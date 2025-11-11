@@ -437,23 +437,20 @@ class Student extends Admin_Controller
         $query = $this->db->get('students');
         $last_row = $query->row();
         $data['admission_no']=$last_row->admission_no;
-        
-        
-        
 
-        $this->form_validation->set_rules('cast_category', $this->lang->line('cast_category'), 'trim|required|xss_clean');
+       // $this->form_validation->set_rules('cast_category', $this->lang->line('cast_category'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('category_id', $this->lang->line('category_id'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('firstname', $this->lang->line('first_name'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('gender', $this->lang->line('gender'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('dob', $this->lang->line('date_of_birth'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
+        //$this->form_validation->set_rules('gender', $this->lang->line('gender'), 'trim|required|xss_clean');
+        //$this->form_validation->set_rules('dob', $this->lang->line('date_of_birth'), 'trim|required|xss_clean');
         if($this->sch_setting_detail->guardian_name){
-            $this->form_validation->set_rules('guardian_name', $this->lang->line('guardian_name'), 'trim|required|xss_clean');
-            $this->form_validation->set_rules('guardian_is', $this->lang->line('guardian'), 'trim|required|xss_clean');
+            //$this->form_validation->set_rules('guardian_name', $this->lang->line('guardian_name'), 'trim|required|xss_clean');
+            //$this->form_validation->set_rules('guardian_is', $this->lang->line('guardian'), 'trim|required|xss_clean');
         }
         if($this->sch_setting_detail->guardian_phone){
-           $this->form_validation->set_rules('guardian_phone', $this->lang->line('guardian_phone'), 'trim|required|xss_clean');
+           //$this->form_validation->set_rules('guardian_phone', $this->lang->line('guardian_phone'), 'trim|required|xss_clean');
         }
         
         $this->form_validation->set_rules(
@@ -519,7 +516,7 @@ class Student extends Admin_Controller
                 'pincode'             => $this->input->post('pincode'),
                 'cast'                => $this->input->post('cast'),
                 'previous_school'     => $this->input->post('previous_school'),
-                'dob'                 => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('dob'))),
+                'dob' => $this->input->post('dob') ? date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('dob'))) : null,
                 'current_address'     => $this->input->post('current_address'),
                 'permanent_address'   => $this->input->post('permanent_address'),
                 'adhar_no'            => $this->input->post('adhar_no'),
@@ -582,11 +579,11 @@ class Student extends Admin_Controller
             $mother_occupation = $this->input->post('mother_occupation');
 
             if($this->sch_setting_detail->guardian_name){
-                $data_insert['guardian_is'] = $this->input->post('guardian_is');
+                $data_insert['guardian_is'] = $this->input->post('guardian_is') ? $this->input->post('guardian_is') : '';
             }
 
             if (isset($measurement_date)) {
-                $data_insert['measurement_date'] = date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('measure_date')));
+                $data_insert['measurement_date'] = $this->input->post('measure_date') ? date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('measure_date'))) : null;
             }
 
             if (isset($house)) {
@@ -1387,17 +1384,18 @@ class Student extends Admin_Controller
         }
 
         $this->form_validation->set_rules('firstname', $this->lang->line('first_name'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('dob', $this->lang->line('date_of_birth'), 'trim|required|xss_clean');
+        //$this->form_validation->set_rules('dob', $this->lang->line('date_of_birth'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('gender', $this->lang->line('gender'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('category_id', $this->lang->line('category_id'), 'trim|required|xss_clean');
+        //$this->form_validation->set_rules('gender', $this->lang->line('gender'), 'trim|required|xss_clean');
 
          if($this->sch_setting_detail->guardian_name){
-            $this->form_validation->set_rules('guardian_name', $this->lang->line('guardian_name'), 'trim|required|xss_clean');
-            $this->form_validation->set_rules('guardian_is', $this->lang->line('guardian'), 'trim|required|xss_clean');
+            //$this->form_validation->set_rules('guardian_name', $this->lang->line('guardian_name'), 'trim|required|xss_clean');
+            //$this->form_validation->set_rules('guardian_is', $this->lang->line('guardian'), 'trim|required|xss_clean');
         }
         if($this->sch_setting_detail->guardian_phone){
-           $this->form_validation->set_rules('guardian_phone', $this->lang->line('guardian_phone'), 'trim|required|xss_clean');
+          // $this->form_validation->set_rules('guardian_phone', $this->lang->line('guardian_phone'), 'trim|required|xss_clean');
         }
 
         $this->form_validation->set_rules(
@@ -1406,7 +1404,7 @@ class Student extends Admin_Controller
                 array('check_student_email_exists', array($this->student_model, 'check_student_email_exists')),
             )
         );
-        $this->form_validation->set_rules('guardian_email', $this->lang->line('guardian_email'), 'trim|valid_email|xss_clean');
+        //$this->form_validation->set_rules('guardian_email', $this->lang->line('guardian_email'), 'trim|valid_email|xss_clean');
         if (!$this->sch_setting_detail->adm_auto_insert) {
 
             $this->form_validation->set_rules('admission_no', $this->lang->line('admission_no'), array('required', array('check_admission_no_exists', array($this->student_model, 'valid_student_admission_no'))));
@@ -1467,7 +1465,7 @@ class Student extends Admin_Controller
                 'pincode'             => $this->input->post('pincode'),
                 'cast'                => $this->input->post('cast'),
                 'previous_school'     => $this->input->post('previous_school'),
-                'dob'                 => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('dob'))),
+                'dob'                 => $this->input->post('dob') ? date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('dob'))) : null,
                 'current_address'     => $this->input->post('current_address'),
                 'permanent_address'   => $this->input->post('permanent_address'),
                 'adhar_no'            => $this->input->post('adhar_no'),
@@ -1520,7 +1518,7 @@ class Student extends Admin_Controller
             $mother_occupation = $this->input->post('mother_occupation');
 
             if($this->sch_setting_detail->guardian_name){
-                $data['guardian_is'] = $this->input->post('guardian_is');
+                $data['guardian_is'] = $this->input->post('guardian_is') ? $this->input->post('guardian_is') : '';
             }
 
             if (isset($measurement_date)) {

@@ -108,7 +108,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <?php } ?>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="exampleInputFile"> <?php echo $this->lang->line('gender'); ?> </label><small class="req"> *</small>
+                                                <label for="exampleInputFile"> <?php echo $this->lang->line('gender'); ?> </label>
                                                 <select class="form-control" name="gender">
                                                     <option value=""><?php echo $this->lang->line('select'); ?></option>
                                                     <?php
@@ -123,14 +123,23 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                              }
                                                              ?>
                                                 </select>
-                                                <span class="text-danger"><?php echo form_error('gender'); ?></span>
+                                                <span class="text-danger"><?php //echo form_error('gender'); ?></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('date_of_birth'); ?></label><small class="req"> *</small>
-                                                <input id="dob" name="dob" placeholder="" type="text" class="form-control date"  value="<?php echo set_value('dob', date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($student['dob']))); ?>" />
-                                                <span class="text-danger"><?php echo form_error('dob'); ?></span>
+                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('date_of_birth'); ?></label>
+												<?php
+													$dob_value = '';
+													if (!empty($student['dob'])) {
+														$dob_value = date(
+															$this->customlib->getSchoolDateFormat(),
+															$this->customlib->dateyyyymmddTodateformat($student['dob'])
+														);
+													}
+												?>
+                                                <input id="dob" name="dob" placeholder="" type="text" class="form-control date"  value="<?php echo set_value('dob', $dob_value); ?>" />
+                                                <span class="text-danger"><?php //echo form_error('dob'); ?></span>
                                             </div>
                                         </div>
 
@@ -343,7 +352,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                             <div class="col-md-4">
                                                  <div class="form-group">
-                                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('fee_category'); ?></label>
+                                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('fee_category'); ?><small class="req"> *</small></label>
                                                     <select  id="category_id" name="category_id" class="form-control" >
                                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                                         <?php foreach ($categorylist as $category) { ?>
@@ -356,7 +365,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                 }
                                                                 ?>
                                                     </select>
-                                                    <!-- <span class="text-danger"><?php echo form_error('category_id'); ?></span> -->
+                                                     <span class="text-danger"><?php echo form_error('category_id'); ?></span>
                                                 </div>
                                             </div>
 
@@ -652,7 +661,7 @@ if (!empty($siblings)) {
                                     <?php if ($sch_setting->guardian_name) { ?>
                                     <div class="row">
                                         <div class="form-group col-md-12">
-                                            <label><?php echo $this->lang->line('if_guardian_is'); ?></label><small class="req"> *</small>&nbsp;&nbsp;&nbsp;
+                                            <label><?php echo $this->lang->line('if_guardian_is'); ?></label>&nbsp;&nbsp;&nbsp;
                                             <label class="radio-inline">
                                                 <input type="radio" name="guardian_is"  <?php
                                                 if ($student['guardian_is'] == "father") {
@@ -685,7 +694,7 @@ if (!empty($siblings)) {
                                                   <?php if ($sch_setting->guardian_name) { ?>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_name'); ?></label><small class="req"> *</small>
+                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_name'); ?></label>
                                                         <input id="guardian_name" name="guardian_name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_name', $student['guardian_name']); ?>" />
                                                         <span class="text-danger"><?php echo form_error('guardian_name'); ?></span>
                                                     </div>
@@ -704,7 +713,7 @@ if (!empty($siblings)) {
                                                    <?php if ($sch_setting->guardian_phone) { ?>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_phone'); ?></label><small class="req"> *</small>
+                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_phone'); ?></label>
                                                         <input id="guardian_phone" name="guardian_phone" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_phone', $student['guardian_phone']); ?>" />
                                                         <span class="text-danger"><?php echo form_error('guardian_phone'); ?></span>
                                                     </div>

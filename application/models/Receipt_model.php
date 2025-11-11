@@ -1324,8 +1324,4 @@ class Receipt_model extends CI_Model {
     }
 
 
-
-
-
-
 }

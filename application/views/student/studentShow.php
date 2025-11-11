@@ -335,16 +335,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             </tr>
                                             <?php if ($sch_setting->category) {  ?>
                                             <tr>
-                                                <td><?php echo $this->lang->line('category'); ?></td>
-                                                <td>
-                                                    <?php
-                                                    foreach ($category_list as $value) {
-                                                        if ($student['category_id'] == $value['id']) {
-                                                            echo $value['category'];
-                                                        }
-                                                    }
-                                                    ?>                                         
-                                                </td>
+                                                <td>Fee <?php echo $this->lang->line('category'); ?></td>
+                                                <td><?php echo $student['category']; ?></td>
                                             </tr>
                                             <?php } if ($sch_setting->mobile_no) {  ?>
                                             <tr>

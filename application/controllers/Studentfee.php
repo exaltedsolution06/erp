@@ -148,6 +148,120 @@ class Studentfee extends Admin_Controller
         $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Fees Paid successfully</div>');
         redirect('studentfee/print/'.base64_encode(json_encode($last_id)));
     }
+	
+	public function editFee(){
+
+        $data = $this->input->post(); 
+        if (empty($data['receipt_no']) || empty($data['student_id'])) {
+            echo json_encode(['status' => 'error', 'message' => 'Receipt number or student ID is missing']);
+            return;
+        }
+		
+		$this->Receipt_model->delete_receipts_by_receipt_no($data['receipt_no']);
+		
+        $last_id=[];
+        if(!empty($data['pay'][0])){            
+            $data['months']=array_unique($data['months']);
+            $total_month=count($data['months']);
+            $paid=$data['pay'];
+            foreach($paid as $key=>$value){
+                if($value=='paid'){
+                    foreach ($data['months'] as $keys => $month) {
+                        // echo $key.'==Key';
+                        $fee_head_type = $data['fee_head_type'][$key];
+                        $student_id = $data['student_id'];
+                        $fee_head = $data['fee_head'][$key];
+
+                        // Check if the combination of student_id, month, and fee_head_type already exists
+                        $existing_entry = $this->Receipt_model->check_existing_entry($student_id, $month, $fee_head_type,$fee_head);
+
+                        if ($existing_entry) {
+                            // If exists, return an error
+                            // echo json_encode(['status' => 'error', 'message' => 'This record already exists']);
+                            // return;
+                            $this->session->set_flashdata('msg', '<div class="alert alert-danger  text-center">This record already exists</div>');
+                            redirect('studentfee/edit/'.base64_encode($data['receipt_no']));
+                        }
+
+                        $insert_data = array(
+                            'receipt_no'   => $data['receipt_no'],
+                            'student_id'   => $data['student_id'],
+                            'months'       => $month,
+                            'fee_head'     => $data['fee_head'][$key],
+                            'fee_head_type'  => $data['fee_head_type'][$key],
+                            'fee_head_name'  => $data['fee_head_name'][$key],
+                            'total'        => ($data['total'][$key]),
+                            'month_total'   => $data['month_total'][$month][$key],
+                            'rec_discount' => (int) ($data['rec_discount'][$key]),
+                            'rec_amount'   => ($data['rec_amount'][$key]),
+                            'balance_amount' => $data['total'][$key]-($data['rec_discount'][$key]+$data['rec_amount'][$key]),
+                            'fees_received' => $data['fees_received'],
+                            'late_fees'    => $data['late_fees'],
+                            'ledger_amt'   => $data['ledger_amt'],
+                            'total_fees'   => $data['total_fees'],
+                            'discount_amt' => $data['discount_amt'],
+                            'net_fees'     => $data['net_fees'],
+                            'receipt_amt'  => $data['receipt_amt'],
+                            'balance_amt'  => $data['balance_amt'],
+                            'mode'         => $data['mode'],
+                            'remarks'      => $data['remarks'],
+                            'date_time'      => $data['date_time'],
+                            'back_id'      => $data['back_id'],
+                            'sr_no'        => $this->session->userdata('last_receipt_id'),
+                             'create_by'     => $this->customlib->getUserData()['email'],
+                             'total_month'  => $total_month,
+                        );
+                        // var_dump($insert_data);
+                        // die;
+
+                        // echo "<hr>";
+                        
+                        $insid=$this->Receipt_model->insert_receipt($insert_data);
+
+                        // var_dump($insid); die;
+                        array_push($last_id,$insid);
+                    }
+                }
+            }
+            // die;
+            // $data['balance_amt']
+            $this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt']));
+            //$this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt'] - $data['prev_balance_amt']));
+        }else{
+            $insert_data = array(
+                'receipt_no'   => $data['receipt_no'],
+                'student_id'   => $data['student_id'],
+                'months'       => '',
+                'fee_head'     => '',
+                'fee_head_type'  =>'', 
+                'fee_head_name'  => 'Ledger Amount',
+                'total'        => ($data['ledger_amt']),
+                'rec_discount' => 0,
+                'rec_amount'   => ($data['receipt_amt']),
+                'balance_amount'   => $data['ledger_amt'],
+                'fees_received' => $data['ledger_amt'],
+                'late_fees'    => $data['late_fees'],
+                'ledger_amt'   => $data['old_ledger_amt'],
+                'total_fees'   => $data['total_fees'],
+                'discount_amt' => $data['discount_amt'],
+                'net_fees'     => $data['net_fees'],
+                'receipt_amt'  => $data['ledger_amt'],
+                'balance_amt'  => $data['balance_amt'],
+                'mode'         => $data['mode'],
+                'remarks'      => $data['remarks'],
+                'date_time'      => $data['date_time'],
+                'back_id'      => $data['back_id'],
+                'sr_no'        => $this->session->userdata('last_receipt_id'),
+                'create_by'     => $this->customlib->getUserData()['email'],
+            );
+			$id=$this->Receipt_model->insert_receipt($insert_data); 
+            array_push($last_id,$id);
+            $this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt']));
+            //$this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt'] - $data['prev_balance_amt']));
+        }
+        $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Fees Edited successfully</div>');
+        redirect('studentfee/print/'.base64_encode(json_encode($last_id)));
+    }
 
 
 
@@ -226,7 +340,63 @@ class Studentfee extends Admin_Controller
         $this->load->view('studentfee/studentfeeSearch', $data);
         $this->load->view('layout/footer', $data);
     }
+	public function receipt_book()
+    {
+        if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
+            access_denied();
+        }
+		$this->session->set_userdata('top_menu', 'Reports');
+        $this->session->set_userdata('sub_menu', 'Reports/receipt-book');
+        //$this->session->set_userdata('subsub_menu', 'Reports/finance/receipt-book');
+		
+        $data['collect_by'] = $this->studentfeemaster_model->get_feesreceived_by();
+        $data['searchlist'] = $this->customlib->get_searchtype();
+        $data['group_by']   = $this->customlib->get_groupby();        
 
+        $from_date = $this->input->get('from_date');
+        $to_date   = $this->input->get('to_date');
+
+        $per_page_input = $this->input->get('per_page');
+        $total_rows = $this->Receipt_model->get_receipt_count($from_date,$to_date);
+
+        $per_page = (!empty($per_page_input) && $per_page_input != 'all') ? (int)$per_page_input : 10;
+        $per_page = ($per_page_input == 'all') ? $total_rows : $per_page;
+
+        $config['base_url'] = base_url('studentfee/receipt_book');
+        $config['total_rows'] = $total_rows;
+        $config['per_page'] = $per_page;
+        $config['uri_segment'] = 3;
+        $config['reuse_query_string'] = TRUE; // keeps per_page in URL
+
+        // Pagination Bootstrap Styling (same as you already have)
+        $config['full_tag_open'] = '<ul class="pagination justify-content-center">';
+        $config['full_tag_close'] = '</ul>';
+        $config['attributes'] = ['class' => 'page-link'];
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+
+        $this->pagination->initialize($config);
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+        $data['receipt_data'] = $this->Receipt_model->get_receipt($config['per_page'], $page,$from_date,$to_date);
+        $data['pagination_links'] = $this->pagination->create_links();
+        $data['sch_setting'] = $this->sch_setting_detail;
+        $this->load->view('layout/header', $data);
+        $this->load->view('studentfee/receipt_book', $data);
+        $this->load->view('layout/footer', $data);
+    }
     public function collection_report()
     {
 
@@ -500,7 +670,108 @@ class Studentfee extends Admin_Controller
             $this->load->view('layout/footer', $data);
         }
     }
+	
+	public function fee_register()
+    {
+        // receipts		
+        if (!$this->rbac->hasPrivilege('fees_statement', 'can_view')) {
+            access_denied();
+        }
+        $this->session->set_userdata('top_menu', 'Reports');
+        $this->session->set_userdata('sub_menu', 'Reports/fee_register');
+        //$this->session->set_userdata('subsub_menu', 'Reports/finance/reportbyname');
+        $data['title']       = 'student fees';
+        $data['title']       = 'student fees';
+        $class               = $this->class_model->get();
+        $data['classlist']   = $class;
+        $data['sch_setting'] = $this->sch_setting_detail;
+        // $data['get_receipt'] = $this->get_receipt
 
+        // $data['receipt_data'] = $this->Receipt_model->get_receipt();
+        $from_date = $this->input->get('from_date');
+        $to_date   = $this->input->get('to_date');
+        // die;
+        // paginate
+        $per_page_input = $this->input->get('per_page');
+        $total_rows = $this->Receipt_model->get_receipt_count($from_date, $to_date);
+
+        $per_page = (!empty($per_page_input) && $per_page_input != 'all') ? (int)$per_page_input : 10;
+        $per_page = ($per_page_input == 'all') ? $total_rows : $per_page;
+
+        $config['base_url'] = base_url('studentfee/fee_register');
+        $config['total_rows'] = $total_rows;
+        $config['per_page'] = $per_page;
+        $config['uri_segment'] = 3;
+        $config['reuse_query_string'] = TRUE;
+
+        // Pagination Bootstrap Styling (same as you already have)
+        $config['full_tag_open'] = '<ul class="pagination justify-content-center">';
+        $config['full_tag_close'] = '</ul>';
+        $config['attributes'] = ['class' => 'page-link'];
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+
+        $this->pagination->initialize($config);
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+        $data['receipt_data'] = $this->Receipt_model->get_receipt($config['per_page'], $page,$from_date, $to_date);
+        $data['pagination_links'] = $this->pagination->create_links();
+        // end paginate
+        // var_dump($data['receipt_data']);
+        // die;
+        if ($this->input->server('REQUEST_METHOD') == "GET") {
+            $this->load->view('layout/header', $data);
+            $this->load->view('studentfee/fee_register', $data);
+            $this->load->view('layout/footer', $data);
+        } else {
+
+            $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
+            $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
+            $this->form_validation->set_rules('student_id', $this->lang->line('student'), 'trim|required|xss_clean');
+
+            if ($this->form_validation->run() == false) {
+
+                $this->load->view('layout/header', $data);
+                $this->load->view('studentfee/fee_register', $data);
+                $this->load->view('layout/footer', $data);
+            } else {
+
+                $data['student_due_fee'] = array();
+                $class_id                = $this->input->post('class_id');
+                $section_id              = $this->input->post('section_id');
+                $student_id              = $this->input->post('student_id');
+                $student                 = $this->student_model->get($student_id);
+                $data['student']         = $student;
+
+                $student_due_fee              = $this->studentfeemaster_model->getStudentFees($student['student_session_id']);
+                $student_discount_fee         = $this->feediscount_model->getStudentFeesDiscount($student['student_session_id']);
+                $data['student_discount_fee'] = $student_discount_fee;
+                $data['student_due_fee']      = $student_due_fee;
+                $data['class_id']             = $class_id;
+                $data['section_id']           = $section_id;
+                $data['student_id']           = $student_id;
+                $category                     = $this->category_model->get();
+                $data['categorylist']         = $category;
+				
+                $this->load->view('layout/header', $data);
+                $this->load->view('studentfee/fee_register', $data);
+                $this->load->view('layout/footer', $data);
+            }
+        }
+    }
+	
     public function reportbyname()
     {
 		
@@ -869,14 +1140,127 @@ class Studentfee extends Admin_Controller
         }
     }
 
-    public function edit($id)
+    public function edit($receipt_no)
     {
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_edit')) {
+		if (!$this->rbac->hasPrivilege('collect_fees', 'can_add')) {
+            access_denied();
+        }
+		$receipt_no = base64_decode($receipt_no);		
+		$receiptArr=$this->Receipt_model->get_receipts_by_receipt_no($receipt_no);
+		//echo '<pre>'; print_r($receiptArr);echo '</pre>';die;
+		$id = $receiptArr[0]['back_id'];
+        $data['back_id']=$id;
+        $data['sch_setting'] = $this->sch_setting_detail;
+        $data['title'] = 'Student Detail';
+        $student         = $this->student_model->getByStudentSession($id);        
+        $data['student'] = $student;
+        $data['update_ids']=$id;
+		
+        $student_due_fee = $this->studentfeemaster_model->getStudentFees($id);
+        $student_discount_fee = $this->feediscount_model->getStudentFeesDiscount($id);
+
+        $data['student_discount_fee'] = $student_discount_fee;
+        $data['student_due_fee']      = $student_due_fee;
+        $category                     = $this->category_model->get();
+        $data['categorylist']         = $category;
+
+        $class_section                = $this->student_model->getClassSection($student["class_id"]);
+        $data["class_section"]        = $class_section;
+        $session                      = $this->setting_model->getCurrentSession();
+        $studentlistbysection         = $this->student_model->getStudentClassSection($student["class_id"], $session);
+        $data["studentlistbysection"] = $studentlistbysection;
+
+        /*$last_receipt_id = $this->Receipt_model->get_last_receipt_id();
+        $this->session->set_userdata('last_receipt_id', $last_receipt_id);
+
+        if(@$_GET['receipt_no'] ==''){
+            $data['receipt_no']=$this->session_model->get($this->setting_model->getCurrentSession())['session']."/".$last_receipt_id;
+        }else{
+            $data['receipt_no']=$_GET['receipt_no'];
+        }*/
+
+		$data['receipt_no']= $receipt_no;
+		
+
+        $data['data_list']=0;
+        $data['addfee']=$id;
+
+        // $data['last_receipt_id']=;
+        // // Check if the combination of student_id, month, and fee_head_type already exists
+        //$existing_entry = $this->Receipt_model->get_pay_mounth($student['id']);
+		
+		// Suppose your main array is stored in $data
+		$months = array_column($receiptArr, 'months');       // Extract all month values
+		$unique_months = array_values(array_unique($months)); // Remove duplicates and reindex
+
+		//print_r($unique_months);die;
+
+        $data['pay_mounth']=$unique_months;        
+        
+        $data['months_data']=[];
+        
+        if(!empty($unique_months)){ 
+            $monthsPost =$unique_months;
+            $class_id=$student['class_id'];
+            $route_id=$student['vehroute_id'];            
+            $category_id=$student['category_id'];
+            $this->db->from('fee_head');
+            $this->db->join('fees_plan', 'fee_head.id = fees_plan.fee_group_id');
+            $this->db->where("JSON_CONTAINS(fees_plan.class_ids, '\"$class_id\"')", null, false);
+            $this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
+            if (!empty($monthsPost)) {
+                $this->db->group_start(); // Start OR group
+                foreach ($monthsPost as $m) {
+                    $m_escaped = $this->db->escape_str($m); // Prevent injection or breaking SQL
+                    $this->db->or_where("JSON_CONTAINS(fee_head.months, '\"$m_escaped\"')", null, false);
+                }
+                $this->db->group_end(); // End OR group
+            }
+            $query = $this->db->get();
+            $data['data_list'] = $query->result();
+            // route
+            $this->db->from('route_head');
+            $this->db->join('route_plan', 'route_head.id = route_plan.fee_group_id');
+            $this->db->where("JSON_CONTAINS(route_plan.class_ids, '\"$class_id\"')", null, false);
+            $this->db->where("JSON_CONTAINS(route_plan.category_ids, '\"$category_id\"')", null, false);
+            $this->db->where('route_head.id', $route_id);
+            
+            $query = $this->db->get();
+            $data['route_data_list'] = $query->result();        
+            
+            $data['months_data']=$monthsPost;
+            // echo  json_encode($data);               
+            // die;
+			
+			$recDiscountArr = [];
+			$recAmountArr = [];
+			foreach ($receiptArr as $row) {
+				$recDiscountArr[$row['fee_head']] = $row['rec_discount'];
+				$recAmountArr[$row['fee_head']] = $row['rec_amount'];
+			}
+			$data['rec_discount'] = $recDiscountArr;
+			$data['received_amount'] = $recAmountArr;
+			//echo '<pre>'; print_r($recDiscountArr);echo '</pre>';die;
+			$data['late_fees'] = $receiptArr[0]['late_fees'];
+			$data['ledger_amt'] = $receiptArr[0]['ledger_amt'];
+			$data['total_fees'] = $receiptArr[0]['total_fees'];
+			$data['discount_amt'] = $receiptArr[0]['discount_amt'];
+			$data['net_fees'] = $receiptArr[0]['net_fees'];
+			$data['receipt_amt'] = $receiptArr[0]['receipt_amt'];
+			$data['balance_amt'] = $receiptArr[0]['balance_amt'];
+			$data['mode'] = $receiptArr[0]['mode'];
+			$data['remarks'] = $receiptArr[0]['remarks'];
+        }
+		$this->load->view('layout/header', $data);
+		$this->load->view('studentfee/studentfeeEdit', $data);
+		$this->load->view('layout/footer', $data);
+		
+        /*if (!$this->rbac->hasPrivilege('collect_fees', 'can_edit')) {
             access_denied();
         }
         $data['title']      = 'Edit studentfees';
         $data['id']         = $id;
-        $studentfee         = $this->studentfee_model->get($id);
+        $studentfee         = $this->studentfee_model->getStudentFees($id);
         $data['studentfee'] = $studentfee;
         $this->form_validation->set_rules('category', $this->lang->line('category'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == false) {
@@ -891,7 +1275,7 @@ class Studentfee extends Admin_Controller
             $this->studentfee_model->add($data);
             $this->session->set_flashdata('msg', '<div studentfee="alert alert-success text-center">' . $this->lang->line('update_message') . '</div>');
             redirect('studentfee/index');
-        }
+        }*/
     }
 
     public function addstudentfee()

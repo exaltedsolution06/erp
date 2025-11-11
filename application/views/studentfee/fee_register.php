@@ -12,14 +12,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
     <!-- Main content -->
     <section class="content">
-        
+        <?php //$this->load->view('reports/_finance'); ?>
         <div class="row">
             <!-- left column -->
-
             <div class="col-md-12">
                 <div class="box removeboxmius">
                     <div class="box-header ptbnull">
-						<h4>Delete Fee List</h4>
+						<h4>Fee Register</h4>
 					</div>
                     
                         <div class="">
@@ -125,7 +124,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                 <th >Mode</th>
                                                 <th >User</th>
-
+                                                <th >Remark</th>
                                             </tr>
                                         </thead>
                                        
@@ -149,15 +148,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 $net_fees_sum  += (float)$record["net_fees"];
                                                 $receipt_amt_sum  += (float)$record["receipt_amt"];
                                                 $balance_amt_sum  += (float)$record["balance_amt"];
-
-                                                $result = $this->db->get_where('student_session', ['student_id' => $record['student_id']])->row();
-                                                
                                             ?>
                                             <tr>
                                                 <td style="width:50px !important"><?= $sno++ ?></td>
                                                 <td style="width:100px !imortant"><?= date('d-m-Y',strtotime($record["date_time"])) ?></td>
                                                 <td style="width:100px !imortant"><?= $record["receipt_no"] ?></td>
-                                                <td ><a href="<?=base_url('studentfee/addfee/'.$result->id)?>?receipt_no=<?= $record["receipt_no"] ?>"><?= $record["admission_no"] ?></a></td>
+                                                <td ><?= $record["admission_no"] ?></td>
                                                 <td ><?= $record["firstname"].' '.$record["middlename"].' '.$record["lastname"] ?></td>
                                                 <td ><?= $record["father_name"] ?></td>
                                                 <td ><?= $record["class"] ?></td>
@@ -211,7 +207,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                 <td ><?= $record["mode"] ?></td>
                                                 <td ><?= $record["create_by"] ?></td>
-                                                
+                                                <td ><?= $record["remarks"] ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                          <tr>
@@ -240,9 +236,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
                                             <th>-</th>
-
                                             <th>-</th>
-                                            <!-- <th>-</th> -->
+                                            <th>-</th>
 
                                         </tr>
                                         <?php else: ?>

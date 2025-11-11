@@ -443,7 +443,90 @@ class Report extends Admin_Controller
         $this->load->view('layout/footer', $data);
 
     }
+	
+	public function fee_card()
+    {
+        $this->session->set_userdata('top_menu', 'Reports');
+        $this->session->set_userdata('sub_menu', 'Reports/fee_card');
+        //$this->session->set_userdata('subsub_menu', 'Reports/finance/onlinefees_report');
+        $id=$_GET['id']??0;
+        $data['student_data'] =$student_data= $this->student_model->getByStudentSession($id);
+        // $data['student_data'] = $this->student_model->getRecentRecord($id);        
+        $category                     = $this->category_model->get();
+        $data['categorylist']         = $category;
+        if($id != 0){
+            // paginate
+            $per_page_input = $this->input->get('per_page');
+            $total_rows = $this->Receipt_model->get_receipt_student_count($student_data['id']);
 
+            // die;
+            $per_page = (!empty($per_page_input) && $per_page_input != 'all') ? (int)$per_page_input : 10;
+            $per_page = ($per_page_input == 'all') ? $total_rows : $per_page;
+
+            $config['base_url'] = base_url('report/fee_card');
+            $config['total_rows'] = $total_rows;
+            $config['per_page'] = $per_page;
+            $config['uri_segment'] = 3;
+            $config['reuse_query_string'] = TRUE; // keeps per_page in URL
+
+            // Pagination Bootstrap Styling (same as you already have)
+            $config['full_tag_open'] = '<ul class="pagination justify-content-center">';
+            $config['full_tag_close'] = '</ul>';
+            $config['attributes'] = ['class' => 'page-link'];
+            $config['first_link'] = 'First';
+            $config['last_link'] = 'Last';
+            $config['first_tag_open'] = '<li class="page-item">';
+            $config['first_tag_close'] = '</li>';
+            $config['last_tag_open'] = '<li class="page-item">';
+            $config['last_tag_close'] = '</li>';
+            $config['next_tag_open'] = '<li class="page-item">';
+            $config['next_tag_close'] = '</li>';
+            $config['prev_tag_open'] = '<li class="page-item">';
+            $config['prev_tag_close'] = '</li>';
+            $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+            $config['cur_tag_close'] = '</a></li>';
+            $config['num_tag_open'] = '<li class="page-item">';
+            $config['num_tag_close'] = '</li>';
+
+            $this->pagination->initialize($config);
+            $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+            $data['receipt_data'] = $this->Receipt_model->get_student_receipt($config['per_page'], $page,$student_data['id']);
+            $data['pagination_links'] = $this->pagination->create_links();
+        }
+        if(!empty($_POST['feesCard'])){
+            $data['fees_card']=$_POST['feesCard'];
+            $monthsPost = $months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
+            $class_id=$student_data['class_id'];
+            $route_id=$student_data['vehroute_id'];
+            $category_id=$student_data['category_id'];
+            // die;
+            $this->db->from('fee_head');
+            $this->db->join('fees_plan', 'fee_head.id = fees_plan.fee_group_id');
+            $this->db->where("JSON_CONTAINS(fees_plan.class_ids, '\"$class_id\"')", null, false);
+            $this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
+            $query = $this->db->get();
+            $data['data_list'] = $query->result();
+              
+            // route
+            $this->db->from('route_head');
+            $this->db->join('route_plan', 'route_head.id = route_plan.fee_group_id');
+            $this->db->where("JSON_CONTAINS(route_plan.class_ids, '\"$class_id\"')", null, false);
+            $this->db->where("JSON_CONTAINS(route_plan.category_ids, '\"$category_id\"')", null, false);
+            $this->db->where('route_head.id', $route_id);
+            $query = $this->db->get();
+            $data['route_data_list'] = $query->result();
+            $data['months_data']=$monthsPost;
+            // echo  json_encode($data);
+            // die;
+        }
+	  // var_dump($data);
+        $data['sch_setting'] = $this->sch_setting_detail;
+        $this->load->view('layout/header', $data);
+        $this->load->view('reports/fee_card', $data);
+        $this->load->view('layout/footer', $data);
+    }
+	
     public function onlinefees_report()
     {
 
@@ -1373,7 +1456,70 @@ class Report extends Admin_Controller
         $this->load->view('reports/payroll', $data);
         $this->load->view('layout/footer', $data);
     }
+	public function defaulter_list()
+    {
+        $this->session->set_userdata('top_menu', 'Reports');
+        $this->session->set_userdata('sub_menu', 'Reports/defaulter_list');
+        //$this->session->set_userdata('subsub_menu', 'Reports/finance/defaulter_list');
+        $data['searchlist']  = $this->customlib->get_searchtype();
+        $data['date_type']   = $this->customlib->date_type();
+        $data['date_typeid'] = '';
 
+        $vehroute_result      = $this->classsection_model->getByID();
+        $data['class'] = $vehroute_result;
+
+        $feegroup_result = $this->feegroup_model->get();
+        $data['category'] = $feegroup_result;
+
+        $data['routes'] = $this->db->order_by('id', 'DESC')->get('route_head')->result_array();
+        $data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('fee_head')->result_array();
+
+        $selectedFeeCat = $_POST['fee_cat'] ?? [];
+        $selectedMonths = $_POST['months'] ?? [];
+        $selectedClasses = $_POST['class'] ?? [];
+        $selectedroutes = $_POST['routes'] ?? [];
+        // 
+
+        // var_dump($selectedClasses);
+        // die;
+ 
+        // paginate
+        $config['base_url'] = base_url('report/defaulter_list');
+        $config['total_rows'] = $this->Receipt_model->get_receipt_count_student($selectedClasses,$selectedFeeCat,$selectedroutes);
+
+        // die;
+        $config['per_page'] = 100;
+        $config['uri_segment'] = 3;
+        // Pagination Bootstrap Styling
+        $config['full_tag_open'] = '<ul class="pagination justify-content-center">';
+        $config['full_tag_close'] = '</ul>';
+        $config['attributes'] = ['class' => 'page-link'];
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        
+        $this->pagination->initialize($config);
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+       
+        $data['receipt_data'] = $this->Receipt_model->get_receipt_student($config['per_page'], $page,$selectedClasses,$selectedFeeCat,$selectedroutes);
+        $data['pagination_links'] = $this->pagination->create_links();
+        // end paginate
+        $this->load->view('layout/header', $data);
+        $this->load->view('reports/defaulter_list', $data);
+        $this->load->view('layout/footer', $data);
+    }
+	
     public function incomegroup()
     {
 

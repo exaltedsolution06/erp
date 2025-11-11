@@ -22,7 +22,59 @@
         <ul class="sidebar-menu verttop">
            <br>
 		   <!-- 1st Menu start -->
-            <?php
+
+		<?php
+			if ($this->module_lib->hasActive('software_subscription') or 1==1) {
+				if (
+					$this->rbac->hasPrivilege('create_package', 'can_view') ||
+					$this->rbac->hasPrivilege('track_ticket', 'can_view') ||
+					$this->rbac->hasPrivilege('closed_ticket', 'can_view') ||
+					$this->rbac->hasPrivilege('ticket_section_report', 'can_view')
+				) {
+					//$CI = get_instance();
+					//$session_sub_menu = $CI->session->userdata('sub_menu');
+					//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
+					$activeSoftwareSuMenu="";
+					/*if(set_Submenu('issueitem/index')
+						|| set_Submenu('Itemstock/index')
+						|| set_Submenu('Item/index')
+						|| set_Submenu('report/ticket-section')
+					){
+						$activeSoftwareSuMenu="active";
+					}*/
+		?>
+					<li class="treeview <?php echo $activeSoftwareSuMenu; ?>">
+						<a href="#">
+							<i class="fa fa-ticket ftlayer"></i> <span>Software Subscription</span>
+							<i class="fa fa-angle-left pull-right"></i>
+						</a>
+						<ul class="treeview-menu">
+							<?php if ($this->rbac->hasPrivilege('package_create', 'can_view')) { ?>
+								<li class="<?php //echo set_Submenu('Package/create'); ?>"><a href="#<?php //echo base_url(); ?>package/create"><i class="fa fa-angle-double-right"></i> Create Package</a></li>
+							<?php } if ($this->rbac->hasPrivilege('package_list', 'can_view')) { ?>
+								<li class="<?php //echo set_Submenu('Package/index'); ?>"><a href="#<?php //echo base_url(); ?>package"><i class="fa fa-angle-double-right"></i> Package List</a></li>
+							<?php } if ($this->rbac->hasPrivilege('package_school_registration', 'can_view')) { ?>
+								<li class="<?php //echo set_Submenu('Package/school-registration'); ?>"><a href="#<?php //echo base_url(); ?>package/school_registration"><i class="fa fa-angle-double-right"></i> School Registration</a></li>
+							<?php } if ($this->rbac->hasPrivilege('package_subscription_details', 'can_view')) { ?>
+								<li class="<?php //echo set_Submenu('Package/subscription-details'); ?>"><a href="#<?php //echo base_url(); ?>package/subscription_details"><i class="fa fa-angle-double-right"></i> Subscription Details</a></li>
+							<?php } if ($this->rbac->hasPrivilege('package_subscription_details', 'can_view')) { ?>
+								<li class="<?php //echo set_Submenu('Package/invoice-details'); ?>"><a href="#<?php //echo base_url(); ?>package/invoice_details"><i class="fa fa-angle-double-right"></i> Invoice Details</a></li>
+							<?php } if ($this->rbac->hasPrivilege('package_invoice_details', 'can_view')) { ?>
+								<li class="<?php //echo set_Submenu('Package/all-reports'); ?>"><a href="#<?php //echo base_url(); ?>package/all_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
+							<?php } ?>
+						</ul>
+					</li>
+					<?php
+				}
+			}
+		?>
+		        
+		<!-- 1st Menu end --> 		        
+		<!-- 2nd Menu start --> 
+		<?php
+				//$CI = get_instance();
+				//$session_sub_menu = $CI->session->userdata('sub_menu');
+				//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
                 $active="";
                 if(set_Submenu('sections/index') 
 					|| set_Submenu('classes/index') 
@@ -43,6 +95,8 @@
                     || set_Submenu('Academics/timetable/mytimetable')
                     || set_Submenu('admin/teacher/assign_class_teacher')
                     || set_Submenu('stdtransfer/index')
+                    || set_Submenu('admin/feediscount')
+                    || set_Submenu('feesforward/index')
                     
                 ){
                     $active="active";
@@ -59,15 +113,15 @@
                     <li class="<?php echo set_Submenu('classes/index'); ?>"><a href="<?php echo base_url(); ?>classes/index"><i class="fa fa-angle-double-right"></i> Add Class</a></li>
                     <li class="<?php echo set_Submenu('admin/feegroup'); ?>"><a href="<?php echo base_url(); ?>admin/feegroup"><i class="fa fa-angle-double-right"></i> Fees Category</a></li>
                     <li class="<?php echo set_Submenu('account/index'); ?>"><a href="<?php echo base_url(); ?>account"><i class="fa fa-angle-double-right"></i> Create Account</a></li>
-                    <li class="<?php echo set_Submenu('feetype/index'); ?>"><a href="<?php echo base_url(); ?>admin/feetype"><i class="fa fa-angle-double-right"></i> Fees Head</a></li>
+                    <li class="<?php echo set_Submenu('feetype/index'); ?>"><a href="<?php echo base_url(); ?>admin/feetype"><i class="fa fa-angle-double-right"></i> Fee Head</a></li>
 					
-                    <li class="<?php echo set_Submenu('admin/feemaster'); ?>"><a href="<?php echo base_url(); ?>admin/feemaster"><i class="fa fa-angle-double-right"></i> Fees Plan</a></li>
+                    <li class="<?php echo set_Submenu('admin/feemaster'); ?>"><a href="<?php echo base_url(); ?>admin/feemaster"><i class="fa fa-angle-double-right"></i> Fee Plan</a></li>
 					<?php if ($this->rbac->hasPrivilege('route', 'can_view')) { ?>
                         <li class="<?php echo set_Submenu('feetype/setroute'); ?>"><a href="<?php echo base_url(); ?>admin/feesroutes/index"><i class="fa fa-angle-double-right"></i> Create Route</a></li>
 					<?php } if ($this->rbac->hasPrivilege('route_plan', 'can_view')) { ?>
 						<li class="<?php echo set_Submenu('admin/setplan'); ?>"><a href="<?php echo base_url(); ?>admin/feesroutes/plan"><i class="fa fa-angle-double-right"></i> Route Plan</a></li>
-					<?php //} if ($this->rbac->hasPrivilege('student_categories', 'can_view')) { ?>
-						<!--<li class="<?php echo set_Submenu('category/index'); ?>"><a href="<?php echo base_url(); ?>category"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('student_categories'); ?></a></li>-->
+					<?php } if ($this->rbac->hasPrivilege('fee_discount', 'can_view')) { ?>
+						<li class="<?php echo set_Submenu('admin/feediscount'); ?>"><a href="<?php echo base_url(); ?>admin/feediscount"><i class="fa fa-angle-double-right"></i> Fee Discount</a></li>
 					<?php } if ($this->rbac->hasPrivilege('student_house', 'can_view')) { ?>
 						<li class="<?php echo set_Submenu('admin/schoolhouse'); ?>"><a href="<?php echo base_url(); ?>admin/schoolhouse"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('house'); ?></a></li>
 					<?php } if ($this->rbac->hasPrivilege('vehicle', 'can_view')) { ?>
@@ -86,11 +140,15 @@
                         <li class="<?php echo set_Submenu('admin/teacher/assign_class_teacher'); ?>"><a href="<?php echo base_url(); ?>admin/teacher/assign_class_teacher"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('assign_class_teacher'); ?></a></li>
                     <?php } if ($this->rbac->hasPrivilege('promote_student', 'can_view')) { ?>
                         <li class="<?php echo set_Submenu('stdtransfer/index'); ?>"><a href="<?php echo base_url(); ?>admin/stdtransfer"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('promote_students'); ?></a></li>
+					<?php } if ($this->rbac->hasPrivilege('previous_session_balance', 'can_view')) { ?>
+                        <li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="<?php echo base_url(); ?>admin/feesforward"><i class="fa fa-angle-double-right"></i> Previous Session Balance</a></li>
+					<?php } if ($this->rbac->hasPrivilege('change_session', 'can_view')) { ?>
+                        <li class="<?php //echo set_Submenu('admin/feesforward'); ?>"><a href="#<?php //echo base_url(); ?>"><i class="fa fa-angle-double-right"></i> Change Session</a></li>
                     <?php } ?>
                 </ul>
             </li>
-			<!-- 1st Menu end -->
-			<!-- 2nd Menu start -->
+			<!-- 2nd Menu end -->
+			<!-- 3rd Menu start -->
             <?php
                 if ($this->module_lib->hasActive('front_office') or 1==1) { // Agar front office module active hai
                     if (
@@ -125,7 +183,9 @@
 						<i class="fa fa-angle-left pull-right"></i>
 					</a>
 					<ul class="treeview-menu">
-						<?php if ($this->rbac->hasPrivilege('admission_enquiry', 'can_view')) { ?>
+						<?php if ($this->rbac->hasPrivilege('setup_front_office', 'can_view')) { ?>
+							<li class="<?php echo set_Submenu('admin/visitorspurpose'); ?>"><a href="<?php echo base_url(); ?>admin/visitorspurpose"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('setup_front_office'); ?></a></li>
+						<?php } if ($this->rbac->hasPrivilege('admission_enquiry', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('admin/enquiry'); ?>"><a href="<?php echo base_url(); ?>admin/enquiry"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('admission_enquiry'); ?> </a></li>
 						<?php } if ($this->rbac->hasPrivilege('visitor_book', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('admin/visitors'); ?>"><a href="<?php echo base_url(); ?>admin/visitors"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('visitor_book'); ?></a></li>
@@ -137,10 +197,8 @@
 							<li class="<?php echo set_Submenu('admin/receive'); ?>"><a href="<?php echo base_url(); ?>admin/receive"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('postal_receive'); ?></a></li>
 						<?php } if ($this->rbac->hasPrivilege('complain', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('admin/complaint'); ?>"><a href="<?php echo base_url(); ?>admin/complaint"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('complain'); ?></a></li>
-						<?php } if ($this->rbac->hasPrivilege('setup_front_office', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('admin/visitorspurpose'); ?>"><a href="<?php echo base_url(); ?>admin/visitorspurpose"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('setup_front_office'); ?></a></li>
 						<?php } if ($this->rbac->hasPrivilege('front_desk_reports', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('report/front-desk'); ?>"><a href="<?php echo base_url(); ?>admin/report/front_desk_reports"><i class="fa fa-angle-double-right"></i> Front Desk Reports</a></li>
+							<li class="<?php echo set_Submenu('report/front-desk'); ?>"><a href="<?php echo base_url(); ?>admin/report/front_desk_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 						<?php } ?>
 					</ul>
 				</li>
@@ -148,8 +206,8 @@
 				}
 			}
 		?>
-		<!-- 2nd Menu end -->
-		<!-- 3rd Menu start -->
+		<!-- 3rd Menu end -->
+		<!-- 4th Menu start -->
         <?php
             if ($this->module_lib->hasActive('student_section') or 1==1) { // Agar student section module active hai
 				if (
@@ -159,8 +217,12 @@
 					$this->rbac->hasPrivilege('bulk_delete', 'can_view') ||
 					$this->rbac->hasPrivilege('student_section_reports', 'can_view')
 				) {
+					//$CI = get_instance();
+					//$session_sub_menu = $CI->session->userdata('sub_menu');
+					//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
 				$activeSsMenu="";
 				if(set_Submenu('student/create')
+					|| set_Submenu('onlinestudent')
 					|| set_Submenu('student/search')
 					|| set_Submenu('student/disablestudentslist')
 					|| set_Submenu('bulkdelete')
@@ -171,12 +233,14 @@
 		?>
 				<li class="treeview <?php echo $activeSsMenu; ?>">
 					<a href="#">
-						<i class="fa fa-user ftlayer"></i> <span>Student Section</span>
+						<i class="fa fa-user ftlayer"></i> <span>Admission Section</span>
 						<i class="fa fa-angle-left pull-right"></i>
 					</a>
 					<ul class="treeview-menu">
 						<?php if ($this->rbac->hasPrivilege('student', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('student/create'); ?>"><a href="<?php echo base_url(); ?>student/create"><i class="fa fa-angle-double-right"></i> New Admission</a></li>
+						<?php } if ($this->rbac->hasPrivilege('onlinestudent', 'can_view')) { ?>
+							<li class="<?php echo set_Submenu('onlinestudent'); ?>"><a href="<?php echo base_url(); ?>admin/onlinestudent"><i class="fa fa-angle-double-right"></i> Online Admission</a></li>
 						<?php } if ($this->rbac->hasPrivilege('student', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('student/search'); ?>"><a href="<?php echo base_url(); ?>student/search"><i class="fa fa-angle-double-right"></i> Student Full Details</a></li>
 						<?php } if ($this->rbac->hasPrivilege('disable_student', 'can_view')) { ?>
@@ -185,7 +249,7 @@
 							<li class="<?php echo set_Submenu('bulkdelete'); ?>"><a href="<?php echo site_url('student/bulkdelete'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('bulk') . " " . $this->lang->line('delete'); ?></a>
 									</li>
 						<?php } if ($this->rbac->hasPrivilege('student_section_reports', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('Reports/student_information'); ?>"><a href="<?php echo base_url(); ?>report/studentinformation"><i class="fa fa-angle-double-right"></i> Students Section Reports</a></li>
+							<li class="<?php echo set_Submenu('Reports/student_information'); ?>"><a href="<?php echo base_url(); ?>report/studentinformation"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 						<?php } ?>
 					</ul>
 				</li>
@@ -193,8 +257,8 @@
 				}
 			}
 		?>
-		<!-- 3rd Menu end -->
-		<!-- 4th Menu start -->
+		<!-- 4th Menu end -->
+		<!-- 5th Menu start -->
 		<?php
 			if ($this->module_lib->hasActive('fee_collection') or 1==1) { // Agar Fee Collection module active hai
 				if (
@@ -208,16 +272,22 @@
 					$this->rbac->hasPrivilege('student_ledger', 'can_view') ||
 					$this->rbac->hasPrivilege('fee_collection_reports', 'can_view')
 				) {
+					$CI = get_instance();
+					$session_sub_menu = $CI->session->userdata('sub_menu');
+					//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
 				$activeFcMenu="";
 				if(set_Submenu('studentfee/index')
 					|| set_Submenu('studentfee/studentfeelist')
+					|| set_Submenu('Reports/receipt-book')
 					|| set_Submenu('studentfee/studentfee_deletedlist')
 					|| set_Submenu('studentfee/searchpayment')
-					|| set_Submenu('studentfee/feesearch')
-					|| set_Submenu('admin/feediscount')
-					|| set_Submenu('feesforward/index')
-					|| set_Submenu('feesforward/index')
+					//|| set_Submenu('studentfee/feesearch')
+					//|| set_Submenu('admin/feediscount')
+					//|| set_Submenu('feesforward/index')
 					|| set_Submenu('Reports/finance')
+					|| set_Submenu('Reports/fee_card')
+					|| set_Submenu('Reports/defaulter_list')
+					|| set_Submenu('Reports/fee_register')
 					|| set_Submenu('reports/studenttransportdetails')
 					
 				){
@@ -231,23 +301,31 @@
 					</a>
 					<ul class="treeview-menu">
 						<?php if ($this->rbac->hasPrivilege('collect_fees', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('studentfee/index'); ?>"><a href="<?php echo base_url(); ?>studentfee"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('collect_fees'); ?></a></li>
+							<li class="<?php echo set_Submenu('studentfee/index'); ?>"><a href="<?php echo base_url(); ?>studentfee"><i class="fa fa-angle-double-right"></i> Collect Fee</a></li>
 						<?php } if ($this->rbac->hasPrivilege('collect_fee_list', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('studentfee/studentfeelist'); ?>"><a href="<?php echo base_url(); ?>studentfee/studentfeelist"><i class="fa fa-angle-double-right"></i> Collect Fees List </a></li>
-						<?php } if ($this->rbac->hasPrivilege('delete_fee_list', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('studentfee/studentfee_deletedlist'); ?>"><a href="<?php echo base_url(); ?>studentfee/studentfee_deletedlist"><i class="fa fa-angle-double-right"></i> Deleted Fees List </a></li>
+							<li class="<?php echo set_Submenu('studentfee/studentfeelist'); ?>"><a href="<?php echo base_url(); ?>studentfee/studentfeelist"><i class="fa fa-angle-double-right"></i> Collect Fee List </a></li>
+						<?php } if ($this->rbac->hasPrivilege('collect_fee_list', 'can_view')) { ?>
+							<li class="<?php echo set_Submenu('Reports/receipt-book'); ?>"><a href="<?php echo base_url(); ?>studentfee/receipt_book"><i class="fa fa-angle-double-right"></i> Receipt Book</a></li>
 						<?php } if ($this->rbac->hasPrivilege('fee_register', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('studentfee/searchpayment'); ?>"><a href="<?php echo base_url(); ?>studentfee/searchpayment"><i class="fa fa-angle-double-right"></i> Fee Register</a></li>
-						<?php } if ($this->rbac->hasPrivilege('defaulter_list', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('studentfee/feesearch'); ?>"><a href="<?php echo base_url(); ?>studentfee/feesearch"><i class="fa fa-angle-double-right"></i> Defaulter List</a></li>
+							<li class="<?php echo set_Submenu('Reports/fee_register'); ?>"><a href="<?php echo base_url(); ?>studentfee/fee_register"><i class="fa fa-angle-double-right"></i> Fee Register</a></li>
 						<?php } if ($this->rbac->hasPrivilege('fee_card', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('admin/feediscount'); ?>"><a href="<?php echo base_url(); ?>admin/feediscount"><i class="fa fa-angle-double-right"></i> Fee Card</a></li>
-						<?php } if ($this->rbac->hasPrivilege('fee_reminder', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="<?php echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Fee Reminder</a></li>
+							<li class="<?php echo set_Submenu('Reports/fee_card'); ?>"><a href="<?php echo base_url(); ?>report/fee_card"><i class="fa fa-angle-double-right"></i> Fee Card</a></li>
+						<?php } if ($this->rbac->hasPrivilege('defaulter_list', 'can_view')) { ?>
+							<li class="<?php echo set_Submenu('Reports/defaulter_list'); ?>"><a href="<?php echo base_url(); ?>report/defaulter_list"><i class="fa fa-angle-double-right"></i> Defaulter List</a></li>
+						<?php } if ($this->rbac->hasPrivilege('delete_fee_list', 'can_view')) { ?>
+							<li class="<?php echo set_Submenu('studentfee/studentfee_deletedlist'); ?>"><a href="<?php echo base_url(); ?>studentfee/studentfee_deletedlist"><i class="fa fa-angle-double-right"></i> Delete Fee List </a></li>
+						<?php } if ($this->rbac->hasPrivilege('defaulter_list', 'can_view')) { ?>
+							<li class="<?php echo set_Submenu('studentfee/searchpayment'); ?>"><a href="<?php echo base_url(); ?>studentfee/searchpayment"><i class="fa fa-angle-double-right"></i> Search Fee Slip</a></li>
 						<?php } if ($this->rbac->hasPrivilege('student_ledger', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="<?php echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Student Ledger</a></li>
+							<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="#<?php //echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Student Ledger</a></li>
+						<?php } if ($this->rbac->hasPrivilege('quick_receipt', 'can_view')) { ?>
+							<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="#<?php //echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Quick Receipt</a></li>
+						<?php } if ($this->rbac->hasPrivilege('quick_payment', 'can_view')) { ?>
+							<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="#<?php //echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Quick Payment</a></li>
+						<?php //} if ($this->rbac->hasPrivilege('fee_reminder', 'can_view')) { ?>
+							<!--<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="<?php echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Fee Reminder</a></li>-->
 						<?php } if ($this->rbac->hasPrivilege('fee_collection_reports', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('Reports/finance') || set_Submenu('reports/studenttransportdetails') ? 'active' : ''; ?>"><a href="<?php echo base_url(); ?>report/finance"><i class="fa fa-angle-double-right"></i> Fee Collection Reports</a></li>
+							<li class="<?php echo set_Submenu('Reports/finance') || set_Submenu('reports/studenttransportdetails') ? 'active' : ''; ?>"><a href="<?php echo base_url(); ?>report/finance"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 						<?php } ?>
 					</ul>
 				</li>
@@ -255,8 +333,80 @@
 				}
 			}
 		?>
-		<!-- 4th Menu end -->
-		<!-- 5th Menu start -->
+		<!-- 5th Menu end -->
+		<!-- 6th Menu start -->
+		<?php
+			if ($this->module_lib->hasActive('human_resource') or 1==1) { // Human Resource module active check
+				if (
+					$this->rbac->hasPrivilege('department', 'can_view') ||
+					$this->rbac->hasPrivilege('designation', 'can_view') ||
+					$this->rbac->hasPrivilege('add_staff', 'can_view') ||
+					$this->rbac->hasPrivilege('staff_attendance', 'can_view') ||
+					$this->rbac->hasPrivilege('payroll', 'can_view') ||
+					$this->rbac->hasPrivilege('approve_leave_request', 'can_view') ||
+					$this->rbac->hasPrivilege('apply_leave', 'can_view') ||
+					$this->rbac->hasPrivilege('leave_type', 'can_view') ||
+					$this->rbac->hasPrivilege('teachers_rating', 'can_view') ||
+					$this->rbac->hasPrivilege('disabled_staff', 'can_view') ||
+					$this->rbac->hasPrivilege('staff_management_report', 'can_view')
+				) {
+					//$CI = get_instance();
+					//$session_sub_menu = $CI->session->userdata('sub_menu');
+					//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
+					$activeSmMenu="";
+					if(set_Submenu('admin/department/department')
+						|| set_Submenu('admin/designation/designation')
+						|| set_Submenu('HR/staff')
+						|| set_Submenu('admin/staff')
+						|| set_Submenu('admin/staffattendance')
+						|| set_Submenu('admin/payroll')
+						|| set_Submenu('admin/leaverequest/leaverequest')
+						|| set_Submenu('admin/staff/leaverequest')
+						|| set_Submenu('admin/leavetypes')
+						|| set_Submenu('HR/rating')
+						|| set_Submenu('HR/staff/disablestafflist')
+						|| set_Submenu('Reports/human_resource')
+					){
+						$activeSmMenu="active";
+					}
+		?>
+					<li class="treeview <?php echo $activeSmMenu; ?>">
+						<a href="#">
+							<i class="fa fa-users ftlayer"></i> <span>Staff Management </span>
+							<i class="fa fa-angle-left pull-right"></i>
+						</a>
+						<ul class="treeview-menu">
+							<?php if ($this->rbac->hasPrivilege('department', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('admin/department/department'); ?>"><a href="<?php echo base_url(); ?>admin/department/department"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('department'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('designation', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('admin/designation/designation'); ?>"><a href="<?php echo base_url(); ?>admin/designation/designation"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('designation'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('add_staff', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('HR/staff') || set_Submenu('admin/staff') ? 'active' : ''; ?>"><a href="<?php echo base_url(); ?>admin/staff"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('staff_directory'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('staff_attendance', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('admin/staffattendance'); ?>"><a href="<?php echo base_url(); ?>admin/staffattendance"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('staff_attendance'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('payroll', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('admin/payroll'); ?>"><a href="<?php echo base_url(); ?>admin/payroll"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('payroll'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('approve_leave_request', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('admin/leaverequest/leaverequest'); ?>"><a href="<?php echo base_url(); ?>admin/leaverequest/leaverequest"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('approve_leave_request'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('apply_leave', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('admin/staff/leaverequest'); ?>"><a href="<?php echo base_url(); ?>admin/staff/leaverequest"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('apply_leave'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('leave_type', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('admin/leavetypes'); ?>"><a href="<?php echo base_url(); ?>admin/leavetypes"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('leave_type'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('teachers_rating', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('HR/rating'); ?>"><a href="<?php echo base_url(); ?>admin/staff/rating"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('teachers') . " " . $this->lang->line('rating'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('disabled_staff', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('HR/staff/disablestafflist'); ?>"><a href="<?php echo base_url(); ?>admin/staff/disablestafflist"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('disabled_staff'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('staff_management_report', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('Reports/human_resource'); ?>"><a href="<?php echo base_url(); ?>report/staff_report"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
+							<?php } ?>
+						</ul>
+					</li>
+		<?php
+				}
+			}
+		?>
+		<!-- 6th Menu end -->
+		<!-- 7th Menu start -->
 		<?php
 			if ($this->module_lib->hasActive('attendance') or 1==1) { // Agar Attendance module active hai
 				if (
@@ -307,7 +457,7 @@
 						?>
 							<li class="<?php echo set_Submenu('Attendance/approve_leave'); ?>"><a href="<?php echo base_url(); ?>admin/approve_leave"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('approve') . " " . $this->lang->line('leave'); ?></a></li>
 						<?php } if ($this->rbac->hasPrivilege('attendance_section_reports', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('Reports/attendance'); ?>"><a href="<?php echo base_url(); ?>report/attendance"><i class="fa fa-angle-double-right"></i> Attendance Section Reports</a></li>
+							<li class="<?php echo set_Submenu('Reports/attendance'); ?>"><a href="<?php echo base_url(); ?>report/attendance"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 						<?php } ?>
 					</ul>
 				</li>
@@ -315,8 +465,47 @@
 				}
 			}
 		?>
-		<!-- 5th Menu end -->
-		<!-- 6th Menu start -->
+		<!-- 7th Menu end -->
+		<!-- 8th Menu start -->
+		<?php
+			if ($this->module_lib->hasActive('online_examination') or 1==1) { // Online Examination module active check
+				if (
+					$this->rbac->hasPrivilege('online_exam', 'can_view') ||
+					$this->rbac->hasPrivilege('question_paper', 'can_view') ||
+					$this->rbac->hasPrivilege('online_exam_report', 'can_view')
+				) {
+				//$CI = get_instance();
+				//$session_sub_menu = $CI->session->userdata('sub_menu');
+				//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
+					$activeOeMenu="";
+					if(set_Submenu('Online_Examinations/Onlineexam')
+						|| set_Submenu('Online_Examinations/question')
+						|| set_Submenu('Reports/online_examinations')
+					){
+						$activeOeMenu="active";
+					}
+        ?>
+					<li class="treeview <?php echo $activeOeMenu; ?>">
+						<a href="#">
+							<i class="fa fa-laptop ftlayer"></i> <span>Online Exam Section </span>
+							<i class="fa fa-angle-left pull-right"></i>
+						</a>
+						<ul class="treeview-menu">
+							<?php if ($this->rbac->hasPrivilege('online_exam', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('Online_Examinations/Onlineexam'); ?>"><a href="<?php echo base_url(); ?>admin/onlineexam"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('online') . " " . $this->lang->line('exam'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('question_paper', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('Online_Examinations/question'); ?>"><a href="<?php echo base_url(); ?>admin/question"><i class="fa fa-angle-double-right"></i> Question Paper</a></li>
+							<?php } if ($this->rbac->hasPrivilege('online_exam_report', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('Reports/online_examinations'); ?>"><a href="<?php echo base_url(); ?>admin/onlineexam/report"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
+							<?php } ?>
+						</ul>
+					</li>
+		<?php
+				}
+			}
+		?>
+		<!-- 8th Menu end -->
+		<!-- 9th Menu start -->
 		<?php
 			if ($this->module_lib->hasActive('examination')) { // Agar Examination module active hai
 				if (
@@ -382,7 +571,7 @@
 						<?php } if ($this->rbac->hasPrivilege('terms_grade', 'can_view')) { ?>
 							<li class="<?php if($this->uri->segment(2)=='termsgrade'){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>admin/termsgrade"><i class="fa fa-angle-double-right"></i> Terms Grade</a></li>
 						<?php } if ($this->rbac->hasPrivilege('exam_section_reports', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('Reports/examinations'); ?>"><a href="<?php echo base_url(); ?>report/examinations"><i class="fa fa-angle-double-right"></i> Exam Section Reports</a></li>
+							<li class="<?php echo set_Submenu('Reports/examinations'); ?>"><a href="<?php echo base_url(); ?>report/examinations"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 						<?php } ?>
 					</ul>
 				</li>
@@ -390,47 +579,8 @@
 				}
 			}
 		?>
-		<!-- 6th Menu end -->
-		<!-- 7th Menu start -->
-		<?php
-			if ($this->module_lib->hasActive('online_examination') or 1==1) { // Online Examination module active check
-				if (
-					$this->rbac->hasPrivilege('online_exam', 'can_view') ||
-					$this->rbac->hasPrivilege('question_paper', 'can_view') ||
-					$this->rbac->hasPrivilege('online_exam_report', 'can_view')
-				) {
-				//$CI = get_instance();
-				//$session_sub_menu = $CI->session->userdata('sub_menu');
-				//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
-					$activeOeMenu="";
-					if(set_Submenu('Online_Examinations/Onlineexam')
-						|| set_Submenu('Online_Examinations/question')
-						|| set_Submenu('Reports/online_examinations')
-					){
-						$activeOeMenu="active";
-					}
-        ?>
-					<li class="treeview <?php echo $activeOeMenu; ?>">
-						<a href="#">
-							<i class="fa fa-laptop ftlayer"></i> <span>Online Exam Section </span>
-							<i class="fa fa-angle-left pull-right"></i>
-						</a>
-						<ul class="treeview-menu">
-							<?php if ($this->rbac->hasPrivilege('online_exam', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('Online_Examinations/Onlineexam'); ?>"><a href="<?php echo base_url(); ?>admin/onlineexam"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('online') . " " . $this->lang->line('exam'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('question_paper', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('Online_Examinations/question'); ?>"><a href="<?php echo base_url(); ?>admin/question"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('question') . " " . $this->lang->line('bank'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('online_exam_report', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('Reports/online_examinations'); ?>"><a href="<?php echo base_url(); ?>admin/onlineexam/report"><i class="fa fa-angle-double-right"></i> Online Exam Reports</a></li>
-							<?php } ?>
-						</ul>
-					</li>
-		<?php
-				}
-			}
-		?>
-		<!-- 7th Menu end -->
-		<!-- 8th Menu start -->
+		<!-- 9th Menu end -->
+		<!-- 10th Menu start -->
         <?php
             if ($this->module_lib->hasActive('lesson_plan') or 1==1) { // Lesson Plan module active check
 				if (
@@ -468,7 +618,7 @@
 							<?php } if ($this->rbac->hasPrivilege('topic', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('admin/lessonplan/topic'); ?>"><a href="<?php echo base_url(); ?>admin/lessonplan/topic"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('topic'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('lesson_plan_report', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('Reports/lesson_plan'); ?>"><a href="<?php echo base_url(); ?>report/lesson_plan"><i class="fa fa-angle-double-right"></i> Lesson Plan Report</a></li>
+								<li class="<?php echo set_Submenu('Reports/lesson_plan'); ?>"><a href="<?php echo base_url(); ?>report/lesson_plan"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 							<?php } ?>
 						</ul>
 					</li>
@@ -476,80 +626,94 @@
 				}
 			}
 		?>
-		<!-- 8th Menu end -->
-		<!-- 9th Menu start -->
+		<!-- 10th Menu end -->
+		<!-- 11th Menu start --> 
 		<?php
-			if ($this->module_lib->hasActive('human_resource') or 1==1) { // Human Resource module active check
+			if ($this->module_lib->hasActive('homework') or 1==1) { // Homework module active check
 				if (
-					$this->rbac->hasPrivilege('department', 'can_view') ||
-					$this->rbac->hasPrivilege('designation', 'can_view') ||
-					$this->rbac->hasPrivilege('add_staff', 'can_view') ||
-					$this->rbac->hasPrivilege('staff_attendance', 'can_view') ||
-					$this->rbac->hasPrivilege('payroll', 'can_view') ||
-					$this->rbac->hasPrivilege('approve_leave_request', 'can_view') ||
-					$this->rbac->hasPrivilege('apply_leave', 'can_view') ||
-					$this->rbac->hasPrivilege('leave_type', 'can_view') ||
-					$this->rbac->hasPrivilege('teachers_rating', 'can_view') ||
-					$this->rbac->hasPrivilege('disabled_staff', 'can_view') ||
-					$this->rbac->hasPrivilege('staff_management_report', 'can_view')
+					$this->rbac->hasPrivilege('add_homework', 'can_view') ||
+					$this->rbac->hasPrivilege('homework_section_report', 'can_view')
 				) {
 					//$CI = get_instance();
 					//$session_sub_menu = $CI->session->userdata('sub_menu');
 					//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
-					$activeSmMenu="";
-					if(set_Submenu('admin/department/department')
-						|| set_Submenu('admin/designation/designation')
-						|| set_Submenu('HR/staff')
-						|| set_Submenu('admin/staff')
-						|| set_Submenu('admin/staffattendance')
-						|| set_Submenu('admin/payroll')
-						|| set_Submenu('admin/leaverequest/leaverequest')
-						|| set_Submenu('admin/staff/leaverequest')
-						|| set_Submenu('admin/leavetypes')
-						|| set_Submenu('HR/rating')
-						|| set_Submenu('HR/staff/disablestafflist')
-						|| set_Submenu('Reports/human_resource')
+					$activeHsMenu="";
+					if(set_Submenu('homework')
+						|| set_Submenu('report/homework-section')
 					){
-						$activeSmMenu="active";
+						$activeHsMenu="active";
 					}
 		?>
-					<li class="treeview <?php echo $activeSmMenu; ?>">
+					<li class="treeview <?php echo $activeHsMenu; ?>">
 						<a href="#">
-							<i class="fa fa-users ftlayer"></i> <span>Staff Management </span>
+							<i class="fa fa-pencil-square-o ftlayer"></i> <span>Homework Section </span>
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
-							<?php if ($this->rbac->hasPrivilege('department', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('admin/department/department'); ?>"><a href="<?php echo base_url(); ?>admin/department/department"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('department'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('designation', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('admin/designation/designation'); ?>"><a href="<?php echo base_url(); ?>admin/designation/designation"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('designation'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('add_staff', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('HR/staff') || set_Submenu('admin/staff') ? 'active' : ''; ?>"><a href="<?php echo base_url(); ?>admin/staff"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('staff_directory'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('staff_attendance', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('admin/staffattendance'); ?>"><a href="<?php echo base_url(); ?>admin/staffattendance"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('staff_attendance'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('payroll', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('admin/payroll'); ?>"><a href="<?php echo base_url(); ?>admin/payroll"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('payroll'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('approve_leave_request', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('admin/leaverequest/leaverequest'); ?>"><a href="<?php echo base_url(); ?>admin/leaverequest/leaverequest"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('approve_leave_request'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('apply_leave', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('admin/staff/leaverequest'); ?>"><a href="<?php echo base_url(); ?>admin/staff/leaverequest"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('apply_leave'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('leave_type', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('admin/leavetypes'); ?>"><a href="<?php echo base_url(); ?>admin/leavetypes"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('leave_type'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('teachers_rating', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('HR/rating'); ?>"><a href="<?php echo base_url(); ?>admin/staff/rating"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('teachers') . " " . $this->lang->line('rating'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('disabled_staff', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('HR/staff/disablestafflist'); ?>"><a href="<?php echo base_url(); ?>admin/staff/disablestafflist"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('disabled_staff'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('staff_management_report', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('Reports/human_resource'); ?>"><a href="<?php echo base_url(); ?>report/staff_report"><i class="fa fa-angle-double-right"></i> Staff Management Report</a></li>
+							<?php if ($this->rbac->hasPrivilege('add_homework', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('homework'); ?>"><a href="<?php echo base_url(); ?>homework"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('add_homework'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('homework_section_report', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('report/homework-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/homework_section_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 							<?php } ?>
 						</ul>
 					</li>
-		<?php
+					<?php
 				}
 			}
 		?>
-		<!-- 9th Menu end -->
-		<!-- 10th Menu start -->
+		<!-- 11th Menu end -->
+		<!-- 12th Menu start --> 
+		<?php
+			if ($this->module_lib->hasActive('download') or 1==1) {
+				if (
+					$this->rbac->hasPrivilege('upload_section', 'can_view') ||
+					$this->rbac->hasPrivilege('assignment', 'can_view') ||
+					$this->rbac->hasPrivilege('study_material', 'can_view') ||
+					$this->rbac->hasPrivilege('syllabus', 'can_view') ||
+					$this->rbac->hasPrivilege('other_download', 'can_view') ||
+					$this->rbac->hasPrivilege('download_section_report', 'can_view')
+				) {
+					//$CI = get_instance();
+					//$session_sub_menu = $CI->session->userdata('sub_menu');
+					//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
+					$activeDsMenu="";
+					if(set_Submenu('admin/content')
+						|| set_Submenu('content/assignment')
+						|| set_Submenu('content/studymaterial')
+						|| set_Submenu('content/syllabus')
+						|| set_Submenu('content/other')
+						|| set_Submenu('report/download-section')
+					){
+						$activeDsMenu="active";
+					}
+		?>
+					<li class="treeview <?php echo $activeDsMenu; ?>">
+						<a href="#">
+							<i class="fa fa-download ftlayer"></i> <span>Download Section</span>
+							<i class="fa fa-angle-left pull-right"></i>
+						</a>
+						<ul class="treeview-menu">
+							<?php if ($this->rbac->hasPrivilege('upload_section', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('admin/content'); ?>"><a href="<?php echo base_url(); ?>admin/content"><i class="fa fa-angle-double-right"></i> Upload Section</a></li>
+							<?php } if ($this->rbac->hasPrivilege('assignment', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('content/assignment'); ?>"><a href="<?php echo base_url(); ?>admin/content/assignment"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('assignments'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('study_material', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('content/studymaterial'); ?>"><a href="<?php echo base_url(); ?>admin/content/studymaterial"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('study_material'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('syllabus', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('content/syllabus'); ?>"><a href="<?php echo base_url(); ?>admin/content/syllabus"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('syllabus'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('other_download', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('content/other'); ?>"><a href="<?php echo base_url(); ?>admin/content/other"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('other_downloads'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('download_section_report', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('report/download-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/download_section_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
+							<?php } ?>
+						</ul>
+					</li>
+					<?php
+				}
+			}
+		?>
+		<!-- 12th Menu end -->
+		<!-- 13th Menu start -->
 		<?php
 			if ($this->module_lib->hasActive('communication') or 1==1) { // Communication module active check
 				if (
@@ -565,6 +729,8 @@
 					//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
 					$activeMsMenu="";
 					if(set_Submenu('notification/index')
+						|| set_Submenu('admin/front/events')
+						|| set_Submenu('admin/front/notice')
 						|| set_Submenu('Communicate/mailsms/compose')
 						|| set_Submenu('mailsms/compose_sms')
 						|| set_Submenu('mailsms/send_whatsapp')
@@ -583,6 +749,10 @@
 							<?php if ($this->rbac->hasPrivilege('notice_board', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('notification/index'); ?>"><a href="<?php echo base_url(); ?>admin/notification"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('notice_board'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('send_email', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('admin/front/events'); ?>"><a href="<?php echo base_url(); ?>admin/front/events"><i class="fa fa-angle-double-right"></i> Update Events</a></li>
+							<?php } if ($this->rbac->hasPrivilege('send_email', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('admin/front/notice'); ?>"><a href="<?php echo base_url(); ?>admin/front/notice"><i class="fa fa-angle-double-right"></i> Update News</a></li>
+							<?php } if ($this->rbac->hasPrivilege('send_email', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('Communicate/mailsms/compose'); ?>"><a href="<?php echo base_url(); ?>admin/mailsms/compose"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('send') . " " . $this->lang->line('email') ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('send_sms', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('mailsms/compose_sms'); ?>"><a href="<?php echo base_url(); ?>admin/mailsms/compose_sms"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('send') . " " . $this->lang->line('sms') ?></a></li>
@@ -591,7 +761,7 @@
 							<?php } if ($this->rbac->hasPrivilege('email_sms_log', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('mailsms/index'); ?>"><a href="<?php echo base_url(); ?>admin/mailsms/index"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('email_/_sms_log'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('message_section_report', 'can_view')) { ?>								
-								<li class="<?php echo set_Submenu('report/message-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/message_section_reports"><i class="fa fa-angle-double-right"></i> Message Section Report</a></li>
+								<li class="<?php echo set_Submenu('report/message-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/message_section_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 							<?php } ?>
 						</ul>
 					</li>
@@ -599,8 +769,8 @@
 				}
 			}
 		?>
-		<!-- 10th Menu end -->
-		<!-- 11th Menu start -->
+		<!-- 13th Menu end -->
+		<!-- 14th Menu start -->
 		<?php
 			if ($this->module_lib->hasActive('certificate') or 1==1) { // Certificate module active check
 				if (
@@ -646,7 +816,7 @@
 							<?php } if ($this->rbac->hasPrivilege('generate_staff_id_card', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('admin/generatestaffidcard'); ?>"><a href="<?php echo base_url('admin/generatestaffidcard/'); ?>"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('generate'); ?> <?php echo $this->lang->line('staff'); ?> <?php echo $this->lang->line('icard'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('certificate_section_report', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('report/certificate-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/certificate_section_reports"><i class="fa fa-angle-double-right"></i> Certificate Section Report</a></li>
+								<li class="<?php echo set_Submenu('report/certificate-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/certificate_section_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 							<?php } ?>
 						</ul>
 					</li>
@@ -654,8 +824,8 @@
 				}
 			}
 		?>
-		<!-- 11th Menu end -->
-		<!-- 12th Menu start -->            
+		<!-- 14th Menu end -->
+		<!-- 15th Menu start -->            
 		<?php
 			if ($this->module_lib->hasActive('library') or 1==1) { // Library module active check
 				if (
@@ -693,7 +863,7 @@
 							<?php } if ($this->rbac->hasPrivilege('add_staff_member', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('Library/member/teacher'); ?>"><a href="<?php echo base_url(); ?>admin/member/teacher"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('add_staff_member'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('library_management_report', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('Reports/library'); ?>"><a href="<?php echo base_url(); ?>report/library"><i class="fa fa-angle-double-right"></i> Library Management Report</a></li>
+								<li class="<?php echo set_Submenu('Reports/library'); ?>"><a href="<?php echo base_url(); ?>report/library"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 							<?php } ?>
 						</ul>
 					</li>
@@ -701,94 +871,8 @@
 				}
 			}
 		?>
-		<!-- 12th Menu end -->
-		<!-- 13th Menu start --> 
-		<?php
-			if ($this->module_lib->hasActive('homework') or 1==1) { // Homework module active check
-				if (
-					$this->rbac->hasPrivilege('add_homework', 'can_view') ||
-					$this->rbac->hasPrivilege('homework_section_report', 'can_view')
-				) {
-					//$CI = get_instance();
-					//$session_sub_menu = $CI->session->userdata('sub_menu');
-					//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
-					$activeHsMenu="";
-					if(set_Submenu('homework')
-						|| set_Submenu('report/homework-section')
-					){
-						$activeHsMenu="active";
-					}
-		?>
-					<li class="treeview <?php echo $activeHsMenu; ?>">
-						<a href="#">
-							<i class="fa fa-pencil-square-o ftlayer"></i> <span>Homework Section </span>
-							<i class="fa fa-angle-left pull-right"></i>
-						</a>
-						<ul class="treeview-menu">
-							<?php if ($this->rbac->hasPrivilege('add_homework', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('homework'); ?>"><a href="<?php echo base_url(); ?>homework"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('add_homework'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('homework_section_report', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('report/homework-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/homework_section_reports"><i class="fa fa-angle-double-right"></i> Homework Section Report</a></li>
-							<?php } ?>
-						</ul>
-					</li>
-					<?php
-				}
-			}
-		?>
-		<!-- 13th Menu end -->
-		<!-- 14th Menu start --> 
-		<?php
-			if ($this->module_lib->hasActive('download') or 1==1) {
-				if (
-					$this->rbac->hasPrivilege('upload_section', 'can_view') ||
-					$this->rbac->hasPrivilege('assignment', 'can_view') ||
-					$this->rbac->hasPrivilege('study_material', 'can_view') ||
-					$this->rbac->hasPrivilege('syllabus', 'can_view') ||
-					$this->rbac->hasPrivilege('other_download', 'can_view') ||
-					$this->rbac->hasPrivilege('download_section_report', 'can_view')
-				) {
-					//$CI = get_instance();
-					//$session_sub_menu = $CI->session->userdata('sub_menu');
-					//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
-					$activeDsMenu="";
-					if(set_Submenu('admin/content')
-						|| set_Submenu('content/assignment')
-						|| set_Submenu('content/studymaterial')
-						|| set_Submenu('content/syllabus')
-						|| set_Submenu('content/other')
-						|| set_Submenu('report/download-section')
-					){
-						$activeDsMenu="active";
-					}
-		?>
-					<li class="treeview <?php echo $activeDsMenu; ?>">
-						<a href="#">
-							<i class="fa fa-download ftlayer"></i> <span>Download Section</span>
-							<i class="fa fa-angle-left pull-right"></i>
-						</a>
-						<ul class="treeview-menu">
-							<?php if ($this->rbac->hasPrivilege('upload_section', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('admin/content'); ?>"><a href="<?php echo base_url(); ?>admin/content"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('upload_content'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('assignment', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('content/assignment'); ?>"><a href="<?php echo base_url(); ?>admin/content/assignment"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('assignments'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('study_material', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('content/studymaterial'); ?>"><a href="<?php echo base_url(); ?>admin/content/studymaterial"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('study_material'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('syllabus', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('content/syllabus'); ?>"><a href="<?php echo base_url(); ?>admin/content/syllabus"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('syllabus'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('other_download', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('content/other'); ?>"><a href="<?php echo base_url(); ?>admin/content/other"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('other_downloads'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('download_section_report', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('report/download-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/download_section_reports"><i class="fa fa-angle-double-right"></i> Download Section Report</a></li>
-							<?php } ?>
-						</ul>
-					</li>
-					<?php
-				}
-			}
-		?>
-		<!-- 14th Menu end -->
-		<!-- 15th Menu start --> 
+		<!-- 15th Menu end -->
+		<!-- 16th Menu start --> 
 		<?php
 			if ($this->module_lib->hasActive('income') or 1==1) {
 				if (
@@ -815,14 +899,14 @@
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
-							<?php if ($this->rbac->hasPrivilege('add_income', 'can_view')) { ?>
+							<?php if ($this->rbac->hasPrivilege('income_heads', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('incomeshead/index'); ?>"><a href="<?php echo base_url(); ?>admin/incomehead"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('income_head'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('add_income', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('income/index'); ?>"><a href="<?php echo base_url(); ?>admin/income"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('add_income'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('search_income', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('income/incomesearch'); ?>"><a href="<?php echo base_url(); ?>admin/income/incomesearch"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('search_income'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('income_heads', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('incomeshead/index'); ?>"><a href="<?php echo base_url(); ?>admin/incomehead"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('income_head'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('income_section_report', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('report/income-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/income_section_reports"><i class="fa fa-angle-double-right"></i> Income Section Report</a></li>
+								<li class="<?php echo set_Submenu('report/income-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/income_section_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 							<?php } ?>
 						</ul>
 					</li>
@@ -830,8 +914,8 @@
 				}
 			}
 		?>
-		<!-- 15th Menu end -->
-		<!-- 16th Menu start --> 
+		<!-- 16th Menu end -->
+		<!-- 17th Menu start --> 
 		<?php
 			if ($this->module_lib->hasActive('expense') or 1==1) {
 				if (
@@ -858,14 +942,14 @@
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
-							<?php if ($this->rbac->hasPrivilege('add_expense', 'can_view')) { ?>
+							<?php if ($this->rbac->hasPrivilege('expense_head', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('expenseshead/index'); ?>"><a href="<?php echo base_url(); ?>admin/expensehead"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('expense_head'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('add_expense', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('expense/index'); ?>"><a href="<?php echo base_url(); ?>admin/expense"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('add_expense'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('search_expense', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('expense/expensesearch'); ?>"><a href="<?php echo base_url(); ?>admin/expense/expensesearch"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('search_expense'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('expense_head', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('expenseshead/index'); ?>"><a href="<?php echo base_url(); ?>admin/expensehead"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('expense_head'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('expense_section_report', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('report/expense-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/expense_section_reports"><i class="fa fa-angle-double-right"></i> Expense Section Report</a></li>
+								<li class="<?php echo set_Submenu('report/expense-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/expense_section_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 							<?php } ?>
 						</ul>
 					</li>
@@ -873,8 +957,8 @@
 				}
 			}
 		?>
-		<!-- 16th Menu end -->
-		<!-- 17th Menu start --> 
+		<!-- 17th Menu end -->
+		<!-- 18th Menu start --> 
 		<?php
 			if ($this->module_lib->hasActive('stock') or 1==1) {
 				if (
@@ -907,20 +991,20 @@
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
-							<?php if ($this->rbac->hasPrivilege('issue_item', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('issueitem/index'); ?>"><a href="<?php echo base_url(); ?>admin/issueitem"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('issue_item'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('add_item_stock', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('Itemstock/index'); ?>"><a href="<?php echo base_url(); ?>admin/itemstock"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('add_item_stock'); ?></a></li>
+							<?php if ($this->rbac->hasPrivilege('item_category', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('itemcategory/index'); ?>"><a href="<?php echo base_url(); ?>admin/itemcategory"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('item_category'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('add_item', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('Item/index'); ?>"><a href="<?php echo base_url(); ?>admin/item"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('add_item'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('item_category', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('itemcategory/index'); ?>"><a href="<?php echo base_url(); ?>admin/itemcategory"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('item_category'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('add_item_stock', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('Itemstock/index'); ?>"><a href="<?php echo base_url(); ?>admin/itemstock"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('add_item_stock'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('issue_item', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('issueitem/index'); ?>"><a href="<?php echo base_url(); ?>admin/issueitem"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('issue_item'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('item_store', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('itemstore/index'); ?>"><a href="<?php echo base_url(); ?>admin/itemstore"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('item_store'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('item_supplier', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('itemsupplier/index'); ?>"><a href="<?php echo base_url(); ?>admin/itemsupplier"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('item_supplier'); ?></a></li>
+							<?php //} if ($this->rbac->hasPrivilege('item_supplier', 'can_view')) { ?>
+								<!--<li class="<?php echo set_Submenu('itemsupplier/index'); ?>"><a href="<?php echo base_url(); ?>admin/itemsupplier"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('item_supplier'); ?></a></li>-->
 							<?php } if ($this->rbac->hasPrivilege('stock_management_report', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('Reports/inventory'); ?>"><a href="<?php echo base_url(); ?>report/inventory"><i class="fa fa-angle-double-right"></i> Stock Management Report</a></li>
+								<li class="<?php echo set_Submenu('Reports/inventory'); ?>"><a href="<?php echo base_url(); ?>report/inventory"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 							<?php } ?>
 						</ul>
 					</li>
@@ -963,7 +1047,7 @@
 							<?php } if ($this->rbac->hasPrivilege('closed_ticket', 'can_view')) { ?>
 								<li class="<?php //echo set_Submenu('Ticket/closed'); ?>"><a href="#<?php //echo base_url(); ?>ticket/closed"><i class="fa fa-angle-double-right"></i> Closed Ticket</a></li>
 							<?php } if ($this->rbac->hasPrivilege('ticket_section_report', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('report/ticket-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/ticket_section_reports"><i class="fa fa-angle-double-right"></i> Ticket Section Report</a></li>
+								<li class="<?php echo set_Submenu('report/ticket-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/ticket_section_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 							<?php } ?>
 						</ul>
 					</li>
@@ -991,6 +1075,9 @@
                     $this->rbac->hasPrivilege('file_types', 'can_view') ||
                     $this->rbac->hasPrivilege('change_session', 'can_view')
                 ) {
+					//$CI = get_instance();
+					//$session_sub_menu = $CI->session->userdata('sub_menu');
+					//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
 					$activeSsMenu="";
 					if(set_Submenu('schsettings/index')
 						|| set_Submenu('sessions/index')
@@ -1005,7 +1092,7 @@
 						|| set_Submenu('System Settings/customfield')
 						|| set_Submenu('System Settings/systemfield')
 						|| set_Submenu('System Settings/filetype')
-						|| set_Submenu('report/ticket-section')
+						|| set_Submenu('admin/backup')
 					){
 						$activeSsMenu="active";
 					}
@@ -1044,6 +1131,8 @@
                                 <li class="<?php echo set_Submenu('System Settings/filetype'); ?>"><a href="<?php echo site_url('admin/admin/filetype'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('file_types'); ?></a></li>
                             <?php } if ($this->rbac->hasPrivilege('change_session', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('System/change_session'); ?>"><a href="#<?php //echo base_url(); ?>system/change_session"><i class="fa fa-angle-double-right"></i> Change Session</a></li>
+                            <?php } if ($this->rbac->hasPrivilege('change_session', 'can_view')) { ?>
+                                <li class="<?php echo set_Submenu('admin/backup'); ?>"><a href="<?php //echo base_url(); ?>admin/admin/backup"><i class="fa fa-angle-double-right"></i> Date Backup</a></li>
                             <?php } ?>
                         </ul>
                     </li>
@@ -1077,7 +1166,7 @@
                             <?php } if ($this->rbac->hasPrivilege('overview', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('MultiBranch/overview'); ?>"><a href="#"><i class="fa fa-angle-double-right"></i> Overview</a></li>
                             <?php } if ($this->rbac->hasPrivilege('multi_branch_report', 'can_view')) { ?>
-                                <li class="<?php echo set_Submenu('report/multi-branch'); ?>"><a href="<?php echo base_url(); ?>admin/report/multi_branch_reports"><i class="fa fa-angle-double-right"></i> Multi Branch Report</a></li>
+                                <li class="<?php echo set_Submenu('report/multi-branch'); ?>"><a href="<?php echo base_url(); ?>admin/report/multi_branch_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
                             <?php } ?>
                         </ul>
                     </li>
@@ -1087,45 +1176,8 @@
         ?>
 
 		<!-- 21th Menu end -->
+		
 		<!-- 22th Menu start --> 
-
-        <?php
-            if ($this->module_lib->hasActive('software_subscription') or 1==1) {
-                if (
-                    $this->rbac->hasPrivilege('create_package', 'can_view') ||
-                    $this->rbac->hasPrivilege('package_list', 'can_view') ||
-                    $this->rbac->hasPrivilege('invoice_section', 'can_view') ||
-                    $this->rbac->hasPrivilege('subscription_report', 'can_view')
-                ) {
-					$activeSoftwareMenu="";
-					if(set_Submenu('report/subscription')
-					){
-						$activeSoftwareMenu="active";
-					}
-        ?>
-                    <li class="treeview <?php echo $activeSoftwareMenu; ?>">
-                        <a href="#">
-                            <i class="fa fa-newspaper-o ftlayer"></i> <span>Software Subscription</span>
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </a>
-                        <ul class="treeview-menu">
-                            <?php if ($this->rbac->hasPrivilege('create_package', 'can_view')) { ?>
-                                <li class="<?php echo set_Submenu('SoftwareSubscription/create'); ?>"><a href="#"><i class="fa fa-angle-double-right"></i> Create Package</a></li>
-                            <?php } if ($this->rbac->hasPrivilege('package_list', 'can_view')) { ?>
-                                <li class="<?php echo set_Submenu('SoftwareSubscription/list'); ?>"><a href="#"><i class="fa fa-angle-double-right"></i> Package List</a></li>
-                            <?php } if ($this->rbac->hasPrivilege('invoice_section', 'can_view')) { ?>
-                                <li class="<?php echo set_Submenu('SoftwareSubscription/invoice'); ?>"><a href="#"><i class="fa fa-angle-double-right"></i> Invoice Section</a></li>
-                            <?php } if ($this->rbac->hasPrivilege('subscription_report', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('report/subscription'); ?>"><a href="<?php echo base_url(); ?>admin/report/subscription_reports"><i class="fa fa-angle-double-right"></i> Subscription Report</a></li>
-                            <?php } ?>
-                        </ul>
-                    </li>
-                    <?php
-                }
-            }
-        ?>
-		<!-- 22th Menu end -->
-		<!-- 23th Menu start --> 
         <?php
             if ($this->module_lib->hasActive('overall_reports') or 1==1) {
                 if (
@@ -1200,7 +1252,7 @@
                 }
             }
             ?>
-		<!-- 23th Menu end -->
+		<!-- 22th Menu end -->
         </ul>
     </section>
 </aside>

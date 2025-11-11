@@ -114,7 +114,7 @@
                                         <?php } ?>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="exampleInputFile"> <?php echo $this->lang->line('gender'); ?></label><small class="req"> *</small>
+                                                <label for="exampleInputFile"> <?php echo $this->lang->line('gender'); ?></label>
                                                 <select class="form-control" name="gender">
                                                     <option value=""><?php echo $this->lang->line('select'); ?></option>
                                                     <?php
@@ -135,7 +135,7 @@
 
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('date_of_birth'); ?></label><small class="req"> *</small>
+                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('date_of_birth'); ?></label>
                                                 <input id="dob" name="dob" placeholder="" type="text" class="form-control date"  value="<?php echo set_value('dob'); ?>" />
                                                 <span class="text-danger"><?php echo form_error('dob'); ?></span>
                                             </div>
@@ -338,9 +338,9 @@
 
                                             <div class="col-md-4">
                                                  <div class="form-group">
-                                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('fee_category'); ?></label>
+                                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('fee_category'); ?><small class="req"> *</small></label>
                                                     <select  id="category_id" name="category_id" class="form-control" >
-                                                        <option value="N.A">N.A</option>
+                                                        <option value="">--Select--</option>
                                                         <?php foreach ($categorylist as $category) { ?>
                                                             <option value="<?php echo $category['id'] ?>" <?php
                                                             if (set_value('category_id') == $category['id']) {
@@ -546,7 +546,7 @@
                                         ?>
                                         <div class="row">
                                         <div class="form-group col-md-12">
-                                            <label><?php echo $this->lang->line('if_guardian_is'); ?><small class="req"> *</small>&nbsp;&nbsp;&nbsp;</label>
+                                            <label><?php echo $this->lang->line('if_guardian_is'); ?>&nbsp;&nbsp;&nbsp;</label>
                                             <label class="radio-inline">
                                                 <input type="radio" name="guardian_is" <?php
                                                        echo set_value('guardian_is') == "father" ? "checked" : "";
@@ -577,7 +577,7 @@
                                         ?>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_name'); ?></label><small class="req"> *</small>
+                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_name'); ?></label>
                                                         <input id="guardian_name" name="guardian_name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_name'); ?>" />
                                                         <span class="text-danger"><?php echo form_error('guardian_name'); ?></span>
                                                     </div>
@@ -598,7 +598,7 @@
                                         ?>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_phone'); ?></label><small class="req"> *</small>
+                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_phone'); ?></label>
                                                         <input id="guardian_phone" name="guardian_phone" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_phone'); ?>" />
                                                         <span class="text-danger"><?php echo form_error('guardian_phone'); ?></span>
                                                     </div>

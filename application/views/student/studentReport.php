@@ -49,13 +49,13 @@
                                 <?php if ($sch_setting->category) { ?>
                                     <div class="col-sm-3 col-md-2">
                                         <div class="form-group"> 
-                                            <label><?php echo $this->lang->line('category'); ?></label>
+                                            <label>Fee <?php echo $this->lang->line('category'); ?></label>
                                             <select  id="category_id" name="category_id" class="form-control" >
                                                 <option value=""><?php echo $this->lang->line('select'); ?></option>
                                                 <?php
                                                 foreach ($categorylist as $category) {
                                                     ?>
-                                                    <option value="<?php echo $category['id'] ?>" <?php if (set_value('category_id') == $category['id']) echo "selected=selected"; ?>><?php echo $category['category'] ?></option>
+                                                    <option value="<?php echo $category['id'] ?>" <?php if (set_value('category_id') == $category['id']) echo "selected=selected"; ?>><?php echo $category['name'] ?></option>
                                                     <?php
                                                     $count++;
                                                 }
@@ -135,7 +135,7 @@
                                             <th><?php echo $this->lang->line('date_of_birth'); ?></th>
                                             <th><?php echo $this->lang->line('gender'); ?></th>
                                             <?php if ($sch_setting->category) { ?>
-                                                <th><?php echo $this->lang->line('category'); ?></th>
+                                                <th>Fee <?php echo $this->lang->line('category'); ?></th>
                                             <?php } if ($sch_setting->mobile_no) { ?>
                                                 <th><?php echo $this->lang->line('mobile_no'); ?></th>
                                             <?php

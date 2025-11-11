@@ -178,7 +178,7 @@ $language_name = $language["short_code"];
                                                         <a href="<?=base_url('student/view/'.$student['id'])?>">Edit</a>
                                                     </div>
                                                     <div class="col-sm-12">
-                                                        <input class="form-check-input month-check" type="checkbox" id="select_all"  >
+                                                        <input class="form-check-input month-check" type="checkbox" id="select_all"  disabled>
                                                         <label for="select_all">Select All</label>
                                                     </div>
                                                     <hr>
@@ -194,17 +194,17 @@ $language_name = $language["short_code"];
                                                             if (in_array($month, $pay_mounth)) {  // Check if month exists in $pay_mounth array
                                                                 // If the month exists in $pay_mounth, disable the checkbox and make it unchecked
                                                                 ?>
-                                                                <input class="form-check-input month-check" type="checkbox" name="months[]" value="<?= $month ?>" id="<?= strtolower($month) ?>" disabled>
+                                                                <input class="form-check-input month-check" type="checkbox" name="months[]" value="<?= $month ?>" id="<?= strtolower($month) ?>" checked>
                                                                 <label for="<?= strtolower($month) ?>"><?= $month ?></label>
                                                                 <?php
                                                             } else {
                                                                 // If the month does not exist in $pay_mounth, show the checkbox as usual
                                                                 if(in_array($month,$months_data)){ ?>
-                                                                    <input class="form-check-input month-check input-mounth" checked="" type="checkbox" name="months[]" value="<?= $month ?>" id="<?= strtolower($month) ?>">
+                                                                    <input class="form-check-input month-check input-mounth" checked="" type="checkbox" name="months[]" value="<?= $month ?>" id="<?= strtolower($month) ?>"  >
                                                                     <label for="<?= strtolower($month) ?>"><?= $month ?></label>
                                                                     <?php }else{
                                                                     ?>
-                                                                    <input class="form-check-input month-check input-mounth" type="checkbox" name="months[]" value="<?= $month ?>" id="<?= strtolower($month) ?>">
+                                                                    <input class="form-check-input month-check input-mounth" type="checkbox" name="months[]" value="<?= $month ?>" id="<?= strtolower($month) ?>" disabled>
                                                                     <label for="<?= strtolower($month) ?>"><?= $month ?></label>
                                                                     <?php
                                                                 } 
@@ -232,7 +232,7 @@ $language_name = $language["short_code"];
                             </div>
                         </div>  
 
-                        <form action="<?=base_url('studentfee/saveFee')?>" id="ledger_form" method="post">
+                        <form action="<?=base_url('studentfee/editFee')?>" id="ledger_form" method="post">
 
                         <input type="hidden" name="date_time" id="outputInput" value="<?=date('Y-m-d')?>" readonly >
                          <div class="card-body" style="padding: 10px;">
@@ -314,8 +314,8 @@ $language_name = $language["short_code"];
                                                 <?php endforeach; ?>
 
                                                 <th><?= $total ?> <input type="hidden" name="total[]" value="<?=$total?>"> </th>
-                                                <th><input type="text" style="width: 100px;" class="rec_discount" name="rec_discount[]" id="total_get_discount_<?=$aa?>" oninput="calculateDisData(this,<?=$aa?>)" value="0"></th>
-                                                <th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?= $total ?>"></th>
+                                                <th><input type="text" style="width: 100px;" class="rec_discount" name="rec_discount[]" id="total_get_discount_<?=$aa?>" oninput="calculateDisData(this,<?=$aa?>)" value="<?=$rec_discount[$row->id];?>"></th>
+                                                <th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id];?>"></th>
                                                 <th>0</th>
                                             </tr>
                                             <?php
@@ -357,8 +357,8 @@ $language_name = $language["short_code"];
                                                     </th>
                                                 <?php endforeach; ?>
                                                 <th><?= $total ?> <input type="hidden" name="total[]" value="<?=$total?>"> </th>
-                                                <th><input type="text" style="width:100px;" class="rec_discount" name="rec_discount[]"  id="total_get_discount_<?=$aa?>"   oninput="calculateDisData(this,<?=$aa?>)" value="0"></th>
-                                                <th><input type="text" style="width:100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?= $total ?>"></th>
+                                                <th><input type="text" style="width:100px;" class="rec_discount" name="rec_discount[]"  id="total_get_discount_<?=$aa?>"   oninput="calculateDisData(this,<?=$aa?>)" value="<?=$rec_discount[$row->id];?>"></th>
+                                                <th><input type="text" style="width:100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id];?>"></th>
                                                 <th>0</th>
                                             </tr>
                                             <?php
@@ -401,125 +401,63 @@ $language_name = $language["short_code"];
                                     
                                     <div class="col-sm-2">
                                         <label for="late_fees">Late Fees</label>
-                                        <input style="width: 100%;" type="text" id="late_fees" class="form-control" name="late_fees" />
+                                        <input style="width: 100%;" type="text" id="late_fees" class="form-control" name="late_fees" value="<?php echo $late_fees;?>"/>
                                     </div>
                                   
                                         
                                          
                                         <input style="width: 100%;" type="hidden" id="old_ledger_amt"  name="old_ledger_amt" readonly value="<?=$student['fees_discount']?>"  />
-                                        
-                                        <?php 
-                                    
-                                    if($statusNew==0) {
-                                    
-                                    ?>
-                                          
-                                          <?php
-                                    }else{
-                                        ?>
+
                                           <div class="col-sm-2">
                                         <input style="width: 100%;" type="hidden" id="ttyp" readonly value="mounth"  />
                                         <label for="ledger_amt">Ledger Amt</label>
-                                        <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" readonly name="ledger_amt" value="<?=$student['fees_discount']?>" min="0"   max="<?= $student['fees_discount'] ?>"  />
+                                        <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" readonly name="ledger_amt" value="<?=$ledger_amt?>" min="0"   max="<?= $student['fees_discount'] ?>"  />
                                         </div>
-                                         <?php
-
-                                    }
-                                    
-                                    
-                                    ?>
-                                       
                                     <div class="col-sm-2">
                                         <label for="total_fees">Total Fees</label>
-                                        <input style="width: 100%;" type="text" id="total_fees" class="form-control" name="total_fees" readonly value="<?=$student['fees_discount']+$final_total?>" />
+                                        <input style="width: 100%;" type="text" id="total_fees" class="form-control" name="total_fees" readonly value="<?=$total_fees?>" />
                                     </div>
-                               
-                                      <?php 
-                                    
-                                    if($statusNew==0) {
-                                    
-                                    ?>
                                      <div class="col-sm-2">
                                         
                                         <label for="discount_amt">Discount Amt</label>
-                                        <input style="width: 100%;" type="text" id="discount_amt" class="form-control" name="discount_amt" value="0"  />
+                                        <input style="width: 100%;" type="text" id="discount_amt" class="form-control" name="discount_amt" value="<?php echo $discount_amt; ?>"  />
                                     </div>
-                                    
-                                    <?php
-                                    }else{
-                                        ?>
-                                        
-                                         <div class="col-sm-2">
-                                        
-                                        <label for="discount_amt">Discount Amt</label>
-                                        <input style="width: 100%;" type="text" id="discount_amt" class="form-control" name="discount_amt" value="0" readonly  />
-                                    </div>
-                                        <?php
-                                    }
-                                    
-                                    
-                                    ?>
                                
                                     
                                     
                                     <div class="col-sm-2">
                                         <label for="net_fees">Net Fees</label>
-                                        <input style="width: 100%;" type="text" id="net_fees" class="form-control" name="net_fees" value="<?=$student['fees_discount']+$final_total?>" readonly />
+                                        <input style="width: 100%;" type="text" id="net_fees" class="form-control" name="net_fees" value="<?=$net_fees?>" readonly />
                                     </div>
                                 </div>
                                 <div class="row " style="margin-top: 10px !important;">
 
-
-                                    <?php 
-                                    
-                                    if($statusNew==0) {
-                                        ?>
-                                        
-                                        <div class="col-sm-2">
-                                        
-                                        <input style="width: 100%;" type="hidden" id="ttyp" readonly value="lager"  />
-                                       
-                                        <label for="ledger_amt">Ledger Amt</label>
-                                        <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" name="ledger_amt" value="" min="0"   max="<?= $student['fees_discount'] ?>"  />
-                                         <lable id="error_message" style="color: red; display:block;font-size:10px !important"></lable>
-                                         <input style="width: 100%;" type="hidden" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$student['fees_discount']+$final_total?>" readonly  />
-                                       
-                                    </div>
-                                        
-                                        <?php
-                                    }else{
-                                        ?>
                                         <div class="col-sm-2">
                                             <label for="receipt_amt">Receipt Amt</label>
-                                            <input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$student['fees_discount']+$final_total?>" readonly  />
+                                            <input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$receipt_amt; ?>" readonly  />
                                         </div>
-                                        <?php
-                                        
-                                    }
-                                    
-                                    ?>
-                                   
                                     
                                     <div class="col-sm-2">
                                         <label for="balance_amt">Balance Amt</label>
-                                        <input style="width: 100%;" type="text" id="balance_amt" class="form-control" name="balance_amt" readonly value="0" />
+										<input style="width: 100%;" type="hidden" class="form-control" name="prev_balance_amt" value="<?php echo $balance_amt; ?>" />
+                                        <input style="width: 100%;" type="text" id="balance_amt" class="form-control" name="balance_amt" readonly value="<?php echo $balance_amt; ?>" />
                                     </div>
                                 
                                     <div class="col-sm-2">
                                         <label for="mode">Mode</label>
                                         <select autofocus=""  name="mode" id="mode" name="class_id" class="form-control" >
-                                            <option value="Online">Online</option>
-                                            <option value="Cash">Cash</option>
-                                            <option value="Other">Other</option>
+                                            <option value="Online" <?php echo $mode == 'Online' ? 'selected' : ''; ?>>Online</option>
+                                            <option value="Cash" <?php echo $mode == 'Cash' ? 'selected' : ''; ?>>Cash</option>
+                                            <option value="Other" <?php echo $mode == 'Other' ? 'selected' : ''; ?>>Other</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-2">
                                         <label for="remarks">Remarks</label>
-                                        <input style="width: 100%;" type="text" id="remarks" class="form-control" name="remarks" />
+                                        <input style="width: 100%;" type="text" id="remarks" class="form-control" name="remarks" value="<?php echo $remarks; ?>" />
                                     </div>
                                     <div class="col-sm-2">
                                         <span><br></span>
-                                        <button type="submit" style="margin-top:5px" id="submit_btn" style="width: 100%;">Save</button>
+                                        <button type="submit" style="margin-top:5px" id="submit_btn" style="width: 100%;">Update</button>
                                     </div>
                                 </div>
                             </div>

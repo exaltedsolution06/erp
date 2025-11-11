@@ -17,16 +17,18 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             <!-- left column -->
             <div class="col-md-12">
                 <div class="box removeboxmius">
-                    <div class="box-header ptbnull"></div>
+                    <div class="box-header ptbnull">
+						<h4>Collect Fee List</h4>
+					</div>
                     
                         <div class="">
-                            <div class="box-header ptbnull"></div>    
+                            <!--<div class="box-header ptbnull"></div>    
                             <div class="box-header">
                                 <h3 class="box-title">
 
                                     <i class="fa fa-file-text-o"></i> 
                                 </h3>
-                            </div>
+                            </div>-->
                             <div class="box-body" style="padding-top:0;">
                                 <div class="row">
                                     
@@ -208,9 +210,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td ><?= $record["create_by"] ?></td>
                                                 <td>
 
-                                                    <!-- <a href="<?php echo base_url(); ?>studentfee/studentfeelist" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Edit">
+                                                    <a href="<?php echo base_url(); ?>studentfee/edit/<?= base64_encode($record["receipt_no"]); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Edit">
                                                         <i class="fa fa-pencil"></i>
-                                                    </a> -->
+                                                    </a>
                                                     <a href="<?php echo base_url(); ?>studentfee/studentfeelist?receipt_no=<?=$record["receipt_no"]?>&type=delete" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Delete">
                                                         <i class="fa fa-trash"></i>
                                                     </a>

@@ -307,7 +307,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td><?php echo $value['gender'] ?></td>
                                                 <td><?php echo date($this->customlib->getSchoolDateFormat(), strtotime($value['dob'])); ?></td>
                                                 <?php if ($sch_setting->category) { ?>
-                                                    <td><?php echo $value['category']; ?></td>
+                                                    <td><?php echo $value['name']; ?></td>
                                                 <?php } if ($sch_setting->religion) { ?>
                                                     <td><?php echo $value['religion']; ?></td>
                                                 <?php } if ($sch_setting->cast) { ?>
