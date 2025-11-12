@@ -1199,8 +1199,145 @@ class Studentfee extends Admin_Controller
         
         $data['months_data']=[];
         
-        if(!empty($unique_months)){ 
-            $monthsPost =$unique_months;
+        //if(!empty($unique_months)){
+		if(!empty($_POST['months']) || !empty($unique_months)){
+			$monthsPost =$unique_months;
+			if(!empty($_POST['months'])){
+				$monthsPost =$_POST['months'];
+			}
+            $class_id=$student['class_id'];
+            $route_id=$student['vehroute_id'];            
+            $category_id=$student['category_id'];
+            $this->db->from('fee_head');
+            $this->db->join('fees_plan', 'fee_head.id = fees_plan.fee_group_id');
+            $this->db->where("JSON_CONTAINS(fees_plan.class_ids, '\"$class_id\"')", null, false);
+            $this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
+            if (!empty($monthsPost)) {
+                $this->db->group_start(); // Start OR group
+                foreach ($monthsPost as $m) {
+                    $m_escaped = $this->db->escape_str($m); // Prevent injection or breaking SQL
+                    $this->db->or_where("JSON_CONTAINS(fee_head.months, '\"$m_escaped\"')", null, false);
+                }
+                $this->db->group_end(); // End OR group
+            }
+            $query = $this->db->get();
+            $data['data_list'] = $query->result();
+            // route
+            $this->db->from('route_head');
+            $this->db->join('route_plan', 'route_head.id = route_plan.fee_group_id');
+            $this->db->where("JSON_CONTAINS(route_plan.class_ids, '\"$class_id\"')", null, false);
+            $this->db->where("JSON_CONTAINS(route_plan.category_ids, '\"$category_id\"')", null, false);
+            $this->db->where('route_head.id', $route_id);
+            
+            $query = $this->db->get();
+            $data['route_data_list'] = $query->result();        
+            
+            $data['months_data']=$monthsPost;
+            // echo  json_encode($data);               
+            // die;
+			
+			$recDiscountArr = [];
+			$recAmountArr = [];
+			foreach ($receiptArr as $row) {
+				$recDiscountArr[$row['fee_head']] = $row['rec_discount'];
+				$recAmountArr[$row['fee_head']] = $row['rec_amount'];
+			}
+			$data['rec_discount'] = $recDiscountArr;
+			$data['received_amount'] = $recAmountArr;
+			//echo '<pre>'; print_r($recDiscountArr);echo '</pre>';die;
+			$data['late_fees'] = $receiptArr[0]['late_fees'];
+			$data['ledger_amt'] = $receiptArr[0]['ledger_amt'];
+			$data['total_fees'] = $receiptArr[0]['total_fees'];
+			$data['discount_amt'] = $receiptArr[0]['discount_amt'];
+			$data['net_fees'] = $receiptArr[0]['net_fees'];
+			$data['receipt_amt'] = $receiptArr[0]['receipt_amt'];
+			$data['balance_amt'] = $receiptArr[0]['balance_amt'];
+			$data['mode'] = $receiptArr[0]['mode'];
+			$data['remarks'] = $receiptArr[0]['remarks'];
+			
+			if(!empty($_POST['months'])){
+				$data['received_amount'] = '';
+				$data['total_fees'] = '';
+				$data['ledger_amt'] = '';
+				$data['net_fees'] = '';
+				$data['receipt_amt'] = '';
+				$data['balance_amt'] = '';
+			}
+        }
+		$this->load->view('layout/header', $data);
+		$this->load->view('studentfee/studentfeeEdit', $data);
+		$this->load->view('layout/footer', $data);
+		
+        /*if (!$this->rbac->hasPrivilege('collect_fees', 'can_edit')) {
+            access_denied();
+        }
+        $data['title']      = 'Edit studentfees';
+        $data['id']         = $id;
+        $studentfee         = $this->studentfee_model->getStudentFees($id);
+        $data['studentfee'] = $studentfee;
+        $this->form_validation->set_rules('category', $this->lang->line('category'), 'trim|required|xss_clean');
+        if ($this->form_validation->run() == false) {
+            $this->load->view('layout/header', $data);
+            $this->load->view('studentfee/studentfeeEdit', $data);
+            $this->load->view('layout/footer', $data);
+        } else {
+            $data = array(
+                'id'       => $id,
+                'category' => $this->input->post('category'),
+            );
+            $this->studentfee_model->add($data);
+            $this->session->set_flashdata('msg', '<div studentfee="alert alert-success text-center">' . $this->lang->line('update_message') . '</div>');
+            redirect('studentfee/index');
+        }*/
+    }
+	public function feeview($receipt_no)
+    {
+		if (!$this->rbac->hasPrivilege('collect_fees', 'can_add')) {
+            access_denied();
+        }
+		$receipt_no = base64_decode($receipt_no);		
+		$receiptArr=$this->Receipt_model->get_receipts_by_receipt_no($receipt_no);
+		//echo '<pre>'; print_r($receiptArr);echo '</pre>';die;
+		$id = $receiptArr[0]['back_id'];
+        $data['back_id']=$id;
+        $data['sch_setting'] = $this->sch_setting_detail;
+        $data['title'] = 'Student Detail';
+        $student         = $this->student_model->getByStudentSession($id);        
+        $data['student'] = $student;
+        $data['update_ids']=$id;
+		
+        $student_due_fee = $this->studentfeemaster_model->getStudentFees($id);
+        $student_discount_fee = $this->feediscount_model->getStudentFeesDiscount($id);
+
+        $data['student_discount_fee'] = $student_discount_fee;
+        $data['student_due_fee']      = $student_due_fee;
+        $category                     = $this->category_model->get();
+        $data['categorylist']         = $category;
+
+        $class_section                = $this->student_model->getClassSection($student["class_id"]);
+        $data["class_section"]        = $class_section;
+        $session                      = $this->setting_model->getCurrentSession();
+        $studentlistbysection         = $this->student_model->getStudentClassSection($student["class_id"], $session);
+        $data["studentlistbysection"] = $studentlistbysection;
+		$data['receipt_no']= $receipt_no;
+        $data['data_list']=0;
+        $data['addfee']=$id;
+		// Suppose your main array is stored in $data
+		$months = array_column($receiptArr, 'months');       // Extract all month values
+		$unique_months = array_values(array_unique($months)); // Remove duplicates and reindex
+
+		//print_r($unique_months);die;
+
+        $data['pay_mounth']=$unique_months;        
+        
+        $data['months_data']=[];
+        
+        //if(!empty($unique_months)){
+		if(!empty($_POST['months']) || !empty($unique_months)){
+			$monthsPost =$unique_months;
+			if(!empty($_POST['months'])){
+				$monthsPost =$_POST['months'];
+			}
             $class_id=$student['class_id'];
             $route_id=$student['vehroute_id'];            
             $category_id=$student['category_id'];
@@ -1252,7 +1389,7 @@ class Studentfee extends Admin_Controller
 			$data['remarks'] = $receiptArr[0]['remarks'];
         }
 		$this->load->view('layout/header', $data);
-		$this->load->view('studentfee/studentfeeEdit', $data);
+		$this->load->view('studentfee/studentfeeView', $data);
 		$this->load->view('layout/footer', $data);
 		
         /*if (!$this->rbac->hasPrivilege('collect_fees', 'can_edit')) {
@@ -1426,6 +1563,73 @@ class Studentfee extends Admin_Controller
         $data['sch_setting'] = $this->sch_setting_detail;
         $this->load->view('layout/header', $data);
         $this->load->view('studentfee/searchpayment', $data);
+        $this->load->view('layout/footer', $data);
+    }
+	public function search_fee_slip()
+    {
+		if ($_GET['type'] == 'delete' && !empty($_GET['receipt_no'])) {
+            $receipt_no = $_GET['receipt_no'];
+            $res_del=$this->db
+                ->select('student_id,date_time,back_id,receipt_no,mode,fee_head,late_fees,ledger_amt,total_fees,discount_amt,net_fees,receipt_amt,balance_amt,remarks,fee_head_name,SUM(balance_amount) as balance_amount,(total) as total, SUM(rec_discount) as rec_discount, SUM(rec_amount) as rec_amount')
+                ->where_in('receipt_no', $receipt_no)
+                ->group_by('fee_head')
+                ->get('receipts')
+                ->row();
+
+
+            //var_dump($res_del);
+            if($res_del->fee_head_name=='Ledger Amount'){
+                $receipt_amt=$res_del->receipt_amt;
+                $this->db->where('student_id', $res_del->student_id);
+                $query = $this->db->get('student_session');
+
+                if ($query->num_rows() > 0) {
+                    $row = $query->row();
+                    $current_discount = (int)$row->fees_discount;
+
+                    // Step 2: Add ₹100 to current discount
+                    $new_discount = $current_discount + $receipt_amt;
+
+                    // Step 3: Update the `fees_discount`
+                    $this->db->where('student_id', $res_del->student_id);
+                    $this->db->update('student_session', array('fees_discount' => $new_discount));
+
+                    if ($this->db->affected_rows() > 0) {
+                        
+                    }
+                }
+            }
+            $this->load->model('Receipt_model');
+            // Step 1: Get all receipts with the same receipt_no
+            $receiptList = $this->Receipt_model->get_receipts_by_receipt_no($receipt_no);
+            // Step 2: Backup each receipt row
+            foreach ($receiptList as $receipt) {
+                $this->Receipt_model->backup_receipt_data($receipt);
+            }
+            // Step 3: Delete from original receipts table
+            $this->Receipt_model->delete_receipts_by_receipt_no($receipt_no);
+			$this->session->set_flashdata('msgdelete', '<div class="alert alert-success text-left">Receipts with Receipt No: ' . $receipt_no . ' backed up and deleted successfully.</div>');
+            redirect('studentfee/search_fee_slip');
+            
+        }
+		//$this->session->unset_flashdata('msgdelete');
+        if (!$this->rbac->hasPrivilege('search_fees_payment', 'can_view')) {
+            access_denied();
+        }
+        $this->session->set_userdata('top_menu', 'Fees Collection');
+        $this->session->set_userdata('sub_menu', 'studentfee/search_fee_slip');
+        $data['title'] = 'Edit studentfees';
+
+        $this->form_validation->set_rules('receipt_no', $this->lang->line('receipt_no'), 'trim|required|xss_clean');
+        if ($this->form_validation->run() == false) {
+
+        } else {
+			$receipt_no = $this->input->post('receipt_no');
+			$data['receipt_data'] = $this->Receipt_model->search_fee_slip($receipt_no);
+        }
+        $data['sch_setting'] = $this->sch_setting_detail;
+        $this->load->view('layout/header', $data);
+        $this->load->view('studentfee/search_fee_slip', $data);
         $this->load->view('layout/footer', $data);
     }
 

@@ -96,6 +96,7 @@
                     || set_Submenu('admin/teacher/assign_class_teacher')
                     || set_Submenu('stdtransfer/index')
                     || set_Submenu('admin/feediscount')
+                    || set_Submenu('student/disable_reason')
                     || set_Submenu('feesforward/index')
                     
                 ){
@@ -140,6 +141,8 @@
                         <li class="<?php echo set_Submenu('admin/teacher/assign_class_teacher'); ?>"><a href="<?php echo base_url(); ?>admin/teacher/assign_class_teacher"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('assign_class_teacher'); ?></a></li>
                     <?php } if ($this->rbac->hasPrivilege('promote_student', 'can_view')) { ?>
                         <li class="<?php echo set_Submenu('stdtransfer/index'); ?>"><a href="<?php echo base_url(); ?>admin/stdtransfer"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('promote_students'); ?></a></li>
+					<?php } if ($this->rbac->hasPrivilege('previous_session_balance', 'can_view')) { ?>
+                        <li class="<?php echo set_Submenu('student/disable_reason'); ?>"><a href="<?php echo base_url(); ?>admin/disable_reason"><i class="fa fa-angle-double-right"></i> Set Disable Reason</a></li>
 					<?php } if ($this->rbac->hasPrivilege('previous_session_balance', 'can_view')) { ?>
                         <li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="<?php echo base_url(); ?>admin/feesforward"><i class="fa fa-angle-double-right"></i> Previous Session Balance</a></li>
 					<?php } if ($this->rbac->hasPrivilege('change_session', 'can_view')) { ?>
@@ -280,7 +283,8 @@
 					|| set_Submenu('studentfee/studentfeelist')
 					|| set_Submenu('Reports/receipt-book')
 					|| set_Submenu('studentfee/studentfee_deletedlist')
-					|| set_Submenu('studentfee/searchpayment')
+					|| set_Submenu('studentfee/search_fee_slip')
+					//|| set_Submenu('studentfee/searchpayment')
 					//|| set_Submenu('studentfee/feesearch')
 					//|| set_Submenu('admin/feediscount')
 					//|| set_Submenu('feesforward/index')
@@ -315,7 +319,7 @@
 						<?php } if ($this->rbac->hasPrivilege('delete_fee_list', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('studentfee/studentfee_deletedlist'); ?>"><a href="<?php echo base_url(); ?>studentfee/studentfee_deletedlist"><i class="fa fa-angle-double-right"></i> Delete Fee List </a></li>
 						<?php } if ($this->rbac->hasPrivilege('defaulter_list', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('studentfee/searchpayment'); ?>"><a href="<?php echo base_url(); ?>studentfee/searchpayment"><i class="fa fa-angle-double-right"></i> Search Fee Slip</a></li>
+							<li class="<?php echo set_Submenu('studentfee/search_fee_slip'); ?>"><a href="<?php echo base_url(); ?>studentfee/search_fee_slip"><i class="fa fa-angle-double-right"></i> Search Fee Slip</a></li>
 						<?php } if ($this->rbac->hasPrivilege('student_ledger', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="#<?php //echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Student Ledger</a></li>
 						<?php } if ($this->rbac->hasPrivilege('quick_receipt', 'can_view')) { ?>
@@ -1132,7 +1136,7 @@
                             <?php } if ($this->rbac->hasPrivilege('change_session', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('System/change_session'); ?>"><a href="#<?php //echo base_url(); ?>system/change_session"><i class="fa fa-angle-double-right"></i> Change Session</a></li>
                             <?php } if ($this->rbac->hasPrivilege('change_session', 'can_view')) { ?>
-                                <li class="<?php echo set_Submenu('admin/backup'); ?>"><a href="<?php //echo base_url(); ?>admin/admin/backup"><i class="fa fa-angle-double-right"></i> Date Backup</a></li>
+                                <li class="<?php echo set_Submenu('admin/backup'); ?>"><a href="<?php //echo base_url(); ?>admin/backup"><i class="fa fa-angle-double-right"></i> Data Backup</a></li>
                             <?php } ?>
                         </ul>
                     </li>

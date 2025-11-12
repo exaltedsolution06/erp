@@ -183,38 +183,38 @@ $language_name = $language["short_code"];
                                                     </div>
                                                     <hr>
                                                     <?php
-                                                    // var_dump($pay_mounth);
+														$months = ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"];
 
-                                                    $months = [ "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec","Jan", "Feb", "Mar"];
-                                                    foreach ($months as $month): ?>
-                                                    <div class="col-sm-3 col-md-3 p-0 m-0 month-checkbox">
-                                                        
+														// Find earliest (first) paid month index; -1 if none paid
+														$firstPaidIndex = -1;
+														foreach ($months as $index => $month) {
+															if (in_array($month, $pay_mounth)) {
+																$firstPaidIndex = $index;
+																break; // stop at first occurrence (earliest in the array order)
+															}
+														}
 
-                                                        <?php
-                                                            if (in_array($month, $pay_mounth)) {  // Check if month exists in $pay_mounth array
-                                                                // If the month exists in $pay_mounth, disable the checkbox and make it unchecked
-                                                                ?>
-                                                                <input class="form-check-input month-check" type="checkbox" name="months[]" value="<?= $month ?>" id="<?= strtolower($month) ?>" checked>
-                                                                <label for="<?= strtolower($month) ?>"><?= $month ?></label>
-                                                                <?php
-                                                            } else {
-                                                                // If the month does not exist in $pay_mounth, show the checkbox as usual
-                                                                if(in_array($month,$months_data)){ ?>
-                                                                    <input class="form-check-input month-check input-mounth" checked="" type="checkbox" name="months[]" value="<?= $month ?>" id="<?= strtolower($month) ?>"  >
-                                                                    <label for="<?= strtolower($month) ?>"><?= $month ?></label>
-                                                                    <?php }else{
-                                                                    ?>
-                                                                    <input class="form-check-input month-check input-mounth" type="checkbox" name="months[]" value="<?= $month ?>" id="<?= strtolower($month) ?>" disabled>
-                                                                    <label for="<?= strtolower($month) ?>"><?= $month ?></label>
-                                                                    <?php
-                                                                } 
-                                                            }
-                                                            ?>
-                                                        
-                                                       
-                                                        
-                                                    </div>
-                                                    <?php endforeach; ?>
+														foreach ($months as $index => $month):
+															$isPaid = in_array($month, $pay_mounth);                // already paid
+															$isSelected = $isPaid || in_array($month, $months_data);// selected if paid or previously selected
+															// disable only months that are strictly before the earliest paid month
+															$isDisabled = ($firstPaidIndex >= 0 && $index < $firstPaidIndex);
+														?>
+															<div class="col-sm-3 col-md-3 p-0 m-0 month-checkbox">
+																<input
+																	class="form-check-input month-check input-mounth"
+																	type="checkbox"
+																	name="months[]"
+																	value="<?= $month ?>"
+																	id="<?= strtolower($month) ?>"
+																	<?= $isSelected ? 'checked' : '' ?>
+																	<?= $isDisabled ? 'disabled' : '' ?>
+																>
+																<label for="<?= strtolower($month) ?>" style="<?= $isDisabled ? 'color:#aaa;' : '' ?>">
+																	<?= $month ?>
+																</label>
+															</div>
+														<?php endforeach; ?>
 
                                                     <div class="col-sm-12" style="text-align: -webkit-right;;">
                                                         <button type="submit" class="btn btn-info">Go</button>
@@ -315,7 +315,7 @@ $language_name = $language["short_code"];
 
                                                 <th><?= $total ?> <input type="hidden" name="total[]" value="<?=$total?>"> </th>
                                                 <th><input type="text" style="width: 100px;" class="rec_discount" name="rec_discount[]" id="total_get_discount_<?=$aa?>" oninput="calculateDisData(this,<?=$aa?>)" value="<?=$rec_discount[$row->id];?>"></th>
-                                                <th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id];?>"></th>
+                                                <th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id]);?>"></th>
                                                 <th>0</th>
                                             </tr>
                                             <?php
@@ -358,7 +358,7 @@ $language_name = $language["short_code"];
                                                 <?php endforeach; ?>
                                                 <th><?= $total ?> <input type="hidden" name="total[]" value="<?=$total?>"> </th>
                                                 <th><input type="text" style="width:100px;" class="rec_discount" name="rec_discount[]"  id="total_get_discount_<?=$aa?>"   oninput="calculateDisData(this,<?=$aa?>)" value="<?=$rec_discount[$row->id];?>"></th>
-                                                <th><input type="text" style="width:100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id];?>"></th>
+                                                <th><input type="text" style="width:100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id]);?>"></th>
                                                 <th>0</th>
                                             </tr>
                                             <?php
@@ -411,11 +411,11 @@ $language_name = $language["short_code"];
                                           <div class="col-sm-2">
                                         <input style="width: 100%;" type="hidden" id="ttyp" readonly value="mounth"  />
                                         <label for="ledger_amt">Ledger Amt</label>
-                                        <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" readonly name="ledger_amt" value="<?=$ledger_amt?>" min="0"   max="<?= $student['fees_discount'] ?>"  />
+                                        <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" readonly name="ledger_amt" value="<?=$ledger_amt? $ledger_amt : $student['fees_discount']; ?>" min="0"   max="<?= $student['fees_discount'] ?>"  />
                                         </div>
                                     <div class="col-sm-2">
                                         <label for="total_fees">Total Fees</label>
-                                        <input style="width: 100%;" type="text" id="total_fees" class="form-control" name="total_fees" readonly value="<?=$total_fees?>" />
+                                        <input style="width: 100%;" type="text" id="total_fees" class="form-control" name="total_fees" readonly value="<?=$total_fees ? $total_fees : $student['fees_discount']+$final_total; ?>" />
                                     </div>
                                      <div class="col-sm-2">
                                         
@@ -423,11 +423,19 @@ $language_name = $language["short_code"];
                                         <input style="width: 100%;" type="text" id="discount_amt" class="form-control" name="discount_amt" value="<?php echo $discount_amt; ?>"  />
                                     </div>
                                
-                                    
+                                    <?php
+										if(empty($net_fees)){
+											$net_fees = $student['fees_discount']+$final_total+$late_fees-$discount_amt;
+										}if(empty($receipt_amt)){
+											$receipt_amt = $student['fees_discount']+$final_total+$late_fees-$discount_amt;
+										}
+										
+										$balance_amt = $net_fees - $receipt_amt;
+									?>
                                     
                                     <div class="col-sm-2">
                                         <label for="net_fees">Net Fees</label>
-                                        <input style="width: 100%;" type="text" id="net_fees" class="form-control" name="net_fees" value="<?=$net_fees?>" readonly />
+                                        <input style="width: 100%;" type="text" id="net_fees" class="form-control" name="net_fees" value="<?=$net_fees; ?>" readonly />
                                     </div>
                                 </div>
                                 <div class="row " style="margin-top: 10px !important;">

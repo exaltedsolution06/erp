@@ -1143,8 +1143,8 @@ class Student extends Admin_Controller
         $userdata           = $this->customlib->getUserData();
 
         $category = $this->category_model->get();
-
-        $fields = array('admission_no', 'roll_no', 'firstname', 'middlename', 'lastname', 'gender', 'dob', 'category_id', 'religion', 'cast', 'mobileno', 'email', 'admission_date', 'blood_group', 'school_house_id', 'height', 'weight', 'measurement_date', 'father_name', 'father_phone', 'father_occupation', 'mother_name', 'mother_phone', 'mother_occupation', 'guardian_is', 'guardian_name', 'guardian_relation', 'guardian_email', 'guardian_phone', 'guardian_occupation', 'guardian_address', 'current_address', 'permanent_address', 'bank_account_no', 'bank_name', 'ifsc_code', 'adhar_no', 'samagra_id', 'rte', 'previous_school', 'note');
+				
+        $fields = array('admission_no', 'roll_no', 'firstname', 'middlename', 'lastname', 'gender', 'dob', 'pan_no', 'aadhan_no', 'other_no', 'cast_category', 'religion', 'cast', 'mobileno','email', 'admission_date', 'image', 'blood_group', 'school_house_id', 'height', 'weight', 'category_id', 'route_id', 'ledger_amt', 'father_name', 'father_phone', 'father_occupation', 'father_pic', 'father_pan_no', 'father_aadhar_no', 'father_other_no', 'father_id_no', 'mother_name', 'mother_phone', 'mother_occupation', 'mother_pic', 'mother_pan_no', 'mother_aadhar_no', 'mother_other_no', 'mother_id_no', 'guardian_is', 'guardian_name', 'guardian_relation', 'guardian_email', 'guardian_pic', 'guardian_phone', 'guardian_occupation', 'guardian_address', 'current_address', 'permanent_address', 'bank_account_no', 'bank_name', 'ifsc_code', 'adhar_no', 'samagra_id', 'rte', 'previous_school', 'note');
 
         $data["fields"]       = $fields;
         $data['categorylist'] = $category;
@@ -1184,41 +1184,107 @@ class Student extends Admin_Controller
                             foreach ($result[$i] as $key => $value) {
 
                                 $student_data[$i][$fields[$n]] = $this->encoding_lib->toUTF8($result[$i][$key]);
+								
+								 
+								$insert_student_data[$i]['is_active'] = 'yes';
+								$insert_student_data[$i]['admission_no'] = $result[$i]['Admission No'];
+								$insert_student_data[$i]['roll_no'] = $result[$i]['Roll Number'];
+								$insert_student_data[$i]['firstname'] = $result[$i]['First Name'];
+								$insert_student_data[$i]['middlename'] = $result[$i]['Middle Name'];
+								$insert_student_data[$i]['lastname'] = $result[$i]['Last Name'];
+								$insert_student_data[$i]['gender'] = $result[$i]['Gender'];
+								$insert_student_data[$i]['dob'] = $result[$i]['Date of Birth (dd-mm-yyyy)'] ? date('Y-m-d', strtotime($result[$i]['Date of Birth (dd-mm-yyyy)'])) : null;								
+								$insert_student_data[$i]['pan_no'] = $result[$i]['Pen No'];
+								$insert_student_data[$i]['aadhan_no'] = $result[$i]['Aadhar No'];
+								$insert_student_data[$i]['other_no'] = $result[$i]['Other No'];
+								$insert_student_data[$i]['cast_category'] = $result[$i]['Cast Category'];
+								$insert_student_data[$i]['religion'] = $result[$i]['Religion'];
+								$insert_student_data[$i]['cast'] = $result[$i]['Caste'];
+								$insert_student_data[$i]['mobileno'] = $result[$i]['Mobile Number'];
+								$insert_student_data[$i]['email'] = $result[$i]['Email'];
+								$insert_student_data[$i]['admission_date'] = $result[$i]['Admission Date (dd-mm-yyyy)'] ? date('Y-m-d', strtotime($result[$i]['Admission Date (dd-mm-yyyy)'])) : null;							
+								
+								$insert_student_data[$i]['image'] = $result[$i]['Student Photo'];
+								$insert_student_data[$i]['blood_group'] = $result[$i]['Blood Group'];
+								$insert_student_data[$i]['school_house_id'] = $result[$i]['Student House ID'];
+								$insert_student_data[$i]['height'] = $result[$i]['Height'];
+								$insert_student_data[$i]['weight'] = $result[$i]['Weight'];
+								$insert_student_data[$i]['measurement_date'] = date('Y-m-d');
+								$insert_student_data[$i]['category_id'] = $result[$i]['Fee Category ID'];
+								$insert_student_data[$i]['route_id'] = $result[$i]['Route List ID'];
+								$insert_student_data[$i]['father_name'] = $result[$i]['Father Name'];
+								$insert_student_data[$i]['father_phone'] = $result[$i]['Father Phone'];
+								$insert_student_data[$i]['father_occupation'] = $result[$i]['Father Occupation'];
+								$insert_student_data[$i]['father_pic'] = $result[$i]['Father Photo'];
+								$insert_student_data[$i]['father_pan_no'] = $result[$i]['Father Pen No'];
+								$insert_student_data[$i]['father_aadhar_no'] = $result[$i]['Father Aadhar No'];
+								$insert_student_data[$i]['father_other_no'] = $result[$i]['Father Other No'];
+								$insert_student_data[$i]['father_id_no'] = $result[$i]['Father ID No'];
+								$insert_student_data[$i]['mother_name'] = $result[$i]['Mother Name'];
+								$insert_student_data[$i]['mother_phone'] = $result[$i]['Mother Phone'];
+								$insert_student_data[$i]['mother_occupation'] = $result[$i]['Mother Occupation'];
+								$insert_student_data[$i]['mother_pic'] = $result[$i]['Mother Photo'];
+								$insert_student_data[$i]['mother_pan_no'] = $result[$i]['Mother Pen No'];
+								$insert_student_data[$i]['mother_aadhar_no'] = $result[$i]['Mother Aadhar No'];
+								$insert_student_data[$i]['mother_other_no'] = $result[$i]['Mother Other No'];
+								$insert_student_data[$i]['mother_id_no'] = $result[$i]['Mother ID No'];
+								$insert_student_data[$i]['guardian_is'] = $result[$i]['Guardian Is'];
+								$insert_student_data[$i]['guardian_name'] = $result[$i]['Guardian Name'];
+								$insert_student_data[$i]['guardian_relation'] = $result[$i]['Guardian Relation'];
+								$insert_student_data[$i]['guardian_email'] = $result[$i]['Guardian Email'];
+								$insert_student_data[$i]['guardian_pic'] = $result[$i]['Guardian Photo'];
+								$insert_student_data[$i]['guardian_phone'] = $result[$i]['Guardian Phone'];
+								$insert_student_data[$i]['guardian_occupation'] = $result[$i]['Guardian Occupation'];
+								$insert_student_data[$i]['guardian_address'] = $result[$i]['Guardian Address'];
+								$insert_student_data[$i]['current_address'] = $result[$i]['Current Address'];
+								$insert_student_data[$i]['permanent_address'] = $result[$i]['Permanent Address'];
+								$insert_student_data[$i]['bank_account_no'] = $result[$i]['Bank Account Number'];
+								$insert_student_data[$i]['bank_name'] = $result[$i]['Bank Name'];
+								$insert_student_data[$i]['ifsc_code'] = $result[$i]['IFSC Code'];
+								$insert_student_data[$i]['adhar_no'] = $result[$i]['National Identification Number'];
+								$insert_student_data[$i]['samagra_id'] = $result[$i]['Local Identification Number'];
+								$insert_student_data[$i]['rte'] = $result[$i]['RTE'];
+								$insert_student_data[$i]['previous_school'] = $result[$i]['Previous School Details'];
+								$insert_student_data[$i]['note'] = $result[$i]['Note'];
+								
+                                
 
-                                $student_data[$i]['is_active'] = 'yes';
-
-                                if (date('Y-m-d', strtotime($result[$i]['date_of_birth'])) === $result[$i]['date_of_birth']) {
-                                    $student_data[$i]['dob'] = date('Y-m-d', strtotime($result[$i]['date_of_birth']));
+                                /*if (date('Y-m-d', strtotime($result[$i]['Date of Birth (dd-mm-yyyy)'])) === $result[$i]['Date of Birth (dd-mm-yyyy)']) {
+                                    $insert_student_data[$i]['dob'] = date('Y-m-d', strtotime($result[$i]['Date of Birth (dd-mm-yyyy)']));
                                 } else {
-                                    $student_data[$i]['dob'] = null;
-                                }
-
-                                if (date('Y-m-d', strtotime($result[$i]['measurement_date'])) === $result[$i]['measurement_date']) {
-                                    $student_data[$i]['measurement_date'] = date('Y-m-d', strtotime($result[$i]['measurement_date']));
+                                    $insert_student_data[$i]['dob'] = null;
+                                }if (date('Y-m-d', strtotime($result[$i]['As on Date (dd-mm-yyyy)'])) === $result[$i]['As on Date (dd-mm-yyyy)']) {
+                                    $student_data[$i]['measurement_date'] = date('Y-m-d', strtotime($result[$i]['As on Date (dd-mm-yyyy)']));
                                 } else {
                                     $student_data[$i]['measurement_date'] = '';
                                 }
 
-                                if (date('Y-m-d', strtotime($result[$i]['admission_date'])) === $result[$i]['admission_date']) {
-                                    $student_data[$i]['admission_date'] = date('Y-m-d', strtotime($result[$i]['admission_date']));
+                                if (date('Y-m-d', strtotime($result[$i]['Admission Date (dd-mm-yyyy)'])) === $result[$i]['Admission Date (dd-mm-yyyy)']) {
+                                    $student_data[$i]['admission_date'] = date('Y-m-d', strtotime($result[$i]['Admission Date (dd-mm-yyyy)']));
                                 } else {
                                     $student_data[$i]['admission_date'] = null;
-                                }
+                                }*/
+								
+								
                                 $n++;
                             }
+							$ledger_amt = $result[$i]['Legder Amount'];
+							//echo $ledger_amt;
+							//echo '<pre>'; print_r($insert_student_data[$i]); echo '<pre>';die;
 
-                            $roll_no                           = $student_data[$i]["roll_no"];
-                            $adm_no                            = $student_data[$i]["admission_no"];
-                            $mobile_no                         = $student_data[$i]["mobileno"];
-                            $email                             = $student_data[$i]["email"];
-                            $guardian_phone                    = $student_data[$i]["guardian_phone"];
-                            $guardian_email                    = $student_data[$i]["guardian_email"];
+                            $roll_no                           = $insert_student_data[$i]["roll_no"];
+                            $adm_no                            = $insert_student_data[$i]["admission_no"];
+                            $mobile_no                         = $insert_student_data[$i]["mobileno"];
+                            $email                             = $insert_student_data[$i]["email"];
+                            $guardian_phone                    = $insert_student_data[$i]["guardian_phone"];
+                            $guardian_email                    = $insert_student_data[$i]["guardian_email"];
+							
                             $data_setting                      = array();
                             $data_setting['id']                = $this->sch_setting_detail->id;
                             $data_setting['adm_auto_insert']   = $this->sch_setting_detail->adm_auto_insert;
                             $data_setting['adm_update_status'] = $this->sch_setting_detail->adm_update_status;
                             if ($this->form_validation->is_unique($adm_no, 'students.admission_no')) {
-                           $insert_id = $this->student_model->add($student_data[$i], $data_setting);
+                           $insert_id = $this->student_model->add($insert_student_data[$i], $data_setting);
                             } else {
 
                                 $insert_id = "";
@@ -1230,6 +1296,7 @@ class Student extends Admin_Controller
                                     'class_id'   => $class_id,
                                     'section_id' => $section_id,
                                     'session_id' => $session,
+                                    'fees_discount' => $ledger_amt
                                 );
 
                                 $this->student_model->add_student_session($data_new);

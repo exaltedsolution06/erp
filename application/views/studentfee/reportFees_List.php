@@ -107,11 +107,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th >Fee Cat.</th>
                                                 <th >Route</th>
                                                 <th >Months</th>
-
-                                
-
                                                 <th style="text-align: right;">Fee</th>
-
                                                 <th style="text-align: right;">Ledger Amt</th>
                                                 <th style="text-align: right;">Late Fees</th>
                                                 <th style="text-align: right;">Total Fees</th>
@@ -119,20 +115,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th style="text-align: right;">Net Fees</th>
                                                 <th style="text-align: right;">Receipt. Amt.</th>
                                                 <th style="text-align: right;">Balance Amt</th>
-
-
-
                                                 <th >Mode</th>
                                                 <th >User</th>
-                                                <!-- <th >Remark</th> -->
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
-                                       
-                                       
-                                    
-                                    <tbody>
-                                        
+										<tbody>
                                             <?php if (!empty($receipt_data)): ?>
                                                 <?php $sno = 1; foreach ($receipt_data as $record): ?>
                                              <?php  
@@ -161,8 +149,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td ><?= $record["section"] ?></td>
                                                 <td ><?=  ($this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()) ? $this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()->name : 'N.A'; ?>  </td>
                                                 <td ><?=  ($this->db->get_where('route_head', ['id' => $record['vehroute_id']])->row()) ? $this->db->get_where('route_head', ['id' => $record['vehroute_id']])->row()->fees_heading : 'N.A'; ?>  </td>
-                                                
-                                                <td >
+                                                <td>
                                                     <?php
                                                         if(!empty($record['fee_head'])){
                                                             // echo $record["receipt_months"];
@@ -180,9 +167,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             echo "Old Bal.";
                                                         }
                                                     ?>
-                                            
                                                 </td>
-
                                                 <?php
                                                      if(!empty($record['fee_head'])){
                                                         ?>
@@ -193,9 +178,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         <td style="text-align: right;">00.00</td>
                                                         <?php
                                                      }
-
                                                 ?>
-                                               
                                                 <td style="text-align: right;"><?= sprintf('%.2f', $record["ledger_amt"]) ?></td>
                                                 <td style="text-align: right;"><?= sprintf('%.2f', !empty($record["late_fees"]) ? $record["late_fees"] : 0) ?></td>
                                                 <td style="text-align: right;"><?= sprintf('%.2f', $record["total_fees"]) ?></td>
@@ -203,13 +186,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td style="text-align: right;"><?= sprintf('%.2f', $record["net_fees"]) ?></td>
                                                 <td style="text-align: right;"><?= sprintf('%.2f', $record["receipt_amt"]) ?></td>
                                                 <td style="text-align: right;"><?= sprintf('%.2f', $record["balance_amt"]) ?></td>
-
-
-
                                                 <td ><?= $record["mode"] ?></td>
                                                 <td ><?= $record["create_by"] ?></td>
                                                 <td>
-
                                                     <a href="<?php echo base_url(); ?>studentfee/edit/<?= base64_encode($record["receipt_no"]); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Edit">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
@@ -242,13 +221,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <th style="text-align: right;"><?= sprintf('%.2f', $net_fees_sum) ?></th>
                                             <th style="text-align: right;"><?= sprintf('%.2f', $receipt_amt_sum) ?></th>
                                             <th style="text-align: right;"><?= sprintf('%.2f', $balance_amt_sum) ?></th>
-
-
                                             <th>-</th>
                                             <th>-</th>
                                             <th>-</th>
-                                            <!-- <th>-</th> -->
-
                                         </tr>
                                         <?php else: ?>
                                             <tr><td colspan="21" class="text-center">No records found</td></tr>
