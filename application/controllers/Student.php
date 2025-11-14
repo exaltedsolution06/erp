@@ -1268,7 +1268,7 @@ class Student extends Admin_Controller
 								
                                 $n++;
                             }
-							$ledger_amt = $result[$i]['Legder Amount'];
+							$ledger_amt = $result[$i]['Ledger Amount'];
 							//echo $ledger_amt;
 							//echo '<pre>'; print_r($insert_student_data[$i]); echo '<pre>';die;
 

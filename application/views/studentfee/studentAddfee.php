@@ -481,7 +481,7 @@ $language_name = $language["short_code"];
                                        
                                         <label for="ledger_amt">Ledger Amt</label>
                                         <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" name="ledger_amt" value="" min="0"   max="<?= $student['fees_discount'] ?>"  />
-                                         <lable id="error_message" style="color: red; display:block;font-size:10px !important"></lable>
+                                         <label id="error_message" style="color: red; display:block;font-size:10px !important"></lable>
                                          <input style="width: 100%;" type="hidden" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$student['fees_discount']+$final_total?>" readonly  />
                                        
                                     </div>

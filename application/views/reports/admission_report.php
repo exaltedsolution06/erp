@@ -150,7 +150,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                         <th><?php echo $this->lang->line('gender'); ?></th>
                                         <?php if ($sch_setting->category) { ?>
-                                            <th><?php echo $this->lang->line('category'); ?></th>
+                                            <th>Fee <?php echo $this->lang->line('category'); ?></th>
                                         <?php } if ($sch_setting->mobile_no) { ?>
                                             <th><?php echo $this->lang->line('mobile_no'); ?></th>
 <?php } ?>

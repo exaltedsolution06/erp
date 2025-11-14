@@ -20,8 +20,14 @@ class Disable_reason extends Admin_Controller
         $this->session->set_userdata('top_menu', 'Student Information');
         $this->session->set_userdata('sub_menu', 'student/disable_reason');
         $data['results'] = $this->disable_reason_model->get();
-        $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');
-
+        //$this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');
+		
+		$this->form_validation->set_rules(
+			'name',
+			$this->lang->line('name'),
+			'trim|required|xss_clean|callback_check_data_unique'
+		);
+		
         if ($this->form_validation->run() == false) {
 
             $this->load->view('layout/header');
@@ -57,8 +63,12 @@ class Disable_reason extends Admin_Controller
         $data['data']    = $this->disable_reason_model->get($id);
         $data['results'] = $this->disable_reason_model->get();
         $data['name']    = $data['data']['reason'];
-        $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');
-
+        //$this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');
+		$this->form_validation->set_rules(
+			'name',
+			$this->lang->line('name'),
+			'trim|required|xss_clean|callback_check_data_unique[' . $id . ']'
+		);
         if ($this->form_validation->run() == false) {
 
             $this->load->view('layout/header');
@@ -93,5 +103,20 @@ class Disable_reason extends Admin_Controller
         $this->disable_reason_model->remove($id);
         redirect('admin/disable_reason');
     }
+	/**
+	* Custom validation callback to check name uniqueness
+	*/
+	public function check_data_unique($data, $id)
+	{
+		$exists = $this->disable_reason_model->data_exists($data, $id);
+
+		if ($exists) {
+			$this->form_validation->set_message('check_data_unique', 'Record already exists');
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 
 }

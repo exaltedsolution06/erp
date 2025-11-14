@@ -271,6 +271,7 @@
                                 <table class="table table-bordered table-striped mt-3">
                                     <thead class="table-light">
                                     <tr>
+                                        <th>Route Id</th>
                                         <th>Route Name</th>
                                         <th>Frequency</th>
                                         <th>Account Name</th>                                        
@@ -296,6 +297,7 @@
                                             $selected_months = json_decode($fee['months'], true); // decode stored months
                                         ?>
                                         <tr>
+                                            <td><?= htmlspecialchars($fee['id']) ?></td>
                                             <td><?= htmlspecialchars($fee['fees_heading']) ?></td>
                                             <td><?= htmlspecialchars($fee['frequency']) ?></td>
 											<td><?= htmlspecialchars($fee['account_name']) ?></td>

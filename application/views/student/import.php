@@ -48,46 +48,24 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <?php
                                     foreach ($fields as $key => $value) {
 
-                                        if ($value == 'adhar_no') {
-                                            $value = "national_identification_no";
-                                        }
-
-                                        if ($value == 'samagra_id') {
-                                            $value = "local_identification_no";
-                                        }
-                                        if ($value == 'firstname') {
-                                            $value = "first_name";
-                                        }
-                                         if ($value == 'middlename') {
-                                            $value = "middle_name";
-                                        }
-                                        if ($value == 'lastname') {
-                                            $value = "last_name";
-                                        }
-                                        if ($value == 'guardian_is') {
-                                            $value = "if_guardian_is";
-                                        }
-                                        if ($value == 'dob') {
-                                            $value = "date_of_birth";
-                                        }
-                                        if ($value == 'category_id') {
-                                            $value = "category";
-                                        }
-                                        if ($value == 'school_house_id') {
-                                            $value = "house";
-                                        }
-                                        if ($value == 'mobileno') {
-                                            $value = "mobile_no";
-                                        }
-                                        if ($value == 'previous_school') {
-                                            $value = "previous_school_details";
-                                        }
+                                        if ($value == 'adhar_no') { $value = "national_identification_no"; }
+                                        if ($value == 'samagra_id') { $value = "local_identification_no"; }
+                                        if ($value == 'firstname') { $value = "first_name"; }
+                                         if ($value == 'middlename') { $value = "middle_name"; }
+                                        if ($value == 'lastname') { $value = "last_name"; }
+                                        if ($value == 'dob') { $value = "date_of_birth"; }
+                                        if ($value == 'school_house_id') { $value = "house"; }
+                                        if ($value == 'mobileno') { $value = "mobile_no"; }
+                                        if ($value == 'previous_school') { $value = "previous_school_details"; }									
+										if ($value == 'image') { $value = "student_photo"; }
+										if ($value == 'category_id') { $value = "fee_category_id"; }
+										if ($value == 'guardian_is') { $value = "adm_guardian_is"; }
                                         $add = "";
-                                        if (($value == "admission_no") || ($value == "firstname") || ($value == "dob") || ($value == "if_guardian_is") || ($value == "gender") || ($value == "guardian_name") || ($value == "guardian_phone")) {
+                                        if (($value == "admission_no") || ($value == "first_name") || ($value == "fee_category_id")) {
                                             $add = "<span class=text-red>*</span>";
                                         }
                                         ?>    
-                                        <th><?php echo $add . "<span>" . $this->lang->line($value) . "</span>"; ?></th>
+                                        <th style="width:200px !important"><?php echo $add . $this->lang->line($value); ?></th>
                                     <?php } ?>
                                 </tr>
                             </thead>
@@ -95,7 +73,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 <tr>
                                     <?php foreach ($fields as $key => $value) {
                                         ?>    
-                                        <td><?php echo "Sample Data" ?></td>
+                                        <td style="width:200px !important"><?php echo "Sample Data" ?></td>
                                     <?php } ?>
                                 </tr>
                             </tbody>

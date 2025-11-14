@@ -73,6 +73,7 @@
                             <table class="table table-striped table-bordered table-hover example">
                                 <thead>
                                     <tr>
+                                        <th><?php echo $this->lang->line('id'); ?></th>
                                         <th><?php echo $this->lang->line('name'); ?></th>
 										<th><?php echo $this->lang->line('description'); ?></th>
                                         <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
@@ -83,6 +84,9 @@
                                     foreach ($feegroupList as $feegroup) {
                                         ?>
                                         <tr>
+											<td class="mailbox-name">
+                                                <?php echo $feegroup['id'] ?>
+                                            </td>
                                             <td class="mailbox-name">
                                                 <?php echo $feegroup['name'] ?>
                                             </td>

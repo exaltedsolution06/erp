@@ -260,7 +260,7 @@ class Studentfee extends Admin_Controller
             //$this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt'] - $data['prev_balance_amt']));
         }
         $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Fees Edited successfully</div>');
-        redirect('studentfee/print/'.base64_encode(json_encode($last_id)));
+        redirect('studentfee/print_receipt/'.base64_encode(json_encode($last_id)));
     }
 
 
@@ -310,7 +310,41 @@ class Studentfee extends Admin_Controller
         $this->load->view('studentfee/print', $data);
         // $this->load->view('layout/footer', $data);
     }
+	
+	public function print_receipt($id){
+        $ids=json_decode(base64_decode($id));
+        
+        $this->db->select('GROUP_CONCAT(DISTINCT months) as month_names');
+        $this->db->from('receipts');
+        $this->db->where_in('id', $ids);
+        $query = $this->db->get();
 
+        $data['month_names'] = $query->row()->month_names;
+        $data['result'] = $this->setting_model->getSetting();
+
+        $data_fees=$this->Receipt_model->get_receipts_by_ids($ids);
+        $student_id=$data_fees[0]->student_id;
+
+        // die;
+        // $this->db->where('id', $student_id); 
+        // $query = $this->db->get('students');
+        // $student = $query->row(); 
+
+        $student = $this->Receipt_model->getStudentsPrint($student_id); // Fetch student with ID 1
+
+        $data['fees']=$data_fees;
+        $data['student']=$student[0];
+        $data['backid']=$data_fees[0]->back_id;
+        $data['receipt_no']=$data_fees[0]->receipt_no;
+
+        // echo "<pre>";
+        // var_dump($data['fees']);  
+        // die;
+
+        // $this->load->view('layout/header', $data);
+        $this->load->view('studentfee/print_receipt', $data);
+        // $this->load->view('layout/footer', $data);
+    }
 
 
 
@@ -1197,13 +1231,17 @@ class Studentfee extends Admin_Controller
 
         $data['pay_mounth']=$unique_months;        
         
+
         $data['months_data']=[];
         
         //if(!empty($unique_months)){
+		$action = $this->input->post('action');
 		if(!empty($_POST['months']) || !empty($unique_months)){
+			
 			$monthsPost =$unique_months;
 			if(!empty($_POST['months'])){
 				$monthsPost =$_POST['months'];
+				$data['pay_mounth']=$_POST['months'];    
 			}
             $class_id=$student['class_id'];
             $route_id=$student['vehroute_id'];            
@@ -1246,7 +1284,9 @@ class Studentfee extends Admin_Controller
 			$data['received_amount'] = $recAmountArr;
 			//echo '<pre>'; print_r($recDiscountArr);echo '</pre>';die;
 			$data['late_fees'] = $receiptArr[0]['late_fees'];
+			$data['ledger_total'] = $receiptArr[0]['ledger_amt'];
 			$data['ledger_amt'] = $receiptArr[0]['ledger_amt'];
+			$data['fees_received'] = $receiptArr[0]['fees_received'];
 			$data['total_fees'] = $receiptArr[0]['total_fees'];
 			$data['discount_amt'] = $receiptArr[0]['discount_amt'];
 			$data['net_fees'] = $receiptArr[0]['net_fees'];
@@ -1254,16 +1294,67 @@ class Studentfee extends Admin_Controller
 			$data['balance_amt'] = $receiptArr[0]['balance_amt'];
 			$data['mode'] = $receiptArr[0]['mode'];
 			$data['remarks'] = $receiptArr[0]['remarks'];
+			$data['date_time'] = $receiptArr[0]['date_time'];
 			
 			if(!empty($_POST['months'])){
-				$data['received_amount'] = '';
-				$data['total_fees'] = '';
-				$data['ledger_amt'] = '';
-				$data['net_fees'] = '';
-				$data['receipt_amt'] = '';
-				$data['balance_amt'] = '';
+				$data['received_amount'] = 0;
+				$data['total_fees'] = 0;
+				$data['balance_amt'] = 0;
+				//$data['ledger_total'] = 0;
+				//$data['fees_received'] = 0;
+				$data['net_fees'] = 0;
+				$data['receipt_amt'] = 0;
+				
+				//$data['late_fees'] = 0;
 			}
+			//echo 'Not Empty months';die;
         }
+		if (empty($_POST['months']) && (int) count(array_filter((array)$unique_months)) == 0) {
+			$data['pay_mounth']=[];
+			$monthsPost=[];
+			if(!empty($_POST['months'])){
+				$monthsPost =$_POST['months'];
+				$data['pay_mounth']=$_POST['months'];    
+			}if(empty($_POST['months'])){
+				$data['data_list']=[];
+				$data['route_data_list']=[];
+			}	
+			$data['months_data']=$monthsPost;
+			$data['ledger_total'] = $receiptArr[0]['ledger_amt'];
+			$data['ledger_amt'] = $receiptArr[0]['ledger_amt'];
+			$data['balance_amt'] = $receiptArr[0]['balance_amt'];
+			$data['fees_received'] = $receiptArr[0]['fees_received'];
+			$data['discount_amt'] = $receiptArr[0]['discount_amt'];
+			//$data['total_fees'] = '';
+			//$data['late_fees'] = '';
+			//$data['net_fees'] = '';
+			//echo 'Empty months';die;
+        }
+		if(empty($_POST['months']) && $action === 'go' && (int) count(array_filter((array)$unique_months)) > 0){
+			$data['pay_mounth']=[];
+			$monthsPost=[];
+			if(!empty($_POST['months'])){
+				$monthsPost =$_POST['months'];
+				$data['pay_mounth']=$_POST['months'];    
+			}if(empty($_POST['months'])){
+				$data['data_list']=[];
+				$data['route_data_list']=[];
+			}
+			$data['months_data']=$monthsPost;		
+			$data['ledger_amt'] = '';
+			//$data['ledger_total'] = 0;
+			$data['balance_amt'] = 0;
+			//$data['discount_amt'] = 0;
+			//$data['fees_received'] = 0;
+			$data['total_fees'] = 0;
+			$data['late_fees'] = 0;
+			$data['net_fees'] = 0;
+			$data['receipt_amt'] = 0;
+			$data['discount_amt'] = 0;
+        }
+		//echo (int) count(array_filter((array)$unique_months));
+		//echo count(array_filter((array)$_POST['months']));
+		//echo '<pre>'; print_r($unique_months);echo '</pre>';die;
 		$this->load->view('layout/header', $data);
 		$this->load->view('studentfee/studentfeeEdit', $data);
 		$this->load->view('layout/footer', $data);
@@ -1387,6 +1478,7 @@ class Studentfee extends Admin_Controller
 			$data['balance_amt'] = $receiptArr[0]['balance_amt'];
 			$data['mode'] = $receiptArr[0]['mode'];
 			$data['remarks'] = $receiptArr[0]['remarks'];
+			$data['date_time'] = $receiptArr[0]['date_time'];
         }
 		$this->load->view('layout/header', $data);
 		$this->load->view('studentfee/studentfeeView', $data);

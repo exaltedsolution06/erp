@@ -111,5 +111,18 @@ class disable_reason_model extends MY_Model {
             return $id;
         }
     }
+	/**
+	 * Check if a reason already exists.
+	 * Optional $id parameter excludes the current record during edit.
+	 */
+	public function data_exists($data, $id = null)
+	{
+		$this->db->where('reason', $data);
+		if ($id !== null) {
+			$this->db->where('id !=', $id); // ignore the current record
+		}
+		$query = $this->db->get('disable_reason');
+		return $query->num_rows() > 0;
+	}
 
 }

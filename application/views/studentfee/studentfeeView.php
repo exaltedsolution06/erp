@@ -107,7 +107,7 @@ $language_name = $language["short_code"];
                                             ?>" alt="No Image">
 
                                             <h4>LEDGER AMT</h4>
-                                            <h5>Rs. <?=number_format($student['fees_discount'],2)?></h5>
+                                            <h5>Rs. <?=number_format($ledger_amt,2)?></h5>
                                         </div>
 
                                         <div class="col-md-10">
@@ -116,7 +116,7 @@ $language_name = $language["short_code"];
                                                     <tbody>
 
                                                         <tr>
-                                                            <td onclick="changeDate(this)"> <b>Date : </b> <input type="date" id="dateInput"></td>
+                                                            <td onclick="changeDate(this)"> <b>Date : </b> <input type="date" value="<?php echo $date_time; ?>"></td>
                                                             <td>Receipt No. <b><?=$receipt_no?></b> </td>
                                                             <td>Admission No.  <b><?=$student['admission_no']?></b> </td>
                                                         </tr>
@@ -229,6 +229,10 @@ $language_name = $language["short_code"];
                         </div>  
 
                         <form action="" id="ledger_form" method="post">
+						<?php
+							if(!empty($data_list))
+							{
+						?>
                          <div class="card-body" style="padding: 10px;">
                             <div class="table-responsive">
                                 <div class="download_label "><?php echo $this->lang->line('student_fees') . ": " . $student['firstname'] . " " . $student['lastname'] ?> </div>
@@ -238,8 +242,7 @@ $language_name = $language["short_code"];
                                         <tr>
 											<th></th>
                                             <th>Fees Head</th>
-                                            <?php foreach($months_data as $key=>$value){
-                                            ?>
+                                            <?php foreach($months_data as $key=>$value){?>
                                             <th><?=$value?> <input type="hidden" name="months[]" value="<?=$value?>" > </th>
                                             <?php
                                             } 
@@ -287,14 +290,13 @@ $language_name = $language["short_code"];
                                                 $final_total += $total;
                                                 $aa++;
                                             }
+												// $aa++;
+												foreach($route_data_list as $row){
 
-                                            // $aa++;
-                                            foreach($route_data_list as $row){
-
-                                                $db_months = json_decode($row->months);
-                                                $total = 0;
-                                                $aa++;
-                                                $statusNew++;
+													$db_months = json_decode($row->months);
+													$total = 0;
+													$aa++;
+													$statusNew++;
                                             ?>
                                             <tr>
                                                 <th><input type="checkbox"  onchange="DeleteRowData(this,<?=$aa?>)" checked disabled />
@@ -319,12 +321,15 @@ $language_name = $language["short_code"];
                                             </tr>
                                             <?php
                                                 $final_total += $total;
-                                            }
+											}
                                             ?>
                                         </tbody>
                                 </table>
                             </div>
                         </div>
+						<?php
+							}
+						?>
                         <!-- /.box-body -->
                         <div class="card-footer"  style="padding: 10px;">
                             <div class="container" style="overflow-x: auto; max-width: 100%;">
@@ -339,7 +344,7 @@ $language_name = $language["short_code"];
                                     
                                     <div class="col-sm-2">
                                         <label for="fees_received">Ledger Total</label>
-                                       <p><?=$student['fees_discount']?></p>
+                                       <p><input style="width: 100%;" type="text" class="form-control" value="<?=$ledger_amt; ?>" disabled /></p>
                                     </div>
                                     <?php }else{
                                     
@@ -347,7 +352,7 @@ $language_name = $language["short_code"];
                                     
                                     <div class="col-sm-2">
                                         <label for="fees_received">Estimated Total</label>
-                                        <p><?=$final_total?></p>
+                                        <p><input style="width: 100%;" type="text" class="form-control" value="<?=$final_total; ?>" disabled /></p>
                                     </div>
                                     
                                     <?php
@@ -357,45 +362,43 @@ $language_name = $language["short_code"];
                                     
                                     <div class="col-sm-2">
                                         <label for="late_fees">Late Fees</label>
-                                        <p><?php echo $late_fees;?></p>
+                                        <p><input style="width: 100%;" type="text" class="form-control" value="<?=$late_fees; ?>" disabled /></p>
                                     </div>
                                     <div class="col-sm-2">
                                         <label for="ledger_amt">Ledger Amt</label>
-                                        <p><?=$ledger_amt; ?></p>
+                                        <p><input style="width: 100%;" type="text" class="form-control" value="<?=$ledger_amt; ?>" disabled /></p>
                                     </div>
                                     <div class="col-sm-2">
                                         <label for="total_fees">Total Fees</label>
-                                        <p><?=$total_fees; ?></p>
+                                        <p><input style="width: 100%;" type="text" class="form-control" value="<?=$total_fees; ?>" disabled /></p>
                                     </div>
                                      <div class="col-sm-2">
                                         <label for="discount_amt">Discount Amt</label>
-                                        <p><?php echo $discount_amt; ?></p>
+                                        <p><input style="width: 100%;" type="text" class="form-control" value="<?=$discount_amt; ?>" disabled /></p>
                                     </div>
                                     
                                     <div class="col-sm-2">
                                         <label for="net_fees">Net Fees</label>
-                                        <p><?=$net_fees; ?></p>
+                                        <p><input style="width: 100%;" type="text" class="form-control" value="<?=$net_fees; ?>" disabled /></p>
                                     </div>
                                 </div>
                                 <div class="row " style="margin-top: 10px !important;">
-
-                                        <div class="col-sm-2">
-                                            <label for="receipt_amt">Receipt Amt</label>
-                                           <p><?=$receipt_amt; ?></p>
-                                        </div>
-                                    
+									<div class="col-sm-2">
+										<label for="receipt_amt">Receipt Amt</label>
+									   <p><input style="width: 100%;" type="text" class="form-control" value="<?=$receipt_amt; ?>" disabled /></p>
+									</div>
                                     <div class="col-sm-2">
                                         <label for="balance_amt">Balance Amt</label>
-										<p><?php echo $balance_amt; ?></p>
+										<p><input style="width: 100%;" type="text" class="form-control" value="<?=$balance_amt; ?>" disabled /></p>
                                     </div>
                                 
                                     <div class="col-sm-2">
                                         <label for="mode">Mode</label>
-                                        <p><?php echo $mode; ?></p>
+                                        <p><input style="width: 100%;" type="text" class="form-control" value="<?=$mode; ?>" disabled /></p>
                                     </div>
                                     <div class="col-sm-4">
                                         <label for="remarks">Remarks</label>
-                                        <p><?php echo $remarks; ?></p>
+                                        <p><input style="width: 100%;" type="text" class="form-control" value="<?=$remarks; ?>" disabled /></p>
                                     </div>
                                 </div>
                             </div>

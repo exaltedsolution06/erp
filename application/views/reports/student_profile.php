@@ -203,7 +203,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <th><?php echo $this->lang->line('gender'); ?></th>
                                         <th><?php echo $this->lang->line('date_of_birth'); ?></th>
                                         <?php if ($sch_setting->category) { ?>
-                                            <th><?php echo $this->lang->line('category'); ?></th>
+                                            <th>Fee <?php echo $this->lang->line('category'); ?></th>
                                         <?php } if ($sch_setting->religion) { ?>
                                             <th><?php echo $this->lang->line('religion'); ?></th>
                                         <?php } if ($sch_setting->cast) { ?>

@@ -107,7 +107,11 @@ $language_name = $language["short_code"];
                                             ?>" alt="No Image">
 
                                             <h4>LEDGER AMT</h4>
-                                            <h5>Rs. <?=number_format($student['fees_discount'],2)?></h5>
+                                            <h5>Rs. <?=$ledger_total? $ledger_total : $student['fees_discount']; ?>
+											<?//=$ledger_total ? number_format($fees_received,2) : number_format($ledger_amt,2); ?>
+											<?//=$ledger_total ? number_format($fees_received,2) : number_format($ledger_amt,2); ?>
+											
+											<?//=$ledger_amt ? number_format($ledger_amt,2) : number_format($student['fees_discount'],2); ?><?//=number_format($student['fees_discount'],2)?></h5>
                                         </div>
 
                                         <div class="col-md-10">
@@ -116,7 +120,7 @@ $language_name = $language["short_code"];
                                                     <tbody>
 
                                                         <tr>
-                                                            <td onclick="changeDate(this)"> <b>Date : </b> <input type="date" id="dateInput"></td>
+                                                            <td onclick="changeDate(this)"> <b>Date : </b> <input type="date" id="dateInput11" value="<?php echo $date_time; ?>"></td>
                                                             <td>Receipt No. <b><?=$receipt_no?></b> </td>
                                                             <td>Admission No.  <b><?=$student['admission_no']?></b> </td>
                                                         </tr>
@@ -183,6 +187,7 @@ $language_name = $language["short_code"];
                                                     </div>
                                                     <hr>
                                                     <?php
+													//echo '<pre>'; print_r($months_data);echo '</pre>';
 														$months = ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar"];
 
 														// Find earliest (first) paid month index; -1 if none paid
@@ -217,7 +222,7 @@ $language_name = $language["short_code"];
 														<?php endforeach; ?>
 
                                                     <div class="col-sm-12" style="text-align: -webkit-right;;">
-                                                        <button type="submit" class="btn btn-info">Go</button>
+                                                        <button type="submit" name="action" value="go" class="btn btn-info">Go</button>
                                                     </div>
                                                 </div>
                                                 </div>
@@ -234,7 +239,7 @@ $language_name = $language["short_code"];
 
                         <form action="<?=base_url('studentfee/editFee')?>" id="ledger_form" method="post">
 
-                        <input type="hidden" name="date_time" id="outputInput" value="<?=date('Y-m-d')?>" readonly >
+                        <input type="hidden" name="date_time" id="outputInput" value="<?=$date_time?>" readonly >
                          <div class="card-body" style="padding: 10px;">
                             <div class="row no-print">
                                 <div class="col-md-12 mDMb10">
@@ -383,7 +388,7 @@ $language_name = $language["short_code"];
                                     
                                     <div class="col-sm-2">
                                         <label for="fees_received">Ledger Total</label>
-                                        <input style="width: 100%;" type="text" id="fees_received" class="form-control" value="<?=$student['fees_discount']?>" name="fees_received" readonly />
+                                        <input style="width: 100%;" type="text" id="fees_received" class="form-control" value="<?=$ledger_total? $ledger_total : $student['fees_discount']; ?>" name="fees_received" readonly />
                                     </div>
                                     <?php }else{
                                     
@@ -406,45 +411,104 @@ $language_name = $language["short_code"];
                                   
                                         
                                          
-                                        <input style="width: 100%;" type="hidden" id="old_ledger_amt"  name="old_ledger_amt" readonly value="<?=$student['fees_discount']?>"  />
-
+                                        <input style="width: 100%;" type="hidden" id="old_ledger_amt"  name="old_ledger_amt" readonly value="<?=$ledger_total? $ledger_total : $student['fees_discount']; ?>"  />
+									<?php 
+                                    $ledger_total = $ledger_total? $ledger_total : $student['fees_discount'];
+                                    if($statusNew==0) {
+                                    
+                                    ?>
+                                          
+                                          <?php
+                                    }else{
+                                        ?>
                                           <div class="col-sm-2">
                                         <input style="width: 100%;" type="hidden" id="ttyp" readonly value="mounth"  />
-                                        <label for="ledger_amt">Ledger Amt</label>
-                                        <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" readonly name="ledger_amt" value="<?=$ledger_amt? $ledger_amt : $student['fees_discount']; ?>" min="0"   max="<?= $student['fees_discount'] ?>"  />
+                                        <label for="ledger_amt">Ledger Amt1</label>
+                                        <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" readonly name="ledger_amt" value="<?=$ledger_total? $ledger_total : $student['fees_discount']; ?>" min="0"   max="<?= $student['fees_discount'] ?>"  />
                                         </div>
+										<?php
+
+                                    }
+                                    
+                                    
+                                    ?>
                                     <div class="col-sm-2">
                                         <label for="total_fees">Total Fees</label>
-                                        <input style="width: 100%;" type="text" id="total_fees" class="form-control" name="total_fees" readonly value="<?=$total_fees ? $total_fees : $student['fees_discount']+$final_total; ?>" />
+                                        <input style="width: 100%;" type="text" id="total_fees" class="form-control" name="total_fees" readonly value="<?=$total_fees ? $total_fees : $late_fees+$ledger_total+$final_total; ?>" />
                                     </div>
+									<?php 
+                                    
+                                    if($statusNew==0) {
+                                    
+                                    ?>
                                      <div class="col-sm-2">
+                                        <label for="discount_amt">Discount Amt</label>
+                                        <input style="width: 100%;" type="text" id="discount_amt" class="form-control" name="discount_amt" value="<?php echo $discount_amt;?>"  />
+                                    </div>
+                               <?php
+                                    }else{
+                                        ?>
+                                        
+                                         <div class="col-sm-2">
                                         
                                         <label for="discount_amt">Discount Amt</label>
-                                        <input style="width: 100%;" type="text" id="discount_amt" class="form-control" name="discount_amt" value="<?php echo $discount_amt; ?>"  />
+                                        <input style="width: 100%;" type="text" id="discount_amt" class="form-control" name="discount_amt" value="<?php echo $discount_amt;?>" readonly  />
                                     </div>
-                               
+                                        <?php
+                                    }
+                                    
+                                    
+                                    ?>
                                     <?php
-										if(empty($net_fees)){
-											$net_fees = $student['fees_discount']+$final_total+$late_fees-$discount_amt;
-										}if(empty($receipt_amt)){
-											$receipt_amt = $student['fees_discount']+$final_total+$late_fees-$discount_amt;
+										if(empty($net_fees) && !empty($months_data)){
+											$net_fees = (int)$ledger_total + (int) $final_total + (int) $late_fees - (int)$discount_amt;
+										} if(empty($receipt_amt)){
+											//$receipt_amt = (int)$student['fees_discount'] + (int)$final_total + (int)$late_fees - (int)$discount_amt;
+											$receipt_amt = (int)$ledger_total + (int)$final_total + (int)$late_fees - (int)$discount_amt;
 										}
 										
-										$balance_amt = $net_fees - $receipt_amt;
+										//$balance_amt = (int)$net_fees - (int)$receipt_amt;
+										if(empty($net_fees) && empty($months_data)){
+											//$net_fees = (int) $student['fees_discount'];
+											$net_fees = $late_fees+$ledger_total+$final_total;
+											$balance_amt = 0;
+										}
 									?>
-                                    
+                                   
                                     <div class="col-sm-2">
                                         <label for="net_fees">Net Fees</label>
                                         <input style="width: 100%;" type="text" id="net_fees" class="form-control" name="net_fees" value="<?=$net_fees; ?>" readonly />
                                     </div>
                                 </div>
                                 <div class="row " style="margin-top: 10px !important;">
-
+<?php 
+                                    
+                                    if($statusNew==0) {
+                                        ?>
+                                        
                                         <div class="col-sm-2">
-                                            <label for="receipt_amt">Receipt Amt</label>
+                                        
+                                        <input style="width: 100%;" type="hidden" id="ttyp" readonly value="lager"  />
+                                       
+                                        <label for="ledger_amt">Ledger Amt2</label>
+                                        <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" name="ledger_amt" value="<?=$ledger_amt? $fees_received : $ledger_amt; ?>" min="0"   max="<?= $student['fees_discount'] ?>"  />
+                                         <label id="error_message" style="color: red; display:block;font-size:10px !important"></label>
+                                         <input style="width: 100%;" type="hidden" id="receipt_amt" class="form-control" name="receipt_amt" value="<?= $student['fees_discount'] ?>" readonly  />
+                                       
+                                    </div>
+                                        
+                                        <?php
+                                    }else{
+                                        ?>
+                                        <div class="col-sm-2">
+                                            <label for="receipt_amt">Receipt Amt2</label>
                                             <input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$receipt_amt; ?>" readonly  />
                                         </div>
+                                    <?php
+                                        
+                                    }
                                     
+                                    ?>
                                     <div class="col-sm-2">
                                         <label for="balance_amt">Balance Amt</label>
 										<input style="width: 100%;" type="hidden" class="form-control" name="prev_balance_amt" value="<?php echo $balance_amt; ?>" />
@@ -1665,13 +1729,15 @@ document.addEventListener('DOMContentLoaded', function () {
             let receiptAmt = parseFloat(document.querySelector('[name="receipt_amt"]').value) || 0;
     
             let netFees = (feesReceived + lateFees + ledgerAmt);
+			//console.log(feesReceived,lateFees,ledgerAmt);
             
             if(discountAmt==''){
                 document.querySelector('[name="total_fees"]').value = netFees;
             }
             document.querySelector('[name="net_fees"]').value = netFees-discountAmt;
     
-            let balanceAmt = netFees - Number(receiptAmt);
+            //let balanceAmt = netFees - Number(receiptAmt);//es
+            let balanceAmt = netFees - Number(receiptAmt) - Number(discountAmt);
             document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);;
         
         }
@@ -1772,6 +1838,10 @@ function FinalcalculateFees(){
 
     let lateFees = parseFloat(document.querySelector('[name="late_fees"]').value) || 0;
     let ledgerAmt1 = parseFloat(document.querySelector('[name="ledger_amt"]').value) || 0;
+    //let balanceAmt1 = parseFloat(document.querySelector('[name="balance_amt"]').value) || 0;
+	
+	
+    //document.querySelector('[name="receipt_amt"]').value = Number(sum)+Number(ledgerAmt1)+Number(lateFees)-Number(balanceAmt1);
     document.querySelector('[name="receipt_amt"]').value = Number(sum)+Number(ledgerAmt1)+Number(lateFees);
 
 
@@ -1783,14 +1853,17 @@ function FinalcalculateFees(){
     let receiptAmt = parseFloat(document.querySelector('[name="receipt_amt"]').value) || 0;
 
 
-    let netFees = totalFees - discountAmt;
-    
+    //let netFees = Number(totalFees) + Number(lateFees) - Number(discountAmt);
+    let netFees = Number(totalFees) - Number(discountAmt);
+    console.log(totalFees, lateFees, discountAmt);
     if(discountAmt==''){
         document.querySelector('[name="total_fees"]').value = netFees;
     }
     document.querySelector('[name="net_fees"]').value = netFees;
-
-    let balanceAmt = netFees - receiptAmt;
+	let balanceAmt = 0;
+	if(netFees > 0) {
+		let balanceAmt = netFees - receiptAmt;
+	}
     document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);;
    
 }
