@@ -888,7 +888,7 @@ th, td {
 
     <div class="card-footer d-flex justify-content-end gap-2">
       <!-- <button class="btn btn-secondary">Cancel</button> -->
-      <a href="<?=base_url()?>studentfee/edit/<?=base64_encode($receipt_no);?>"><button class="btn btn-success">Back</button></a>
+      <a href="<?=base_url()?>studentfee"><button class="btn btn-success">Back</button></a>
       <button class="btn btn-primary"  onclick="window.print()" >Rs Collect & Print</button>
     </div>
   </div>

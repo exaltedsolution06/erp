@@ -120,7 +120,7 @@ $language_name = $language["short_code"];
                                                     <tbody>
 
                                                         <tr>
-                                                            <td onclick="changeDate(this)"> <b>Date : </b> <input type="date" id="dateInput11" value="<?php echo $date_time; ?>"></td>
+                                                            <td onclick="changeDate(this)"> <b>Date : </b> <input type="date" id="dateInput" value="<?php echo $date_time; ?>"></td>
                                                             <td>Receipt No. <b><?=$receipt_no?></b> </td>
                                                             <td>Admission No.  <b><?=$student['admission_no']?></b> </td>
                                                         </tr>
@@ -182,7 +182,7 @@ $language_name = $language["short_code"];
                                                         <a href="<?=base_url('student/view/'.$student['id'])?>">Edit</a>
                                                     </div>
                                                     <div class="col-sm-12">
-                                                        <input class="form-check-input month-check" type="checkbox" id="select_all"  disabled>
+                                                        <input class="form-check-input month-check" type="checkbox" id="select_all">
                                                         <label for="select_all">Select All</label>
                                                     </div>
                                                     <hr>
@@ -262,6 +262,7 @@ $language_name = $language["short_code"];
                             <input type="hidden"  value="<?=$addfee?>" name="addfee">
                             <input type="hidden"  value="<?=$receipt_no?>" name="receipt_no">
                             <input type="hidden"  value="<?=$student['id']?>" name="student_id">
+                            <input type="hidden"  value="<?=$sr_no?>" name="sr_no">
                             <div class="table-responsive">
                                 <div class="download_label "><?php echo $this->lang->line('student_fees') . ": " . $student['firstname'] . " " . $student['lastname'] ?> </div>
                                 <table class="table table-bordered">
@@ -321,7 +322,7 @@ $language_name = $language["short_code"];
                                                 <th><?= $total ?> <input type="hidden" name="total[]" value="<?=$total?>"> </th>
                                                 <th><input type="text" style="width: 100px;" class="rec_discount" name="rec_discount[]" id="total_get_discount_<?=$aa?>" oninput="calculateDisData(this,<?=$aa?>)" value="<?=$rec_discount[$row->id];?>"></th>
                                                 <th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id]);?>"></th>
-                                                <th>0</th>
+                                                <th><?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?></th>
                                             </tr>
                                             <?php
                                                 $final_total += $total;
@@ -362,9 +363,9 @@ $language_name = $language["short_code"];
                                                     </th>
                                                 <?php endforeach; ?>
                                                 <th><?= $total ?> <input type="hidden" name="total[]" value="<?=$total?>"> </th>
-                                                <th><input type="text" style="width:100px;" class="rec_discount" name="rec_discount[]"  id="total_get_discount_<?=$aa?>"   oninput="calculateDisData(this,<?=$aa?>)" value="<?=$rec_discount[$row->id];?>"></th>
+                                                <th><input type="text" style="width:100px;" class="rec_discount" name="rec_discount[]"  id="total_get_discount_<?=$aa?>"   oninput="calculateDisData(this,<?=$aa?>)" value="<?=$rec_discount[$row->id];?>"></th>				
                                                 <th><input type="text" style="width:100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id]);?>"></th>
-                                                <th>0</th>
+                                                <th><?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?></th>
                                             </tr>
                                             <?php
                                                 $final_total += $total;
@@ -423,7 +424,7 @@ $language_name = $language["short_code"];
                                         ?>
                                           <div class="col-sm-2">
                                         <input style="width: 100%;" type="hidden" id="ttyp" readonly value="mounth"  />
-                                        <label for="ledger_amt">Ledger Amt1</label>
+                                        <label for="ledger_amt">Ledger Amt</label>
                                         <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" readonly name="ledger_amt" value="<?=$ledger_total? $ledger_total : $student['fees_discount']; ?>" min="0"   max="<?= $student['fees_discount'] ?>"  />
                                         </div>
 										<?php
@@ -434,7 +435,7 @@ $language_name = $language["short_code"];
                                     ?>
                                     <div class="col-sm-2">
                                         <label for="total_fees">Total Fees</label>
-                                        <input style="width: 100%;" type="text" id="total_fees" class="form-control" name="total_fees" readonly value="<?=$total_fees ? $total_fees : $late_fees+$ledger_total+$final_total; ?>" />
+                                        <input style="width: 100%;" type="text" id="total_fees" class="form-control" name="total_fees" readonly value="<?=$total_fees ? $total_fees : (int)$late_fees+(int)$ledger_total+(int)$final_total; ?>" />
                                     </div>
 									<?php 
                                     
@@ -490,7 +491,7 @@ $language_name = $language["short_code"];
                                         
                                         <input style="width: 100%;" type="hidden" id="ttyp" readonly value="lager"  />
                                        
-                                        <label for="ledger_amt">Ledger Amt2</label>
+                                        <label for="ledger_amt">Ledger Amt</label>
                                         <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" name="ledger_amt" value="<?=$ledger_amt? $fees_received : $ledger_amt; ?>" min="0"   max="<?= $student['fees_discount'] ?>"  />
                                          <label id="error_message" style="color: red; display:block;font-size:10px !important"></label>
                                          <input style="width: 100%;" type="hidden" id="receipt_amt" class="form-control" name="receipt_amt" value="<?= $student['fees_discount'] ?>" readonly  />
@@ -501,7 +502,7 @@ $language_name = $language["short_code"];
                                     }else{
                                         ?>
                                         <div class="col-sm-2">
-                                            <label for="receipt_amt">Receipt Amt2</label>
+                                            <label for="receipt_amt">Receipt Amt</label>
                                             <input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$receipt_amt; ?>" readonly  />
                                         </div>
                                     <?php
@@ -1478,6 +1479,7 @@ function formatToDisplayDate(inputDateStr) {
         document.querySelector('[name="receipt_amt"]').value = sum+ledger_amt;
         let feesReceived = parseFloat(document.querySelector('[name="net_fees"]').value) || 0;
         let balanceAmt = feesReceived - sum;
+		//alert(balanceAmt);
         document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);;
         FinalcalculateFees();
     }
@@ -1860,10 +1862,10 @@ function FinalcalculateFees(){
         document.querySelector('[name="total_fees"]').value = netFees;
     }
     document.querySelector('[name="net_fees"]').value = netFees;
-	let balanceAmt = 0;
-	if(netFees > 0) {
+	//let balanceAmt = 0;
+	//if(netFees > 0) {
 		let balanceAmt = netFees - receiptAmt;
-	}
+	//}
     document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);;
    
 }
@@ -1921,7 +1923,7 @@ function calculateDataCheckBox(checkbox,id){
 }
 
 
-    document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
+    //document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
 
 
 

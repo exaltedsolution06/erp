@@ -152,6 +152,7 @@ class Studentfee extends Admin_Controller
 	public function editFee(){
 
         $data = $this->input->post(); 
+		//echo '<pre>'; print_r($data); echo '</pre>';die;
         if (empty($data['receipt_no']) || empty($data['student_id'])) {
             echo json_encode(['status' => 'error', 'message' => 'Receipt number or student ID is missing']);
             return;
@@ -194,7 +195,7 @@ class Studentfee extends Admin_Controller
                             'month_total'   => $data['month_total'][$month][$key],
                             'rec_discount' => (int) ($data['rec_discount'][$key]),
                             'rec_amount'   => ($data['rec_amount'][$key]),
-                            'balance_amount' => $data['total'][$key]-($data['rec_discount'][$key]+$data['rec_amount'][$key]),
+                            'balance_amount' => (int) $data['total'][$key]-((int) $data['rec_discount'][$key] + (int) $data['rec_amount'][$key]),
                             'fees_received' => $data['fees_received'],
                             'late_fees'    => $data['late_fees'],
                             'ledger_amt'   => $data['ledger_amt'],
@@ -207,12 +208,11 @@ class Studentfee extends Admin_Controller
                             'remarks'      => $data['remarks'],
                             'date_time'      => $data['date_time'],
                             'back_id'      => $data['back_id'],
-                            'sr_no'        => $this->session->userdata('last_receipt_id'),
+                            'sr_no'        => $data['sr_no'] ? $data['sr_no'] : 1,
                              'create_by'     => $this->customlib->getUserData()['email'],
                              'total_month'  => $total_month,
                         );
-                        // var_dump($insert_data);
-                        // die;
+						//echo '<pre>'; print_r($insert_data); echo '</pre>';die;
 
                         // echo "<hr>";
                         
@@ -251,7 +251,7 @@ class Studentfee extends Admin_Controller
                 'remarks'      => $data['remarks'],
                 'date_time'      => $data['date_time'],
                 'back_id'      => $data['back_id'],
-                'sr_no'        => $this->session->userdata('last_receipt_id'),
+                'sr_no'        => $data['sr_no'] ? $data['sr_no'] : 1,
                 'create_by'     => $this->customlib->getUserData()['email'],
             );
 			$id=$this->Receipt_model->insert_receipt($insert_data); 
@@ -1276,12 +1276,15 @@ class Studentfee extends Admin_Controller
 			
 			$recDiscountArr = [];
 			$recAmountArr = [];
+			$balanceAmountArr = [];
 			foreach ($receiptArr as $row) {
 				$recDiscountArr[$row['fee_head']] = $row['rec_discount'];
 				$recAmountArr[$row['fee_head']] = $row['rec_amount'];
+				$balanceAmountArr[$row['fee_head']] = $row['balance_amount'];
 			}
 			$data['rec_discount'] = $recDiscountArr;
 			$data['received_amount'] = $recAmountArr;
+			$data['balance_amount'] = $balanceAmountArr;
 			//echo '<pre>'; print_r($recDiscountArr);echo '</pre>';die;
 			$data['late_fees'] = $receiptArr[0]['late_fees'];
 			$data['ledger_total'] = $receiptArr[0]['ledger_amt'];
@@ -1292,9 +1295,11 @@ class Studentfee extends Admin_Controller
 			$data['net_fees'] = $receiptArr[0]['net_fees'];
 			$data['receipt_amt'] = $receiptArr[0]['receipt_amt'];
 			$data['balance_amt'] = $receiptArr[0]['balance_amt'];
+			//$data['balance_amount'] = $receiptArr[0]['balance_amount'];
 			$data['mode'] = $receiptArr[0]['mode'];
 			$data['remarks'] = $receiptArr[0]['remarks'];
 			$data['date_time'] = $receiptArr[0]['date_time'];
+			$data['sr_no'] = $receiptArr[0]['sr_no'];
 			
 			if(!empty($_POST['months'])){
 				$data['received_amount'] = 0;
@@ -1304,6 +1309,9 @@ class Studentfee extends Admin_Controller
 				//$data['fees_received'] = 0;
 				$data['net_fees'] = 0;
 				$data['receipt_amt'] = 0;
+				
+				$data['rec_discount'] = 0;
+				$data['balance_amount'] = 0;
 				
 				//$data['late_fees'] = 0;
 			}

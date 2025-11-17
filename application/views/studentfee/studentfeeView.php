@@ -86,7 +86,7 @@ $language_name = $language["short_code"];
                                 </div>
                                 <div class="col-md-8">
                                     <div class="btn-group pull-right">
-                                        <a href="<?php echo base_url() ?>search_fee_slip" type="button" class="btn btn-primary btn-xs">
+                                        <a href="<?php echo base_url() ?>studentfee/search_fee_slip" type="button" class="btn btn-primary btn-xs">
                                         <i class="fa fa-arrow-left"></i> <?php echo $this->lang->line('back'); ?></a>
                                     </div>
                                 </div>
