@@ -1466,8 +1466,10 @@ function formatToDisplayDate(inputDateStr) {
         
         let ledger_amt = parseFloat(document.querySelector('[name="ledger_amt"]').value) || 0;
         document.querySelector('[name="receipt_amt"]').value = sum+ledger_amt;
+		
         let feesReceived = parseFloat(document.querySelector('[name="net_fees"]').value) || 0;
         let balanceAmt = feesReceived - sum;
+		
         document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);;
         FinalcalculateFees();
     }
@@ -1718,12 +1720,13 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelector('[name="receipt_amt"]').value = Number(receiptAmt1)+Number(lateFees);
             let receiptAmt = parseFloat(document.querySelector('[name="receipt_amt"]').value) || 0;
     
-            let netFees = (feesReceived + lateFees + ledgerAmt);
-            
-            if(discountAmt==''){
+            let totalFees = (feesReceived + lateFees + ledgerAmt);
+            document.querySelector('[name="total_fees"]').value = totalFees;
+            /*if(discountAmt==''){
                 document.querySelector('[name="total_fees"]').value = netFees;
-            }
-            document.querySelector('[name="net_fees"]').value = netFees-discountAmt;
+            }*/
+			let netFees = totalFees-discountAmt;
+            document.querySelector('[name="net_fees"]').value = totalFees-discountAmt;
     
             let balanceAmt = netFees - Number(receiptAmt);
             document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);;
@@ -1832,6 +1835,10 @@ function FinalcalculateFees(){
     let feesReceived = parseFloat(document.querySelector('[name="fees_received"]').value) || 0;
     let ledgerAmt = parseFloat(document.querySelector('[name="ledger_amt"]').value) || 0;
     
+	let totalFeesVal = lateFees + feesReceived + ledgerAmt; // ES
+	
+   // let totalFees = parseFloat(document.querySelector('[name="total_fees"]').value) || 0;  // ES
+   document.querySelector('[name="total_fees"]').value = totalFeesVal; // ES
     let totalFees = parseFloat(document.querySelector('[name="total_fees"]').value) || 0;
     let discountAmt = parseFloat(document.querySelector('[name="discount_amt"]').value) || 0;
     let receiptAmt = parseFloat(document.querySelector('[name="receipt_amt"]').value) || 0;

@@ -1306,14 +1306,14 @@ class Studentfee extends Admin_Controller
 				$data['total_fees'] = 0;
 				$data['balance_amt'] = 0;
 				//$data['ledger_total'] = 0;
-				//$data['fees_received'] = 0;
+				$data['discount_amt'] = 0;
 				$data['net_fees'] = 0;
 				$data['receipt_amt'] = 0;
 				
 				$data['rec_discount'] = 0;
 				$data['balance_amount'] = 0;
 				
-				//$data['late_fees'] = 0;
+				$data['late_fees'] = 0;
 			}
 			//echo 'Not Empty months';die;
         }
