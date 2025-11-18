@@ -233,15 +233,41 @@ th, td {
     <tbody>
 
 
-    <?php $i=1; $pay=0; foreach($fees as $list){ ?>
+    <?php 
+		$i=1; 
+		$pay=0;
+
+		foreach($fees as $list){ ?>
     <tr>
         <td><?=$i++?></td>
         <td><?=$list->fee_head_name?></td>
         <!-- <td class="text-center"><?=$list->total?></td>
         <td class="text-center"><?=$list->rec_discount?></td> -->
+		<?php 
+		if($list->fee_head_name != 'Ledger Amount')
+		{
+		?>
         <td class="text-end"><?=$list->total?></td>
+		<?php 
+		}
+		else{
+		?>
+			<td class="text-end"><?=$list->ledger_amt?></td>
+		<?php 
+		}
+		?>
+		
     </tr>
-    <?php $pay+=$list->total; } ?>
+    <?php
+		if($list->fee_head_name != 'Ledger Amount')
+		{
+			$pay+=$list->total; 
+		}
+		else{
+			$pay = $list->ledger_amt; 
+		}
+	} 
+	?>
 
        <?php if($fees[0]->fee_head_name != 'Ledger Amount'){ ?>
                         <tr> 
@@ -389,9 +415,32 @@ th, td {
       <td><?=$list->fee_head_name?></td>
       <!-- <td class="text-center"><?=$list->total?></td>
       <td class="text-center"><?=$list->rec_discount?></td> -->
-      <td class="text-end"><?=$list->total?></td>
+      <?php 
+		if($list->fee_head_name != 'Ledger Amount')
+		{
+		?>
+        <td class="text-end"><?=$list->total?></td>
+		<?php 
+		}
+		else{
+		?>
+			<td class="text-end"><?=$list->ledger_amt?></td>
+		<?php 
+		}
+		?>
+	  
   </tr>
-  <?php $pay+=$list->total; } ?>
+  <?php
+
+		if($list->fee_head_name != 'Ledger Amount')
+		{
+			$pay+=$list->total; 
+		}
+		else{
+			$pay = $list->ledger_amt; 
+		}
+  
+  } ?>
   
   
      <?php if($fees[0]->fee_head_name != 'Ledger Amount'){ ?>
@@ -765,9 +814,31 @@ th, td {
                             <td><?=$list->fee_head_name?></td>
                             <!-- <td class="text-center"><?=$list->total?></td>
                             <td class="text-center"><?=$list->rec_discount?></td> -->
-                            <td class="text-end"><?=$list->total?></td>
+                            <!--<td class="text-end"><?=$list->total?></td>-->
+							<?php 
+								if($list->fee_head_name != 'Ledger Amount')
+								{
+								?>
+								<td class="text-end"><?=$list->total?></td>
+								<?php 
+								}
+								else{
+								?>
+									<td class="text-end"><?=$list->ledger_amt?></td>
+								<?php 
+								}
+							?>
                         </tr>
-                        <?php $pay+=$list->total; } ?>
+                        <?php 
+							if($list->fee_head_name != 'Ledger Amount')
+							{
+								$pay+=$list->total; 
+							}
+							else{
+								$pay = $list->ledger_amt; 
+							}
+						} 
+						?>
                          <?php if($fees[0]->fee_head_name != 'Ledger Amount'){ ?>
                         <tr> 
                             <td><?=$i?></td>
