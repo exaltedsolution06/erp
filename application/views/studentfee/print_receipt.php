@@ -281,7 +281,7 @@ th, td {
     </tr>
 
     <tr>
-        <td colspan="2" class="text-end">+ Late Fee (If Any)</td>
+        <td colspan="2" class="text-end">+ Late/Other Fee (If Any)</td>
         <td class="text-end"><?=$fees[0]->late_fees??0?></td>
     </tr>
 
@@ -454,7 +454,7 @@ th, td {
   </tr>
 
   <tr>
-      <td colspan="2" class="text-end">+ Late Fee (If Any)</td>
+      <td colspan="2" class="text-end">+ Late/Other Fee (If Any)</td>
       <td class="text-end"><?=$fees[0]->late_fees??0?></td>
   </tr>
 
@@ -850,7 +850,7 @@ th, td {
                         </tr>
 
                         <tr>
-                            <td colspan="2" class="text-end">+ Late Fee (If Any)</td>
+                            <td colspan="2" class="text-end">+ Late/Other Fee (If Any)</td>
                             <td class="text-end"><?=$fees[0]->late_fees??0?></td>
                         </tr>
 

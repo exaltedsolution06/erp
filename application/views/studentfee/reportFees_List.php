@@ -109,7 +109,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th >Months</th>
                                                 <th style="text-align: right;">Fee</th>
                                                 <th style="text-align: right;">Ledger Amt</th>
-                                                <th style="text-align: right;">Late Fees</th>
+                                                <th style="text-align: right;">Late/Other</th>
                                                 <th style="text-align: right;">Total Fees</th>
                                                 <th style="text-align: right;">Discount Amt</th>
                                                 <th style="text-align: right;">Net Fees</th>

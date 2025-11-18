@@ -406,7 +406,7 @@ $language_name = $language["short_code"];
                                     
                                     
                                     <div class="col-sm-2">
-                                        <label for="late_fees">Late Fees</label>
+                                        <label for="late_fees">Late/Other Fee</label>
                                         <input style="width: 100%;" type="text" id="late_fees" class="form-control" name="late_fees" value="<?php echo $late_fees;?>"/>
                                     </div>
                                   
