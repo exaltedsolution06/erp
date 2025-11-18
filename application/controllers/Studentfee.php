@@ -1980,9 +1980,14 @@ class Studentfee extends Admin_Controller
                 ->row();
 
 
-            var_dump($res_del);
+            //echo "<pre>"; print_r($res_del);die;
             if($res_del->fee_head_name=='Ledger Amount'){
-                $receipt_amt=$res_del->receipt_amt;
+                 $receipt_amt=$res_del->receipt_amt; // 18-11-2025
+				 $ledger_amt=$res_del->ledger_amt;
+				 $balance_amt=$res_del->balance_amt;
+				 $update_receipt_amt = $ledger_amt - $balance_amt; // ES
+				
+				
                 $this->db->where('student_id', $res_del->student_id);
                 $query = $this->db->get('student_session');
 
@@ -1991,7 +1996,8 @@ class Studentfee extends Admin_Controller
                     $current_discount = (int)$row->fees_discount;
 
                     // Step 2: Add ₹100 to current discount
-                    $new_discount = $current_discount + $receipt_amt;
+                    //$new_discount = $current_discount + $receipt_amt; // 18-11-2025
+                    $new_discount = $current_discount + $update_receipt_amt; // ES
 
                     // Step 3: Update the `fees_discount`
                     $this->db->where('student_id', $res_del->student_id);

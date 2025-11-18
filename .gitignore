@@ -17,3 +17,4 @@ application/logs/*
 !application/logs/.htaccess
 /vendor/
 application/third_party/omnipay/vendor/
+backend/captcha_images/
