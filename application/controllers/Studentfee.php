@@ -1309,6 +1309,7 @@ class Studentfee extends Admin_Controller
 				$data['discount_amt'] = 0;
 				$data['net_fees'] = 0;
 				$data['receipt_amt'] = 0;
+				$data['discount_amt'] = 0;
 				
 				$data['rec_discount'] = 0;
 				$data['balance_amount'] = 0;
@@ -1979,8 +1980,9 @@ class Studentfee extends Admin_Controller
                 ->get('receipts')
                 ->row();
 
-
+            //var_dump($res_del);
             //echo "<pre>"; print_r($res_del);die;
+
             if($res_del->fee_head_name=='Ledger Amount'){
                  $receipt_amt=$res_del->receipt_amt; // 18-11-2025
 				 $ledger_amt=$res_del->ledger_amt;
