@@ -152,6 +152,9 @@ class Studentfee extends Admin_Controller
 	public function editFee(){
 
         $data = $this->input->post(); 
+		
+		$rept_no = explode('/', $data['receipt_no']);
+        $srNo = $rept_no[1];	
 		//echo '<pre>'; print_r($data); echo '</pre>';die;
         if (empty($data['receipt_no']) || empty($data['student_id'])) {
             echo json_encode(['status' => 'error', 'message' => 'Receipt number or student ID is missing']);
@@ -208,7 +211,7 @@ class Studentfee extends Admin_Controller
                             'remarks'      => $data['remarks'],
                             'date_time'      => $data['date_time'],
                             'back_id'      => $data['back_id'],
-                            'sr_no'        => $data['sr_no'] ? $data['sr_no'] : 1,
+                            'sr_no'        => $data['sr_no'] ? $data['sr_no'] : $srNo,
                              'create_by'     => $this->customlib->getUserData()['email'],
                              'total_month'  => $total_month,
                         );
@@ -1958,7 +1961,6 @@ class Studentfee extends Admin_Controller
 
     public function studentfeelist(){
         
-
         // if($_GET['type']=='delete'){
         //     $this->load->model('Receipt_model');
         //     if ($this->Receipt_model->delete_receipt($_GET['id'])) {
@@ -1968,10 +1970,11 @@ class Studentfee extends Admin_Controller
         //     }
         //     redirect('studentfee/studentfeelist');
         // }
+		$this->session->unset_userdata('success');
 
         if ($_GET['type'] == 'delete' && !empty($_GET['receipt_no'])) {
             $receipt_no = $_GET['receipt_no'];
-
+			
 
             $res_del=$this->db
                 ->select('student_id,date_time,back_id,receipt_no,mode,fee_head,late_fees,ledger_amt,total_fees,discount_amt,net_fees,receipt_amt,balance_amt,remarks,fee_head_name,SUM(balance_amount) as balance_amount,(total) as total, SUM(rec_discount) as rec_discount, SUM(rec_amount) as rec_amount')
@@ -2024,7 +2027,10 @@ class Studentfee extends Admin_Controller
             // Step 3: Delete from original receipts table
             $this->Receipt_model->delete_receipts_by_receipt_no($receipt_no);
 
-            $this->session->set_flashdata('success', 'Receipts with Receipt No: ' . $receipt_no . ' backed up and deleted successfully.');
+            //$this->session->set_flashdata('success', 'Receipts with Receipt No: ' . $receipt_no . ' backed up and deleted successfully.');
+			
+			$this->session->set_flashdata('success', '<div class="alert alert-success text-center">Receipts with Receipt No: ' . $receipt_no . ' backed up and deleted successfully.</div>');
+			
             redirect('studentfee/studentfeelist');
             
         }
@@ -2153,10 +2159,7 @@ class Studentfee extends Admin_Controller
             }
         }
 
-
-
-
-    }
+	}
 
 
 // studentfee_deletedlist

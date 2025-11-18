@@ -89,7 +89,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         
                                     </div>
                                     
-                                </div>   
+                                </div>
+								<?php if ($this->session->flashdata('success')) { ?>
+								<?php echo $this->session->flashdata('success') ?>
+								<?php 
+								} ?> 
                                  <div class="table-responsive-" style="overflow: auto;">
                                     <div class="download_label"> </div>
 

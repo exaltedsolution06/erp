@@ -208,6 +208,21 @@ class Receipt_model extends CI_Model {
 
     public function get_last_receipt_id()
     {
+        $this->db->select_max('sr_no');
+		$query = $this->db->get('receipts');
+
+        if ($query->num_rows() > 0) {
+			$row = $query->row();
+			$max_id = $row->sr_no;
+			$next_id = $max_id +1;
+            return $next_id;
+        } else {
+            return 1; // Or 0, depending on your logic
+        }
+    }
+	
+	public function get_last_receipt_id_bck()
+    {
         $this->db->select('sr_no'); // Replace 'id' with your actual primary key column if different
         $this->db->from('receipts');
         $this->db->order_by('id', 'DESC');
