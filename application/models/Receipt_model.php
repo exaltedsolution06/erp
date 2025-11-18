@@ -204,8 +204,6 @@ class Receipt_model extends CI_Model {
         return $query->result_array();
     }
 
-
-
     public function get_last_receipt_id()
     {
         $this->db->select_max('sr_no'); 
