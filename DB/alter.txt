@@ -1,0 +1,2 @@
+ALTER TABLE `receipts` CHANGE `sr_no` `sr_no` BIGINT(20) NULL DEFAULT NULL; 
+
