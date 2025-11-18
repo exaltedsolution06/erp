@@ -1983,7 +1983,7 @@ class Studentfee extends Admin_Controller
             //var_dump($res_del);
             //echo "<pre>"; print_r($res_del);die;
 
-            if($res_del->fee_head_name=='Ledger Amount'){
+            //if($res_del->fee_head_name=='Ledger Amount'){
                  $receipt_amt=$res_del->receipt_amt; // 18-11-2025
 				 $ledger_amt=$res_del->ledger_amt;
 				 $balance_amt=$res_del->balance_amt;
@@ -2009,7 +2009,7 @@ class Studentfee extends Admin_Controller
                         
                     }
                 }
-            }
+            //}
            
             $this->load->model('Receipt_model');
 
