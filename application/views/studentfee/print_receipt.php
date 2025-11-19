@@ -222,13 +222,11 @@ th, td {
         <th class="text-end"><?=$fees[0]->ledger_amt?></th>
     </tr>-->
     <?php } ?>
-	<?php if($fees[0]->fee_head_name != 'Ledger Amount'){ ?>
     <tr style="border-top:2px solid;border-bottom:2px solid">
         <th>Sr.</th>
         <th>Particulars</th>
         <th class="text-end">Total Amt.</th>
     </tr>
-	<?php } ?>
     </thead>
     <tbody>
 
@@ -391,13 +389,11 @@ th, td {
       <th class="text-end"><?=$fees[0]->ledger_amt?></th>
   </tr>-->
   <?php } ?>
-  <?php if($fees[0]->fee_head_name != 'Ledger Amount'){ ?>
   <tr style="border-top:2px solid;border-bottom:2px solid">
       <th>Sr.</th>
       <th>Particulars</th>
       <th class="text-end">Total Amt.</th>
   </tr>
-  <?php } ?>
   </thead>
   <tbody>
 
@@ -786,13 +782,11 @@ th, td {
                             <th class="text-end"><?=$fees[0]->ledger_amt?></th>
                         </tr>-->
                         <?php } ?>
-						<?php if($fees[0]->fee_head_name != 'Ledger Amount'){ ?>
                         <tr style="border-top:2px solid;border-bottom:2px solid">
                             <th>Sr.</th>
                             <th>Particulars</th>
                             <th class="text-end">Total Amt.</th>
                         </tr>
-						<?php } ?>
                         </thead>
                         <tbody>
 

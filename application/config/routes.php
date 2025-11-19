@@ -14,7 +14,8 @@ $route['librarian/unauthorized'] = 'librarian/librarian/unauthorized';
 $route['404_override'] = 'welcome/show_404';
 $route['translate_uri_dashes'] = FALSE;
 $route['cron/(:any)'] = 'cron/index/$1';
-
+//es
+$route['admin/fee-discount'] = 'admin/fee_discount';
 //======= front url rewriting==========
 $route['page/(:any)'] = 'welcome/page/$1';
 $route['read/(:any)'] = 'welcome/read/$1';

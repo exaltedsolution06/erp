@@ -122,7 +122,7 @@
 					<?php } if ($this->rbac->hasPrivilege('route_plan', 'can_view')) { ?>
 						<li class="<?php echo set_Submenu('admin/setplan'); ?>"><a href="<?php echo base_url(); ?>admin/feesroutes/plan"><i class="fa fa-angle-double-right"></i> Route Plan</a></li>
 					<?php } if ($this->rbac->hasPrivilege('fee_discount', 'can_view')) { ?>
-						<li class="<?php echo set_Submenu('admin/feediscount'); ?>"><a href="<?php echo base_url(); ?>admin/feediscount"><i class="fa fa-angle-double-right"></i> Fee Discount</a></li>
+						<li class="<?php echo set_Submenu('admin/feediscount'); ?>"><a href="<?php echo base_url(); ?>admin/fee-discount"><i class="fa fa-angle-double-right"></i> Fee Discount</a></li>
 					<?php } if ($this->rbac->hasPrivilege('student_house', 'can_view')) { ?>
 						<li class="<?php echo set_Submenu('admin/schoolhouse'); ?>"><a href="<?php echo base_url(); ?>admin/schoolhouse"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('house'); ?></a></li>
 					<?php } if ($this->rbac->hasPrivilege('vehicle', 'can_view')) { ?>
