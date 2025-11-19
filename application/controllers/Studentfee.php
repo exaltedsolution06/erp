@@ -1030,9 +1030,7 @@ class Studentfee extends Admin_Controller
         if (!$this->rbac->hasPrivilege('collect_fees', 'can_add')) {
             access_denied();
         }
-
-     
-
+		
         $data['back_id']=$id;
         $data['sch_setting'] = $this->sch_setting_detail;
         $data['title'] = 'Student Detail';
@@ -1057,7 +1055,7 @@ class Studentfee extends Admin_Controller
 
         $last_receipt_id = $this->Receipt_model->get_last_receipt_id();
         $this->session->set_userdata('last_receipt_id', $last_receipt_id);
-
+		echo $last_receipt_id; die;
         if(@$_GET['receipt_no'] ==''){
             $data['receipt_no']=$this->session_model->get($this->setting_model->getCurrentSession())['session']."/".$last_receipt_id;
         }else{
