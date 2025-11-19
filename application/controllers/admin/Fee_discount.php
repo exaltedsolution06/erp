@@ -172,43 +172,6 @@ class Fee_discount extends Admin_Controller {
 		return $defaultArray;
 	}
 
-
-
-
-    function delete($id) {
-        $data['title'] = 'feecategory List';
-        $this->feediscount_model->remove($id);
-        redirect('admin/feediscount/index');
-    }
-
-    /*function index() {
-        if (!$this->rbac->hasPrivilege('fees_discount', 'can_view')) {
-            access_denied();
-        }
-        $this->session->set_userdata('top_menu', 'Fees Collection');
-        $this->session->set_userdata('sub_menu', 'admin/feediscount');
-        $feesdiscount_result = $this->feediscount_model->get();
-        $data['feediscountList'] = $feesdiscount_result;
-        $this->form_validation->set_rules('code', $this->lang->line('discount_code'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('amount', $this->lang->line('amount'), 'trim|required|xss_clean');
-        if ($this->form_validation->run() == FALSE) {
-            $this->load->view('layout/header', $data);
-            $this->load->view('admin/feediscount/feediscountList', $data);
-            $this->load->view('layout/footer', $data);
-        } else {
-            $data = array(
-                'name' => $this->input->post('name'),
-                'code' => $this->input->post('code'),
-                'amount' => $this->input->post('amount'),
-                'description' => $this->input->post('description'),
-            );
-            $this->feediscount_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('success_message') . '</div>');
-            redirect('admin/feediscount');
-        }
-    }*/
-
 }
 
 ?>

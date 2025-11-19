@@ -49,20 +49,6 @@ class Fee_discount_model extends MY_Model {
 		return ($query->num_rows() > 0);
 	}
 
-	public function get($student_session_id) {
-        $this->db->select()->from('fee_discounts');
-        if ($student_session_id != null) {
-            $this->db->where('student_session_id', $student_session_id);
-        }
-        $query = $this->db->get();
-		//echo $this->db->last_query();die;
-        if ($student_session_id != null) {
-            return $query->row_array();
-        } else {
-            return $query->result_array();
-        }
-    }
-
     /**
      * This function will delete the record based on the id
      * @param $id
@@ -86,59 +72,6 @@ class Fee_discount_model extends MY_Model {
             return false;
         } else {
             //return $return_value;
-        }
-    }
-
-    /**
-     * This function will take the post data passed from the controller
-     * If id is present, then it will do an update
-     * else an insert. One function doing both add and edit.
-     * @param $data
-     */
-    public function add($data) {
-        $this->db->trans_start(); # Starting Transaction
-        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
-        //=======================Code Start===========================
-        if (isset($data['id'])) {
-            $this->db->where('id', $data['id']);
-            $this->db->update('fee_discounts', $data);
-            $message = UPDATE_RECORD_CONSTANT . " On  fees discounts id " . $data['id'];
-            $action = "Update";
-            $record_id = $data['id'];
-            $this->log($message, $record_id, $action);
-            //======================Code End==============================
-
-            $this->db->trans_complete(); # Completing transaction
-            /* Optional */
-
-            if ($this->db->trans_status() === false) {
-                # Something went wrong.
-                $this->db->trans_rollback();
-                return false;
-            } else {
-                //return $return_value;
-            }
-        } else {
-            $data['session_id'] = $this->current_session;
-            $this->db->insert('fee_discounts', $data);
-            $id = $this->db->insert_id();
-            $message = INSERT_RECORD_CONSTANT . " On  fees discounts id " . $id;
-            $action = "Insert";
-            $record_id = $id;
-            $this->log($message, $record_id, $action);           
-            //======================Code End==============================
-
-            $this->db->trans_complete(); # Completing transaction
-            /* Optional */
-
-            if ($this->db->trans_status() === false) {
-                # Something went wrong.
-                $this->db->trans_rollback();
-                return false;
-            } else {
-                //return $return_value;
-            }
-            return $id;
         }
     }
 
