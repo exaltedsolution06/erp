@@ -91,7 +91,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                  <div class="table-responsive-" style="overflow: auto;">
                                     <div class="download_label"> </div>
 
-                                    <table  cellpadding="8" cellspacing="0" class="table example table-striped table-bordered table-hover example table-fixed-header" style="width:2500px !important">
+                                    <table  cellpadding="8" cellspacing="0" class="table example table-striped table-bordered table-hover example table-fixed-header" style="width:2100px !important">
                                         <thead>
                                             <tr>
                                                 <th style="width:50px !imortant">S.No</th>
@@ -111,7 +111,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th style="text-align: right;">Fee</th>
 
                                                 <th style="text-align: right;">Ledger Amt</th>
-                                                <th style="text-align: right;">Late Fees</th>
+                                                <th style="text-align: right;">Late/Other Fees</th>
                                                 <th style="text-align: right;">Total Fees</th>
                                                 <th style="text-align: right;">Discount Amt</th>
                                                 <th style="text-align: right;">Net Fees</th>

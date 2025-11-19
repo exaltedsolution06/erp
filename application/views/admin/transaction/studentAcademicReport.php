@@ -84,7 +84,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                  <div class="table-responsive-" style="overflow: auto;">
                                     <div class="download_label"> </div>
 
-                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header" style="width:2000px !important">
+                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header" style="width:1800px !important">
                                         <thead>
                                             <tr>
                                                 <th>S.No</th>

@@ -284,7 +284,7 @@ $language_name = $language["short_code"];
                                                 <th><?= $total ?></th>
                                                 <th><?=$rec_discount[$row->id];?></th>
                                                 <th><?=$received_amount[$row->id];?></th>
-                                                <th>0</th>
+                                                <th><?=$balance_amount[$row->id];?></th>
                                             </tr>
                                             <?php
                                                 $final_total += $total;
@@ -317,7 +317,7 @@ $language_name = $language["short_code"];
                                                 <th><?= $total ?></th>
                                                 <th><?=$rec_discount[$row->id];?></th>
                                                 <th><?=$received_amount[$row->id];?></th>
-                                                <th>0</th>
+                                                <th><?=$balance_amount[$row->id];?></th>
                                             </tr>
                                             <?php
                                                 $final_total += $total;

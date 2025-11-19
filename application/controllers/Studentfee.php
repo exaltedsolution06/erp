@@ -1474,12 +1474,15 @@ class Studentfee extends Admin_Controller
 			
 			$recDiscountArr = [];
 			$recAmountArr = [];
+			$balanceAmountArr = [];
 			foreach ($receiptArr as $row) {
 				$recDiscountArr[$row['fee_head']] = $row['rec_discount'];
 				$recAmountArr[$row['fee_head']] = $row['rec_amount'];
+				$balanceAmountArr[$row['fee_head']] = $row['balance_amount'];
 			}
 			$data['rec_discount'] = $recDiscountArr;
 			$data['received_amount'] = $recAmountArr;
+			$data['balance_amount'] = $balanceAmountArr;
 			//echo '<pre>'; print_r($recDiscountArr);echo '</pre>';die;
 			$data['late_fees'] = $receiptArr[0]['late_fees'];
 			$data['ledger_amt'] = $receiptArr[0]['ledger_amt'];
