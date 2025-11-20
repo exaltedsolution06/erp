@@ -76,7 +76,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 </div>
                             </div>
 							<?php if ($this->session->flashdata('success')): ?>
-								<div class="alert alert-success">
+								<div class="alert alert-success" id="successMsg">
 									<?= $this->session->flashdata('success'); ?>
 								</div>
 								<?php $this->session->unset_userdata('success'); ?>
@@ -223,6 +223,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                     </div>
 					<input type="hidden" id="feedHeads" value="<?= count($data_list) ?>">
 					<input type="hidden" id="routeList" value="<?=count($route_data_list) ?>">
+					<input type="hidden" id="issubmit" value="<?= $issubmit ?>">
                 </div>
             </div>
         </div>   
@@ -252,6 +253,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 							document.getElementById('searchInput').value = item.name + ' s/o '+ item.father +' ('+item.class+')';
 							suggestionsList.style.display = 'none';
 							//alert(item.id);
+							$('#successMsg').hide();
 							const currentUrl = "<?=base_url()?>admin/fee-discount";
 							const urlWithQuery = currentUrl.includes('?') ? 
 							 `${currentUrl}&id=${item.id})` :
@@ -342,4 +344,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 		$('#final-total-text').html(finalsum);
 		
 	});
+	
+	let issubmit = $('#issubmit').val();
+	if(issubmit == 1)
+	{
+		setTimeout(function () {
+			$('#successMsg').fadeOut('slow');
+		}, 3000);
+	}
+	
 </script>

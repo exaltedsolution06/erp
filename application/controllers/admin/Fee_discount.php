@@ -66,8 +66,10 @@ class Fee_discount extends Admin_Controller {
 		
 		$data['remarks'] = $feeDiscountsArr[0]['remarks'];
 		
-		$data['src_name'] = $student_data['firstname'] ? $student_data['firstname'].' '.$student_data['middlename'].' '.$student_data['lastname'].' s/o '.$student_data['guardian_name'].' ('.$student_data['class'].'-'.$student_data['section'].')' : '';
+		$data['src_name'] = '';
+		//$data['src_name'] = $student_data['firstname'] ? $student_data['firstname'].' '.$student_data['middlename'].' '.$student_data['lastname'].' s/o '.$student_data['guardian_name'].' ('.$student_data['class'].'-'.$student_data['section'].')' : '';
 		//echo '<pre>'; print_r($data); echo '</pre>'; die;
+		$data['issubmit'] = '';
         $this->load->view('layout/header', $data);
         $this->load->view('admin/fee_discount/fee-discount', $data);
         $this->load->view('layout/footer', $data);
@@ -180,6 +182,7 @@ class Fee_discount extends Admin_Controller {
 		$data['src_name'] = '';
 		//$data['src_name'] = $student_data['firstname'] ? $student_data['firstname'].' '.$student_data['middlename'].' '.$student_data['lastname'].' s/o '.$student_data['guardian_name'].' ('.$student_data['class'].'-'.$student_data['section'].')' : '';
 		//----------------------------------------
+		$data['issubmit'] = 1;
 		
         //redirect('admin/fee-discount');
 		
