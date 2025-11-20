@@ -361,7 +361,7 @@ $language_name = $language["short_code"];
 																if (is_array($row->amount)) {
 																	echo $row->amount[$value];
                                                                 $total += $row->amount[$value];
-                                                                ?><input type="hidden" name="month_total[<?=$value?>][]" value="<?=$row->amount[$value]?>">
+                                                                ?><input type="hidden" name="month_total[<?=$value?>][]" value="<?=$row->amount[$value] ?>">
 																<?php
 																}
 																else

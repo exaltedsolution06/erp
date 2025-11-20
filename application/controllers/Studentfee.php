@@ -1127,7 +1127,7 @@ class Studentfee extends Admin_Controller
 			//-----
         
             
-            $data['months_data']=$monthsPost;
+            $data['months_data'] = $monthsPost;
                
                
             // echo  json_encode($data);
@@ -1188,10 +1188,12 @@ class Studentfee extends Admin_Controller
 		if (!$this->rbac->hasPrivilege('collect_fees', 'can_add')) {
             access_denied();
         }
-		$receipt_no = base64_decode($receipt_no);		
+		$receipt_no = base64_decode($receipt_no);
+        
 		$receiptArr=$this->Receipt_model->get_receipts_by_receipt_no($receipt_no);
 		//echo '<pre>'; print_r($receiptArr);echo '</pre>';die;
 		$id = $receiptArr[0]['back_id'];
+		
         $data['back_id']=$id;
         $data['sch_setting'] = $this->sch_setting_detail;
         $data['title'] = 'Student Detail';
@@ -1269,6 +1271,15 @@ class Studentfee extends Admin_Controller
             }
             $query = $this->db->get();
             $data['data_list'] = $query->result();
+			
+			//---- 20-11-2025---ES--
+			$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($id);
+			$routeDiscountsArr    = $this->fee_discount_model->get_all_routes($id);
+			
+			$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr);
+			//echo "<pre>";print_r($data['data_list']);die;
+			//--------------------
+			
             // route
             $this->db->from('route_head');
             $this->db->join('route_plan', 'route_head.id = route_plan.fee_group_id');
@@ -1277,7 +1288,11 @@ class Studentfee extends Admin_Controller
             $this->db->where('route_head.id', $route_id);
             
             $query = $this->db->get();
-            $data['route_data_list'] = $query->result();        
+            $data['route_data_list'] = $query->result();
+
+			 //---- 20-11-2025---ES--
+			$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
+			//-----
             
             $data['months_data']=$monthsPost;
             // echo  json_encode($data);               

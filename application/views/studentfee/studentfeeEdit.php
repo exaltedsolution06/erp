@@ -308,9 +308,21 @@ $language_name = $language["short_code"];
                                                     <th>
                                                         <?php 
                                                             if(in_array($value, $db_months)){
+																
+																if (is_array($row->amount)) 
+																{
+																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
+																	echo $amount;
+																	$total += $amount;
+																	?>
+																	<input type="hidden" name="month_total[<?=$value?>][]" value="<?=$row->amount[$value]?>">
+																<?php
+																}
+																else{
                                                                 echo $row->amount;
                                                                 $total += $row->amount;
                                                                 ?><input type="hidden" name="month_total[<?=$value?>][]" value="<?=$row->amount?>"><?php
+																}
                                                             } else {
                                                                 echo 0;
                                                                 ?><input type="hidden" name="month_total[<?=$value?>][]" value="0"><?php
@@ -349,9 +361,18 @@ $language_name = $language["short_code"];
                                                     <th>
                                                         <?php 
                                                             if(in_array($value, $db_months)){
+																
+																if (is_array($row->amount)) {
+																	echo $row->amount[$value];
+																	$total += $row->amount[$value];
+																	?><input type="hidden" name="month_total[<?=$value?>][]" value="<?=$row->amount[$value] ?>">
+																<?php
+																}
+																else{
                                                                 echo $row->amount;
                                                                 $total += $row->amount;
                                                                 ?><input type="hidden" name="month_total[<?=$value?>][]" value="<?=$row->amount?>"><?php
+																}
                                                             } else {
                                                                 echo 0;
                                                                 ?>
