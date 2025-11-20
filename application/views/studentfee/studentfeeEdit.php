@@ -6,6 +6,8 @@
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 $language = $this->customlib->getLanguage();
 $language_name = $language["short_code"];
+
+//echo "<pre>";print_r($data_list);die;
 ?>
 <div class="content-wrapper">
     <div class="row">
@@ -290,6 +292,7 @@ $language_name = $language["short_code"];
                                         $statusNew=0;
                                             $final_total = 0;
                                             $aa=1;
+											$bal = 0;
                                             foreach($data_list as $row){
                                                 $db_months = json_decode($row->months);
                                                 $total = 0;
@@ -334,11 +337,16 @@ $language_name = $language["short_code"];
                                                 <th><?= $total ?> <input type="hidden" name="total[]" value="<?=$total?>"> </th>
                                                 <th><input type="text" style="width: 100px;" class="rec_discount" name="rec_discount[]" id="total_get_discount_<?=$aa?>" oninput="calculateDisData(this,<?=$aa?>)" value="<?=$rec_discount[$row->id];?>"></th>
                                                 <th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id]);?>"></th>
-                                                <th><?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?></th>
+												
+												<th><?= $total-$received_amount[$row->id] ?></th>
+                                                
+												<!--<th><?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?></th>-->
                                             </tr>
                                             <?php
                                                 $final_total += $total;
                                                 $aa++;
+												
+												$bal = $bal + $total-$received_amount[$row->id];
                                             }
 
                                             // $aa++;
@@ -831,9 +839,25 @@ $language_name = $language["short_code"];
         </form>
     </div>
 </div>
+<input type="text" name="balc" id="balc" value="<?= $bal ? $bal : 0 ?>">
 
-
-
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+		let fees_received = parseFloat(document.querySelector('[name="fees_received"]').value) || 0;
+		let late_fees = parseFloat(document.querySelector('[name="late_fees"]').value) || 0;
+		
+		let ledger_amt = parseFloat(document.querySelector('[name="ledger_amt"]').value) || 0;
+		
+		let balc = parseFloat(document.querySelector('[name="balc"]').value) || 0;
+		
+		let sum = parseFloat(fees_received) + parseFloat(late_fees) + parseFloat(ledger_amt);
+		$('#total_fees').val(sum);
+		$('#net_fees').val(sum);
+		//let bal = 50;
+		$('#balance_amt').val(balc);
+		//alert(fees_received);alert(late_fees);alert(ledger_amt);
+});
+</script>
 <script>
 function changeDate(td) {
     const dateSpan = td.querySelector('#admissionDate');
@@ -1952,6 +1976,7 @@ function calculateDataCheckBox(checkbox,id){
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+		 
         const ledgerAmtInput = document.getElementById('ledger_amt');
         // const oldLedgerAmt = parseInt(document.getElementById('net_fees').value, 10);
         const oldLedgerAmt = parseFloat(document.getElementById('net_fees').value);
@@ -1989,7 +2014,8 @@ function calculateDataCheckBox(checkbox,id){
 
         // Initial validation on page load
         validateLedgerAmount();
-    });
+		
+	});
 
 
 
