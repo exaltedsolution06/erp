@@ -1123,7 +1123,7 @@ class Studentfee extends Admin_Controller
 			
 			
 			//---- 20-11-2025---ES--
-			//$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
+			$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
 			//-----
         
             
