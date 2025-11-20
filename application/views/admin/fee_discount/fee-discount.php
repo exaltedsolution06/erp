@@ -146,7 +146,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 														<input type="text" name="fee[<?=$row->id ?>][<?= $value ?>]" id="textval-<?= $aa ?>-<?= $key+1 ?>" data-col="<?= $key+1 ?>" data-row="<?= $aa ?>" class="form-control inputtext" value="<?php echo $amount; ?>" <?php echo ($existFeeHeadMonth === false) ? 'readonly style="background-color:#eee; pointer-events: none;"' : ''; ?>>	
 													</td>
 													<?php endforeach; ?>
-													<td style="text-align: right;"><b><?= $total ?></b></td>
+													<td style="text-align: right;"><b><span id="fees-tot-<?= $aa; ?>"><?= $total ?></span></b></td>
 												</tr>
 														<?php
 															$final_total += $total;
@@ -285,7 +285,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 		let colsum = 0;
 		let colTotal = 0;
 		let col = $(this).data('col');
-		//alert(col);
+		let row = $(this).data('row');
+		//alert(row);
 		let value = 0;
 		
 		// column calculation
@@ -297,17 +298,27 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 			
 		}
 		//alert(colsum);
-		if(routeList != '')
+		if(routeList != 0)
 		{
 			value = $('#textroute-' +  col).val();
 			colsum = parseInt(colsum) + parseInt(value); 
+			
 		}
+		//alert(colsum);
 		$('#col-tot' + col).html(colsum);
 		//--------------------
+		// row calculation fees
+		let rowsumFees = 0;
+		for(var i=1; i<=12; i++)
+		{
+			let value =  $('#textval-' + row + '-' +  i).val();
+			rowsumFees = parseInt(rowsumFees) + parseInt(value); 
+		}
+		$('#fees-tot-' + row).html(rowsumFees);
 		
-		// row calculation
+		// row calculation route
 		let rowsum = 0;
-		if(routeList != '')
+		if(routeList != 0)
 		{
 			
 			for(var i=1; i<=12; i++)
