@@ -251,7 +251,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 						li.onclick = function () {
 							document.getElementById('searchInput').value = item.name + ' s/o '+ item.father +' ('+item.class+')';
 							suggestionsList.style.display = 'none';
-							
+							//alert(item.id);
 							const currentUrl = "<?=base_url()?>admin/fee-discount";
 							const urlWithQuery = currentUrl.includes('?') ? 
 							 `${currentUrl}&id=${item.id})` :
