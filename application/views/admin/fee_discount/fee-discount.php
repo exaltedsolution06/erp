@@ -14,7 +14,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         <div class="box-header ptbnull row">
                             <div class="form-group col-md-8" style="position: relative;">
                                 <label>Student Search</label>
-                                <input type="text" id="searchInput" name="search_text" class="form-control" placeholder="Search By Student Name, Roll Number, Enroll Number, National Id, Local Id Etc.">
+                                <input type="text" id="searchInput" name="search_text" class="form-control" placeholder="Search By Student Name, Roll Number, Enroll Number, National Id, Local Id Etc." value="<?= $src_name ?>">
                                 <ul id="suggestionsList" class="list-group" style="position: absolute; z-index: 1000; width: 100%; display: none;"></ul>
                             </div>
                         </div> 
@@ -230,7 +230,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 			suggestionsList.style.display = 'none';
 			return;
 		}
-
+		//alert(encodeURIComponent);
 		fetch("<?=base_url()?>/report/search_api?query=" + encodeURIComponent(query))
 			.then(response => response.json())
 			.then(data => {

@@ -23,7 +23,8 @@ class Fee_discount extends Admin_Controller {
         $data['title']     = 'Fee Discount';
 		
         $id=$_GET['id']??0;
-        $data['student_data'] =$student_data= $this->student_model->getByStudentSession($id);
+		
+		$data['student_data'] =$student_data= $this->student_model->getByStudentSession($id);
         $category                     = $this->category_model->get();
         $data['categorylist']         = $category;
 		
@@ -64,6 +65,8 @@ class Fee_discount extends Admin_Controller {
 		$data['months_data']=$monthsPost;
 		
 		$data['remarks'] = $feeDiscountsArr[0]['remarks'];
+		
+		$data['src_name'] = $student_data['firstname'] ? $student_data['firstname'].' '.$student_data['middlename'].' '.$student_data['lastname'].' s/o '.$student_data['guardian_name'].' ('.$student_data['class'].'-'.$student_data['section'].')' : '';
 		//echo '<pre>'; print_r($data); echo '</pre>'; die;
         $this->load->view('layout/header', $data);
         $this->load->view('admin/fee_discount/fee-discount', $data);
