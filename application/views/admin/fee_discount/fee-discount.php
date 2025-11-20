@@ -1,5 +1,7 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
+//echo "<pre>";print_r($data_list);die;
+//echo "<pre>";print_r($route_data_list);die;
 ?>
 <div class="content-wrapper">
     <!-- Main content -->
@@ -106,6 +108,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 											</thead>
 											<tbody>
 												<?php 
+													$col=1;
 													if(isset($months_data)){
 														$statusNew = 0;
 														$final_total = 0;
@@ -140,7 +143,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 																$column_totals[$key] += $amount;
 															}
 														?>  
-														<input type="text" name="fee[<?=$row->id ?>][<?= $value ?>]" class="form-control" value="<?php echo $amount; ?>" <?php echo ($existFeeHeadMonth === false) ? 'readonly style="background-color:#eee; pointer-events: none;"' : ''; ?>>	
+														<input type="text" name="fee[<?=$row->id ?>][<?= $value ?>]" id="textval-<?= $aa ?>-<?= $key+1 ?>" data-col="<?= $key+1 ?>" data-row="<?= $aa ?>" class="form-control inputtext" value="<?php echo $amount; ?>" <?php echo ($existFeeHeadMonth === false) ? 'readonly style="background-color:#eee; pointer-events: none;"' : ''; ?>>	
 													</td>
 													<?php endforeach; ?>
 													<td style="text-align: right;"><b><?= $total ?></b></td>
@@ -155,6 +158,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 															$total = 0;
 															$aa++;
 															$statusNew++;
+															$routecol =1;
 													?>
 												<tr>
 													<td></td>
@@ -179,13 +183,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 															$column_totals[$key] += $rAmount;
 														}
 													?>   
-													<input type="text" name="route[<?=$row->id ?>][<?= $value ?>]" class="form-control" value="<?php echo $rAmount; ?>" <?php echo ($existRouteHeadMonth === false) ? 'readonly style="background-color:#eee; pointer-events: none;"' : ''; ?>>	
+													<input type="text" name="route[<?=$row->id ?>][<?= $value ?>]" class="form-control inputtext" data-col="<?= $key+1 ?>" data-row="<?= $aa ?>" value="<?php echo $rAmount; ?>" <?php echo ($existRouteHeadMonth === false) ? 'readonly style="background-color:#eee; pointer-events: none;"' : ''; ?> id="textroute-<?= $routecol ?>">	
 													</td>
-													<?php endforeach; ?>
-													<td style="text-align: right;"><b><?= $total ?> </b></td>
+													<?php $routecol++;endforeach; ?>
+													<td style="text-align: right;" data-col="<?= $routecol; ?>"><b><span id="route-tot-<?= $routecol ?>"><?= $total ?> </span></b></td>
 												</tr>
 												<?php
 														$final_total += $total;
+														
 													}
 													if(!empty($final_total)) {
 												?>
@@ -193,9 +198,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 													<td></td>
 													<td><b>Total</b></td>
 													<?php foreach ($column_totals as $col_total): ?>
-													<td style="text-align: right;"><b><?= $col_total ?></b></td>
-													<?php endforeach; ?>
-													<td style="text-align: right;"><b><?= $final_total ?></b></td>
+													<td style="text-align: right;"><b><span id="col-tot<?= $col ?>"><?= $col_total ?></span></b></td>
+													<?php $col++; endforeach; ?>
+													<td style="text-align: right;"><b><span id="final-total-text"><?= $final_total ?></span></b></td>
 												</tr>
 												<?php } } ?>
 
@@ -216,6 +221,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         </div>
 						<?php } ?>
                     </div>
+					<input type="hidden" id="feedHeads" value="<?= count($data_list) ?>">
+					<input type="hidden" id="routeList" value="<?=count($route_data_list) ?>">
                 </div>
             </div>
         </div>   
@@ -269,5 +276,59 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 					suggestionsList.style.display = 'none';
 				}
 			});
+	});
+	
+	$(document).on('keyup', '.inputtext', function() {
+		let feeheads = $('#feedHeads').val();
+		let routeList = $('#routeList').val();
+		//alert($(this).val());
+		let colsum = 0;
+		let colTotal = 0;
+		let col = $(this).data('col');
+		//alert(col);
+		let value = 0;
+		
+		// column calculation
+		for(var i=1; i<=feeheads; i++)
+		{
+			let textvalId = 'textval-' + i + '-'+ col;
+			value = $('#' + textvalId).val();
+			colsum = parseInt(colsum) + parseInt(value); 
+			
+		}
+		//alert(colsum);
+		if(routeList != '')
+		{
+			value = $('#textroute-' +  col).val();
+			colsum = parseInt(colsum) + parseInt(value); 
+		}
+		$('#col-tot' + col).html(colsum);
+		//--------------------
+		
+		// row calculation
+		let rowsum = 0;
+		if(routeList != '')
+		{
+			
+			for(var i=1; i<=12; i++)
+			{
+				let value =  $('#textroute-' +  i).val();
+				rowsum = parseInt(rowsum) + parseInt(value); 
+			}
+			//alert(rowsum);
+			$('#route-tot-' + 13).html(rowsum);
+		}
+		
+		// final total 
+		let finalsum = 0;
+		for(var i=1; i<=12; i++)
+		{
+			let finamvalue =  $('#col-tot' +  i).html();
+			finalsum = finalsum + parseInt(finamvalue);
+			
+		}
+		//alert(finalsum);
+		$('#final-total-text').html(finalsum);
+		
 	});
 </script>
