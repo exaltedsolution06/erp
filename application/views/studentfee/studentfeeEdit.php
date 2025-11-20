@@ -855,6 +855,10 @@ document.addEventListener('DOMContentLoaded', function () {
 		$('#net_fees').val(sum);
 		//let bal = 50;
 		$('#balance_amt').val(balc);
+		
+		let discount_amt = parseFloat(document.querySelector('[name="discount_amt"]').value) || 0;
+		let netFees = parseFloat(sum) - parseFloat(discount_amt);
+		$('#net_fees').val(netFees);
 		//alert(fees_received);alert(late_fees);alert(ledger_amt);
 });
 </script>
@@ -1775,12 +1779,14 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelector('[name="receipt_amt"]').value = Number(receiptAmt1)+Number(lateFees);
             let receiptAmt = parseFloat(document.querySelector('[name="receipt_amt"]').value) || 0;
     
+			let totalFees = (feesReceived + lateFees + ledgerAmt);
+            document.querySelector('[name="total_fees"]').value = totalFees;
             let netFees = (feesReceived + lateFees + ledgerAmt);
 			//console.log(feesReceived,lateFees,ledgerAmt);
             
-            if(discountAmt==''){
+            /*if(discountAmt==''){
                 document.querySelector('[name="total_fees"]').value = netFees;
-            }
+            }*/
             document.querySelector('[name="net_fees"]').value = netFees-discountAmt;
     
             //let balanceAmt = netFees - Number(receiptAmt);//es
