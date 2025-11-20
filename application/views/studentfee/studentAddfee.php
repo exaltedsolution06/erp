@@ -7,6 +7,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 $language = $this->customlib->getLanguage();
 $language_name = $language["short_code"];
 ?>
+
 <div class="content-wrapper">
     <div class="row">
         <div class="col-md-12">
@@ -302,9 +303,22 @@ $language_name = $language["short_code"];
                                                     <th>
                                                         <?php 
                                                             if(in_array($value, $db_months)){
-                                                                echo $row->amount;
-                                                                $total += $row->amount;
-                                                                ?><input type="hidden" name="month_total[<?=$value?>][]" value="<?=$row->amount?>"><?php
+																if (is_array($row->amount)) 
+																{
+																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
+																	echo $amount;
+																	$total += $amount;
+																	?>
+																	<input type="hidden" name="month_total[<?=$value?>][]" value="<?=$row->amount[$value]?>">
+																<?php
+																}
+																else{
+																	echo $row->amount;
+																	$total += $row->amount;
+																	?>
+																	<input type="hidden" name="month_total[<?=$value?>][]" value="<?=$row->amount?>">
+																<?php
+																}
                                                             } else {
                                                                 echo 0;
                                                                 ?><input type="hidden" name="month_total[<?=$value?>][]" value="0"><?php
