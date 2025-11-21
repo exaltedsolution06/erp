@@ -236,6 +236,77 @@ class Fee_discount extends Admin_Controller {
 
 		return $defaultArray;
 	}
+	public function fees_reset($id='')
+	{
+		$student_session_id = $_GET['id'] ?? 0;
+		$discount_exists = $this->fee_discount_model->discount_exists($student_session_id);
+		if($discount_exists) {
+			$this->fee_discount_model->remove($student_session_id);
+			$this->session->set_flashdata('success', 'Fees Reset successfully.');
+		}
+		
+		
+		//--- fetch data -----------------------------------
+		$this->session->set_userdata('top_menu', 'Fees Collection');
+        $this->session->set_userdata('sub_menu', 'admin/feediscount');
+		
+        $data['title']     = 'Fee Discount';
+		
+		$id=$student_session_id ?? 0;
+		
+		$data['student_data'] =$student_data= $this->student_model->getByStudentSession($id);
+        $category                     = $this->category_model->get();
+        $data['categorylist']         = $category;
+		
+		//echo $student_data['student_session_id']; die;
+        $feeDiscountsArr              = $this->fee_discount_model->get_all_fees($id);
+        $routeDiscountsArr              = $this->fee_discount_model->get_all_routes($id);
+		
+		//echo '<pre>'; print_r($feeDiscountsArr); echo '</pre>';die;
+
+		$monthsPost = $months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
+		$class_id=$student_data['class_id'];
+		$route_id=$student_data['vehroute_id'];
+		$category_id=$student_data['category_id'];
+		// die;
+		$this->db->from('fee_head');
+		$this->db->join('fees_plan', 'fee_head.id = fees_plan.fee_group_id');
+		$this->db->where("JSON_CONTAINS(fees_plan.class_ids, '\"$class_id\"')", null, false);
+		$this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
+		$query = $this->db->get();
+		$data['data_list'] = $query->result();
+			//echo '<pre>'; print_r($data['data_list']); echo '</pre>';die;
+		$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr);
+		
+		//echo '<pre>'; print_r($data['data_list']); echo '</pre>';die;
+		  
+		// route
+		$this->db->from('route_head');
+		$this->db->join('route_plan', 'route_head.id = route_plan.fee_group_id');
+		$this->db->where("JSON_CONTAINS(route_plan.class_ids, '\"$class_id\"')", null, false);
+		$this->db->where("JSON_CONTAINS(route_plan.category_ids, '\"$category_id\"')", null, false);
+		$this->db->where('route_head.id', $route_id);
+		$query = $this->db->get();
+		$data['route_data_list'] = $query->result();
+		$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
+		
+		//echo '<pre>'; print_r($data['route_data_list']); echo '</pre>';die;
+		
+		$data['months_data']=$monthsPost;
+		
+		$data['remarks'] = $feeDiscountsArr[0]['remarks'];
+		
+		$data['src_name'] = '';
+		//$data['src_name'] = $student_data['firstname'] ? $student_data['firstname'].' '.$student_data['middlename'].' '.$student_data['lastname'].' s/o '.$student_data['guardian_name'].' ('.$student_data['class'].'-'.$student_data['section'].')' : '';
+		//----------------------------------------
+		$data['issubmit'] = 1;
+		
+        //redirect('admin/fee-discount');
+		
+		$this->load->view('layout/header', $data);
+        $this->load->view('admin/fee_discount/fee-discount', $data);
+        $this->load->view('layout/footer', $data);
+	}
 
 }
 

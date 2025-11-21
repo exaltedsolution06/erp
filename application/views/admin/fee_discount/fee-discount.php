@@ -90,8 +90,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 							<?php endif; ?>
 
 							<form method="POST" action="<?php echo base_url('admin/fee_discount/submit'); ?>">
-							<input type="hidden" name="student_session_id" value="<?=$student_data['student_session_id']?>">
-							<input type="hidden" name="student_id" value="<?=$student_data['id']?>">
+							<input type="hidden" id="student_session_id" name="student_session_id" value="<?=$student_data['student_session_id']?>">
+							<input type="hidden" id="student_id" name="student_id" value="<?=$student_data['id']?>">
                             <div class="row mt-5 mb-5">
                                 <div class="col-sm-12">
 									<div class="" style="border: 2px solid #f2f2f2; padding: 0rem;margin-top:10px;margin-bottom:10px">
@@ -210,8 +210,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 </div>
                             </div>
 							<div class="row">
-								<div class="col-md-10 col-sm-8 col-xs-12" style="margin-top: 5px;">
+								<div class="col-md-8 col-sm-8 col-xs-12" style="margin-top: 5px;">
 									<textarea style="min-height:45px" name="remarks" class="form-control" placeholder="Remarks"><?php echo $remarks; ?></textarea>
+								</div>
+								<div class="col-md-2 col-sm-4 col-xs-12 text-right" style="margin-top: 5px;">
+									<button type="button" class="btn btn-lg btn-primary fees-reset">Fees Reset</button>
 								</div>
 								<div class="col-md-2 col-sm-4 col-xs-12 text-right" style="margin-top: 5px;">
 									<button type="submit" class="btn btn-lg btn-primary">Update Fees</button>
@@ -352,5 +355,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 			$('#successMsg').fadeOut('slow');
 		}, 3000);
 	}
+	
+	$(document).on('click', '.fees-reset', function(){
+		let student_session_id = $('#student_session_id').val();
+		const currentUrl = "<?= base_url() ?>admin/fee_discount/fees_reset";
+		const urlWithQuery = `${currentUrl}?id=${student_session_id}`;
+		window.location.href = urlWithQuery;
+
+	});
 	
 </script>
