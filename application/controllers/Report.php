@@ -17,6 +17,7 @@ class Report extends Admin_Controller
         $this->sch_setting_detail = $this->setting_model->getSetting();
         $this->current_session = $this->setting_model->getCurrentSession();
         $this->current_date    = $this->setting_model->getDateYmd();
+		$this->load->model('fee_discount_model');
     }
 
     public function pdfStudentFeeRecord()
@@ -507,6 +508,14 @@ class Report extends Admin_Controller
             $this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
             $query = $this->db->get();
             $data['data_list'] = $query->result();
+			
+			//---- 20-11-2025---ES--
+			$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($id);
+			$routeDiscountsArr    = $this->fee_discount_model->get_all_routes($id);
+			
+			$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr);
+			//echo "<pre>";print_r($data['data_list']);die;
+			//----------------------
               
             // route
             $this->db->from('route_head');
@@ -519,6 +528,10 @@ class Report extends Admin_Controller
             $data['months_data']=$monthsPost;
             // echo  json_encode($data);
             // die;
+			
+			//---- 20-11-2025---ES--
+			$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
+			//-----
         }
 	  // var_dump($data);
         $data['sch_setting'] = $this->sch_setting_detail;
@@ -2501,7 +2514,52 @@ class Report extends Admin_Controller
         echo json_encode($results);
     }
 
+	function updateMonthlyFeeAmounts($defaultArray, $paidArray)
+	{
+		$monthMap = [
+			"Apr" => "month_apr",
+			"May" => "month_may",
+			"Jun" => "month_jun",
+			"Jul" => "month_jul",
+			"Aug" => "month_aug",
+			"Sep" => "month_sep",
+			"Oct" => "month_oct",
+			"Nov" => "month_nov",
+			"Dec" => "month_dec",
+			"Jan" => "month_jan",
+			"Feb" => "month_feb",
+			"Mar" => "month_mar"
+		];
 
+		foreach ($defaultArray as &$feeHead) {
+
+			foreach ($paidArray as $paid) {
+
+				if ($paid['fee_type_id'] == $feeHead->id) {
+
+					$months = json_decode($feeHead->months, true);
+
+					if (!is_array($months)) continue;
+
+					$amounts = [];
+
+					foreach ($months as $month) {
+
+						$column = $monthMap[$month];
+
+						$amounts[$month] = isset($paid[$column])
+							? floatval($paid[$column])
+							: floatval($feeHead->amount); // fallback
+					}
+
+					// Replace amount with month-wise array
+					$feeHead->amount = $amounts;
+				}
+			}
+		}
+
+		return $defaultArray;
+	}
 
 
 

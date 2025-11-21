@@ -1,5 +1,6 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
+//echo "<pre>";print_r($data_list);die;
 ?>
 <div class="content-wrapper">
     <section class="content-header">
@@ -213,9 +214,19 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             ])->row()->fees_received : 0;
 
                                                             if ($amount != 0 && in_array($value, $db_months)) {
+																
+																if (is_array($row->amount)) {
+																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
+																	echo $amount;
+																	$total += $amount;
+																	$column_totals[$key] += $row->amount[$value];
+																}
+																else
+																{
                                                                 echo $row->amount;
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
+																}
                                                             } else {
                                                                 echo 0;
                                                             }
@@ -232,17 +243,38 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             ])->row()->fees_received : 0;
 
                                                             if ($amount == 0 && in_array($value, $db_months)) {
+																
+																if (is_array($row->amount)) 
+																{
+																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
+																	echo $amount;
+																	$total += $amount;
+																	$column_totals[$key] += $row->amount[$value];
+																}
+																else
+																{
                                                                 echo $row->amount;
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
+																}
                                                             } else {
                                                                 echo 0;
                                                             }
                                                         } else {
                                                             if (in_array($value, $db_months)) {
-                                                                echo $row->amount;
+																if (is_array($row->amount)) 
+																{
+																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
+																	echo $amount;
+																	$total += $amount;
+																	$column_totals[$key] += $row->amount[$value];
+																}
+																else
+																{
+																echo $row->amount;
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
+																}
                                                             } else {
                                                                 echo 0;
                                                             }
@@ -283,9 +315,17 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             ])->row()->receipt_amt : 0;
 
                                                             if ($amount != 0 && in_array($value, $db_months)) {
+																
+																if (is_array($row->amount)) {
+																echo $row->amount[$value];
+                                                                $total += $row->amount[$value];
+                                                                $column_totals[$key] += $row->amount[$value];
+																}
+																else{
                                                                 echo $row->amount;
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
+																}
                                                             } else {
                                                                 echo 0;
                                                             }
@@ -301,17 +341,31 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             ])->row()->receipt_amt : 0;
 
                                                             if ($amount == 0 && in_array($value, $db_months)) {
+																if (is_array($row->amount)) {
+																echo $row->amount[$value];
+                                                                $total += $row->amount[$value];
+                                                                $column_totals[$key] += $row->amount[$value];
+																}
+																else{
                                                                 echo $row->amount;
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
+																}
                                                             } else {
                                                                 echo 0;
                                                             }
                                                         } else {
                                                             if (in_array($value, $db_months)) {
+																if (is_array($row->amount)) {
+																echo $row->amount[$value];
+                                                                $total += $row->amount[$value];
+                                                                $column_totals[$key] += $row->amount[$value];
+																}
+																else{
                                                                 echo $row->amount;
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
+																}
                                                             } else {
                                                                 echo 0;
                                                             }

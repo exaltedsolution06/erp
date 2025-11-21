@@ -1105,7 +1105,6 @@ class Studentfee extends Admin_Controller
 			$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($id);
 			$routeDiscountsArr    = $this->fee_discount_model->get_all_routes($id);
 			
-			
 			$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr);
 			//echo "<pre>";print_r($data['data_list']);die;
             //------
