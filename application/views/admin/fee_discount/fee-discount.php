@@ -214,7 +214,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									<textarea style="min-height:45px" name="remarks" class="form-control" placeholder="Remarks"><?php echo $remarks; ?></textarea>
 								</div>
 								<div class="col-md-2 col-sm-4 col-xs-12 text-right" style="margin-top: 5px;">
-									<button type="button" class="btn btn-lg btn-primary fees-reset">Reset Fees</button>
+									<button type="button" class="btn btn-lg btn-warning fees-reset">Reset Fees</button>
 								</div>
 								<div class="col-md-2 col-sm-4 col-xs-12 text-right" style="margin-top: 5px;">
 									<button type="submit" class="btn btn-lg btn-primary">Update Fees</button>
