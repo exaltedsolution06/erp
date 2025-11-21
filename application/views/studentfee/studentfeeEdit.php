@@ -1564,10 +1564,10 @@ function formatToDisplayDate(inputDateStr) {
             let element = document.getElementById("total_rec_discount_" + id);
             // alert(element);
 			//alert(val2);alert(dis_amt);alert(val3);
-			if(dis_amt-val3 >= 0)
-			{
+			//if(dis_amt-val3 >= 0)
+			//{
 				element.value = dis_amt-val3;
-			}
+			//}
 
         }
 
