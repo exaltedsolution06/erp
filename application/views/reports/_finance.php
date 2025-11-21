@@ -30,7 +30,9 @@
                         <li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/finance/incomegroup'); ?>"><a href="<?php echo base_url(); ?>report/incomegroup"><i class="fa fa-file-text-o"></i> Defaulter List</a></li>
                        
                         <li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/finance/expensegroup'); ?>"><a href="<?php echo base_url(); ?>report/expensegroup"><i class="fa fa-file-text-o"></i> Fee Estimate Report</a></li>
-						<li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('    Reports/finance'); ?>"><a href="<?php echo base_url(); ?>admin/route/studenttransportdetails"><i class="fa fa-file-text-o"></i> Transport Section Report</a></li>
+						<li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/finance'); ?>"><a href="<?php echo base_url(); ?>admin/route/studenttransportdetails"><i class="fa fa-file-text-o"></i> Transport Section Report</a></li>
+						
+						<li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/finance/discountedstudent'); ?>"><a href="<?php echo base_url(); ?>admin/route/discountedstudent"><i class="fa fa-file-text-o"></i> List of Discounted Students</a></li>
 
                 </ul>
             </div>

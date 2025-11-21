@@ -9,6 +9,7 @@ class Route extends Admin_Controller {
         parent::__construct();
         $this->load->model("classteacher_model");
          $this->sch_setting_detail = $this->setting_model->getSetting();
+		$this->load->model("Receipt_model");
     }
 
     public function index() {
@@ -159,6 +160,72 @@ class Route extends Admin_Controller {
 			return true;
 		}
 	}
+	public function discountedstudent()
+    {
+		
+        $this->session->set_userdata('top_menu', 'Reports');
+        $this->session->set_userdata('sub_menu', 'Reports/finance');
+        $this->session->set_userdata('subsub_menu', 'Reports/finance/discountedstudent');
+        $data['searchlist']  = $this->customlib->get_searchtype();
+        $data['date_type']   = $this->customlib->date_type();
+        $data['date_typeid'] = '';
+		
+        $filters = [
+            'per_page'      => $this->input->get('per_page'),
+            'categoryHead'  => $this->input->get('categoryHead'),
+            'class_id'      => $this->input->get('class_id'),
+            'from_date'     => $this->input->get('from_date'),
+            'to_date'       => $this->input->get('to_date'),
+        ];
+
+
+        // paginate
+        $config['base_url'] = base_url('admin/route/discountedstudent');
+        $config['total_rows'] = $this->Receipt_model->discountedstudent_count($filters);
+
+        // die;
+        $config['per_page'] = 10;
+        $config['uri_segment'] = 3;
+        // Pagination Bootstrap Styling
+        $config['full_tag_open'] = '<ul class="pagination justify-content-center">';
+        $config['full_tag_close'] = '</ul>';
+        $config['attributes'] = ['class' => 'page-link'];
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        
+        $this->pagination->initialize($config);
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+       
+        $data['receipt_data'] = $this->Receipt_model->discountedstudent($config['per_page'], $page,$filters);
+       
+        $data['pagination_links'] = $this->pagination->create_links();
+
+        // end paginate
+        $data['classes_data'] = $this->db->get('classes')->result();
+        
+        $data['category_head'] = $this->feegroup_model->get();
+         
+
+        
+
+
+        $data['expenseList'] = $expenseList;
+        $this->load->view('layout/header', $data);
+        $this->load->view('reports/discountedstudent', $data);
+        $this->load->view('layout/footer', $data);
+    }
 
 }
 

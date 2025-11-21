@@ -541,12 +541,109 @@ class Receipt_model extends CI_Model {
     }
 
 
+	public function discountedstudent($limit, $offset,$filters=[])
+    {
+    //    echo $from_date;
+        // die;
+        $this->db->select('
+            fee_discounts.*,
+            classes.id AS class_id,
+            student_session.id as student_session_id,
+            students.id,
+            classes.class,
+            sections.id AS section_id,
+            sections.section,
+            students.admission_no,
+            students.roll_no,
+            students.admission_date,
+            students.firstname,
+            students.middlename,
+            students.lastname,
+            students.image,
+            students.mobileno,
+            students.email,
+            students.state,
+            students.city,
+            students.pincode,
+            students.religion,
+            students.dob,
+            students.current_address,
+            students.permanent_address,
+            IFNULL(students.category_id, 0) as category_id,
+            IFNULL(categories.category, "") as category,
+            students.adhar_no,
+            students.samagra_id,
+            students.bank_account_no,
+            students.bank_name,
+            students.ifsc_code,
+            students.guardian_name,
+            students.app_key,
+            students.guardian_relation,
+            students.guardian_phone,
+            students.guardian_address,
+            students.is_active,
+            students.created_at,
+            students.updated_at,
+            students.father_name,
+            students.rte,
+            students.gender,
+            users.id as user_tbl_id,
+            users.username,
+            users.password as user_tbl_password,
+            users.is_active as user_tbl_active
+        ');
+        $this->db->from('fee_discounts');
+        $this->db->join('students', 'students.id = fee_discounts.student_id');
+        $this->db->join('student_session', 'student_session.student_id = students.id');
+        $this->db->join('classes', 'student_session.class_id = classes.id');
+        $this->db->join('sections', 'sections.id = student_session.section_id');
+        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        $this->db->join('users', 'users.user_id = students.id', 'left');
+
+        if (!empty($filters['categoryHead']) and $filters['categoryHead']!='All') {
+            $this->db->where('students.category_id', $filters['categoryHead']);
+        }
+        if (!empty($filters['class_id']) and $filters['class_id']!='All') {
+            $this->db->where('student_session.class_id', $filters['class_id']);
+        }
+        if (!empty($filters['from_date']) && !empty($filters['to_date'])) {
+            $this->db->where('DATE(fee_discounts.updated_date) >=', $filters['from_date']);
+            $this->db->where('DATE(fee_discounts.updated_date) <=', $filters['to_date']);
+        }
+        $this->db->group_by('fee_discounts.student_session_id');
+        $this->db->order_by('fee_discounts.id', 'DESC');
+        $this->db->limit($limit, $offset);
+
+        $query = $this->db->get();
+        return $query->result();
+
+    }
 
 
 
 
-
-
+    public function discountedstudent_count($filters=[])
+    {
+        $this->db->select('fee_discounts.id'); // Select only grouped field
+        $this->db->from('fee_discounts');
+        $this->db->join('students', 'students.id = fee_discounts.student_id');
+        $this->db->join('student_session', 'student_session.student_id = students.id');
+        $this->db->join('users', 'users.user_id = students.id', 'left');
+        if (!empty($filters['categoryHead']) and $filters['categoryHead']!='All') {
+            $this->db->where('students.category_id', $filters['categoryHead']);
+        }
+        if (!empty($filters['class_id']) and $filters['class_id']!='All') {
+            $this->db->where('student_session.class_id', $filters['class_id']);
+        }
+        if (!empty($filters['from_date']) && !empty($filters['to_date'])) {
+            $this->db->where('DATE(fee_discounts.updated_date) >=', $filters['from_date']);
+            $this->db->where('DATE(fee_discounts.updated_date) <=', $filters['to_date']);
+        }
+        $this->db->group_by('fee_discounts.student_session_id');
+        
+        $query = $this->db->get();
+        return $query->num_rows(); // This returns the count of grouped rows
+    }
 
 
 

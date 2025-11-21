@@ -2560,8 +2560,5 @@ class Report extends Admin_Controller
 
 		return $defaultArray;
 	}
-
-
-
-
+    
 }
