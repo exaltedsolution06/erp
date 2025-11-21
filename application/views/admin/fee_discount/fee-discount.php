@@ -232,6 +232,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         </div>   
     </section>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 	document.getElementById('searchInput').addEventListener('input', function () {
 		const query = this.value;
@@ -358,10 +359,23 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 	
 	$(document).on('click', '.fees-reset', function(){
 		let student_session_id = $('#student_session_id').val();
-		const currentUrl = "<?= base_url() ?>admin/fee_discount/fees_reset";
-		const urlWithQuery = `${currentUrl}?id=${student_session_id}`;
-		window.location.href = urlWithQuery;
-
+		
+		Swal.fire({
+				title: 'Do you want to reset the fees?',
+				text: "You won't be able to revert this!",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, reset fees!',
+				cancelButtonText: 'Cancel'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					const currentUrl = "<?= base_url() ?>admin/fee_discount/fees_reset";
+					const urlWithQuery = `${currentUrl}?id=${student_session_id}`;
+					window.location.href = urlWithQuery;
+				}
+			});
 	});
 	
 </script>

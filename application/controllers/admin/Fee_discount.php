@@ -67,6 +67,8 @@ class Fee_discount extends Admin_Controller {
 		$data['remarks'] = $feeDiscountsArr[0]['remarks'];
 		
 		$data['src_name'] = '';
+		$this->session->unset_userdata('success');
+		$this->session->unset_userdata('error');
 		//$data['src_name'] = $student_data['firstname'] ? $student_data['firstname'].' '.$student_data['middlename'].' '.$student_data['lastname'].' s/o '.$student_data['guardian_name'].' ('.$student_data['class'].'-'.$student_data['section'].')' : '';
 		//echo '<pre>'; print_r($data); echo '</pre>'; die;
 		$data['issubmit'] = '';
