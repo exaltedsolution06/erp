@@ -83,7 +83,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 							<?php endif; ?>
 
 							<?php if ($this->session->flashdata('error')): ?>
-								<div class="alert alert-danger">
+								<div class="alert alert-danger" id="feeresetMsg">
 									<?= $this->session->flashdata('error'); ?>
 								</div>
 								<?php $this->session->unset_userdata('error'); ?>
@@ -227,6 +227,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 					<input type="hidden" id="feedHeads" value="<?= count($data_list) ?>">
 					<input type="hidden" id="routeList" value="<?=count($route_data_list) ?>">
 					<input type="hidden" id="issubmit" value="<?= $issubmit ?>">
+					<input type="hidden" id="isresetfees" value="<?= $isresetfees ?>">
                 </div>
             </div>
         </div>   
@@ -350,10 +351,18 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 	});
 	
 	let issubmit = $('#issubmit').val();
+	let isresetfees = $('#isresetfees').val();
 	if(issubmit == 1)
 	{
 		setTimeout(function () {
 			$('#successMsg').fadeOut('slow');
+		}, 3000);
+	}
+	
+	if(isresetfees == 1)
+	{
+		setTimeout(function () {
+			$('#feeresetMsg').fadeOut('slow');
 		}, 3000);
 	}
 	
