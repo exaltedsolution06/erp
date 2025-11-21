@@ -245,7 +245,6 @@ class Fee_discount extends Admin_Controller {
 		$discount_exists = $this->fee_discount_model->discount_exists($student_session_id);
 		if($discount_exists) {
 			$this->fee_discount_model->remove($student_session_id);
-			$this->session->set_flashdata('error', 'Fees Reset successfully.');
 		}
 		
 		
@@ -302,6 +301,7 @@ class Fee_discount extends Admin_Controller {
 		$data['src_name'] = '';
 		//$data['src_name'] = $student_data['firstname'] ? $student_data['firstname'].' '.$student_data['middlename'].' '.$student_data['lastname'].' s/o '.$student_data['guardian_name'].' ('.$student_data['class'].'-'.$student_data['section'].')' : '';
 		//----------------------------------------
+		$this->session->set_flashdata('error', 'Fees Reset successfully.');
 		$data['issubmit'] = '';
 		$data['isresetfees'] = 1;
         //redirect('admin/fee-discount');
