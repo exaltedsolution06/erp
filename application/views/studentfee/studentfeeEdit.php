@@ -843,6 +843,7 @@ $language_name = $language["short_code"];
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+	// by ES 21-11-2025
 		let fees_received = parseFloat(document.querySelector('[name="fees_received"]').value) || 0;
 		let late_fees = parseFloat(document.querySelector('[name="late_fees"]').value) || 0;
 		
@@ -1562,7 +1563,11 @@ function formatToDisplayDate(inputDateStr) {
             var dis_amt=val1-val2;
             let element = document.getElementById("total_rec_discount_" + id);
             // alert(element);
-            element.value = dis_amt-val3;
+			//alert(val2);alert(dis_amt);alert(val3);
+			if(dis_amt-val3 >= 0)
+			{
+				element.value = dis_amt-val3;
+			}
 
         }
 
@@ -1570,6 +1575,7 @@ function formatToDisplayDate(inputDateStr) {
         document.querySelectorAll('.rec_discount').forEach(el => {
             const val = parseFloat(el.value);
             if (!isNaN(val)) {
+				//alert(val);
                 sum += val;
             }
         });
