@@ -242,7 +242,7 @@ class Fee_discount extends Admin_Controller {
 		$discount_exists = $this->fee_discount_model->discount_exists($student_session_id);
 		if($discount_exists) {
 			$this->fee_discount_model->remove($student_session_id);
-			$this->session->set_flashdata('success', 'Fees Reset successfully.');
+			$this->session->set_flashdata('error', 'Fees Reset successfully.');
 		}
 		
 		
