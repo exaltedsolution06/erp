@@ -1248,7 +1248,6 @@ class Studentfee extends Admin_Controller
         //if(!empty($unique_months)){
 		$action = $this->input->post('action');
 		if(!empty($_POST['months']) || !empty($unique_months)){
-			
 			$monthsPost =$unique_months;
 			if(!empty($_POST['months'])){
 				$monthsPost =$_POST['months'];

@@ -338,7 +338,7 @@ $language_name = $language["short_code"];
                                                 <th><input type="text" style="width: 100px;" class="rec_discount" name="rec_discount[]" id="total_get_discount_<?=$aa?>" oninput="calculateDisData(this,<?=$aa?>)" value="<?=$rec_discount[$row->id];?>"></th>
                                                 <th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id]);?>"></th>
 												
-												<th><?= $total-$received_amount[$row->id] ?></th>
+												<th><?= $total-$rec_discount[$row->id]-($received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id])) ?></th>
                                                 
 												<!--<th><?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?></th>-->
                                             </tr>
@@ -346,7 +346,7 @@ $language_name = $language["short_code"];
                                                 $final_total += $total;
                                                 $aa++;
 												
-												$bal = $bal + $total-$received_amount[$row->id];
+												$bal = $bal + $total-$rec_discount[$row->id]-($received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id]));
                                             }
 
                                             // $aa++;
@@ -839,7 +839,7 @@ $language_name = $language["short_code"];
         </form>
     </div>
 </div>
-<input type="text" name="balc" id="balc" value="<?= $bal ? $bal : 0 ?>">
+<input type="hidden" name="balc" id="balc" value="<?= $bal ? $bal : 0 ?>">
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -849,7 +849,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		let ledger_amt = parseFloat(document.querySelector('[name="ledger_amt"]').value) || 0;
 		
 		let balc = parseFloat(document.querySelector('[name="balc"]').value) || 0;
-		
+		//alert(balc);
 		let sum = parseFloat(fees_received) + parseFloat(late_fees) + parseFloat(ledger_amt);
 		$('#total_fees').val(sum);
 		$('#net_fees').val(sum);
