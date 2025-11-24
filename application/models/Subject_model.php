@@ -156,5 +156,20 @@ class Subject_model extends MY_Model {
 					->num_rows() > 0;
 	}
 
+	public function get_exam_subjects($exam_group_class_batch_exam_id)
+	{
+		$this->db->distinct();
+		$this->db->select('sgs.subject_id');
+		$this->db->from('exam_group_class_batch_exam_students eg');
+		$this->db->join('student_session ss', 'ss.id = eg.student_session_id');
+		$this->db->join('class_sections cs', 'cs.class_id = ss.class_id AND cs.section_id = ss.section_id');
+		$this->db->join('subject_group_class_sections sgcs', 'sgcs.class_section_id = cs.id');
+		$this->db->join('subject_group_subjects sgs', 'sgs.subject_group_id = sgcs.subject_group_id');
+		$this->db->where('eg.exam_group_class_batch_exam_id', $exam_group_class_batch_exam_id);
+
+		$query = $this->db->get();
+
+		return array_column($query->result_array(), 'subject_id');
+	}
 
 }

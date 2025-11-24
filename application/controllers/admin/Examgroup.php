@@ -544,7 +544,8 @@ class Examgroup extends Admin_Controller {
         $data['examgroupDetail'] = $this->examgroup_model->getExamByID($exam_id);
         $data['exam_subjects'] = $this->batchsubject_model->getExamSubjects($exam_id);
         $data['batch_subjects'] = $this->subject_model->get();
-
+        $data['get_exam_subjects'] = $this->subject_model->get_exam_subjects($exam_id);
+		//echo '<pre>';print_r($data['get_exam_subjects']);exit;
         $data['exam_id'] = $exam_id;
         $data['exam_subjects_count'] = count($data['exam_subjects']);
 

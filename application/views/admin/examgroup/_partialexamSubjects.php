@@ -52,6 +52,7 @@
                             <?php
                             if (!empty($batch_subjects)) {
                                 foreach ($batch_subjects as $subject_key => $subject_value) {
+									if(in_array($subject_value['id'], $get_exam_subjects)){
                                     ?>
                                     <option value="<?php echo $subject_value['id'] ?>" <?php echo set_select('subject_' . $count, $subject_value['id'], ($exam_subject_value->subject_id == $subject_value['id']) ? true : false); ?>>
                                         <?php 
@@ -61,6 +62,7 @@
                                         </option>
 
                                     <?php
+									}
                                 }
                             }
                             ?>

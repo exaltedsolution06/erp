@@ -94,8 +94,9 @@
                                     <tr>
                                         <th><?php echo $this->lang->line('subject'); ?></th>
                                         <th><?php echo $this->lang->line('subject_code'); ?></th>
-                                        <th><?php echo $this->lang->line('subject'); ?>
-                                            <?php echo $this->lang->line('type'); ?>
+                                        <th><?php echo $this->lang->line('subject_type_one'); ?>
+                                        </th>
+                                        <th><?php echo $this->lang->line('subject_type'); ?>
                                         </th>
                                         <th class="text-right no-print"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
@@ -108,6 +109,7 @@
                                         <tr>
                                             <td class="mailbox-name"> <?php echo $subject['name'] ?></td>
                                             <td class="mailbox-name"><?php echo $subject['code'] ?></td>
+                                            <td class="mailbox-name"><?php echo ucfirst($subject['type_one']) ?></td>
                                             <td class="mailbox-name"><?php echo ucfirst($subject['type']) ?></td>
                                             <td class="mailbox-date pull-right no-print">
                                                 <?php
