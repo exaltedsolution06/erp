@@ -20,8 +20,11 @@ class Subject extends Admin_Controller {
         $subject_result = $this->subject_model->get();
         $data['subjectlist'] = $subject_result;
         $data['subject_types'] = $this->customlib->subjectType();
-        $this->form_validation->set_rules('name', $this->lang->line('subject_name'), 'trim|required|xss_clean|callback__check_name_exists');
+        $data['subject_types_one'] = $this->customlib->subjectTypeOne();
+        // $this->form_validation->set_rules('name', $this->lang->line('subject_name'), 'trim|required|xss_clean|callback__check_name_exists');
+        $this->form_validation->set_rules('name', $this->lang->line('subject_name'), 'trim|required|xss_clean|callback__check_unique_subject');
         $this->form_validation->set_rules('type', $this->lang->line('type'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('type_one', $this->lang->line('subject_type_one'), 'trim|required|xss_clean');
         if ($this->input->post('code')) {
             $this->form_validation->set_rules('code', $this->lang->line('code'), 'trim|required|callback__check_code_exists');
         }
@@ -34,6 +37,7 @@ class Subject extends Admin_Controller {
                 'name' => $this->input->post('name'),
                 'code' => $this->input->post('code'),
                 'type' => $this->input->post('type'),
+                'type_one' => $this->input->post('type_one'),
             );
             $this->subject_model->add($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
@@ -81,6 +85,35 @@ class Subject extends Admin_Controller {
             return TRUE;
         }
     }
+	
+	public function _check_unique_subject() {
+		$name = $this->input->post('name');
+		$type = $this->input->post('type');
+		$type_one = $this->input->post('type_one');
+
+		$exists = $this->subject_model->check_combination_exists($name, $type, $type_one);
+
+		if ($exists) {
+			$this->form_validation->set_message('_check_unique_subject', $this->lang->line('sub_already_exists'));
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+	public function _check_unique_subject_edit($name, $id) {
+		$type = $this->input->post('type');
+		$type_one = $this->input->post('type_one');
+
+		$exists = $this->subject_model->check_combination_exists_edit($name, $type, $type_one, $id);
+
+		if ($exists) {
+			$this->form_validation->set_message('_check_unique_subject_edit', $this->lang->line('sub_already_exists'));
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+
 
     function edit($id) {
         if (!$this->rbac->hasPrivilege('subject', 'can_edit')) {
@@ -93,7 +126,14 @@ class Subject extends Admin_Controller {
         $subject = $this->subject_model->get($id);
         $data['subject'] = $subject;
         $data['subject_types'] = $this->customlib->subjectType();
-        $this->form_validation->set_rules('name', $this->lang->line('subject'), 'trim|required|xss_clean');
+        $data['subject_types_one'] = $this->customlib->subjectTypeOne();
+        // $this->form_validation->set_rules('name', $this->lang->line('subject'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules(
+			'name',
+			$this->lang->line('subject'),
+			'trim|required|xss_clean|callback__check_unique_subject_edit['.$id.']'
+		);
+
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('layout/header', $data);
             $this->load->view('admin/subject/subjectEdit', $data);
@@ -104,6 +144,7 @@ class Subject extends Admin_Controller {
                 'name' => $this->input->post('name'),
                 'code' => $this->input->post('code'),
                 'type' => $this->input->post('type'),
+                'type_one' => $this->input->post('type_one'),
             );
             $this->subject_model->add($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');

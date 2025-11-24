@@ -35,17 +35,32 @@
                                     <input autofocus="" id="category" name="name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('name', $subject['name']); ?>" />
                                     <span class="text-danger"><?php echo form_error('name'); ?></span>
                                 </div>
-                                <?php
-                                foreach ($subject_types as $subject_type_key => $subject_type_value) {
-                                    ?>
+								<div class="form-group">
+									<label><?php echo $this->lang->line('subject_type_one'); ?></label><small class="req"> *</small><br>
+									<?php
+									foreach ($subject_types_one as $subject_type_key => $subject_type_value) {
+										?>
 
-                                    <label class="radio-inline">
-                                        <input type="radio" value="<?php echo $subject_type_key ?>" name="type" <?php echo set_radio('type', $subject_type_key, (set_value('type', $subject['type']) == $subject_type_key) ? TRUE : FALSE ); ?> ><?php echo $subject_type_value; ?> 
-                                    </label>
-                                    <?php
-                                }
-                                ?>
+										<label class="radio-inline">
+											<input type="radio" value="<?php echo $subject_type_key ?>" name="type_one" <?php echo set_radio('type_one', $subject_type_key, (set_value('type_one', $subject['type_one']) == $subject_type_key) ? TRUE : FALSE ); ?> ><?php echo $subject_type_value; ?> 
+										</label>
+										<?php
+									}
+									?>
+								</div>
+								<div class="form-group">
+									<label><?php echo $this->lang->line('subject_type'); ?></label><small class="req"> *</small><br>
+									<?php
+									foreach ($subject_types as $subject_type_key => $subject_type_value) {
+										?>
 
+										<label class="radio-inline">
+											<input type="radio" value="<?php echo $subject_type_key ?>" name="type" <?php echo set_radio('type', $subject_type_key, (set_value('type', $subject['type']) == $subject_type_key) ? TRUE : FALSE ); ?> ><?php echo $subject_type_value; ?> 
+										</label>
+										<?php
+									}
+									?>
+								</div>
                                 <div class="form-group"><br>
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('subject_code'); ?></label>
                                     <input id="category" name="code" placeholder="" type="text" class="form-control"  value="<?php echo set_value('code', $subject['code']); ?>" />

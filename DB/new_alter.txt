@@ -1,0 +1,1 @@
+ALTER TABLE `subjects` ADD `type_one` VARCHAR(100) NOT NULL AFTER `type`;

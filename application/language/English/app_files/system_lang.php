@@ -1611,7 +1611,7 @@ $lang['android_app_purchase_code_already_registered'] = "Android App Purchase Co
 $lang['please_check'] = "Please check";
 $lang['for_latest_version_update'] = "for latest version update.";
 $lang['awaited'] = "Awaited";
-//added y ES
+//added by ES
 $lang['pan_no'] = 'Pen No';
 $lang['aadhan_no'] = 'Aadhar No.';
 $lang['other_no'] = 'Other No.';
@@ -1631,3 +1631,8 @@ $lang['mother_other_no'] = 'Mother Other No';
 $lang['mother_id_no'] = 'Mother ID No';
 $lang['adm_guardian_is'] = 'Guardian Is';
 $lang['guardian_pic'] = 'Guardian Photo';
+$lang['subject_type'] = 'Subject Type 2';
+$lang['subject_type_one'] = 'Subject Type 1';
+$lang['main'] = 'Main';
+$lang['optional'] = 'Optional';
+$lang['sub_already_exists'] = 'This subject already exists with same type 1 and 2.';

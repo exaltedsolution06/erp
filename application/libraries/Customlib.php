@@ -67,6 +67,15 @@ class Customlib
         // $subject_type['both']      = $this->CI->lang->line('both');
         return $subject_type;
     }
+    public function subjectTypeOne()
+    {
+        $subject_type = array();
+        // $subject_type['none']      = $this->CI->lang->line('none');
+        $subject_type['main']    = $this->CI->lang->line('main');
+        $subject_type['optional'] = $this->CI->lang->line('optional');
+        // $subject_type['both']      = $this->CI->lang->line('both');
+        return $subject_type;
+    }
 
     public function getGender()
     {

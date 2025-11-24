@@ -137,5 +137,24 @@ class Subject_model extends MY_Model {
             return FALSE;
         }
     }
+	
+	public function check_combination_exists($name, $type, $type_one) {
+		return $this->db->where('name', $name)
+						->where('type', $type)
+						->where('type_one', $type_one)
+						->get('subjects')->num_rows() > 0;
+	}
+	
+	public function check_combination_exists_edit($name, $type, $type_one, $id)
+	{
+		return $this->db
+					->where('name', $name)
+					->where('type', $type)
+					->where('type_one', $type_one)
+					->where('id !=', $id)
+					->get('subjects')
+					->num_rows() > 0;
+	}
+
 
 }
