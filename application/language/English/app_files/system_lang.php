@@ -1636,3 +1636,6 @@ $lang['subject_type_one'] = 'Subject Type 1';
 $lang['main'] = 'Main';
 $lang['optional'] = 'Optional';
 $lang['sub_already_exists'] = 'This subject already exists with same type 1 and 2.';
+$lang['co_scholastic'] = 'Co- Scholastic';
+$lang['areas'] = 'Areas';
+$lang['exam_group'] = 'Exam Group';

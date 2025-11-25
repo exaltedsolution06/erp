@@ -118,6 +118,7 @@ class Coscholasticareas extends Admin_Controller {
         $data['examType'] = $this->exam_type;
         $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('exam_type', $this->lang->line('exam') . " " . $this->lang->line('type'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('exam_group', $this->lang->line('exam_group'), 'trim|required|xss_clean');
 
 
 
@@ -130,6 +131,7 @@ class Coscholasticareas extends Admin_Controller {
                 'exam_type' => $this->input->post('exam_type'),
                 'is_active' => $is_active,
                 'description' => $this->input->post('description'),
+                'exam_group' => $this->input->post('exam_group'),
             );
 
            $insert_id = $this->examgroup_model->add_c($data);
@@ -138,7 +140,9 @@ class Coscholasticareas extends Admin_Controller {
             redirect('admin/coscholasticareas/index');
         }
         $examgroup_result = $this->examgroup_model->get_c();
+		// echo '<pre>';print_r($examgroup_result);exit;
         $data['examgrouplist'] = $examgroup_result;
+        $data['exam_group_list'] = $this->examgroup_model->get();
         $this->load->view('layout/header', $data);
         $this->load->view('admin/coscholasticareas/examgroupList', $data);
         $this->load->view('layout/footer', $data);
@@ -248,11 +252,13 @@ class Coscholasticareas extends Admin_Controller {
         $data['examType'] = $this->exam_type;
         $examgroup_result = $this->examgroup_model->get_c();
         $data['examgrouplist'] = $examgroup_result;
+        $data['exam_group_list'] = $this->examgroup_model->get();
 
        
 
 
         $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('exam_group', $this->lang->line('exam_group'), 'trim|required|xss_clean');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('layout/header', $data);
@@ -267,6 +273,7 @@ class Coscholasticareas extends Admin_Controller {
                 'exam_type' => $this->input->post('exam_type'),
                 'is_active' => $is_active,
                 'description' => $this->input->post('description'),
+                'exam_group' => $this->input->post('exam_group'),
             );
             $insert_id = $this->examgroup_model->add_c($data);
 

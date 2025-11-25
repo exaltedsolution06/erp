@@ -32,7 +32,7 @@ class Examgroup_model extends MY_Model {
         }
     }
 
-     public function get_c($id = null) {
+    /*public function get_c($id = null) {
 
         $this->db->select('coscholasticareas.*,(select count(*) from exam_group_class_batch_exams WHERE exam_group_class_batch_exams.exam_group_id=coscholasticareas.id) as `counter`')->from('coscholasticareas');
         if ($id != null) {
@@ -46,7 +46,35 @@ class Examgroup_model extends MY_Model {
         } else {
             return $query->result();
         }
-    }
+    }*/
+	public function get_c($id = null)
+	{
+		$this->db->select('
+			coscholasticareas.*,
+			exam_groups.name as exam_group_name,
+			(SELECT COUNT(*) 
+			 FROM exam_group_class_batch_exams 
+			 WHERE exam_group_class_batch_exams.exam_group_id = coscholasticareas.exam_group
+			) as counter
+		');
+		$this->db->from('coscholasticareas');
+		$this->db->join('exam_groups', 'exam_groups.id = coscholasticareas.exam_group', 'left');
+
+		if ($id != null) {
+			$this->db->where('coscholasticareas.id', $id);
+		} else {
+			$this->db->order_by('coscholasticareas.id');
+		}
+
+		$query = $this->db->get();
+
+		if ($id != null) {
+			return $query->row();
+		} else {
+			return $query->result();
+		}
+	}
+
 
 
 

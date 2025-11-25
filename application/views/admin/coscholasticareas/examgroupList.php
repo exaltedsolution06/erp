@@ -12,7 +12,7 @@
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title"> Add Co- Scholastic Areas</h3>
+                            <h3 class="box-title"> <?php echo $this->lang->line('add') . " " . $this->lang->line('co_scholastic') . " " . $this->lang->line('areas') ?></h3>
                         </div><!-- /.box-header -->
                         <form id="form1" action="<?php echo site_url('admin/coscholasticareas') ?>"  id="examgroupform" name="examgroupform" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                             <div class="box-body">
@@ -55,6 +55,21 @@
                                     <textarea class="form-control" id="description" name="description" placeholder="" rows="3"><?php echo set_value('description'); ?></textarea>
                                     <span class="text-danger"></span>
                                 </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1"> <?php echo $this->lang->line('exam') . " " . $this->lang->line('group') ?></label> <small class="req">*</small>
+                                    <select id="name" name="exam_group" placeholder="" type="text" class="form-control">
+                                        <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                        <?php
+                                        foreach ($exam_group_list as $examGroup_value) {
+                                            ?>
+                                            <option value="<?php echo $examGroup_value->id; ?>"><?php echo $examGroup_value->name; ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+
+                                    <span class="text-danger"><?php echo form_error('exam_group'); ?></span>
+                                </div>
                             </div><!-- /.box-body -->
 
                             <div class="box-footer">
@@ -89,6 +104,7 @@
                                         <th><?php echo $this->lang->line('name'); ?></th>
                                         <th><?php echo $this->lang->line('no') . " " . $this->lang->line('of') . " " . $this->lang->line('exams'); ?></th>
                                         <th><?php echo $this->lang->line('exam') . " " . $this->lang->line('type'); ?></th>
+                                        <th><?php echo $this->lang->line('exam') . " " . $this->lang->line('group'); ?></th>
                                         <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
                                 </thead>
@@ -126,6 +142,10 @@
                                                 </td>
                                                 <td class="mailbox-name">
                                                     <?php echo $examType[$examgroup->exam_type]; ?>
+
+                                                </td>
+                                                <td class="mailbox-name">
+                                                    <?php echo $examgroup->exam_group_name; ?>
 
                                                 </td>
 
