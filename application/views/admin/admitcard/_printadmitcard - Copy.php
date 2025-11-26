@@ -1,8 +1,5 @@
 <style type="text/css">
     @media print {
-		.mark-container {
-			page-break-inside: avoid;
-		}
         .pagebreak { page-break-before: always; } /* page-break-after works, as well */
     }
 
@@ -15,7 +12,7 @@
     .denifittable td {padding: 10px 10px; font-weight: bold;border-collapse: collapse;border-left: 1px solid #999;}
 
     .mark-container{
-        width: 1000px;position: relative;z-index: 2; margin: 0 auto; padding: 10px 30px;}
+        width: 1000px;position: relative;z-index: 2; margin: 0 auto; padding: 20px 30px;}
 
     .tcmybg {
         background:top center;
@@ -106,12 +103,12 @@ if ($admitcard->right_logo != "") {
 if ($admitcard->exam_name) {
             ?>
                     <tr>
-                        <td valign="top" style="text-align: center; text-transform: capitalize; text-decoration: underline; font-weight: bold; padding-top: 0;"><?php echo $admitcard->exam_name; ?></td>
+                        <td valign="top" style="text-align: center; text-transform: capitalize; text-decoration: underline; font-weight: bold; padding-top: 5px;"><?php echo $admitcard->exam_name; ?></td>
                     </tr>
                     <?php
 }
         ?>
-                <tr><td valign="top" height="5"></td></tr>
+                <tr><td valign="top" height="10"></td></tr>
                 <tr>
                     <td valign="top">
                         <table cellpadding="0" cellspacing="0" width="100%" style="text-transform: uppercase;">
@@ -263,7 +260,7 @@ if ($student_value->image != '') {
                         </table>
                     </td>
                 </tr>
-                <tr><td valign="top" height="5"></td></tr>
+                <tr><td valign="top" height="10"></td></tr>
                 <tr>
                     <td valign="top">
                         <table cellpadding="0" cellspacing="0" width="100%" class="denifittable">
@@ -298,10 +295,10 @@ if ($admitcard->content_footer != "") {
                     <?php
 }
         ?>
+                <tr><td valign="top" height="20px"></td></tr>
                 <?php
 if ($admitcard->sign != "") {
             ?>
-                <tr><td valign="top" height="20px"></td></tr>
                     <tr>
                         <td align="right" valign="top">
                             <table cellpadding="0" cellspacing="0" width="100%" style="text-align: center;">
@@ -318,6 +315,7 @@ if ($admitcard->sign != "") {
         ?>
             </table>
         </div>
+        <div class="pagebreak"> </div>
         <?php
 }
 }
