@@ -152,7 +152,7 @@
                                                     <th><?php echo $this->lang->line('father_name'); ?></th>
                                                     <th><?php echo $this->lang->line('date_of_birth'); ?></th>
                                                     <th><?php echo $this->lang->line('gender'); ?></th>
-                                                    <th><?php echo $this->lang->line('category'); ?></th>
+                                                    <th><?php echo $this->lang->line('fee_category'); ?></th>
                                                     <th class=""><?php echo $this->lang->line('mobile_no'); ?></th>
 
                                                 </tr>
