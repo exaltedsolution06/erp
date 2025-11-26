@@ -90,6 +90,14 @@ class Examgroup_model extends MY_Model {
 
         return $query->row();
     }
+    public function getExamByID_c($id = null) {
+
+        $sql = "SELECT coscholasticareas.name as `exam_group_name`,coscholasticareas.exam_type as `exam_group_type`,coscholasticareas.id as `exam_group_id`,exam_group_class_batch_exams.*,sessions.session FROM `exam_group_class_batch_exams` INNER JOIN coscholasticareas on coscholasticareas.id= exam_group_class_batch_exams.exam_group_id INNER JOIN sessions on sessions.id = exam_group_class_batch_exams.session_id WHERE exam_group_class_batch_exams.id=" . $this->db->escape($id);
+        // $this->db->select('exam_group_class_batch_exams.*')->from('exam_group_class_batch_exams');
+        $query = $this->db->query($sql);
+
+        return $query->row();
+    }
 
 
      public function getExamByID_1($id = null) {

@@ -57,7 +57,7 @@
                             <table class="table table-hover table-striped table-bordered loading1" id="exam_table">
                                 <thead>
                                     <tr>
-                                        <th><?php echo $this->lang->line('name'); ?></th>
+                                        <th><?php echo $this->lang->line('assessment'); ?></th>
                                         <th><?php echo $this->lang->line('session') ?></th>
                                         <th><?php echo $this->lang->line('subjects') . " " . $this->lang->line('included'); ?></th>
                                         <th class="text text-center"><?php echo $this->lang->line('status'); ?></th>
@@ -920,7 +920,7 @@ if (set_value('class_id') == $class['id']) {
 		$('#class_id').html('<option value="">Loading...</option>');
 
 		$.ajax({
-			url: "<?php echo site_url('admin/coscholasticareas/get_exam_classes'); ?>",
+			url: "<?php echo site_url('admin/examgroup/get_exam_classes'); ?>",
 			type: "POST",
 			data: { exam_id: exam_id },
 			dataType: "json",

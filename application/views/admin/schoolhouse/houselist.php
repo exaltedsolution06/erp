@@ -69,6 +69,7 @@
                             <table class="table table-striped table-bordered table-hover example">
                                 <thead>
                                     <tr>
+                                        <th><?php echo $this->lang->line('id'); ?></th>
                                         <th><?php echo $this->lang->line('name'); ?></th>
                                         <th><?php echo $this->lang->line('description'); ?></th>
                                         <!--<th><?php echo $this->lang->line('house') . " " . $this->lang->line('id'); ?></th>-->
@@ -81,6 +82,7 @@
                                     foreach ($houselist as $house) {
                                         ?>
                                         <tr>
+                                            <td class="mailbox-name"><?php echo $house['id'] ?></td>
                                             <td class="mailbox-name"><?php echo $house['house_name'] ?></td>
                                             <td class="mailbox-name"><?php echo $house['description'] ?></td>
                                             <!--<td class="mailbox-name"><?php echo $house['id'] ?></td>-->
