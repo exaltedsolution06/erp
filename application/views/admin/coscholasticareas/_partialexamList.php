@@ -34,10 +34,18 @@ foreach ($examList as $exam_key => $exam_value) {
                     }
             if ($this->rbac->hasPrivilege('exam_subject', 'can_view')) {
                         ?>
-                <button class="btn btn-default btn-xs" id="subjectModalButton" data-toggle="tooltip"   data-exam_id="<?php echo $exam_value->id; ?>"  title="<?php echo $this->lang->line('exam') . " Terms" ?>"><i class="fa fa-book" aria-hidden="true"></i></button>
+                <!--<button class="btn btn-default btn-xs" id="subjectModalButton" data-toggle="tooltip"   data-exam_id="<?php echo $exam_value->id; ?>"  title="<?php echo $this->lang->line('exam') . " Terms" ?>"><i class="fa fa-book" aria-hidden="true"></i></button>-->
                 <?php
             }
             
+			if ($this->rbac->hasPrivilege('exam_marks', 'can_view')) {
+                ?>
+                <!--<button type="button" class="btn btn-default btn-xs examMarksSubject" id="load" data-toggle="tooltip"  data-recordid="<?php echo $exam_value->id; ?>" title="<?php echo $this->lang->line('exam_marks'); ?>" data-loading-text="<i class='fa fa-spinner fa-spin'></i>"><i class="fa fa-newspaper-o"></i></button>-->
+				<span data-toggle="tooltip" title="<?php echo $this->lang->line('exam_marks'); ?>">
+                    <a href="#" class="btn btn-default btn-xs" data-exam_id="<?php echo $exam_value->id; ?>" data-toggle="modal" data-target="#subjectModal"><i class="fa fa-newspaper-o"></i></a>
+                </span>
+                <?php
+            }
             
             if ($this->rbac->hasPrivilege('exam', 'can_edit')) {
                 ?>

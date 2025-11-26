@@ -89,6 +89,67 @@ class Examgroupstudent_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->result_array();
     }
+	public function examGroupSubjectResult_c($class_id, $section_id, $session_id, $exam_id)
+	{
+		$sql = "SELECT 
+					exam_group_class_batch_exam_students.id AS exam_group_class_batch_exam_students_id,
+					exam_group_class_batch_exam_students.roll_no AS exam_roll_no,
+					IFNULL(exam_group_exam_results_coscholastic.id, 0) AS exam_group_exam_result_id,
+					IFNULL(exam_group_exam_results_coscholastic.attendence, '') AS exam_group_exam_result_attendance,
+					IFNULL(exam_group_exam_results_coscholastic.get_marks, '') AS exam_group_exam_result_get_marks,
+					IFNULL(exam_group_exam_results_coscholastic.note, '') AS exam_group_exam_result_note,
+					students.id AS student_id,
+					students.admission_no,
+					students.roll_no,
+					students.admission_date,
+					students.firstname,
+					students.middlename,
+					students.lastname,
+					students.image,
+					students.mobileno,
+					students.email,
+					students.state,
+					students.city,
+					students.pincode,
+					students.religion,
+					students.dob,
+					students.current_address,
+					students.permanent_address,
+					students.category_id,
+					IFNULL(categories.category, '') AS category,
+					students.adhar_no,
+					students.samagra_id,
+					students.bank_account_no,
+					students.bank_name,
+					students.ifsc_code,
+					students.guardian_name,
+					students.guardian_relation,
+					students.guardian_phone,
+					students.guardian_address,
+					students.is_active,
+					students.father_name,
+					students.gender
+				FROM exam_group_class_batch_exam_students
+				INNER JOIN student_session 
+					ON student_session.id = exam_group_class_batch_exam_students.student_session_id
+				INNER JOIN students 
+					ON students.id = student_session.student_id
+				LEFT JOIN categories 
+					ON categories.id = students.category_id
+				LEFT JOIN exam_group_exam_results_coscholastic 
+					ON exam_group_exam_results_coscholastic.exam_group_class_batch_exam_student_id = exam_group_class_batch_exam_students.id
+				    AND exam_group_exam_results_coscholastic.exam_group_class_batch_exam_subject_id = " . $this->db->escape($exam_id) . "	
+				WHERE student_session.class_id = " . $this->db->escape($class_id) . "
+				  AND student_session.section_id = " . $this->db->escape($section_id) . "
+				  AND student_session.session_id = " . $this->db->escape($session_id) . "
+				  AND exam_group_class_batch_exam_students.exam_group_class_batch_exam_id = " . $this->db->escape($exam_id) . "
+				  GROUP BY students.id
+				ORDER BY students.id ASC";
+
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
 
     public function add_result($insert_array) {
 
@@ -112,6 +173,47 @@ class Examgroupstudent_model extends CI_Model {
                 } else {
 
                     $this->db->insert('exam_group_exam_results', $student_value);
+                }
+            }
+        }
+
+        $this->db->trans_complete(); # Completing transaction
+
+        /* Optional */
+
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            # Everything is Perfect.
+            # Committing data to the database.
+            $this->db->trans_commit();
+            return true;
+        }
+    }
+    public function add_result_c($insert_array) {
+
+        $this->db->trans_start(); # Starting Transaction
+        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+
+        if (!empty($insert_array)) {
+            foreach ($insert_array as $student_key => $student_value) {
+
+                $student_value['exam_group_class_batch_exam_subject_id '];
+                $student_value['exam_group_class_batch_exam_student_id'];
+
+                $this->db->where('exam_group_class_batch_exam_subject_id ', $student_value['exam_group_class_batch_exam_subject_id ']);
+                $this->db->where('exam_group_class_batch_exam_student_id', $student_value['exam_group_class_batch_exam_student_id']);
+                $q = $this->db->get('exam_group_exam_results_coscholastic');
+
+                if ($q->num_rows() > 0) {
+                    $update_result = $q->row();
+                    $this->db->where('id', $update_result->id);
+                    $this->db->update('exam_group_exam_results_coscholastic', $student_value);
+                } else {
+
+                    $this->db->insert('exam_group_exam_results_coscholastic', $student_value);
                 }
             }
         }

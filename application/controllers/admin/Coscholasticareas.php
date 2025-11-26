@@ -321,7 +321,7 @@ class Coscholasticareas extends Admin_Controller {
         $this->form_validation->set_error_delimiters('<p>', '</p>');
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'required|trim|xss_clean');
-        $this->form_validation->set_rules('subject_id', $this->lang->line('subject'), 'required|trim|xss_clean');
+        // $this->form_validation->set_rules('subject_id', $this->lang->line('subject'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('session_id', $this->lang->line('session'), 'required|trim|xss_clean');
         $userdata = $this->customlib->getUserData();
         $role_id = $userdata["role_id"];
@@ -337,7 +337,7 @@ class Coscholasticareas extends Admin_Controller {
                 'class_id' => form_error('class_id'),
                 'section_id' => form_error('section_id'),
                 'session_id' => form_error('session_id'),
-                'subject_id' => form_error('subject_id'),
+                // 'subject_id' => form_error('subject_id'),
             );
             $array = array('status' => 0, 'error' => $data);
             echo json_encode($array);
@@ -347,23 +347,25 @@ class Coscholasticareas extends Admin_Controller {
             echo json_encode($array);
         } else {
 
-            $exam_subject_id = $this->input->post('subject_id');
-            $data['exam_group_class_batch_exam_subject_id'] = $exam_subject_id;
+            // $exam_subject_id = $this->input->post('subject_id');
+            // $data['exam_group_class_batch_exam_subject_id'] = $exam_subject_id;
             $class_id = $this->input->post('class_id');
             $section_id = $this->input->post('section_id');
+            $exam_id = $this->input->post('exam_id');
             $session_id = $this->input->post('session_id');
             $data['class_id'] = $this->input->post('class_id');
             $data['section_id'] = $this->input->post('section_id');
             $data['session_id'] = $this->input->post('session_id');
-            $resultlist = $this->examgroupstudent_model->examGroupSubjectResult($exam_subject_id, $class_id, $section_id, $session_id);
+            $data['exam_id'] = $exam_id;
+            $resultlist = $this->examgroupstudent_model->examGroupSubjectResult_c($class_id, $section_id, $session_id, $exam_id);
 
-            $subject_detail = $this->batchsubject_model->getExamSubject($exam_subject_id);
+            // $subject_detail = $this->batchsubject_model->getExamSubject($exam_subject_id);
  
-            $data['subject_detail'] = $subject_detail;
+            // $data['subject_detail'] = $subject_detail;
             $data['attendence_exam'] = $this->attendence_exam;
             $data['resultlist'] = $resultlist;
             $data['sch_setting']  =$this->sch_setting_detail;
-            $student_exam_page = $this->load->view('admin/examgroup/_partialstudentmarkEntry', $data, true);
+            $student_exam_page = $this->load->view('admin/coscholasticareas/_partialstudentmarkEntry', $data, true);
 
             $array = array('status' => '1', 'error' => '', 'page' => $student_exam_page);
             echo json_encode($array);
@@ -470,16 +472,16 @@ class Coscholasticareas extends Admin_Controller {
     }
 
     public function entrymarks() {
-        $this->form_validation->set_error_delimiters('', '');
-        $this->form_validation->set_rules('exam_group_class_batch_exam_subject_id', 'Subject', 'required|trim|xss_clean');
-
-        if ($this->form_validation->run() == false) {
+        // $this->form_validation->set_error_delimiters('', '');
+        // $this->form_validation->set_rules('exam_group_class_batch_exam_subject_id', 'Subject', 'required|trim|xss_clean');
+		
+        /*if ($this->form_validation->run() == false) {
             $data = array(
                 'exam_group_class_batch_exam_subject_id' => form_error('exam_group_class_batch_exam_subject_id'),
             );
             $array = array('status' => 0, 'error' => $data);
             echo json_encode($array);
-        } else {
+        } else {*/
 
             $exam_group_student_id = $this->input->post('exam_group_student_id');
             $insert_array = array();
@@ -493,7 +495,7 @@ class Coscholasticareas extends Admin_Controller {
                         $attendance = "present";
                     }
                     $array = array(
-                        'exam_group_class_batch_exam_subject_id' => $this->input->post('exam_group_class_batch_exam_subject_id'),
+                        'exam_group_class_batch_exam_subject_id ' => $this->input->post('exam_id'),
                         'exam_group_class_batch_exam_student_id' => $exam_group_student_value,
                         'attendence' => $attendance,
                         'get_marks' => $this->input->post('exam_group_student_mark_' . $exam_group_student_value),
@@ -503,10 +505,10 @@ class Coscholasticareas extends Admin_Controller {
                 }
             }
 
-            $this->examgroupstudent_model->add_result($insert_array);
+            $this->examgroupstudent_model->add_result_c($insert_array);
             $array = array('status' => '1', 'error' => '', 'message' => $this->lang->line('success_message'));
             echo json_encode($array);
-        }
+        // }
     }
 
     public function getexam() {
@@ -615,6 +617,15 @@ class Coscholasticareas extends Admin_Controller {
         $data['subject_page'] = $this->load->view('admin/coscholasticareas/_getSubjectByExam', $data, true);
         echo json_encode($data);
     }
+
+	public function get_exam_classes()
+	{
+		$exam_id = $this->input->post('exam_id');
+
+		$classes = $this->subject_model->get_exam_classes($exam_id);
+
+		echo json_encode($classes);
+	}
 
     public function addexamsubject() {
 
