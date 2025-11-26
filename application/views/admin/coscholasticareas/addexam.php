@@ -55,7 +55,7 @@
                                     <tr>
                                         <th><?php echo $this->lang->line('name'); ?></th>
                                         <th><?php echo $this->lang->line('session') ?></th>
-                                        <th><?php echo $this->lang->line('subjects') . " " . $this->lang->line('included'); ?></th>
+                                        <!--<th><?php echo $this->lang->line('subjects') . " " . $this->lang->line('included'); ?></th>-->
                                         <th class="text text-center"><?php echo $this->lang->line('status'); ?></th>
                                             <th class="text text-center"><?php echo $this->lang->line('publish')." ".$this->lang->line('result'); ?></th>
                                         <th class=""><?php echo $this->lang->line('description') ?></th>
