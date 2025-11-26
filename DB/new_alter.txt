@@ -2,3 +2,17 @@ ALTER TABLE `subjects` ADD `type_one` VARCHAR(100) NOT NULL AFTER `type`;
 
 DELETE FROM logs WHERE `logs`.`id` = 0"
 ALTER TABLE `logs` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT; 
+
+ALTER TABLE `coscholasticareas` ADD `exam_group` INT(11) NULL DEFAULT NULL AFTER `description`;
+
+
+New table - 
+1) exam_group_exam_results_coscholastic
+
+
+
+
+======================================================================
+No required column table
+'exam_group_d' column not required in 'exam_group_class_batch_exams' table.
+

@@ -907,12 +907,33 @@ if (set_value('class_id') == $class['id']) {
     $('#subjectModal').on('shown.bs.modal', function (e) {
         var subject_id = $(e.relatedTarget).data('subject_id');
         var subject_name = $(e.relatedTarget).data('subject_name');
-         var teachersubject_id = $(e.relatedTarget).data('teachersubject_id');
+        var teachersubject_id = $(e.relatedTarget).data('teachersubject_id');
+		var exam_id = $(e.relatedTarget).data('exam_id');
+		
         $('.subjectmodal_header').html("").html(subject_name);
         $('.marksEntryForm').html("");
         $('.subject_id').val("").val(subject_id);
         $('.teachersubject_id').val("").val(teachersubject_id);
         $(e.currentTarget).find('input[name="subject_name"]').val(subject_name);
+		
+		// Load Class list exam-wise
+		$('#class_id').html('<option value="">Loading...</option>');
+
+		$.ajax({
+			url: "<?php echo site_url('admin/coscholasticareas/get_exam_classes'); ?>",
+			type: "POST",
+			data: { exam_id: exam_id },
+			dataType: "json",
+			success: function (response) {
+
+				$('#class_id').html('<option value=""><?php echo $this->lang->line('select'); ?></option>');
+
+				$.each(response, function (i, item) {
+					console.log(item);
+					$('#class_id').append('<option value="'+item.id+'">'+item.class+'</option>');
+				});
+			}
+		});
     })
 
     $('#subjectModal').on('hidden.bs.modal', function () {

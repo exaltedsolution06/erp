@@ -568,9 +568,19 @@ class Examgroup extends Admin_Controller {
         $session = $this->session_model->get();
         $data['sessionlist'] = $session;
         $data['current_session'] = $this->sch_current_session;
+        $data['recordid'] = $id;
         $data['subject_page'] = $this->load->view('admin/examgroup/_getSubjectByExam', $data, true);
         echo json_encode($data);
     }
+	
+	public function get_exam_classes()
+	{
+		$exam_id = $this->input->post('exam_id');
+
+		$classes = $this->subject_model->get_exam_classes($exam_id);
+
+		echo json_encode($classes);
+	}
 
     public function addexamsubject() {
 

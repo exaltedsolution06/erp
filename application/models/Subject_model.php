@@ -171,5 +171,29 @@ class Subject_model extends MY_Model {
 
 		return array_column($query->result_array(), 'subject_id');
 	}
+	
+	public function get_exam_classes($exam_group_class_batch_exam_id)
+	{
+		$this->db->distinct();
+		$this->db->select('ss.class_id');
+		$this->db->from('exam_group_class_batch_exam_students eg');
+		$this->db->join('student_session ss', 'ss.id = eg.student_session_id');
+		$this->db->where('eg.exam_group_class_batch_exam_id', $exam_group_class_batch_exam_id);
+
+		$query = $this->db->get();
+
+		$class_ids = array_column($query->result_array(), 'class_id');
+
+		if (empty($class_ids)) {
+			return [];
+		}
+		
+		// Step 2: Fetch class names based on class IDs
+		$this->db->select('id, class');
+		$this->db->from('classes');
+		$this->db->where_in('id', $class_ids);
+
+		return $this->db->get()->result();
+	}
 
 }

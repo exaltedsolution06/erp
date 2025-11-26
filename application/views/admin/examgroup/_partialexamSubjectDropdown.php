@@ -9,11 +9,13 @@ if (empty($batch_subjects)) {
     <?php
     if (!empty($batch_subjects)) {
         foreach ($batch_subjects as $subject_key => $subject_value) {
+			if(in_array($subject_value['id'], $get_exam_subjects)){
           $sub_code=($subject_value['code'] != "") ? " (".$subject_value['code'].")":"";
             ?>
             <option value="<?php echo $subject_value['id'] ?>"><?php 
             echo $subject_value['name'].$sub_code; ?></option>
             <?php
+			}
         }
     }
 }

@@ -2,7 +2,7 @@
 <?php if ($this->rbac->hasPrivilege('marks_import', 'can_view')) {
     ?>
 
-    <div class="row">   
+    <!--<div class="row">   
         <div class="col-md-9"> 
             <form method="POST" enctype="multipart/form-data" id="fileUploadForm">
 
@@ -18,14 +18,14 @@
     <div class="col-md-3"> 
         <a class="btn btn-primary pull-right" href="<?php echo site_url('admin/examgroup/exportformat') ?>" target="_blank"><i class="fa fa-download"></i> <?php echo $this->lang->line('export') . " " . $this->lang->line('sample'); ?></a>
     </div>
-    </div>    
+    </div>-->    
     <?php
 }
 ?>
 
 
-<form method="post" action="<?php echo site_url('admin/examgroup/entrymarks') ?>" id="assign_form1111">
-    <input type="hidden" id="max_mark" value="<?php echo $subject_detail->max_marks; ?>">
+<form method="post" action="<?php echo site_url('admin/coscholasticareas/entrymarks') ?>" id="assign_form1111">
+    
     <?php
     if (isset($resultlist) && !empty($resultlist)) {
         ?>
@@ -35,7 +35,7 @@
 
 
 
-                <input type="hidden" name="exam_group_class_batch_exam_subject_id" value="<?php echo $exam_group_class_batch_exam_subject_id; ?>">
+                <input type="hidden" name="exam_id" value="<?php echo $exam_id ?>">
                 <div class="table-responsive">
 
                     <table class="table table-striped">
@@ -88,7 +88,7 @@
 
                                     </div>
                                 </td>
-                                <td> <input type="number" class="marksssss form-control" name="exam_group_student_mark_<?php echo $student['exam_group_class_batch_exam_students_id']; ?>" value="<?php echo $student['exam_group_exam_result_get_marks']; ?>" step="any"></td>
+                                <td> <input type="text" class="marksssss form-control" name="exam_group_student_mark_<?php echo $student['exam_group_class_batch_exam_students_id']; ?>" value="<?php echo $student['exam_group_exam_result_get_marks']; ?>" step="any"></td>
 
                                 <td> <input type="text" class="form-control note" name="exam_group_student_note_<?php echo $student['exam_group_class_batch_exam_students_id']; ?>" value="<?php echo $student['exam_group_exam_result_note']; ?>"></td>
 

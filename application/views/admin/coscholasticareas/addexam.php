@@ -211,8 +211,9 @@ foreach ($sessionlist as $session) {
                 <h4 class="modal-title subjectmodal_header"></h4>
             </div>
             <div class="modal-body">
-                <form role="form" id="searchStudentForm" action="<?php echo site_url('admin/examgroup/subjectstudent') ?>" method="post" class="mb10">
+                <form role="form" id="searchStudentForm" action="<?php echo site_url('admin/coscholasticareas/subjectstudent') ?>" method="post" class="mb10">
 
+                    <input type="hidden" name="exam_id" value="0" class="exam_id">
                     <input type="hidden" name="subject_id" value="0" class="subject_id">
                     <input type="hidden" name="teachersubject_id" value="0" class="teachersubject_id">
                     
@@ -976,11 +977,32 @@ if (set_value('class_id') == $class['id']) {
         var subject_id = $(e.relatedTarget).data('subject_id');
         var subject_name = $(e.relatedTarget).data('subject_name');
          var teachersubject_id = $(e.relatedTarget).data('teachersubject_id');
+		var exam_id = $(e.relatedTarget).data('exam_id');
         $('.subjectmodal_header').html("").html(subject_name);
         $('.marksEntryForm').html("");
         $('.subject_id').val("").val(subject_id);
         $('.teachersubject_id').val("").val(teachersubject_id);
+        $('.exam_id').val("").val(exam_id);
         $(e.currentTarget).find('input[name="subject_name"]').val(subject_name);
+		
+		// Load Class list exam-wise
+		$('#class_id').html('<option value="">Loading...</option>');
+
+		$.ajax({
+			url: "<?php echo site_url('admin/examgroup/get_exam_classes'); ?>",
+			type: "POST",
+			data: { exam_id: exam_id },
+			dataType: "json",
+			success: function (response) {
+
+				$('#class_id').html('<option value=""><?php echo $this->lang->line('select'); ?></option>');
+
+				$.each(response, function (i, item) {
+					console.log(item);
+					$('#class_id').append('<option value="'+item.id+'">'+item.class+'</option>');
+				});
+			}
+		});
     })
 
     $('#subjectModal').on('hidden.bs.modal', function () {
@@ -988,6 +1010,7 @@ if (set_value('class_id') == $class['id']) {
         $('.subjectmodal_header').html("");
         $('.marksEntryForm').html("");
         $('.subject_id').val("");
+        $('.exam_id').val("");
         $("#searchStudentForm").find('input:text,select,textarea').val('');
         $('#section_id').find('option').not(':first').remove();
         $('#session_id').val(current_session);
@@ -1115,7 +1138,7 @@ if (set_value('class_id') == $class['id']) {
                 $(this).rules("add",
                         {
                             required: true,
-                            uniqueUserName: true,
+                            // uniqueUserName: true,
                             messages: {
                                 required: "Required",
                             }
