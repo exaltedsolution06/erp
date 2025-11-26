@@ -4,3 +4,10 @@ ALTER TABLE `coscholasticareas` ADD `exam_group` INT(11) NULL DEFAULT NULL AFTER
 
 New table - 
 1) exam_group_exam_results_coscholastic
+
+
+
+
+======================================================================
+No required column table
+'exam_group_d' column not required in 'exam_group_class_batch_exams' table.
