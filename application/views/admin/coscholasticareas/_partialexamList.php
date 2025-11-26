@@ -9,9 +9,9 @@ foreach ($examList as $exam_key => $exam_value) {
             <?php echo $exam_value->session; ?>
         </td>
 
-        <td>
+        <!--<td>
             <?php echo $exam_value->total_subjects; ?>
-        </td>
+        </td>-->
 
         <td class="text text-center">
             <?php echo ($exam_value->is_active == 1) ? "<i class='fa fa-check-square-o'></i>" : "<i class='fa fa-exclamation-circle'></i>"; ?>
@@ -42,7 +42,7 @@ foreach ($examList as $exam_key => $exam_value) {
                 ?>
                 <!--<button type="button" class="btn btn-default btn-xs examMarksSubject" id="load" data-toggle="tooltip"  data-recordid="<?php echo $exam_value->id; ?>" title="<?php echo $this->lang->line('exam_marks'); ?>" data-loading-text="<i class='fa fa-spinner fa-spin'></i>"><i class="fa fa-newspaper-o"></i></button>-->
 				<span data-toggle="tooltip" title="<?php echo $this->lang->line('exam_marks'); ?>">
-                    <a href="#" class="btn btn-default btn-xs" data-exam_id="<?php echo $exam_value->id; ?>" data-toggle="modal" data-target="#subjectModal"><i class="fa fa-newspaper-o"></i></a>
+                    <a href="#" class="btn btn-default btn-xs" data-subject_name="<?php echo $exam_value->exam; ?>" data-exam_id="<?php echo $exam_value->id; ?>" data-toggle="modal" data-target="#subjectModal"><i class="fa fa-newspaper-o"></i></a>
                 </span>
                 <?php
             }
