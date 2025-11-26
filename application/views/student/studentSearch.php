@@ -117,7 +117,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 											<?php if ($sch_setting->category) {
                                               ?>
                                               <?php if ($sch_setting->category) {  ?>
-                                            <th><?php echo $this->lang->line('category'); ?></th>
+                                            <th><?php echo $this->lang->line('fee_category'); ?></th>
 											<?php }
                                              } if ($sch_setting->mobile_no) {
                                                ?>
