@@ -97,14 +97,14 @@ class Marksheet extends Admin_Controller {
                 $is_section = 0;
             }
              if (isset($_POST['is_header'])) {
-                $is_section = 1;
+                $is_header = 1;
             } else {
-                $is_section = 0;
+                $is_header = 0;
             }
              if (isset($_POST['is_footer'])) {
-                $is_section = 1;
+                $is_footer = 1;
             } else {
-                $is_section = 0;
+                $is_footer = 0;
             }
 
 
