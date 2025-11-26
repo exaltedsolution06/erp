@@ -232,7 +232,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <div class="row">
                                         <?php if ($sch_setting->admission_date) { 
                                             $admission_date="";
-                                            if($student['admission_date']!='0000-00-00'){
+                                            if($student['admission_date']!='0000-00-00' || $student['admission_date']!=''){
                                                 $admission_date=date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($student['admission_date']));
                                             }
                                             
