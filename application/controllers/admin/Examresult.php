@@ -505,8 +505,8 @@ class Examresult extends Admin_Controller {
 
 
 
-        $marksheet_result = $this->marksheet_model->get();
-        $data['marksheetlist'] = $marksheet_result;
+        $reportcard_result = $this->reportcard_model->get();
+        $data['reportcardlist'] = $reportcard_result;
 
 
     

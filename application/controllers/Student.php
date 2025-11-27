@@ -1130,6 +1130,10 @@ class Student extends Admin_Controller
         $msg = $this->mailsmsconf->mailsms('login_credential', $parent_login_detail);
     }
 	function normalizeNumber($value) {
+		// If value is not numeric, return as it is
+		if (!is_numeric($value)) {
+			return $value;
+		}
 		if (stripos($value, 'e') !== false) {
 			return number_format($value, 0, '', '');
 		}

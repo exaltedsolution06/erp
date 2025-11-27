@@ -102,39 +102,56 @@
 
                                 <div class="row">
 
-                                    <div class="col-sm-4">
-                                     <label></small> <br>  
-                                <h3 class="box-title titlefix "><i class="fa fa-users"></i> <?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('list'); ?></h3>
+                                    <div class="col-sm-3">
+											 <label></small> <br>  
+										<h3 class="box-title titlefix "><i class="fa fa-users"></i> <?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('list'); ?></h3>
 
-                            </div>
+									</div>
 
 
-                                <div class="col-sm-4">
-                                    
-                                     <label>Terms</label><small class="req"> *</small>
-                                    <select autofocus="" required id="exam_group_id" name="exam_group_id[]" class="form-control select2" multiple >
-                                        <option value=""><?php echo $this->lang->line('select'); ?></option>
-                                        <?php
-                                        foreach ($examgrouplist as $ex_group_key => $ex_group_value) {
-                                            
-                                            ?>
-                                            <option value="<?php echo $ex_group_value->id ?>" <?php
-                                            if (set_value('exam_group_id') == $ex_group_value->id) {
-                                                echo "selected=selected";
-                                            }
-                                            ?>><?php echo $ex_group_value->name; ?></option>
-                                                    <?php
-                                                }
-                                                ?>
-                                    </select>
+									<div class="col-sm-3">
+										
+										 <label>Terms</label><small class="req"> *</small>
+										<select autofocus="" required id="exam_group_id" name="exam_group_id[]" class="form-control select2" multiple >
+											<option value=""><?php echo $this->lang->line('select'); ?></option>
+											<?php
+											foreach ($examgrouplist as $ex_group_key => $ex_group_value) {
+												
+												?>
+												<option value="<?php echo $ex_group_value->id ?>" <?php
+												if (set_value('exam_group_id') == $ex_group_value->id) {
+													echo "selected=selected";
+												}
+												?>><?php echo $ex_group_value->name; ?></option>
+														<?php
+													}
+													?>
+										</select>
 
-                                </div>
-                                   
+									</div>
+									<div class="col-sm-3">										
+										<label><?php echo $this->lang->line('report_card') . " " . $this->lang->line('template') ?></label><small class="req"> *</small>
+										<select  id="reportcard" name="reportcard" class="form-control" >
+											<option value=""><?php echo $this->lang->line('select'); ?></option>
+											<?php
+											foreach ($reportcardlist as $reportcard) {
+												?>
+												<option value="<?php echo $reportcard->id ?>" <?php
+												if (set_value('reportcard') == $reportcard->id) {
+													echo "selected=selected";
+												}
+												?>><?php echo $reportcard->template; ?></option>
+														<?php
+													}
+													?>
+										</select>
+									</div>
+									   
 
-                                 <div class="col-sm-4">
-                                     <label></label> <br>  
-                                <button  class="btn btn-info btn-sm printSelected pull-right" type="submit" name="generate" title="generate multiple certificate"><?php echo $this->lang->line('generate'); ?></button>
-                                </div>
+									 <div class="col-sm-3">
+										<label></label> <br>  
+										<button  class="btn btn-info btn-sm printSelected pull-right" type="submit" name="generate" title="generate multiple certificate"><?php echo $this->lang->line('generate'); ?></button>
+									</div>
                                 </div>
 
 

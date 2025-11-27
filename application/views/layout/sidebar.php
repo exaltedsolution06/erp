@@ -521,6 +521,7 @@
 					$this->rbac->hasPrivilege('print_admit_card', 'can_view') ||
 					$this->rbac->hasPrivilege('design_marksheet', 'can_view') ||
 					$this->rbac->hasPrivilege('print_marksheet', 'can_view') ||
+					$this->rbac->hasPrivilege('design_report_card', 'can_view') ||
 					$this->rbac->hasPrivilege('report_card', 'can_view') ||
 					$this->rbac->hasPrivilege('marks_grade', 'can_view') ||
 					$this->rbac->hasPrivilege('terms_grade', 'can_view') ||
@@ -538,6 +539,7 @@
 					|| set_Submenu('Examinations/examresult/admitcard')
 					|| set_Submenu('Examinations/marksheet')
 					|| set_Submenu('Examinations/examresult/marksheet')
+					|| set_Submenu('Examinations/reportcard')
 					|| set_Submenu('Examinations/examresult/reportcard')
 					|| set_Submenu('Examinations/grade')
 					|| set_Submenu('Examinations/termsgrade')
@@ -568,8 +570,10 @@
 							<li class="<?php echo set_Submenu('Examinations/marksheet'); ?>"><a href="<?php echo site_url('admin/marksheet'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('design') . " " . $this->lang->line('marksheet') ?></a></li>
 						<?php } if ($this->rbac->hasPrivilege('print_marksheet', 'can_view')) { ?>
 							<li class="<?php if($this->uri->segment(3)=='marksheet'){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>admin/examresult/marksheet"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('print') . " " . $this->lang->line('marksheet'); ?></a></li>
+						<?php } if ($this->rbac->hasPrivilege('design_report_card', 'can_view')) { ?>
+							<li class="<?php echo set_Submenu('Examinations/reportcard'); ?>"><a href="<?php echo site_url('admin/reportcard'); ?>"><i class="fa fa-angle-double-right"></i>  <?php echo $this->lang->line('design') . " " . $this->lang->line('report_card') ?></a></li>
 						<?php } if ($this->rbac->hasPrivilege('report_card', 'can_view')) { ?>
-							<li class="<?php if($this->uri->segment(3)=='reportcard'){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>admin/examresult/reportcard"><i class="fa fa-angle-double-right"></i>  Report Card</a></li>
+							<li class="<?php if($this->uri->segment(3)=='reportcard'){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>admin/examresult/reportcard"><i class="fa fa-angle-double-right"></i>  <?php echo $this->lang->line('print') . " " . $this->lang->line('report_card'); ?></a></li>
 						<?php } if ($this->rbac->hasPrivilege('marks_grade', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('Examinations/grade'); ?>"><a href="<?php echo base_url(); ?>admin/grade"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('marks_grade'); ?></a></li>
 						<?php } if ($this->rbac->hasPrivilege('terms_grade', 'can_view')) { ?>
