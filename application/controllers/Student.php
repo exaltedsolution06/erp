@@ -531,12 +531,12 @@ class Student extends Admin_Controller
                 'guardian_relation'   => $this->input->post('guardian_relation'),
                 'guardian_phone'      => $this->input->post('guardian_phone'),
                 'guardian_address'    => $this->input->post('guardian_address'),
-                'vehroute_id'         => $vehroute_id,
+                'route_id'         => $vehroute_id,
                 'hostel_room_id'      => $hostel_room_id,
                 'note'                => $this->input->post('note'),
                 'is_active'           => 'yes',
-                'pan_no'    => $this->input->post('pan_no'),
-                'aadhan_no'    => $this->input->post('aadhan_no'),
+                'pan_no'    => $this->input->post('pen_no'),
+                'aadhan_no'    => $this->input->post('aadhar_no'),
                 'other_no'    => $this->input->post('other_no'),
                 'father_pan_no'    => $this->input->post('father_pan_no'),
                 'father_aadhar_no'    => $this->input->post('father_aadhar_no'),
@@ -1129,7 +1129,12 @@ class Student extends Admin_Controller
 
         $msg = $this->mailsmsconf->mailsms('login_credential', $parent_login_detail);
     }
-
+	function normalizeNumber($value) {
+		if (stripos($value, 'e') !== false) {
+			return number_format($value, 0, '', '');
+		}
+		return $value;
+	}
     public function import()
     {
         if (!$this->rbac->hasPrivilege('import_student', 'can_view')) {
@@ -1195,12 +1200,12 @@ class Student extends Admin_Controller
 								$insert_student_data[$i]['gender'] = $result[$i]['Gender'];
 								$insert_student_data[$i]['dob'] = $result[$i]['Date of Birth (dd-mm-yyyy)'] ? date('Y-m-d', strtotime($result[$i]['Date of Birth (dd-mm-yyyy)'])) : null;								
 								$insert_student_data[$i]['pan_no'] = $result[$i]['Pen No'];
-								$insert_student_data[$i]['aadhan_no'] = $result[$i]['Aadhar No'];
-								$insert_student_data[$i]['other_no'] = $result[$i]['Other No'];
+								$insert_student_data[$i]['aadhan_no'] = $this->normalizeNumber($result[$i]['Aadhar No']);
+								$insert_student_data[$i]['other_no'] = $this->normalizeNumber($result[$i]['Other No']);
 								$insert_student_data[$i]['cast_category'] = $result[$i]['Cast Category'];
 								$insert_student_data[$i]['religion'] = $result[$i]['Religion'];
 								$insert_student_data[$i]['cast'] = $result[$i]['Caste'];
-								$insert_student_data[$i]['mobileno'] = $result[$i]['Mobile Number'];
+								$insert_student_data[$i]['mobileno'] = $this->normalizeNumber($result[$i]['Mobile Number']);
 								$insert_student_data[$i]['email'] = $result[$i]['Email'];
 								$insert_student_data[$i]['admission_date'] = $result[$i]['Admission Date (dd-mm-yyyy)'] ? date('Y-m-d', strtotime($result[$i]['Admission Date (dd-mm-yyyy)'])) : null;							
 								
@@ -1213,36 +1218,36 @@ class Student extends Admin_Controller
 								$insert_student_data[$i]['category_id'] = $result[$i]['Fee Category ID'];
 								$insert_student_data[$i]['route_id'] = $result[$i]['Route List ID'];
 								$insert_student_data[$i]['father_name'] = $result[$i]['Father Name'];
-								$insert_student_data[$i]['father_phone'] = $result[$i]['Father Phone'];
+								$insert_student_data[$i]['father_phone'] = $this->normalizeNumber($result[$i]['Father Phone']);
 								$insert_student_data[$i]['father_occupation'] = $result[$i]['Father Occupation'];
 								$insert_student_data[$i]['father_pic'] = $result[$i]['Father Photo'];
 								$insert_student_data[$i]['father_pan_no'] = $result[$i]['Father Pen No'];
-								$insert_student_data[$i]['father_aadhar_no'] = $result[$i]['Father Aadhar No'];
-								$insert_student_data[$i]['father_other_no'] = $result[$i]['Father Other No'];
-								$insert_student_data[$i]['father_id_no'] = $result[$i]['Father ID No'];
+								$insert_student_data[$i]['father_aadhar_no'] = $this->normalizeNumber($result[$i]['Father Aadhar No']);
+								$insert_student_data[$i]['father_other_no'] = $this->normalizeNumber($result[$i]['Father Other No']);
+								$insert_student_data[$i]['father_id_no'] = $this->normalizeNumber($result[$i]['Father ID No']);
 								$insert_student_data[$i]['mother_name'] = $result[$i]['Mother Name'];
-								$insert_student_data[$i]['mother_phone'] = $result[$i]['Mother Phone'];
+								$insert_student_data[$i]['mother_phone'] = $this->normalizeNumber($result[$i]['Mother Phone']);
 								$insert_student_data[$i]['mother_occupation'] = $result[$i]['Mother Occupation'];
 								$insert_student_data[$i]['mother_pic'] = $result[$i]['Mother Photo'];
 								$insert_student_data[$i]['mother_pan_no'] = $result[$i]['Mother Pen No'];
-								$insert_student_data[$i]['mother_aadhar_no'] = $result[$i]['Mother Aadhar No'];
-								$insert_student_data[$i]['mother_other_no'] = $result[$i]['Mother Other No'];
-								$insert_student_data[$i]['mother_id_no'] = $result[$i]['Mother ID No'];
+								$insert_student_data[$i]['mother_aadhar_no'] = $this->normalizeNumber($result[$i]['Mother Aadhar No']);
+								$insert_student_data[$i]['mother_other_no'] = $this->normalizeNumber($result[$i]['Mother Other No']);
+								$insert_student_data[$i]['mother_id_no'] = $this->normalizeNumber($result[$i]['Mother ID No']);
 								$insert_student_data[$i]['guardian_is'] = $result[$i]['Guardian Is'];
 								$insert_student_data[$i]['guardian_name'] = $result[$i]['Guardian Name'];
 								$insert_student_data[$i]['guardian_relation'] = $result[$i]['Guardian Relation'];
 								$insert_student_data[$i]['guardian_email'] = $result[$i]['Guardian Email'];
 								$insert_student_data[$i]['guardian_pic'] = $result[$i]['Guardian Photo'];
-								$insert_student_data[$i]['guardian_phone'] = $result[$i]['Guardian Phone'];
+								$insert_student_data[$i]['guardian_phone'] = $this->normalizeNumber($result[$i]['Guardian Phone']);
 								$insert_student_data[$i]['guardian_occupation'] = $result[$i]['Guardian Occupation'];
 								$insert_student_data[$i]['guardian_address'] = $result[$i]['Guardian Address'];
 								$insert_student_data[$i]['current_address'] = $result[$i]['Current Address'];
 								$insert_student_data[$i]['permanent_address'] = $result[$i]['Permanent Address'];
-								$insert_student_data[$i]['bank_account_no'] = $result[$i]['Bank Account Number'];
+								$insert_student_data[$i]['bank_account_no'] = $this->normalizeNumber($result[$i]['Bank Account Number']);
 								$insert_student_data[$i]['bank_name'] = $result[$i]['Bank Name'];
 								$insert_student_data[$i]['ifsc_code'] = $result[$i]['IFSC Code'];
-								$insert_student_data[$i]['adhar_no'] = $result[$i]['National Identification Number'];
-								$insert_student_data[$i]['samagra_id'] = $result[$i]['Local Identification Number'];
+								$insert_student_data[$i]['adhar_no'] = $this->normalizeNumber($result[$i]['National Identification Number']);
+								$insert_student_data[$i]['samagra_id'] = $this->normalizeNumber($result[$i]['Local Identification Number']);
 								$insert_student_data[$i]['rte'] = $result[$i]['RTE'];
 								$insert_student_data[$i]['previous_school'] = $result[$i]['Previous School Details'];
 								$insert_student_data[$i]['note'] = $result[$i]['Note'];
@@ -1547,12 +1552,12 @@ class Student extends Admin_Controller
                 'guardian_relation'   => $this->input->post('guardian_relation'),
                 'guardian_phone'      => $this->input->post('guardian_phone'),
                 'guardian_address'    => $this->input->post('guardian_address'),
-                'vehroute_id'         => $vehroute_id,
+                'route_id'         => $vehroute_id,
                 'hostel_room_id'      => $hostel_room_id,
                 'note'                => $this->input->post('note'),
                 'is_active'           => 'yes',
-                'pan_no'    => $this->input->post('pan_no'),
-                'aadhan_no'    => $this->input->post('aadhan_no'),
+                'pan_no'    => $this->input->post('pen_no'),
+                'aadhan_no'    => $this->input->post('aadhar_no'),
                 'other_no'    => $this->input->post('other_no'),
                 'father_pan_no'    => $this->input->post('father_pan_no'),
                 'father_aadhar_no'    => $this->input->post('father_aadhar_no'),

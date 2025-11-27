@@ -398,7 +398,7 @@ class Coscholasticareas extends Admin_Controller {
             $resultlist = $this->examstudent_model->searchExamStudents($data['class_id'], $data['section_id'], $data['exam_id']);
 
             $data['resultlist'] = $resultlist;
-            $student_exam_page = $this->load->view('admin/examgroup/_partialexamstudent', $data, true);
+            $student_exam_page = $this->load->view('admin/coscholasticareas/_partialexamstudent', $data, true);
             $array = array('status' => '1', 'error' => '', 'page' => $student_exam_page);
             echo json_encode($array);
         }
@@ -622,7 +622,7 @@ class Coscholasticareas extends Admin_Controller {
 	{
 		$exam_id = $this->input->post('exam_id');
 
-		$classes = $this->subject_model->get_exam_classes($exam_id);
+		$classes = $this->subject_model->get_exam_classes_c($exam_id);
 
 		echo json_encode($classes);
 	}

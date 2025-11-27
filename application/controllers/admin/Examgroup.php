@@ -576,8 +576,9 @@ class Examgroup extends Admin_Controller {
 	public function get_exam_classes()
 	{
 		$exam_id = $this->input->post('exam_id');
+		$subject_id = $this->input->post('subject_id');
 
-		$classes = $this->subject_model->get_exam_classes($exam_id);
+		$classes = $this->subject_model->get_exam_classes($exam_id, $subject_id);
 
 		echo json_encode($classes);
 	}

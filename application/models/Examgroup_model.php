@@ -54,7 +54,7 @@ class Examgroup_model extends MY_Model {
 			exam_groups.name as exam_group_name,
 			(SELECT COUNT(*) 
 			 FROM exam_group_class_batch_exams 
-			 WHERE exam_group_class_batch_exams.exam_group_id = coscholasticareas.exam_group
+			 WHERE exam_group_class_batch_exams.exam_group_id = coscholasticareas.id and exam_group_class_batch_exams.coscholasticareas=1 
 			) as counter
 		');
 		$this->db->from('coscholasticareas');

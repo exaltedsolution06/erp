@@ -89,13 +89,13 @@
                 <div class="modal-body">
                     <input type="hidden" name="exam_id" value="0">
                     <div class="row">
-                        <div class="form-group col-xs-12 col-sm-9 col-md-9 col-lg-9">
+                        <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <label for="exam"><?php echo $this->lang->line('exam') ?><small class="req"> *</small></label>
                             <input type="text" class="form-control" id="exam" name="exam">
                             <span class="text text-danger" id="exam_error"></span>
                         </div>
                         <div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                            <label for="exam"><?php echo $this->lang->line('session') ?></label>
+                            <!--<label for="exam"><?php echo $this->lang->line('session') ?></label>
                             <select  id="session_id" name="session_id" class="form-control" >
                                 <option value=""><?php echo $this->lang->line('select'); ?></option>
                                 <?php
@@ -105,7 +105,8 @@ foreach ($sessionlist as $session) {
                                     <?php
 }
 ?>
-                            </select>
+                            </select>-->
+							<input type="hidden" id="session_id" name="session_id" value="<?php echo $current_session; ?>">
                             <span class="text text-danger" id="session_id_error"></span>
                         </div>
                         <div class="clearfix"></div>                   
@@ -221,7 +222,7 @@ foreach ($sessionlist as $session) {
                     <input type="hidden" name="teachersubject_id" value="0" class="teachersubject_id">
                     
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label><?php echo $this->lang->line('class'); ?><small class="req"> *</small></label>
                                 <select autofocus="" id="class_id" name="class_id" class="form-control" >
@@ -242,7 +243,7 @@ if (set_value('class_id') == $class['id']) {
                             </div><!--./form-group-->
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('section'); ?><small class="req"> *</small></label>
@@ -256,7 +257,7 @@ if (set_value('class_id') == $class['id']) {
 
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label><?php echo $this->lang->line('session'); ?><small class="req"> *</small></label>
+                                <!--<label><?php echo $this->lang->line('session'); ?><small class="req"> *</small></label>
                                 <select  id="session_id" name="session_id" class="form-control" >
                                     <option value=""><?php echo $this->lang->line('select'); ?></option>
                                     <?php
@@ -266,8 +267,9 @@ foreach ($sessionlist as $session) {
                                         <?php
 }
 ?>
-                                </select>
-                            </div><!--./form-group-->
+                                </select>-->
+								<input type="hidden" id="session_id" name="session_id" value="<?php echo $current_session; ?>">
+                            </div>
                         </div>
 
                         <div class="col-sm-12">
@@ -447,7 +449,7 @@ if (set_value('class_id') == $class['id']) {
                     $('#formadd')[0].reset();
                 },
                 success: function (data) {
-                    $("#formadd select[name=session_id] [value=" + data.exam.session_id + "]").attr('selected', 'true');
+                    $("#formadd input[name=session_id] [value=" + data.exam.session_id + "]");
                     $("#formadd input[name=exam]").val(data.exam.exam);
                     $("#formadd input[name=date_from]").val(data.exam.date_from);
                     $("#formadd input[name=exam_id]").val(data.exam.id);
@@ -922,7 +924,7 @@ if (set_value('class_id') == $class['id']) {
 		$.ajax({
 			url: "<?php echo site_url('admin/examgroup/get_exam_classes'); ?>",
 			type: "POST",
-			data: { exam_id: exam_id },
+			data: { exam_id: exam_id, subject_id: teachersubject_id },
 			dataType: "json",
 			success: function (response) {
 

@@ -146,7 +146,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                          <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Pen No</label>
-                                                <input id="pen_no" name="pen_no" placeholder="" type="text" class="form-control "  value="<?php echo set_value('pen_no', $student['pen_no']); ?>" />
+                                                <input id="pen_no" name="pen_no" placeholder="" type="text" class="form-control "  value="<?php echo set_value('pen_no', $student['pan_no']); ?>" />
                                                 <span class="text-danger"><?php echo form_error('pen_no'); ?></span>
                                             </div>
                                         </div>
@@ -154,7 +154,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Aadhar No.</label>
-                                                <input id="aadhar_no" name="aadhar_no" placeholder="" type="text" class="form-control "  value="<?php echo set_value('aadhar_no', $student['aadhar_no']); ?>" />
+                                                <input id="aadhar_no" name="aadhar_no" placeholder="" type="text" class="form-control "  value="<?php echo set_value('aadhar_no', $student['aadhan_no']); ?>" />
                                             </div>
                                         </div>
 
@@ -378,7 +378,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         <?php
                                                         // echo json_encode($vehroutelist);
                                                         foreach ($vehroutelist as $vehroute) {
-                                                            if($student['vehroute_id']==$vehroute['id']){
+                                                            if($student['route_id']==$vehroute['id']){
                                                                 ?>
                                                             <option selected value="<?=$vehroute['id']?>"><?=$vehroute['fees_heading']?></option>
                                                             <?php

@@ -1640,3 +1640,4 @@ $lang['co_scholastic'] = 'Co- Scholastic';
 $lang['areas'] = 'Areas';
 $lang['exam_group'] = 'Exam Group';
 $lang['assessment'] = 'Assessment';
+$lang['grade'] = 'Grade';

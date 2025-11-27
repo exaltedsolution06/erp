@@ -19,7 +19,7 @@
 
                                 <th><?php echo $this->lang->line('student_name'); ?></th> <th><?php echo $this->lang->line('father_name'); ?></th>
                                 <?php if ($sch_setting->category) { ?>
-                                    <th><?php echo $this->lang->line('category'); ?></th>
+                                    <th><?php echo $this->lang->line('fee_category'); ?></th>
                                 <?php } ?>
                                 <th><?php echo $this->lang->line('gender'); ?></th>
 

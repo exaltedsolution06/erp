@@ -45,10 +45,10 @@
                                 <th><?php echo $this->lang->line('admission_no'); ?></th>
                                 <th><?php echo $this->lang->line('roll_no'); ?></th>
                                 <th><?php echo $this->lang->line('student_name'); ?></th> <th><?php echo $this->lang->line('father_name'); ?></th>
-                                <th><?php echo $this->lang->line('category'); ?></th>
+                                <th><?php echo $this->lang->line('fee_category'); ?></th>
                                 <th><?php echo $this->lang->line('gender'); ?></th>
                                 <th><?php echo $this->lang->line('attendence'); ?></th>
-                                <th><?php echo $this->lang->line('marks') ?></th>
+                                <th><?php echo $this->lang->line('grade').' / '.$this->lang->line('marks') ?></th>
                                 <th><?php echo $this->lang->line('note') ?></th>
 
                             </tr>

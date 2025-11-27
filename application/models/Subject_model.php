@@ -172,7 +172,7 @@ class Subject_model extends MY_Model {
 		return array_column($query->result_array(), 'subject_id');
 	}
 	
-	public function get_exam_classes($exam_group_class_batch_exam_id)
+	public function get_exam_classes_c($exam_group_class_batch_exam_id)
 	{
 		$this->db->distinct();
 		$this->db->select('ss.class_id');
@@ -192,6 +192,57 @@ class Subject_model extends MY_Model {
 		$this->db->select('id, class');
 		$this->db->from('classes');
 		$this->db->where_in('id', $class_ids);
+
+		return $this->db->get()->result();
+	}
+	public function get_exam_classes($exam_group_class_batch_exam_id, $subject_id)
+	{
+		/* ----------------------------------------------------
+		   1. Get classes from exam group students
+		---------------------------------------------------- */
+		$this->db->distinct();
+		$this->db->select('ss.class_id');
+		$this->db->from('exam_group_class_batch_exam_students eg');
+		$this->db->join('student_session ss', 'ss.id = eg.student_session_id');
+		$this->db->where('eg.exam_group_class_batch_exam_id', $exam_group_class_batch_exam_id);
+
+		$exam_classes = array_column($this->db->get()->result_array(), 'class_id');
+
+		if (empty($exam_classes)) {
+			return [];
+		}
+
+		/* ----------------------------------------------------
+		   2. Get classes where this subject exists via subject group
+		---------------------------------------------------- */
+		$this->db->distinct();
+		$this->db->select('cs.class_id');
+		$this->db->from('subject_group_subjects sgs');
+		$this->db->join('subject_group_class_sections sgcs', 'sgcs.subject_group_id = sgs.subject_group_id');
+		$this->db->join('class_sections cs', 'cs.id = sgcs.class_section_id');
+		$this->db->where('sgs.subject_id', $subject_id);
+
+		$subject_group_classes = array_column($this->db->get()->result_array(), 'class_id');
+
+		if (empty($subject_group_classes)) {
+			return [];
+		}
+
+		/* ----------------------------------------------------
+		   3. FINAL: Return only CLASS IDs present in BOTH
+		---------------------------------------------------- */
+		$final_class_ids = array_intersect($exam_classes, $subject_group_classes);
+
+		if (empty($final_class_ids)) {
+			return [];
+		}
+
+		/* ----------------------------------------------------
+		   4. Fetch class names from classes table
+		---------------------------------------------------- */
+		$this->db->select('id, class');
+		$this->db->from('classes');
+		$this->db->where_in('id', $final_class_ids);
 
 		return $this->db->get()->result();
 	}
