@@ -532,7 +532,7 @@ class Coscholasticareas extends Admin_Controller {
 
     public function getExamByID() {
         $exam_id = $this->input->post('exam_id');
-        $result = $this->examgroup_model->getExamByID($exam_id);
+        $result = $this->examgroup_model->getExamByID_c($exam_id);
         if (!empty($result)) {
             $result->date_from = $this->customlib->dateformat($result->date_from);
             $result->date_to = $this->customlib->dateformat($result->date_to);

@@ -989,7 +989,7 @@ if (set_value('class_id') == $class['id']) {
 		$('#class_id').html('<option value="">Loading...</option>');
 
 		$.ajax({
-			url: "<?php echo site_url('admin/examgroup/get_exam_classes'); ?>",
+			url: "<?php echo site_url('admin/coscholasticareas/get_exam_classes'); ?>",
 			type: "POST",
 			data: { exam_id: exam_id },
 			dataType: "json",
