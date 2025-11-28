@@ -532,6 +532,7 @@ class Student extends Admin_Controller
                 'guardian_phone'      => $this->input->post('guardian_phone'),
                 'guardian_address'    => $this->input->post('guardian_address'),
                 'route_id'         => $vehroute_id,
+                'vehroute_id'         => $vehroute_id,
                 'hostel_room_id'      => $hostel_room_id,
                 'note'                => $this->input->post('note'),
                 'is_active'           => 'yes',
@@ -1221,6 +1222,7 @@ class Student extends Admin_Controller
 								$insert_student_data[$i]['measurement_date'] = date('Y-m-d');
 								$insert_student_data[$i]['category_id'] = $result[$i]['Fee Category ID'];
 								$insert_student_data[$i]['route_id'] = $result[$i]['Route List ID'];
+								$insert_student_data[$i]['vehroute_id'] = $result[$i]['Route List ID'];
 								$insert_student_data[$i]['father_name'] = $result[$i]['Father Name'];
 								$insert_student_data[$i]['father_phone'] = $this->normalizeNumber($result[$i]['Father Phone']);
 								$insert_student_data[$i]['father_occupation'] = $result[$i]['Father Occupation'];
@@ -1557,6 +1559,7 @@ class Student extends Admin_Controller
                 'guardian_phone'      => $this->input->post('guardian_phone'),
                 'guardian_address'    => $this->input->post('guardian_address'),
                 'route_id'         => $vehroute_id,
+                'vehroute_id'         => $vehroute_id,
                 'hostel_room_id'      => $hostel_room_id,
                 'note'                => $this->input->post('note'),
                 'is_active'           => 'yes',
