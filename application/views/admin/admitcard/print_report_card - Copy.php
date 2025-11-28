@@ -71,6 +71,7 @@
 
 	foreach($marksheet as $stddata){
 	
+	
 			if(in_array($stddata->student_id, $exam_group_class_batch_exam_student_id)){
 			$student_id=$stddata->student_id;
 ?>
@@ -83,19 +84,26 @@
 				<img src="<?php echo base_url('uploads/reportcard/'.$desc->header_img) ?>" style="height:150px;width:100%">
 			</div>
 			<?php } ?>
-			<?php if(!empty($desc->title)){ ?>
 			<div class="col-12 text-center">
-				<p class="text-danger h3"><?php echo $desc->title; ?></p>
+				<p class="text-danger h3">REPORT CARD (SESSION : 2022-23)</p>
+				<span class="text-danger" > (<?php echo $desc->heading; ?>)</span>
 			</div>
-			<?php } ?>
+			<?php //$student_id=$stddata->id;  ?>
 			<div class="col-12" style="border:1px solid">
+				<!--<table class="table-borderless">
+					<thead>
+						<tr>
+						  <th scope="col" class="text-danger">Students Profile</th>
+						</tr>
+					</thead>
+				</table>-->
 				<div class="row pt-3" >
 					<div class="col-6" >
 						<table class="table table-borderless">
 						<tbody>
 							<?php if($desc->is_name==1){ ?>
 							<tr>
-							  <th class="th" scope="row"><?php echo $this->lang->line('student_name'); ?></th>
+							  <th class="th" scope="row">STUDENT’S NAME</th>
 							  <td>:  &nbsp;</td>
 							  <td><?=$stddata->firstname.' '.$stddata->middlename.' '.$stddata->lastname ?></td>
 							</tr>
@@ -104,7 +112,7 @@
 						
 						<?php if($desc->is_father_name==1){ ?>
 							<tr>
-							  <th scope="row"  class="th"><?php echo $this->lang->line('father_name'); ?></th>
+							  <th scope="row"  class="th">FATHER’S NAME</th>
 							  <td>:</td>
 							  <td><?=$stddata->father_name?></td>
 							</tr>
@@ -113,7 +121,7 @@
 						
 						<?php if($desc->is_mother_name==1){ ?>
 							<tr>
-							  <th scope="row"  class="th"><?php echo $this->lang->line('mother_name'); ?></th>
+							  <th scope="row"  class="th">MOTHER'S NAME</th>
 							  <td>:</td>
 							  <td><?=$stddata->mother_name?></td>
 							</tr>
@@ -122,11 +130,24 @@
 						<?php if($desc->is_dob==1){ ?>
 							
 							<tr>
-							  <th scope="row"  class="th"><?php echo $this->lang->line('d_o_b'); ?></th>
+							  <th scope="row"  class="th">D.O.B.</th>
 							  <td>:</td>
 							  <td><?=date('d-M-Y',strtotime($stddata->dob))?></td>
 							</tr>
 							<?php } ?>
+							
+							
+							
+							
+
+
+							<!--tr>
+							  <th scope="row"  class="th">ADDRESS</th>
+							  <td>:</td>
+							  <td><?=$stddata->guardian_address?></td>
+							</tr-->
+						
+							
 						  </tbody>
 						</table>
 					</div>
@@ -136,29 +157,29 @@
 						  <tbody>
 						  	<?php  if($desc->is_class==1 or $desc->is_section==1){ ?>
 							<tr>
-							  <th scope="row"  class="th"><?php echo $this->lang->line('class_and_section'); ?></th>
+							  <th scope="row"  class="th">CLASS & SECTION</th>
 							  <td>:</td>
 							  <td><?=$stddata->class?>  <?=$stddata->section?>  </td>
 							</tr>
 							<?php } if($desc->is_roll_no==1){ ?>
 							<tr>
-							  <th  class="th"><?php echo $this->lang->line('roll_no'); ?></th>
+							  <th  class="th">ROLL NO.</th>
 							  <td>:  &nbsp;</td>
 							  <td><?=$stddata->roll_no?></td>
 							</tr>
 							<?php } if($desc->is_admission_no==1){ ?>
 							<tr>
-							  <th  class="th" scope="row"><?php echo $this->lang->line('admission_no'); ?></th>
+							  <th  class="th" scope="row">ADMISSION NO.</th>
 							  <td>:</td>
 							  <td><?=$stddata->admission_no?></td>
 							</tr>
-							<?php } if($desc->is_contactno==1){ ?>
+							<?php } ?>
 							<tr>
-							  <th  class="th" scope="row"><?php echo $this->lang->line('contactno'); ?></th>
+							  <th  class="th" scope="row">CONTACT NO.</th>
 							  <td>:</td>
 							  <td><?=$stddata->mobileno?></td>
 							</tr>
-							<?php } ?>
+						
 						  </tbody>
 						</table>
 					
@@ -170,24 +191,33 @@
 			
 			<div class="col-12 mt-1" style="border:0px solid">
 				<div class="row">
+					<div class="col-12" style="border-bottom:0px solid">
+						<table class=" table-borderless">
+							<thead>
+								<tr>
+								  <th scope="col" class="text-danger">Scholastic Area</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				
 					<div class="col-12" style="padding-left:0px;padding-right:0px;padding-bottom:0px">
 						<table class="w-100 table-bordered border-dark text-center" style="padding-bottom:0px">
 							
 							<thead style="background:#fff">
 								
 								<tr>
-									<th class="text-success">Scholastic Area</th>
+									<th></th>
 									<?php 
-									$allNames = [];
+										
 									
 									foreach($post_exam_group_id as $rowDatagroup){
 									$exam_type=$this->db->query("SELECT * FROM exam_group_class_batch_exams WHERE exam_group_id='".$rowDatagroup->id."'")->result();
-									$allNames[] = $rowDatagroup->name;
 										?>
-									<th colspan="<?=count($exam_type)+1?>" class="text-danger"><?=$rowDatagroup->name?></th>
+									<th colspan="<?=count($exam_type)+1?>">Overall Performance</th>
 									<?php } ?>
 									
-									<th colspan="2" class="text-danger"><?= implode(' + ', $allNames); ?></th>
+									<th colspan="1"> </th>
 								</tr>
 
 
@@ -204,7 +234,7 @@
 									<th style="width:90px"><?=$type->exam?> </th>
 										<?php } ?>
 										
-										<th style="width:100px">Mark Obt</th>
+										
 									
 									
 									
@@ -213,7 +243,7 @@
 									
 									
 									
-									<th style="width:100px">G. Total</th>
+									<th style="width:100px">Overall Total</th>
 									<th style="width:100px">Overall Grade</th>
 								</tr>
 							</thead>
@@ -226,6 +256,17 @@
 								$aadi=0;
 								$finalTotal=0;
 								$maxMark=[];
+								
+								// echo $sql = "SELECT * FROM exam_group_class_batch_exam_subjects LEFT JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.  INNER JOIN subjects on subjects.id=exam_group_class_batch_exam_subjects.subject_id WHERE       exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id IN ('".implode("','",$postExamGroupId)."')";
+								
+								
+								// echo  $sql = "SELECT exam_group_class_batch_exam_subjects.*,exam_group_exam_results.id as `exam_group_exam_results_id`,exam_group_exam_results.attendence,exam_group_exam_results.get_marks,exam_group_exam_results.note,subjects.name,subjects.code FROM `exam_group_class_batch_exam_subjects` inner JOIN exam_group_exam_results on exam_group_exam_results.exam_group_class_batch_exam_subject_id=exam_group_class_batch_exam_subjects.id INNER JOIN exam_group_class_batch_exam_students on exam_group_exam_results.exam_group_class_batch_exam_student_id=exam_group_class_batch_exam_students.id  INNER JOIN subjects on subjects.id=exam_group_class_batch_exam_subjects.subject_id INNER JOIN exam_group_class_batch_exams ON exam_group_class_batch_exams.id=exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id  WHERE exam_group_class_batch_exams.exam_group_id IN ('".implode("','",$postExamGroupId)."') and exam_group_class_batch_exam_students.id=" . $stddata->student_id . " ";
+								
+								
+								
+								
+								
+								
 								
 								 $sql="SELECT exam_group_class_batch_exam_subjects.subject_id FROM exam_group_class_batch_exam_subjects INNER JOIN exam_group_class_batch_exams ON exam_group_class_batch_exams.id=exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id  INNER JOIN exam_groups ON exam_groups.id=exam_group_class_batch_exams.exam_group_id INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id WHERE exam_group_class_batch_exam_students.student_id='". $stddata->student_id ."' and exam_groups.id  IN ('".implode("','",$postExamGroupId)."') ";
 								
@@ -319,8 +360,7 @@ $resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_
 											
 											
 											
-											 // $max_marks+=round($resultData->max_marks);
-											 $max_marks+=round($maxMarks->max_marks);
+											 $max_marks+=round($resultData->max_marks);
 											
 
 
@@ -328,11 +368,12 @@ $resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_
 										?>
 											<td>
 												<?php 
-													$marks = !empty($resultData) ? ($resultData->attendence == 'absent' ? 'AB' : round($resultData->get_marks)) : "-";
-													echo $marks;
-
-													$total_subject++; 
-													array_push($array, !empty($resultData) ? $resultData->get_marks : 0);
+													
+													// echo $resultData->max_marks.'<br>';
+													
+												echo round($resultData->get_marks);
+												$total_subject++; 
+													array_push($array,$resultData->get_marks);
 												?>
 											</td>
 											
@@ -343,7 +384,7 @@ $resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_
 											
 										?>
 									
-									<td style="width:100px"><?php echo $total; ?></td>
+								
 									
 									<?php array_push($array,$total); } ?>
 
@@ -352,7 +393,7 @@ $resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_
 									
 									
 									
-										$grade = ($max_marks > 0) ? ($total1 * 100 / $max_marks) : 0;
+										$grade=$total1*100/$max_marks; 
 									
 									
 								 
@@ -394,16 +435,13 @@ $resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_
 										<?php
 										$i=count($final);
 										foreach($final as $row){
-											/*if($i==1){
+											if($i==1){
 												echo '<td>'.$row.'/'.array_sum($maxMark).'</td>';
 											}else{
 												echo '<td>'.$row.'</td>';
 											}
-											$i--;*/	
-											echo '<td>'.$row.'</td>';	
+											$i--;											
 										} ?>
-										
-										<td><?php echo $finalTotal.'/'.array_sum($maxMark); ?></td>
 										
 										<td> 
 										<?php
@@ -562,6 +600,22 @@ $resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_
 				</div>
 				
 			</div>
+			
+			
+			<!--<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px">
+				<table class="w-100 table-bordered border-dark " style="padding-bottom:0px">
+					
+					<tr>
+						<th style="width:200px;background:#fff">Exam Result Date</th>
+						<th style="width:800px"></th>
+					</tr>
+				</table>
+			</div>-->
+			<?php if($desc->is_footer==1){ ?>
+			<div class="col-12">
+				<img src="<?php echo base_url('uploads/marksheet/'.$desc->footer_img) ?>" style="height:100px;width:100%">
+			</div>
+			<?php }	 ?>
 		</div>
 	</div>
 
@@ -569,8 +623,7 @@ $resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_
 <div class="pagebreak"></div>
 
 
-			<?php }
-			} ?>
+			<?php }  } ?>
 
   </body>
 </html>

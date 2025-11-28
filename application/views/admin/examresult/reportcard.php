@@ -93,7 +93,6 @@
                     if (isset($studentList)) {
                         ?>
                         <form method="post" action="<?php echo base_url('admin/examresult/printreportcard') ?>" id="printMarksheet1">
-                            <input type="hidden" name="marksheet_template" value="<?php echo $marksheet_template; ?>">
 
 
                             <div class="box-header ptbnull"></div>  
@@ -131,7 +130,7 @@
 									</div>
 									<div class="col-sm-3">										
 										<label><?php echo $this->lang->line('report_card') . " " . $this->lang->line('template') ?></label><small class="req"> *</small>
-										<select  id="reportcard" name="reportcard" class="form-control" >
+										<select required id="reportcard" name="reportcard" class="form-control" >
 											<option value=""><?php echo $this->lang->line('select'); ?></option>
 											<?php
 											foreach ($reportcardlist as $reportcard) {
@@ -148,7 +147,7 @@
 									</div>
 									   
 
-									 <div class="col-sm-3">
+									<div class="col-sm-3">
 										<label></label> <br>  
 										<button  class="btn btn-info btn-sm printSelected pull-right" type="submit" name="generate" title="generate multiple certificate"><?php echo $this->lang->line('generate'); ?></button>
 									</div>

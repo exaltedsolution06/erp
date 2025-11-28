@@ -23,9 +23,7 @@ class Reportcard extends Admin_Controller {
 
         $this->form_validation->set_rules('template', $this->lang->line('template'), 'trim|required|xss_clean');
 
-        $this->form_validation->set_rules('left_logo', $this->lang->line('left') . " " . $this->lang->line('logo'), 'callback_handle_upload[left_logo]');
-        $this->form_validation->set_rules('right_logo', $this->lang->line('right') . " " . $this->lang->line('logo'), 'callback_handle_upload[right_logo]');
-        $this->form_validation->set_rules('background_img', $this->lang->line('background') . " " . $this->lang->line('image'), 'callback_handle_upload[background_img]');
+        $this->form_validation->set_rules('header_img', 'header_img', 'callback_handle_upload[header_img]');
         $this->form_validation->set_rules('left_sign', $this->lang->line('sign'), 'callback_handle_upload[left_sign]');
         $this->form_validation->set_rules('middle_sign', $this->lang->line('sign'), 'callback_handle_upload[middle_sign]');
         $this->form_validation->set_rules('right_sign', $this->lang->line('sign'), 'callback_handle_upload[right_sign]');
@@ -47,42 +45,21 @@ class Reportcard extends Admin_Controller {
             } else {
                 $is_mother_name = 0;
             }
+            if (isset($_POST['is_dob'])) {
+                $is_dob = 1;
+            } else {
+                $is_dob = 0;
+            }
 
             if (isset($_POST['is_admission_no'])) {
                 $is_admission_no = 1;
             } else {
                 $is_admission_no = 0;
             }
-            if (isset($_POST['exam_session'])) {
-                $exam_session = 1;
-            } else {
-                $exam_session = 0;
-            }
             if (isset($_POST['is_roll_no'])) {
                 $is_roll_no = 1;
             } else {
                 $is_roll_no = 0;
-            }
-            if (isset($_POST['is_address'])) {
-                $is_address = 1;
-            } else {
-                $is_address = 0;
-            }
-            if (isset($_POST['is_gender'])) {
-                $is_gender = 1;
-            } else {
-                $is_gender = 0;
-            }
-
-            if (isset($_POST['is_photo'])) {
-                $is_photo = 1;
-            } else {
-                $is_photo = 0;
-            }
-            if (isset($_POST['is_division'])) {
-                $is_division = 1;
-            } else {
-                $is_division = 0;
             }
 
             if (isset($_POST['is_class'])) {
@@ -96,49 +73,38 @@ class Reportcard extends Admin_Controller {
             } else {
                 $is_section = 0;
             }
-             if (isset($_POST['is_header'])) {
+            if (isset($_POST['is_contactno'])) {
+                $is_contactno = 1;
+            } else {
+                $is_contactno = 0;
+            }
+
+            if (isset($_POST['is_header'])) {
                 $is_header = 1;
             } else {
                 $is_header = 0;
-            }
-             if (isset($_POST['is_footer'])) {
-                $is_footer = 1;
-            } else {
-                $is_footer = 0;
             }
 
 
 
             $insert_data = array(
                 'template' => $this->input->post('template'),
-                'heading' => $this->input->post('heading'),
                 'title' => $this->input->post('title'),
-                'exam_name' => $this->input->post('exam_name'),
-                'school_name' => $this->input->post('school_name'),
-                'exam_center' => $this->input->post('exam_center'),
                 'date' => $this->input->post('date'),
                 'is_name' => $is_name,
                 'is_father_name' => $is_father_name,
                 'is_mother_name' => $is_mother_name,
+                'is_dob' => $is_dob,
                 'is_admission_no' => $is_admission_no,
                 'is_roll_no' => $is_roll_no,
-                'is_photo' => $is_photo,
                 'is_class' => $is_class,
-                'is_header' => $is_header,
-                'is_footer' => $is_footer,
                 'is_section' => $is_section,
-                'is_division' => $is_division,
-                'content' => $this->input->post('content'),
-                'content_footer' => $this->input->post('content_footer'),
-                'exam_session' => $exam_session,
-                'left_logo' => "",
-                'right_logo' => "",
+                'is_contactno' => $is_contactno,
+                'is_header'=>$is_header,
                 'left_sign' => "",
                 'right_sign' => "",
                 'middle_sign' => "",
-                'background_img' => "",
                 'header_img'=>"",
-                'footer_img'=>"",
             );
 
 
@@ -148,33 +114,6 @@ class Reportcard extends Admin_Controller {
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["header_img"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['header_img'] = $img_name;
-            }
-
-            if (isset($_FILES["footer_img"]) && !empty($_FILES["footer_img"]['name'])) {
-                $time = md5($_FILES["footer_img"]['name'] . microtime());
-                $fileInfo = pathinfo($_FILES["footer_img"]["name"]);
-                $img_name = $time . '.' . $fileInfo['extension'];
-                move_uploaded_file($_FILES["footer_img"]["tmp_name"], "./uploads/reportcard/" . $img_name);
-                $insert_data['footer_img'] = $img_name;
-            }
-
-
-
-
-
-            if (isset($_FILES["left_logo"]) && !empty($_FILES["left_logo"]['name'])) {
-                $time = md5($_FILES["left_logo"]['name'] . microtime());
-                $fileInfo = pathinfo($_FILES["left_logo"]["name"]);
-                $img_name = $time . '.' . $fileInfo['extension'];
-                move_uploaded_file($_FILES["left_logo"]["tmp_name"], "./uploads/reportcard/" . $img_name);
-                $insert_data['left_logo'] = $img_name;
-            }
-            if (isset($_FILES["right_logo"]) && !empty($_FILES["right_logo"]['name'])) {
-                $time = md5($_FILES["right_logo"]['name'] . microtime());
-                $fileInfo = pathinfo($_FILES["right_logo"]["name"]);
-                $img_name = $time . '.' . $fileInfo['extension'];
-                move_uploaded_file($_FILES["right_logo"]["tmp_name"], "./uploads/reportcard/" . $img_name);
-                $insert_data['right_logo'] = $img_name;
             }
             if (isset($_FILES["left_sign"]) && !empty($_FILES["left_sign"]['name'])) {
                 $time = md5($_FILES["left_sign"]['name'] . microtime());
@@ -195,14 +134,6 @@ class Reportcard extends Admin_Controller {
                 move_uploaded_file($_FILES["right_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['right_sign'] = $img_name;
             }
-            if (isset($_FILES["background_img"]) && !empty($_FILES["background_img"]['name'])) {
-                $time = md5($_FILES["background_img"]['name'] . microtime());
-                $fileInfo = pathinfo($_FILES["background_img"]["name"]);
-                $img_name = $time . '.' . $fileInfo['extension'];
-                move_uploaded_file($_FILES["background_img"]["tmp_name"], "./uploads/reportcard/" . $img_name);
-                $insert_data['background_img'] = $img_name;
-            }
-
             $this->reportcard_model->add($insert_data);
 
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
@@ -271,9 +202,7 @@ class Reportcard extends Admin_Controller {
 
         $this->form_validation->set_rules('template', 'template', 'trim|required|xss_clean');
 
-        $this->form_validation->set_rules('left_logo', 'left_logo', 'callback_handle_upload[left_logo]');
-        $this->form_validation->set_rules('right_logo', 'right_logo', 'callback_handle_upload[right_logo]');
-        $this->form_validation->set_rules('background_img', 'background_img', 'callback_handle_upload[background_img]');
+        $this->form_validation->set_rules('header_img', 'header_img', 'callback_handle_upload[header_img]');
         $this->form_validation->set_rules('left_sign', $this->lang->line('sign'), 'callback_handle_upload[left_sign]');
         $this->form_validation->set_rules('middle_sign', $this->lang->line('sign'), 'callback_handle_upload[middle_sign]');
         $this->form_validation->set_rules('right_sign', $this->lang->line('sign'), 'callback_handle_upload[right_sign]');
@@ -295,43 +224,21 @@ class Reportcard extends Admin_Controller {
             } else {
                 $is_mother_name = 0;
             }
+            if (isset($_POST['is_dob'])) {
+                $is_dob = 1;
+            } else {
+                $is_dob = 0;
+            }
 
             if (isset($_POST['is_admission_no'])) {
                 $is_admission_no = 1;
             } else {
                 $is_admission_no = 0;
             }
-            if (isset($_POST['exam_session'])) {
-                $exam_session = 1;
-            } else {
-                $exam_session = 0;
-            }
             if (isset($_POST['is_roll_no'])) {
                 $is_roll_no = 1;
             } else {
                 $is_roll_no = 0;
-            }
-            if (isset($_POST['is_address'])) {
-                $is_address = 1;
-            } else {
-                $is_address = 0;
-            }
-            if (isset($_POST['is_gender'])) {
-                $is_gender = 1;
-            } else {
-                $is_gender = 0;
-            }
-
-            if (isset($_POST['is_photo'])) {
-                $is_photo = 1;
-            } else {
-                $is_photo = 0;
-            }
-
-            if (isset($_POST['is_division'])) {
-                $is_division = 1;
-            } else {
-                $is_division = 0;
             }
 
             if (isset($_POST['is_class'])) {
@@ -345,42 +252,34 @@ class Reportcard extends Admin_Controller {
             } else {
                 $is_section = 0;
             }
+            if (isset($_POST['is_contactno'])) {
+                $is_contactno = 1;
+            } else {
+                $is_contactno = 0;
+            }
 
             if (isset($_POST['is_header'])) {
                 $is_header = 1;
             } else {
                 $is_header = 0;
             }
-             if (isset($_POST['is_footer'])) {
-                $is_footer = 1;
-            } else {
-                $is_footer = 0;
-            }
 
 
             $insert_data = array(
                 'id' => $this->input->post('id'),
                 'template' => $this->input->post('template'),
-                'heading' => $this->input->post('heading'),
                 'title' => $this->input->post('title'),
-                'exam_name' => $this->input->post('exam_name'),
-                'school_name' => $this->input->post('school_name'),
-                'exam_center' => $this->input->post('exam_center'),
-                'content' => $this->input->post('content'),
-                'content_footer' => $this->input->post('content_footer'),
                 'date' => $this->input->post('date'),
                 'is_name' => $is_name,
                 'is_father_name' => $is_father_name,
                 'is_mother_name' => $is_mother_name,
+                'is_dob' => $is_dob,
                 'is_admission_no' => $is_admission_no,
                 'is_roll_no' => $is_roll_no,
-                'is_photo' => $is_photo,
-                'is_header'=>$is_header,
                 'is_class' => $is_class,
-                'is_footer'=>$is_footer,
                 'is_section' => $is_section,
-                'is_division' => $is_division,
-                'exam_session' => $exam_session,
+                'is_contactno' => $is_contactno,
+                'is_header'=>$is_header,
             );
             
             
@@ -390,44 +289,6 @@ class Reportcard extends Admin_Controller {
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["header_img"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['header_img'] = $img_name;
-            }
-
-            if (isset($_FILES["footer_img"]) && !empty($_FILES["footer_img"]['name'])) {
-                $time = md5($_FILES["footer_img"]['name'] . microtime());
-                $fileInfo = pathinfo($_FILES["footer_img"]["name"]);
-                $img_name = $time . '.' . $fileInfo['extension'];
-                move_uploaded_file($_FILES["footer_img"]["tmp_name"], "./uploads/reportcard/" . $img_name);
-                $insert_data['footer_img'] = $img_name;
-            }
-
-
-
-
-
-
-
-            if (isset($_FILES["left_logo"]) && !empty($_FILES["left_logo"]['name'])) {
-                $time = md5($_FILES["left_logo"]['name'] . microtime());
-                $fileInfo = pathinfo($_FILES["left_logo"]["name"]);
-                $img_name = $time . '.' . $fileInfo['extension'];
-                move_uploaded_file($_FILES["left_logo"]["tmp_name"], "./uploads/reportcard/" . $img_name);
-                $insert_data['left_logo'] = $img_name;
-            }
-
-
-
-
-
-
-
-
-
-            if (isset($_FILES["right_logo"]) && !empty($_FILES["right_logo"]['name'])) {
-                $time = md5($_FILES["right_logo"]['name'] . microtime());
-                $fileInfo = pathinfo($_FILES["right_logo"]["name"]);
-                $img_name = $time . '.' . $fileInfo['extension'];
-                move_uploaded_file($_FILES["right_logo"]["tmp_name"], "./uploads/reportcard/" . $img_name);
-                $insert_data['right_logo'] = $img_name;
             }
             if (isset($_FILES["left_sign"]) && !empty($_FILES["left_sign"]['name'])) {
                 $time = md5($_FILES["left_sign"]['name'] . microtime());
@@ -447,13 +308,6 @@ class Reportcard extends Admin_Controller {
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["right_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['right_sign'] = $img_name;
-            }
-            if (isset($_FILES["background_img"]) && !empty($_FILES["background_img"]['name'])) {
-                $time = md5($_FILES["background_img"]['name'] . microtime());
-                $fileInfo = pathinfo($_FILES["background_img"]["name"]);
-                $img_name = $time . '.' . $fileInfo['extension'];
-                move_uploaded_file($_FILES["background_img"]["tmp_name"], "./uploads/reportcard/" . $img_name);
-                $insert_data['background_img'] = $img_name;
             }
 
             $this->reportcard_model->add($insert_data);

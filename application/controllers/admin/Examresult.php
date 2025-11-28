@@ -621,13 +621,24 @@ class Examresult extends Admin_Controller {
 
 
 
+		// Convert empty values removed
+		$students_array = array_filter($students_array, function($v){
+			return !empty($v) && is_numeric($v);
+		});
 
-        $sql="SELECT *,S.id as student_id,CL.class,SE.section FROM students S  LEFT JOIN student_session SS ON SS.student_id=S.id LEFT JOIN classes CL ON CL.id=SS.class_id LEFT JOIN sections SE ON SE.id=SS.section_id LEFT JOIN categories C ON C.id=S.category_id WHERE SS.session_id='$session_id' and SS.class_id ='$class_id' and SS.section_id ='$section_id'";
+		if (empty($students_array)) {
+			die("No valid student IDs found");
+		}
+
+		$student_ids = implode(",", $students_array);
+		
+        $sql="SELECT *,S.id as student_id,CL.class,SE.section FROM students S  LEFT JOIN student_session SS ON SS.student_id=S.id LEFT JOIN classes CL ON CL.id=SS.class_id LEFT JOIN sections SE ON SE.id=SS.section_id LEFT JOIN categories C ON C.id=S.category_id WHERE SS.session_id='$session_id' and SS.class_id ='$class_id' and SS.section_id ='$section_id' AND S.id IN ($student_ids)";
 
        
 
         $query = $this->db->query($sql);       
         $data['marksheet'] = $query->result();
+        $data['reportcard'] = $this->reportcard_model->get($this->input->post('reportcard'));
         
 
         
