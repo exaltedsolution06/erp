@@ -47,7 +47,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <span class="text-danger"><?php echo form_error('template'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('session').' '.$this->lang->line('title'); ?></label>
+                                    <label><?php echo $this->lang->line('title'); ?></label>
                                     <input autofocus="" id="title" name="title" placeholder="" type="text" class="form-control" value="<?php echo set_value('title', $reportcard->title); ?>"/>
                                     <span class="text-danger"><?php echo form_error('title'); ?></span>
                                 </div>
@@ -139,7 +139,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 <div class="form-group switch-inline">
                                     <label><?php echo $this->lang->line('header'); ?></label>
                                     <div class="material-switch switchcheck">
-                                        <input id="is_header" name="is_header" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_header', '1', (set_value('is_header', $reportcard->is_section) == 1) ? TRUE : FALSE); ?>>
+                                        <input id="is_header" name="is_header" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_header', '1', (set_value('is_header', $reportcard->is_header) == 1) ? TRUE : FALSE); ?>>
                                         <label for="is_header" class="label-success"></label>
                                     </div>
                                 </div>
@@ -176,6 +176,15 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										<label for="exam_group_overall" class="label-success"></label>
 									</div>
 								</div>
+								
+                                <div class="form-group switch-inline">
+                                    <label><?php echo $this->lang->line('marks_grade_table'); ?></label>
+                                    <div class="material-switch switchcheck">
+                                        <input id="marks_grade_table" name="marks_grade_table" type="checkbox" class="chk" value="1" <?php echo set_checkbox('marks_grade_table', '1', (set_value('marks_grade_table', $reportcard->marks_grade_table) == 1) ? TRUE : FALSE); ?>>
+                                        <label for="marks_grade_table" class="label-success"></label>
+                                    </div>
+                                </div>
+								
 								
 
                             </div><!-- /.box-body -->

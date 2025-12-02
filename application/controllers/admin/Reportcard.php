@@ -84,6 +84,11 @@ class Reportcard extends Admin_Controller {
             } else {
                 $is_header = 0;
             }
+            if (isset($_POST['marks_grade_table'])) {
+                $marks_grade_table = 1;
+            } else {
+                $marks_grade_table = 0;
+            }
 
 
 
@@ -102,6 +107,7 @@ class Reportcard extends Admin_Controller {
                 'is_contactno' => $is_contactno,
                 'exam_group_grade'=>json_encode($this->input->post('exam_group')),
                 'is_header'=>$is_header,
+                'marks_grade_table'=>$marks_grade_table,
                 'left_sign' => "",
                 'right_sign' => "",
                 'middle_sign' => "",
@@ -267,6 +273,12 @@ class Reportcard extends Admin_Controller {
                 $is_header = 0;
             }
 
+            if (isset($_POST['marks_grade_table'])) {
+                $marks_grade_table = 1;
+            } else {
+                $marks_grade_table = 0;
+            }
+
 
             $insert_data = array(
                 'id' => $this->input->post('id'),
@@ -284,6 +296,7 @@ class Reportcard extends Admin_Controller {
                 'is_contactno' => $is_contactno,
                 'exam_group_grade'=>json_encode($this->input->post('exam_group')),
                 'is_header'=>$is_header,
+                'marks_grade_table'=>$marks_grade_table,
             );
             
             

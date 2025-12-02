@@ -7,12 +7,14 @@ if (!defined('BASEPATH')) {
 class Examresult extends Admin_Controller {
 
     public $exam_type = array();
+    private $sch_current_session = "";
 
     public function __construct() {
         parent::__construct();
         $this->exam_type = $this->config->item('exam_type');
         $this->attendence_exam = $this->config->item('attendence_exam');
         $this->sch_setting_detail = $this->setting_model->getSetting();
+        $this->sch_current_session = $this->setting_model->getCurrentSession();
     }
 
     public function printCard() {
@@ -536,7 +538,7 @@ class Examresult extends Admin_Controller {
 
 
 
-            $sql="SELECT *,S.id as student_id FROM students S LEFT JOIN student_session SS ON SS.student_id=S.id  LEFT JOIN categories C ON C.id=S.category_id WHERE SS.session_id='$session_id' and SS.class_id ='$class_id' and SS.section_id ='$section_id'";
+            $sql="SELECT *,S.id as student_id FROM students S LEFT JOIN student_session SS ON SS.student_id=S.id  LEFT JOIN categories C ON C.id=S.category_id WHERE SS.session_id='$session_id' and SS.class_id ='$class_id' and SS.section_id ='$section_id' ORDER BY S.firstname asc";
         
 
           
@@ -548,6 +550,7 @@ class Examresult extends Admin_Controller {
             $data['class_id']=$class_id;
         }
         $data['sch_setting'] = $this->sch_setting_detail;
+        $data['current_session'] = $this->sch_current_session;
         
         
         $this->load->view('layout/header', $data);
@@ -646,10 +649,12 @@ class Examresult extends Admin_Controller {
         
         
         $data['post_exam_group_id']=$this->db->query("SELECT * FROM exam_groups WHERE id IN ('".implode("','",$exam_group_id)."')")->result();
-    
+		
+        $data['current_session'] = $this->session_model->get($this->sch_current_session);
            
-        $student_admit_cards = $this->load->view('admin/admitcard/print_report_card',$data);
-        
+        $student_admit_cards = $this->load->view('admin/admitcard/print_report_card', $data, true);
+		$array = array('status' => '1', 'error' => '', 'page' => $student_admit_cards);
+		echo json_encode($array);
         
         
         

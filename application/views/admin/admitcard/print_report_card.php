@@ -1,8 +1,7 @@
 <?php
 
 	$desc=$reportcard;
-	$saved_json = json_decode($desc->exam_group_grade, true);	
-	// echo '<pre>'; print_r($desc);exit;
+	$saved_json = json_decode($desc->exam_group_grade, true);
 	// var_dump($marksheet['students'][0]['exam_result']);
 ?>
 
@@ -60,10 +59,53 @@
   <body>
 
 <?php 
+	ob_start();
+	$grade_html = '';
+	if($desc->marks_grade_table==1){
+?>
+	<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px">
+		<div class="text-danger text-center"><h4><?php echo $this->lang->line('grade_system'); ?></h4></div>
+		<?php
+			$grades = $this->db->order_by('mark_from', 'DESC')->get('grades')->result();
+			$half = ceil(count($grades) / 2);
 
+			$left  = array_slice($grades, 0, $half);
+			$right = array_slice($grades, $half);
+		?>
+		<table class="w-100 border-dark table-bordered">
+			<tr>
+				<th style="padding-left:8px;"><?php echo $this->lang->line('marks_range'); ?></th>
+				<th style="padding-left:8px;"><?php echo $this->lang->line('grade'); ?></th>
+				<th style="padding-left:8px;"><?php echo $this->lang->line('marks_range'); ?></th>
+				<th style="padding-left:8px;"><?php echo $this->lang->line('grade'); ?></th>
+			</tr>
+			<?php for ($i = 0; $i < $half; $i++): ?>
+				<tr>
 
+					<!-- LEFT SIDE -->
+					<?php if (isset($left[$i])): ?>
+						<td style="padding-left:8px;"><?= $left[$i]->mark_upto ?> - <?= $left[$i]->mark_from ?></td>
+						<td style="padding-left:8px;"><?= $left[$i]->name ?></td>
+					<?php else: ?>
+						<td></td><td></td>
+					<?php endif; ?>
 
+					<!-- RIGHT SIDE -->
+					<?php if (isset($right[$i])): ?>
+						<td style="padding-left:8px;"><?= $right[$i]->mark_upto ?> - <?= $right[$i]->mark_from ?></td>
+						<td style="padding-left:8px;"><?= $right[$i]->name ?></td>
+					<?php else: ?>
+						<td></td><td></td>
+					<?php endif; ?>
 
+				</tr>
+			<?php endfor; ?>
+		</table>
+
+	</div>
+<?php
+	}
+	$grade_html .= ob_get_clean();	
 
 	$exam_group_class_batch_exam_student_id=$_POST['exam_group_class_batch_exam_student_id'];
 
@@ -76,7 +118,7 @@
 			$student_id=$stddata->student_id;
 ?>
 
-	<div class="container mb-5">
+	<div class="container1 mb-5" style="margin: 12px;">
 		<div class="row">
 			<div class="col-12 bg-danger"style="height:0px"></div>
 			<?php if($desc->is_header==1){ ?>
@@ -86,7 +128,7 @@
 			<?php } ?>
 			<?php if(!empty($desc->title)){ ?>
 			<div class="col-12 text-center">
-				<p class="text-danger h3"><?php echo $desc->title; ?></p>
+				<p class="text-danger h3"><?php echo $desc->title; ?> (<?php echo $this->lang->line('session'); ?> : <?php echo $current_session['session']; ?>)</p>
 			</div>
 			<?php } ?>
 			<div class="col-12" style="border:1px solid">
@@ -177,10 +219,9 @@
 							<thead style="background:#fff">
 								
 								<tr>
-									<th class="text-success">Scholastic Area</th>
+									<th class="text-success"><?php echo $this->lang->line('scholastic_area'); ?></th>
 									<?php 
 									$allNames = [];
-									// echo '<pre>'; print_r($post_exam_group_id);exit;
 									foreach($post_exam_group_id as $rowDatagroup){
 									$exam_type=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$rowDatagroup->id."' AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
 									$allNames[] = $rowDatagroup->name;
@@ -205,7 +246,7 @@
 
 								
 								<tr style="vertical-align: middle;">
-									<th style="width:100px">Main <span class="text-success">Subject</span></th>
+									<th style="width:100px"><?php echo $this->lang->line('main'); ?> <?php echo $this->lang->line('subject'); ?></th>
 									
 									<?php  foreach($post_exam_group_id as $rowDatagroup){
 									$exam_type=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$rowDatagroup->id."' AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
@@ -217,11 +258,11 @@
 									<th class="text-success" style="width:90px"><?=$type->exam?>  </th>
 										<?php } ?>
 										
-										<th class="text-success" style="width:100px">Mark Obt</th>
+										<th class="text-success" style="width:100px"><?php echo $this->lang->line('marks'); ?> <?php echo $this->lang->line('obtained'); ?></th>
 										<?php
 										if(isset($saved_json[$rowDatagroup->id]) && $saved_json[$rowDatagroup->id] == 1){
 										?>
-										<th class="text-success" style="width:100px">Grade</th>
+										<th class="text-success" style="width:100px"><?php echo $this->lang->line('grade'); ?></th>
 									
 									
 									
@@ -230,11 +271,11 @@
 									
 									
 									
-									<th class="text-success" style="width:100px">G. Total</th>
+									<th class="text-success" style="width:100px"><?php echo $this->lang->line('grand_total'); ?></th>
 									<?php
 										if(isset($saved_json['overall']) && $saved_json['overall'] == 1){
 										?>
-									<th class="text-success" style="width:100px">Overall Grade</th>
+									<th class="text-success" style="width:100px"><?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('grade'); ?></th>
 									<?php } ?>
 								</tr>
 							</thead>
@@ -266,11 +307,15 @@
 								
 								$student_result = $this->studentsession_model->getStudentClass($stddata->student_id);
 								$subject_group_by_classsection = $this->subjectgroup_model->getGroupByClassandSection($student_result['class_id'], $student_result['section_id']);
-								$subject_list_by_groupid = $this->subjectgroup_model->getByID($subject_group_by_classsection[0]['subject_group_id']);
 								$subject_id_data = [];
+								foreach ($subject_group_by_classsection as $sgc_val) {
+									$subject_list_by_groupid = $this->subjectgroup_model->getByID($sgc_val['subject_group_id']);
 
-								foreach ($subject_list_by_groupid[0]->group_subject as $subject) {
-									$subject_id_data[] = $subject->subject_id;
+									foreach ($subject_list_by_groupid as $slg_val) {
+										foreach ($slg_val->group_subject as $subject) {
+											$subject_id_data[] = $subject->subject_id;
+										}
+									}
 								}
 								
 								$max_marks = $max_marks_op = 0;
@@ -555,7 +600,7 @@
 							
 							<tfoot>
 									<tr style="font-weight:bold">
-										<th class="text-success" style="text-align:left;padding-left:8px">Total : </th>
+										<th class="text-success" style="text-align:left;padding-left:8px"><?php echo $this->lang->line('total'); ?> : </th>
 										<?php
 										$i=count($final);
 										foreach($final as $row){
@@ -595,22 +640,14 @@
 										</td>
 										<?php } ?>
 									</tr>
-									
-									<tr style="text-align: left !important;">
-										<th style="padding-left: 8px !important;"  colspan="<?=sizeof($final)+3?>">Optional Subject</th>
-									</tr>
-									<?php echo $optional_html; ?>
-									<tr style="text-align: left !important;">
-										<th style="padding-left: 8px !important;"  colspan="<?=sizeof($final)+3?>">Overall Percentage(%) :  <?php 
-											$totalMaxMarks = array_sum($maxMark);
-
-											$totalNumber = ($totalMaxMarks > 0) 
-												? round(($finalTotal * 100 / $totalMaxMarks), 2) 
-												: 0;
-
-											echo $totalNumber;
-											?>% </th>
-									</tr>
+									<?php if($optional_html != ''){ ?>
+										<tr style="text-align: left !important;">
+											<th style="padding-left: 8px !important;"  colspan="<?=sizeof($final)+3?>"><?php echo $this->lang->line('optional'); ?> <?php echo $this->lang->line('subject'); ?></th>
+										</tr>
+									<?php
+										echo $optional_html;
+									}
+									?>
 									<?php echo $optional_list; ?>
 							</tfoot>
 							
@@ -634,62 +671,58 @@
 			
 			
 			
-			<div class="col-12" >
+			<div class="col-6" style="padding: 0;" >
 				Note : 'AB' Indicates <strong>ABSENT</strong> in the Subject Exam.
+			</div>
+			<div class="col-6 text-end" style="padding: 0;"><strong>
+				<?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('percentage'); ?>(%) : <?php 
+											$totalMaxMarks = array_sum($maxMark);
 
-				<?php
+											$totalNumber = ($totalMaxMarks > 0) 
+												? round(($finalTotal * 100 / $totalMaxMarks), 2) 
+												: 0;
 
-
-						$tearm_count=($_POST['exam_group_id']);
-						// echo '<pre>'; print_r($tearm_count);exit;
-
-				?>
+											echo $totalNumber;
+											?>%</strong>
 			</div>
 			
-			<?php $examgroup_result = $this->examgroup_model->get_c(); foreach ($examgroup_result as $key => $value) {	
-							
-				?>
-
-			<div class="col-<?=12/count($examgroup_result)?>" style="padding:0px">
+			<?php 
+			$tearm_count=($_POST['exam_group_id']);
+			$examgroup_result = $this->examgroup_model->get_c_by_exam_group($tearm_count);
+			
+			foreach ($examgroup_result as $key => $value) {							
+			?>
+			<div class="col-<?=12/count($examgroup_result)?> mt-3" style="padding:0px">
 				<table class="w-100 border-dark text-center table-bordered">
 					<tr class="text-center">
-						<th colspan="3"><h5 class="text-danger"><?=$value->name ?></h5>
+						<th colspan="2"><h5 class="text-danger"><?=$value->name ?></h5>
 							<h6>(3 Point Grading Scale A,B,C)</h6>
 						</th>
 					</tr>
 					<tr style="background:#fff"	>	
 						<th style="text-align: left !important;padding-left: 15px !important;"><em style="color:#C00;">Activities</em></th>
-						<?php $z=1; for ($i=0; $i < count($tearm_count); $i++) { 
+						<?php /*$z=1; for ($i=0; $i < count($tearm_count); $i++) { 
 							echo '<th>G'.$z++.'</th>';
-						} ?>
+						}*/ ?>
+						<th><?php echo $this->lang->line('grade'); ?></th>
 						
 						
 					</tr>
 					<?php  
+					$list=$this->examgroup_model->getExamByExamGroup_reportCard_c($value->id,$student_id);
 					
-					
-					
-					//var_dump($student_id);
-					
-					$list=$this->examgroup_model->getExamByExamGroup_reportCard($value->id,$student_id); 
-
-
-
-
 					foreach($list as $res){ 
-
-
-						?>
-
+					?>
 					<tr>
 						<th style="text-align: left !important;padding-left: 15px !important;">
 							<?=$res->exam; ?>
 						</th>
-							<?php 
-								$z=1; for ($i=0; $i < count($tearm_count); $i++) {
-									 $term_id=$tearm_count[$i];
+						<td><?=$res->get_marks; ?></td>
+						<?php 
+						/*$z=1; for ($i=0; $i < count($tearm_count); $i++) {
+							$term_id=$tearm_count[$i];
 
-								// echo $res->id.','.$term_id.','.$student_id;		
+							// echo $res->id.','.$term_id.','.$student_id;		
 
 							$grade=$this->batchsubject_model->getExamSubjectsPrintReport($res->id,$term_id,$student_id);
 							
@@ -697,54 +730,53 @@
 							echo '<td>'.$grade[0]->grade.'</td>';
 							// echo '<td>6</td>';
 
-						} ?>
-					</tr>
-					
+						}*/
+						?>
+					</tr>					
 				<?php } ?>
 				</table>
 			</div>
 
 				<?php
 			} ?>
-
-
-
 			
-			
-			
-			<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px">
+			<!--<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px">
 				<table class="w-100 table-bordered border-dark " style="padding-bottom:0px">
 					<tr>
-						<th style="width:200px;background:#fff">Result</th>
-						<!--<th style="width:200px"></th>-->
+						<th style="padding-left: 8px !important;width:200px;background:#fff"><?php echo $this->lang->line('result'); ?></th>
 						<th style="width:800px"></th>
 					</tr>
 				</table>
-			</div>
-			
+			</div>-->
 			
 			<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px;border:1px solid">
 				<div class="row text-center">
 					<div class="col-4">
-						
-						<h6 class="mt-5">CLASS TEACHER </h6>
+						<img src="<?php echo base_url('uploads/reportcard/'.$desc->left_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
+						<h6 class="mt-1"><?php echo $this->lang->line('class_teacher'); ?> </h6>
 						
 					</div>                   
 					
 					<div class="col-4">
-						
-						<h6 class="mt-5">EXAMINATION I/C </h6>
+						<img src="<?php echo base_url('uploads/reportcard/'.$desc->middle_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
+						<h6 class="mt-1"><?php echo $this->lang->line('examination_ic'); ?> </h6>
 						
 					</div>
 					
 					<div class="col-4">
-						
-						<h6 class="mt-5">PRINCIPAL</h6>
+						<img src="<?php echo base_url('uploads/reportcard/'.$desc->right_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
+						<h6 class="mt-1"><?php echo $this->lang->line('principal'); ?></h6>
 						
 					</div>
 				</div>
 				
 			</div>
+			
+			<?php
+			if($grade_html != ''){
+				echo $grade_html;
+			}
+			?>
 		</div>
 	</div>
 
@@ -757,14 +789,3 @@
 
   </body>
 </html>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<script>
-	
-	$( document ).ready(function() {
-   
-	// window.print();
-   
-});
-
-</script>

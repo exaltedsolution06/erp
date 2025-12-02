@@ -40,7 +40,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <span class="text-danger"><?php echo form_error('template'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('session').' '.$this->lang->line('title'); ?></label>
+                                    <label><?php echo $this->lang->line('title'); ?></label>
                                     <input autofocus="" id="title" value="<?php echo set_value('title'); ?>" name="title" placeholder="" type="text" class="form-control" />
                                     <span class="text-danger"><?php echo form_error('title'); ?></span>
                                 </div>
@@ -166,6 +166,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										<label for="group_overall" class="label-success"></label>
 									</div>
 								</div>
+								
+								<div class="form-group switch-inline">
+                                    <label><?php echo $this->lang->line('marks_grade_table'); ?></label>
+                                    <div class="material-switch switchcheck">
+                                        <input id="marks_grade_table" name="marks_grade_table" type="checkbox" class="chk" value="1">
+                                        <label for="marks_grade_table" class="label-success"></label>
+                                    </div>
+                                </div>
                             </div><!-- /.box-body -->
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>

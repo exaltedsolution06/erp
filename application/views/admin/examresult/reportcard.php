@@ -24,7 +24,7 @@
                            
 							
 							
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            <!--<div class="col-sm-6 col-lg-4 col-md-4">
                                 <div class="form-group">  
                                     <label><?php echo $this->lang->line('session'); ?></label><small class="req"> *</small>
                                     <select  id="session_id" name="session_id" class="form-control" >
@@ -43,8 +43,9 @@
                                     </select>
                                     <span class="text-danger"><?php echo form_error('session_id'); ?></span>
                                 </div>  
-                            </div>
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            </div>-->
+							<input type="hidden" name="session_id" id="session_id" value="<?php echo $current_session; ?>">
+                            <div class="col-sm-6 col-lg-6 col-md-6">
                                 <div class="form-group">   
                                     <label><?php echo $this->lang->line('class'); ?></label><small class="req"> *</small>
                                     <select id="class_id" name="class_id" class="form-control" >
@@ -65,7 +66,7 @@
                                 </div>  
                             </div>
 
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            <div class="col-sm-6 col-lg-6 col-md-6">
                                 <div class="form-group"> 
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('section'); ?></label><small class="req"> *</small>
                                     <select  id="section_id" name="section_id" class="form-control" >
@@ -92,7 +93,7 @@
                     <?php
                     if (isset($studentList)) {
                         ?>
-                        <form method="post" action="<?php echo base_url('admin/examresult/printreportcard') ?>" id="printMarksheet1">
+                        <form method="post" action="<?php echo base_url('admin/examresult/printreportcard') ?>" id="printreportcard">
 
 
                             <div class="box-header ptbnull"></div>  
@@ -196,11 +197,14 @@
                                                     ?>
                                                     <tr>
                                                         
-														<td class="text-center"><input type="checkbox" class="checkbox center-block"  onclick="StdSelect('<?php echo $student_value->student_id; ?>')">
+														<!--<td class="text-center"><input type="checkbox" class="checkbox center-block"  onclick="StdSelect('<?php echo $student_value->student_id; ?>')">
 															
 														<input type="hidden"   name="exam_group_class_batch_exam_student_id[]" id="std<?php echo $student_value->student_id; ?>">
 
-                                                        </td>
+                                                        </td>-->
+														<td class="text-center"><input type="checkbox" class="checkbox center-block"  name="exam_group_class_batch_exam_student_id[]" data-student_id="<?php echo $student_value->student_id; ?>" value="<?php echo $student_value->student_id; ?>">
+
+                                                            </td>
 														  
 														
                                                         <td><?php echo $student_value->admission_no; ?></td>
@@ -337,14 +341,14 @@
 </script>
 <script>
 
-    $(document).on('submit', 'form#printMarksheet', function (e) {
+    $(document).on('submit', 'form#printreportcard', function (e) {
 
         e.preventDefault();
         var form = $(this);
         var subsubmit_button = $(this).find(':submit');
         var formdata = form.serializeArray();
 
-        var list_selected =  $('form#printMarksheet input[name="exam_group_class_batch_exam_student_id[]"]:checked').length;
+        var list_selected =  $('form#printreportcard input[name="exam_group_class_batch_exam_student_id[]"]:checked').length;
       if(list_selected > 0){
         $.ajax({
             type: "POST",
@@ -356,8 +360,8 @@
             },
             success: function (response)
             {
-                $(".abc").html(response.page);
-                // Popup(response.page);
+                // $(".abc").html(response.page);
+                Popup(response.page);
             },
             error: function (xhr) { // if error occured
 
