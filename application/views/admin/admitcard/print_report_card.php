@@ -1,6 +1,7 @@
 <?php
 
 	$desc=$reportcard;
+	$saved_json = json_decode($desc->exam_group_grade, true);	
 	// echo '<pre>'; print_r($desc);exit;
 	// var_dump($marksheet['students'][0]['exam_result']);
 ?>
@@ -179,42 +180,62 @@
 									<th class="text-success">Scholastic Area</th>
 									<?php 
 									$allNames = [];
-									
+									// echo '<pre>'; print_r($post_exam_group_id);exit;
 									foreach($post_exam_group_id as $rowDatagroup){
-									$exam_type=$this->db->query("SELECT * FROM exam_group_class_batch_exams WHERE exam_group_id='".$rowDatagroup->id."'")->result();
+									$exam_type=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$rowDatagroup->id."' AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
 									$allNames[] = $rowDatagroup->name;
+									if(isset($saved_json[$rowDatagroup->id]) && $saved_json[$rowDatagroup->id] == 1){
+										$gradecount = 2;
+									}else{
+										$gradecount = 1;
+									}
 										?>
-									<th colspan="<?=count($exam_type)+1?>" class="text-danger"><?=$rowDatagroup->name?></th>
-									<?php } ?>
+									<th colspan="<?=count($exam_type)+$gradecount?>" class="text-danger"><?=$rowDatagroup->name?></th>
+									<?php }
+										if(isset($saved_json['overall']) && $saved_json['overall'] == 1){
+											$overallgradecount = 2;
+										}else{
+											$overallgradecount = 1;
+										}
+									?>
 									
-									<th colspan="2" class="text-danger"><?= implode(' + ', $allNames); ?></th>
+									<th colspan="<?php echo $overallgradecount; ?>" class="text-danger"><?= implode(' + ', $allNames); ?></th>
 								</tr>
 
 
 								
 								<tr style="vertical-align: middle;">
-									<th style="width:100px">Subject</th>
+									<th style="width:100px">Main <span class="text-success">Subject</span></th>
 									
 									<?php  foreach($post_exam_group_id as $rowDatagroup){
-									$exam_type=$this->db->query("SELECT * FROM exam_group_class_batch_exams WHERE exam_group_id='".$rowDatagroup->id."'")->result();
+									$exam_type=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$rowDatagroup->id."' AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
+										
 										foreach($exam_type as $type){
 										?>
 									
 									
-									<th style="width:90px"><?=$type->exam?> </th>
+									<th class="text-success" style="width:90px"><?=$type->exam?>  </th>
 										<?php } ?>
 										
-										<th style="width:100px">Mark Obt</th>
+										<th class="text-success" style="width:100px">Mark Obt</th>
+										<?php
+										if(isset($saved_json[$rowDatagroup->id]) && $saved_json[$rowDatagroup->id] == 1){
+										?>
+										<th class="text-success" style="width:100px">Grade</th>
 									
 									
 									
+									<?php } } ?>
+									
+									
+									
+									
+									<th class="text-success" style="width:100px">G. Total</th>
+									<?php
+										if(isset($saved_json['overall']) && $saved_json['overall'] == 1){
+										?>
+									<th class="text-success" style="width:100px">Overall Grade</th>
 									<?php } ?>
-									
-									
-									
-									
-									<th style="width:100px">G. Total</th>
-									<th style="width:100px">Overall Grade</th>
 								</tr>
 							</thead>
 							
@@ -226,9 +247,10 @@
 								$aadi=0;
 								$finalTotal=0;
 								$maxMark=[];
+								$maxMark_op=[];
 								
-								 $sql="SELECT exam_group_class_batch_exam_subjects.subject_id FROM exam_group_class_batch_exam_subjects INNER JOIN exam_group_class_batch_exams ON exam_group_class_batch_exams.id=exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id  INNER JOIN exam_groups ON exam_groups.id=exam_group_class_batch_exams.exam_group_id INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id WHERE exam_group_class_batch_exam_students.student_id='". $stddata->student_id ."' and exam_groups.id  IN ('".implode("','",$postExamGroupId)."') ";
-								
+								/*$sql="SELECT exam_group_class_batch_exam_subjects.subject_id FROM exam_group_class_batch_exam_subjects INNER JOIN exam_group_class_batch_exams ON exam_group_class_batch_exams.id=exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id  INNER JOIN exam_groups ON exam_groups.id=exam_group_class_batch_exams.exam_group_id INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id WHERE exam_group_class_batch_exam_students.student_id='". $stddata->student_id ."' and exam_groups.id  IN ('".implode("','",$postExamGroupId)."') ";
+								 
 								
 								
 								$query = $this->db->query($sql);
@@ -240,138 +262,219 @@
 									array_push($abc,$rowdata->subject_id);
 								}
 								
-								$subject_id_data=array_unique($abc);
+								$subject_id_data=array_unique($abc);*/
 								
+								$student_result = $this->studentsession_model->getStudentClass($stddata->student_id);
+								$subject_group_by_classsection = $this->subjectgroup_model->getGroupByClassandSection($student_result['class_id'], $student_result['section_id']);
+								$subject_list_by_groupid = $this->subjectgroup_model->getByID($subject_group_by_classsection[0]['subject_group_id']);
+								$subject_id_data = [];
+
+								foreach ($subject_list_by_groupid[0]->group_subject as $subject) {
+									$subject_id_data[] = $subject->subject_id;
+								}
 								
-								// var_dump($subject_id_data);
-								
-								
-								
-								
-								
-								
-								//foreach($subject as $rowdata){
-								
-								$max_marks=0;
-								$total_subject=0;
-								
+								$max_marks = $max_marks_op = 0;
+								$total_subject = $total_subject_op=0;
+								$optional_list = '';
 								for($i=0;$i<count($subject_id_data);$i++){
 								
 									$sql1="SELECT * FROM subjects WHERE id='".$subject_id_data[$i]."' ";
 									$query1 = $this->db->query($sql1);
-									$rowdata= $query1->result()[0];
-									$max_marks1=0;
-									$total1=0;
-									$array=[];
+									$rowdata = $query1->result()[0];
+									$max_marks1 = $max_marks1_op = 0;
+									$total1 = $total1_op = 0;
+									$array = $array_op = [];
+									if($rowdata->type_one != 'optional'){
 								?>
-							
-								<tr>
-									<td style="text-align:left;padding-left:8px" ><?=$rowdata->name?></td>
-									
-									<?php
+								
+										<tr>
+											<td class="text-success" style="text-align:left;padding-left:8px" ><?=$rowdata->name?></td>
+											
+											<?php
 
-										foreach($post_exam_group_id as $post_exam_group){
-											
-											
-											$total=0;
-											$exam_group_id=$post_exam_group->id;
-	
-										
-										$exam_type=$this->db->query("SELECT * FROM exam_group_class_batch_exams WHERE exam_group_id='".$exam_group_id."'")->result();
-									
-
-
-										foreach($exam_type as $type){
-											
-											
-											
-											
-											
-											
-											
-											
-											
-										
-											
-											$maxMarks=$this->db->query("SELECT max_marks FROM exam_group_class_batch_exam_subjects WHERE exam_group_class_batch_exams_id='".$type->id."' and subject_id='".$rowdata->id."'")->result()[0];
-											
-												array_push($maxMark,$maxMarks->max_marks);
-						
-
-	// $resultData=$this->db->query("SELECT * FROM exam_group_class_batch_exams WHERE exam_group_id='".$type->exam_group_id."' and id='".$type->id."'  ")->result();
-									
-$resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_batch_exam_subjects.max_marks FROM exam_group_exam_results left JOIN exam_group_class_batch_exam_subjects ON exam_group_class_batch_exam_subjects.id=exam_group_exam_results.exam_group_class_batch_exam_subject_id left JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.id=exam_group_exam_results.`exam_group_class_batch_exam_student_id` WHERE exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id='".$type->id."' and exam_group_class_batch_exam_students.exam_group_class_batch_exam_id='".$type->id."' and exam_group_class_batch_exam_subjects.subject_id='".$rowdata->id."' and exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result()[0];									
-	
-	// var_dump($rest);	
-											
-											
-											
-											
-											// die();
-										
-											
-											
-											
-											
-											// $this->db->where('exam_group_class_batch_exam_subject_id', $student_value['exam_group_class_batch_exam_subject_id']);
-											// $this->db->where('exam_group_class_batch_exam_student_id', $student_value['exam_group_class_batch_exam_student_id']);
-											// $resultData = $this->db->get('exam_group_exam_results');
-											
-											
-											
-											 // $max_marks+=round($resultData->max_marks);
-											 $max_marks+=round($maxMarks->max_marks);
+											foreach($post_exam_group_id as $post_exam_group){
+													
+													
+													$total=0;
+													$exam_group_id=$post_exam_group->id;
+			
+												
+												// $exam_type=$this->db->query("SELECT * FROM exam_group_class_batch_exams WHERE exam_group_id='".$exam_group_id."'")->result();
+												$exam_type=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$exam_group_id."' AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
 											
 
 
-											
-										?>
-											<td>
-												<?php 
-													$marks = !empty($resultData) ? ($resultData->attendence == 'absent' ? 'AB' : round($resultData->get_marks)) : "-";
-													echo $marks;
+												$max_marks1 = 0;
+												foreach($exam_type as $type){
+													$maxMarks=$this->db->query("SELECT max_marks FROM exam_group_class_batch_exam_subjects WHERE exam_group_class_batch_exams_id='".$type->id."' and subject_id='".$rowdata->id."'")->result()[0];
+													array_push($maxMark,$maxMarks->max_marks);
+								
+								
+		$resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_batch_exam_subjects.max_marks FROM exam_group_exam_results left JOIN exam_group_class_batch_exam_subjects ON exam_group_class_batch_exam_subjects.id=exam_group_exam_results.exam_group_class_batch_exam_subject_id left JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.id=exam_group_exam_results.`exam_group_class_batch_exam_student_id` WHERE exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id='".$type->id."' and exam_group_class_batch_exam_students.exam_group_class_batch_exam_id='".$type->id."' and exam_group_class_batch_exam_subjects.subject_id='".$rowdata->id."' and exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result()[0];
 
-													$total_subject++; 
-													array_push($array, !empty($resultData) ? $resultData->get_marks : 0);
+													$max_marks+=round($maxMarks->max_marks);
+													$max_marks1+=round($maxMarks->max_marks);
 												?>
+													<td>
+														<?php 
+															$marks = !empty($resultData) ? ($resultData->attendence == 'absent' ? 'AB' : round($resultData->get_marks)) : "-";
+															echo $marks;
+
+															$total_subject++; 
+															array_push($array, !empty($resultData) ? $resultData->get_marks : 0);
+														?>
+													</td>
+													
+												<?php 
+														$total+=$resultData->get_marks; 
+													} 
+													$total1+=$total; 
+													
+												?>
+											
+											<td style="width:100px"><?php echo $total; ?></td>
+											<?php
+											if(isset($saved_json[$exam_group_id]) && $saved_json[$exam_group_id] == 1){
+											?>
+											<td style="width:100px">
+											<?php
+												$t_grade = ($max_marks1 > 0) ? ($total * 100 / $max_marks1) : 0;
+												$gd=$this->db->query("SELECT * FROM `grades` WHERE mark_from>='$t_grade' and 	mark_upto<='$t_grade' order by mark_upto asc")->result();
+												echo ($gd[0]->name);
+											?>
 											</td>
 											
-										<?php 
-												$total+=$resultData->get_marks; 
-											} 
-											$total1+=$total; 
+											<?php
+											}
+											array_push($array,$total); 
 											
-										?>
-									
-									<td style="width:100px"><?php echo $total; ?></td>
-									
-									<?php array_push($array,$total); } ?>
+											if(isset($saved_json[$exam_group_id]) && $saved_json[$exam_group_id] == 1){
+												$grade_array = [];
+												$grade_array = [ 'type'=>'grade', 'marks'=>$max_marks1 ];
+												// array_push($array,$max_marks1);
+												array_push($array,$grade_array);
+											} 
+											} 
+											?>
 
-									<td><?=$total1.'/<b>'.$max_marks.'</b>'?> <?php //echo $max_marks; ?> </td>
-									<td><?php 
+											<td><?=$total1.'/<b>'.$max_marks.'</b>'?> <?php //echo $max_marks; ?> </td>
+											<?php
+											if(isset($saved_json['overall']) && $saved_json['overall'] == 1){
+											?>
+											<td><?php 
+											
+											
+											
+												$grade = ($max_marks > 0) ? ($total1 * 100 / $max_marks) : 0;
+											
+											
+										 
+											
+											
+											
+											$gd=$this->db->query("SELECT * FROM `grades` WHERE mark_from>='$grade' and 	mark_upto<='$grade' order by mark_upto asc")->result(); 
+											
+											//echo ($gd[0]->name);
+												echo ($gd[0]->name);
+											
+											?></td>
+											<?php } ?>	
+										</tr>
 									
-									
-									
-										$grade = ($max_marks > 0) ? ($total1 * 100 / $max_marks) : 0;
-									
-									
-								 
-									
-									
-									
-									$gd=$this->db->query("SELECT * FROM `grades` WHERE mark_from>='$grade' and 	mark_upto<='$grade' order by mark_upto asc")->result(); 
-									
-									//echo ($gd[0]->name);
-										echo ($gd[0]->name);
-									
-									?></td>
-										
-								</tr>
+									<?php
+										$max_marks=0;
+										$finalTotal+=$total1;
+										array_push($array1,$array);	
+									}else{
+										ob_start();
+										$optional_html = '';
+									?>
+										<tr class="optional">
+											<td class="text-success" style="text-align:left;padding-left:8px" ><?=$rowdata->name?></td>
+											
+											<?php
+
+												foreach($post_exam_group_id as $post_exam_group){
+													
+													
+													$total_op=0;
+													$exam_group_id_op=$post_exam_group->id;
+			
+												
+												// $exam_type_op=$this->db->query("SELECT * FROM exam_group_class_batch_exams WHERE exam_group_id='".$exam_group_id_op."'")->result();
+												$exam_type_op=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$exam_group_id_op."' AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
+											
+
+												$max_marks1_op = 0;
+												foreach($exam_type_op as $type_op){
+													
+													$maxMarks_op=$this->db->query("SELECT max_marks FROM exam_group_class_batch_exam_subjects WHERE exam_group_class_batch_exams_id='".$type_op->id."' and subject_id='".$rowdata->id."'")->result()[0];
+													
+													array_push($maxMark_op,$maxMarks_op->max_marks);
 								
-								<?php
-									$max_marks=0;
-									$finalTotal+=$total1;
-									array_push($array1,$array);	
+								
+		$resultData_op=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_batch_exam_subjects.max_marks FROM exam_group_exam_results left JOIN exam_group_class_batch_exam_subjects ON exam_group_class_batch_exam_subjects.id=exam_group_exam_results.exam_group_class_batch_exam_subject_id left JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.id=exam_group_exam_results.`exam_group_class_batch_exam_student_id` WHERE exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id='".$type_op->id."' and exam_group_class_batch_exam_students.exam_group_class_batch_exam_id='".$type_op->id."' and exam_group_class_batch_exam_subjects.subject_id='".$rowdata->id."' and exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result()[0];		
+
+													$max_marks_op+=round($maxMarks_op->max_marks);
+													$max_marks1_op+=round($maxMarks_op->max_marks);
+												?>
+													<td>
+														<?php 
+															$marks_op = !empty($resultData_op) ? ($resultData_op->attendence == 'absent' ? 'AB' : round($resultData_op->get_marks)) : "-";
+															echo $marks_op;
+
+															$total_subject_op++; 
+															array_push($array_op, !empty($resultData_op) ? $resultData_op->get_marks : 0);
+														?>
+													</td>
+													
+												<?php 
+														$total_op+=$resultData_op->get_marks; 
+													} 
+													$total1_op+=$total_op; 
+													
+												?>
+											
+											<td style="width:100px"><?php echo $total_op; ?></td>
+											<?php
+											if(isset($saved_json[$exam_group_id_op]) && $saved_json[$exam_group_id_op] == 1){
+											?>
+											<td style="width:100px">
+											<?php
+												$t_grade_op = ($max_marks1_op > 0) ? ($total_op * 100 / $max_marks1_op) : 0;
+												$gd_op=$this->db->query("SELECT * FROM `grades` WHERE mark_from>='$t_grade_op' and 	mark_upto<='$t_grade_op' order by mark_upto asc")->result();
+												echo ($gd_op[0]->name);
+											?>
+											</td>
+											
+											<?php } array_push($array_op,$total_op); } ?>
+
+											<td><?=$total1_op.'/<b>'.$max_marks_op.'</b>'?> <?php //echo $max_marks; ?> </td>
+											<?php
+											if(isset($saved_json['overall']) && $saved_json['overall'] == 1){
+											?>
+											<td><?php 
+											
+											
+											
+												$grade_op = ($max_marks_op > 0) ? ($total1_op * 100 / $max_marks_op) : 0;
+											
+											
+										 
+											
+											
+											
+											$gd_op=$this->db->query("SELECT * FROM `grades` WHERE mark_from>='$grade_op' and 	mark_upto<='$grade_op' order by mark_upto asc")->result(); 
+											
+											//echo ($gd[0]->name);
+												echo ($gd_op[0]->name);
+											
+											?></td>
+											<?php } ?>	
+										</tr>
+									<?php
+									$optional_html .= ob_get_clean();
+									}
 								}
 
 								?>
@@ -381,16 +484,78 @@ $resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_
 							
 							<?php
 							
-								$final = array();
+								/*$final = array();
 								array_walk_recursive($array1, function($item, $key) use (&$final){
 									$final[$key] = isset($final[$key]) ?  $item + $final[$key] : $item;
-								});
-								
+								});*/
+								$colTotals = [];
+								$gradeLimits = [];
+
+								// Step 1: SUM numeric columns + store grade marks
+								foreach ($array1 as $row) {
+									foreach ($row as $index => $value) {
+
+										// numeric marks
+										if (is_numeric($value)) {
+											if (!isset($colTotals[$index])) $colTotals[$index] = 0;
+											$colTotals[$index] += $value;
+										}
+
+										// grade block
+										elseif (is_array($value) && isset($value['marks'])) {
+											if (!isset($gradeLimits[$index])) $gradeLimits[$index] = 0;
+											$gradeLimits[$index] += $value['marks'];
+										}
+									}
+								}
+
+
+								// Step 2: Build final array
+								$final = [];
+
+								foreach ($array1[0] as $index => $colExample) {
+
+									// numeric column → push total
+									if (is_numeric($colExample)) {
+										$final[] = $colTotals[$index];
+									}
+
+									// grade column → calculate grade
+									elseif (is_array($colExample) && isset($colExample['marks'])) {
+
+										$maxMarks = $gradeLimits[$index];
+
+										// total marks before this grade column
+										$prevColIndex = $index - 1;
+										$totalMarks = $colTotals[$prevColIndex] ?? 0;
+
+										// percentage
+										$percentage = ($maxMarks > 0)
+											? ($totalMarks * 100 / $maxMarks)
+											: 0;
+
+										// DB grade fetch
+										$gd = $this->db->query("
+											SELECT name FROM grades
+											WHERE mark_from <= '$percentage'
+											  AND mark_upto >= '$percentage'
+											LIMIT 1
+										")->row();
+										$gd=$this->db->query("SELECT * FROM `grades` WHERE mark_from>='$percentage' and 	mark_upto<='$percentage' order by mark_upto asc")->result();
+
+										// $gradeName = $gd ? $gd->name : "-";
+
+										// push grade
+										$final[] = $gd[0]->name;
+									}
+								}
+
+
 							?>
 							
 							<tfoot>
 									<tr style="font-weight:bold">
-										<th style="text-align:left;padding-left:8px">Total : </th>
+										<th class="text-success" style="text-align:left;padding-left:8px">Total : </th>
 										<?php
 										$i=count($final);
 										foreach($final as $row){
@@ -404,11 +569,16 @@ $resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_
 										} ?>
 										
 										<td><?php echo $finalTotal.'/'.array_sum($maxMark); ?></td>
-										
+										<?php
+										if(isset($saved_json['overall']) && $saved_json['overall'] == 1){
+										?>
 										<td> 
 										<?php
 											
-											$grade=$finalTotal*100/array_sum($maxMark); 
+											// $grade=$finalTotal*100/array_sum($maxMark); 
+											
+											$totalMaxMarks = array_sum($maxMark);
+											$grade = ($totalMaxMarks > 0) ? ($finalTotal * 100 / $totalMaxMarks) : 0;
 									
 									
 									
@@ -423,13 +593,25 @@ $resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_
 										?>
 										
 										</td>
-										
+										<?php } ?>
 									</tr>
 									
 									<tr style="text-align: left !important;">
-										<th style="padding-left: 15px !important;"  colspan="<?=sizeof($final)+3?>">Overall Percentage(%) :  <?php echo $totalNumber=round($finalTotal*100/array_sum($maxMark),2); ?>% </th>
+										<th style="padding-left: 8px !important;"  colspan="<?=sizeof($final)+3?>">Optional Subject</th>
 									</tr>
-									
+									<?php echo $optional_html; ?>
+									<tr style="text-align: left !important;">
+										<th style="padding-left: 8px !important;"  colspan="<?=sizeof($final)+3?>">Overall Percentage(%) :  <?php 
+											$totalMaxMarks = array_sum($maxMark);
+
+											$totalNumber = ($totalMaxMarks > 0) 
+												? round(($finalTotal * 100 / $totalMaxMarks), 2) 
+												: 0;
+
+											echo $totalNumber;
+											?>% </th>
+									</tr>
+									<?php echo $optional_list; ?>
 							</tfoot>
 							
 						</table>
@@ -458,7 +640,8 @@ $resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_
 				<?php
 
 
-						$tearm_count=($_POST['exam_group_id']); 
+						$tearm_count=($_POST['exam_group_id']);
+						// echo '<pre>'; print_r($tearm_count);exit;
 
 				?>
 			</div>

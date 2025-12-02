@@ -135,6 +135,37 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <label for="is_header" class="label-success"></label>
                                     </div>
                                 </div>
+								
+								<?php foreach($exam_groups as $exam_groups_val){ ?>
+									<div class="form-group switch-inline">
+										<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('grade'); ?> <?php echo $exam_groups_val->name; ?></label>
+
+										<div class="material-switch switchcheck">
+											<input 
+												id="group_<?php echo $exam_groups_val->id; ?>" 
+												name="exam_group_switch[<?php echo $exam_groups_val->id; ?>]" 
+												type="checkbox" 
+												class="chk" 
+												value="1"
+											>
+											<label for="group_<?php echo $exam_groups_val->id; ?>" class="label-success"></label>
+										</div>
+									</div>
+								<?php } ?>
+								<div class="form-group switch-inline">
+									<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('grade'); ?></label>
+
+									<div class="material-switch switchcheck">
+										<input 
+											id="group_overall" 
+											name="exam_group_switch[overall]" 
+											type="checkbox" 
+											class="chk" 
+											value="1"
+										>
+										<label for="group_overall" class="label-success"></label>
+									</div>
+								</div>
                             </div><!-- /.box-body -->
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>

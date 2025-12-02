@@ -614,7 +614,7 @@ class Examresult extends Admin_Controller {
        
 
         $exam_group_id = $this->input->post('exam_group_id');
-        $data['post_exam_group_id'] = implode(",",$exam_group_id);
+        // $data['post_exam_group_id'] = implode(",",$exam_group_id);
         $students_array = $this->input->post('exam_group_class_batch_exam_student_id');
        
        

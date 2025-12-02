@@ -143,6 +143,40 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <label for="is_header" class="label-success"></label>
                                     </div>
                                 </div>
+								
+								<?php foreach($exam_groups as $exam_groups_val){
+									$saved_json = json_decode($reportcard->exam_group_grade, true);								
+								?>
+									<div class="form-group switch-inline">
+										<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('grade'); ?> <?= $exam_groups_val->name; ?></label>
+
+										<div class="material-switch switchcheck">
+											<input id="exam_group_<?= $exam_groups_val->id ?>"
+												   name="exam_group[<?= $exam_groups_val->id ?>]"
+												   type="checkbox"
+												   class="chk"
+												   value="1"
+												   <?= isset($saved_json[$exam_groups_val->id]) && $saved_json[$exam_groups_val->id] == 1 ? 'checked' : '' ?>
+											>
+											<label for="exam_group_<?= $exam_groups_val->id ?>" class="label-success"></label>
+										</div>
+									</div>
+								<?php } ?>
+								<div class="form-group switch-inline">
+									<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('grade'); ?></label>
+
+									<div class="material-switch switchcheck">
+										<input id="exam_group_overall"
+											   name="exam_group[overall]"
+											   type="checkbox"
+											   class="chk"
+											   value="1"
+											   <?= isset($saved_json['overall']) && $saved_json['overall'] == 1 ? 'checked' : '' ?>
+										>
+										<label for="exam_group_overall" class="label-success"></label>
+									</div>
+								</div>
+								
 
                             </div><!-- /.box-body -->
                             <div class="box-footer">

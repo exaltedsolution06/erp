@@ -100,6 +100,7 @@ class Reportcard extends Admin_Controller {
                 'is_class' => $is_class,
                 'is_section' => $is_section,
                 'is_contactno' => $is_contactno,
+                'exam_group_grade'=>json_encode($this->input->post('exam_group')),
                 'is_header'=>$is_header,
                 'left_sign' => "",
                 'right_sign' => "",
@@ -139,6 +140,8 @@ class Reportcard extends Admin_Controller {
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
             redirect('admin/reportcard/index');
         }
+		
+		$this->data['exam_groups'] = $this->examgroup_model->get();
 
         $this->load->view('layout/header');
         $this->load->view('admin/reportcard/createreportcard', $this->data);
@@ -279,6 +282,7 @@ class Reportcard extends Admin_Controller {
                 'is_class' => $is_class,
                 'is_section' => $is_section,
                 'is_contactno' => $is_contactno,
+                'exam_group_grade'=>json_encode($this->input->post('exam_group')),
                 'is_header'=>$is_header,
             );
             
@@ -315,6 +319,8 @@ class Reportcard extends Admin_Controller {
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
             redirect('admin/reportcard/index');
         }
+		
+		$this->data['exam_groups'] = $this->examgroup_model->get();
 
         $this->load->view('layout/header');
         $this->load->view('admin/reportcard/editreportcard', $this->data);

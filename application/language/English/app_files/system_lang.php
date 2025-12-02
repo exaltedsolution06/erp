@@ -1642,3 +1642,4 @@ $lang['exam_group'] = 'Exam Group';
 $lang['assessment'] = 'Assessment';
 $lang['grade'] = 'Grade';
 $lang['class_and_section'] = 'Class & Section';
+$lang['overall'] = 'Overall';
