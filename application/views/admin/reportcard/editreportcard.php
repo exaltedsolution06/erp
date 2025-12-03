@@ -52,24 +52,45 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <span class="text-danger"><?php echo form_error('title'); ?></span>
                                 </div>
 								
-                                <div class="form-group">
+                                <div class="form-group switch-inline width-100">
                                     <label><?php echo $this->lang->line('header').' '.$this->lang->line('image'); ?></label>
+                                    <div class="material-switch switchcheck float-right">
+                                        <input id="is_header" name="is_header" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_header', '1', (set_value('is_header', $reportcard->is_header) == 1) ? TRUE : FALSE); ?>>
+                                        <label for="is_header" class="label-success"></label>
+                                    </div>
                                     <input id="documents" name="header_img" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="background_image">
                                 </div>
-                                <div class="form-group">
-                                    <label><?php echo $this->lang->line('left') . " " . $this->lang->line('sign'); ?></label>
+                                <div class="form-group switch-inline width-100">
+                                    <label><?php echo $this->lang->line('class_teacher') . " " . $this->lang->line('sign'); ?></label>
+                                    <div class="material-switch switchcheck float-right">
+                                        <input id="is_class_teacher" name="is_class_teacher" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_class_teacher', '1', (set_value('is_class_teacher', $reportcard->is_class_teacher) == 1) ? TRUE : FALSE); ?>>
+                                        <label for="is_class_teacher" class="label-success"></label>
+                                    </div>
                                     <input id="documents" name="left_sign" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="left_sign">
                                     <span class="text-danger"><?php echo form_error('left_sign'); ?></span>
                                 </div>
-                                <div class="form-group">
-                                    <label><?php echo $this->lang->line('middle') . " " . $this->lang->line('sign'); ?></label>
+                                <div class="form-group switch-inline width-100">
+                                    <label><?php echo $this->lang->line('examination_ic') . " " . $this->lang->line('sign'); ?></label>
+                                    <div class="material-switch switchcheck float-right">
+                                        <input id="is_examination_ic" name="is_examination_ic" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_examination_ic', '1', (set_value('is_examination_ic', $reportcard->is_examination_ic) == 1) ? TRUE : FALSE); ?>>
+                                        <label for="is_examination_ic" class="label-success"></label>
+                                    </div>
                                     <input id="documents" name="middle_sign" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="middle_sign">
                                     <span class="text-danger"><?php echo form_error('middle_sign'); ?></span>
                                 </div>
-                                <div class="form-group">
-                                    <label><?php echo $this->lang->line('right') . " " . $this->lang->line('sign'); ?></label>
+                                <div class="form-group switch-inline width-100">
+                                    <label><?php echo $this->lang->line('principal') . " " . $this->lang->line('sign'); ?></label>
+                                    <div class="material-switch switchcheck float-right">
+                                        <input id="is_principal" name="is_principal" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_principal', '1', (set_value('is_principal', $reportcard->is_principal) == 1) ? TRUE : FALSE); ?>>
+                                        <label for="is_principal" class="label-success"></label>
+                                    </div>
                                     <input id="documents" name="right_sign" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="right_sign">
                                     <span class="text-danger"><?php echo form_error('right_sign'); ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <label><?php echo $this->lang->line('background_image'); ?></label>
+                                    <input id="documents" name="background_image" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="background_image">
+                                    <span class="text-danger"><?php echo form_error('background_image'); ?></span>
                                 </div>
 								
                                 <div class="form-group switch-inline">
@@ -135,17 +156,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <label for="is_contactno" class="label-success"></label>
                                     </div>
                                 </div>
-
-                                <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('header'); ?></label>
-                                    <div class="material-switch switchcheck">
-                                        <input id="is_header" name="is_header" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_header', '1', (set_value('is_header', $reportcard->is_header) == 1) ? TRUE : FALSE); ?>>
-                                        <label for="is_header" class="label-success"></label>
-                                    </div>
-                                </div>
 								
-								<?php foreach($exam_groups as $exam_groups_val){
-									$saved_json = json_decode($reportcard->exam_group_grade, true);								
+								<?php foreach($exam_groups as $exam_groups_val){							
+									$saved_json = json_decode($reportcard->exam_group_grade, true);				
+									$saved_max_marks_json = json_decode($reportcard->exam_group_max_marks, true);					
 								?>
 									<div class="form-group switch-inline">
 										<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('grade'); ?> <?= $exam_groups_val->name; ?></label>
@@ -161,6 +175,20 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 											<label for="exam_group_<?= $exam_groups_val->id ?>" class="label-success"></label>
 										</div>
 									</div>
+									<div class="form-group switch-inline">
+										<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('max'); ?> <?php echo $this->lang->line('marks'); ?> <?= $exam_groups_val->name; ?></label>
+
+										<div class="material-switch switchcheck">
+											<input id="max_marks_<?= $exam_groups_val->id ?>"
+												   name="max_marks[<?= $exam_groups_val->id ?>]"
+												   type="checkbox"
+												   class="chk"
+												   value="1"
+												   <?= isset($saved_max_marks_json[$exam_groups_val->id]) && $saved_max_marks_json[$exam_groups_val->id] == 1 ? 'checked' : '' ?>
+											>
+											<label for="max_marks_<?= $exam_groups_val->id ?>" class="label-success"></label>
+										</div>
+									</div>
 								<?php } ?>
 								<div class="form-group switch-inline">
 									<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('grade'); ?></label>
@@ -174,6 +202,20 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 											   <?= isset($saved_json['overall']) && $saved_json['overall'] == 1 ? 'checked' : '' ?>
 										>
 										<label for="exam_group_overall" class="label-success"></label>
+									</div>
+								</div>
+								<div class="form-group switch-inline">
+									<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('max'); ?> <?php echo $this->lang->line('marks'); ?></label>
+
+									<div class="material-switch switchcheck">
+										<input id="max_marks_overall"
+											   name="max_marks[overall]"
+											   type="checkbox"
+											   class="chk"
+											   value="1"
+											   <?= isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1 ? 'checked' : '' ?>
+										>
+										<label for="max_marks_overall" class="label-success"></label>
 									</div>
 								</div>
 								
@@ -235,8 +277,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <a style="cursor: pointer;" class="view_data" id="<?php echo $certificate->id ?>" data-toggle="popover" class="detail_popover" ><?php echo $certificate->template; ?></a>
                                                 </td>
                                                 <td class="mailbox-name">
-                                                    <?php if ($certificate->header_img != '' && !is_null($certificate->header_img)) { ?>
-                                                        <img src="<?php echo base_url('uploads/reportcard/') ?><?php echo $certificate->header_img ?>" width="40">
+                                                    <?php if ($certificate->background_image != '' && !is_null($certificate->background_image)) { ?>
+                                                        <img src="<?php echo base_url('uploads/reportcard/') ?><?php echo $certificate->background_image ?>" width="40">
                                                     <?php } else { ?>
                                                         <i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>
                                                     <?php } ?>

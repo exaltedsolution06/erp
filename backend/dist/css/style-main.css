@@ -41,7 +41,8 @@
          url('../fonts/roboto-medium-webfont.svg#robotomedium') format('svg');
     font-style: normal; font-weight: normal;
 }
-
+.float-right{float: right !important;}
+.width-100{width: 100%;}
 .content-header{display:none;}
 .font15{font-size:15px;}
 .cal15{font-size:15px; margin-top: 0px;}

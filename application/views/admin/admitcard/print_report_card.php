@@ -1,7 +1,8 @@
 <?php
 
 	$desc=$reportcard;
-	$saved_json = json_decode($desc->exam_group_grade, true);
+	$saved_json = json_decode($desc->exam_group_grade, true);			
+	$saved_max_marks_json = json_decode($desc->exam_group_max_marks, true);	
 	// var_dump($marksheet['students'][0]['exam_result']);
 ?>
 
@@ -51,6 +52,18 @@
 		font-weight:bold;
 	  }
    }
+   .mark-container{
+        width: 1000px;position: relative;z-index: 2; margin: 0 auto; padding: 10px 30px;}
+   .tcmybg {
+	   background:top center;
+        background-size: 100% 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1;
+   }
+   .maincontent{position: relative;z-index: 2}
   
 </style>
 
@@ -111,21 +124,32 @@
 
 
 
-
 	foreach($marksheet as $stddata){
 	
 			if(in_array($stddata->student_id, $exam_group_class_batch_exam_student_id)){
 			$student_id=$stddata->student_id;
 ?>
 
-	<div class="container1 mb-5" style="margin: 12px;">
-		<div class="row">
+	<div class="mark-container mb-5">
+	<?php
+		if ($desc->background_image != "") {
+	?>
+		<img src="<?php echo base_url('uploads/reportcard/' . $desc->background_image); ?>" class="tcmybg" width="100%" height="100%" />
+	<?php
+		}
+	?>
+		<div class="row maincontent">
 			<div class="col-12 bg-danger"style="height:0px"></div>
-			<?php if($desc->is_header==1){ ?>
-			<div class="col-12">
+			<?php 
+			if($desc->is_header==1){
+			if($desc->header_img!='' || $desc->header_img!=null){
+			$is_header_file_path = FCPATH . 'uploads/reportcard/' . $desc->header_img;
+			if (file_exists($is_header_file_path)) {
+			?>
+			<div class="col-12" style="padding:0;">
 				<img src="<?php echo base_url('uploads/reportcard/'.$desc->header_img) ?>" style="height:150px;width:100%">
 			</div>
-			<?php } ?>
+			<?php } } } ?>
 			<?php if(!empty($desc->title)){ ?>
 			<div class="col-12 text-center">
 				<p class="text-danger h3"><?php echo $desc->title; ?> (<?php echo $this->lang->line('session'); ?> : <?php echo $current_session['session']; ?>)</p>
@@ -216,7 +240,7 @@
 					<div class="col-12" style="padding-left:0px;padding-right:0px;padding-bottom:0px">
 						<table class="w-100 table-bordered border-dark text-center" style="padding-bottom:0px">
 							
-							<thead style="background:#fff">
+							<thead>
 								
 								<tr>
 									<th class="text-success"><?php echo $this->lang->line('scholastic_area'); ?></th>
@@ -225,18 +249,22 @@
 									foreach($post_exam_group_id as $rowDatagroup){
 									$exam_type=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$rowDatagroup->id."' AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
 									$allNames[] = $rowDatagroup->name;
+									$gradecount = 1;
 									if(isset($saved_json[$rowDatagroup->id]) && $saved_json[$rowDatagroup->id] == 1){
-										$gradecount = 2;
-									}else{
-										$gradecount = 1;
+										$gradecount++;
+									}
+									if(isset($saved_max_marks_json[$rowDatagroup->id]) && $saved_max_marks_json[$rowDatagroup->id] == 1){
+										$gradecount++;
 									}
 										?>
 									<th colspan="<?=count($exam_type)+$gradecount?>" class="text-danger"><?=$rowDatagroup->name?></th>
 									<?php }
+										$overallgradecount = 1;
 										if(isset($saved_json['overall']) && $saved_json['overall'] == 1){
-											$overallgradecount = 2;
-										}else{
-											$overallgradecount = 1;
+											$overallgradecount++;
+										}
+										if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
+											$overallgradecount++;
 										}
 									?>
 									
@@ -258,23 +286,33 @@
 									<th class="text-success" style="width:90px"><?=$type->exam?>  </th>
 										<?php } ?>
 										
-										<th class="text-success" style="width:100px"><?php echo $this->lang->line('marks'); ?> <?php echo $this->lang->line('obtained'); ?></th>
+										<th class="text-success" style="width:100px"><?php echo $this->lang->line('m_o'); ?></th>
 										<?php
+										if(isset($saved_max_marks_json[$rowDatagroup->id]) && $saved_max_marks_json[$rowDatagroup->id] == 1){
+										?>
+										<th class="text-success" style="width:100px"><?php echo $this->lang->line('m_m'); ?></th>
+										<?php
+										}
 										if(isset($saved_json[$rowDatagroup->id]) && $saved_json[$rowDatagroup->id] == 1){
 										?>
 										<th class="text-success" style="width:100px"><?php echo $this->lang->line('grade'); ?></th>
-									
-									
-									
-									<?php } } ?>
+									<?php 
+										}
+									} 
+									?>
 									
 									
 									
 									
 									<th class="text-success" style="width:100px"><?php echo $this->lang->line('grand_total'); ?></th>
 									<?php
+										if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
+									?>
+									<th class="text-success" style="width:100px"><?php echo $this->lang->line('m_m'); ?></th>
+									<?php
+										}
 										if(isset($saved_json['overall']) && $saved_json['overall'] == 1){
-										?>
+									?>
 									<th class="text-success" style="width:100px"><?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('grade'); ?></th>
 									<?php } ?>
 								</tr>
@@ -320,7 +358,6 @@
 								
 								$max_marks = $max_marks_op = 0;
 								$total_subject = $total_subject_op=0;
-								$optional_list = '';
 								for($i=0;$i<count($subject_id_data);$i++){
 								
 									$sql1="SELECT * FROM subjects WHERE id='".$subject_id_data[$i]."' ";
@@ -379,6 +416,11 @@
 											
 											<td style="width:100px"><?php echo $total; ?></td>
 											<?php
+											if(isset($saved_max_marks_json[$exam_group_id]) && $saved_max_marks_json[$exam_group_id] == 1){
+											?>
+											<td style="width:100px"><?php echo $max_marks1; ?></td>
+											<?php
+											}
 											if(isset($saved_json[$exam_group_id]) && $saved_json[$exam_group_id] == 1){
 											?>
 											<td style="width:100px">
@@ -392,6 +434,9 @@
 											<?php
 											}
 											array_push($array,$total); 
+											if(isset($saved_max_marks_json[$exam_group_id]) && $saved_max_marks_json[$exam_group_id] == 1){
+												array_push($array,$max_marks1);
+											}
 											
 											if(isset($saved_json[$exam_group_id]) && $saved_json[$exam_group_id] == 1){
 												$grade_array = [];
@@ -402,8 +447,13 @@
 											} 
 											?>
 
-											<td><?=$total1.'/<b>'.$max_marks.'</b>'?> <?php //echo $max_marks; ?> </td>
+											<td><?=$total1; ?> <?php //echo $max_marks; ?> </td>
 											<?php
+											if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
+											?>
+											<td><?=$max_marks; ?> <?php //echo $max_marks; ?> </td>
+											<?php
+											}
 											if(isset($saved_json['overall']) && $saved_json['overall'] == 1){
 											?>
 											<td><?php 
@@ -482,6 +532,11 @@
 											
 											<td style="width:100px"><?php echo $total_op; ?></td>
 											<?php
+											if(isset($saved_max_marks_json[$exam_group_id]) && $saved_max_marks_json[$exam_group_id] == 1){
+											?>
+											<td style="width:100px"><?php echo $max_marks1_op; ?></td>
+											<?php
+											}
 											if(isset($saved_json[$exam_group_id_op]) && $saved_json[$exam_group_id_op] == 1){
 											?>
 											<td style="width:100px">
@@ -494,8 +549,13 @@
 											
 											<?php } array_push($array_op,$total_op); } ?>
 
-											<td><?=$total1_op.'/<b>'.$max_marks_op.'</b>'?> <?php //echo $max_marks; ?> </td>
+											<td><?=$total1_op; ?> <?php //echo $max_marks; ?> </td>
 											<?php
+											if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
+											?>
+											<td><?=$max_marks_op; ?> <?php //echo $max_marks; ?> </td>
+											<?php
+											}
 											if(isset($saved_json['overall']) && $saved_json['overall'] == 1){
 											?>
 											<td><?php 
@@ -613,8 +673,13 @@
 											echo '<td>'.$row.'</td>';	
 										} ?>
 										
-										<td><?php echo $finalTotal.'/'.array_sum($maxMark); ?></td>
+										<td><?php echo $finalTotal; ?></td>
 										<?php
+										if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
+										?>
+										<td><?php echo array_sum($maxMark); ?></td>
+										<?php
+										}
 										if(isset($saved_json['overall']) && $saved_json['overall'] == 1){
 										?>
 										<td> 
@@ -640,15 +705,17 @@
 										</td>
 										<?php } ?>
 									</tr>
-									<?php if($optional_html != ''){ ?>
+									<?php
+									if($optional_html != ''){
+										$final_column_count = sizeof($final)+3+$overallgradecount;
+									?>
 										<tr style="text-align: left !important;">
-											<th style="padding-left: 8px !important;"  colspan="<?=sizeof($final)+3?>"><?php echo $this->lang->line('optional'); ?> <?php echo $this->lang->line('subject'); ?></th>
+											<th style="padding-left: 8px !important;"  colspan="<?=$final_column_count; ?>"><?php echo $this->lang->line('optional'); ?> <?php echo $this->lang->line('subject'); ?></th>
 										</tr>
 									<?php
 										echo $optional_html;
 									}
 									?>
-									<?php echo $optional_list; ?>
 							</tfoot>
 							
 						</table>
@@ -692,14 +759,14 @@
 			
 			foreach ($examgroup_result as $key => $value) {							
 			?>
-			<div class="col-<?=12/count($examgroup_result)?> mt-3" style="padding:0px">
+			<div class="col-6 mt-3" style="padding:0px">
 				<table class="w-100 border-dark text-center table-bordered">
 					<tr class="text-center">
 						<th colspan="2"><h5 class="text-danger"><?=$value->name ?></h5>
 							<h6>(3 Point Grading Scale A,B,C)</h6>
 						</th>
 					</tr>
-					<tr style="background:#fff"	>	
+					<tr>	
 						<th style="text-align: left !important;padding-left: 15px !important;"><em style="color:#C00;">Activities</em></th>
 						<?php /*$z=1; for ($i=0; $i < count($tearm_count); $i++) { 
 							echo '<th>G'.$z++.'</th>';
@@ -748,31 +815,90 @@
 					</tr>
 				</table>
 			</div>-->
-			
-			<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px;border:1px solid">
+			<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px;">
+				<div class="row">
+					<div class="col-12 mt-3 mb-3">
+						<strong><?php echo $this->lang->line('remarks'); ?> :</strong> <span>___________________________________________________________________</span>
+					</div>
+					<div class="col-6">
+						<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <span>___________________________________</span>
+					</div>
+					<div class="col-6 text-end">
+						<strong><?php echo $this->lang->line('date'); ?> :</strong> <span>________________________________</span>
+					</div>
+				</div>
+			</div>
+			<?php
+				$sign_count = 0;
+				if($desc->is_class_teacher==1){ $sign_count++; }
+				if($desc->is_examination_ic==1){ $sign_count++; }
+				if($desc->is_principal==1){ $sign_count++; }
+				if($sign_count > 0){
+			?>
+			<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px;">
 				<div class="row text-center">
-					<div class="col-4">
+					<?php
+					if($desc->is_class_teacher==1){
+					?>
+					<div class="col-<?php echo 12/$sign_count; ?>">
+						<?php
+						if($desc->left_sign!='' || $desc->left_sign!=null){
+						$is_left_sign_file_path = FCPATH . 'uploads/reportcard/' . $desc->left_sign;
+							if (file_exists($is_left_sign_file_path)) {						
+						?>
 						<img src="<?php echo base_url('uploads/reportcard/'.$desc->left_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
-						<h6 class="mt-1"><?php echo $this->lang->line('class_teacher'); ?> </h6>
-						
+						<?php
+							}else{
+								echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+							}
+						}else{
+							echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+						}
+						?>
+						<h6 class="mt-1"><?php echo $this->lang->line('class_teacher'); ?> <?php echo $this->lang->line('sign'); ?> </h6>
 					</div>                   
-					
-					<div class="col-4">
+					<?php } if($desc->is_examination_ic==1){ ?>
+					<div class="col-<?php echo 12/$sign_count; ?>">
+						<?php
+						if($desc->middle_sign!='' || $desc->middle_sign!=null){
+						$is_middle_sign_file_path = FCPATH . 'uploads/reportcard/' . $desc->middle_sign;
+							if (file_exists($is_middle_sign_file_path)) {						
+						?>
 						<img src="<?php echo base_url('uploads/reportcard/'.$desc->middle_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
-						<h6 class="mt-1"><?php echo $this->lang->line('examination_ic'); ?> </h6>
-						
+						<?php
+							}else{
+								echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+							}
+						}else{
+							echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+						}
+						?>
+						<h6 class="mt-1"><?php echo $this->lang->line('examination_ic'); ?> <?php echo $this->lang->line('sign'); ?> </h6>
 					</div>
-					
-					<div class="col-4">
+					<?php } if($desc->is_principal==1){ ?>
+					<div class="col-<?php echo 12/$sign_count; ?>">
+						<?php
+						if($desc->right_sign!='' || $desc->right_sign!=null){
+						$is_right_sign_file_path = FCPATH . 'uploads/reportcard/' . $desc->right_sign;
+							if (file_exists($is_right_sign_file_path)) {						
+						?>
 						<img src="<?php echo base_url('uploads/reportcard/'.$desc->right_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
-						<h6 class="mt-1"><?php echo $this->lang->line('principal'); ?></h6>
-						
+						<?php
+							}else{
+								echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+							}
+						}else{
+							echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+						}
+						?>
+						<h6 class="mt-1"><?php echo $this->lang->line('principal'); ?> <?php echo $this->lang->line('sign'); ?></h6>
 					</div>
+					<?php } ?>
 				</div>
 				
 			</div>
-			
 			<?php
+				}
 			if($grade_html != ''){
 				echo $grade_html;
 			}

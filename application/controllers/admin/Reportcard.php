@@ -89,13 +89,27 @@ class Reportcard extends Admin_Controller {
             } else {
                 $marks_grade_table = 0;
             }
+            if (isset($_POST['is_class_teacher'])) {
+                $is_class_teacher = 1;
+            } else {
+                $is_class_teacher = 0;
+            }
+            if (isset($_POST['is_examination_ic'])) {
+                $is_examination_ic = 1;
+            } else {
+                $is_examination_ic = 0;
+            }
+            if (isset($_POST['is_principal'])) {
+                $is_principal = 1;
+            } else {
+                $is_principal = 0;
+            }
 
 
 
             $insert_data = array(
                 'template' => $this->input->post('template'),
                 'title' => $this->input->post('title'),
-                'date' => $this->input->post('date'),
                 'is_name' => $is_name,
                 'is_father_name' => $is_father_name,
                 'is_mother_name' => $is_mother_name,
@@ -106,11 +120,16 @@ class Reportcard extends Admin_Controller {
                 'is_section' => $is_section,
                 'is_contactno' => $is_contactno,
                 'exam_group_grade'=>json_encode($this->input->post('exam_group')),
+                'exam_group_max_marks'=>json_encode($this->input->post('max_marks')),
                 'is_header'=>$is_header,
                 'marks_grade_table'=>$marks_grade_table,
+                'is_class_teacher'=>$is_class_teacher,
+                'is_examination_ic'=>$is_examination_ic,
+                'is_principal'=>$is_principal,
                 'left_sign' => "",
                 'right_sign' => "",
                 'middle_sign' => "",
+                'background_image' => "",
                 'header_img'=>"",
             );
 
@@ -140,6 +159,12 @@ class Reportcard extends Admin_Controller {
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["right_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['right_sign'] = $img_name;
+            }if (isset($_FILES["background_image"]) && !empty($_FILES["background_image"]['name'])) {
+                $time = md5($_FILES["background_image"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["background_image"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["background_image"]["tmp_name"], "./uploads/reportcard/" . $img_name);
+                $insert_data['background_image'] = $img_name;
             }
             $this->reportcard_model->add($insert_data);
 
@@ -278,13 +303,27 @@ class Reportcard extends Admin_Controller {
             } else {
                 $marks_grade_table = 0;
             }
+            if (isset($_POST['is_class_teacher'])) {
+                $is_class_teacher = 1;
+            } else {
+                $is_class_teacher = 0;
+            }
+            if (isset($_POST['is_examination_ic'])) {
+                $is_examination_ic = 1;
+            } else {
+                $is_examination_ic = 0;
+            }
+            if (isset($_POST['is_principal'])) {
+                $is_principal = 1;
+            } else {
+                $is_principal = 0;
+            }
 
 
             $insert_data = array(
                 'id' => $this->input->post('id'),
                 'template' => $this->input->post('template'),
                 'title' => $this->input->post('title'),
-                'date' => $this->input->post('date'),
                 'is_name' => $is_name,
                 'is_father_name' => $is_father_name,
                 'is_mother_name' => $is_mother_name,
@@ -295,8 +334,12 @@ class Reportcard extends Admin_Controller {
                 'is_section' => $is_section,
                 'is_contactno' => $is_contactno,
                 'exam_group_grade'=>json_encode($this->input->post('exam_group')),
+                'exam_group_max_marks'=>json_encode($this->input->post('max_marks')),
                 'is_header'=>$is_header,
                 'marks_grade_table'=>$marks_grade_table,
+                'is_class_teacher'=>$is_class_teacher,
+                'is_examination_ic'=>$is_examination_ic,
+                'is_principal'=>$is_principal,
             );
             
             
@@ -325,6 +368,12 @@ class Reportcard extends Admin_Controller {
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["right_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['right_sign'] = $img_name;
+            }if (isset($_FILES["background_image"]) && !empty($_FILES["background_image"]['name'])) {
+                $time = md5($_FILES["background_image"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["background_image"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["background_image"]["tmp_name"], "./uploads/reportcard/" . $img_name);
+                $insert_data['background_image'] = $img_name;
             }
 
             $this->reportcard_model->add($insert_data);

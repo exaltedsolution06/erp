@@ -1648,3 +1648,6 @@ $lang['examination_ic'] = 'Examination I/C';
 $lang['grade_system'] = 'Grading System';
 $lang['marks_range'] = 'Marks Range';
 $lang['marks_grade_table'] = 'Marks Grade Table';
+$lang['m_m'] = 'M.M';
+$lang['m_o'] = 'M.O';
+$lang['promoted_to_class'] = 'Promoted to Class';
