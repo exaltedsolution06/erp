@@ -129,6 +129,7 @@
                                                     <?php
                                                     if (!empty($subjectList)) {
                                                         foreach ($subjectList as $subject_key => $subject_value) {
+                                                        if(in_array($subject_value->subject_id, $subject_id_data)) {
                                                             ?>
                                                             <th>
                                                                 <?php
@@ -144,6 +145,7 @@
                                                                 ?>
                                                             </th>
                                                             <?php
+                                                        }
                                                         }
 
                                                         if ($exam_details->exam_group_type == "school_grade_system" || $exam_details->exam_group_type == "basic_system" || $exam_details->exam_group_type == "coll_grade_system") {
@@ -194,7 +196,7 @@
                                                                 $total_credit_hour = 0;
                                                                 $total_quality_point = 0;
                                                                 foreach ($subjectList as $subject_key => $subject_value) {
-
+																if(in_array($subject_value->subject_id, $subject_id_data)) {		
                                                                     $subject_status = 1;
                                                                     $total_marks = $total_marks + $subject_value->max_marks;
                                                                     ?>
@@ -263,6 +265,7 @@
                                                                         ?>
                                                                     </td>
                                                                     <?php
+                                                                }
                                                                 }
 
                                                                 if ($exam_details->exam_group_type == "school_grade_system" || $exam_details->exam_group_type == "basic_system" || $exam_details->exam_group_type == "coll_grade_system") {

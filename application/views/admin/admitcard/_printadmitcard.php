@@ -275,6 +275,7 @@ if ($student_value->image != '') {
                             </tr>
                             <?php
 foreach ($exam_subjects as $subject_key => $subject_value) {
+if(in_array($subject_value->subject_id, $subject_id_data)) {
             ?>
                                 <tr>
                                     <td valign="top" style="text-align: center;"><?php echo date($this->customlib->getSchoolDateFormat(), strtotime($subject_value->date_from)) . " " . $subject_value->time_from; ?></td>
@@ -283,6 +284,7 @@ foreach ($exam_subjects as $subject_key => $subject_value) {
                                     <td style="text-align: center;text-transform: uppercase;"><?php echo $subject_value->subject_type; ?></td>
                                 </tr>
                                 <?php
+}
 }
         ?>
                         </table>

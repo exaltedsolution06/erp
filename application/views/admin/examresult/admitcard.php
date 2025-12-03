@@ -132,6 +132,8 @@
                         ?>
                         <form method="post" action="<?php echo base_url('admin/examresult/printCard') ?>" id="printCard">
                             <input type="hidden" name="admitcard_template" value="<?php echo $admitcard_template; ?>">
+                            <input type="hidden" name="post_class_id" value="<?php echo $post_class_id; ?>">
+                            <input type="hidden" name="post_section_id" value="<?php echo $post_section_id; ?>">
                             <div  class="" >
                                 <div class="box-header ptbnull"></div> 
                                 <div class="box-header ptbnull">

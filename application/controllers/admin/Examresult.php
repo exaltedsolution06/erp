@@ -37,6 +37,8 @@ class Examresult extends Admin_Controller {
         } else {
             $post_exam_id = $this->input->post('post_exam_id');
             $post_exam_group_id = $this->input->post('post_exam_group_id');
+            $post_class_id = $this->input->post('post_class_id');
+            $post_section_id = $this->input->post('post_section_id');
             $students_array = $this->input->post('exam_group_class_batch_exam_student_id');
             $exam = $this->examgroup_model->getExamByID($post_exam_id);
             $data['exam'] = $exam;
@@ -44,6 +46,19 @@ class Examresult extends Admin_Controller {
             $data['exam_grades'] = $exam_grades;
             $data['admitcard'] = $this->admitcard_model->get($this->input->post('admitcard_template'));
             $data['exam_subjects'] = $this->batchsubject_model->getExamSubjects($post_exam_id);
+			$subject_group_by_classsection = $this->subjectgroup_model->getGroupByClassandSection($post_class_id, $post_section_id);
+			$subject_id_data = [];
+			foreach ($subject_group_by_classsection as $sgc_val) {
+				$subject_list_by_groupid = $this->subjectgroup_model->getByID($sgc_val['subject_group_id']);
+
+				foreach ($subject_list_by_groupid as $slg_val) {
+					foreach ($slg_val->group_subject as $subject) {
+						$subject_id_data[] = $subject->subject_id;
+					}
+				}
+			}
+			$data['subject_id_data'] = $subject_id_data;
+			
             $data['student_details'] = $this->examstudent_model->getStudentsAdmitCardByExamAndStudentID($students_array, $post_exam_id);
             $data['sch_setting']= $this->sch_setting_detail;
             $student_admit_cards = $this->load->view('admin/admitcard/_printadmitcard', $data, true);
@@ -95,6 +110,8 @@ class Examresult extends Admin_Controller {
  
             $data['exam_id'] = $exam_id;
             $data['exam_group_id'] = $exam_group_id;
+            $data['post_class_id'] = $class_id;
+            $data['post_section_id'] = $section_id;
         }
         $data['sch_setting'] = $this->sch_setting_detail;
         $this->load->view('layout/header', $data);
@@ -288,6 +305,19 @@ class Examresult extends Admin_Controller {
             $data['exam_details'] = $exam_details;
             $data['exam_id'] = $exam_id;
             $data['exam_group_id'] = $exam_group_id;
+			
+			$subject_group_by_classsection = $this->subjectgroup_model->getGroupByClassandSection($class_id, $section_id);
+			$subject_id_data = [];
+			foreach ($subject_group_by_classsection as $sgc_val) {
+				$subject_list_by_groupid = $this->subjectgroup_model->getByID($sgc_val['subject_group_id']);
+
+				foreach ($subject_list_by_groupid as $slg_val) {
+					foreach ($slg_val->group_subject as $subject) {
+						$subject_id_data[] = $subject->subject_id;
+					}
+				}
+			}			
+            $data['subject_id_data'] = $subject_id_data;
         }   
         $data['sch_setting'] = $this->sch_setting_detail;
         $this->load->view('layout/header', $data);
