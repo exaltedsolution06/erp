@@ -88,26 +88,26 @@
 		?>
 		<table class="w-100 border-dark table-bordered">
 			<tr>
-				<th style="padding-left:8px;"><?php echo $this->lang->line('marks_range'); ?></th>
-				<th style="padding-left:8px;"><?php echo $this->lang->line('grade'); ?></th>
-				<th style="padding-left:8px;"><?php echo $this->lang->line('marks_range'); ?></th>
-				<th style="padding-left:8px;"><?php echo $this->lang->line('grade'); ?></th>
+				<th style="padding-left:8px;text-align: center;"><?php echo $this->lang->line('marks_range'); ?></th>
+				<th style="padding-left:8px;text-align: center;"><?php echo $this->lang->line('grade'); ?></th>
+				<th style="padding-left:8px;text-align: center;"><?php echo $this->lang->line('marks_range'); ?></th>
+				<th style="padding-left:8px;text-align: center;"><?php echo $this->lang->line('grade'); ?></th>
 			</tr>
 			<?php for ($i = 0; $i < $half; $i++): ?>
 				<tr>
 
 					<!-- LEFT SIDE -->
 					<?php if (isset($left[$i])): ?>
-						<td style="padding-left:8px;"><?= rtrim(rtrim($left[$i]->mark_upto, '0'), '.') ?> - <?= rtrim(rtrim($left[$i]->mark_from, '0'), '.') ?></td>
-						<td style="padding-left:8px;"><?= $left[$i]->name ?></td>
+						<td style="padding-left:8px;text-align: center;"><?= rtrim(rtrim($left[$i]->mark_upto, '0'), '.') ?> - <?= rtrim(rtrim($left[$i]->mark_from, '0'), '.') ?></td>
+						<td style="padding-left:8px;text-align: center;"><?= $left[$i]->name ?></td>
 					<?php else: ?>
 						<td></td><td></td>
 					<?php endif; ?>
 
 					<!-- RIGHT SIDE -->
 					<?php if (isset($right[$i])): ?>
-						<td style="padding-left:8px;"><?= rtrim(rtrim($right[$i]->mark_upto, '0'), '.') ?> - <?= rtrim(rtrim($right[$i]->mark_from, '0'), '.') ?></td>
-						<td style="padding-left:8px;"><?= $right[$i]->name ?></td>
+						<td style="padding-left:8px;text-align: center;"><?= rtrim(rtrim($right[$i]->mark_upto, '0'), '.') ?> - <?= rtrim(rtrim($right[$i]->mark_from, '0'), '.') ?></td>
+						<td style="padding-left:8px;text-align: center;"><?= $right[$i]->name ?></td>
 					<?php else: ?>
 						<td></td><td></td>
 					<?php endif; ?>
