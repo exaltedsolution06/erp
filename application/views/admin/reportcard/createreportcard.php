@@ -169,7 +169,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 												class="chk" 
 												value="1"
 											>
-											<label for="group_<?php echo $exam_groups_val->id; ?>" class="label-success"></label>
+											<label for="exam_group_<?php echo $exam_groups_val->id; ?>" class="label-success"></label>
 										</div>
 									</div>
 									<div class="form-group switch-inline">
@@ -183,7 +183,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 												class="chk" 
 												value="1"
 											>
-											<label for="marks_obtained<?php echo $exam_groups_val->id; ?>" class="label-success"></label>
+											<label for="marks_obtained_<?php echo $exam_groups_val->id; ?>" class="label-success"></label>
 										</div>
 									</div>
 									<div class="form-group switch-inline">

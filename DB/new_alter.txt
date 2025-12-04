@@ -6,23 +6,23 @@ ALTER TABLE `logs` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `coscholasticareas` ADD `exam_group` INT(11) NULL DEFAULT NULL AFTER `description`;
 
-New table - 
-1) exam_group_exam_results_coscholastic
-
-2) template_reportcard
-
-New folder - 
-1) uploads/reportcard
-
 ALTER TABLE `template_reportcard` CHANGE `date` `background_image` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 ALTER TABLE `template_reportcard` ADD `is_class_teacher` INT(11) NOT NULL DEFAULT '0' AFTER `right_sign`, ADD `is_examination_ic` INT(11) NOT NULL DEFAULT '0' AFTER `is_class_teacher`, ADD `is_principal` INT(11) NOT NULL DEFAULT '0' AFTER `is_examination_ic`;
 ALTER TABLE `template_reportcard` ADD `exam_group_max_marks` JSON NULL DEFAULT NULL AFTER `exam_group_grade`;
 
-
-D:\xampp\htdocs\erp\backend\dist\css\style-main.css
-==============================New script==============================
 ALTER TABLE `template_reportcard` ADD `is_photo` INT(11) NOT NULL DEFAULT '0' AFTER `is_section`;
 ALTER TABLE `template_reportcard` ADD `exam_group_marks_obtained` JSON NULL DEFAULT NULL AFTER `exam_group_grade`;
+
+==============================New script==============================
+New table - 
+1) exam_group_exam_results_coscholastic
+2) template_reportcard
+
+Other files - 
+1) D:\xampp\htdocs\erp\backend\dist\css\style-main.css
+
+New folder - 
+1) uploads/reportcard
 
 
 
