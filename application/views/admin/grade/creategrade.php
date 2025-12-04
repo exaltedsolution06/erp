@@ -143,8 +143,8 @@
 
                                                                 <tr>                
                                                                     <td width="24%" class="text-left"><?php echo $grade_value->name ?></td>
-                                                                    <td width="40%" class="text-left"><?php echo $grade_value->mark_upto . " " . $this->lang->line('to') . " " . $grade_value->mark_from; ?> </td>
-                                                                    <td width="20%" class="text-left"><?php echo $grade_value->point ?> </td>
+                                                                    <td width="40%"><?php echo rtrim(rtrim($grade_value->mark_upto, '0'), '.') . " " . $this->lang->line('to') . " " . rtrim(rtrim($grade_value->mark_from, '0'), '.'); ?> </td>
+                                                                    <td width="20%"><?php echo rtrim(rtrim($grade_value->point, '0'), '.') ?> </td>
                                                                     <td class="text-right">
 
                                                                         <?php

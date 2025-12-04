@@ -273,7 +273,7 @@
             $('#exam_id').html("");
             var base_url = '<?php echo base_url() ?>';
             var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
-             div_data += '<option selected>All</option>';
+             // div_data += '<option selected>All</option>';
             $.ajax({
                 type: "POST",
                 url: base_url + "admin/examgroup/getExamByExamgroup",

@@ -34,7 +34,7 @@
                                     <input id="name" name="name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('name', $examgroup->name); ?>" />
                                     <span class="text-danger"><?php echo form_error('name'); ?></span>
                                 </div>
-                                <div class="form-group">
+                                <!--<div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('exam') . " " . $this->lang->line('type') ?></label> <small class="req">*</small>
                                     <select id="name" name="exam_type" placeholder="" type="text" class="form-control">
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
@@ -48,7 +48,7 @@
                                     </select>
 
                                     <span class="text-danger"><?php echo form_error('exam_type'); ?></span>
-                                </div>
+                                </div>-->
 
 
 
@@ -106,7 +106,7 @@
                                     <tr>
                                         <th><?php echo $this->lang->line('name'); ?></th>
                                         <th><?php echo $this->lang->line('no_of_exams') ?></th>
-                                        <th><?php echo $this->lang->line('exam') . " " . $this->lang->line('type'); ?></th>
+                                        <th><?php echo $this->lang->line('description'); ?></th>
                                         <th><?php echo $this->lang->line('exam') . " " . $this->lang->line('group'); ?></th>
                                         <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
@@ -142,7 +142,7 @@
 
                                                 </td>
                                                 <td class="mailbox-name">
-                                                    <?php echo $examType[$examgroup->exam_type]; ?>
+                                                    <?php echo $examgroup->description; ?>
 
                                                 </td>
                                                 <td class="mailbox-name">

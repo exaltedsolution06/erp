@@ -115,9 +115,9 @@ class Coscholasticareas extends Admin_Controller {
         $this->session->set_userdata('sub_menu', 'Examinations/coscholasticareas');
         $data['title'] = 'Add Batch';
         $data['title_list'] = 'Recent Batch';
-        $data['examType'] = $this->exam_type;
+        // $data['examType'] = $this->exam_type;
         $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('exam_type', $this->lang->line('exam') . " " . $this->lang->line('type'), 'trim|required|xss_clean');
+        // $this->form_validation->set_rules('exam_type', $this->lang->line('exam') . " " . $this->lang->line('type'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('exam_group', $this->lang->line('exam_group'), 'trim|required|xss_clean');
 
 
@@ -128,7 +128,7 @@ class Coscholasticareas extends Admin_Controller {
             $is_active = 0;
             $data = array(
                 'name' => $this->input->post('name'),
-                'exam_type' => $this->input->post('exam_type'),
+                // 'exam_type' => $this->input->post('exam_type'),
                 'is_active' => $is_active,
                 'description' => $this->input->post('description'),
                 'exam_group' => $this->input->post('exam_group'),
@@ -249,7 +249,7 @@ class Coscholasticareas extends Admin_Controller {
         $data['id'] = $id;
         $examgroup = $this->examgroup_model->get_c($id);
         $data['examgroup'] = $examgroup;
-        $data['examType'] = $this->exam_type;
+        // $data['examType'] = $this->exam_type;
         $examgroup_result = $this->examgroup_model->get_c();
         $data['examgrouplist'] = $examgroup_result;
         $data['exam_group_list'] = $this->examgroup_model->get();
@@ -270,7 +270,7 @@ class Coscholasticareas extends Admin_Controller {
             $data = array(
                 'id' => $this->input->post('id'),
                 'name' => $this->input->post('name'),
-                'exam_type' => $this->input->post('exam_type'),
+                // 'exam_type' => $this->input->post('exam_type'),
                 'is_active' => $is_active,
                 'description' => $this->input->post('description'),
                 'exam_group' => $this->input->post('exam_group'),

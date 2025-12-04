@@ -559,7 +559,7 @@
 						<?php } if ($this->rbac->hasPrivilege('co_scholastic_areas', 'can_view')) { ?>
 							<li class="<?php if($this->uri->segment(2)=='coscholasticareas'){ echo 'active'; } ?>"><a href="<?php echo site_url('admin/coscholasticareas'); ?>"><i class="fa fa-angle-double-right"></i> Co-Scholastic Areas</a></li>
 						<?php } if ($this->rbac->hasPrivilege('exam_schedule', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('Examinations/Examschedule'); ?>"><a href="<?php echo site_url('admin/exam_schedule'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('exam_schedule'); ?></a></li>
+							<!--<li class="<?php echo set_Submenu('Examinations/Examschedule'); ?>"><a href="<?php echo site_url('admin/exam_schedule'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('exam_schedule'); ?></a></li>-->
 						<?php } if ($this->rbac->hasPrivilege('exam_result', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('Examinations/Examresult'); ?>"><a href="<?php echo site_url('admin/examresult'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('exam') . " " . $this->lang->line('result'); ?></a></li>
 						<?php } if ($this->rbac->hasPrivilege('design_admit_card', 'can_view')) { ?>
@@ -577,7 +577,7 @@
 						<?php } if ($this->rbac->hasPrivilege('marks_grade', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('Examinations/grade'); ?>"><a href="<?php echo base_url(); ?>admin/grade"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('marks_grade'); ?></a></li>
 						<?php } if ($this->rbac->hasPrivilege('terms_grade', 'can_view')) { ?>
-							<li class="<?php if($this->uri->segment(2)=='termsgrade'){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>admin/termsgrade"><i class="fa fa-angle-double-right"></i> Terms Grade</a></li>
+							<!--<li class="<?php if($this->uri->segment(2)=='termsgrade'){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>admin/termsgrade"><i class="fa fa-angle-double-right"></i> Terms Grade</a></li>-->
 						<?php } if ($this->rbac->hasPrivilege('exam_section_reports', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('Reports/examinations'); ?>"><a href="<?php echo base_url(); ?>report/examinations"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 						<?php } ?>

@@ -295,7 +295,7 @@ if(in_array($subject_value->subject_id, $subject_id_data)) {
 if ($admitcard->content_footer != "") {
             ?>
                     <tr>
-                        <td valign="top" style="padding-bottom: 15px; line-height: normal;"> <?php echo htmlspecialchars_decode($admitcard->content_footer); ?></td>
+                        <td valign="top" style="padding-bottom: 15px; line-height: normal;text-align: right;"><div style="margin-top: 10px;font-weight: bold;"> <?php echo htmlspecialchars_decode($admitcard->content_footer); ?></div></td>
                     </tr>
                     <?php
 }

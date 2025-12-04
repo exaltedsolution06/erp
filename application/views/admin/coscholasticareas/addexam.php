@@ -1329,7 +1329,7 @@ if (set_value('class_id') == $class['id']) {
             form_data.append('file', file_data);
 
             $.ajax({
-                url: baseurl + "/admin/examgroup/uploadfile",
+                url: baseurl + "/admin/coscholasticareas/uploadfile",
                 type: 'POST',
                 dataType: 'JSON',
                 data: form_data,

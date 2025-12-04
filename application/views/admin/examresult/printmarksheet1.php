@@ -58,7 +58,9 @@
 	
   </head>
   <body>
-
+  <div class="container mb-2 mt-2">
+<a href="<?php echo base_url('admin/examresult/marksheet') ?>"><button type="button" class="btn btn-primary btn-sm" style="background-color: #727272;border-color: #525252;transition: .3s;">Back</button></a>
+</div>
 <?php 
 
 

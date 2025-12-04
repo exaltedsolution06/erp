@@ -143,6 +143,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </div>
                                 </div>
                                 <div class="form-group switch-inline">
+                                    <label><?php echo $this->lang->line('photo') ?></label>
+                                    <div class="material-switch switchcheck">
+                                        <input id="is_photo" name="is_photo" type="checkbox" class="chk" value="1">
+                                        <label for="is_photo" class="label-success"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group switch-inline">
                                     <label><?php echo $this->lang->line('contactno') ?></label>
                                     <div class="material-switch switchcheck">
                                         <input id="is_contactno" name="is_contactno" type="checkbox" class="chk" value="1">
@@ -163,6 +170,20 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 												value="1"
 											>
 											<label for="group_<?php echo $exam_groups_val->id; ?>" class="label-success"></label>
+										</div>
+									</div>
+									<div class="form-group switch-inline">
+										<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('marks'); ?> <?php echo $this->lang->line('obtained'); ?> <?= $exam_groups_val->name; ?></label>
+
+										<div class="material-switch switchcheck">
+											<input 
+												id="marks_obtained_<?php echo $exam_groups_val->id; ?>" 
+												name="marks_obtained[<?php echo $exam_groups_val->id; ?>]" 
+												type="checkbox" 
+												class="chk" 
+												value="1"
+											>
+											<label for="marks_obtained<?php echo $exam_groups_val->id; ?>" class="label-success"></label>
 										</div>
 									</div>
 									<div class="form-group switch-inline">
@@ -195,7 +216,21 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									</div>
 								</div>
 								<div class="form-group switch-inline">
-									<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('grade'); ?></label>
+									<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('marks'); ?> <?php echo $this->lang->line('obtained'); ?></label>
+
+									<div class="material-switch switchcheck">
+										<input 
+											id="marks_obtained_overall" 
+											name="marks_obtained[overall]" 
+											type="checkbox" 
+											class="chk" 
+											value="1"
+										>
+										<label for="marks_obtained_overall" class="label-success"></label>
+									</div>
+								</div>
+								<div class="form-group switch-inline">
+									<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('max'); ?> <?php echo $this->lang->line('marks'); ?></label>
 
 									<div class="material-switch switchcheck">
 										<input 

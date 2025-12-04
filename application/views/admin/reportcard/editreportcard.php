@@ -150,6 +150,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </div>
                                 </div>
                                 <div class="form-group switch-inline">
+                                    <label><?php echo $this->lang->line('photo'); ?></label>
+                                    <div class="material-switch switchcheck">
+                                        <input id="is_photo" name="is_photo" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_photo', '1', (set_value('is_photo', $reportcard->is_photo) == 1) ? TRUE : FALSE); ?>>
+                                        <label for="is_photo" class="label-success"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group switch-inline">
                                     <label><?php echo $this->lang->line('contactno'); ?></label>
                                     <div class="material-switch switchcheck">
                                         <input id="is_contactno" name="is_contactno" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_contactno', '1', (set_value('is_contactno', $reportcard->is_contactno) == 1) ? TRUE : FALSE); ?>>
@@ -160,6 +167,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 								<?php foreach($exam_groups as $exam_groups_val){							
 									$saved_json = json_decode($reportcard->exam_group_grade, true);				
 									$saved_max_marks_json = json_decode($reportcard->exam_group_max_marks, true);					
+									$saved_marks_obtained_json = json_decode($reportcard->exam_group_marks_obtained, true);					
 								?>
 									<div class="form-group switch-inline">
 										<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('grade'); ?> <?= $exam_groups_val->name; ?></label>
@@ -173,6 +181,20 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 												   <?= isset($saved_json[$exam_groups_val->id]) && $saved_json[$exam_groups_val->id] == 1 ? 'checked' : '' ?>
 											>
 											<label for="exam_group_<?= $exam_groups_val->id ?>" class="label-success"></label>
+										</div>
+									</div>
+									<div class="form-group switch-inline">
+										<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('marks'); ?> <?php echo $this->lang->line('obtained'); ?> <?= $exam_groups_val->name; ?></label>
+
+										<div class="material-switch switchcheck">
+											<input id="marks_obtained_<?= $exam_groups_val->id ?>"
+												   name="marks_obtained[<?= $exam_groups_val->id ?>]"
+												   type="checkbox"
+												   class="chk"
+												   value="1"
+												   <?= isset($saved_marks_obtained_json[$exam_groups_val->id]) && $saved_marks_obtained_json[$exam_groups_val->id] == 1 ? 'checked' : '' ?>
+											>
+											<label for="marks_obtained_<?= $exam_groups_val->id ?>" class="label-success"></label>
 										</div>
 									</div>
 									<div class="form-group switch-inline">
@@ -202,6 +224,20 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 											   <?= isset($saved_json['overall']) && $saved_json['overall'] == 1 ? 'checked' : '' ?>
 										>
 										<label for="exam_group_overall" class="label-success"></label>
+									</div>
+								</div>
+								<div class="form-group switch-inline">
+									<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('marks'); ?> <?php echo $this->lang->line('obtained'); ?></label>
+
+									<div class="material-switch switchcheck">
+										<input id="marks_obtained_overall"
+											   name="marks_obtained[overall]"
+											   type="checkbox"
+											   class="chk"
+											   value="1"
+											   <?= isset($saved_marks_obtained_json['overall']) && $saved_marks_obtained_json['overall'] == 1 ? 'checked' : '' ?>
+										>
+										<label for="marks_obtained_overall" class="label-success"></label>
 									</div>
 								</div>
 								<div class="form-group switch-inline">

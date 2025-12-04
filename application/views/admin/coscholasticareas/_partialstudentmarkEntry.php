@@ -2,7 +2,7 @@
 <?php if ($this->rbac->hasPrivilege('marks_import', 'can_view')) {
     ?>
 
-    <!--<div class="row">   
+    <div class="row">   
         <div class="col-md-9"> 
             <form method="POST" enctype="multipart/form-data" id="fileUploadForm">
 
@@ -18,7 +18,7 @@
     <div class="col-md-3"> 
         <a class="btn btn-primary pull-right" href="<?php echo site_url('admin/examgroup/exportformat') ?>" target="_blank"><i class="fa fa-download"></i> <?php echo $this->lang->line('export') . " " . $this->lang->line('sample'); ?></a>
     </div>
-    </div>-->    
+    </div>
     <?php
 }
 ?>

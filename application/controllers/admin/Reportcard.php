@@ -73,6 +73,11 @@ class Reportcard extends Admin_Controller {
             } else {
                 $is_section = 0;
             }
+            if (isset($_POST['is_photo'])) {
+                $is_photo = 1;
+            } else {
+                $is_photo = 0;
+            }
             if (isset($_POST['is_contactno'])) {
                 $is_contactno = 1;
             } else {
@@ -118,8 +123,10 @@ class Reportcard extends Admin_Controller {
                 'is_roll_no' => $is_roll_no,
                 'is_class' => $is_class,
                 'is_section' => $is_section,
+                'is_photo' => $is_photo,
                 'is_contactno' => $is_contactno,
                 'exam_group_grade'=>json_encode($this->input->post('exam_group')),
+                'exam_group_marks_obtained'=>json_encode($this->input->post('marks_obtained')),
                 'exam_group_max_marks'=>json_encode($this->input->post('max_marks')),
                 'is_header'=>$is_header,
                 'marks_grade_table'=>$marks_grade_table,
@@ -286,6 +293,11 @@ class Reportcard extends Admin_Controller {
             } else {
                 $is_section = 0;
             }
+            if (isset($_POST['is_photo'])) {
+                $is_photo = 1;
+            } else {
+                $is_photo = 0;
+            }
             if (isset($_POST['is_contactno'])) {
                 $is_contactno = 1;
             } else {
@@ -332,8 +344,10 @@ class Reportcard extends Admin_Controller {
                 'is_roll_no' => $is_roll_no,
                 'is_class' => $is_class,
                 'is_section' => $is_section,
+                'is_photo' => $is_photo,
                 'is_contactno' => $is_contactno,
                 'exam_group_grade'=>json_encode($this->input->post('exam_group')),
+                'exam_group_marks_obtained'=>json_encode($this->input->post('marks_obtained')),
                 'exam_group_max_marks'=>json_encode($this->input->post('max_marks')),
                 'is_header'=>$is_header,
                 'marks_grade_table'=>$marks_grade_table,

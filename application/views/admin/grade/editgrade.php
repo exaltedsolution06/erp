@@ -51,18 +51,30 @@
                                     <span class="text-danger"><?php echo form_error('name'); ?></span>
                                 </div>
                                 <div class="form-group">
+									<?php 
+										$mark_from_val = isset($editgrade['mark_from']) ? $editgrade['mark_from'] : '';
+										$mark_from_val = rtrim(rtrim($mark_from_val, '0'), '.'); 
+									?>
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('percent_upto'); ?></label><small class="req"> *</small>
-                                    <input id="mark_from" name="mark_from"  type="text" class="form-control"  value="<?php echo set_value('mark_from', $editgrade['mark_from']); ?>" />
+                                    <input id="mark_from" name="mark_from"  type="text" class="form-control"  value="<?php echo set_value('mark_from', $mark_from_val); ?>" />
                                     <span class="text-danger"><?php echo form_error('mark_from'); ?></span>
                                 </div>
                                 <div class="form-group">
+									<?php 
+										$mark_upto_val = isset($editgrade['mark_upto']) ? $editgrade['mark_upto'] : '';
+										$mark_upto_val = rtrim(rtrim($mark_upto_val, '0'), '.'); 
+									?>
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('percent_from'); ?></label><small class="req"> *</small>
-                                    <input id="mark_upto" name="mark_upto"  type="text" class="form-control"  value="<?php echo set_value('mark_upto', $editgrade['mark_upto']); ?>" />
+                                    <input id="mark_upto" name="mark_upto"  type="text" class="form-control"  value="<?php echo set_value('mark_upto', $mark_upto_val); ?>" />
                                     <span class="text-danger"><?php echo form_error('mark_upto'); ?></span>
                                 </div>
                                  <div class="form-group">
+									<?php 
+										$grade_point_val = isset($editgrade['point']) ? $editgrade['point'] : '';
+										$grade_point_val = rtrim(rtrim($grade_point_val, '0'), '.'); 
+									?>
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('grade')." ".$this->lang->line('point');?></label><small class="req"> *</small>
-                                    <input autofocus="" id="grade_point" name="grade_point" placeholder="" type="text" class="form-control"  value="<?php echo set_value('grade_point', $editgrade['point']); ?>" />
+                                    <input autofocus="" id="grade_point" name="grade_point" placeholder="" type="text" class="form-control"  value="<?php echo set_value('grade_point', $grade_point_val); ?>" />
                                     <span class="text-danger"><?php echo form_error('grade_point'); ?></span>
                                 </div>
                                 <div class="form-group">
@@ -141,8 +153,8 @@
 
                                                                 <tr>                
                                                                     <td width="24%"><?php echo $grade_value->name ?></td>
-                                                                    <td width="40%"><?php echo $grade_value->mark_upto . " " . $this->lang->line('to') . " " . $grade_value->mark_from; ?> </td>
-                                                                    <td width="20%"><?php echo $grade_value->point ?> </td>
+                                                                    <td width="40%"><?php echo rtrim(rtrim($grade_value->mark_upto, '0'), '.') . " " . $this->lang->line('to') . " " . rtrim(rtrim($grade_value->mark_from, '0'), '.'); ?> </td>
+                                                                    <td width="20%"><?php echo rtrim(rtrim($grade_value->point, '0'), '.') ?> </td>
                                                                     <td class="text-right">
 
                                                                         <?php

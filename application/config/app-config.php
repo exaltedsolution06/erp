@@ -10,9 +10,9 @@ if (!defined('BASEPATH')) {
 $config['adm_digit_length'] = 6;
 $config['exam_type'] = array(
     'basic_system' => lang('basic_system'),
-    'school_grade_system' => lang('school_grade_system'),
-    'coll_grade_system' => lang('coll_grade_system'),
-    'gpa' => lang('gpa'),
+    // 'school_grade_system' => lang('school_grade_system'),
+    // 'coll_grade_system' => lang('coll_grade_system'),
+    // 'gpa' => lang('gpa'),
 );
 
 $config['image_validate'] = array(

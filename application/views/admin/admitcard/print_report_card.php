@@ -3,6 +3,7 @@
 	$desc=$reportcard;
 	$saved_json = json_decode($desc->exam_group_grade, true);			
 	$saved_max_marks_json = json_decode($desc->exam_group_max_marks, true);	
+	$saved_marks_obtained_json = json_decode($desc->exam_group_marks_obtained, true);	
 	// var_dump($marksheet['students'][0]['exam_result']);
 ?>
 
@@ -97,7 +98,7 @@
 
 					<!-- LEFT SIDE -->
 					<?php if (isset($left[$i])): ?>
-						<td style="padding-left:8px;"><?= $left[$i]->mark_upto ?> - <?= $left[$i]->mark_from ?></td>
+						<td style="padding-left:8px;"><?= rtrim(rtrim($left[$i]->mark_upto, '0'), '.') ?> - <?= rtrim(rtrim($left[$i]->mark_from, '0'), '.') ?></td>
 						<td style="padding-left:8px;"><?= $left[$i]->name ?></td>
 					<?php else: ?>
 						<td></td><td></td>
@@ -105,7 +106,7 @@
 
 					<!-- RIGHT SIDE -->
 					<?php if (isset($right[$i])): ?>
-						<td style="padding-left:8px;"><?= $right[$i]->mark_upto ?> - <?= $right[$i]->mark_from ?></td>
+						<td style="padding-left:8px;"><?= rtrim(rtrim($right[$i]->mark_upto, '0'), '.') ?> - <?= rtrim(rtrim($right[$i]->mark_from, '0'), '.') ?></td>
 						<td style="padding-left:8px;"><?= $right[$i]->name ?></td>
 					<?php else: ?>
 						<td></td><td></td>
@@ -125,7 +126,7 @@
 
 
 	foreach($marksheet as $stddata){
-	
+	// echo '<pre>';print_r($stddata);
 			if(in_array($stddata->student_id, $exam_group_class_batch_exam_student_id)){
 			$student_id=$stddata->student_id;
 ?>
@@ -157,7 +158,18 @@
 			<?php } ?>
 			<div class="col-12" style="border:1px solid">
 				<div class="row pt-3" >
-					<div class="col-6" >
+						<?php
+						$is_photo_exists = false;
+						if($desc->is_photo==1){	
+							if($stddata->image != ''){
+								$is_student_photo_file_path = FCPATH . $stddata->image;
+								if (file_exists($is_student_photo_file_path)) {
+									$is_photo_exists = true;
+								}
+							}
+						}
+						?>
+					<div class="col-<?php echo $is_photo_exists ? 5 : 6; ?>" >
 						<table class="table table-borderless">
 						<tbody>
 							<?php if($desc->is_name==1){ ?>
@@ -197,7 +209,7 @@
 						  </tbody>
 						</table>
 					</div>
-					<div class="col-6">
+					<div class="col-<?php echo $is_photo_exists ? 5 : 6; ?>">
 					
 						<table class="table table-borderless">
 						  <tbody>
@@ -230,6 +242,21 @@
 						</table>
 					
 					</div>
+					<?php
+					if($is_photo_exists){
+					?>
+					<div class="col-2">
+						<table class="table table-borderless">
+							<tbody>
+								<tr>
+									<td valign="top" width="25%" align="right">
+										<img src="<?php echo base_url() . $stddata->image; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<?php } ?>
 				</div>
 			</div>
 			
@@ -249,8 +276,11 @@
 									foreach($post_exam_group_id as $rowDatagroup){
 									$exam_type=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$rowDatagroup->id."' AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
 									$allNames[] = $rowDatagroup->name;
-									$gradecount = 1;
+									$gradecount = 0;
 									if(isset($saved_json[$rowDatagroup->id]) && $saved_json[$rowDatagroup->id] == 1){
+										$gradecount++;
+									}
+									if(isset($saved_marks_obtained_json[$rowDatagroup->id]) && $saved_marks_obtained_json[$rowDatagroup->id] == 1){
 										$gradecount++;
 									}
 									if(isset($saved_max_marks_json[$rowDatagroup->id]) && $saved_max_marks_json[$rowDatagroup->id] == 1){
@@ -259,8 +289,11 @@
 										?>
 									<th colspan="<?=count($exam_type)+$gradecount?>" class="text-danger"><?=$rowDatagroup->name?></th>
 									<?php }
-										$overallgradecount = 1;
+										$overallgradecount = 0;
 										if(isset($saved_json['overall']) && $saved_json['overall'] == 1){
+											$overallgradecount++;
+										}
+										if(isset($saved_marks_obtained_json['overall']) && $saved_marks_obtained_json['overall'] == 1){
 											$overallgradecount++;
 										}
 										if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
@@ -286,8 +319,12 @@
 									<th class="text-success" style="width:90px"><?=$type->exam?>  </th>
 										<?php } ?>
 										
+										<?php
+										if(isset($saved_marks_obtained_json[$rowDatagroup->id]) && $saved_marks_obtained_json[$rowDatagroup->id] == 1){
+										?>
 										<th class="text-success" style="width:100px"><?php echo $this->lang->line('m_o'); ?></th>
 										<?php
+										}
 										if(isset($saved_max_marks_json[$rowDatagroup->id]) && $saved_max_marks_json[$rowDatagroup->id] == 1){
 										?>
 										<th class="text-success" style="width:100px"><?php echo $this->lang->line('m_m'); ?></th>
@@ -304,8 +341,12 @@
 									
 									
 									
-									<th class="text-success" style="width:100px"><?php echo $this->lang->line('grand_total'); ?></th>
 									<?php
+										if(isset($saved_marks_obtained_json['overall']) && $saved_marks_obtained_json['overall'] == 1){
+									?>
+									<th class="text-success" style="width:100px"><?php echo $this->lang->line('m_o'); ?></th>
+									<?php
+										}
 										if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
 									?>
 									<th class="text-success" style="width:100px"><?php echo $this->lang->line('m_m'); ?></th>
@@ -370,7 +411,7 @@
 								?>
 								
 										<tr>
-											<td class="text-success" style="text-align:left;padding-left:8px" ><?=$rowdata->name?></td>
+											<td class="text-success" style="text-align:left;padding-left:8px;font-weight: bold;" ><?=$rowdata->name?></td>
 											
 											<?php
 
@@ -414,8 +455,12 @@
 													
 												?>
 											
+											<?php
+											if(isset($saved_marks_obtained_json[$exam_group_id]) && $saved_marks_obtained_json[$exam_group_id] == 1){
+											?>
 											<td style="width:100px"><?php echo $total; ?></td>
 											<?php
+											}
 											if(isset($saved_max_marks_json[$exam_group_id]) && $saved_max_marks_json[$exam_group_id] == 1){
 											?>
 											<td style="width:100px"><?php echo $max_marks1; ?></td>
@@ -433,7 +478,9 @@
 											
 											<?php
 											}
+											if(isset($saved_marks_obtained_json[$exam_group_id]) && $saved_marks_obtained_json[$exam_group_id] == 1){
 											array_push($array,$total); 
+											}
 											if(isset($saved_max_marks_json[$exam_group_id]) && $saved_max_marks_json[$exam_group_id] == 1){
 												array_push($array,$max_marks1);
 											}
@@ -447,8 +494,12 @@
 											} 
 											?>
 
+											<?php
+											if(isset($saved_marks_obtained_json['overall']) && $saved_marks_obtained_json['overall'] == 1){
+											?>
 											<td><?=$total1; ?> <?php //echo $max_marks; ?> </td>
 											<?php
+											}
 											if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
 											?>
 											<td><?=$max_marks; ?> <?php //echo $max_marks; ?> </td>
@@ -485,7 +536,7 @@
 										$optional_html = '';
 									?>
 										<tr class="optional">
-											<td class="text-success" style="text-align:left;padding-left:8px" ><?=$rowdata->name?></td>
+											<td class="text-success" style="text-align:left;padding-left:8px;font-weight: bold;" ><?=$rowdata->name?></td>
 											
 											<?php
 
@@ -530,9 +581,13 @@
 													
 												?>
 											
+											<?php
+											if(isset($saved_marks_obtained_json[$exam_group_id_op]) && $saved_marks_obtained_json[$exam_group_id_op] == 1){
+											?>
 											<td style="width:100px"><?php echo $total_op; ?></td>
 											<?php
-											if(isset($saved_max_marks_json[$exam_group_id]) && $saved_max_marks_json[$exam_group_id] == 1){
+											}
+											if(isset($saved_max_marks_json[$exam_group_id_op]) && $saved_max_marks_json[$exam_group_id_op] == 1){
 											?>
 											<td style="width:100px"><?php echo $max_marks1_op; ?></td>
 											<?php
@@ -549,8 +604,12 @@
 											
 											<?php } array_push($array_op,$total_op); } ?>
 
+											<?php
+											if(isset($saved_marks_obtained_json['overall']) && $saved_marks_obtained_json['overall'] == 1){
+											?>
 											<td><?=$total1_op; ?> <?php //echo $max_marks; ?> </td>
 											<?php
+											}
 											if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
 											?>
 											<td><?=$max_marks_op; ?> <?php //echo $max_marks; ?> </td>
@@ -660,7 +719,7 @@
 							
 							<tfoot>
 									<tr style="font-weight:bold">
-										<th class="text-success" style="text-align:left;padding-left:8px"><?php echo $this->lang->line('total'); ?> : </th>
+										<th class="text-success" style="text-align:left;padding-left:8px"><?php echo $this->lang->line('total'); ?></th>
 										<?php
 										$i=count($final);
 										foreach($final as $row){
@@ -673,8 +732,12 @@
 											echo '<td>'.$row.'</td>';	
 										} ?>
 										
+										<?php
+										if(isset($saved_marks_obtained_json['overall']) && $saved_marks_obtained_json['overall'] == 1){
+										?>
 										<td><?php echo $finalTotal; ?></td>
 										<?php
+										}
 										if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
 										?>
 										<td><?php echo array_sum($maxMark); ?></td>
@@ -761,9 +824,8 @@
 			?>
 			<div class="col-6 mt-3" style="padding:0px">
 				<table class="w-100 border-dark text-center table-bordered">
-					<tr class="text-center">
-						<th colspan="2"><h5 class="text-danger"><?=$value->name ?></h5>
-							<h6>(3 Point Grading Scale A,B,C)</h6>
+					<tr class="text-start">
+						<th colspan="2" style="padding-left:8px;"><h5 class="text-danger"><?=$value->name ?>: <span style="color:#000;font-size: 14px;"><?=$value->description ?></span></h5>
 						</th>
 					</tr>
 					<tr>	
@@ -817,13 +879,13 @@
 			</div>-->
 			<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px;">
 				<div class="row">
-					<div class="col-12 mt-3 mb-3">
+					<div class="col-7 mt-3 mb-3">
 						<strong><?php echo $this->lang->line('remarks'); ?> :</strong> <span>___________________________________________________________________</span>
 					</div>
-					<div class="col-6">
+					<div class="col-5 mt-3 mb-3 text-end">
 						<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <span>___________________________________</span>
 					</div>
-					<div class="col-6 text-end">
+					<div class="col-6">
 						<strong><?php echo $this->lang->line('date'); ?> :</strong> <span>________________________________</span>
 					</div>
 				</div>
