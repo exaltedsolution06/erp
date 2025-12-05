@@ -29,7 +29,7 @@ class Enc_lib {
     }
 
     function passHashDyc($password, $encrypt_password) {
-        $isPasswordCorrect = password_verify($password, $encrypt_password);
+		$isPasswordCorrect = password_verify($password, $encrypt_password);
         return $isPasswordCorrect;
     }
 

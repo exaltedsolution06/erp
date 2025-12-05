@@ -773,8 +773,8 @@ class Staff_model extends MY_Model
 
         $record = $this->getByEmail($data['email']);
         if ($record) {
-            // $pass_verify = $this->enc_lib->passHashDyc($data['password'], $record->password);
-            $pass_verify=true;
+            $pass_verify = $this->enc_lib->passHashDyc($data['password'], $record->password);
+            //$pass_verify=true;
             if ($pass_verify) {
                 $roles = $this->staffroles_model->getStaffRoles($record->id);
                 $record->roles = array($roles[0]->name => $roles[0]->role_id);

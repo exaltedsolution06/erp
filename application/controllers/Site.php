@@ -44,7 +44,7 @@ class Site extends Public_Controller
 
     public function login()
     {
-
+		
         $app_name = $this->setting_model->get();
         $app_name = $app_name[0]['name'];
 
@@ -74,6 +74,7 @@ class Site extends Public_Controller
             $data['name']          = $app_name;
             $this->load->view('admin/login', $data);
         } else {
+			//echo"<pre>";print_r($this->input->post());die;
             $login_post = array(
                 'email'    => $this->input->post('username'),
                 'password' => $this->input->post('password'),
