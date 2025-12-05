@@ -66,6 +66,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <label for="toDate">To</label>
                                         <input type="date" class="form-control" id="toDate" name="to_date" value="<?= $this->input->get('to_date') ?? date('Y-m-d') ?>" required>
                                     </div>
+									<div class="form-group col-md-2">
+                                        <label for="toDate">Mode</label>
+                                        <select name="mode" class="form-control">
+											<option value="">Select Mode</option>
+											<option value="Online" <?php if ($this->input->get('mode') == 'Online') echo "selected=selected" ?>>Online</option>
+											<option value="Cash"  <?php if ($this->input->get('mode') == 'Cash') echo "selected=selected" ?>>Cash</option>
+										</select>
+                                    </div>
 
                                     <!-- Submit Button -->
                                     <div class="form-group col-md-2 d-flex align-items-end">

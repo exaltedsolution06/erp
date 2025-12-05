@@ -238,7 +238,7 @@ class Receipt_model extends CI_Model {
 
     // reportbyname
 
-    public function get_receipt($limit, $offset,$from_date = null, $to_date = null)
+    public function get_receipt($limit, $offset,$from_date = null, $to_date = null, $mode = null)
     {
          //    echo $from_date;
         // die;
@@ -306,6 +306,11 @@ class Receipt_model extends CI_Model {
             $this->db->where('DATE(receipts.date_time) >=', $from_date);
             $this->db->where('DATE(receipts.date_time) <=', $to_date);
         }
+		
+		if(!empty($mode))
+		{
+			$this->db->where('mode', $mode);
+		}
 
         $this->db->group_by('receipts.receipt_no');
         $this->db->order_by('receipts.date_time', 'DESC');
@@ -317,7 +322,7 @@ class Receipt_model extends CI_Model {
 
     }
 
-    public function get_receipt_count($from_date = null, $to_date = null)
+    public function get_receipt_count($from_date = null, $to_date = null, $mode = null)
     {
         $this->db->select('receipts.receipt_no'); // Select only grouped field
         $this->db->from('receipts');
@@ -328,6 +333,11 @@ class Receipt_model extends CI_Model {
             $this->db->where('DATE(receipts.date_time) >=', $from_date);
             $this->db->where('DATE(receipts.date_time) <=', $to_date);
         }
+		
+		if (!empty($from_date)){
+			$this->db->where('mode', $mode);
+		}
+		
         $this->db->group_by('receipts.receipt_no');
         
         $query = $this->db->get();

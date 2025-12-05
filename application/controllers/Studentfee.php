@@ -393,9 +393,10 @@ class Studentfee extends Admin_Controller
 
         $from_date = $this->input->get('from_date');
         $to_date   = $this->input->get('to_date');
+        $mode   = $this->input->get('mode');
 
         $per_page_input = $this->input->get('per_page');
-        $total_rows = $this->Receipt_model->get_receipt_count($from_date,$to_date);
+        $total_rows = $this->Receipt_model->get_receipt_count($from_date,$to_date,$mode);
 
         $per_page = (!empty($per_page_input) && $per_page_input != 'all') ? (int)$per_page_input : 10;
         $per_page = ($per_page_input == 'all') ? $total_rows : $per_page;
@@ -427,8 +428,9 @@ class Studentfee extends Admin_Controller
 
         $this->pagination->initialize($config);
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-
-        $data['receipt_data'] = $this->Receipt_model->get_receipt($config['per_page'], $page,$from_date,$to_date);
+		
+		
+        $data['receipt_data'] = $this->Receipt_model->get_receipt($config['per_page'], $page,$from_date,$to_date,$mode);
         $data['pagination_links'] = $this->pagination->create_links();
         $data['sch_setting'] = $this->sch_setting_detail;
         $this->load->view('layout/header', $data);
@@ -734,10 +736,11 @@ class Studentfee extends Admin_Controller
         // $data['receipt_data'] = $this->Receipt_model->get_receipt();
         $from_date = $this->input->get('from_date');
         $to_date   = $this->input->get('to_date');
+        $mode   = $this->input->get('mode');
         // die;
         // paginate
         $per_page_input = $this->input->get('per_page');
-        $total_rows = $this->Receipt_model->get_receipt_count($from_date, $to_date);
+        $total_rows = $this->Receipt_model->get_receipt_count($from_date, $to_date,$mode);
 
         $per_page = (!empty($per_page_input) && $per_page_input != 'all') ? (int)$per_page_input : 10;
         $per_page = ($per_page_input == 'all') ? $total_rows : $per_page;
@@ -770,7 +773,7 @@ class Studentfee extends Admin_Controller
         $this->pagination->initialize($config);
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 
-        $data['receipt_data'] = $this->Receipt_model->get_receipt($config['per_page'], $page,$from_date, $to_date);
+        $data['receipt_data'] = $this->Receipt_model->get_receipt($config['per_page'], $page,$from_date, $to_date,$mode);
         $data['pagination_links'] = $this->pagination->create_links();
         // end paginate
         // var_dump($data['receipt_data']);
