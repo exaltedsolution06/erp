@@ -1677,6 +1677,57 @@ class Student_model extends MY_Model
             return false;
         }
     }
+	
+	public function searchByAdmissionNo($searchterm, $carray = null)
+    {
+        $userdata = $this->customlib->getUserData();
+        $staff_id = $userdata['id'];
+
+        $i             = 1;
+        $custom_fields = $this->customfield_model->get_custom_fields('students', 1);
+
+        $field_var_array = array();
+        if (!empty($custom_fields)) {
+            foreach ($custom_fields as $custom_fields_key => $custom_fields_value) {
+                $tb_counter = "table_custom_" . $i;
+                array_push($field_var_array, 'table_custom_' . $i . '.field_value as ' . $custom_fields_value->name);
+                $this->db->join('custom_field_values as ' . $tb_counter, 'students.id = ' . $tb_counter . '.belong_table_id AND ' . $tb_counter . '.custom_field_id = ' . $custom_fields_value->id, 'left');
+                $i++;
+            }
+        }
+
+        $field_variable = implode(',', $field_var_array);
+
+        if (($userdata["role_id"] == 2) && ($userdata["class_teacher"] == "yes")) {
+            if (!empty($carray)) {
+
+                $this->db->where_in("student_session.class_id", $carray);
+                $sections = $this->teacher_model->get_teacherrestricted_modeallsections($staff_id);
+				foreach ($sections as $key => $value) {
+                    $sections_id[] = $value['section_id'];
+                }
+                $this->db->where_in("student_session.section_id", $sections_id);
+            } else {
+                $this->db->where_in("student_session.class_id", "");
+            }
+        }
+
+        $this->db->select('classes.id AS `class_id`,students.id,student_session.id as student_session_id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(fee_groups.name, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,students.cast_category,' . $field_variable)->from('students');
+        $this->db->join('student_session', 'student_session.student_id = students.id');
+        $this->db->join('classes', 'student_session.class_id = classes.id');
+        $this->db->join('sections', 'sections.id = student_session.section_id');
+        $this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
+        $this->db->join('school_houses', 'students.school_house_id = school_houses.id', 'left');
+        $this->db->where('student_session.session_id', $this->current_session);
+        $this->db->where('students.is_active', 'yes');
+        $this->db->group_start();
+        // $this->db->like('CONCAT(students.firstname," ",students.middlename," ",students.lastname)', $searchterm);
+		$this->db->where('students.admission_no', $searchterm);
+        $this->db->group_end();
+        $this->db->order_by('students.id');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 
     //===========
 

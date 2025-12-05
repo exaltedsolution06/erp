@@ -1801,6 +1801,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let balanceAmt = netFees - Number(receiptAmt) - Number(discountAmt);
             document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);
 			
+			// 05-12-2025
 			/*const hid_receipt_amt = parseFloat(document.querySelector('[name="hid_receipt_amt"]').value);
 			const errorMessageRcpt = document.getElementById('error_message_rcpt');
 			
@@ -1817,13 +1818,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			}*/
         
         }
-        
-        
-        
-        
-        
-        
-        
         
     }
 });

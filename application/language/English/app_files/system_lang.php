@@ -1651,3 +1651,4 @@ $lang['marks_grade_table'] = 'Marks Grade Table';
 $lang['m_m'] = 'M.M';
 $lang['m_o'] = 'M.O';
 $lang['promoted_to_class'] = 'Promoted to Class';
+$lang['search_by_admission_no'] = 'Search By Admission No.';
