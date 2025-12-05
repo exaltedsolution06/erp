@@ -295,5 +295,15 @@ class Setting_model extends MY_Model {
         $image = $this->db->select('footer_content')->from('print_headerfooter')->where('print_type', 'staff_payslip')->get()->row_array();
         echo $image['footer_content'];
     }
+	public function check_receipt_no()
+	{
+
+        $query = $this->db->get('receipt_sr_no');
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+	}
 
 }

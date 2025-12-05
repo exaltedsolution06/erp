@@ -582,6 +582,21 @@
 
                                 </div><!--./row-->
                                 <div class="row">
+									<div class="col-md-12">
+                                        <div class="settinghr"></div>
+                                        <h4 class="session-head"><?php echo $this->lang->line('receipt_sequence'); ?></h4>
+                                    </div><!--./col-md-12-->
+									<div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4"><?php echo $this->lang->line('receipt_start_sequence') ?><small class="req"> *</small></label>
+                                            <div class="col-sm-8">
+
+                                                <input id="receipt_start_sequence" value="<?php echo $result->receipt_start_sequence; ?>" name="receipt_start_sequence" placeholder="" type="text" class="form-control" />
+                                                <span class="text-danger"><?php echo form_error('receipt_start_sequence'); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+									
                                     <div class="col-md-12">
                                         <div class="settinghr"></div>
                                         <h4 class="session-head"><?php echo $this->lang->line('online_examination'); ?></h4>
@@ -1047,7 +1062,7 @@
             dataType: 'json',
 
             success: function (data) {
-
+				//alert(data.check_receipt_no);
                 if (data.status == "fail") {
                     var message = "";
                     $.each(data.error, function (index, value) {

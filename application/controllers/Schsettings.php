@@ -281,6 +281,7 @@ class Schsettings extends Admin_Controller {
                 'adm_prefix' => form_error('adm_prefix'),
                 'adm_no_digit' => form_error('adm_no_digit'),
                 'staffid_start_from' => form_error('staffid_start_from'),
+                'receipt_start_sequence' => form_error('receipt_start_sequence'),
                 'staffid_prefix' => form_error('staffid_prefix'),
                 'staffid_no_digit' => form_error('staffid_no_digit'),
                 'online_admission' => form_error('online_admission'),
@@ -292,7 +293,6 @@ class Schsettings extends Admin_Controller {
             echo json_encode($array);
         } else {
             $setting_result = $this->setting_model->getSetting();
-
             $data = array(
                 'id' => $this->input->post('sch_id'),
                 'attendence_type' => $this->input->post('attendence_type'),
@@ -385,8 +385,10 @@ class Schsettings extends Admin_Controller {
             } else {
                 set_language($this->input->post('sch_lang_id'));
             }
+			
+			//$check_receipt_no = $this->setting_model->check_receipt_no();
 
-            $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
+            $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'),'check_receipt_no'=> $check_receipt_no);
             echo json_encode($array);
         }
     }

@@ -3,6 +3,7 @@ New table -
 1) exam_group_exam_results_coscholastic
 2) template_reportcard
 3) fee_discounts
+4) receipt_sr_no (id, sr_no(bigint))
 
 ==============================Alter script==============================
 ALTER TABLE `subjects` ADD `type_one` VARCHAR(100) NOT NULL AFTER `type`;
@@ -17,6 +18,9 @@ ALTER TABLE `template_reportcard` ADD `is_class_teacher` INT(11) NOT NULL DEFAUL
 ALTER TABLE `template_reportcard` ADD `exam_group_max_marks` JSON NULL DEFAULT NULL AFTER `exam_group_grade`;
 ALTER TABLE `template_reportcard` ADD `is_photo` INT(11) NOT NULL DEFAULT '0' AFTER `is_section`;
 ALTER TABLE `template_reportcard` ADD `exam_group_marks_obtained` JSON NULL DEFAULT NULL AFTER `exam_group_grade`;
+
+//-----05-12-2025---------
+INSERT INTO `receipt_sr_no` (`id`, `sr_no`) VALUES (NULL, '2000');
 
 ===============================
 File change outside of application folder
