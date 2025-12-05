@@ -532,7 +532,9 @@ $language_name = $language["short_code"];
                                         ?>
                                         <div class="col-sm-2">
                                             <label for="receipt_amt">Receipt Amt</label>
-                                            <input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$receipt_amt; ?>" readonly  />
+                                            <input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$receipt_amt; ?>"/>
+											<lable id="error_message_rcpt" style="color: red; display:block;font-size:10px !important">Amount must be between 0 and <?=$receipt_amt ?>.</lable>
+											<input type="hidden" value="<?=$receipt_amt; ?>" name="hid_receipt_amt" id="hid_receipt_amt">
                                         </div>
                                     <?php
                                         
@@ -1782,7 +1784,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             let receiptAmt1 = sum+ledgerAmt;
     
-            document.querySelector('[name="receipt_amt"]').value = Number(receiptAmt1)+Number(lateFees);
+            //document.querySelector('[name="receipt_amt"]').value = Number(receiptAmt1)+Number(lateFees); // comment 05-12-2025
             let receiptAmt = parseFloat(document.querySelector('[name="receipt_amt"]').value) || 0;
     
 			let totalFees = (feesReceived + lateFees + ledgerAmt);
@@ -1797,7 +1799,22 @@ document.addEventListener('DOMContentLoaded', function () {
     
             //let balanceAmt = netFees - Number(receiptAmt);//es
             let balanceAmt = netFees - Number(receiptAmt) - Number(discountAmt);
-            document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);;
+            document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);
+			
+			/*const hid_receipt_amt = parseFloat(document.querySelector('[name="hid_receipt_amt"]').value);
+			const errorMessageRcpt = document.getElementById('error_message_rcpt');
+			
+			if(receiptAmt > hid_receipt_amt)
+			{
+				document.querySelector('[name="receipt_amt"]').value = hid_receipt_amt;
+				document.querySelector('[name="balance_amt"]').value = 0.00;
+				errorMessageRcpt.textContent = `Amount must be between 0 and ${hid_receipt_amt}.`;
+                errorMessageRcpt.style.display = 'block';
+			}
+			else{
+				
+				errorMessageRcpt.style.display = 'none';
+			}*/
         
         }
         

@@ -515,7 +515,9 @@ $language_name = $language["short_code"];
                                         ?>
                                         <div class="col-sm-2">
                                             <label for="receipt_amt">Receipt Amt</label>
-                                            <input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$student['fees_discount']+$final_total?>" readonly  />
+                                            <input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$student['fees_discount']+$final_total?>"/>
+											<lable id="error_message_rcpt" style="color: red; display:block;font-size:10px !important">Amount must be between 0 and <?=$student['fees_discount']+$final_total ?>.</lable>
+											<input type="hidden" value="<?=$student['fees_discount']+$final_total?>" name="hid_receipt_amt" id="hid_receipt_amt">
                                         </div>
                                         <?php
                                         
@@ -1690,7 +1692,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function calculateFees() {
 
-
         let sum = 0;
         document.querySelectorAll('.rec_amount').forEach(el => {
             const val = parseFloat(el.value);
@@ -1725,7 +1726,6 @@ document.addEventListener('DOMContentLoaded', function () {
            
             document.querySelector('[name="net_fees"]').value = netFees-discountAmt;
             
-            
             document.querySelector('[name="receipt_amt"]').value = netFees;
             
             
@@ -1740,10 +1740,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }else{
 
             let receiptAmt1 = sum+ledgerAmt;
-    
-            document.querySelector('[name="receipt_amt"]').value = Number(receiptAmt1)+Number(lateFees);
+			//alert(receiptAmt1);alert(lateFees);
+            //document.querySelector('[name="receipt_amt"]').value = Number(receiptAmt1)+Number(lateFees); // comment 05-12-2025
             let receiptAmt = parseFloat(document.querySelector('[name="receipt_amt"]').value) || 0;
-    
+			//alert(receiptAmt);
             let totalFees = (feesReceived + lateFees + ledgerAmt);
             document.querySelector('[name="total_fees"]').value = totalFees;
             /*if(discountAmt==''){
@@ -1754,6 +1754,21 @@ document.addEventListener('DOMContentLoaded', function () {
     
             let balanceAmt = netFees - Number(receiptAmt);
             document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);;
+			
+			const hid_receipt_amt = parseFloat(document.querySelector('[name="hid_receipt_amt"]').value);
+			const errorMessageRcpt = document.getElementById('error_message_rcpt');
+			
+			if(receiptAmt > hid_receipt_amt)
+			{
+				document.querySelector('[name="receipt_amt"]').value = hid_receipt_amt;
+				document.querySelector('[name="balance_amt"]').value = 0.00;
+				errorMessageRcpt.textContent = `Amount must be between 0 and ${hid_receipt_amt}.`;
+                errorMessageRcpt.style.display = 'block';
+			}
+			else{
+				
+				errorMessageRcpt.style.display = 'none';
+			}
         
         }
         
@@ -1942,6 +1957,7 @@ function calculateDataCheckBox(checkbox,id){
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const ledgerAmtInput = document.getElementById('ledger_amt');
+       
         // const oldLedgerAmt = parseInt(document.getElementById('net_fees').value, 10);
         const oldLedgerAmt = parseFloat(document.getElementById('net_fees').value);
 
@@ -1972,12 +1988,17 @@ function calculateDataCheckBox(checkbox,id){
                 submitBtn.disabled = false;
             }
         }
+		
+		
 
         // Validate on input change
         ledgerAmtInput.addEventListener('input', validateLedgerAmount);
+		
+        
 
         // Initial validation on page load
         validateLedgerAmount();
+		
     });
 
 

@@ -554,7 +554,8 @@ class Admin extends Admin_Controller
             $userdata    = $this->customlib->getUserData();
             $data_array  = array(
                 'current_pass' => $this->input->post('current_pass'),
-                'new_pass'     => md5($this->input->post('new_pass')),
+                //'new_pass'     => md5($this->input->post('new_pass')),
+                'new_pass'     => $this->enc_lib->passHashEnc($this->input->post('new_pass')),
                 'user_id'      => $sessionData['id'],
                 'user_email'   => $sessionData['email'],
                 'user_name'    => $sessionData['username'],
