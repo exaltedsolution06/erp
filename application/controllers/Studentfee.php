@@ -617,6 +617,8 @@ class Studentfee extends Admin_Controller
             $section     = $this->input->post('section_id');
             $search      = $this->input->post('search');
             $search_text = $this->input->post('search_text');
+            $search_addmis_no = $this->input->post('search_addmis_no');
+			
             if (isset($search)) {
                 if ($search == 'search_filter') {
                     $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
@@ -631,7 +633,7 @@ class Studentfee extends Admin_Controller
                     $data['resultlist'] = $resultlist;
                 }
 				else if ($search == 'search_addmiss_no') {
-					$resultlist         = $this->student_model->searchByAdmissionNo($search_text);
+					$resultlist         = $this->student_model->searchByAdmissionNo($search_addmis_no);
                     $data['resultlist'] = $resultlist;
 				}
                 $this->load->view('layout/header', $data);
