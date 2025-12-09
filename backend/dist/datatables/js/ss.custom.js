@@ -32,7 +32,8 @@ $(document).ready(function () {
 						var sheet = xlsx.xl.worksheets['sheet1.xml'];
 
 						// Your label text (dynamic from .download_label)
-						var labelText = $('.download_label').text();  
+						var labelText = $('.download_label').text(); 
+											
 						if(labelText != ''){
 						// Create first row
 						var firstRow = `
