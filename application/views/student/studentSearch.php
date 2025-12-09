@@ -198,7 +198,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             <i class="fa fa-print"></i>
                                                         </a>
 														
-														<a target="_blank" href="<?php echo base_url(); ?>student/Certificate/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Character Certificate" >
+														<!--<a target="_blank" href="<?php echo base_url(); ?>student/Certificate/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Character Certificate" >
                                                             <i class="fa fa-print"></i>
                                                         </a>
 														
@@ -206,7 +206,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 														
 														<a target="_blank" href="<?php echo base_url(); ?>student/dobcertificate/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="DOB Certificate" >
                                                             <i class="fa fa-print"></i>
-                                                        </a>
+                                                        </a>-->
 														
 														
 														
