@@ -1,5 +1,6 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
+//echo "<pre>";print_r($receipt_data);die;
 ?>
 
 <div class="content-wrapper">
@@ -90,6 +91,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <th>Mode</th>
                                         <th>User</th>
                                         <th>Remark</th>
+										<span class="download_label" style="display:none;">Receipt Book</span>
                                         <!-- <th>Action</th> -->
                                     </tr>
                                 </thead>
@@ -116,6 +118,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <td><?= $record["mode"] ?></td>
                                             <td><?= $record["create_by"] ?></td>
                                             <td><?= $record["remarks"] ?></td>
+											
                                             <!-- <td>
                                                 <a data-placement="left" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Edit">
                                                     <i class="fa fa-pencil"></i>
@@ -302,4 +305,15 @@ function fnExcelReport() {
 
     return true;
 }
+</script>
+<script>
+/*$('.example').DataTable({
+    columnDefs: [
+        {
+            targets: 12,   // change this index to match your column
+            visible: false,
+            searchable: false
+        }
+    ]
+});*/
 </script>
