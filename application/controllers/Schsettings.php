@@ -213,7 +213,6 @@ class Schsettings extends Admin_Controller {
     }
 
     public function getSchsetting() {
-
         $data = $this->setting_model->getSetting();
         echo json_encode($data);
     }
@@ -367,6 +366,7 @@ class Schsettings extends Admin_Controller {
             }
 
             $data['adm_update_status'];
+            $data['receipt_sr_no'] = $this->input->post('receipt_start_sequence');
             $this->setting_model->add($data);
             $this->load->helper('lang');
             $this->session->userdata['admin']['date_format'] = $this->input->post('sch_date_format');

@@ -591,7 +591,7 @@
                                             <label class="col-sm-4"><?php echo $this->lang->line('receipt_start_sequence') ?><small class="req"> *</small></label>
                                             <div class="col-sm-8">
 
-                                                <input id="receipt_start_sequence" value="<?php echo $result->receipt_start_sequence; ?>" name="receipt_start_sequence" placeholder="" type="text" class="form-control"/>
+                                                <input id="receipt_start_sequence" value="<?php echo $result->receipt_sr_no; ?>" name="receipt_start_sequence" placeholder="" type="text" class="form-control"/>
 												<span class="text-danger" id="receipt_error"></span>
                                                 <!--<span class="text-danger" id="receipt_error"><?php echo form_error('receipt_start_sequence'); ?></span>-->
                                             </div>
