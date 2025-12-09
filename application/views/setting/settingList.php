@@ -1091,6 +1091,11 @@
                 }
 				else if(data.check_receipt_no == true)
 				{
+					$('.receipt-sequence').show();
+					$('.receipt-enabled').click();
+					$('html, body').animate({
+					  scrollTop: $('#staffid_start_from').offset().top
+					}, 800);
 					$('#receipt_error').text('You have already existing Receipt No. please receipt no. to update this field');
 				}
 				else {

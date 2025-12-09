@@ -827,7 +827,15 @@
 
 
                                             </div>
-                                        </div>
+											
+											
+											<div class="row">
+												<?php
+												echo display_custom_fields('students');
+												?>
+											</div>
+
+										 </div>
                                         <div id='upload_documents_hide_show'>
 <?php if ($sch_setting->upload_documents) { ?>
                                                 <div class="row">

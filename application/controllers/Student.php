@@ -417,19 +417,24 @@ class Student extends Admin_Controller
         $data['hostelList']         = $hostelList;
         $vehroute_result            = $this->db->order_by('id', 'DESC')->get('route_head')->result_array();
         $data['vehroutelist']       = $vehroute_result;
-        // $custom_fields              = $this->customfield_model->getByBelong('students');
+		
+		
+		// fetch data for cusrom fielda
+        $custom_fields              = $this->customfield_model->getByBelong('students');
 
 
        
-        // foreach ($custom_fields as $custom_fields_key => $custom_fields_value) {
-        //     if ($custom_fields_value['validation']) {
-        //         $custom_fields_id   = $custom_fields_value['id'];
-        //         $custom_fields_name = $custom_fields_value['name'];
-        //         $this->form_validation->set_rules("custom_fields[students][" . $custom_fields_id . "]", $custom_fields_name, 'trim|required');
-        //     }
-        // }
-
-        // var_dump($custom_fields); die;
+        foreach ($custom_fields as $custom_fields_key => $custom_fields_value) {
+            if ($custom_fields_value['validation']) {
+                $custom_fields_id   = $custom_fields_value['id'];
+                $custom_fields_name = $custom_fields_value['name'];
+                $this->form_validation->set_rules("custom_fields[students][" . $custom_fields_id . "]", $custom_fields_name, 'trim|required');
+            }
+        }
+		$data['custom_fields'] = $custom_fields;
+		
+		//echo "<pre>";print_r($custom_fields);die;
+         //var_dump($custom_fields); die;
         
         
         $this->db->order_by('id', 'DESC');
