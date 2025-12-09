@@ -313,8 +313,8 @@ class Receipt_model extends CI_Model {
 		}
 
         $this->db->group_by('receipts.receipt_no');
-        //$this->db->order_by('receipts.date_time', 'DESC');
-		$this->db->order_by('receipts.sr_no', 'DESC');
+        $this->db->order_by('receipts.date_time', 'DESC');
+		$this->db->order_by('receipts.sr_no', 'ASC');
         $this->db->limit($limit, $offset);
 
         $query = $this->db->get();
