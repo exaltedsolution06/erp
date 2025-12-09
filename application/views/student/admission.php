@@ -380,15 +380,25 @@
 			<div class="col-12">
 				<table width="100%" cellspacing="0" cellpadding="0" class="table-details">
 					<thead>
-					<tr>
-						<th>Fee Category</th>
-						<th>Route Name</th>
-						<th>Driver Name</th>
-						<th>Vehicle No</th>
-						<th>Current Address</th>
-						<th>Permanent Address</th>
-					</tr>
+						<tr>
+							<th>Fee Category</th>
+							<th>Route Name</th>
+							<th>Driver Name</th>
+							<th>Vehicle No</th>
+							<th>Current Address</th>
+							<th>Permanent Address</th>
+						</tr>
 					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
 				</table>
 			</div>
 			
