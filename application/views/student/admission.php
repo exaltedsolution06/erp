@@ -11,6 +11,10 @@
 				vertical-align: top;
 				font-size: 14px;
 			}
+			.table-details td, .table-details th {
+				border: 1px solid #333;
+				padding: 6px 8px;
+			}
 
 			.label {
 				width: 45%;
@@ -402,14 +406,42 @@
 				</table>
 			</div>
 			
+			<div class="col-12 mb-3 mt-5 text-center" style="border-bottom: 2px dashed #000;">
+                <h4>Miscellaneous Details</h4>
+            </div>
+			<div class="col-12">
+				<table width="100%" cellspacing="0" cellpadding="0" class="table-details">
+					<thead>
+						<tr>
+							<th>Last School Name</th>
+							<th>Bank Account Detail</th>
+							<th>Bank Name</th>
+							<th> IFSC Code</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
             <div class="col-sm-12 mb-5 mt-5">
               <div class="row">
-                <div class="col-6">
-                  Teacher-in-charge
-                </div>
-
-                <div class="col-6 " style="text-align: right;">
-                  Principal/HeadMaster
+                <div class="col-12 ">
+				<b>Note</b> : <span style="font-size:13px !important">
+                  <?php
+					if (!empty($footer_text)) {
+						echo $footer_text;
+					} else {
+						echo 'This is a System Generated Slip Not Required Stamp.';
+					}
+				  ?>
+                </span>
                 </div>
               </div>
             </div>
