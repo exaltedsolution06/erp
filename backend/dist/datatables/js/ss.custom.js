@@ -26,7 +26,41 @@ $(document).ready(function () {
                     title: $('.download_label').html(),
                     exportOptions: {
                         columns: ':visible'
-                    }
+                    },
+					customize: function (xlsx) {
+
+						var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+						// Your label text (dynamic from .download_label)
+						var labelText = $('.download_label').text();  
+						if(labelText != ''){
+						// Create first row
+						var firstRow = `
+							<row r="1">
+								<c t="inlineStr" r="A1">
+									<is><t>` + labelText + `</t></is>
+								</c>
+							</row>
+						`;
+
+						// Shift existing rows down by +1
+						$('row', sheet).each(function () {
+							var r = parseInt($(this).attr('r'));
+							$(this).attr('r', r + 1);
+
+							$(this).find('c').each(function () {
+								var cellRef = $(this).attr('r');
+								var col = cellRef.replace(/[0-9]/g, '');
+								var rowNumber = parseInt(cellRef.replace(/[A-Z]/g, ''));
+								$(this).attr('r', col + (rowNumber + 1));
+							});
+						});
+
+						// Insert new first row at the top
+						sheet.childNodes[0].childNodes[1].innerHTML =
+							firstRow + sheet.childNodes[0].childNodes[1].innerHTML;
+						}
+					}
                 },
 
                 {

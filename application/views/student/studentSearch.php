@@ -208,7 +208,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 														
 														
 													
-                                                        <a href="<?php echo base_url(); ?>student/certificate/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('show'); ?>" >
+                                                        <a target="_blank" href="<?php echo base_url(); ?>student/certificate/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('show'); ?>" >
                                                             <i class="fa fa-reorder"></i>
                                                         </a>
                                                         <?php
