@@ -386,7 +386,7 @@ class Schsettings extends Admin_Controller {
                 set_language($this->input->post('sch_lang_id'));
             }
 			
-			//$check_receipt_no = $this->setting_model->check_receipt_no();
+			$check_receipt_no = $this->setting_model->check_receipt_no();
 
             $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'),'check_receipt_no'=> $check_receipt_no);
             echo json_encode($array);

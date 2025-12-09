@@ -591,8 +591,9 @@
                                             <label class="col-sm-4"><?php echo $this->lang->line('receipt_start_sequence') ?><small class="req"> *</small></label>
                                             <div class="col-sm-8">
 
-                                                <input id="receipt_start_sequence" value="<?php echo $result->receipt_start_sequence; ?>" name="receipt_start_sequence" placeholder="" type="text" class="form-control" />
-                                                <span class="text-danger"><?php echo form_error('receipt_start_sequence'); ?></span>
+                                                <input id="receipt_start_sequence" value="<?php echo $result->receipt_start_sequence; ?>" name="receipt_start_sequence" placeholder="" type="text" class="form-control"/>
+												<span class="text-danger" id="receipt_error"></span>
+                                                <!--<span class="text-danger" id="receipt_error"><?php echo form_error('receipt_start_sequence'); ?></span>-->
                                             </div>
                                         </div>
                                     </div>
@@ -1070,9 +1071,14 @@
                         message += value;
                     });
                     errorMsg(message);
-                } else {
+                }
+				else if(data.check_receipt_no == true)
+				{
+					$('#receipt_error').text('You have already existing Receipt No. please receipt no. to update this field');
+				}
+				else {
                     successMsg(data.message);
-                    window.location.reload(true);
+                    //window.location.reload(true);
                 }
 
                 $this.button('reset');
