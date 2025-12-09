@@ -90,17 +90,20 @@ class Studentfee extends Admin_Controller
                         // echo "<hr>";
                         
                         $insid=$this->Receipt_model->insert_receipt($insert_data);
-
-                        // var_dump($insid); die;
+						 // var_dump($insid); die;
                         array_push($last_id,$insid);
                     }
                 }
             }
-
-
-            // die;
+			// die;
             // $data['balance_amt']
             $this->Receipt_model->update_student($data['student_id'],$data['balance_amt']);
+			
+			// by exaltedsol
+			$expld_receipt_no = explode('/', $data['receipt_no']);
+			$receipt_sr_no = $expld_receipt_no[1];
+			$this->setting_model->insert_receipt_sr_no($receipt_sr_no);
+			
         }else{
 
           
@@ -135,14 +138,16 @@ class Studentfee extends Admin_Controller
 
 
            $id=$this->Receipt_model->insert_receipt($insert_data);
- 
-            array_push($last_id,$id);
+		   
+			array_push($last_id,$id);
 
             $this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt']));
-
-
-
-        }
+			
+			// by exaltedsol
+			$expld_receipt_no = explode('/', $data['receipt_no']);
+			$receipt_sr_no = $expld_receipt_no[1];
+			$this->setting_model->insert_receipt_sr_no($receipt_sr_no);
+		}
 
 
 

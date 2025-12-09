@@ -332,5 +332,25 @@ class Setting_model extends MY_Model {
             return 1; // Or 0, depending on your logic
         }
 	}
+	public function insert_receipt_sr_no($recpt = '')
+	{
+		$data['sr_no'] = $recpt;
+		$this->db->insert('receipt_sr_no', $data);
+		
+		
+			$this->db->select_max('id'); 
+			$this->db->limit(1);
+			$query = $this->db->get('sch_settings');
+
+			if ($query->num_rows() > 0) {
+				$row = $query->row();
+				$max_id = $row->id;
+
+				$this->db->where('id', $max_id);
+				$this->db->update('sch_settings', [
+					'receipt_sr_no' => $data['sr_no']
+				]);
+			}
+	}
 
 }
