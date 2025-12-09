@@ -1,6 +1,7 @@
 
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
+//echo "<pre>";print_r($receipt_data);die;
 ?>
 <div class="content-wrapper" style="min-height: 1126px;">
     <section class="content-header">
@@ -133,7 +134,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th >Mode</th>
                                                 <th >User</th>
                                                 <th >Remark</th>
-                                            </tr>
+												<span class="download_label" style="display:none;">Fee Register</span>
+											</tr>
                                         </thead>
                                        
                                        
