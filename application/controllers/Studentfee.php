@@ -351,7 +351,7 @@ class Studentfee extends Admin_Controller
         $data['footer_text']= $this->setting_model->get_receiptfooter_return();
 
         // echo "<pre>";
-        // var_dump($data['fees']);  
+        // var_dump($data['header_image']);  
         // die;
 
         // $this->load->view('layout/header', $data);

@@ -331,6 +331,65 @@ class Student extends Admin_Controller
         $this->load->view('student/dob-certificate', $data);
         // $this->load->view('layout/footer', $data);
     }
+	public function admission($id)
+    {
+
+        $data['title']         = 'Student Admission';
+        $student               = $this->student_model->get($id);
+        $gradeList             = $this->grade_model->get();
+        $studentSession        = $this->student_model->getStudentSession($id);
+        $timeline              = $this->timeline_model->getStudentTimeline($id, $status = '');
+        $data["timeline_list"] = $timeline;
+
+        $student_session_id = $studentSession["student_session_id"];
+
+        $student_session         = $studentSession["session"];
+        $data['sch_setting']     = $this->sch_setting_detail;
+        $data['adm_auto_insert'] = $this->sch_setting_detail->adm_auto_insert;
+        $current_student_session = $this->student_model->get_studentsession($student['student_session_id']);
+
+        $data["session"]              = $current_student_session["session"];
+        $student_due_fee              = $this->studentfeemaster_model->getStudentFees($student['student_session_id']);
+        $student_discount_fee         = $this->feediscount_model->getStudentFeesDiscount($student['student_session_id']);
+        $data['student_discount_fee'] = $student_discount_fee;
+        $data['student_due_fee']      = $student_due_fee;
+        $siblings                     = $this->student_model->getMySiblings($student['parent_id'], $student['id']);
+
+        $student_doc = $this->student_model->getstudentdoc($id);
+
+        $data['student_doc']    = $student_doc;
+        $data['student_doc_id'] = $id;
+        $category_list          = $this->category_model->get();
+        $data['category_list']  = $category_list;
+        $data['gradeList']      = $gradeList;
+        $data['student']        = $student;
+        $data['siblings']       = $siblings;
+        $class_section          = $this->student_model->getClassSection($student["class_id"]);
+        $data["class_section"]  = $class_section;
+        $session                = $this->setting_model->getCurrentSession();
+
+        $studentlistbysection         = $this->student_model->getStudentClassSection($student["class_id"], $session);
+        $data["studentlistbysection"] = $studentlistbysection;
+
+        $data['guardian_credential'] = $this->student_model->guardian_credential($student['parent_id']);
+
+        $data['reason'] = $this->disable_reason_model->get();
+        if ($student['is_active'] = 'no') {
+            $data['reason_data'] = $this->disable_reason_model->get($student['dis_reason']);
+        }
+		
+		$data['exam_result']          = $this->examgroupstudent_model->searchStudentExams($student['student_session_id'], true, true);
+	  
+
+		$data['exam_grade']           = $this->grade_model->getGradeDetails();
+		$data['header_image']= $this->setting_model->get_receiptheader_return();
+        $data['footer_text']= $this->setting_model->get_receiptfooter_return();
+		// echo '<pre>';
+        // var_dump($data['student']);
+        // $this->load->view('layout/header', $data);
+        $this->load->view('student/admission', $data);
+        // $this->load->view('layout/footer', $data);
+    }
 
 
   

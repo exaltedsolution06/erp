@@ -184,7 +184,7 @@ th, td {
     <?php
 	if(!empty($header_image)){
 	?>
-	<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php $this->setting_model->get_receiptheader(); ?>" style="height:100px;width:100%">
+	<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">
 	<?php } else { ?>
 	<h5><b><?=$result->name?></b></h5>
     <span><?=$result->address?></span> <br>
@@ -369,7 +369,7 @@ th, td {
 	<?php
 	if(!empty($header_image)){
 	?>
-	<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php $this->setting_model->get_receiptheader(); ?>" style="height:100px;width:100%">
+	<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">
 	<?php } else { ?>
     <h5><b><?=$result->name?></b></h5>
     <span><?=$result->address?></span> <br>
@@ -779,7 +779,7 @@ th, td {
                         <?php
 						if(!empty($header_image)){
 						?>
-						<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php $this->setting_model->get_receiptheader(); ?>" style="height:100px;width:100%">
+						<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">
 						<?php } else { ?>
 						<h5><b><?=$result->name?></b></h5>
                         <span><?=$result->address?></span> <br>

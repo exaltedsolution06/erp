@@ -194,6 +194,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                     <td class="pull-right">
 														
+														<a target="_blank" href="<?php echo base_url(); ?>student/admission/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Admission" >
+                                                            <i class="fa fa-print"></i>
+                                                        </a>
+														
 														<a target="_blank" href="<?php echo base_url(); ?>student/Certificate/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Character Certificate" >
                                                             <i class="fa fa-print"></i>
                                                         </a>
