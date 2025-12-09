@@ -23,7 +23,7 @@ class Studentfee extends Admin_Controller
     public function saveFee(){
 
         $data = $this->input->post(); 
-       
+        //echo "<pre>";print_r($data);die;
        
         if (empty($data['receipt_no']) || empty($data['student_id'])) {
             
@@ -1066,8 +1066,29 @@ class Studentfee extends Admin_Controller
         $session                      = $this->setting_model->getCurrentSession();
         $studentlistbysection         = $this->student_model->getStudentClassSection($student["class_id"], $session);
         $data["studentlistbysection"] = $studentlistbysection;
-
-        $last_receipt_id = $this->Receipt_model->get_last_receipt_id();
+		
+		//--- exaltedsol 09-12-2025---
+		$check_receipt_no = $this->setting_model->check_receipt_no();
+		if($check_receipt_no == false)
+		{
+			$get_receipt_no = $this->setting_model->check_sch_setting_receipt_no();
+			
+			if($get_receipt_no)
+			{
+				$last_receipt_id = $get_receipt_no;
+			}
+			else{
+				$last_receipt_id = 1;
+			}
+		}
+		else{
+			$last_receipt_id = $this->Setting_model->get_last_receipt_id();
+		}
+		
+		//----------------------------
+        //$last_receipt_id = $this->Receipt_model->get_last_receipt_id();// 09-12-2025
+		
+		
         $this->session->set_userdata('last_receipt_id', $last_receipt_id);
 		//echo $last_receipt_id; die;
         if(@$_GET['receipt_no'] ==''){
