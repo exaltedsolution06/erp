@@ -19,6 +19,13 @@
 				border-bottom: 1px dotted #000;
 				width: 55%;
 			}
+			.label_name {
+				width: 20%;
+			}
+			.value_name {
+				border-bottom: 1px dotted #000;
+				width: 80%;
+			}
 		</style>
 	</head>
   <body>
@@ -41,13 +48,13 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Admission No</div>
-									<div class="value"><strong>513</strong></div>
+									<div class="value"><strong><?php echo $student['admission_no']; ?></strong></div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Admission Date</div>
-									<div class="value"><strong>20-04-2024</strong></div>
+									<div class="value"><strong><?php echo $student['admission_date']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -74,8 +81,8 @@
 						<div class="row mt-2">
 							<div class="col-12">
 								<div class="d-flex">
-									<div class="label">Student Full Name</div>
-									<div class="value"><strong>Vihan Roy</strong></div>
+									<div class="label_name">Student Full Name</div>
+									<div class="value_name"><strong>Vihan Roy</strong></div>
 								</div>
 							</div>
 						</div>
@@ -183,6 +190,208 @@
 			<div class="col-12 mb-3 mt-5 text-center" style="border-bottom: 2px dashed #000;">
                 <h4>Parents and Guardian Details</h4>
             </div>
+			<div class="col-12">
+				<div class="row">
+					<div class="col-10">
+						<div class="row">
+							<div class="col-12">
+								<div class="d-flex">
+									<div class="label_name">Father Name</div>
+									<div class="value_name"><strong>Vinay Roy</strong></div>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">Contact No</div>
+									<div class="value"><strong>8965236589</strong></div>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">Occupation</div>
+									<div class="value"><strong>PVT employee</strong></div>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">PEN No</div>
+									<div class="value"><strong>ETZPM4041M</strong></div>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">Adhar No</div>
+									<div class="value"><strong>1111 2222 3333</strong></div>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">Other No</div>
+									<div class="value"><strong>1111 2222 3333</strong></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-2">
+						<table class="table table-borderless">
+							<tbody>
+								<tr>
+									<td valign="top" width="25%" align="right">
+										<img src="<?php echo base_url() . $student['image']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+            </div>
+			<div class="col-12">
+				<div class="row">
+					<div class="col-10">
+						<div class="row">
+							<div class="col-12">
+								<div class="d-flex">
+									<div class="label_name">Mother Name</div>
+									<div class="value_name"><strong>Vinay Roy</strong></div>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">Contact No</div>
+									<div class="value"><strong>8965236589</strong></div>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">Occupation</div>
+									<div class="value"><strong>PVT employee</strong></div>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">PEN No</div>
+									<div class="value"><strong>ETZPM4041M</strong></div>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">Adhar No</div>
+									<div class="value"><strong>1111 2222 3333</strong></div>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">Other No</div>
+									<div class="value"><strong>1111 2222 3333</strong></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-2">
+						<table class="table table-borderless">
+							<tbody>
+								<tr>
+									<td valign="top" width="25%" align="right">
+										<img src="<?php echo base_url() . $student['image']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+            </div>
+			<div class="col-12">
+				<div class="row">
+					<div class="col-10">
+						<div class="row">
+							<div class="col-12">
+								<div class="d-flex">
+									<div class="label_name">Guardian Name</div>
+									<div class="value_name"><strong>Vinay Roy</strong></div>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">Contact No</div>
+									<div class="value"><strong>8965236589</strong></div>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">Occupation</div>
+									<div class="value"><strong>PVT employee</strong></div>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">PEN No</div>
+									<div class="value"><strong>ETZPM4041M</strong></div>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">Adhar No</div>
+									<div class="value"><strong>1111 2222 3333</strong></div>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-6">
+								<div class="d-flex">
+									<div class="label">Other No</div>
+									<div class="value"><strong>1111 2222 3333</strong></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-2">
+						<table class="table table-borderless">
+							<tbody>
+								<tr>
+									<td valign="top" width="25%" align="right">
+										<img src="<?php echo base_url() . $student['image']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+            </div>
+			
+			<div class="col-12 mb-3 mt-5 text-center" style="border-bottom: 2px dashed #000;">
+                <h4>Fee Details</h4>
+            </div>
+			<div class="col-12">
+				<table width="100%" cellspacing="0" cellpadding="0" class="table-details">
+					<thead>
+					<tr>
+						<th>Fee Category</th>
+						<th>Route Name</th>
+						<th>Driver Name</th>
+						<th>Vehicle No</th>
+						<th>Current Address</th>
+						<th>Permanent Address</th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+			
             <div class="col-sm-12 mb-5 mt-5">
               <div class="row">
                 <div class="col-6">
