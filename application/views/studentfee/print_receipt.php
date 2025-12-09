@@ -792,7 +792,7 @@ th, td {
                         <thead>
                             <tr style="border-top:2px solid;border-bottom:2px solid">
                                 <th><strong>Rec. No.:</strong> <?=$fees[0]->receipt_no?></th>
-								<th><strong>School Copy</strong></th>
+								<th><strong>Parent Copy</strong></th>
                                 <th class="text-end"><strong>Date:</strong> <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
                             </tr>
                         </thead>
