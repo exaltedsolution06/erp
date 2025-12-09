@@ -123,6 +123,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th >Mode</th>
                                                 <th >User</th>
                                                 <th >Remark</th>
+												<span class="download_label" style="display:none;">Fee Register</span>
                                             </tr>
                                         </thead>
                                        
