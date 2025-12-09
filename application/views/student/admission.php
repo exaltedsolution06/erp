@@ -471,12 +471,12 @@
 
 
 <script>
-/*window.onload = function () {
+window.onload = function () {
    window.print();
         window.onafterprint = back;
 }
  function back() {
     // window.history.back();
 	window.close();
- }*/
+ }
 </script>
