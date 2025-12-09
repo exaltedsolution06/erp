@@ -240,6 +240,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th style="text-align:right">Net Fee</th>
                                                 <th style="text-align:right">Rec. Amt.</th>
                                                 <th style="text-align:right">Bal. Amt.</th>
+												 <span class="download_label" style="display:none;">Fee Category Wise Collection</span>
                                             </tr>
                                         </thead>
                                        

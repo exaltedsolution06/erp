@@ -113,6 +113,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th>Mode</th>
                                                 <th>User</th>
                                                 <th>Remark</th>
+												<span class="download_label" style="display:none;">Fee Day Book</span>
                                             </tr>
                                         </thead>
                                        
