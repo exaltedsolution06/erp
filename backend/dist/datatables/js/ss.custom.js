@@ -33,6 +33,7 @@ $(document).ready(function () {
 
 						// Your label text (dynamic from .download_label)
 						var labelText = $('.download_label').text(); 
+						//var labelText = 'ewew'; 
 											
 						if(labelText != ''){
 						// Create first row
