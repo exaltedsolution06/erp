@@ -23,9 +23,6 @@ ALTER TABLE `template_reportcard` ADD `exam_group_marks_obtained` JSON NULL DEFA
 ALTER TABLE `sch_settings` ADD `receipt_sr_no` BIGINT(20) NULL DEFAULT NULL AFTER `id`;
 
 
-//-----05-12-2025---------
-INSERT INTO `receipt_sr_no` (`id`, `sr_no`) VALUES (NULL, '2000');
-
 ===============================
 File change outside of application folder
 --------
