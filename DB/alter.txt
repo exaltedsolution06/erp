@@ -134,3 +134,4 @@ ALTER TABLE `timetables` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
 
 DELETE FROM logs WHERE `logs`.`id` = 0"
 ALTER TABLE `logs` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT; 
+ALTER TABLE `custom_field_values` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT; 
