@@ -271,6 +271,11 @@ class Setting_model extends MY_Model {
         echo $image['header_image'];
     }
 
+    public function get_receiptheader_return() {
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
+        return $image['header_image'];
+    }
+
     public function unlink_receiptheader() {
         $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
         return $image['header_image'];
@@ -279,6 +284,11 @@ class Setting_model extends MY_Model {
     public function get_receiptfooter() {
         $image = $this->db->select('footer_content')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
         echo $image['footer_content'];
+    }
+
+    public function get_receiptfooter_return() {
+        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
+        return $image['footer_content'];
     }
 
     public function get_payslipheader() {

@@ -20,7 +20,7 @@ if($_GET['copy']=='2'){
       background-color: #f8f9fa;
     }
     .receipt-card {
-      max-width: 1400px;
+      /*max-width: 1400px;*/
       margin: 30px auto;
     }
     .card-header {
@@ -88,7 +88,7 @@ if($_GET['copy']=='2'){
     position: absolute;
     top: 0;
     left: 0;
-    width: 280mm;
+    /*width: 280mm;*/
     height: 100vh;
     padding: 0 !important;
     box-sizing: border-box;
@@ -173,18 +173,24 @@ th, td {
     <div id="print-area" >
         
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-6" style="padding-left: 40px;">
 
 
 
           <div  style="border:2px solid;" >
 
 
-<div class="text-center p-3 pt-0 pb-0">
-    <h5><b><?=$result->name?></b></h5>
+<div class="text-center p-3 pb-0">
+    <?php
+	if(!empty($header_image)){
+	?>
+	<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php $this->setting_model->get_receiptheader(); ?>" style="height:100px;width:100%">
+	<?php } else { ?>
+	<h5><b><?=$result->name?></b></h5>
     <span><?=$result->address?></span> <br>
     <span><b>Phone No.</b>: <?=$result->phone?></span>, <span><b>Email Id.</b>: <?=$result->email?></span> <br>
-    <span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br>
+	<span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br>
+	<?php } ?>
 </div>
 
 
@@ -192,6 +198,7 @@ th, td {
     <thead>
         <tr style="border-top:2px solid;border-bottom:2px solid">
             <th><strong>Rec. No.:</strong> <?=$fees[0]->receipt_no?></th>
+            <th><strong>School Copy</strong></th>
             <th class="text-end"><strong>Date:</strong> <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
         </tr>
     </thead>
@@ -231,11 +238,15 @@ th, td {
     <tbody>
 
 
-    <?php $i=1; $pay=0; foreach($fees as $list){ ?>
+    <?php 
+		$i=1; 
+		$pay=0;
+
+		foreach($fees as $list){ ?>
     <tr>
         <td><?=$i++?></td>
         <td <?php echo $fees[0]->fee_head_name == 'Ledger Amount' ? 'style="font-weight:bold"' : ''; ?>><?=$list->fee_head_name?></td>
-         <?php 
+        <?php 
 		if($list->fee_head_name != 'Ledger Amount')
 		{
 		?>
@@ -258,7 +269,8 @@ th, td {
 		else{
 			$pay = $list->ledger_amt; 
 		}
-	} ?>
+	}
+	?>
 
        <?php if($fees[0]->fee_head_name != 'Ledger Amount'){ ?>
                         <tr> 
@@ -324,7 +336,15 @@ th, td {
       <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
       <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
       <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
-      <label class="f12_new" for=""><b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp</span> </label>
+      <label class="f12_new" for=""><b>Note</b> : <span style="font-size:13px !important">
+	  <?php
+		if (!empty($footer_text)) {
+			echo $footer_text;
+		} else {
+			echo 'This is a System Generated Slip Not Required Stamp.';
+		}
+	  ?>
+	  </span> </label>
       </div>
   </div>
 
@@ -340,16 +360,22 @@ th, td {
 
 
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-6" style="padding-left: 40px;">
 
           <div  style="border:2px solid;" >
 
 
-<div class="text-center p-3 pt-0 pb-0">
+<div class="text-center p-3 pb-0">
+	<?php
+	if(!empty($header_image)){
+	?>
+	<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php $this->setting_model->get_receiptheader(); ?>" style="height:100px;width:100%">
+	<?php } else { ?>
     <h5><b><?=$result->name?></b></h5>
     <span><?=$result->address?></span> <br>
     <span><b>Phone No.</b>: <?=$result->phone?></span>, <span><b>Email Id.</b>: <?=$result->email?></span> <br>
     <span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br>
+	<?php } ?>
 </div>
 
 
@@ -357,6 +383,7 @@ th, td {
     <thead>
         <tr style="border-top:2px solid;border-bottom:2px solid">
             <th><strong>Rec. No.:</strong> <?=$fees[0]->receipt_no?></th>
+			<th><strong>Parent Copy</strong></th>
             <th class="text-end"><strong>Date:</strong> <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
         </tr>
     </thead>
@@ -493,7 +520,15 @@ th, td {
       <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
       <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
       <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
-      <label class="f12_new" for=""><b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp</span> </label>
+      <label class="f12_new" for=""><b>Note</b> : <span style="font-size:13px !important">
+	  <?php
+		if (!empty($footer_text)) {
+			echo $footer_text;
+		} else {
+			echo 'This is a System Generated Slip Not Required Stamp.';
+		}
+	  ?>
+	  </span> </label>
       </div>
   </div>
 
@@ -585,7 +620,7 @@ th, td {
       background-color: #f8f9fa;
     }
     .receipt-card {
-      max-width: 700px;
+      /*max-width: 700px;*/
       margin: 30px auto;
     }
     .card-header {
@@ -653,7 +688,7 @@ th, td {
     position: absolute;
     top: 0;
     left: 0;
-    width: 140mm;
+    width: 150mm;
     height: 100vh;
     padding: 0 !important;
     box-sizing: border-box;
@@ -735,16 +770,21 @@ th, td {
 
      <?php //var_dump($fees); ?>
 
-    <div id="print-area" >
-        
+    <div id="print-area">
+        <div  style="padding-left: 40px;" >
             <div  style="border:2px solid;" >
 
 
-                    <div class="text-center p-3 pt-0 pb-0">
-                        <h5><b><?=$result->name?></b></h5>
+                    <div class="text-center p-3 pb-0">
+                        <?php
+						if(!empty($header_image)){
+						?>
+						<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php $this->setting_model->get_receiptheader(); ?>" style="height:100px;width:100%">
+						<?php } else { ?>
+						<h5><b><?=$result->name?></b></h5>
                         <span><?=$result->address?></span> <br>
                         <span><b>Phone No.</b>: <?=$result->phone?></span>, <span><b>Email Id.</b>: <?=$result->email?></span> <br>
-                        <span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br>
+                        <span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br><?php } ?>
                     </div>
 
 
@@ -752,6 +792,7 @@ th, td {
                         <thead>
                             <tr style="border-top:2px solid;border-bottom:2px solid">
                                 <th><strong>Rec. No.:</strong> <?=$fees[0]->receipt_no?></th>
+								<th><strong>School Copy</strong></th>
                                 <th class="text-end"><strong>Date:</strong> <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
                             </tr>
                         </thead>
@@ -796,17 +837,17 @@ th, td {
                             <td><?=$i++?></td>
                             <td <?php echo $fees[0]->fee_head_name == 'Ledger Amount' ? 'style="font-weight:bold"' : ''; ?>><?=$list->fee_head_name?></td>
 							<?php 
-							if($list->fee_head_name != 'Ledger Amount')
-							{
-							?>
-							<td class="text-end"><?=$list->total?></td>
-							<?php 
-							}
-							else{
-							?>
-								<td <?php echo $fees[0]->fee_head_name == 'Ledger Amount' ? 'style="font-weight:bold"' : ''; ?> class="text-end"><?=$list->ledger_amt?></td>
-							<?php 
-							}
+								if($list->fee_head_name != 'Ledger Amount')
+								{
+								?>
+								<td class="text-end"><?=$list->total?></td>
+								<?php 
+								}
+								else{
+								?>
+									<td <?php echo $fees[0]->fee_head_name == 'Ledger Amount' ? 'style="font-weight:bold"' : ''; ?> class="text-end"><?=$list->ledger_amt?></td>
+								<?php 
+								}
 							?>
                         </tr>
                         <?php 
@@ -884,7 +925,15 @@ th, td {
                           <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
                           <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
                           <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
-                          <label class="f12_new" for=""><b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp</span> </label>
+                          <label class="f12_new" for=""><b>Note</b> : <span style="font-size:13px !important">
+						  <?php
+							if (!empty($footer_text)) {
+								echo $footer_text;
+							} else {
+								echo 'This is a System Generated Slip Not Required Stamp.';
+							}
+						  ?>
+						  </span> </label>
                           </div>
                       </div>
 
@@ -897,6 +946,7 @@ th, td {
                 
         </div>
 
+		</div>
     </div>
 
 

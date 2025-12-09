@@ -306,6 +306,8 @@ class Studentfee extends Admin_Controller
         $data['fees']=$data_fees;
         $data['student']=$student[0];
         $data['backid']=$data_fees[0]->back_id;
+        $data['header_image']= $this->setting_model->get_receiptheader_return();
+        $data['footer_text']= $this->setting_model->get_receiptfooter_return();
 
 
         // echo "<pre>";
@@ -345,6 +347,8 @@ class Studentfee extends Admin_Controller
         $data['student']=$student[0];
         $data['backid']=$data_fees[0]->back_id;
         $data['receipt_no']=$data_fees[0]->receipt_no;
+        $data['header_image']= $this->setting_model->get_receiptheader_return();
+        $data['footer_text']= $this->setting_model->get_receiptfooter_return();
 
         // echo "<pre>";
         // var_dump($data['fees']);  
