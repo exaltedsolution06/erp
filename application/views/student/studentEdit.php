@@ -876,6 +876,11 @@ if (!empty($siblings)) {
                                                 </div>
                                             </div>
 <?php } ?>
+											<div class="row">
+												<?php
+												echo display_custom_fields('students', $id);
+												?>
+											</div>
 
                                     </div>
                                 </div>
@@ -910,6 +915,7 @@ if (!empty($siblings)) {
 
         $('.datetime').datetimepicker({
         });
+		 $(".color").colorpicker();
 
         $(document).on('click', '#sibiling_class_id', function () {
             var class_id = $(this).val();

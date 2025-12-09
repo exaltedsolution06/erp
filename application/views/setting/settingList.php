@@ -582,13 +582,30 @@
 
                                 </div><!--./row-->
                                 <div class="row">
+								
 									<div class="col-md-12">
                                         <div class="settinghr"></div>
                                         <h4 class="session-head"><?php echo $this->lang->line('receipt_sequence'); ?></h4>
                                     </div><!--./col-md-12-->
+									
 									<div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-sm-4"><?php echo $this->lang->line('receipt_start_sequence') ?><small class="req"> *</small></label>
+                                            <label class="col-sm-4"><?php echo $this->lang->line('manual_receipt_no'); ?></label>
+                                            <div class="col-sm-8">
+                                                <label class="radio-inline">
+                                                    <input class="receipt-disabled" type="radio" 
+                                                    checked><?php echo $this->lang->line('disabled'); ?>
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input class="receipt-enabled" type="radio"><?php echo $this->lang->line('enabled'); ?>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+									
+									<div class="col-md-6 receipt-sequence" style="display:none">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4"><?php echo $this->lang->line('receipt_start_sequence') ?><small class="req"></small></label>
                                             <div class="col-sm-8">
 
                                                 <input id="receipt_start_sequence" value="<?php echo $result->receipt_sr_no; ?>" name="receipt_start_sequence" placeholder="" type="text" class="form-control"/>
@@ -1074,6 +1091,11 @@
                 }
 				else if(data.check_receipt_no == true)
 				{
+					$('.receipt-sequence').show();
+					$('.receipt-enabled').click();
+					$('html, body').animate({
+					  scrollTop: $('#staffid_start_from').offset().top
+					}, 800);
 					$('#receipt_error').text('You have already existing Receipt No. please receipt no. to update this field');
 				}
 				else {
@@ -1085,7 +1107,18 @@
             }
         });
     });
-
+	
+	$(document).on('click', '.receipt-disabled' , function(){
+		$('.receipt-disabled').attr('checked', true);
+		$('.receipt-enabled').attr('checked', false);
+		$('.receipt-sequence').hide();
+	});
+	
+	$(document).on('click', '.receipt-enabled' , function(){
+		$('.receipt-disabled').attr('checked', false);
+		$('.receipt-enabled').attr('checked', true);
+		$('.receipt-sequence').show();
+	})
 
 </script>
 

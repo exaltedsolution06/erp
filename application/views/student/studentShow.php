@@ -1,5 +1,10 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
+
+//echo "<pre>";print_r($student);die;
+//echo "<pre>";print_r($sch_setting);die;
+//$cutom_fields_data = get_custom_table_values($student['id'], 'students');
+//echo "<pre>";print_r($cutom_fields_data);die;
 ?>
 <style type="text/css">
     /*.table td:last-child, th:last-child {float: none;text-align: start;}*/
@@ -221,6 +226,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         <li class="active"><a href="#activity" data-toggle="tab" aria-expanded="true"><?php echo $this->lang->line('profile'); ?></a></li>
 
                         <?php
+						
                         if ($this->module_lib->hasActive('fees_collection')) {
                             if (($this->rbac->hasPrivilege('collect_fees', 'can_view') ||
                                     $this->rbac->hasPrivilege('search_fees_payment', 'can_view') ||
@@ -238,7 +244,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 <?php
                             }
                         }
-
 
                        
                         ?>              
@@ -329,7 +334,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td><?php echo $this->lang->line('date_of_birth'); ?></td>
                                                 <td><?php
                                                     if (!empty($student['admission_date']) && $student['admission_date']!='0000-00-00') {
+														if(isset($student['dob']))
+														{
                                                         echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($student['dob']));
+														}
+														else{
+															echo 'N/A';
+														}
                                                     }
                                                     ?></td>
                                             </tr>
@@ -361,6 +372,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <?php } ?>
                                             <?php
                                             $cutom_fields_data = get_custom_table_values($student['id'], 'students');
+											//echo "<pre>";print_r($cutom_fields_data);die;
                                             if (!empty($cutom_fields_data)) {
                                                 foreach ($cutom_fields_data as $field_key => $field_value) {
                                                     ?>

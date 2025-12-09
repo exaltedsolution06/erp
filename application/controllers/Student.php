@@ -155,9 +155,12 @@ class Student extends Admin_Controller
 
         $data['title']         = 'Student Details';
         $student               = $this->student_model->get($id);
+		//echo "<pre>";print_r($student);die;
         $gradeList             = $this->grade_model->get();
         $studentSession        = $this->student_model->getStudentSession($id);
+		
         $timeline              = $this->timeline_model->getStudentTimeline($id, $status = '');
+		
         $data["timeline_list"] = $timeline;
 
         $student_session_id = $studentSession["student_session_id"];
@@ -184,6 +187,7 @@ class Student extends Admin_Controller
         $data['student']        = $student;
         $data['siblings']       = $siblings;
         $class_section          = $this->student_model->getClassSection($student["class_id"]);
+		
         $data["class_section"]  = $class_section;
         $session                = $this->setting_model->getCurrentSession();
 
@@ -199,7 +203,7 @@ class Student extends Admin_Controller
 		
         $data['exam_result']          = $this->examgroupstudent_model->searchStudentExams($student['student_session_id'], true, true);
   
-  
+ 
         $data['exam_grade']           = $this->grade_model->getGradeDetails();
 
         $this->load->view('layout/header', $data);
@@ -476,19 +480,24 @@ class Student extends Admin_Controller
         $data['hostelList']         = $hostelList;
         $vehroute_result            = $this->db->order_by('id', 'DESC')->get('route_head')->result_array();
         $data['vehroutelist']       = $vehroute_result;
-        // $custom_fields              = $this->customfield_model->getByBelong('students');
+		
+		
+		// fetch data for cusrom fielda
+        $custom_fields              = $this->customfield_model->getByBelong('students');
 
 
        
-        // foreach ($custom_fields as $custom_fields_key => $custom_fields_value) {
-        //     if ($custom_fields_value['validation']) {
-        //         $custom_fields_id   = $custom_fields_value['id'];
-        //         $custom_fields_name = $custom_fields_value['name'];
-        //         $this->form_validation->set_rules("custom_fields[students][" . $custom_fields_id . "]", $custom_fields_name, 'trim|required');
-        //     }
-        // }
-
-        // var_dump($custom_fields); die;
+        foreach ($custom_fields as $custom_fields_key => $custom_fields_value) {
+            if ($custom_fields_value['validation']) {
+                $custom_fields_id   = $custom_fields_value['id'];
+                $custom_fields_name = $custom_fields_value['name'];
+                $this->form_validation->set_rules("custom_fields[students][" . $custom_fields_id . "]", $custom_fields_name, 'trim|required');
+            }
+        }
+		//$data['custom_fields'] = $custom_fields;
+		
+		//echo "<pre>";print_r($custom_fields);die;
+         //var_dump($custom_fields); die;
         
         
         $this->db->order_by('id', 'DESC');
@@ -537,21 +546,21 @@ class Student extends Admin_Controller
 
             // echo "ok";
             // die;
-            // $custom_field_post  = $this->input->post("custom_fields[students]");
-            // $custom_value_array = array();
-            // if (!empty($custom_field_post)) {
+             $custom_field_post  = $this->input->post("custom_fields[students]");
+             $custom_value_array = array();
+             if (!empty($custom_field_post)) {
 
-            //     foreach ($custom_field_post as $key => $value) {
-            //         $check_field_type = $this->input->post("custom_fields[students][" . $key . "]");
-            //         $field_value      = is_array($check_field_type) ? implode(",", $check_field_type) : $check_field_type;
-            //         $array_custom     = array(
-            //             'belong_table_id' => 0,
-            //             'custom_field_id' => $key,
-            //             'field_value'     => $field_value,
-            //         );
-            //         $custom_value_array[] = $array_custom;
-            //     }
-            // }
+                 foreach ($custom_field_post as $key => $value) {
+                    $check_field_type = $this->input->post("custom_fields[students][" . $key . "]");
+                     $field_value      = is_array($check_field_type) ? implode(",", $check_field_type) : $check_field_type;
+                     $array_custom     = array(
+                         'belong_table_id' => 0,
+                        'custom_field_id' => $key,
+                         'field_value'     => $field_value,
+                    );
+                     $custom_value_array[] = $array_custom;
+                }
+            }
 
             $class_id   = $this->input->post('class_id');
             $section_id = $this->input->post('section_id');
