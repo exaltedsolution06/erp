@@ -431,7 +431,7 @@ class Student extends Admin_Controller
                 $this->form_validation->set_rules("custom_fields[students][" . $custom_fields_id . "]", $custom_fields_name, 'trim|required');
             }
         }
-		$data['custom_fields'] = $custom_fields;
+		//$data['custom_fields'] = $custom_fields;
 		
 		//echo "<pre>";print_r($custom_fields);die;
          //var_dump($custom_fields); die;
@@ -483,21 +483,21 @@ class Student extends Admin_Controller
 
             // echo "ok";
             // die;
-            // $custom_field_post  = $this->input->post("custom_fields[students]");
-            // $custom_value_array = array();
-            // if (!empty($custom_field_post)) {
+             $custom_field_post  = $this->input->post("custom_fields[students]");
+             $custom_value_array = array();
+             if (!empty($custom_field_post)) {
 
-            //     foreach ($custom_field_post as $key => $value) {
-            //         $check_field_type = $this->input->post("custom_fields[students][" . $key . "]");
-            //         $field_value      = is_array($check_field_type) ? implode(",", $check_field_type) : $check_field_type;
-            //         $array_custom     = array(
-            //             'belong_table_id' => 0,
-            //             'custom_field_id' => $key,
-            //             'field_value'     => $field_value,
-            //         );
-            //         $custom_value_array[] = $array_custom;
-            //     }
-            // }
+                 foreach ($custom_field_post as $key => $value) {
+                    $check_field_type = $this->input->post("custom_fields[students][" . $key . "]");
+                     $field_value      = is_array($check_field_type) ? implode(",", $check_field_type) : $check_field_type;
+                     $array_custom     = array(
+                         'belong_table_id' => 0,
+                        'custom_field_id' => $key,
+                         'field_value'     => $field_value,
+                    );
+                     $custom_value_array[] = $array_custom;
+                }
+            }
 
             $class_id   = $this->input->post('class_id');
             $section_id = $this->input->post('section_id');
