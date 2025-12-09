@@ -171,7 +171,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 ?>
 
                                                 <th>Total</th>
-                                              
+                                              <span class="download_label" style="display:none;">Head Wise Collection</span>
 
 
                                             </tr>

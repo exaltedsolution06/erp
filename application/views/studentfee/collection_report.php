@@ -81,6 +81,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <th>Mode</th>
                                         <th>User</th>
                                         <th>Remark</th>
+										<span class="download_label" style="display:none;">Receipt Book</span>
                                         <!-- <th>Action</th> -->
                                     </tr>
                                 </thead>
