@@ -362,5 +362,15 @@ class Setting_model extends MY_Model {
 				]);
 			}
 	}
+	public function truncate_receipt($id)
+	{
+		$this->db->truncate('receipt_sr_no');
+		$this->db->truncate('receipts');
+		$this->db->truncate('deleted_receipts');
+		$this->db->where('id', $id);
+		$this->db->update('sch_settings', [
+			'receipt_sr_no' => null
+		]);
+	}
 
 }

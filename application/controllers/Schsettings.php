@@ -450,5 +450,12 @@ class Schsettings extends Admin_Controller {
         }
         return true;
     }
+	public function ajax_truncate_receipt_no()
+	{
+		 $id = $this->input->post('id');
+		 $del = $this->setting_model->truncate_receipt($id);
+		 $array = array('status' => 'success');
+         echo json_encode($array);
+	}
 
 }

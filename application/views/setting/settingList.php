@@ -610,7 +610,7 @@
 
                                                 <input id="receipt_start_sequence" value="<?php echo $result->receipt_sr_no; ?>" name="receipt_start_sequence" placeholder="" type="text" class="form-control"/>
 												<span class="text-danger" id="receipt_error"></span>
-                                                <!--<span class="text-danger" id="receipt_error"><?php echo form_error('receipt_start_sequence'); ?></span>-->
+                                                <button type="button" class="btn btn-danger delete_receipt_record" style="height:34px;width:70px;margin-top:5px;margin-left:5px;display:none;">Delete</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1014,8 +1014,22 @@
         </div>
     </div>
 </div>
-
+<input type="hidden" id="hid_receipt_sr_no" value="<?php echo $result->receipt_sr_no; ?>">
+<input type="hidden" id="hid_id" value="<?php echo $result->id; ?>">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+	
+	let hid_receipt_sr_no = $('#hid_receipt_sr_no').val();
+	if(hid_receipt_sr_no != '')
+	{
+		$('.receipt-sequence').show();
+		$('.receipt-enabled').click();
+		$('html, body').animate({
+			scrollTop: $('#receipt_start_sequence').offset().top - 200
+		}, 800)
+	}
+})
     var base_url = '<?php echo base_url(); ?>';
     var logo_type = "logo";
     $('.upload_logo').on('click', function (e) {
@@ -1091,6 +1105,7 @@
                 }
 				else if(data.check_receipt_no == true)
 				{
+					$('.delete_receipt_record').show();
 					$('.receipt-sequence').show();
 					$('.receipt-enabled').click();
 					$('html, body').animate({
@@ -1119,6 +1134,85 @@
 		$('.receipt-enabled').attr('checked', true);
 		$('.receipt-sequence').show();
 	})
+	
+	$(document).on('click', '.delete_receipt_record', function(){
+		let hid_id = $('#hid_id').val();
+		//alert(hid_id);
+		
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "Delete table related to all reciepts !",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!',
+			cancelButtonText: 'Cancel'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+					url: '<?php echo site_url('schsettings/ajax_truncate_receipt_no') ?>',
+					type: 'post',
+					data: {id:hid_id},
+					//contentType: false,
+					//processData: false,
+					dataType: 'json',
+					cache: false,
+
+					beforeSend: function () {
+						//$('#modal-uploadfile').addClass('modal_loading');
+					},
+					success: function (response) {
+						
+						if(response.status == 'success')
+						{
+							$('.receipt-disabled').click();
+							$('html, body').animate({
+								scrollTop: $('#receipt_start_sequence').offset().top - 200
+							}, 800)
+						}
+					},
+					error: function (xhr) { // if error occured
+
+					},
+					complete: function () {
+						//$('#modal-uploadfile').removeClass('modal_loading');
+					}
+				});
+			}
+		});
+		
+		
+		/*$.ajax({
+            url: '<?php echo site_url('schsettings/ajax_truncate_receipt_no') ?>',
+            type: 'post',
+            data: {id:hid_id},
+            //contentType: false,
+            //processData: false,
+            dataType: 'json',
+            cache: false,
+
+            beforeSend: function () {
+                //$('#modal-uploadfile').addClass('modal_loading');
+            },
+            success: function (response) {
+				
+				if(response.status == 'success')
+				{
+					$('.receipt-disabled').click();
+					$('html, body').animate({
+						scrollTop: $('#receipt_start_sequence').offset().top - 200
+					}, 800)
+				}
+            },
+            error: function (xhr) { // if error occured
+
+            },
+            complete: function () {
+                //$('#modal-uploadfile').removeClass('modal_loading');
+			}
+		});*/
+	});
 
 </script>
 
