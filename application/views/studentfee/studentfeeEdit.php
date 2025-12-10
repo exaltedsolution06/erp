@@ -1786,7 +1786,6 @@ document.addEventListener('DOMContentLoaded', function () {
             
             document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);
 			
-			//document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2); // 10-12-2025
             
         }else{
 
