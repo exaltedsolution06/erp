@@ -1768,4 +1768,13 @@ class Customlib
 
         return $name;
     }
+	public function payment_mode_type()
+    {
+        $mode = array(
+			'Online' => $this->CI->lang->line('online'),
+            'Cash'   => $this->CI->lang->line('cash'),
+            'Other' => $this->CI->lang->line('other'),
+        );
+		return $mode;
+    }
 }
