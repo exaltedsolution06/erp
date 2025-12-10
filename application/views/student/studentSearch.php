@@ -68,7 +68,26 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 </div>  
                                 
                             </div><!--./col-md-6-->
-                            <div class="col-md-6">
+							<div class="col-md-3 col-sm-3">
+                                <div class="row">
+                                    <form role="form" action="<?php echo site_url('student/search') ?>" method="post" class="">
+                                        <?php echo $this->customlib->getCSRF(); ?>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label><?php echo $this->lang->line('search_by_admission_no') ?></label>
+                                                <input type="text" name="search_addmis_no" class="form-control" value="<?php echo set_value('search_addmis_no'); ?>" placeholder="<?php echo $this->lang->line('search_by_admission_no'); ?>">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <button type="submit" name="search" value="search_addmiss_no" class="btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div> 
+							</div>
+                            <div class="col-md-3">
                                 <div class="row">
                                     <form role="form" action="<?php echo site_url('student/search') ?>" method="post" class="">
                                         <?php echo $this->customlib->getCSRF(); ?>

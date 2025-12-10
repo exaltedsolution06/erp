@@ -1914,6 +1914,7 @@ class Student extends Admin_Controller
             $section     = $this->input->post('section_id');
             $search      = $this->input->post('search');
             $search_text = $this->input->post('search_text');
+			$search_addmis_no = $this->input->post('search_addmis_no');
             if (isset($search)) {
                 if ($search == 'search_filter') {
                     $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
@@ -1924,6 +1925,7 @@ class Student extends Admin_Controller
                         $data['class_id']    = $this->input->post('class_id');
                         $data['section_id']  = $this->input->post('section_id');
                         $data['search_text'] = $this->input->post('search_text');
+                        $data['search_addmis_no'] = $this->input->post('search_addmis_no');
                         $resultlist          = $this->student_model->searchByClassSection($class, $section);
                         $data['resultlist']  = $resultlist;
                         $title               = $this->classsection_model->getDetailbyClassSection($data['class_id'], $data['section_id']);
@@ -1936,6 +1938,14 @@ class Student extends Admin_Controller
                     $resultlist          = $this->student_model->searchFullText($search_text, $carray);
                     $data['resultlist']  = $resultlist;
                     $data['title']       = 'Search Details: ' . $data['search_text'];
+                }
+				else if ($search == 'search_addmiss_no') {
+                    $data['searchby'] = "text";
+
+                    $data['search_addmis_no'] = trim($this->input->post('search_addmis_no'));
+                    $resultlist          = $this->student_model->searchByAdmissionNo($search_addmis_no, $carray);
+                    $data['resultlist']  = $resultlist;
+                    $data['title']       = 'Search Admisstion No.: ' . $data['search_addmis_no'];
                 }
             }
 
