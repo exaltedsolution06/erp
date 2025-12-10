@@ -1015,6 +1015,8 @@
     </div>
 </div>
 <input type="hidden" id="hid_receipt_sr_no" value="<?php echo $result->receipt_sr_no; ?>">
+<input type="hidden" id="hid_id" value="<?php echo $result->id; ?>">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -1134,13 +1136,59 @@ $(document).ready(function(){
 	})
 	
 	$(document).on('click', '.delete_receipt_record', function(){
+		let hid_id = $('#hid_id').val();
+		//alert(hid_id);
 		
-		$.ajax({
-            url: '<?php echo site_url('schsettings/ajax_delete_receipt_no') ?>',
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "Delete table related to all reciepts !",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!',
+			cancelButtonText: 'Cancel'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+					url: '<?php echo site_url('schsettings/ajax_truncate_receipt_no') ?>',
+					type: 'post',
+					data: {id:hid_id},
+					//contentType: false,
+					//processData: false,
+					dataType: 'json',
+					cache: false,
+
+					beforeSend: function () {
+						//$('#modal-uploadfile').addClass('modal_loading');
+					},
+					success: function (response) {
+						
+						if(response.status == 'success')
+						{
+							$('.receipt-disabled').click();
+							$('html, body').animate({
+								scrollTop: $('#receipt_start_sequence').offset().top - 200
+							}, 800)
+						}
+					},
+					error: function (xhr) { // if error occured
+
+					},
+					complete: function () {
+						//$('#modal-uploadfile').removeClass('modal_loading');
+					}
+				});
+			}
+		});
+		
+		
+		/*$.ajax({
+            url: '<?php echo site_url('schsettings/ajax_truncate_receipt_no') ?>',
             type: 'post',
-            //data: {},
-            contentType: false,
-            processData: false,
+            data: {id:hid_id},
+            //contentType: false,
+            //processData: false,
             dataType: 'json',
             cache: false,
 
@@ -1148,14 +1196,14 @@ $(document).ready(function(){
                 //$('#modal-uploadfile').addClass('modal_loading');
             },
             success: function (response) {
-                /*if (response.success) {
-                    successMsg(response.message);
-                    window.location.reload(true);
-                } else {
-
-                    errorMsg(response.error.file);
-                }*/
-
+				
+				if(response.status == 'success')
+				{
+					$('.receipt-disabled').click();
+					$('html, body').animate({
+						scrollTop: $('#receipt_start_sequence').offset().top - 200
+					}, 800)
+				}
             },
             error: function (xhr) { // if error occured
 
@@ -1163,7 +1211,7 @@ $(document).ready(function(){
             complete: function () {
                 //$('#modal-uploadfile').removeClass('modal_loading');
 			}
-		});
+		});*/
 	});
 
 </script>
