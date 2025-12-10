@@ -1502,7 +1502,7 @@ function formatToDisplayDate(inputDateStr) {
 
 
     function calculateDisData(input,id){
-        // alert(id);
+        //alert(id);
         let cleanedValue = input.value.replace(/[^0-9.]/g, '');
         const parts = cleanedValue.split('.');
         if (parts.length > 2) {
@@ -1758,11 +1758,14 @@ document.addEventListener('DOMContentLoaded', function () {
 			const hid_receipt_amt = parseFloat(document.querySelector('[name="hid_receipt_amt"]').value);
 			const errorMessageRcpt = document.getElementById('error_message_rcpt');
 			
-			if(receiptAmt > hid_receipt_amt)
+			//alert(receiptAmt);alert(hid_receipt_amt);
+			if(receiptAmt >= hid_receipt_amt)
 			{
-				document.querySelector('[name="receipt_amt"]').value = hid_receipt_amt;
+				//document.querySelector('[name="receipt_amt"]').value = hid_receipt_amt; // comment 10-12-2025
+				document.querySelector('[name="receipt_amt"]').value = totalFees-discountAmt; // 10-12-2025
 				document.querySelector('[name="balance_amt"]').value = 0.00;
-				errorMessageRcpt.textContent = `Amount must be between 0 and ${hid_receipt_amt}.`;
+				//errorMessageRcpt.textContent = `Amount must be between 0 and ${hid_receipt_amt}.`;// comment 10-12-2025
+				errorMessageRcpt.textContent = `Amount must be between 0 and ${totalFees-discountAmt}.`;// 10-12-2025
                 errorMessageRcpt.style.display = 'block';
 			}
 			else{
@@ -1856,12 +1859,15 @@ function FinalcalculateFees(){
     });
     document.querySelector('[name="discount_amt"]').value = Number(sum1);
 
-
+	
     let sum = 0;
     document.querySelectorAll('.rec_amount').forEach(el => {
         const val = parseFloat(el.value);
         if (!isNaN(val)) {
+			//alert(val);
             sum += val;
+			
+			
         }
     });
     
@@ -1869,7 +1875,14 @@ function FinalcalculateFees(){
     let lateFees = parseFloat(document.querySelector('[name="late_fees"]').value) || 0;
     let ledgerAmt1 = parseFloat(document.querySelector('[name="ledger_amt"]').value) || 0;
     document.querySelector('[name="receipt_amt"]').value = Number(sum)+Number(ledgerAmt1)+Number(lateFees);
-
+	
+	
+	// 10-12-2025 when give discount then receive amount message change
+	const errorMessageRcpt = document.getElementById('error_message_rcpt');
+	errorMessageRcpt.textContent = `Amount must be between 0 and ${Number(sum)+Number(ledgerAmt1)+Number(lateFees)}.`;
+	errorMessageRcpt.style.display = 'block';
+	//--
+	
 
     let feesReceived = parseFloat(document.querySelector('[name="fees_received"]').value) || 0;
     let ledgerAmt = parseFloat(document.querySelector('[name="ledger_amt"]').value) || 0;
