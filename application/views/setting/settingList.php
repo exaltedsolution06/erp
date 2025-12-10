@@ -1014,8 +1014,20 @@
         </div>
     </div>
 </div>
-
+<input type="hidden" id="hid_receipt_sr_no" value="<?php echo $result->receipt_sr_no; ?>">
 <script type="text/javascript">
+$(document).ready(function(){
+	
+	let hid_receipt_sr_no = $('#hid_receipt_sr_no').val();
+	if(hid_receipt_sr_no != '')
+	{
+		$('.receipt-sequence').show();
+		$('.receipt-enabled').click();
+		$('html, body').animate({
+			scrollTop: $('#receipt_start_sequence').offset().top - 200
+		}, 800)
+	}
+})
     var base_url = '<?php echo base_url(); ?>';
     var logo_type = "logo";
     $('.upload_logo').on('click', function (e) {
