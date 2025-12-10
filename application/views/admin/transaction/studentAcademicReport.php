@@ -82,7 +82,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
                                  <div class="table-responsive-" style="overflow: auto;">
-                                    <div class="download_label"> </div>
+                                    <div class="download_label"><?php echo $this->lang->line('fee_day_book');?></div>
 
                                     <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header" style="width:1800px !important">
                                         <thead>
@@ -113,7 +113,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th>Mode</th>
                                                 <th>User</th>
                                                 <th>Remark</th>
-												<span class="download_label" style="display:none;">Fee Day Book</span>
                                             </tr>
                                         </thead>
                                        

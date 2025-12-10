@@ -161,7 +161,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <h3 class="box-title titlefix"><i class="fa fa-users"></i> <?php echo form_error('student'); ?> <?php echo $this->lang->line('student_transport_report'); ?></h3>
                         </div>
                         <div class="box-body table-responsive">
-                            <div class="download_label"><?php echo $this->lang->line('student_transport_report') . "<br>";
+                            <div class="download_label"><?php echo $this->lang->line('student_transport_report') . "\n";
                                         $this->customlib->get_postmessage();
                                         ?></div>
                             <table class="table table-striped table-bordered table-hover example">

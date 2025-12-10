@@ -27,13 +27,13 @@ $(document).ready(function () {
                     exportOptions: {
                         columns: ':visible'
                     },
-					customize: function (xlsx) {
+					/*customize: function (xlsx) {
 
 						var sheet = xlsx.xl.worksheets['sheet1.xml'];
 
 						// Your label text (dynamic from .download_label)
-						var labelText = $('.download_label').text(); 
-						//var labelText = 'ewew'; 
+						//var labelText = $('.download_label').text(); 
+						var labelText = ''; 
 											
 						if(labelText != ''){
 						// Create first row
@@ -62,7 +62,7 @@ $(document).ready(function () {
 						sheet.childNodes[0].childNodes[1].innerHTML =
 							firstRow + sheet.childNodes[0].childNodes[1].innerHTML;
 						}
-					}
+					}*/
                 },
 
                 {

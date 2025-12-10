@@ -222,7 +222,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                 <div class="table-responsive">
                                     <div class="download_label"> <?php
-                                        // echo $this->lang->line('fees_statement') . "<br>";
+                                        echo $this->lang->line('fee_category_wise_collection') . "\n".
                                         $this->customlib->get_postmessage();
                                         ?></div>
 
@@ -240,7 +240,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th style="text-align:right">Net Fee</th>
                                                 <th style="text-align:right">Rec. Amt.</th>
                                                 <th style="text-align:right">Bal. Amt.</th>
-												 <span class="download_label" style="display:none;">Fee Category Wise Collection</span>
                                             </tr>
                                         </thead>
                                        
