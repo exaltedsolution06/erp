@@ -1,3 +1,7 @@
+<?php 
+//echo "<pre>";print_r($data);die;
+//echo $data['student']['firstname'];die;
+?>
 <!doctype html>
 <html lang="en">
 	<head>
@@ -52,13 +56,13 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Admission No</div>
-									<div class="value"><strong><?php echo $student['admission_no']; ?></strong></div>
+									<div class="value"><strong><?php echo $data['student']['admission_no']; ?></strong></div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Admission Date</div>
-									<div class="value"><strong><?php echo $student['admission_date']; ?></strong></div>
+									<div class="value"><strong><?php echo date('d/m/Y', strtotime($data['student']['admission_date'])); ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -66,19 +70,19 @@
 							<div class="col-4">
 								<div class="d-flex">
 									<div class="label">Class</div>
-									<div class="value"><strong>Play</strong></div>
+									<div class="value"><strong><?php echo $data['student']['class']; ?></strong></div>
 								</div>
 							</div>
 							<div class="col-4">
 								<div class="d-flex">
 									<div class="label">Section</div>
-									<div class="value"><strong>A</strong></div>
+									<div class="value"><strong><?php echo $data['student']['section']; ?></strong></div>
 								</div>
 							</div>
 							<div class="col-4">
 								<div class="d-flex">
 									<div class="label">Roll No</div>
-									<div class="value"><strong>AG101</strong></div>
+									<div class="value"><strong><?php echo $data['student']['roll_no']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -86,7 +90,7 @@
 							<div class="col-12">
 								<div class="d-flex">
 									<div class="label_name">Student Full Name</div>
-									<div class="value_name"><strong>Vihan Roy</strong></div>
+									<div class="value_name"><strong><?php echo $data['student']['firstname'].''.$data['student']['middlename'].''.$data['student']['lastname']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -94,13 +98,13 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Gender</div>
-									<div class="value"><strong>Male</strong></div>
+									<div class="value"><strong><?php echo $data['student']['gender']; ?></strong></div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">DOB</div>
-									<div class="value"><strong>20-04-2024</strong></div>
+									<div class="value"><strong><?php echo date('d/m/Y', strtotime($data['student']['dob'])); ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -108,13 +112,13 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">PEN No</div>
-									<div class="value"><strong>ETZPM4041M</strong></div>
+									<div class="value"><strong></strong></div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Adhar No</div>
-									<div class="value"><strong>1111 2222 3333</strong></div>
+									<div class="value"><strong><?php echo $data['student']['adhar_no']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -124,7 +128,7 @@
 							<tbody>
 								<tr>
 									<td valign="top" width="25%" align="right">
-										<img src="<?php echo base_url() . $student['image']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
+										<img src="<?php echo base_url() . $data['student']['image']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
 									</td>
 								</tr>
 							</tbody>
@@ -135,13 +139,13 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Other No</div>
-									<div class="value"><strong>1258964586</strong></div>
+									<div class="value"><strong><?php echo $data['student']['other_no']; ?></strong></div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Caste Category </div>
-									<div class="value"><strong>ABC</strong></div>
+									<div class="value"><strong><?php echo $data['student']['cast_category']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -149,13 +153,13 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Religion</div>
-									<div class="value"><strong>Hindu</strong></div>
+									<div class="value"><strong><?php echo $data['student']['religion']; ?></strong></div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Caste </div>
-									<div class="value"><strong>General</strong></div>
+									<div class="value"><strong><?php echo $data['student']['cast']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -163,13 +167,13 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Student Mob. No</div>
-									<div class="value"><strong>9732479865</strong></div>
+									<div class="value"><strong><?php echo $data['student']['mobileno']; ?></strong></div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Email ID </div>
-									<div class="value"><strong>student@gmail.com</strong></div>
+									<div class="value"><strong><?php echo $data['student']['email']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -177,13 +181,13 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Blood Group</div>
-									<div class="value"><strong>A+</strong></div>
+									<div class="value"><strong><?php echo $data['student']['blood_group']; ?></strong></div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Student House</div>
-									<div class="value"><strong>ABC street, Kolkata</strong></div>
+									<div class="value"><strong></strong></div>
 								</div>
 							</div>
 						</div>
@@ -201,7 +205,7 @@
 							<div class="col-12">
 								<div class="d-flex">
 									<div class="label_name">Father Name</div>
-									<div class="value_name"><strong>Vinay Roy</strong></div>
+									<div class="value_name"><strong><?php echo $data['student']['father_name']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -209,13 +213,13 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Contact No</div>
-									<div class="value"><strong>8965236589</strong></div>
+									<div class="value"><strong><?php echo $data['student']['father_phone']; ?></strong></div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Occupation</div>
-									<div class="value"><strong>PVT employee</strong></div>
+									<div class="value"><strong><?php echo $data['student']['father_occupation']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -223,21 +227,20 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">PEN No</div>
-									<div class="value"><strong>ETZPM4041M</strong></div>
+									<div class="value"><strong></strong></div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Adhar No</div>
-									<div class="value"><strong>1111 2222 3333</strong></div>
+									<div class="value"><strong><?php echo $data['student']['father_aadhar_no']; ?></strong></div>
 								</div>
 							</div>
 						</div>
 						<div class="row mt-2">
 							<div class="col-6">
 								<div class="d-flex">
-									<div class="label">Other No</div>
-									<div class="value"><strong>1111 2222 3333</strong></div>
+									<div class="label">Other No</div><?php echo $data['student']['father_other_no']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -247,7 +250,7 @@
 							<tbody>
 								<tr>
 									<td valign="top" width="25%" align="right">
-										<img src="<?php echo base_url() . $student['image']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
+										<img src="<?php echo base_url() . $data['student']['father_pic']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
 									</td>
 								</tr>
 							</tbody>
@@ -262,7 +265,7 @@
 							<div class="col-12">
 								<div class="d-flex">
 									<div class="label_name">Mother Name</div>
-									<div class="value_name"><strong>Vinay Roy</strong></div>
+									<div class="value_name"><strong><?php echo $data['student']['mother_name']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -270,13 +273,13 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Contact No</div>
-									<div class="value"><strong>8965236589</strong></div>
+									<div class="value"><strong><?php echo $data['student']['mother_phone']; ?></strong></div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Occupation</div>
-									<div class="value"><strong>PVT employee</strong></div>
+									<div class="value"><strong><?php echo $data['student']['mother_occupation']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -284,13 +287,13 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">PEN No</div>
-									<div class="value"><strong>ETZPM4041M</strong></div>
+									<div class="value"><strong></strong></div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Adhar No</div>
-									<div class="value"><strong>1111 2222 3333</strong></div>
+									<div class="value"><strong><?php echo $data['student']['mother_aadhar_no']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -298,7 +301,7 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Other No</div>
-									<div class="value"><strong>1111 2222 3333</strong></div>
+									<div class="value"><strong><?php echo $data['student']['mother_other_no']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -308,7 +311,7 @@
 							<tbody>
 								<tr>
 									<td valign="top" width="25%" align="right">
-										<img src="<?php echo base_url() . $student['image']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
+										<img src="<?php echo base_url() . $data['student']['mother_pic']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
 									</td>
 								</tr>
 							</tbody>
@@ -323,7 +326,7 @@
 							<div class="col-12">
 								<div class="d-flex">
 									<div class="label_name">Guardian Name</div>
-									<div class="value_name"><strong>Vinay Roy</strong></div>
+									<div class="value_name"><strong><?php echo $data['student']['guardian_name']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -331,13 +334,13 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Contact No</div>
-									<div class="value"><strong>8965236589</strong></div>
+									<div class="value"><strong><?php echo $data['student']['guardian_phone']; ?></strong></div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Occupation</div>
-									<div class="value"><strong>PVT employee</strong></div>
+									<div class="value"><strong><?php echo $data['student']['guardian_occupation']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -345,13 +348,13 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">PEN No</div>
-									<div class="value"><strong>ETZPM4041M</strong></div>
+									<div class="value"><strong>NA</strong></div>
 								</div>
 							</div>
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Adhar No</div>
-									<div class="value"><strong>1111 2222 3333</strong></div>
+									<div class="value"><strong>NA</strong></div>
 								</div>
 							</div>
 						</div>
@@ -359,7 +362,7 @@
 							<div class="col-6">
 								<div class="d-flex">
 									<div class="label">Other No</div>
-									<div class="value"><strong>1111 2222 3333</strong></div>
+									<div class="value"><strong></strong></div>
 								</div>
 							</div>
 						</div>
@@ -369,7 +372,7 @@
 							<tbody>
 								<tr>
 									<td valign="top" width="25%" align="right">
-										<img src="<?php echo base_url() . $student['image']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
+										<img src="<?php echo base_url() . $data['student']['guardian_pic']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
 									</td>
 								</tr>
 							</tbody>

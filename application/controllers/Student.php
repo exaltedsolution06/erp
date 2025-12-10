@@ -205,7 +205,8 @@ class Student extends Admin_Controller
   
  
         $data['exam_grade']           = $this->grade_model->getGradeDetails();
-
+		
+		//echo "<pre>";print_r($data);die;
         $this->load->view('layout/header', $data);
         $this->load->view('student/studentShow', $data);
         $this->load->view('layout/footer', $data);
@@ -388,10 +389,12 @@ class Student extends Admin_Controller
 		$data['exam_grade']           = $this->grade_model->getGradeDetails();
 		$data['header_image']= $this->setting_model->get_receiptheader_return();
         $data['footer_text']= $this->setting_model->get_receiptfooter_return();
+		
 		// echo '<pre>';
         // var_dump($data['student']);
         // $this->load->view('layout/header', $data);
-        $this->load->view('student/admission', $data);
+		//echo "<pre>";print_r($data);die;
+        $this->load->view('student/admission', ['data' => $data]);
         // $this->load->view('layout/footer', $data);
     }
 
