@@ -269,6 +269,9 @@ class Studentfee extends Admin_Controller
             //$this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt'] - $data['prev_balance_amt']));
         }
         $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Fees Edited successfully</div>');
+		
+		//print_r($last_id); 
+		//print_r($receiptIds); die;
         redirect('studentfee/print_receipt/'.base64_encode(json_encode($last_id)));
     }
 
@@ -323,8 +326,9 @@ class Studentfee extends Admin_Controller
     }
 	
 	public function print_receipt($id){
+		
         $ids=json_decode(base64_decode($id));
-        
+        //print_r($ids);die;
         $this->db->select('GROUP_CONCAT(DISTINCT months) as month_names');
         $this->db->from('receipts');
         $this->db->where_in('id', $ids);
@@ -2220,7 +2224,11 @@ class Studentfee extends Admin_Controller
         }
 
 	}
-
+	
+	public function callback_receipts_ids_by_receipt_no($receipt_no){
+		$ids = $this->Receipt_model->get_receipts_ids_by_receipt_no(base64_decode($receipt_no));
+		redirect('studentfee/print_receipt/'.base64_encode(json_encode($ids)));
+	}
 
 // studentfee_deletedlist
 

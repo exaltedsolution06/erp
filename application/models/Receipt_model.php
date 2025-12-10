@@ -314,7 +314,7 @@ class Receipt_model extends CI_Model {
 
         $this->db->group_by('receipts.receipt_no');
         $this->db->order_by('receipts.date_time', 'DESC');
-		$this->db->order_by('receipts.sr_no', 'ASC');
+		$this->db->order_by('receipts.sr_no', 'DESC');
         $this->db->limit($limit, $offset);
 
         $query = $this->db->get();
@@ -417,8 +417,10 @@ class Receipt_model extends CI_Model {
             $this->db->where('DATE(receipts.date_time) <=', $to_date);
         }
 
-        $this->db->group_by('deleted_receipts.receipt_no');
-        $this->db->order_by('deleted_receipts.id', 'DESC');
+        //$this->db->group_by('deleted_receipts.receipt_no');
+        //$this->db->order_by('deleted_receipts.id', 'DESC');
+		$this->db->order_by('deleted_receipts.date_time', 'DESC');
+		$this->db->order_by('deleted_receipts.sr_no', 'DESC');
         $this->db->limit($limit, $offset);
 
         $query = $this->db->get();
@@ -1436,6 +1438,13 @@ class Receipt_model extends CI_Model {
     public function get_receipts_by_receipt_no($receipt_no) {
         return $this->db->get_where('receipts', ['receipt_no' => $receipt_no])->result_array();
     }
+	public function get_receipts_ids_by_receipt_no($receipt_no) {
+		$this->db->select('receipts.id');
+        $this->db->from('receipts');
+		$this->db->where('receipt_no', $receipt_no);
+		$query = $this->db->get();
+        return array_column($query->result_array(), 'id');
+    }
 
     public function backup_receipt_data($data) {
         return $this->db->insert('deleted_receipts', $data);
@@ -1513,7 +1522,7 @@ class Receipt_model extends CI_Model {
         }
 
         $this->db->group_by('receipts.receipt_no');
-        $this->db->order_by('receipts.id', 'DESC');
+        $this->db->order_by('receipts.id', 'ASC');
         //$this->db->limit($limit, $offset);
 
         $query = $this->db->get();

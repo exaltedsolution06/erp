@@ -1712,7 +1712,31 @@ function DeleteRowData(checkbox,id) {
 
 
 
-
+$(document).ready(function () {
+    $("#receipt_amt").on("keyup", function () {
+        let clean = $(this).val().replace(/[^0-9.]/g, '');
+        $(this).val(clean);		
+		
+		let net_fees = $("#net_fees").val();
+		let receipt_amt = $("#receipt_amt").val();
+        let balanceAmt = Number(net_fees) - Number(receipt_amt);
+		$("#balance_amt").val(parseFloat(balanceAmt).toFixed(2));
+		console.log(receipt_amt, net_fees);
+		if(Number(receipt_amt) >= Number(net_fees)) {
+			$('#error_message_rcpt').text(`Amount must be between 0 and ${net_fees}.`).show();
+			$(this).val(net_fees);
+			$("#balance_amt").val(0);
+		} else{
+			$('#error_message_rcpt').hide()
+		}
+		// If empty OR zero OR not a number → disable button
+        if (receipt_amt === "" || parseFloat(receipt_amt) <= 0 || isNaN(receipt_amt)) {
+            $("#submit_btn").prop("disabled", true);
+        } else {
+            $("#submit_btn").prop("disabled", false);
+        }		
+    });
+});
 
 
 
@@ -1725,19 +1749,12 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.querySelector('[name="balance_amt"]').value = parseFloat(netFee) - parseFloat(recAmt);
 	//-------------------------
 
-    const inputs = document.querySelectorAll('[name="fees_received"], [name="discount_amt"],[name="ledger_amt"],[name="late_fees"], [name="total_fees"], [name="receipt_amt"]');
+    const inputs = document.querySelectorAll('[name="fees_received"], [name="discount_amt"],[name="ledger_amt"],[name="late_fees"], [name="total_fees"]');
     inputs.forEach(input => {
         input.addEventListener('keyup', calculateFees);
     });
-    
-    
-    
-    
     const ttyp=$("#ttyp").val();
-
     function calculateFees() {
-
-
         let sum = 0;
         document.querySelectorAll('.rec_amount').forEach(el => {
             const val = parseFloat(el.value);
@@ -1745,10 +1762,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				//alert(val);
                 sum += val;
             }
-        });
-
-
-        
+        });        
         let old_ledger_amt = parseFloat(document.querySelector('[name="old_ledger_amt"]').value) || 0;
         let feesReceived = parseFloat(document.querySelector('[name="fees_received"]').value) || 0;
         let feesReceived_1 = parseFloat(document.querySelector('[name="fees_received"]').value) || 0;
@@ -1756,9 +1770,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let lateFees = parseFloat(document.querySelector('[name="late_fees"]').value) || 0;
         let totalFees = parseFloat(document.querySelector('[name="total_fees"]').value) || 0;
         let discountAmt = parseFloat(document.querySelector('[name="discount_amt"]').value) || 0;
-
-        
-       
 
         if(ttyp=='lager'){ 
             
@@ -1791,7 +1802,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             let receiptAmt1 = sum+ledgerAmt;
     
-            //document.querySelector('[name="receipt_amt"]').value = Number(receiptAmt1)+Number(lateFees); // comment 05-12-2025
+            document.querySelector('[name="receipt_amt"]').value = Number(receiptAmt1)+Number(lateFees); // comment 05-12-2025
             let receiptAmt = parseFloat(document.querySelector('[name="receipt_amt"]').value) || 0;
     
 			let totalFees = (feesReceived + lateFees + ledgerAmt);
@@ -1809,7 +1820,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);
 			
 			//--- 10-12-2025---
-			document.querySelector('[name="receipt_amt"]').value = netFees-discountAmt;
+			//document.querySelector('[name="receipt_amt"]').value = netFees-discountAmt;
 			
 			const errorMessageRcpt = document.getElementById('error_message_rcpt');
 			errorMessageRcpt.textContent = `Amount must be between 0 and ${netFees-discountAmt}.`;

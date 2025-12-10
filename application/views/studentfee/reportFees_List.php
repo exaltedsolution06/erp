@@ -201,6 +201,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td ><?= $record["mode"] ?></td>
                                                 <td ><?= $record["create_by"] ?></td>
                                                 <td>
+													<a target="_blank" href="<?php echo base_url(); ?>studentfee/callback_receipts_ids_by_receipt_no/
+													<?= base64_encode($record["receipt_no"]); ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="Print Receipt">
+														<i class="fa fa-print"></i>
+													</a>
+														
                                                     <a href="<?php echo base_url(); ?>studentfee/edit/<?= base64_encode($record["receipt_no"]); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Edit">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
