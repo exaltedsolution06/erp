@@ -876,13 +876,16 @@ if (!empty($siblings)) {
                                                 </div>
                                             </div>
 <?php } ?>
-											<div class="row">
-												<?php
-												echo display_custom_fields('students', $id);
-												?>
-											</div>
+											
 
                                     </div>
+									<div class="row">
+												<div class="col-md-12">
+													<div class="form-group">
+														<?php echo display_custom_fields('students', $id); ?>
+													</div>
+												</div>
+											</div>
                                 </div>
                             </div>
                             <div class="box-footer">

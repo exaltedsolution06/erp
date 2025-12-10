@@ -603,15 +603,18 @@
                                         </div>
                                     </div>
 									
-									<div class="col-md-6 receipt-sequence" style="display:none">
+									<div class="col-md-12 receipt-sequence" style="display:none">
                                         <div class="form-group row">
-                                            <label class="col-sm-4"><?php echo $this->lang->line('receipt_start_sequence') ?><small class="req"></small></label>
+                                            <label class="col-sm-2"><?php echo $this->lang->line('receipt_start_sequence') ?><small class="req"></small></label>
                                             <div class="col-sm-8">
 
                                                 <input id="receipt_start_sequence" value="<?php echo $result->receipt_sr_no; ?>" name="receipt_start_sequence" placeholder="" type="text" class="form-control"/>
 												<span class="text-danger" id="receipt_error"></span>
-                                                <button type="button" class="btn btn-danger delete_receipt_record" style="height:34px;width:70px;margin-top:5px;margin-left:5px;display:none;">Delete</button>
+                                                
                                             </div>
+											<div class="col-sm-2">
+												<button type="button" class="btn btn-danger delete_receipt_record" style="display:none;">Delete All Receipts</button>
+											</div>
                                         </div>
                                     </div>
 									
@@ -1111,7 +1114,7 @@ $(document).ready(function(){
 					$('html, body').animate({
 					  scrollTop: $('#staffid_start_from').offset().top
 					}, 800);
-					$('#receipt_error').text('You have already existing Receipt No. please receipt no. to update this field');
+					$('#receipt_error').text('You have already existing Receipts. Please remove  all receipts to update this field.');
 				}
 				else {
                     successMsg(data.message);

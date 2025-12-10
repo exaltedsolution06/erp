@@ -173,7 +173,7 @@ th, td {
     <div id="print-area" >
         
         <div class="row">
-          <div class="col-sm-6" style="padding-left: 40px;">
+          <div class="col-sm-6" style="padding-left: 60px;">
 
 
 
@@ -336,15 +336,16 @@ th, td {
       <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
       <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
       <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
-      <label class="f12_new" for=""><b>Note</b> : <span style="font-size:13px !important">
+      <label class="f12_new" for="">
 	  <?php
 		if (!empty($footer_text)) {
 			echo $footer_text;
 		} else {
-			echo 'This is a System Generated Slip Not Required Stamp.';
+			echo '<b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp.</span>';
 		}
 	  ?>
-	  </span> </label>
+	   </label>
+	   <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important"><?=$create_by->employee_id?></span></label>
       </div>
   </div>
 
@@ -360,7 +361,7 @@ th, td {
 
 
           </div>
-          <div class="col-sm-6" style="padding-left: 40px;">
+          <div class="col-sm-6" style="padding-left: 60px;">
 
           <div  style="border:2px solid;" >
 
@@ -520,15 +521,16 @@ th, td {
       <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
       <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
       <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
-      <label class="f12_new" for=""><b>Note</b> : <span style="font-size:13px !important">
+      <label class="f12_new" for="">
 	  <?php
 		if (!empty($footer_text)) {
 			echo $footer_text;
 		} else {
-			echo 'This is a System Generated Slip Not Required Stamp.';
+			echo '<b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp.</span>';
 		}
 	  ?>
-	  </span> </label>
+	   </label>
+	   <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important"><?=$create_by->employee_id?></span></label>
       </div>
   </div>
 
@@ -620,7 +622,7 @@ th, td {
       background-color: #f8f9fa;
     }
     .receipt-card {
-      /*max-width: 700px;*/
+      max-width: 700px;
       margin: 30px auto;
     }
     .card-header {
@@ -771,7 +773,7 @@ th, td {
      <?php //var_dump($fees); ?>
 
     <div id="print-area">
-        <div  style="padding-left: 40px;" >
+        <div  style="padding-left: 60px;" >
             <div  style="border:2px solid;" >
 
 
@@ -925,15 +927,16 @@ th, td {
                           <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
                           <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
                           <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
-                          <label class="f12_new" for=""><b>Note</b> : <span style="font-size:13px !important">
+                          <label class="f12_new" for="">
 						  <?php
 							if (!empty($footer_text)) {
 								echo $footer_text;
 							} else {
-								echo 'This is a System Generated Slip Not Required Stamp.';
+								echo '<b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp.</span>';
 							}
 						  ?>
-						  </span> </label>
+						   </label>
+						   <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important"><?=$create_by->employee_id?></span></label>
                           </div>
                       </div>
 

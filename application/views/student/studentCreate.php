@@ -829,10 +829,12 @@
                                             </div>
 											
 											
-											<div class="row">
-												<?php
-												echo display_custom_fields('students');
-												?>
+											<div class="row around10">
+												<div class="col-md-12">
+													<div class="form-group">
+														<?php echo display_custom_fields('students'); ?>
+													</div>
+												</div>
 											</div>
 
 										 </div>

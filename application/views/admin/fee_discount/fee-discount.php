@@ -137,8 +137,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 																}
 
 																$amount = (floor($amount) == $amount) ? (int)$amount : $amount;
-
-																$existFeeHeadMonth = true;
+																if($row->paid_flag[$value] == 0) {
+																	$existFeeHeadMonth = true;
+																}
 																$total += $amount;
 																$column_totals[$key] += $amount;
 															}
@@ -177,8 +178,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 															}
 
 															$rAmount = (floor($rAmount) == $rAmount) ? (int)$rAmount : $rAmount;
-
-															$existRouteHeadMonth = true;
+															if($row->paid_flag[$value] == 0) {
+																$existRouteHeadMonth = true;
+															}
 															$total += $rAmount;
 															$column_totals[$key] += $rAmount;
 														}

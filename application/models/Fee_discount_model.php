@@ -27,6 +27,40 @@ class Fee_discount_model extends MY_Model {
         
 		return $query->result_array();
     }
+	public function get_already_taken_fees($student_session_id) {
+
+		$this->db->select("receipts.fee_head, receipts.months");
+		$this->db->from('receipts');
+		$this->db->join('student_session', "student_session.student_id = receipts.student_id", "left");
+
+		if ($student_session_id != null) {
+			$this->db->where('student_session.id', $student_session_id);
+			$this->db->where('receipts.fee_head_type', 'fees');
+		}
+
+		$query = $this->db->get();
+		$rows = $query->result_array();
+
+		// ---- Convert to final useful array ---- //
+		$result = [];
+
+		foreach ($rows as $r) {
+			$fee_head = $r['fee_head'];
+			$month    = $r['months'];
+
+			if (!isset($result[$fee_head])) {
+				$result[$fee_head] = [];
+			}
+
+			// Avoid duplicates
+			if (!in_array($month, $result[$fee_head])) {
+				$result[$fee_head][] = $month;
+			}
+		}
+
+		return $result;
+	}
+
 	public function get_all_routes($student_session_id) {
         $this->db->select()->from('fee_discounts');
         if ($student_session_id != null) {
@@ -38,6 +72,39 @@ class Fee_discount_model extends MY_Model {
         
 		return $query->result_array();
     }
+	public function get_already_taken_route_fees($student_session_id) {
+
+		$this->db->select("receipts.fee_head, receipts.months");
+		$this->db->from('receipts');
+		$this->db->join('student_session', "student_session.student_id = receipts.student_id", "left");
+
+		if ($student_session_id != null) {
+			$this->db->where('student_session.id', $student_session_id);
+			$this->db->where('receipts.fee_head_type', 'route');
+		}
+
+		$query = $this->db->get();
+		$rows = $query->result_array();
+
+		// ---- Convert to final useful array ---- //
+		$result = [];
+
+		foreach ($rows as $r) {
+			$fee_head = $r['fee_head'];
+			$month    = $r['months'];
+
+			if (!isset($result[$fee_head])) {
+				$result[$fee_head] = [];
+			}
+
+			// Avoid duplicates
+			if (!in_array($month, $result[$fee_head])) {
+				$result[$fee_head][] = $month;
+			}
+		}
+
+		return $result;
+	}
 	public function discount_exists($student_session_id)
 	{
 		$this->db->select('id');
