@@ -13,7 +13,7 @@
 			.table-details td {
 				padding: 6px 4px;
 				vertical-align: top;
-				font-size: 14px;
+				font-size: 12px;
 			}
 			.table-details td, .table-details th {
 				border: 1px solid #333;
@@ -22,17 +22,30 @@
 
 			.label {
 				width: 45%;
+				font-size: 12px;
 			}
 			.value {
 				border-bottom: 1px dotted #000;
 				width: 55%;
+				font-size: 12px;
 			}
 			.label_name {
 				width: 20%;
+				font-size: 12px;
 			}
 			.value_name {
 				border-bottom: 1px dotted #000;
 				width: 80%;
+				font-size: 12px;
+			}
+			.label60 {
+				width: 60%;
+				font-size: 12px;
+			}
+			.value40 {
+				border-bottom: 1px dotted #000;
+				width: 40%;
+				font-size: 12px;
 			}
 		</style>
 	</head>
@@ -46,8 +59,8 @@
 				<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">
 				<?php } ?>
             </div>
-            <div class="col-12 mb-3 mt-3 text-center" style="border-bottom: 2px dashed #000;">
-                <h4>Basic Information</h4>
+            <div class="col-12 mb-1 mt-1 text-left" style="border-bottom: 2px dashed #000;">
+                <h5>Basic Information</h5>
             </div>
             <div class="col-12">
 				<div class="row">
@@ -87,38 +100,52 @@
 							</div>
 						</div>
 						<div class="row mt-2">
-							<div class="col-12">
-								<div class="d-flex">
-									<div class="label_name">Student Full Name</div>
-									<div class="value_name"><strong><?php echo $data['student']['firstname'].''.$data['student']['middlename'].''.$data['student']['lastname']; ?></strong></div>
-								</div>
-							</div>
-						</div>
-						<div class="row mt-2">
-							<div class="col-6">
+							<div class="col-4">
 								<div class="d-flex">
 									<div class="label">Gender</div>
 									<div class="value"><strong><?php echo $data['student']['gender']; ?></strong></div>
 								</div>
 							</div>
-							<div class="col-6">
+							<div class="col-4">
 								<div class="d-flex">
 									<div class="label">DOB</div>
 									<div class="value"><strong><?php echo date('d/m/Y', strtotime($data['student']['dob'])); ?></strong></div>
 								</div>
 							</div>
-						</div>
-						<div class="row mt-2">
-							<div class="col-6">
+							<div class="col-4">
 								<div class="d-flex">
-									<div class="label">PEN No</div>
-									<div class="value"><strong></strong></div>
+									<div class="label">Blood Group</div>
+									<div class="value"><strong><?php echo $data['student']['blood_group']; ?></strong></div>
 								</div>
 							</div>
-							<div class="col-6">
+						</div>
+						<div class="row mt-2">
+							<div class="col-12">
 								<div class="d-flex">
-									<div class="label">Adhar No</div>
-									<div class="value"><strong><?php echo $data['student']['adhar_no']; ?></strong></div>
+									<div class="label_name">Student Name</div>
+									<div class="value_name"><strong><?php echo $data['student']['firstname'].''.$data['student']['middlename'].''.$data['student']['lastname']; ?></strong></div>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-2">
+							
+							<div class="col-4">
+								<div class="d-flex">
+									<div class="label60">Caste Category </div>
+									<div class="value40"><strong><?php echo $data['student']['cast_category']; ?></strong></div>
+								</div>
+							</div>
+	
+							<div class="col-4">
+								<div class="d-flex">
+									<div class="label">Religion</div>
+									<div class="value"><strong><?php echo $data['student']['religion']; ?></strong></div>
+								</div>
+							</div>
+							<div class="col-4">
+								<div class="d-flex">
+									<div class="label">Caste </div>
+									<div class="value"><strong><?php echo $data['student']['cast']; ?></strong></div>
 								</div>
 							</div>
 						</div>
@@ -127,8 +154,8 @@
 						<table class="table table-borderless">
 							<tbody>
 								<tr>
-									<td valign="top" width="25%" align="right">
-										<img src="<?php echo base_url() . $data['student']['image']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
+									<td valign="top" width="100%" align="right">
+										<img src="<?php echo base_url() . $data['student']['image']; ?>" width="70" height="90" style="border: 2px solid #fff;outline: 1px solid #000000;">
 									</td>
 								</tr>
 							</tbody>
@@ -136,55 +163,39 @@
 					</div>
 					<div class="col-12">
 						<div class="row mt-2">
-							<div class="col-6">
+							<div class="col-4">
+								<div class="d-flex">
+									<div class="label">PEN No</div>
+									<div class="value"><strong></strong></div>
+								</div>
+							</div>
+							<div class="col-4">
+								<div class="d-flex">
+									<div class="label">Adhar No</div>
+									<div class="value"><strong><?php echo $data['student']['adhar_no']; ?></strong></div>
+								</div>
+							</div>
+							<div class="col-4">
 								<div class="d-flex">
 									<div class="label">Other No</div>
 									<div class="value"><strong><?php echo $data['student']['other_no']; ?></strong></div>
 								</div>
 							</div>
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Caste Category </div>
-									<div class="value"><strong><?php echo $data['student']['cast_category']; ?></strong></div>
-								</div>
-							</div>
-						</div>
-						<div class="row mt-2">
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Religion</div>
-									<div class="value"><strong><?php echo $data['student']['religion']; ?></strong></div>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Caste </div>
-									<div class="value"><strong><?php echo $data['student']['cast']; ?></strong></div>
-								</div>
-							</div>
 						</div>
 						<div class="row mt-2">	
-							<div class="col-6">
+							<div class="col-4">
 								<div class="d-flex">
-									<div class="label">Student Mob. No</div>
-									<div class="value"><strong><?php echo $data['student']['mobileno']; ?></strong></div>
+									<div class="label60">Student Mob. No</div>
+									<div class="value40"><strong><?php echo $data['student']['mobileno']; ?></strong></div>
 								</div>
 							</div>
-							<div class="col-6">
+							<div class="col-4">
 								<div class="d-flex">
 									<div class="label">Email ID </div>
 									<div class="value"><strong><?php echo $data['student']['email']; ?></strong></div>
 								</div>
 							</div>
-						</div>
-						<div class="row mt-2">
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Blood Group</div>
-									<div class="value"><strong><?php echo $data['student']['blood_group']; ?></strong></div>
-								</div>
-							</div>
-							<div class="col-6">
+							<div class="col-4">
 								<div class="d-flex">
 									<div class="label">Student House</div>
 									<div class="value"><strong></strong></div>
@@ -195,8 +206,8 @@
 				</div>
             </div>
 
-			<div class="col-12 mb-3 mt-5 text-center" style="border-bottom: 2px dashed #000;">
-                <h4>Parents and Guardian Details</h4>
+			<div class="col-12 mb-1 mt-2 text-center" style="border-bottom: 2px dashed #000;">
+                <h5>Parents and Guardian Details</h5>
             </div>
 			<div class="col-12">
 				<div class="row">
@@ -249,8 +260,8 @@
 						<table class="table table-borderless">
 							<tbody>
 								<tr>
-									<td valign="top" width="25%" align="right">
-										<img src="<?php echo base_url() . $data['student']['father_pic']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
+									<td valign="top" width="100%" align="right">
+										<img src="<?php echo base_url() . $data['student']['father_pic']; ?>" width="70" height="90" style="border: 2px solid #fff;outline: 1px solid #000000;">
 									</td>
 								</tr>
 							</tbody>
