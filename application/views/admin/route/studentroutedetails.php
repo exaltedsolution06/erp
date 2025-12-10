@@ -181,9 +181,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <th><?php echo $this->lang->line('driver_contact'); ?></th>
                                         <th class="text-right"><?php echo $this->lang->line('fare') . " (" . $currency_symbol . ")"; ?></th>
 										
-
-
-                                    </tr>
+									</tr>
                                 </thead>
                                 <tbody>
                                     <?php
