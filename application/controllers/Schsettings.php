@@ -450,5 +450,9 @@ class Schsettings extends Admin_Controller {
         }
         return true;
     }
+	public function ajax_delete_receipt_no()
+	{
+		$del = $this->setting_model->delete_receipt();
+	}
 
 }

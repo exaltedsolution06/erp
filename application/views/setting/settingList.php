@@ -610,7 +610,7 @@
 
                                                 <input id="receipt_start_sequence" value="<?php echo $result->receipt_sr_no; ?>" name="receipt_start_sequence" placeholder="" type="text" class="form-control"/>
 												<span class="text-danger" id="receipt_error"></span>
-                                                <!--<span class="text-danger" id="receipt_error"><?php echo form_error('receipt_start_sequence'); ?></span>-->
+                                                <button type="button" class="btn btn-danger delete_receipt_record" style="height:34px;width:70px;margin-top:5px;margin-left:5px;display:none;">Delete</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1103,6 +1103,7 @@ $(document).ready(function(){
                 }
 				else if(data.check_receipt_no == true)
 				{
+					$('.delete_receipt_record').show();
 					$('.receipt-sequence').show();
 					$('.receipt-enabled').click();
 					$('html, body').animate({
@@ -1131,6 +1132,39 @@ $(document).ready(function(){
 		$('.receipt-enabled').attr('checked', true);
 		$('.receipt-sequence').show();
 	})
+	
+	$(document).on('click', '.delete_receipt_record', function(){
+		
+		$.ajax({
+            url: '<?php echo site_url('schsettings/ajax_delete_receipt_no') ?>',
+            type: 'post',
+            //data: {},
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            cache: false,
+
+            beforeSend: function () {
+                //$('#modal-uploadfile').addClass('modal_loading');
+            },
+            success: function (response) {
+                /*if (response.success) {
+                    successMsg(response.message);
+                    window.location.reload(true);
+                } else {
+
+                    errorMsg(response.error.file);
+                }*/
+
+            },
+            error: function (xhr) { // if error occured
+
+            },
+            complete: function () {
+                //$('#modal-uploadfile').removeClass('modal_loading');
+			}
+		});
+	});
 
 </script>
 

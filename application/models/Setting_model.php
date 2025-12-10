@@ -362,5 +362,9 @@ class Setting_model extends MY_Model {
 				]);
 			}
 	}
+	public function delete_receipt()
+	{
+		$this->db->truncate('receipt_sr_no');
+	}
 
 }
