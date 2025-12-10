@@ -1081,6 +1081,7 @@
                     $this->rbac->hasPrivilege('custom_fields', 'can_view') ||
                     $this->rbac->hasPrivilege('system_fields', 'can_view') ||
                     $this->rbac->hasPrivilege('file_types', 'can_view') ||
+					$this->rbac->hasPrivilege('set_captcha', 'can_view') ||
                     $this->rbac->hasPrivilege('change_session', 'can_view')
                 ) {
 					//$CI = get_instance();
@@ -1101,6 +1102,7 @@
 						|| set_Submenu('System Settings/systemfield')
 						|| set_Submenu('System Settings/filetype')
 						|| set_Submenu('admin/backup')
+						|| set_Submenu('System Settings/captcha')
 					){
 						$activeSsMenu="active";
 					}
@@ -1137,6 +1139,8 @@
                                 <li class="<?php echo set_Submenu('System Settings/systemfield'); ?>"><a href="<?php echo base_url(); ?>admin/systemfield"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('system') . " " . $this->lang->line('fields'); ?></a></li>
                             <?php } if ($this->rbac->hasPrivilege('file_types', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('System Settings/filetype'); ?>"><a href="<?php echo site_url('admin/admin/filetype'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('file_types'); ?></a></li>
+                            <?php }  if ($this->rbac->hasPrivilege('set_captcha', 'can_view')) { ?>
+                                <li class="<?php echo set_Submenu('System Settings/captcha'); ?>"><a href="<?php echo site_url('admin/captcha'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('set_captcha'); ?></a></li>
                             <?php } if ($this->rbac->hasPrivilege('change_session', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('System/change_session'); ?>"><a href="#<?php //echo base_url(); ?>system/change_session"><i class="fa fa-angle-double-right"></i> Change Session</a></li>
                             <?php } if ($this->rbac->hasPrivilege('change_session', 'can_view')) { ?>

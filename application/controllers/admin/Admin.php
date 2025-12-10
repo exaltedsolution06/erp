@@ -805,6 +805,18 @@ class Admin extends Admin_Controller
         $this->load->view('admin/filetype', $data);
         $this->load->view('layout/footer', $data);
     }
+	public function captcha()
+    {
+    
+        $data          = array();
+        $data['title'] = 'File Type List';
+        $this->session->set_userdata('top_menu', 'System Settings');
+        $this->session->set_userdata('sub_menu', 'System Settings/captcha');
+        $data['captcha'] = $this->filetype_model->get();
+        $this->load->view('layout/header', $data);
+        $this->load->view('admin/captcha', $data);
+        $this->load->view('layout/footer', $data);
+    }
 
     public function addfiletype()
     {
