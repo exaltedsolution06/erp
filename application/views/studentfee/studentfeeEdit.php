@@ -1719,7 +1719,11 @@ function DeleteRowData(checkbox,id) {
 
 document.addEventListener('DOMContentLoaded', function () {
 
-
+	//---------10-12-2025 page load------
+	let netFee = document.querySelector('[name="net_fees"]').value;
+	let recAmt = document.querySelector('[name="receipt_amt"]').value;
+	document.querySelector('[name="balance_amt"]').value = parseFloat(netFee) - parseFloat(recAmt);
+	//-------------------------
 
     const inputs = document.querySelectorAll('[name="fees_received"], [name="discount_amt"],[name="ledger_amt"],[name="late_fees"], [name="total_fees"], [name="receipt_amt"]');
     inputs.forEach(input => {
@@ -1738,6 +1742,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.rec_amount').forEach(el => {
             const val = parseFloat(el.value);
             if (!isNaN(val)) {
+				//alert(val);
                 sum += val;
             }
         });
@@ -1765,7 +1770,8 @@ document.addEventListener('DOMContentLoaded', function () {
             
             //   alert(netFees);
             document.querySelector('[name="total_fees"]').value = netFees;
-           
+            
+			//alert(netFees-discountAmt);
             document.querySelector('[name="net_fees"]').value = netFees-discountAmt;
             
             
@@ -1778,7 +1784,9 @@ document.addEventListener('DOMContentLoaded', function () {
             
             // alert(balanceAmt);
             
-            document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);;
+            document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);
+			
+			//document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2); // 10-12-2025
             
         }else{
 
@@ -1800,6 +1808,15 @@ document.addEventListener('DOMContentLoaded', function () {
             //let balanceAmt = netFees - Number(receiptAmt);//es
             let balanceAmt = netFees - Number(receiptAmt) - Number(discountAmt);
             document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);
+			
+			//--- 10-12-2025---
+			document.querySelector('[name="receipt_amt"]').value = netFees-discountAmt;
+			
+			const errorMessageRcpt = document.getElementById('error_message_rcpt');
+			errorMessageRcpt.textContent = `Amount must be between 0 and ${netFees-discountAmt}.`;
+            errorMessageRcpt.style.display = 'block';
+			//------------------
+			
 			
 			// 05-12-2025
 			/*const hid_receipt_amt = parseFloat(document.querySelector('[name="hid_receipt_amt"]').value);
@@ -1886,7 +1903,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 function FinalcalculateFees(){
-
+    
     let sum1 = 0;
     document.querySelectorAll('.rec_discount').forEach(el => {
         const val = parseFloat(el.value);
@@ -1907,6 +1924,7 @@ function FinalcalculateFees(){
     
 
     let lateFees = parseFloat(document.querySelector('[name="late_fees"]').value) || 0;
+	
     let ledgerAmt1 = parseFloat(document.querySelector('[name="ledger_amt"]').value) || 0;
     //let balanceAmt1 = parseFloat(document.querySelector('[name="balance_amt"]').value) || 0;
 	
@@ -1930,12 +1948,17 @@ function FinalcalculateFees(){
         document.querySelector('[name="total_fees"]').value = netFees;
     }
     document.querySelector('[name="net_fees"]').value = netFees;
+	
 	//let balanceAmt = 0;
 	//if(netFees > 0) {
 		let balanceAmt = netFees - receiptAmt;
 	//}
     document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);;
    
+    //-- 10-12-2025----
+	const errorMessageRcpt = document.getElementById('error_message_rcpt');
+	errorMessageRcpt.textContent = `Amount must be between 0 and ${receiptAmt}.`;
+	errorMessageRcpt.style.display = 'block';
 }
 
 
