@@ -106,6 +106,11 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                     </div>
                                     
                                 </div>   
+								<?php if ($this->session->flashdata('success')) { ?>
+								<?php echo $this->session->flashdata('success') ?>
+								<?php 
+								$this->session->unset_userdata('success');
+								} ?> 
                                  <div class="table-responsive-" style="overflow: auto;">
                                     <div class="download_label"> </div>
 
@@ -227,7 +232,7 @@ $payment_mode_type = $this->customlib->payment_mode_type();
 
                                                 <td ><?= $record["mode"] ?></td>
                                                 <td ><?= $record["create_by"] ?></td>
-												<td><a href="<?php echo base_url(); ?>studentfee/studentfeedeletedlist?receipt_no=<?=$record["receipt_no"]?>&type=delete" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Delete">
+												<td><a href="<?php echo base_url(); ?>studentfee/studentfee_deletedlist?receipt_no=<?=$record["receipt_no"]?>&type=delete" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Retrive">
                                                         <i class="fa fa-rotate-right"></i>
                                                     </a></td>
                                                 

@@ -1539,4 +1539,13 @@ class Receipt_model extends CI_Model {
         return $query->result();
 
     }
+	public function get_deleted_receipts_by_receipt_no($receipt_no) {
+        return $this->db->get_where('deleted_receipts', ['receipt_no' => $receipt_no])->result_array();
+    }
+	public function backup_deleted_receipt_data($data) {
+        return $this->db->insert('receipts', $data);
+    }
+	public function receipt_no_delete_from_delete_receipts($receipt_no) {
+        return $this->db->delete('deleted_receipts', ['receipt_no' => $receipt_no]);
+    }
 }
