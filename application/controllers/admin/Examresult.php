@@ -196,6 +196,8 @@ class Examresult extends Admin_Controller {
         $data['post_exam_id']=$_POST['post_exam_id'];
         $data['postExamGroupId']=$post_exam_group_id;
         
+		$data['marksheet_template_id'] = $this->input->post('marksheet_template');
+		$data['session_id'] = $session_id;
         
         $data['post_exam_group_id']=$this->db->query("SELECT * FROM exam_groups WHERE id='$post_exam_group_id'")->result();
     
