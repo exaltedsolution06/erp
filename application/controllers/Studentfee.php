@@ -2267,13 +2267,14 @@ class Studentfee extends Admin_Controller
 
         $from_date = $this->input->get('from_date');
         $to_date   = $this->input->get('to_date');
-
-
+		$mode   = $this->input->get('mode');
+		
         // die;
 
         // paginate
         $per_page_input = $this->input->get('per_page');
-        $total_rows = $this->Receipt_model->get_deleted_receipt_count($from_date, $to_date);
+        $total_rows = $this->Receipt_model->get_deleted_receipt_count($from_date, $to_date, $mode);
+		
 
         $per_page = (!empty($per_page_input) && $per_page_input != 'all') ? (int)$per_page_input : 10;
         $per_page = ($per_page_input == 'all') ? $total_rows : $per_page;
@@ -2307,8 +2308,88 @@ class Studentfee extends Admin_Controller
 
         $this->pagination->initialize($config);
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+		
+		//---------------11-12-2025----------------------------
+		//$cc = $this->Receipt_model->get_deleted_receipt($config['per_page'], $page,$from_date, $to_date);
+		
+		/*$this->db->select('
+            deleted_receipts.*,
+            deleted_receipts.receipt_no,
+            deleted_receipts.id as receipts_id,
+            GROUP_CONCAT(DISTINCT deleted_receipts.months ORDER BY deleted_receipts.months SEPARATOR ", ") AS receipt_months,
+            classes.id AS class_id,
+            student_session.id as student_session_id,
+            students.id,
+            classes.class,
+            sections.id AS section_id,
+            sections.section,
+            students.admission_no,
+            students.roll_no,
+            students.admission_date,
+            students.firstname,
+            students.middlename,
+            students.lastname,
+            students.image,
+            students.mobileno,
+            students.vehroute_id,
+            students.email,
+            students.state,
+            students.city,
+            students.pincode,
+            students.religion,
+            students.dob,
+            students.current_address,
+            students.permanent_address,
+            IFNULL(students.category_id, 0) as category_id,
+            IFNULL(categories.category, "") as category,
+            students.adhar_no,
+            students.samagra_id,
+            students.bank_account_no,
+            students.bank_name,
+            students.ifsc_code,
+            students.guardian_name,
+            students.app_key,
+            students.guardian_relation,
+            students.guardian_phone,
+            students.guardian_address,
+            students.is_active,
+            students.created_at,
+            students.updated_at,
+            students.father_name,
+            students.rte,
+            students.gender,
+            users.id as user_tbl_id,
+            users.username,
+            users.password as user_tbl_password,
+            users.is_active as user_tbl_active
+        ');
+        $this->db->from('deleted_receipts');
+        $this->db->join('students', 'students.id = deleted_receipts.student_id');
+        $this->db->join('student_session', 'student_session.student_id = students.id');
+        $this->db->join('classes', 'student_session.class_id = classes.id');
+        $this->db->join('sections', 'sections.id = student_session.section_id');
+        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        $this->db->join('users', 'users.user_id = students.id', 'left');
 
-        $data['receipt_data'] = $this->Receipt_model->get_deleted_receipt($config['per_page'], $page,$from_date, $to_date);
+        
+        if (!empty($from_date) && !empty($to_date)) {
+            $this->db->where('DATE(deleted_receipts.date_time) >=', $from_date);
+            $this->db->where('DATE(deleted_receipts.date_time) <=', $to_date);
+        }
+
+        //$this->db->group_by('deleted_receipts.receipt_no');
+        //$this->db->order_by('deleted_receipts.id', 'DESC');
+		$this->db->order_by('deleted_receipts.date_time', 'DESC');
+		$this->db->order_by('deleted_receipts.sr_no', 'DESC');
+        
+
+        $query1 = $this->db->get();
+		
+		
+		echo "<pre>";print_r($query1->result());die;*/
+		//---------------------------------------------------------
+		
+        $data['receipt_data'] = $this->Receipt_model->get_deleted_receipt($config['per_page'], $page,$from_date, $to_date, $mode);
         $data['pagination_links'] = $this->pagination->create_links();
 
         // end paginate
