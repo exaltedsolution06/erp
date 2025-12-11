@@ -1,5 +1,6 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
+//echo "<pre>";print_r($receipt_data);die;
 ?>
 <style type="text/css">
     /*REQUIRED*/
@@ -291,6 +292,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th>S.No</th>
                                                 <th>Adm. No</th>
                                                 <th>Student</th>
+                                                <th>Contact No.</th>
                                                 <th>Father</th>
                                                 <th>Class</th>
                                                 <th>Sec.</th>
@@ -533,6 +535,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <td><?= $sno++ ?></td>
                                                     <td><?= $record["admission_no"] ?><?php //json_encode($record)?></td>
                                                     <td><?= $record["firstname"].' '.$record["middlename"].' '.$record["lastname"] ?></td>
+													<td><?= isset($record["mobileno"]) ? $record["mobileno"] : 'NA'; ?></td>
                                                     <td><?= $record["father_name"] ?></td>
                                                     <td><?= $record["class"] ?></td>
                                                     <td><?= $record["section"] ?></td>
