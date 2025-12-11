@@ -11,41 +11,40 @@
 		<title>Admission</title>
 		<style>
 			.table-details td {
-				padding: 6px 4px;
+				border: 1px solid #333;
+				padding: 2px 4px;
 				vertical-align: top;
 				font-size: 12px;
 			}
-			.table-details td, .table-details th {
+			.table-details th {
 				border: 1px solid #333;
-				padding: 6px 8px;
+				padding: 2px 4px;
+				font-size: 13px;
+				font-weight: 600;
 			}
-
-			.label {
-				width: 45%;
-				font-size: 12px;
-			}
-			.value {
+			.borderOnly {
 				border-bottom: 1px dotted #000;
-				width: 55%;
 				font-size: 12px;
+				font-weight: 600;
+				padding-left:0;
 			}
-			.label_name {
-				width: 20%;
+			.labelOnly {
 				font-size: 12px;
+			}	
+			.text-right {
+				text-align: right;
 			}
-			.value_name {
-				border-bottom: 1px dotted #000;
-				width: 80%;
-				font-size: 12px;
+			.heading {
+				font-size: 16px;
+				font-weight: 600;
+				border-bottom: 1px dashed #212529;
+				text-align:left;
+				margin-top: 10px;
+				margin-bottom: 10px;
+				color: #212529;
 			}
-			.label60 {
-				width: 60%;
-				font-size: 12px;
-			}
-			.value40 {
-				border-bottom: 1px dotted #000;
-				width: 40%;
-				font-size: 12px;
+			.text-small {
+				font-size: 10px;
 			}
 		</style>
 	</head>
@@ -54,104 +53,52 @@
         <div class="row" style="border:2px solid #000;">
             <div class="col-12" style="border-bottom: 2px solid #000;padding: 5px;">
 				<?php
-				if(!empty($header_image)){
+				if(!empty($data['header_image'])){
 				?>
-				<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">
+				<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $data['header_image']; ?>" style="height:100px;width:100%">
 				<?php } ?>
             </div>
-            <div class="col-12 mb-1 mt-1 text-left" style="border-bottom: 2px dashed #000;">
-                <h5>Basic Information</h5>
-            </div>
+            <div class="col-12 heading">Basic Information</div>
             <div class="col-12">
-				<div class="row">
+				<div class="row" style="margin-right:0px">
 					<div class="col-10">
-						<div class="row">
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Admission No</div>
-									<div class="value"><strong><?php echo $data['student']['admission_no']; ?></strong></div>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Admission Date</div>
-									<div class="value"><strong><?php echo date('d/m/Y', strtotime($data['student']['admission_date'])); ?></strong></div>
-								</div>
-							</div>
+						<div class="row d-flex">
+							<div class="col-3 labelOnly">Admission No</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['admission_no']; ?></div>
+							<div class="col-3 labelOnly text-right">Admission Date</div>
+							<div class="col-3 borderOnly"><?php echo date('d/m/Y', strtotime($data['student']['admission_date'])); ?></div>
 						</div>
-						<div class="row mt-2">
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label">Class</div>
-									<div class="value"><strong><?php echo $data['student']['class']; ?></strong></div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label">Section</div>
-									<div class="value"><strong><?php echo $data['student']['section']; ?></strong></div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label">Roll No</div>
-									<div class="value"><strong><?php echo $data['student']['roll_no']; ?></strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-3 labelOnly">Student Name</div>
+							<div class="col-9 borderOnly"><?php echo $data['student']['firstname'].''.$data['student']['middlename'].''.$data['student']['lastname']; ?></div>
 						</div>
-						<div class="row mt-2">
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label">Gender</div>
-									<div class="value"><strong><?php echo $data['student']['gender']; ?></strong></div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label">DOB</div>
-									<div class="value"><strong><?php echo date('d/m/Y', strtotime($data['student']['dob'])); ?></strong></div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label">Blood Group</div>
-									<div class="value"><strong><?php echo $data['student']['blood_group']; ?></strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-3 labelOnly">Caste Category </div>
+							<div class="col-2 borderOnly"><?php echo $data['student']['cast_category']; ?></div>
+							<div class="col-2 labelOnly text-right">Religion</div>
+							<div class="col-2 borderOnly"><?php echo $data['student']['religion']; ?></div>
+							<div class="col-1 labelOnly text-right">Caste </div>
+							<div class="col-2 borderOnly"><?php echo $data['student']['cast']; ?></div>
 						</div>
-						<div class="row mt-2">
-							<div class="col-12">
-								<div class="d-flex">
-									<div class="label_name">Student Name</div>
-									<div class="value_name"><strong><?php echo $data['student']['firstname'].''.$data['student']['middlename'].''.$data['student']['lastname']; ?></strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-2 labelOnly">Class</div>
+							<div class="col-2 borderOnly"><?php echo $data['student']['class']; ?></div>
+							<div class="col-2 labelOnly">Section</div>
+							<div class="col-2 borderOnly"><?php echo $data['student']['section']; ?></div>
+							<div class="col-2 labelOnly">Roll No</div>
+							<div class="col-2 borderOnly"><?php echo $data['student']['roll_no']; ?></div>
 						</div>
-						<div class="row mt-2">
-							
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label60">Caste Category </div>
-									<div class="value40"><strong><?php echo $data['student']['cast_category']; ?></strong></div>
-								</div>
-							</div>
-	
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label">Religion</div>
-									<div class="value"><strong><?php echo $data['student']['religion']; ?></strong></div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label">Caste </div>
-									<div class="value"><strong><?php echo $data['student']['cast']; ?></strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-2 labelOnly">Gender</div>
+							<div class="col-2 borderOnly"><?php echo $data['student']['gender']; ?></div>
+							<div class="col-2 labelOnly">DOB</div>
+							<div class="col-2 borderOnly"><?php echo date('d/m/Y', strtotime($data['student']['dob'])); ?></div>
+							<div class="col-2 labelOnly">Blood Group</div>
+							<div class="col-2 borderOnly"><?php echo $data['student']['blood_group']; ?></div>
 						</div>
 					</div>
 					<div class="col-2">
-						<table class="table table-borderless">
+						<table class="table table-borderless mb-0">
 							<tbody>
 								<tr>
 									<td valign="top" width="100%" align="right">
@@ -162,102 +109,54 @@
 						</table>
 					</div>
 					<div class="col-12">
-						<div class="row mt-2">
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label">PEN No</div>
-									<div class="value"><strong></strong></div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label">Adhar No</div>
-									<div class="value"><strong><?php echo $data['student']['adhar_no']; ?></strong></div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label">Other No</div>
-									<div class="value"><strong><?php echo $data['student']['other_no']; ?></strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-2 labelOnly">PEN No</div>
+							<div class="col-2 borderOnly">123</div>
+							<div class="col-2 labelOnly text-right">Adhar No</div>
+							<div class="col-2 borderOnly"><?php echo $data['student']['adhar_no']; ?></div>
+							<div class="col-2 labelOnly text-right">Other No</div>
+							<div class="col-2 borderOnly"><?php echo $data['student']['other_no']; ?></div>
 						</div>
-						<div class="row mt-2">	
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label60">Student Mob. No</div>
-									<div class="value40"><strong><?php echo $data['student']['mobileno']; ?></strong></div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label">Email ID </div>
-									<div class="value"><strong><?php echo $data['student']['email']; ?></strong></div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div class="d-flex">
-									<div class="label">Student House</div>
-									<div class="value"><strong></strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-2 labelOnly">Student Mob. No</div>
+							<div class="col-2 borderOnly"><?php echo $data['student']['mobileno']; ?></div>
+							<div class="col-2 labelOnly text-right">Email ID </div>
+							<div class="col-2 borderOnly"><?php echo $data['student']['email']; ?></div>
+							<div class="col-2 labelOnly text-right">Student House</div>
+							<div class="col-2 borderOnly">123</div>
 						</div>
 					</div>
 				</div>
             </div>
 
-			<div class="col-12 mb-1 mt-2 text-center" style="border-bottom: 2px dashed #000;">
-                <h5>Parents and Guardian Details</h5>
-            </div>
+			<div class="col-12 heading">Parents and Guardian Details</div>
 			<div class="col-12">
-				<div class="row">
-					<div class="col-10">
-						<div class="row">
-							<div class="col-12">
-								<div class="d-flex">
-									<div class="label_name">Father Name</div>
-									<div class="value_name"><strong><?php echo $data['student']['father_name']; ?></strong></div>
-								</div>
-							</div>
+				<div class="row" style="margin-right:0px">
+					<div class="col-<?php echo $data['student']['father_pic']!='' ? 10 : 12; ?>">
+						<div class="row d-flex">
+							<div class="col-3 labelOnly">Father Name</div>
+							<div class="col-9 borderOnly"><?php echo $data['student']['father_name']; ?></div>
 						</div>
-						<div class="row mt-2">
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Contact No</div>
-									<div class="value"><strong><?php echo $data['student']['father_phone']; ?></strong></div>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Occupation</div>
-									<div class="value"><strong><?php echo $data['student']['father_occupation']; ?></strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-3 labelOnly">Contact No</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['father_phone']; ?></div>
+							<div class="col-3 labelOnly text-right">Occupation</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['father_occupation']; ?></div>
 						</div>
-						<div class="row mt-2">
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">PEN No</div>
-									<div class="value"><strong></strong></div>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Adhar No</div>
-									<div class="value"><strong><?php echo $data['student']['father_aadhar_no']; ?></strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-3 labelOnly">PEN No</div>
+							<div class="col-3 borderOnly">2323</div>
+							<div class="col-3 labelOnly text-right">Adhar No</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['father_aadhar_no']; ?></div>
 						</div>
-						<div class="row mt-2">
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Other No</div><?php echo $data['student']['father_other_no']; ?></strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-3 labelOnly">Other No</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['father_other_no']; ?></div>
 						</div>
 					</div>
+					<?php if(!empty($data['student']['father_pic'])) { ?>
 					<div class="col-2">
-						<table class="table table-borderless">
+						<table class="table table-borderless mb-0">
 							<tbody>
 								<tr>
 									<td valign="top" width="100%" align="right">
@@ -267,162 +166,124 @@
 							</tbody>
 						</table>
 					</div>
+					<?php } ?>
 				</div>
             </div>
 			<div class="col-12">
-				<div class="row">
-					<div class="col-10">
-						<div class="row">
-							<div class="col-12">
-								<div class="d-flex">
-									<div class="label_name">Mother Name</div>
-									<div class="value_name"><strong><?php echo $data['student']['mother_name']; ?></strong></div>
-								</div>
-							</div>
+				<div class="row mt-2" style="margin-right:0px">
+					<div class="col-<?php echo $data['student']['mother_pic']!='' ? 10 : 12; ?>">
+						<div class="row d-flex">
+							<div class="col-3 labelOnly">Mother Name</div>
+							<div class="col-9 borderOnly"><?php echo $data['student']['mother_name']; ?></div>
 						</div>
-						<div class="row mt-2">
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Contact No</div>
-									<div class="value"><strong><?php echo $data['student']['mother_phone']; ?></strong></div>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Occupation</div>
-									<div class="value"><strong><?php echo $data['student']['mother_occupation']; ?></strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-3 labelOnly">Contact No</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['mother_phone']; ?></div>
+							<div class="col-3 labelOnly text-right">Occupation</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['mother_occupation']; ?></div>
 						</div>
-						<div class="row mt-2">
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">PEN No</div>
-									<div class="value"><strong></strong></div>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Adhar No</div>
-									<div class="value"><strong><?php echo $data['student']['mother_aadhar_no']; ?></strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-3 labelOnly">PEN No</div>
+							<div class="col-3 borderOnly">fghdfgh</div>
+
+							<div class="col-3 labelOnly text-right">Adhar No</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['mother_aadhar_no']; ?></div>
 						</div>
-						<div class="row mt-2">
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Other No</div>
-									<div class="value"><strong><?php echo $data['student']['mother_other_no']; ?></strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-3 labelOnly">Other No</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['mother_other_no']; ?></div>
 						</div>
 					</div>
+					<?php if(!empty($data['student']['mother_pic'])) { ?>
 					<div class="col-2">
-						<table class="table table-borderless">
+						<table class="table table-borderless mb-0">
 							<tbody>
 								<tr>
-									<td valign="top" width="25%" align="right">
-										<img src="<?php echo base_url() . $data['student']['mother_pic']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
+									<td valign="top" width="100%" align="right">
+										<img src="<?php echo base_url() . $data['student']['mother_pic']; ?>" width="70" height="90" style="border: 2px solid #fff;outline: 1px solid #000000;">
 									</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
+					<?php } ?>
 				</div>
             </div>
 			<div class="col-12">
-				<div class="row">
-					<div class="col-10">
-						<div class="row">
-							<div class="col-12">
-								<div class="d-flex">
-									<div class="label_name">Guardian Name</div>
-									<div class="value_name"><strong><?php echo $data['student']['guardian_name']; ?></strong></div>
-								</div>
-							</div>
+				<div class="row mt-2" style="margin-right:0px">
+					<div class="col-<?php echo $data['student']['guardian_pic']!='' ? 10 : 12; ?>">
+						<div class="row d-flex">
+							<div class="col-3 labelOnly">Guardian Name</div>
+							<div class="col-9 borderOnly"><?php echo $data['student']['guardian_name']; ?></div>
 						</div>
-						<div class="row mt-2">
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Contact No</div>
-									<div class="value"><strong><?php echo $data['student']['guardian_phone']; ?></strong></div>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Occupation</div>
-									<div class="value"><strong><?php echo $data['student']['guardian_occupation']; ?></strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-3 labelOnly">Contact No</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['guardian_phone']; ?></div>
+							<div class="col-3 labelOnly text-right">Occupation</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['guardian_occupation']; ?></div>
 						</div>
-						<div class="row mt-2">
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">PEN No</div>
-									<div class="value"><strong>NA</strong></div>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Adhar No</div>
-									<div class="value"><strong>NA</strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-3 labelOnly">PAN No</div>
+							<div class="col-3 borderOnly">NA</div>
+							<div class="col-3 labelOnly text-right">Adhar No</div>
+							<div class="col-3 borderOnly">NA</div>
 						</div>
-						<div class="row mt-2">
-							<div class="col-6">
-								<div class="d-flex">
-									<div class="label">Other No</div>
-									<div class="value"><strong></strong></div>
-								</div>
-							</div>
+						<div class="row mt-2 d-flex">
+							<div class="col-3 labelOnly">Other No</div>
+							<div class="col-3 borderOnly">hjkghkj</div>
 						</div>
 					</div>
+					<?php if(!empty($data['student']['guardian_pic'])) { ?>
 					<div class="col-2">
-						<table class="table table-borderless">
+						<table class="table table-borderless mb-0" >
 							<tbody>
 								<tr>
-									<td valign="top" width="25%" align="right">
-										<img src="<?php echo base_url() . $data['student']['guardian_pic']; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
+									<td valign="top" width="100%" align="right">
+										<img src="<?php echo base_url() . $data['student']['guardian_pic']; ?>" width="70" height="90" style="border: 2px solid #fff;outline: 1px solid #000000;">
 									</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
+					<?php } ?>
 				</div>
             </div>
 			
-			<div class="col-12 mb-3 mt-5 text-center" style="border-bottom: 2px dashed #000;">
-                <h4>Fee Details</h4>
-            </div>
+			<div class="col-12 heading">Fee Details</div>
 			<div class="col-12">
-				<table width="100%" cellspacing="0" cellpadding="0" class="table-details">
-					<thead>
-						<tr>
-							<th>Fee Category</th>
-							<th>Route Name</th>
-							<th>Driver Name</th>
-							<th>Vehicle No</th>
-							<th>Current Address</th>
-							<th>Permanent Address</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="row d-flex">
+					<div class="col-12">
+						<table width="100%" cellspacing="0" cellpadding="0" class="table-details">
+							<thead>
+								<tr>
+									<th>Fee Category</th>
+									<th>Route Name</th>
+									<th>Driver Name</th>
+									<th>Vehicle No</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>asdfasf</td>
+									<td>sdfasf</td>
+									<td>sdfsadf</td>
+									<td>sdfsdf</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="row mt-2" style="margin-right:0px">
+					<div class="col-3 labelOnly">Current Address</div>
+					<div class="col-9 borderOnly">dgdfgdfg</div>
+				</div>
+				<div class="row mt-1" style="margin-right:0px">
+					<div class="col-3 labelOnly">Permanent Address</div>
+					<div class="col-9 borderOnly">dgdfgdfg</div>
+				</div>
 			</div>
 			
-			<div class="col-12 mb-3 mt-5 text-center" style="border-bottom: 2px dashed #000;">
-                <h4>Miscellaneous Details</h4>
-            </div>
+			<div class="col-12 heading">Miscellaneous Details</div>
 			<div class="col-12">
 				<table width="100%" cellspacing="0" cellpadding="0" class="table-details">
 					<thead>
@@ -435,27 +296,25 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td>dfg</td>
+							<td>dsg</td>
+							<td>dfg</td>
+							<td>dfg</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 			
-            <div class="col-sm-12 mb-5 mt-5">
+            <div class="col-sm-12 mb-1 mt-1">
               <div class="row">
-                <div class="col-12 ">
-				<b>Note</b> : <span style="font-size:13px !important">
+                <div class="col-12 text-small">
                   <?php
-					if (!empty($footer_text)) {
-						echo $footer_text;
+					if (!empty($data['footer_text'])) {
+						echo $data['footer_text'];
 					} else {
-						echo 'This is a System Generated Slip Not Required Stamp.';
+						echo '<strong>Note</strong> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp.</span>';
 					}
 				  ?>
-                </span>
                 </div>
               </div>
             </div>

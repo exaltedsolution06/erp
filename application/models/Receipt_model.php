@@ -413,8 +413,8 @@ class Receipt_model extends CI_Model {
 
         
         if (!empty($from_date) && !empty($to_date)) {
-            $this->db->where('DATE(receipts.date_time) >=', $from_date);
-            $this->db->where('DATE(receipts.date_time) <=', $to_date);
+            $this->db->where('DATE(deleted_receipts.date_time) >=', $from_date);
+            $this->db->where('DATE(deleted_receipts.date_time) <=', $to_date);
         }
 
         //$this->db->group_by('deleted_receipts.receipt_no');
