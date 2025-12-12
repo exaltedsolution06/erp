@@ -259,8 +259,6 @@ class Setting_model extends MY_Model {
 
     public function add_printheader($data) {
 		
-		
-		
 		$query = $this->db->where('print_type', $data['print_type'])->get('print_headerfooter');
         if ($query->num_rows() > 0) {
             $this->db->where('print_type', $data['print_type']);
