@@ -858,15 +858,19 @@ document.addEventListener('DOMContentLoaded', function () {
 		if(hasAction == 'go')
 		{
 			let sum = parseFloat(fees_received) + parseFloat(late_fees) + parseFloat(ledger_amt); // 12-12-2025
+			$('#balance_amt').val(balc);
 		}
 		else{
+			let balance_amt = $('#balance_amt').val();
+			//alert(balance_amt);
+			$('#balance_amt').val(balance_amt);
 			let sum = parseFloat(fees_received) + parseFloat(late_fees); // 12-12-2025
 		}
 		
 		$('#total_fees').val(sum);
 		$('#net_fees').val(sum);
 		//let bal = 50;
-		$('#balance_amt').val(balc);
+		//$('#balance_amt').val(balc); // 12-12-2025
 		
 		let discount_amt = parseFloat(document.querySelector('[name="discount_amt"]').value) || 0;
 		let netFees = parseFloat(sum) - parseFloat(discount_amt);
@@ -1753,9 +1757,13 @@ $(document).ready(function () {
 document.addEventListener('DOMContentLoaded', function () {
 
 	//---------10-12-2025 page load------
+	let hasAction = $('#hasaction').val();
 	let netFee = document.querySelector('[name="net_fees"]').value;
 	let recAmt = document.querySelector('[name="receipt_amt"]').value;
-	document.querySelector('[name="balance_amt"]').value = parseFloat(netFee) - parseFloat(recAmt);
+	if(hasAction == 'go')
+	{
+		document.querySelector('[name="balance_amt"]').value = parseFloat(netFee) - parseFloat(recAmt);
+	}
 	//-------------------------
 
     const inputs = document.querySelectorAll('[name="fees_received"], [name="discount_amt"],[name="ledger_amt"],[name="late_fees"], [name="total_fees"]');
