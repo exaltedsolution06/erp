@@ -2280,9 +2280,37 @@ class Studentfee extends Admin_Controller
 		if ($_GET['type'] == 'delete' && !empty($_GET['receipt_no'])) {
             $receipt_no = $_GET['receipt_no'];
 			
+			
+			// update table student_session table 
+				$res_del=$this->db
+					->select('student_id,date_time,back_id,receipt_no,mode,fee_head,late_fees,ledger_amt,total_fees,discount_amt,net_fees,receipt_amt,balance_amt,remarks,fee_head_name,SUM(balance_amount) as balance_amount,(total) as total, SUM(rec_discount) as rec_discount, SUM(rec_amount) as rec_amount')
+					->where_in('receipt_no', $receipt_no)
+					->group_by('fee_head')
+					->get('deleted_receipts')
+					->row();
+					
+					
+				$receipt_amt=$res_del->receipt_amt;
+				$this->db->where('student_id', $res_del->student_id);
+				$query = $this->db->get('student_session');
+				
+				if ($query->num_rows() > 0) {
+					$row = $query->row();
+					$current_discount = (int)$row->fees_discount;
+					
+					$new_discount = $current_discount - $receipt_amt; // ES
+
+					// Step 3: Update the `fees_discount`
+					$this->db->where('student_id', $res_del->student_id);
+					$this->db->update('student_session', array('fees_discount' => $new_discount));
+				}
+			
+			//----------
+			
+			
 			// Step 1: Get all receipts with the same receipt_no
             $receiptList = $this->Receipt_model->get_deleted_receipts_by_receipt_no($receipt_no);
-			//echo "<pre>";print_r($receiptList);die;
+			
 			
 			 // Step 2: Backup each receipt row
             foreach ($receiptList as $receipt) {
@@ -2291,6 +2319,8 @@ class Studentfee extends Admin_Controller
 			
 			// Step 3: Delete from original receipts table
             $this->Receipt_model->receipt_no_delete_from_delete_receipts($receipt_no);
+			
+			
 			
 			$this->session->set_flashdata('success', '<div class="alert alert-success text-center">Receipts with Receipt No: ' . $receipt_no . ' retrived successfully.</div>');
 			
