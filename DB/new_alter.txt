@@ -27,6 +27,7 @@ ALTER TABLE `sch_settings` ADD `receipt_sr_no` BIGINT(20) NULL DEFAULT NULL AFTE
 File change outside of application folder
 --------
 backend\dist\css\style-main.css
+backend\dist\datatables\js\ss.custom.js
 
 ===============================
 

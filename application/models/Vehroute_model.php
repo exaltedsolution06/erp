@@ -66,6 +66,17 @@ class Vehroute_model extends MY_Model {
         $query = $this->db->get();
         return $vehicle_routes = $query->result();
     }
+    public function getVechileByRouteforAdmission($route_id, $type = '') {
+        $this->db->select('vehicle_routes.id as vec_route_id,vehicles.*')->from('vehicle_routes');
+        $this->db->join('vehicles', 'vehicles.id = vehicle_routes.vehicle_id');
+        $this->db->where('vehicle_routes.route_id', $route_id);
+        $this->db->order_by('vehicle_routes.id', 'DESC');
+		if ($type == 1) {
+			$this->db->limit(1);
+		}
+        $query = $this->db->get();
+        return $vehicle_routes = $query->result();
+    }
 
     public function getVechileDetailByVecRouteID($id) {
         $this->db->select('vehicle_routes.id as vec_route_id,vehicles.*,transport_route.route_title')->from('vehicle_routes');
