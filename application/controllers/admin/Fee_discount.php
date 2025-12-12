@@ -204,7 +204,7 @@ class Fee_discount extends Admin_Controller {
         $this->load->view('layout/footer', $data);
     }
 	
-	function updateMonthlyFeeAmounts($defaultArray, $paidArray, $paymentAlreadyTaken)
+	function updateMonthlyFeeAmounts($defaultArray, $paidArray, $paymentAlreadyTaken = [])
 	{
 		// Prepare month mapping
 		$monthMap = [
