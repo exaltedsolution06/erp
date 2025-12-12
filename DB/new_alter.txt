@@ -34,6 +34,7 @@ backend\dist\datatables\js\ss.custom.js
 New folder - 
 ------------------
 1) uploads/reportcard
+2) uploads/print_headerfooter/admission_form
 
 
 

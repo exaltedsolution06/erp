@@ -568,9 +568,9 @@ document.getElementById('searchInput').addEventListener('input', function () {
                     // console.log(item);
                     const li = document.createElement('li');
                     li.className = 'list-group-item list-group-item-action';
-                    li.textContent = item.name + ' s/o '+ item.father +' ('+item.class+')';;
+                    li.textContent =  '(' + item.admission_no + ') '+item.name + ' s/o '+ item.father +' ('+item.class+')';;
                     li.onclick = function () {
-                        document.getElementById('searchInput').value = item.name + ' s/o '+ item.father +' ('+item.class+')';
+                        document.getElementById('searchInput').value = '(' + item.admission_no + ') '+ item.name + ' s/o '+ item.father +' ('+item.class+')';
                         suggestionsList.style.display = 'none';
                         
                         const currentUrl = "<?=base_url()?>/report/fee_card";
