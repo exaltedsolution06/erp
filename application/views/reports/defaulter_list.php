@@ -292,10 +292,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th>S.No</th>
                                                 <th>Adm. No</th>
                                                 <th>Student</th>
-                                                <th>Contact No.</th>
                                                 <th>Father</th>
                                                 <th>Class</th>
                                                 <th>Sec.</th>
+												<th>Contact No.</th>
                                                 <th>Fee Cat.</th>
                                                 <th>Route</th>
 
@@ -535,10 +535,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <td><?= $sno++ ?></td>
                                                     <td><?= $record["admission_no"] ?><?php //json_encode($record)?></td>
                                                     <td><?= $record["firstname"].' '.$record["middlename"].' '.$record["lastname"] ?></td>
-													<td><?= isset($record["mobileno"]) ? $record["mobileno"] : 'NA'; ?></td>
-                                                    <td><?= $record["father_name"] ?></td>
+													<td><?= $record["father_name"] ?></td>
                                                     <td><?= $record["class"] ?></td>
                                                     <td><?= $record["section"] ?></td>
+													<td><?= isset($record["mobileno"]) ? $record["mobileno"] : 'NA'; ?></td>
                                                     <td ><?=  ($this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()) ? $this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()->name : 'N.A'; ?>  </td>
                                                 
                                                     <td ><?=  ($this->db->get_where('route_head', ['id' => $record['vehroute_id']])->row()) ? $this->db->get_where('route_head', ['id' => $record['vehroute_id']])->row()->fees_heading : 'N.A'; ?>  </td>
