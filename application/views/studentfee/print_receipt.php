@@ -60,8 +60,8 @@ if($_GET['copy']=='2'){
 @media print {
   @page {
     size: A4 landscape;
-    margin: 0;
-    margin-left:10px;
+    /*margin: 0;
+    margin-left:10px;*/
     margin-top:10px;
   }
 
@@ -102,7 +102,7 @@ if($_GET['copy']=='2'){
   }
 
   .receipt-card {
-    margin: 0 !important;
+    /*margin: 0 !important;*/
     padding: 0 !important;
     box-shadow: none !important;
     border: none !important;
@@ -173,7 +173,7 @@ th, td {
     <div id="print-area" >
         
         <div class="row">
-          <div class="col-sm-6" style="padding-left: 60px;">
+          <div class="col-sm-6" style="padding-left: 40px;">
 
 
 
@@ -345,7 +345,11 @@ th, td {
 		}
 	  ?>
 	   </label>
-	   <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important"><?=$create_by->employee_id?></span></label>
+	   <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important">
+							<?= implode(' ', array_filter([
+								$create_by->name ?? '',
+								$create_by->surname ?? ''
+							])); ?> (<?=$create_by->employee_id?>)</span></label>
       </div>
   </div>
 
@@ -361,7 +365,7 @@ th, td {
 
 
           </div>
-          <div class="col-sm-6" style="padding-left: 60px;">
+          <div class="col-sm-6" style="padding-left: 40px;">
 
           <div  style="border:2px solid;" >
 
@@ -530,7 +534,11 @@ th, td {
 		}
 	  ?>
 	   </label>
-	   <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important"><?=$create_by->employee_id?></span></label>
+	    <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important">
+							<?= implode(' ', array_filter([
+								$create_by->name ?? '',
+								$create_by->surname ?? ''
+							])); ?> (<?=$create_by->employee_id?>)</span></label>
       </div>
   </div>
 
@@ -661,7 +669,7 @@ th, td {
 
 @media print {
   @page {
-    size: A4 landscape;
+    size: A4 portrait;
     margin: 0;
     margin-left:10px;
     margin-top:10px;
@@ -690,7 +698,7 @@ th, td {
     position: absolute;
     top: 0;
     left: 0;
-    width: 150mm;
+    /*width: 150mm;*/
     height: 100vh;
     padding: 0 !important;
     box-sizing: border-box;
@@ -704,10 +712,13 @@ th, td {
   }
 
   .receipt-card {
-    margin: 0 !important;
+    /*margin: 0 !important;*/
     padding: 0 !important;
     box-shadow: none !important;
     border: none !important;
+	
+	max-width: none !important;
+    width: 100% !important;
   }
 
   .table th, .table td {
@@ -936,7 +947,11 @@ th, td {
 							}
 						  ?>
 						   </label>
-						   <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important"><?=$create_by->employee_id?></span></label>
+						    <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important">
+							<?= implode(' ', array_filter([
+								$create_by->name ?? '',
+								$create_by->surname ?? ''
+							])); ?> (<?=$create_by->employee_id?>)</span></label>
                           </div>
                       </div>
 
