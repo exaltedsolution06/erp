@@ -70,7 +70,13 @@
 						</div>
 						<div class="row mt-2 d-flex">
 							<div class="col-3 labelOnly">Student Name</div>
-							<div class="col-9 borderOnly"><?php echo $data['student']['firstname'].''.$data['student']['middlename'].''.$data['student']['lastname']; ?></div>
+							<div class="col-9 borderOnly">
+							<?= implode(' ', array_filter([
+								$data['student']['firstname'] ?? '',
+								$data['student']['middlename'] ?? '',
+								$data['student']['lastname'] ?? ''
+							])); ?>
+							</div>
 						</div>
 						<div class="row mt-2 d-flex">
 							<div class="col-3 labelOnly">Caste Category </div>
@@ -111,7 +117,7 @@
 					<div class="col-12">
 						<div class="row mt-2 d-flex">
 							<div class="col-2 labelOnly">PEN No</div>
-							<div class="col-2 borderOnly">123</div>
+							<div class="col-2 borderOnly"><?php echo $data['student']['pan_no']; ?></div>
 							<div class="col-2 labelOnly text-right">Adhar No</div>
 							<div class="col-2 borderOnly"><?php echo $data['student']['adhar_no']; ?></div>
 							<div class="col-2 labelOnly text-right">Other No</div>
@@ -145,7 +151,7 @@
 						</div>
 						<div class="row mt-2 d-flex">
 							<div class="col-3 labelOnly">PEN No</div>
-							<div class="col-3 borderOnly">2323</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['father_pan_no']; ?></div>
 							<div class="col-3 labelOnly text-right">Adhar No</div>
 							<div class="col-3 borderOnly"><?php echo $data['student']['father_aadhar_no']; ?></div>
 						</div>
@@ -184,7 +190,7 @@
 						</div>
 						<div class="row mt-2 d-flex">
 							<div class="col-3 labelOnly">PEN No</div>
-							<div class="col-3 borderOnly">fghdfgh</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['mother_pan_no']; ?></div>
 
 							<div class="col-3 labelOnly text-right">Adhar No</div>
 							<div class="col-3 borderOnly"><?php echo $data['student']['mother_aadhar_no']; ?></div>
@@ -223,14 +229,14 @@
 							<div class="col-3 borderOnly"><?php echo $data['student']['guardian_occupation']; ?></div>
 						</div>
 						<div class="row mt-2 d-flex">
-							<div class="col-3 labelOnly">PAN No</div>
-							<div class="col-3 borderOnly">NA</div>
+							<div class="col-3 labelOnly">PEN No</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['guardian_is'] == 'father' ? $data['student']['father_pan_no'] : ($data['student']['guardian_is'] == 'mother' ? $data['student']['mother_pan_no'] : ''); ?></div>
 							<div class="col-3 labelOnly text-right">Adhar No</div>
-							<div class="col-3 borderOnly">NA</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['guardian_is'] == 'father' ? $data['student']['father_aadhar_no'] : ($data['student']['guardian_is'] == 'mother' ? $data['student']['mother_aadhar_no'] : ''); ?></div>
 						</div>
 						<div class="row mt-2 d-flex">
 							<div class="col-3 labelOnly">Other No</div>
-							<div class="col-3 borderOnly">hjkghkj</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['guardian_is'] == 'father' ? $data['student']['father_other_no'] : ($data['student']['guardian_is'] == 'mother' ? $data['student']['mother_other_no'] : ''); ?></div>
 						</div>
 					</div>
 					<?php if(!empty($data['student']['guardian_pic'])) { ?>
@@ -264,10 +270,18 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>asdfasf</td>
-									<td>sdfasf</td>
-									<td>sdfsadf</td>
-									<td>sdfsdf</td>
+									<td><?php echo $data['student']['category']; ?></td>
+									<td><?php echo $data['route_details']['route_title']; ?></td>
+									<?php
+									$driverNames = array_column($data['vehicle_details'], 'driver_name'); 
+									$driverNames = implode(', ', $driverNames);
+									?>
+									<td><?php echo $driverNames; ?></td>
+									<?php
+									$vehicleNos = array_column($data['vehicle_details'], 'vehicle_no'); 
+									$vehicleNos = implode(', ', $vehicleNos);
+									?>
+									<td><?php echo $vehicleNos; ?></td>
 								</tr>
 							</tbody>
 						</table>
@@ -275,11 +289,11 @@
 				</div>
 				<div class="row mt-2" style="margin-right:0px">
 					<div class="col-3 labelOnly">Current Address</div>
-					<div class="col-9 borderOnly">dgdfgdfg</div>
+					<div class="col-9 borderOnly"><?php echo $data['student']['current_address']; ?></div>
 				</div>
 				<div class="row mt-1" style="margin-right:0px">
 					<div class="col-3 labelOnly">Permanent Address</div>
-					<div class="col-9 borderOnly">dgdfgdfg</div>
+					<div class="col-9 borderOnly"><?php echo $data['student']['permanent_address']; ?></div>
 				</div>
 			</div>
 			
@@ -291,15 +305,15 @@
 							<th>Last School Name</th>
 							<th>Bank Account Detail</th>
 							<th>Bank Name</th>
-							<th> IFSC Code</th>
+							<th>IFSC Code</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td>dfg</td>
-							<td>dsg</td>
-							<td>dfg</td>
-							<td>dfg</td>
+							<td><?php echo $data['student']['previous_school']; ?></td>
+							<td><?php echo $data['student']['bank_account_no']; ?></td>
+							<td><?php echo $data['student']['bank_name']; ?></td>
+							<td><?php echo $data['student']['ifsc_code']; ?></td>
 						</tr>
 					</tbody>
 				</table>
@@ -321,20 +335,6 @@
 
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>
 </html>

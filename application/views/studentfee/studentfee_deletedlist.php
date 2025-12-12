@@ -1,6 +1,7 @@
 
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
+$payment_mode_type = $this->customlib->payment_mode_type();
 ?>
 <div class="content-wrapper" style="min-height: 1126px;">
     <section class="content-header">
@@ -67,6 +68,20 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <label for="toDate">To</label>
                                         <input type="date" class="form-control" id="toDate" name="to_date" value="<?= $this->input->get('to_date') ?? date('Y-m-d') ?>" required>
                                     </div>
+									<div class="form-group col-md-2">
+                                        <label for="toDate">Mode</label>
+                                        <select name="mode" class="form-control">
+											<option value="">Select Mode</option>
+											<?php 
+											foreach($payment_mode_type as $key=>$mode)
+											{
+											?>
+											<option value="<?php echo $key ?>" <?php if ($this->input->get('mode') == $key) echo "selected=selected" ?>><?php echo $mode; ?></option>
+											<?php 
+											}
+											?>
+										</select>
+                                    </div>
 
                                     <!-- Submit Button -->
                                     <div class="form-group col-md-2 d-flex align-items-end">
@@ -91,6 +106,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </div>
                                     
                                 </div>   
+								<?php if ($this->session->flashdata('success')) { ?>
+								<?php echo $this->session->flashdata('success') ?>
+								<?php 
+								$this->session->unset_userdata('success');
+								} ?> 
                                  <div class="table-responsive-" style="overflow: auto;">
                                     <div class="download_label"> </div>
 
@@ -125,6 +145,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                 <th >Mode</th>
                                                 <th >User</th>
+                                                <th >Action</th>
 
                                             </tr>
                                         </thead>
@@ -211,6 +232,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                 <td ><?= $record["mode"] ?></td>
                                                 <td ><?= $record["create_by"] ?></td>
+												<td><a href="<?php echo base_url(); ?>studentfee/studentfee_deletedlist?receipt_no=<?=$record["receipt_no"]?>&type=delete" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Retrive">
+                                                        <i class="fa fa-rotate-right"></i>
+                                                    </a></td>
                                                 
                                             </tr>
                                         <?php endforeach; ?>

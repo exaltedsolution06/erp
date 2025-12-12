@@ -66,9 +66,11 @@
 
 
 	$exam_group_class_batch_exam_student_id=$_POST['exam_group_class_batch_exam_student_id'];
-
-
-
+	
+	$template_title = $this->db->get_where('template_marksheets', ['id' => $marksheet_template_id])->row_array();
+	
+	$session_name = $this->db->get_where('sessions', ['id' => $session_id])->row_array();
+	
 
 	foreach($marksheet as $stddata){
 	
@@ -86,7 +88,7 @@
 			</div>
 		<?php } ?>
 			<div class="col-12 text-center">
-				<p class="text-danger h3">REPORT CARD (SESSION : 2022-23)</p>
+				<p class="text-danger h3"><?php echo isset($template_title['title']) ? $template_title['title'] : 'REPORT CARD';?> (SESSION : <?php echo $session_name['session'] ;?>)</p>
 				<span class="text-danger" > (<?php echo $desc->heading; ?>)</span>
 			</div>
 			<?php //$student_id=$stddata->id;  ?>
@@ -133,7 +135,7 @@
 							<tr>
 							  <th scope="row"  class="th">D.O.B.</th>
 							  <td>:</td>
-							  <td><?=date('d-M-Y',strtotime($stddata->dob))?></td>
+							  <td><?= isset($stddata->dob) ? date('d-M-Y',strtotime($stddata->dob)) : 'NA';?></td>
 							</tr>
 							<?php } ?>
 							

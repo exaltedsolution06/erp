@@ -2248,8 +2248,9 @@ class Studentfee extends Admin_Controller
         // $this->session->set_userdata('top_menu', 'Reports');
         // $this->session->set_userdata('sub_menu', 'Reports/finance');
         // $this->session->set_userdata('subsub_menu', 'Reports/finance/studentfeelist');
-
-         $this->session->set_userdata('top_menu', $this->lang->line('fees_collection'));
+		
+		
+        $this->session->set_userdata('top_menu', $this->lang->line('fees_collection'));
         $this->session->set_userdata('sub_menu', 'studentfee/studentfee_deletedlist');
 
 
@@ -2267,13 +2268,34 @@ class Studentfee extends Admin_Controller
 
         $from_date = $this->input->get('from_date');
         $to_date   = $this->input->get('to_date');
-
-
+		$mode   = $this->input->get('mode');
+		
         // die;
+		
+		if ($_GET['type'] == 'delete' && !empty($_GET['receipt_no'])) {
+            $receipt_no = $_GET['receipt_no'];
+			
+			// Step 1: Get all receipts with the same receipt_no
+            $receiptList = $this->Receipt_model->get_deleted_receipts_by_receipt_no($receipt_no);
+			//echo "<pre>";print_r($receiptList);die;
+			
+			 // Step 2: Backup each receipt row
+            foreach ($receiptList as $receipt) {
+                $this->Receipt_model->backup_deleted_receipt_data($receipt);
+            }
+			
+			// Step 3: Delete from original receipts table
+            $this->Receipt_model->receipt_no_delete_from_delete_receipts($receipt_no);
+			
+			$this->session->set_flashdata('success', '<div class="alert alert-success text-center">Receipts with Receipt No: ' . $receipt_no . ' retrived successfully.</div>');
+			
+            redirect('studentfee/studentfee_deletedlist');
+		}
 
         // paginate
         $per_page_input = $this->input->get('per_page');
-        $total_rows = $this->Receipt_model->get_deleted_receipt_count($from_date, $to_date);
+        $total_rows = $this->Receipt_model->get_deleted_receipt_count($from_date, $to_date, $mode);
+		
 
         $per_page = (!empty($per_page_input) && $per_page_input != 'all') ? (int)$per_page_input : 10;
         $per_page = ($per_page_input == 'all') ? $total_rows : $per_page;
@@ -2307,8 +2329,10 @@ class Studentfee extends Admin_Controller
 
         $this->pagination->initialize($config);
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-
-        $data['receipt_data'] = $this->Receipt_model->get_deleted_receipt($config['per_page'], $page,$from_date, $to_date);
+		
+		
+		
+        $data['receipt_data'] = $this->Receipt_model->get_deleted_receipt($config['per_page'], $page,$from_date, $to_date, $mode);
         $data['pagination_links'] = $this->pagination->create_links();
 
         // end paginate
