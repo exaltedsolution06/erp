@@ -366,7 +366,7 @@ class Schsettings extends Admin_Controller {
             }
 
             $data['adm_update_status'];
-            $data['receipt_sr_no'] = $this->input->post('receipt_start_sequence');
+            //$data['receipt_sr_no'] = $this->input->post('receipt_start_sequence');
             $this->setting_model->add($data);
             $this->load->helper('lang');
             $this->session->userdata['admin']['date_format'] = $this->input->post('sch_date_format');
@@ -386,10 +386,25 @@ class Schsettings extends Admin_Controller {
                 set_language($this->input->post('sch_lang_id'));
             }
 			
+			// receipt_start_sequence
+			$receipt_start_sequence = $this->input->post('receipt_start_sequence');
 			$check_receipt_no = $this->setting_model->check_receipt_no();
+			
+			if($check_receipt_no)
+			{
+				$array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'),'check_receipt_no'=> $check_receipt_no);
+				echo json_encode($array);
+			}
+			else
+			{
+				$editdata['id'] = $this->input->post('sch_id');
+				$editdata['receipt_sr_no'] = $this->input->post('receipt_start_sequence');
+				$this->setting_model->add($editdata);
+				$array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'),'check_receipt_no'=> $check_receipt_no);
+				echo json_encode($array);
+			}
 
-            $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'),'check_receipt_no'=> $check_receipt_no);
-            echo json_encode($array);
+            
         }
     }
 

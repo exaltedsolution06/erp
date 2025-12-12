@@ -1024,13 +1024,16 @@
 $(document).ready(function(){
 	
 	let hid_receipt_sr_no = $('#hid_receipt_sr_no').val();
-	if(hid_receipt_sr_no != '')
+	if(hid_receipt_sr_no != 0)
 	{
 		$('.receipt-sequence').show();
 		$('.receipt-enabled').click();
-		$('html, body').animate({
+		/*$('html, body').animate({
 			scrollTop: $('#receipt_start_sequence').offset().top - 200
-		}, 800)
+		}, 800)*/
+	}
+	else{
+		$('#receipt_start_sequence').val('');
 	}
 })
     var base_url = '<?php echo base_url(); ?>';
@@ -1106,7 +1109,7 @@ $(document).ready(function(){
                     });
                     errorMsg(message);
                 }
-				else if(data.check_receipt_no == true)
+				/*else if(data.check_receipt_no == true)
 				{
 					$('.delete_receipt_record').show();
 					$('.receipt-sequence').show();
@@ -1115,7 +1118,7 @@ $(document).ready(function(){
 					  scrollTop: $('#staffid_start_from').offset().top
 					}, 800);
 					$('#receipt_error').text('You have already existing Receipts. Please remove  all receipts to update this field.');
-				}
+				}*/
 				else {
                     successMsg(data.message);
                     //window.location.reload(true);
@@ -1129,12 +1132,15 @@ $(document).ready(function(){
 	$(document).on('click', '.receipt-disabled' , function(){
 		$('.receipt-disabled').attr('checked', true);
 		$('.receipt-enabled').attr('checked', false);
+		$('#receipt_start_sequence').val(0);
 		$('.receipt-sequence').hide();
 	});
 	
 	$(document).on('click', '.receipt-enabled' , function(){
 		$('.receipt-disabled').attr('checked', false);
 		$('.receipt-enabled').attr('checked', true);
+		let hid_receipt_sr_no = $('#hid_receipt_sr_no').val();
+		$('#receipt_start_sequence').val(hid_receipt_sr_no);
 		$('.receipt-sequence').show();
 	})
 	

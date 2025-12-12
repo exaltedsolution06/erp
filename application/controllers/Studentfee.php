@@ -1077,7 +1077,7 @@ class Studentfee extends Admin_Controller
         $studentlistbysection         = $this->student_model->getStudentClassSection($student["class_id"], $session);
         $data["studentlistbysection"] = $studentlistbysection;
 		
-		//--- exaltedsol 09-12-2025---
+		//--- exaltedsol 09-12-2025--- 
 		$check_receipt_no = $this->setting_model->check_receipt_no();
 		if($check_receipt_no == false)
 		{

@@ -352,7 +352,7 @@ class Setting_model extends MY_Model {
 			$this->db->limit(1);
 			$query = $this->db->get('sch_settings');
 
-			if ($query->num_rows() > 0) {
+			/*if ($query->num_rows() > 0) {
 				$row = $query->row();
 				$max_id = $row->id;
 
@@ -360,7 +360,7 @@ class Setting_model extends MY_Model {
 				$this->db->update('sch_settings', [
 					'receipt_sr_no' => $data['sr_no']
 				]);
-			}
+			}*/
 	}
 	public function truncate_receipt($id)
 	{
