@@ -26,7 +26,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                     </div>
                     <div class="box-body">
                         
-                        <?php if ($this->session->flashdata('msg')) { ?> <div class="alert alert-success">  <?php echo $this->session->flashdata('msg') ?> </div> <?php } ?>
+                        <?php if ($this->session->flashdata('msg')) { ?> <!--<div class="alert alert-success">-->  <?php //echo $this->session->flashdata('msg') ?> <!--</div>--> <?php } ?>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">

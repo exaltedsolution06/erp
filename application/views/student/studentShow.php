@@ -669,7 +669,17 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         <div class="tab-pane" id="fee">
                             <table class="table table-bordered">
                                     <thead class="header">
-                                        
+									<?php
+                                        if(empty($data_list)){
+										?>
+										
+											<div class="alert alert-danger">
+												<?php echo $this->lang->line('no_record_found'); ?>
+											</div>
+										<?php										
+										}
+										else{
+										?>
                                         <tr>
                                             <th>
                                                 <!-- <input type="checkbox" checked id="select_all_data"/><br> -->
@@ -686,16 +696,19 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <th>Received</th>
                                             <th>Balance</th> -->
                                         </tr>
+										<?php 
+										}
+										?>
                                     </thead>
+									<?php 
+									if(!empty($data_list)){
+									?>
                                     <tbody>
                                     <?php 
-
-
-                                            if(isset($months_data)){
-
-                                        $statusNew = 0;
+										$statusNew = 0;
                                         $final_total = 0;
                                         $aa = 1;
+										
                                         $column_totals = array_fill(0, count($months_data), 0); // initialize column totals
 
                                         // Loop for $data_list
@@ -899,10 +912,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <?php endforeach; ?>
                                             <td style="text-align: right;"><b><?= $final_total ?></b></td>
                                         </tr>
-                                        <?php } } ?>
+                                        <?php }  ?>
 
                                     </tbody>
-
+									<?php 
+										}
+									?>
 
 
                                 </table>
