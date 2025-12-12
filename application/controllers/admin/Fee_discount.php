@@ -50,7 +50,7 @@ class Fee_discount extends Admin_Controller {
 		
 		//echo '<pre>'; print_r($data['data_list']); echo '</pre>';die;
 		$feesAlreadyTakenArr = $this->fee_discount_model->get_already_taken_fees($student_session_id);
-		//echo '<pre>'; print_r($feesAlreadyTakenData); echo '</pre>';die;
+		//echo '<pre>'; print_r($feesAlreadyTakenArr); echo '</pre>';die;
 		
 		$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr, $feesAlreadyTakenArr);
 		
@@ -172,7 +172,7 @@ class Fee_discount extends Admin_Controller {
 		$query = $this->db->get();
 		$data['data_list'] = $query->result();
 			//echo '<pre>'; print_r($data['data_list']); echo '</pre>';die;
-		$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr);
+		$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr, []);
 		
 		//echo '<pre>'; print_r($data['data_list']); echo '</pre>';die;
 		  
@@ -184,7 +184,7 @@ class Fee_discount extends Admin_Controller {
 		$this->db->where('route_head.id', $route_id);
 		$query = $this->db->get();
 		$data['route_data_list'] = $query->result();
-		$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
+		$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr, []);
 		
 		//echo '<pre>'; print_r($data['route_data_list']); echo '</pre>';die;
 		
@@ -206,6 +206,7 @@ class Fee_discount extends Admin_Controller {
 	
 	function updateMonthlyFeeAmounts($defaultArray, $paidArray, $paymentAlreadyTaken)
 	{
+		// Prepare month mapping
 		$monthMap = [
 			"Apr" => "month_apr",
 			"May" => "month_may",
@@ -221,41 +222,64 @@ class Fee_discount extends Admin_Controller {
 			"Mar" => "month_mar"
 		];
 
+		// Normalize paymentAlreadyTaken
+		// If empty, set empty array to avoid errors
+		if (!is_array($paymentAlreadyTaken)) {
+			$paymentAlreadyTaken = [];
+		}
+
 		foreach ($defaultArray as &$feeHead) {
 
-			foreach ($paidArray as $paid) {
+			// Decode months list from default array
+			$months = json_decode($feeHead->months, true);
+			if (!is_array($months)) continue;
 
-				if ($paid['fee_type_id'] == $feeHead->id) {
+			// Create month-wise amount & paid_flag arrays
+			$amounts = [];
+			$paidFlags = [];
 
-					$months = json_decode($feeHead->months, true);
-					if (!is_array($months)) continue;
-
-					$amounts = [];
-					foreach ($months as $month) {
-
-						$column = $monthMap[$month];
-
-						// --- Amount calculation ---
-						$amounts[$month] = isset($paid[$column])
-							? floatval($paid[$column])
-							: floatval($feeHead->amount);
-
-						// --- Paid flag from $paymentAlreadyTaken ---
-						if (isset($paymentAlreadyTaken[$feeHead->id]) && in_array($month, $paymentAlreadyTaken[$feeHead->id])) {
-							$feeHead->paid_flag[$month] = 1;  // or true
-						} else {
-							$feeHead->paid_flag[$month] = 0;  // or false
-						}
-					}
-
-					// Assign back
-					$feeHead->amount = $amounts;
+			// Find matching paidArray entry (if any)
+			$paidRow = null;
+			foreach ($paidArray as $p) {
+				if ($p['fee_type_id'] == $feeHead->id) {
+					$paidRow = $p;
+					break;
 				}
 			}
+
+			foreach ($months as $month) {
+
+				$column = $monthMap[$month];
+
+				// ---------- AMOUNT ----------
+				if ($paidRow !== null && isset($paidRow[$column])) {
+					$amounts[$month] = floatval($paidRow[$column]);
+				} else {
+					$amounts[$month] = floatval($feeHead->amount);   // fallback to default
+				}
+
+				// ---------- PAID FLAG ----------
+				if (
+					isset($paymentAlreadyTaken[$feeHead->id]) && 
+					in_array($month, $paymentAlreadyTaken[$feeHead->id])
+				) {
+					$paidFlags[$month] = 1;      // already paid
+				} else {
+					$paidFlags[$month] = 0;      // NOT paid
+				}
+			}
+
+			// Assign to object
+			$feeHead->amount = $amounts;
+			$feeHead->paid_flag = $paidFlags;
 		}
 
 		return $defaultArray;
 	}
+
+
+
+
 
 
 	/*function updateMonthlyFeeAmounts($defaultArray, $paidArray)
@@ -357,7 +381,7 @@ class Fee_discount extends Admin_Controller {
 		$query = $this->db->get();
 		$data['data_list'] = $query->result();
 			//echo '<pre>'; print_r($data['data_list']); echo '</pre>';die;
-		$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr);
+		$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr, []);
 		
 		//echo '<pre>'; print_r($data['data_list']); echo '</pre>';die;
 		  
@@ -369,7 +393,7 @@ class Fee_discount extends Admin_Controller {
 		$this->db->where('route_head.id', $route_id);
 		$query = $this->db->get();
 		$data['route_data_list'] = $query->result();
-		$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
+		$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr, []);
 		
 		//echo '<pre>'; print_r($data['route_data_list']); echo '</pre>';die;
 		
