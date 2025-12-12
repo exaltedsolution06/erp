@@ -1058,6 +1058,7 @@ class Studentfee extends Admin_Controller
         $data['title'] = 'Student Detail';
 
         $student         = $this->student_model->getByStudentSession($id);
+		//echo "<pre>";print_r($student);die;
         
         $data['student'] = $student;
         $data['update_ids']=$id;
@@ -1286,6 +1287,7 @@ class Studentfee extends Admin_Controller
 
         $data['months_data']=[];
         
+		$data['hasaction'] = '';
         //if(!empty($unique_months)){
 		$action = $this->input->post('action');
 		if(!empty($_POST['months']) || !empty($unique_months)){
@@ -1294,6 +1296,7 @@ class Studentfee extends Admin_Controller
 				$monthsPost =$_POST['months'];
 				$data['pay_mounth']=$_POST['months'];    
 			}
+			
             $class_id=$student['class_id'];
             $route_id=$student['vehroute_id'];            
             $category_id=$student['category_id'];
@@ -1383,6 +1386,7 @@ class Studentfee extends Admin_Controller
 			//echo 'Not Empty months';die;
         }
 		if (empty($_POST['months']) && (int) count(array_filter((array)$unique_months)) == 0) {
+			 
 			$data['pay_mounth']=[];
 			$monthsPost=[];
 			if(!empty($_POST['months'])){
@@ -1404,6 +1408,7 @@ class Studentfee extends Admin_Controller
 			//echo 'Empty months';die;
         }
 		if(empty($_POST['months']) && $action === 'go' && (int) count(array_filter((array)$unique_months)) > 0){
+			
 			$data['pay_mounth']=[];
 			$monthsPost=[];
 			if(!empty($_POST['months'])){
@@ -1425,6 +1430,8 @@ class Studentfee extends Admin_Controller
 			$data['receipt_amt'] = 0;
 			$data['discount_amt'] = 0;
         }
+		
+		$data['hasaction'] = $action;
 		//echo (int) count(array_filter((array)$unique_months));
 		//echo count(array_filter((array)$_POST['months']));
 		//echo '<pre>'; print_r($unique_months);echo '</pre>';die;

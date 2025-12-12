@@ -842,9 +842,11 @@ $language_name = $language["short_code"];
     </div>
 </div>
 <input type="hidden" name="balc" id="balc" value="<?= $bal ? $bal : 0 ?>">
+<input type="hidden" name="hasaction" id="hasaction" value="<?= $hasaction ? $hasaction : 0 ?>">
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+	   let hasAction = $('#hasaction').val();
 	// by ES 21-11-2025
 		let fees_received = parseFloat(document.querySelector('[name="fees_received"]').value) || 0;
 		let late_fees = parseFloat(document.querySelector('[name="late_fees"]').value) || 0;
@@ -853,7 +855,14 @@ document.addEventListener('DOMContentLoaded', function () {
 		
 		let balc = parseFloat(document.querySelector('[name="balc"]').value) || 0;
 		//alert(balc);
-		let sum = parseFloat(fees_received) + parseFloat(late_fees) + parseFloat(ledger_amt);
+		if(hasAction == 'go')
+		{
+			let sum = parseFloat(fees_received) + parseFloat(late_fees) + parseFloat(ledger_amt); // 12-12-2025
+		}
+		else{
+			let sum = parseFloat(fees_received) + parseFloat(late_fees); // 12-12-2025
+		}
+		
 		$('#total_fees').val(sum);
 		$('#net_fees').val(sum);
 		//let bal = 50;
