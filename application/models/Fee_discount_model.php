@@ -39,6 +39,7 @@ class Fee_discount_model extends MY_Model {
 		}
 
 		$query = $this->db->get();
+		//echo $this->db->last_query();die;
 		$rows = $query->result_array();
 
 		// ---- Convert to final useful array ---- //
