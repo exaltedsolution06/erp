@@ -1,6 +1,6 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
-//echo "<pre>";print_r($data_list);die;
+
 ?>
 <div class="content-wrapper">
     <section class="content-header">
@@ -110,7 +110,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <?php if ($selected === 'structure' || $selected === null) echo 'checked'; ?>>
                                                 <label class="form-check-label" for="feeStructure">Show Fee Structure</label>
                                             </div>
-                                            
+                                           
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="feesCard" id="receivedCard" value="received"
                                                     <?php if ($selected === 'received') echo 'checked'; ?>>

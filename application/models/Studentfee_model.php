@@ -36,6 +36,7 @@ class Studentfee_model extends CI_Model {
         $this->db->join('feetype', 'feetype.id = feemasters.feetype_id');
         $this->db->join('feecategory', 'feetype.feecategory_id = feecategory.id');
         $this->db->where('student_session.student_id', $id);
+        $this->db->where('student_session.id', $id);
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->order_by('student_fees.id');
         $query = $this->db->get();

@@ -532,6 +532,8 @@ class Report extends Admin_Controller
 			//---- 20-11-2025---ES--
 			$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
 			//-----
+			
+			
         }
 	  // var_dump($data);
         $data['sch_setting'] = $this->sch_setting_detail;

@@ -17,7 +17,7 @@ class Student extends Admin_Controller
         $this->load->library('mailsmsconf');
         $this->load->library('encoding_lib');
         $this->load->model("classteacher_model");
-        $this->load->model(array("timeline_model", "student_edit_field_model"));
+        $this->load->model(array("timeline_model", "student_edit_field_model","fee_discount_model"));
         $this->blood_group        = $this->config->item('bloodgroup');
         $this->sch_setting_detail = $this->setting_model->getSetting();
         $this->role;
@@ -169,9 +169,10 @@ class Student extends Admin_Controller
         $data['sch_setting']     = $this->sch_setting_detail;
         $data['adm_auto_insert'] = $this->sch_setting_detail->adm_auto_insert;
         $current_student_session = $this->student_model->get_studentsession($student['student_session_id']);
-
+		
         $data["session"]              = $current_student_session["session"];
         $student_due_fee              = $this->studentfeemaster_model->getStudentFees($student['student_session_id']);
+		//echo "<pre>";print_r($student_due_fee);die;
         $student_discount_fee         = $this->feediscount_model->getStudentFeesDiscount($student['student_session_id']);
         $data['student_discount_fee'] = $student_discount_fee;
         $data['student_due_fee']      = $student_due_fee;
@@ -205,6 +206,39 @@ class Student extends Admin_Controller
   
  
         $data['exam_grade']           = $this->grade_model->getGradeDetails();
+		
+		// get fees amount 12-12-2025-----
+		$data['fees_card']='received';
+		$back_id  = $this->db->select('back_id')->from('receipts')->where('student_id', $id)->get()->row_array();
+		//echo $back_id['back_id']; die;
+		$data['student_data'] =$student_data= $this->student_model->getByStudentSession($back_id['back_id']);
+		
+		$monthsPost = $months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
+		$class_id=$student_data['class_id'];
+		$route_id=$student_data['vehroute_id'];
+		$category_id=$student_data['category_id'];
+		
+		$this->db->from('fee_head');
+		$this->db->join('fees_plan', 'fee_head.id = fees_plan.fee_group_id');
+		$this->db->where("JSON_CONTAINS(fees_plan.class_ids, '\"$class_id\"')", null, false);
+		$this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
+		$query = $this->db->get();
+		$data['data_list'] = $query->result();
+		
+		$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($back_id['back_id']);
+		$routeDiscountsArr    = $this->fee_discount_model->get_all_routes($back_id['back_id']);
+		
+		$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr);
+		
+		$this->db->from('route_head');
+		$this->db->join('route_plan', 'route_head.id = route_plan.fee_group_id');
+		$this->db->where("JSON_CONTAINS(route_plan.class_ids, '\"$class_id\"')", null, false);
+		$this->db->where("JSON_CONTAINS(route_plan.category_ids, '\"$category_id\"')", null, false);
+		$this->db->where('route_head.id', $route_id);
+		$query = $this->db->get();
+		$data['route_data_list'] = $query->result();
+		$data['months_data']=$monthsPost;
+		//--------------
 		
 		//echo "<pre>";print_r($data);die;
         $this->load->view('layout/header', $data);
@@ -2333,5 +2367,52 @@ class Student extends Admin_Controller
 
         echo json_encode($array);
     }
+	
+	function updateMonthlyFeeAmounts($defaultArray, $paidArray)
+	{
+		$monthMap = [
+			"Apr" => "month_apr",
+			"May" => "month_may",
+			"Jun" => "month_jun",
+			"Jul" => "month_jul",
+			"Aug" => "month_aug",
+			"Sep" => "month_sep",
+			"Oct" => "month_oct",
+			"Nov" => "month_nov",
+			"Dec" => "month_dec",
+			"Jan" => "month_jan",
+			"Feb" => "month_feb",
+			"Mar" => "month_mar"
+		];
+
+		foreach ($defaultArray as &$feeHead) {
+
+			foreach ($paidArray as $paid) {
+
+				if ($paid['fee_type_id'] == $feeHead->id) {
+
+					$months = json_decode($feeHead->months, true);
+
+					if (!is_array($months)) continue;
+
+					$amounts = [];
+
+					foreach ($months as $month) {
+
+						$column = $monthMap[$month];
+
+						$amounts[$month] = isset($paid[$column])
+							? floatval($paid[$column])
+							: floatval($feeHead->amount); // fallback
+					}
+
+					// Replace amount with month-wise array
+					$feeHead->amount = $amounts;
+				}
+			}
+		}
+
+		return $defaultArray;
+	}
 
 }
