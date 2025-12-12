@@ -106,9 +106,7 @@ class Studentfee extends Admin_Controller
 			
         }else{
 
-          
-
-            $insert_data = array(
+			$insert_data = array(
                 'receipt_no'   => $data['receipt_no'],
                 'student_id'   => $data['student_id'],
                 'months'       => '',
