@@ -268,9 +268,6 @@ class Setting_model extends MY_Model {
         } else {
            $this->db->insert('print_headerfooter', $data);
         }
-		
-        //$this->db->where('print_type', $data['print_type']);
-        //$this->db->update('print_headerfooter', $data);
     }
 
     public function get_printheader() {
@@ -286,9 +283,15 @@ class Setting_model extends MY_Model {
         $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
         return $image['header_image'];
     }
+	
+	public function get_header_return($type='') {
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', $type)->get()->row_array();
+        return $image['header_image'];
+    }
+	
 
-    public function unlink_receiptheader() {
-        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
+    public function unlink_receiptheader($type='') {
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', $type)->get()->row_array();
         return $image['header_image'];
     }
 
@@ -299,6 +302,11 @@ class Setting_model extends MY_Model {
 
     public function get_receiptfooter_return() {
         $image = $this->db->select('footer_content')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
+        return $image['footer_content'];
+    }
+	
+	 public function get_footer_return($type='') {
+        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('print_type', $type)->get()->row_array();
         return $image['footer_content'];
     }
 

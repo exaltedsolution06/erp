@@ -50,7 +50,7 @@ class Print_headerfooter extends Admin_Controller {
 
                 if ($_POST['type'] == 'student_receipt') {
 
-                    $path = $this->setting_model->unlink_receiptheader();
+                    $path = $this->setting_model->unlink_receiptheader($_POST['type']);
 
                     $path1 = "uploads/print_headerfooter/student_receipt/" . $path;
                     $url = FCPATH . $path1;
@@ -63,7 +63,7 @@ class Print_headerfooter extends Admin_Controller {
 				else if ($_POST['type'] == 'admission_form') {
 					
 
-                    $path = $this->setting_model->unlink_receiptheader();
+                    $path = $this->setting_model->unlink_receiptheader($_POST['type']);
 
                     $path1 = "uploads/print_headerfooter/admission_form/" . $path;
                     $url = FCPATH . $path1;

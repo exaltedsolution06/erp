@@ -55,7 +55,7 @@
 				<?php
 				if(!empty($data['header_image'])){
 				?>
-				<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $data['header_image']; ?>" style="height:100px;width:100%">
+				<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/admission_form/<?php echo $data['header_image']; ?>" style="height:100px;width:100%">
 				<?php } ?>
             </div>
             <div class="col-12 heading">Basic Information</div>

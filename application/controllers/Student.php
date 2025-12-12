@@ -345,8 +345,10 @@ class Student extends Admin_Controller
 		$data['route_details'] = $this->route_model->get($student['route_id'], 1);
 		$data['vehicle_details'] = $this->vehroute_model->getVechileByRouteforAdmission($student['route_id'], 1);
 		
-		$data['header_image']= $this->setting_model->get_receiptheader_return();
-        $data['footer_text']= $this->setting_model->get_receiptfooter_return();
+		//$data['header_image']= $this->setting_model->get_receiptheader_return();
+		$data['header_image']= $this->setting_model->get_header_return('admission_form');
+        //$data['footer_text']= $this->setting_model->get_receiptfooter_return();
+        $data['footer_text']= $this->setting_model->get_footer_return('admission_form');
 		
         $this->load->view('student/admission', ['data' => $data]);
     }
