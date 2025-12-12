@@ -34,8 +34,8 @@ class Print_headerfooter extends Admin_Controller {
         }
 
 
-
-
+		
+		
 
 
         if ($this->form_validation->run() == FALSE) {
@@ -43,6 +43,8 @@ class Print_headerfooter extends Admin_Controller {
         } else {
 
             if (isset($_FILES["header_image"]) && !empty($_FILES['header_image']['name'])) {
+				 //echo "<pre>";print_r($_FILES);
+				 //echo "<pre>";print_r($_POST);die;
                 $fileInfo = pathinfo($_FILES["header_image"]["name"]);
                 $img_name = 'header_image.' . $fileInfo['extension'];
 
@@ -57,7 +59,21 @@ class Print_headerfooter extends Admin_Controller {
                         unlink($url);
                     }
                     move_uploaded_file($_FILES["header_image"]["tmp_name"], "./uploads/print_headerfooter/student_receipt/" . $img_name);
-                } else {
+                }
+				else if ($_POST['type'] == 'admission_form') {
+					
+
+                    $path = $this->setting_model->unlink_receiptheader();
+
+                    $path1 = "uploads/print_headerfooter/admission_form/" . $path;
+                    $url = FCPATH . $path1;
+
+                    if (file_exists($url)) {
+                        unlink($url);
+                    }
+                    move_uploaded_file($_FILES["header_image"]["tmp_name"], "./uploads/print_headerfooter/admission_form/" . $img_name);
+                } 
+				else {
                     $path = $this->setting_model->unlink_payslipheader();
 
                     $path1 = "uploads/print_headerfooter/staff_payslip/" . $path;

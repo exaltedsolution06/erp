@@ -219,25 +219,25 @@
 				<div class="row mt-2" style="margin-right:0px">
 					<div class="col-<?php echo $data['student']['guardian_pic']!='' ? 10 : 12; ?>">
 						<div class="row d-flex">
-							<div class="col-3 labelOnly">Guardian Name</div>
-							<div class="col-9 borderOnly"><?php echo $data['student']['guardian_name']; ?></div>
+							<div class="col-3 labelOnly">Current Address</div>
+							<div class="col-9 borderOnly"><?php echo $data['student']['current_address']; ?></div>
 						</div>
 						<div class="row mt-2 d-flex">
-							<div class="col-3 labelOnly">Contact No</div>
-							<div class="col-3 borderOnly"><?php echo $data['student']['guardian_phone']; ?></div>
-							<div class="col-3 labelOnly text-right">Occupation</div>
-							<div class="col-3 borderOnly"><?php echo $data['student']['guardian_occupation']; ?></div>
+							<div class="col-3 labelOnly">Permanent Address</div>
+							<div class="col-9 borderOnly"><?php echo $data['student']['permanent_address']; ?></div>
+							<!--<div class="col-3 labelOnly text-right">Occupation</div>
+							<div class="col-3 borderOnly"><?php echo $data['student']['guardian_occupation']; ?></div>-->
 						</div>
-						<div class="row mt-2 d-flex">
+						<!--<div class="row mt-2 d-flex">
 							<div class="col-3 labelOnly">PEN No</div>
 							<div class="col-3 borderOnly"><?php echo $data['student']['guardian_is'] == 'father' ? $data['student']['father_pan_no'] : ($data['student']['guardian_is'] == 'mother' ? $data['student']['mother_pan_no'] : ''); ?></div>
 							<div class="col-3 labelOnly text-right">Adhar No</div>
 							<div class="col-3 borderOnly"><?php echo $data['student']['guardian_is'] == 'father' ? $data['student']['father_aadhar_no'] : ($data['student']['guardian_is'] == 'mother' ? $data['student']['mother_aadhar_no'] : ''); ?></div>
-						</div>
-						<div class="row mt-2 d-flex">
+						</div>-->
+						<!--<div class="row mt-2 d-flex">
 							<div class="col-3 labelOnly">Other No</div>
 							<div class="col-3 borderOnly"><?php echo $data['student']['guardian_is'] == 'father' ? $data['student']['father_other_no'] : ($data['student']['guardian_is'] == 'mother' ? $data['student']['mother_other_no'] : ''); ?></div>
-						</div>
+						</div>-->
 					</div>
 					<?php if(!empty($data['student']['guardian_pic'])) { ?>
 					<div class="col-2">
@@ -287,14 +287,14 @@
 						</table>
 					</div>
 				</div>
-				<div class="row mt-2" style="margin-right:0px">
+				<!--<div class="row mt-2" style="margin-right:0px">
 					<div class="col-3 labelOnly">Current Address</div>
 					<div class="col-9 borderOnly"><?php echo $data['student']['current_address']; ?></div>
 				</div>
 				<div class="row mt-1" style="margin-right:0px">
 					<div class="col-3 labelOnly">Permanent Address</div>
 					<div class="col-9 borderOnly"><?php echo $data['student']['permanent_address']; ?></div>
-				</div>
+				</div>-->
 			</div>
 			
 			<div class="col-12 heading">Miscellaneous Details</div>

@@ -258,8 +258,19 @@ class Setting_model extends MY_Model {
     }
 
     public function add_printheader($data) {
-        $this->db->where('print_type', $data['print_type']);
-        $this->db->update('print_headerfooter', $data);
+		
+		
+		
+		$query = $this->db->where('print_type', $data['print_type'])->get('print_headerfooter');
+        if ($query->num_rows() > 0) {
+            $this->db->where('print_type', $data['print_type']);
+			$this->db->update('print_headerfooter', $data);
+        } else {
+           $this->db->insert('print_headerfooter', $data);
+        }
+		
+        //$this->db->where('print_type', $data['print_type']);
+        //$this->db->update('print_headerfooter', $data);
     }
 
     public function get_printheader() {

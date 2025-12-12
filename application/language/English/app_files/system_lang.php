@@ -1662,3 +1662,4 @@ $lang['head_wise_collection'] = 'Head Wise Collection';
 $lang['fee_category_wise_collection'] = 'Fee Category Wise Collection';
 $lang['route_wise_collection_report'] = 'Route Wise Collection Report';
 $lang['set_captcha'] = 'Set Captcha';
+$lang['admission_form_header_footer'] = 'Admission form header footer';
