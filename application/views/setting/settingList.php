@@ -593,11 +593,11 @@
                                             <label class="col-sm-4"><?php echo $this->lang->line('manual_receipt_no'); ?></label>
                                             <div class="col-sm-8">
                                                 <label class="radio-inline">
-                                                    <input class="receipt-disabled" type="radio" 
+                                                    <input name="receipt_status" class="receipt-disabled" value="0" type="radio" 
                                                     checked><?php echo $this->lang->line('disabled'); ?>
                                                 </label>
                                                 <label class="radio-inline">
-                                                    <input class="receipt-enabled" type="radio"><?php echo $this->lang->line('enabled'); ?>
+                                                    <input name="receipt_status" value="1" class="receipt-enabled" type="radio"><?php echo $this->lang->line('enabled'); ?>
                                                 </label>
                                             </div>
                                         </div>
@@ -606,9 +606,9 @@
 									<div class="col-md-12 receipt-sequence" style="display:none">
                                         <div class="form-group row">
                                             <label class="col-sm-2"><?php echo $this->lang->line('receipt_start_sequence') ?><small class="req"></small></label>
-                                            <div class="col-sm-8">
-
-                                                <input id="receipt_start_sequence" value="<?php echo $result->receipt_sr_no; ?>" name="receipt_start_sequence" placeholder="" type="text" class="form-control"/>
+                                            <div class="col-sm-8">				
+												<input value="<?php echo $result->receipt_sr_no != 0 ? $result->receipt_sr_no : ''; ?>" name="receipt_start_sequence_existing" id="receipt_start_sequence_existing" type="hidden"/>
+                                                <input type="text" class="form-control" id="receipt_start_sequence" name="receipt_start_sequence" value="<?php echo $result->receipt_sr_no != 0 ? $result->receipt_sr_no : ''; ?>"/>
 												<span class="text-danger" id="receipt_error"></span>
                                                 
                                             </div>
@@ -1017,16 +1017,15 @@
         </div>
     </div>
 </div>
-<input type="hidden" id="hid_receipt_sr_no" value="<?php echo $result->receipt_sr_no; ?>">
 <input type="hidden" id="hid_id" value="<?php echo $result->id; ?>">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	let hid_receipt_sr_no = $('#hid_receipt_sr_no').val();
-	if(hid_receipt_sr_no != 0)
+	let hid_receipt_sr_no = $('#receipt_start_sequence_existing').val();
+	if(hid_receipt_sr_no != '')
 	{
-		$('.receipt-sequence').show();
+		//$('.receipt-sequence').show();
 		$('.receipt-enabled').click();
 		/*$('html, body').animate({
 			scrollTop: $('#receipt_start_sequence').offset().top - 200
@@ -1109,18 +1108,23 @@ $(document).ready(function(){
                     });
                     errorMsg(message);
                 }
-				/*else if(data.check_receipt_no == true)
+				else if(data.check_receipt_no == true)
 				{
+					$('.receipt-enabled').click();
 					$('.delete_receipt_record').show();
 					$('.receipt-sequence').show();
-					$('.receipt-enabled').click();
+					
 					$('html, body').animate({
 					  scrollTop: $('#staffid_start_from').offset().top
 					}, 800);
 					$('#receipt_error').text('You have already existing Receipts. Please remove  all receipts to update this field.');
-				}*/
+				}
 				else {
                     successMsg(data.message);
+					if($('.receipt-disabled').is(':checked')) {
+						$('#receipt_start_sequence_existing').val('')
+						$('#receipt_start_sequence').val('')
+					}
                     //window.location.reload(true);
                 }
 
@@ -1131,18 +1135,28 @@ $(document).ready(function(){
 	
 	$(document).on('click', '.receipt-disabled' , function(){
 		$('.receipt-disabled').attr('checked', true);
-		$('.receipt-enabled').attr('checked', false);
-		$('#receipt_start_sequence').val(0);
+		//$('.receipt-enabled').attr('checked', false);
 		$('.receipt-sequence').hide();
+		$('#receipt_start_sequence').val('');
 	});
 	
-	$(document).on('click', '.receipt-enabled' , function(){
-		$('.receipt-disabled').attr('checked', false);
-		$('.receipt-enabled').attr('checked', true);
-		let hid_receipt_sr_no = $('#hid_receipt_sr_no').val();
-		$('#receipt_start_sequence').val(hid_receipt_sr_no);
-		$('.receipt-sequence').show();
-	})
+	$(document).on('change', '.receipt-enabled', function () {
+
+		if ($(this).is(':checked')) {
+
+			$('.receipt-sequence').show();
+
+			let hid_receipt_sr_no = $('#receipt_start_sequence_existing').val();
+			console.log('Hidden:', hid_receipt_sr_no);
+
+			$('#receipt_start_sequence').val(hid_receipt_sr_no);
+
+			$('.delete_receipt_record').hide();
+			$('#receipt_error').text('');
+		}
+	});
+
+
 	
 	$(document).on('click', '.delete_receipt_record', function(){
 		let hid_id = $('#hid_id').val();

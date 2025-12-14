@@ -387,8 +387,13 @@ class Schsettings extends Admin_Controller {
             }
 			
 			// receipt_start_sequence
+			$receipt_status = $this->input->post('receipt_status');
 			$receipt_start_sequence = $this->input->post('receipt_start_sequence');
-			$check_receipt_no = $this->setting_model->check_receipt_no();
+			$receipt_start_sequence_existing = $this->input->post('receipt_start_sequence_existing');
+			$receipt_sequence['receipt_status']	= $receipt_status;
+			$receipt_sequence['receipt_start_sequence']	= $receipt_start_sequence;
+			$receipt_sequence['receipt_start_sequence_existing']	= $receipt_start_sequence_existing;
+			$check_receipt_no = $this->setting_model->check_setting_receipt_no($receipt_sequence);
 			
 			if($check_receipt_no)
 			{

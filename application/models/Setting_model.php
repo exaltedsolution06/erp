@@ -259,6 +259,8 @@ class Setting_model extends MY_Model {
 
     public function add_printheader($data) {
 		
+		//echo '<pre>'; print_r($data); echo '</pre>';die;
+		
 		$query = $this->db->where('print_type', $data['print_type'])->get('print_headerfooter');
         if ($query->num_rows() > 0) {
             $this->db->where('print_type', $data['print_type']);
@@ -324,9 +326,27 @@ class Setting_model extends MY_Model {
     }
 	public function check_receipt_no()
 	{
+		$query = $this->db->get('receipt_sr_no');
+		$num_rows = $query->num_rows();
 
-        $query = $this->db->get('receipt_sr_no');
-        if ($query->num_rows() > 0) {
+        if ($num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+	}
+	public function check_setting_receipt_no($data)
+	{
+		$receipt_status = $data['receipt_status'];
+		$receipt_start_sequence = $data['receipt_start_sequence'];
+		$receipt_start_sequence_existing = $data['receipt_start_sequence_existing'];
+		
+		$num_rows = '';
+		if($receipt_status == 1 && ($receipt_start_sequence_existing == '' || $receipt_start_sequence != $receipt_start_sequence_existing)) { 
+			$query = $this->db->get('receipt_sr_no');
+			$num_rows = $query->num_rows();
+		}
+        if ($num_rows > 0) {
             return true;
         } else {
             return false;

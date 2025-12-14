@@ -25,18 +25,18 @@ class Print_headerfooter extends Admin_Controller {
             $is_required = $this->setting_model->check_haederimage($_POST['type']);
             $this->form_validation->set_rules('header_image', $this->lang->line('header') . " " . $this->lang->line('image'), 'trim|xss_clean|callback_handle_upload[' . $is_required . ']');
             if ($_POST['type'] == 'staff_payslip') {
-                $this->form_validation->set_rules('message', $this->lang->line('message'), 'required|trim|xss_clean');
+                //$this->form_validation->set_rules('message', $this->lang->line('message'), 'required|trim|xss_clean');
                 $message = 'message';
+            } else if ($_POST['type'] == 'admission_form') {
+                //$this->form_validation->set_rules('message2', $this->lang->line('message'), 'required|trim|xss_clean');
+                $message = 'message2';
             } else {
-                $this->form_validation->set_rules('message1', $this->lang->line('message'), 'required|trim|xss_clean');
+                //$this->form_validation->set_rules('message1', $this->lang->line('message'), 'required|trim|xss_clean');
                 $message = 'message1';
             }
         }
 
-
-		
-		
-
+//echo 'dfgfd---',$_POST[$message];die;
 
         if ($this->form_validation->run() == FALSE) {
             
@@ -87,10 +87,37 @@ class Print_headerfooter extends Admin_Controller {
 
                 $data = array('print_type' => $_POST['type'], 'header_image' => $img_name, 'footer_content' => $_POST[$message], 'created_by' => $this->customlib->getStaffID());
                 $this->setting_model->add_printheader($data);
-            }
+            }			
+			else 
+			{				
+				if ($_POST['type'] == 'student_receipt') {
+					$path = $this->setting_model->unlink_receiptheader($_POST['type']);
+					$path1 = "uploads/print_headerfooter/student_receipt/" . $path;
+                    $url = FCPATH . $path1;
+                    if (file_exists($url)) {
+                        unlink($url);
+                    }
+				} else if ($_POST['type'] == 'admission_form') {	
+					$path = $this->setting_model->unlink_receiptheader($_POST['type']);
+					$path1 = "uploads/print_headerfooter/admission_form/" . $path;
+                    $url = FCPATH . $path1;
 
-            $data = array('print_type' => $_POST['type'], 'footer_content' => $_POST[$message], 'created_by' => $this->customlib->getStaffID());
-            $this->setting_model->add_printheader($data);
+                    if (file_exists($url)) {
+                        unlink($url);
+                    }
+				} else {
+					$path = $this->setting_model->unlink_payslipheader();
+                    $path1 = "uploads/print_headerfooter/staff_payslip/" . $path;
+                    $url = FCPATH . $path1;
+                    if (file_exists($url)) {
+                        unlink($url);
+                    }
+				}
+				$data = array('print_type' => $_POST['type'], 'header_image' => '', 'footer_content' => $_POST[$message], 'created_by' => $this->customlib->getStaffID());
+				$this->setting_model->add_printheader($data);
+			}
+			
+            $this->session->set_flashdata('type', $_POST['type']);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
         }
 

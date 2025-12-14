@@ -2291,6 +2291,9 @@ class Studentfee extends Admin_Controller
 					
 					
 				$receipt_amt=$res_del->receipt_amt;
+				$ledger_amt= (int)$res_del->ledger_amt;
+				$balance_amount= (int)$res_del->balance_amt;
+				
 				$this->db->where('student_id', $res_del->student_id);
 				$query = $this->db->get('student_session');
 				
@@ -2298,7 +2301,7 @@ class Studentfee extends Admin_Controller
 					$row = $query->row();
 					$current_discount = (int)$row->fees_discount;
 					
-					$new_discount = $current_discount - $receipt_amt; // ES
+					$new_discount = $current_discount - $ledger_amt + $balance_amount; // ES
 
 					// Step 3: Update the `fees_discount`
 					$this->db->where('student_id', $res_del->student_id);

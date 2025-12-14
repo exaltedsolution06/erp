@@ -4,9 +4,12 @@
         <h1>
             <?php
             echo $this->lang->line('system_settings');
-
+		$activeTab = $this->session->flashdata('type');
+		$activeTab = $activeTab ?: 'student_receipt';
             // print_r(validation_errors());
             //die; 
+			//print_r($_POST['type']);die; 
+			//echo $this->session->flashdata('type');die;
             ?> </h1>
     </section>
 
@@ -18,10 +21,10 @@
                 <div class="nav-tabs-custom box box-primary theme-shadow">
 
                     <ul class="nav nav-tabs pull-right">
-                        <li ><a href="#tab_4" data-toggle="tab"><?php echo $this->lang->line('payslip') ?></a></li>
+                        <li class="<?php echo ($activeTab == 'staff_payslip') ? 'active' : ''?>"><a href="#tab_4" data-toggle="tab"><?php echo $this->lang->line('payslip') ?></a></li>
 						
-                        <li><a href="#tab_3" data-toggle="tab"><?php echo $this->lang->line('fees_receipt'); ?></a></li>
-						<li  class="active"><a href="#tab_2" data-toggle="tab"><?php echo $this->lang->line('admission_form_header_footer') ?></a></li>
+                        <li class="<?php echo ($activeTab == 'student_receipt') ? 'active' : ''?>"><a href="#tab_3" data-toggle="tab"><?php echo $this->lang->line('fees_receipt'); ?></a></li>
+						<li class="<?php echo ($activeTab == 'admission_form') ? 'active' : ''?>"><a href="#tab_2" data-toggle="tab"><?php echo $this->lang->line('admission_form_header_footer') ?></a></li>
 
                         <li class="pull-left header"> <?php echo $this->lang->line('print_headerfooter'); ?></li>
                     </ul>
@@ -36,7 +39,7 @@
                         <?php echo $this->customlib->getCSRF(); ?>
 						
 						<!-- .tab panel -->
-						<div class="tab-pane active" id="tab_2">
+						<div class="tab-pane <?php echo ($activeTab == 'admission_form') ? 'active' : ''?>" id="tab_2">
                             <form role="form"  enctype="multipart/form-data" action="<?php echo site_url('admin/print_headerfooter/edit') ?>" class="" method="post">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -47,10 +50,10 @@
                                             <span class="text-danger"><?php echo form_error('header_image'); ?></span>
                                         </div>
                                         <div class="form-group"><label><?php echo $this->lang->line('footer') . " " . $this->lang->line('content'); ?><small class="req"> *</small></label>
-                                            <textarea id="student_textarea" name="message1" class="form-control" style="height: 250px">
-                                                <?php echo set_value('message1', $result[2]['footer_content']); ?>
+                                            <textarea id="admission_textarea" name="message2" class="form-control" style="height: 250px">
+                                                <?php echo set_value('message2', $result[2]['footer_content']); ?>
                                             </textarea>
-                                            <span class="text-danger"><?php echo form_error('message1'); ?></span>
+                                            <span class="text-danger"><?php echo form_error('message2'); ?></span>
                                         </div>
                                     </div>
 
@@ -69,7 +72,7 @@
                         <!-- /.tab-pane -->
 						
                         <!-- /.tab-pane -->
-                        <div class="tab-pane" id="tab_3">
+                        <div class="tab-pane <?php echo ($activeTab == 'student_receipt') ? 'active' : ''?>" id="tab_3">
                             <form role="form"  enctype="multipart/form-data" action="<?php echo site_url('admin/print_headerfooter/edit') ?>" class="" method="post">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -101,7 +104,7 @@
                         </div>
                         <!-- /.tab-pane -->
 
-                        <div class="tab-pane" id="tab_4">
+                        <div class="tab-pane <?php echo ($activeTab == 'staff_payslip') ? 'active' : ''?>" id="tab_4">
                             <form role="form" action="<?php echo site_url('admin/print_headerfooter/edit') ?>" class="" enctype="multipart/form-data" method="post">
                                 <div class="row">
                                     <div class="col-md-12">     
@@ -142,6 +145,7 @@
 <script src="<?php echo base_url(); ?>backend/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 <script>
     $(function () {
+        $("#admission_textarea").wysihtml5();
         $("#staff_textarea").wysihtml5();
         $("#student_textarea").wysihtml5();
 

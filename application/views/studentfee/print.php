@@ -993,7 +993,7 @@ th, td {
     <div class="card-footer d-flex justify-content-end gap-2">
       <!-- <button class="btn btn-secondary">Cancel</button> -->
       <a href="<?=base_url()?>studentfee"><button class="btn btn-success">Back</button></a>
-      <button class="btn btn-primary"  onclick="window.print()" >Rs Collect & Print</button>
+      <button class="btn btn-primary"  onclick="window.print()" >Print</button>
     </div>
   </div>
 </body>
