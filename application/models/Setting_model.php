@@ -409,5 +409,16 @@ class Setting_model extends MY_Model {
 			'receipt_sr_no' => null
 		]);
 	}
+	
+	public function checkDeleteList($checkData = null)
+    {
+        $this->db->where($checkData['field'], $checkData['id']);
+        $query = $this->db->get($checkData['table']);
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
