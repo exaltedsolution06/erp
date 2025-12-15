@@ -67,7 +67,21 @@ class Sections extends Admin_Controller
             access_denied();
         }
         $data['title'] = 'Section List';
-        $this->section_model->remove($id);
+		//$table = 'class_sections';
+		$checkData['table'] = 'class_sections';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'section_id ';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection)
+		{
+			$this->session->set_flashdata('errmsg', '<div class="alert alert-danger text-left">Section already added in the class list</div>');
+		}
+		else{
+			 //$this->section_model->remove($id);
+		}
+		
+        //$this->section_model->remove($id);
         redirect('sections/index');
     }
 

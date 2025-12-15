@@ -427,7 +427,7 @@ class Customlib
         //     return $student['timezone'];
         // }
     }
-        public function getStartWeek()
+    public function getStartWeek()
     {      
         $admin = $this->CI->session->userdata('admin');
       
@@ -1777,4 +1777,5 @@ class Customlib
         );
 		return $mode;
     }
+
 }
