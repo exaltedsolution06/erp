@@ -173,7 +173,7 @@ th, td {
     <div id="print-area" >
         
         <div class="row">
-          <div class="col-sm-6" style="padding-left: 40px;">
+          <div class="col-sm-6" style="padding-left: 40px; padding-top:20px">
 
 
 
@@ -365,7 +365,7 @@ th, td {
 
 
           </div>
-          <div class="col-sm-6" style="padding-left: 40px;">
+          <div class="col-sm-6" style="padding-left: 10px; padding-right:30px;  padding-top:20px">
 
           <div  style="border:2px solid;" >
 
@@ -784,7 +784,7 @@ th, td {
      <?php //var_dump($fees); ?>
 
     <div id="print-area">
-        <div  style="padding-left: 60px;" >
+        <div  style="padding-left: 40px; padding-right: 20px; padding-top:20px" >
             <div  style="border:2px solid;" >
 
 
