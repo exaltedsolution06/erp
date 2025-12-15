@@ -60,8 +60,8 @@ if($_GET['copy']=='2'){
 @media print {
   @page {
     size: A4 landscape;
-    margin: 0;
-    margin-left:10px;
+    /*margin: 0;
+    margin-left:10px;*/
     margin-top:10px;
   }
 
@@ -89,7 +89,7 @@ if($_GET['copy']=='2'){
     top: 0;
     left: 0;
     /*width: 280mm;*/
-    height: 100vh;
+    /*height: 100vh;*/
     padding: 0 !important;
     box-sizing: border-box;
     overflow: hidden;
@@ -102,7 +102,7 @@ if($_GET['copy']=='2'){
   }
 
   .receipt-card {
-    margin: 0 !important;
+    /*margin: 0 !important;*/
     padding: 0 !important;
     box-shadow: none !important;
     border: none !important;
@@ -120,13 +120,18 @@ if($_GET['copy']=='2'){
   
   .accountant-sign {
     /* position: absolute; */
-    padding-top:4rem;
-    text-align: center;
+    padding-top:3.3rem;
+    text-align: right;
+    padding-right:0 !important;
   }
 
   .abd{
     padding:0px !important;
   }
+  
+	.footer-content{
+		padding:0 !important;
+	}
   .abd>.f12_new{
     font-size:9px !important;
   }
@@ -141,7 +146,7 @@ table {
 th, td {
   
  
-  padding: 3px !important; /* Optional: remove all padding */
+  padding: 0px !important; /* Optional: remove all padding */
   margin: 0px !important; 
 
   padding-left: 15px !important;
@@ -151,11 +156,15 @@ th, td {
 
 .accountant-sign {
     /* position: absolute; */
-   padding-top:4rem;
-    text-align: center;
+   padding-top:3.3rem;
+    text-align: right;
+    padding-right:4px;
   }
 .abd{
   padding:4px;
+}
+.footer-content{
+  padding:0 4px 4px 4px;
 }
 
   </style>
@@ -329,13 +338,34 @@ th, td {
 
 
 <div class="row">
-  <div class="col-9">
+  <div class="col-8">
     <div class="abd">
 
      
       <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
       <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
       <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
+      
+	   <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important">
+							<?= implode(' ', array_filter([
+								$create_by->name ?? '',
+								$create_by->surname ?? ''
+							])); ?> (<?=$create_by->employee_id?>)</span></label>
+      </div>
+  </div>
+
+  
+	<div class="col-4">
+		<div class="accountant-sign">
+			<h6>Accountant Sign</h6>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+	<div class="col-12">
+	<div class="footer-content">
       <label class="f12_new" for="">
 	  <?php
 		if (!empty($footer_text)) {
@@ -345,15 +375,8 @@ th, td {
 		}
 	  ?>
 	   </label>
-	   <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important"><?=$create_by->employee_id?></span></label>
-      </div>
-  </div>
-
-  
-  <div class="col-3 accountant-sign">
-    <h6>Accountant Sign</h6>
-</div>
-
+	</div>
+	</div>
 </div>
 
 </div>
@@ -514,13 +537,33 @@ th, td {
 
 
 <div class="row">
-  <div class="col-9">
+  <div class="col-8">
     <div class="abd">
 
      
       <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
       <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
       <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
+	    <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important">
+							<?= implode(' ', array_filter([
+								$create_by->name ?? '',
+								$create_by->surname ?? ''
+							])); ?> (<?=$create_by->employee_id?>)</span></label>
+      </div>
+  </div>
+
+  
+	<div class="col-4">
+		<div class="accountant-sign">
+			<h6>Accountant Sign</h6>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+	<div class="col-12">
+	<div class="footer-content">
       <label class="f12_new" for="">
 	  <?php
 		if (!empty($footer_text)) {
@@ -530,15 +573,8 @@ th, td {
 		}
 	  ?>
 	   </label>
-	   <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important"><?=$create_by->employee_id?></span></label>
-      </div>
-  </div>
-
-  
-  <div class="col-3 accountant-sign">
-    <h6>Accountant Sign</h6>
-</div>
-
+	</div>
+	</div>
 </div>
 
 </div>
@@ -589,7 +625,7 @@ th, td {
     <div class="card-footer d-flex justify-content-end gap-2">
       <!-- <button class="btn btn-secondary">Cancel</button> -->
       <a href="<?=base_url()?>studentfee/addfee/<?=$backid?>"><button class="btn btn-success">Back</button></a>
-      <button class="btn btn-primary"  onclick="window.print()" >Rs Collect & Print</button>
+      <button class="btn btn-primary"  onclick="window.print()" >Print</button>
     </div>
   </div>
 </body>
@@ -691,7 +727,7 @@ th, td {
     top: 0;
     left: 0;
     width: 150mm;
-    height: 100vh;
+    /*height: 100vh;*/
     padding: 0 !important;
     box-sizing: border-box;
     overflow: hidden;
@@ -704,10 +740,13 @@ th, td {
   }
 
   .receipt-card {
-    margin: 0 !important;
+    /*margin: 0 !important;*/
     padding: 0 !important;
     box-shadow: none !important;
     border: none !important;
+	
+	max-width: none !important;
+    width: 100% !important;
   }
 
   .table th, .table td {
@@ -722,13 +761,17 @@ th, td {
   
   .accountant-sign {
     /* position: absolute; */
-    padding-top:4rem;
-    text-align: center;
+    padding-top:3.3rem;
+    text-align: right;
+    padding-right:0 !important;
   }
 
   .abd{
     padding:0px !important;
   }
+  .footer-content{
+	padding:0 !important;
+	}
   .abd>.f12_new{
     font-size:9px !important;
   }
@@ -743,7 +786,7 @@ table {
 th, td {
   
  
-  padding: 3px !important; /* Optional: remove all padding */
+  padding: 0px !important; /* Optional: remove all padding */
   margin: 0px !important; 
 
   padding-left: 15px !important;
@@ -753,11 +796,15 @@ th, td {
 
 .accountant-sign {
     /* position: absolute; */
-   padding-top:4rem;
-    text-align: center;
+   padding-top:3.3rem;
+    text-align: right;
+    padding-right:4px;
   }
 .abd{
   padding:4px;
+}
+.footer-content{
+  padding:0 4px 4px 4px;
 }
 
   </style>
@@ -773,7 +820,7 @@ th, td {
      <?php //var_dump($fees); ?>
 
     <div id="print-area">
-        <div  style="padding-left: 40px; padding-right: 20px; padding-top:20px">
+        <div  style="padding-left: 40px; padding-right: 20px; padding-top:20px" >
             <div  style="border:2px solid;" >
 
 
@@ -920,14 +967,35 @@ th, td {
 
 
                     <div class="row">
-                      <div class="col-9">
+                      <div class="col-8">
                         <div class="abd">
 
                          
                           <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
                           <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
                           <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
-                          <label class="f12_new" for="">
+                          
+						    <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important">
+							<?= implode(' ', array_filter([
+								$create_by->name ?? '',
+								$create_by->surname ?? ''
+							])); ?> (<?=$create_by->employee_id?>)</span></label>
+                          </div>
+                      </div>
+
+                      
+                      <div class="col-4">
+							<div class="accountant-sign">
+								<h6>Accountant Sign</h6>
+							</div>
+						</div>
+
+                    </div>
+					
+					<div class="row">
+						<div class="col-12">
+						<div class="footer-content">
+						  <label class="f12_new" for="">
 						  <?php
 							if (!empty($footer_text)) {
 								echo $footer_text;
@@ -936,16 +1004,10 @@ th, td {
 							}
 						  ?>
 						   </label>
-						   <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important"><?=$create_by->employee_id?></span></label>
-                          </div>
-                      </div>
-
-                      
-                      <div class="col-3 accountant-sign">
-                        <h6>Accountant Sign</h6>
-                    </div>
-
-                    </div>
+						</div>
+						</div>
+					</div>
+					
                 
         </div>
 

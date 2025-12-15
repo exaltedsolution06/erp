@@ -89,7 +89,7 @@ if($_GET['copy']=='2'){
     top: 0;
     left: 0;
     /*width: 280mm;*/
-    height: 100vh;
+    /*height: 100vh;*/
     padding: 0 !important;
     box-sizing: border-box;
     overflow: hidden;
@@ -120,13 +120,18 @@ if($_GET['copy']=='2'){
   
   .accountant-sign {
     /* position: absolute; */
-    padding-top:4rem;
-    text-align: center;
+    padding-top:3.3rem;
+    text-align: right;
+    padding-right:0 !important;
   }
 
   .abd{
     padding:0px !important;
   }
+  
+	.footer-content{
+		padding:0 !important;
+	}
   .abd>.f12_new{
     font-size:9px !important;
   }
@@ -141,7 +146,7 @@ table {
 th, td {
   
  
-  padding: 3px !important; /* Optional: remove all padding */
+  padding: 0px !important; /* Optional: remove all padding */
   margin: 0px !important; 
 
   padding-left: 15px !important;
@@ -151,11 +156,15 @@ th, td {
 
 .accountant-sign {
     /* position: absolute; */
-   padding-top:4rem;
-    text-align: center;
+   padding-top:3.3rem;
+    text-align: right;
+    padding-right:4px;
   }
 .abd{
   padding:4px;
+}
+.footer-content{
+  padding:0 4px 4px 4px;
 }
 
   </style>
@@ -329,22 +338,14 @@ th, td {
 
 
 <div class="row">
-  <div class="col-9">
+  <div class="col-8">
     <div class="abd">
 
      
       <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
       <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
       <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
-      <label class="f12_new" for="">
-	  <?php
-		if (!empty($footer_text)) {
-			echo $footer_text;
-		} else {
-			echo '<b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp.</span>';
-		}
-	  ?>
-	   </label>
+      
 	   <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important">
 							<?= implode(' ', array_filter([
 								$create_by->name ?? '',
@@ -354,10 +355,28 @@ th, td {
   </div>
 
   
-  <div class="col-3 accountant-sign">
-    <h6>Accountant Sign</h6>
+	<div class="col-4">
+		<div class="accountant-sign">
+			<h6>Accountant Sign</h6>
+		</div>
+	</div>
+
 </div>
 
+<div class="row">
+	<div class="col-12">
+	<div class="footer-content">
+      <label class="f12_new" for="">
+	  <?php
+		if (!empty($footer_text)) {
+			echo $footer_text;
+		} else {
+			echo '<b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp.</span>';
+		}
+	  ?>
+	   </label>
+	</div>
+	</div>
 </div>
 
 </div>
@@ -518,22 +537,13 @@ th, td {
 
 
 <div class="row">
-  <div class="col-9">
+  <div class="col-8">
     <div class="abd">
 
      
       <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
       <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
       <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
-      <label class="f12_new" for="">
-	  <?php
-		if (!empty($footer_text)) {
-			echo $footer_text;
-		} else {
-			echo '<b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp.</span>';
-		}
-	  ?>
-	   </label>
 	    <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important">
 							<?= implode(' ', array_filter([
 								$create_by->name ?? '',
@@ -543,10 +553,28 @@ th, td {
   </div>
 
   
-  <div class="col-3 accountant-sign">
-    <h6>Accountant Sign</h6>
+	<div class="col-4">
+		<div class="accountant-sign">
+			<h6>Accountant Sign</h6>
+		</div>
+	</div>
+
 </div>
 
+<div class="row">
+	<div class="col-12">
+	<div class="footer-content">
+      <label class="f12_new" for="">
+	  <?php
+		if (!empty($footer_text)) {
+			echo $footer_text;
+		} else {
+			echo '<b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp.</span>';
+		}
+	  ?>
+	   </label>
+	</div>
+	</div>
 </div>
 
 </div>
@@ -597,7 +625,7 @@ th, td {
     <div class="card-footer d-flex justify-content-end gap-2">
       <!-- <button class="btn btn-secondary">Cancel</button> -->
       <a href="<?=base_url()?>studentfee/addfee/<?=$backid?>"><button class="btn btn-success">Back</button></a>
-      <button class="btn btn-primary"  onclick="window.print()" >Rs Collect & Print</button>
+      <button class="btn btn-primary"  onclick="window.print()" >Print</button>
     </div>
   </div>
 </body>
@@ -669,7 +697,7 @@ th, td {
 
 @media print {
   @page {
-    size: A4 portrait;
+    size: A4 landscape;
     margin: 0;
     margin-left:10px;
     margin-top:10px;
@@ -698,8 +726,8 @@ th, td {
     position: absolute;
     top: 0;
     left: 0;
-    /*width: 150mm;*/
-    height: 100vh;
+    width: 150mm;
+    /*height: 100vh;*/
     padding: 0 !important;
     box-sizing: border-box;
     overflow: hidden;
@@ -733,13 +761,17 @@ th, td {
   
   .accountant-sign {
     /* position: absolute; */
-    padding-top:4rem;
-    text-align: center;
+    padding-top:3.3rem;
+    text-align: right;
+    padding-right:0 !important;
   }
 
   .abd{
     padding:0px !important;
   }
+  .footer-content{
+	padding:0 !important;
+	}
   .abd>.f12_new{
     font-size:9px !important;
   }
@@ -754,7 +786,7 @@ table {
 th, td {
   
  
-  padding: 3px !important; /* Optional: remove all padding */
+  padding: 0px !important; /* Optional: remove all padding */
   margin: 0px !important; 
 
   padding-left: 15px !important;
@@ -764,11 +796,15 @@ th, td {
 
 .accountant-sign {
     /* position: absolute; */
-   padding-top:4rem;
-    text-align: center;
+   padding-top:3.3rem;
+    text-align: right;
+    padding-right:4px;
   }
 .abd{
   padding:4px;
+}
+.footer-content{
+  padding:0 4px 4px 4px;
 }
 
   </style>
@@ -931,22 +967,14 @@ th, td {
 
 
                     <div class="row">
-                      <div class="col-9">
+                      <div class="col-8">
                         <div class="abd">
 
                          
                           <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
                           <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
                           <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
-                          <label class="f12_new" for="">
-						  <?php
-							if (!empty($footer_text)) {
-								echo $footer_text;
-							} else {
-								echo '<b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp.</span>';
-							}
-						  ?>
-						   </label>
+                          
 						    <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important">
 							<?= implode(' ', array_filter([
 								$create_by->name ?? '',
@@ -956,11 +984,30 @@ th, td {
                       </div>
 
                       
-                      <div class="col-3 accountant-sign">
-                        <h6>Accountant Sign</h6>
-                    </div>
+						<div class="col-4">
+							<div class="accountant-sign">
+								<h6>Accountant Sign</h6>
+							</div>
+						</div>
 
                     </div>
+					
+					<div class="row">
+						<div class="col-12">
+						<div class="footer-content">
+						  <label class="f12_new" for="">
+						  <?php
+							if (!empty($footer_text)) {
+								echo $footer_text;
+							} else {
+								echo '<b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp.</span>';
+							}
+						  ?>
+						   </label>
+						</div>
+						</div>
+					</div>
+
                 
         </div>
 
