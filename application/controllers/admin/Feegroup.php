@@ -48,7 +48,25 @@ class FeeGroup extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Fees Master List';
-        $this->feegroup_model->remove($id);
+		
+		
+		// by ES
+		$checkData['menu'] = 'feecategory';		
+		$checkData['table'] = 'students';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'category_id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Category already used in student</div>');
+		}
+		else{
+			 $this->feegroup_model->remove($id);
+			 $this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Category deleted successfully</div>');
+		}
+		
+        //$this->feegroup_model->remove($id);
         redirect('admin/feegroup/index');
     }
 

@@ -412,10 +412,29 @@ class Setting_model extends MY_Model {
 	
 	public function checkDeleteList($checkData = null)
     {
-        $this->db->where($checkData['field'], $checkData['id']);
-        $query = $this->db->get($checkData['table']);
+		//echo "<pre>";print_r($checkData);die;
+		if($checkData['menu'] == 'feeplan' || $checkData['menu'] == 'routeplan')
+		{
+			
+		}
+		else{
+			$this->db->where($checkData['field'], $checkData['id']);
+			$query = $this->db->get($checkData['table']);
+		}
+		
         if ($query->num_rows() > 0) {
             return true;
+        } else {
+            return false;
+        }
+    }
+	
+	public function getNameById($table = null, $field = null, $id = null)
+    {
+        $this->db->where($field, $id);
+        $query = $this->db->get($table);
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
         } else {
             return false;
         }

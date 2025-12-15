@@ -1021,7 +1021,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	
 	let hid_receipt_sr_no = $('#receipt_start_sequence_existing').val();
 	if(hid_receipt_sr_no != '')
 	{

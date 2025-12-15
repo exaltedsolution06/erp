@@ -77,6 +77,32 @@ class Subjectgroup extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Fees Master List';
+		
+		// by ES
+		/*$class_id	= '';	
+		$subjectgroup = $this->subjectgroup_model->getByID($id);
+		if(!empty($subjectgroup[0]->sections[0]))
+		{
+			$class_id = $subjectgroup[0]->sections[0]->class_id;
+		}
+		
+		
+		
+		$checkData['menu'] = 'subjectgroup';
+		$checkData['table'] = 'subject_group_subjects';
+		$checkData['id'] = $class_id;
+		$checkData['field'] = 'id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Subject already used in subject group</div>');
+		}
+		else{
+			 //$this->subjectgroup_model->remove($id);
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Subject deleted successfully</div>');
+		}*/
+		
         $this->subjectgroup_model->remove($id);
         redirect('admin/subjectgroup');
     }
@@ -102,7 +128,7 @@ class Subjectgroup extends Admin_Controller {
         $data['class_id'] = 0;
         $data['subjectgroupList'] = $subjectgroupList;
         $subjectgroup = $this->subjectgroup_model->getByID($id);
-
+		
 
         if (!empty($subjectgroup[0]->sections)) {
 

@@ -238,7 +238,24 @@ class Examgroup extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Delete Batch';
-        $this->examgroup_model->remove($id);
+		
+		// ES
+		$checkData['menu'] = 'createexam';
+		$checkData['table'] = ' exam_group_class_batch_exams';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'exam_group_id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Exam term already used</div>');
+		}
+		else{
+			 $this->examgroup_model->remove($id);
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Exam term deleted successfully</div>');
+		}
+		
+        //$this->examgroup_model->remove($id);
         redirect('admin/examgroup');
     }
 

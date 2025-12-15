@@ -97,7 +97,24 @@ class Vehicle extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Fees Master List';
-        $this->vehicle_model->remove($id);
+		
+		// by ES 
+		$checkData['menu'] = 'addvehicle';
+		$checkData['table'] = 'students';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'vehroute_id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Vehicle already used in student</div>');
+		}
+		else{
+			$this->vehicle_model->remove($id);
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Vehicle deleted successfully</div>');
+		}
+		
+        //$this->vehicle_model->remove($id);
         redirect('admin/vehicle/index');
     }
 	/**

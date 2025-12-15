@@ -240,6 +240,11 @@
                     <div class="box-header ptbnull">
                         <h3 class="box-title titlefix">Fees Head List</h3>
                     </div>
+					<?php if ($this->session->flashdata('editmsg')) { ?>
+                                    <?php echo $this->session->flashdata('editmsg') ?>
+						<?php 
+					    $this->session->unset_userdata('editmsg');
+						} ?> 
                     <div class="box-body">
                         <div class="mt-5">
                             <div class="table-responsive">
@@ -284,7 +289,9 @@
                                                  <td class="text-left">
                                                     <i class="fa-solid <?= $isChecked ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger' ?>"></i>
                                                 </td>
-                                                <?php endforeach; ?>
+                                                <?php 
+												
+												endforeach; ?>
                                             <td>
                                                 <a data-placement="left" href="<?php echo site_url('admin/feetype/edit/' . $fee['id']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                     <i class="fa fa-pencil"></i>

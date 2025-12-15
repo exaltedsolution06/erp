@@ -238,6 +238,23 @@ class Feemaster extends Admin_Controller {
         $this->db->where('id', $id);
         // $this->db->where('is_system', 0);
         $this->db->delete('fees_plan');
+		
+		// ES
+		$checkData['menu'] = 'feeplan';
+		$checkData['table'] = 'subject_group_subjects';
+		$checkData['id'] = $class_id;
+		$checkData['field'] = 'id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Subject already used in subject group</div>');
+		}
+		else{
+			 //$this->subjectgroup_model->remove($id);
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Subject deleted successfully</div>');
+		}
+		
         redirect('admin/feemaster/index');
     }
 

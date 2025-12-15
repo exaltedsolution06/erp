@@ -216,8 +216,26 @@ class Feesroutes extends Admin_Controller
     
     function delete($id) {
         $data['title'] = 'Fees Master List';
-        $this->db->where('id',$id);
-        $this->db->delete('route_head');
+		
+		// by ES 
+		$checkData['menu'] = 'createroute';
+		$checkData['table'] = 'students';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'route_id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Route already used in student</div>');
+		}
+		else{
+			$this->db->where('id',$id);
+			$this->db->delete('route_head');
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Route deleted successfully</div>');
+		}
+		
+        //$this->db->where('id',$id);
+        //$this->db->delete('route_head');
         redirect('admin/feesroutes/index');
     }
 
