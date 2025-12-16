@@ -505,6 +505,41 @@ class Setting_model extends MY_Model {
 			}
 			return $count;
 		}
+		if($checkData['menu'] == 'createexam')
+		{
+			
+			$this->db->select('id');
+			$this->db->where('exam_group_id', $checkData['id']);
+			$exam_ids = $this->db->get('exam_group_class_batch_exams');
+			//echo "<pre>";print_r($exam_ids->result_array());
+			$batch_exam_student_arr = [];
+			$batch_exam_subject_arr = [];
+			foreach($exam_ids->result_array() as $exams)
+			{
+				$this->db->select('id');
+				$this->db->where('exam_group_class_batch_exam_id', $exams['id']);
+				$query = $this->db->get('exam_group_class_batch_exam_students');
+
+				foreach ($query->result_array() as $row) {
+					$batch_exam_student_arr[] = $row['id'];
+				}
+			}
+			//echo "<pre>";print_r($batch_exam_student_arr);
+			
+			foreach($exam_ids->result_array() as $exams)
+			{
+				
+				$this->db->select('id');
+				$this->db->where('exam_group_class_batch_exams_id', $exams['id']);
+				$query = $this->db->get('exam_group_class_batch_exam_subjects');
+				
+				foreach ($query->result_array() as $row) {
+					$batch_exam_subject_arr[] = $row['id'];
+				}
+			}
+			
+			//echo "<pre>";print_r($batch_exam_subject_arr);die;
+		}
 		else{
 			$this->db->where($checkData['field'], $checkData['id']);
 			$query = $this->db->get($checkData['table']);

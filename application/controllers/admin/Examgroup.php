@@ -241,7 +241,7 @@ class Examgroup extends Admin_Controller {
 		
 		// ES
 		$checkData['menu'] = 'createexam';
-		$checkData['table'] = ' exam_group_class_batch_exams';
+		$checkData['table'] = 'exam_group_class_batch_exams';
 		$checkData['id'] = $id;
 		$checkData['field'] = 'exam_group_id';
 		$ifsection = $this->Setting_model->checkDeleteList($checkData);
@@ -251,7 +251,7 @@ class Examgroup extends Admin_Controller {
 			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Exam term already used</div>');
 		}
 		else{
-			 $this->examgroup_model->remove($id);
+			//$this->examgroup_model->remove($id);
 			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Exam term deleted successfully</div>');
 		}
 		
