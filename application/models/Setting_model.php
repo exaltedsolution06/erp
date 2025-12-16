@@ -413,19 +413,11 @@ class Setting_model extends MY_Model {
 	public function checkDeleteList($checkData = null)
     {
 		//echo "<pre>";print_r($checkData);die;
-		if($checkData['menu'] == 'feeplan' || $checkData['menu'] == 'routeplan')
+		$session_result = $this->get();
+		$current_session_id = $session_result[0]['current_session']['session_id'];
+		if($checkData['menu'] == 'feeplan')
 		{
-			echo "<pre>";print_r($checkData);
-			$session_result = $this->get();
-			$current_session_id = $session_result[0]['current_session']['session_id'];
-			
-			/*$this->db->where_in('class_id', $checkData['class']);
-			$this->db->where_in('session_id', $current_session_id);
-			$this->db->order_by('student_id', 'ASC');
-			$query = $this->db->get('student_session');
-			$result = $query->result_array();
-			echo "<pre>";print_r($result);die;*/
-			
+			//echo "<pre>";print_r($checkData);
 			$this->db->select('distinct(student_session.student_id) as student_id,students.category_id');
 			$this->db->from('student_session');
 			$this->db->join('students', 'students.id = student_session.student_id');
@@ -445,9 +437,73 @@ class Setting_model extends MY_Model {
 				{
 					$existsStudent++;
 				}
-				
 			}
 			return $existsStudent;
+		}
+		if($checkData['menu'] == 'routeplan')
+		{
+			//echo "<pre>";print_r($checkData);
+			$this->db->select('distinct(student_session.student_id) as student_id,student_session.class_id');
+			$this->db->from('student_session');
+			$this->db->join('students', 'students.id = student_session.student_id');
+			$this->db->where_in('student_session.class_id', $checkData['class']);
+			$this->db->where('student_session.session_id', $current_session_id);
+			$this->db->order_by('student_session.student_id', 'ASC');
+			$query = $this->db->get();
+			$result = $query->result_array();
+			//echo "<pre>";print_r($result);die;
+			
+			$existsStudent = 0;
+			foreach($result as $res)
+			{
+				$this->db->where('id', $res['student_id']);
+				$this->db->where('route_id', $checkData['route_id']);
+				$this->db->where_in('category_id', $checkData['categories']);
+				$qr = $this->db->get('students');
+				if($qr->num_rows() > 0)
+				{
+					$existsStudent++;
+				}
+			}
+			return $existsStudent;
+		}
+		if($checkData['menu'] == 'subjectgroup')
+		{
+			$this->db->select('
+				exam_group_class_batch_exam_students.exam_group_class_batch_exam_id AS exam_id,
+				exam_group_class_batch_exam_students.student_id,
+				exam_group_class_batch_exam_subjects.subject_id,
+				student_session.class_id,
+				student_session.section_id
+			');
+			$this->db->from('exam_group_class_batch_exam_students');
+			$this->db->join(
+				'exam_group_class_batch_exam_subjects',
+				'exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id = exam_group_class_batch_exam_students.exam_group_class_batch_exam_id'
+			);
+			$this->db->join(
+				'student_session',
+				'student_session.student_id = exam_group_class_batch_exam_students.student_id'
+			);
+			$this->db->group_by([
+				'exam_group_class_batch_exam_students.exam_group_class_batch_exam_id',
+				'exam_group_class_batch_exam_students.student_id',
+				'exam_group_class_batch_exam_subjects.subject_id',
+				'student_session.class_id',
+				'student_session.section_id'
+			]);
+
+			$qr = $this->db->get();
+			//echo "<pre>"; print_r($qr->result_array()); 
+			$count =0;
+			foreach($qr->result_array() as $res)
+			{
+				if($res['class_id'] == $checkData['subject_array'][0]['class_id'] && $res['section_id'] == $checkData['subject_array'][0]['section_id'])
+				{
+					$count++;
+				}
+			}
+			return $count;
 		}
 		else{
 			$this->db->where($checkData['field'], $checkData['id']);

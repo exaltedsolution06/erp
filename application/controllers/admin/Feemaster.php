@@ -258,7 +258,7 @@ class Feemaster extends Admin_Controller {
 		//echo $ifsection;die;
 		if($ifsection > 0)
 		{
-			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Class with respect to categoty already has students</div>');
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Class with respect to category already has students</div>');
 		}
 		else{
 			$this->db->where('id', $id);

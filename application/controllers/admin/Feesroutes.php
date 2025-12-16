@@ -447,9 +447,35 @@ class Feesroutes extends Admin_Controller
     
     function delete1($id) {
         $data['title'] = 'Fees Master List';
-        $this->db->where('id',$id);
-        $this->db->delete('route_plan');
-        $this->session->set_flashdata('msg', '<div class="alert alert-success">Fee Master Delete successfully.</div>');
+        //$this->db->where('id',$id);
+        //$this->db->delete('route_plan');
+        //$this->session->set_flashdata('msg', '<div class="alert alert-success">Fee Master Delete successfully.</div>');
+		
+		// ES
+		$this->db->where('id', $id);
+		$query = $this->db->get('route_plan');
+		$res = $query->row_array();
+		$class = json_decode($res['class_ids']);
+		$route_id = $res['fee_group_id'];
+		$categories = json_decode($res['category_ids']);
+		
+		$checkData['menu'] = 'routeplan';
+		$checkData['parenttable'] = 'students';
+		$checkData['table'] = 'route_plan';
+		$checkData['id'] = $id;
+		$checkData['class'] = $class;
+		$checkData['categories'] = $categories;
+		$checkData['route_id'] = $route_id;
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Route head with respect to Class and category already has students</div>');
+		}
+		else{
+			$this->db->where('id',$id);
+			$this->db->delete('route_plan');
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Route plan deleted successfully</div>');
+		}
                 
         redirect('admin/feesroutes/plan');
     }

@@ -309,7 +309,7 @@ foreach ($sessionlist as $session) {
                         <div class="col-sm-6">
                                 <div class="form-group">
                             <label><?php echo $this->lang->line('class'); ?></label><small class="req"> *</small>
-                            <select autofocus="" id="class_id" name="class_id" class="form-control" >
+                            <select autofocus="" id="class_id" name="class_id" class="form-control">
                                 <option value=""><?php echo $this->lang->line('select'); ?></option>
                                 <?php
 foreach ($classlist as $class) {

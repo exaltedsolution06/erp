@@ -301,7 +301,6 @@ class Examgroup extends Admin_Controller {
     }
 
     public function addexam($id) {
-
         if (!$this->rbac->hasPrivilege('exam', 'can_view')) {
             access_denied();
         }

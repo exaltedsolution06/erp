@@ -115,6 +115,12 @@
                     <div class="box-body">
                         <div class="table-responsive mailbox-messages" id="subject_list">
                             <div class="download_label"><?php echo $this->lang->line('subject') . " " . $this->lang->line('group') . " " . $this->lang->line('list'); ?></div>
+							
+							<?php if ($this->session->flashdata('editmsg')) { ?>
+                                    <?php echo $this->session->flashdata('editmsg') ?>
+							<?php 
+								$this->session->unset_userdata('editmsg');
+							} ?> 
 
                             <a class="btn btn-default btn-xs pull-right" id="print" onclick="printDiv()" ><i class="fa fa-print"></i></a> <a class="btn btn-default btn-xs pull-right" id="btnExport" onclick="fnExcelReport();"> <i class="fa fa-file-excel-o"></i> </a>
                             <table class="table table-striped  table-hover " id="headerTable">

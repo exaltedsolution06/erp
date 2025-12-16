@@ -77,33 +77,49 @@ class Subjectgroup extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Fees Master List';
+		//echo $id; die;
+		// By ES
+		$current_session_id = $this->setting_model->getCurrentSession();
 		
-		// by ES
-		/*$class_id	= '';	
-		$subjectgroup = $this->subjectgroup_model->getByID($id);
-		if(!empty($subjectgroup[0]->sections[0]))
+		$this->db->select('subject_group_class_sections.subject_group_id,class_sections.class_id,class_sections.section_id,subject_group_subjects.subject_id');
+		$this->db->from('subject_group_class_sections');
+		$this->db->join('subject_group_subjects', 'subject_group_subjects.subject_group_id = subject_group_class_sections.subject_group_id');
+		$this->db->join('class_sections', 'class_sections.id = subject_group_class_sections.class_section_id');
+		$this->db->where('subject_group_class_sections.session_id', $current_session_id);
+		$this->db->where('subject_group_class_sections.subject_group_id', $id);
+		$query = $this->db->get();
+		//echo "<pre>";print_r($query->result_array());die;
+		$subject_array = [];
+		foreach($query->result_array() as $key => $val)
 		{
-			$class_id = $subjectgroup[0]->sections[0]->class_id;
+			if (empty($subject_array)) {
+				$subject_array[$key] = [
+					'class_id' =>	$val['class_id'],
+					'section_id' =>	$val['section_id'],
+					'subject' =>	[],
+				];
+			 }
+			$subject_array[0]['subject'][] = $val['subject_id'];
 		}
+		$subject_array = array_values($subject_array);
 		
-		
-		
+		//echo "<pre>";print_r($subject_array);
 		$checkData['menu'] = 'subjectgroup';
-		$checkData['table'] = 'subject_group_subjects';
-		$checkData['id'] = $class_id;
+		$checkData['table'] = '';
 		$checkData['field'] = 'id';
+		$checkData['subject_array'] = $subject_array;
 		$ifsection = $this->Setting_model->checkDeleteList($checkData);
 		
 		if($ifsection > 0)
 		{
-			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Subject already used in subject group</div>');
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Subject group already used in exam term</div>');
 		}
 		else{
-			 //$this->subjectgroup_model->remove($id);
-			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Subject deleted successfully</div>');
-		}*/
+			$this->subjectgroup_model->remove($id);
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Subject group deleted successfully</div>');
+		}
 		
-        $this->subjectgroup_model->remove($id);
+        //$this->subjectgroup_model->remove($id);
         redirect('admin/subjectgroup');
     }
 
