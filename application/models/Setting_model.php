@@ -415,18 +415,51 @@ class Setting_model extends MY_Model {
 		//echo "<pre>";print_r($checkData);die;
 		if($checkData['menu'] == 'feeplan' || $checkData['menu'] == 'routeplan')
 		{
+			echo "<pre>";print_r($checkData);
+			$session_result = $this->get();
+			$current_session_id = $session_result[0]['current_session']['session_id'];
 			
+			/*$this->db->where_in('class_id', $checkData['class']);
+			$this->db->where_in('session_id', $current_session_id);
+			$this->db->order_by('student_id', 'ASC');
+			$query = $this->db->get('student_session');
+			$result = $query->result_array();
+			echo "<pre>";print_r($result);die;*/
+			
+			$this->db->select('distinct(student_session.student_id) as student_id,students.category_id');
+			$this->db->from('student_session');
+			$this->db->join('students', 'students.id = student_session.student_id');
+			$this->db->where_in('student_session.class_id', $checkData['class']);
+			$this->db->where('student_session.session_id', $current_session_id);
+			$this->db->order_by('student_session.student_id', 'ASC');
+			$query = $this->db->get();
+			$result = $query->result_array();
+			//echo "<pre>";print_r($result);die;
+			$existsStudent = 0;
+			foreach($result as $res)
+			{
+				$this->db->where('id', $res['student_id']);
+				$this->db->where_in('category_id', $checkData['categories']);
+				$qr = $this->db->get('students');
+				if($qr->num_rows() > 0)
+				{
+					$existsStudent++;
+				}
+				
+			}
+			return $existsStudent;
 		}
 		else{
 			$this->db->where($checkData['field'], $checkData['id']);
 			$query = $this->db->get($checkData['table']);
+			if ($query->num_rows() > 0) {
+            return true;
+			} else {
+				return false;
+			}
 		}
 		
-        if ($query->num_rows() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        
     }
 	
 	public function getNameById($table = null, $field = null, $id = null)
