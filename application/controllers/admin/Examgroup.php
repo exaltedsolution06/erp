@@ -251,7 +251,7 @@ class Examgroup extends Admin_Controller {
 			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Exam term already used</div>');
 		}
 		else{
-			//$this->examgroup_model->remove($id);
+			$this->examgroup_model->remove($id);
 			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Exam term deleted successfully</div>');
 		}
 		
@@ -452,6 +452,8 @@ class Examgroup extends Admin_Controller {
                 'is_publish' => $is_publish,
                 'description' => $this->input->post('description'),
             );
+			
+			
 
             if ($exam_id != 0) {
                 $postarray['id'] = $exam_id;
