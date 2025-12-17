@@ -3693,6 +3693,11 @@ content: "";
         background: #779f08;
         border-radius: 100%;
         font-size: 10px;}
+
+#suggestionsList.list-group {
+	max-height: 300px;
+	overflow-y: auto;
+}		
 /*body:not(.form-membership) {overflow: hidden;}*/
 
 @media(max-width:767px){
