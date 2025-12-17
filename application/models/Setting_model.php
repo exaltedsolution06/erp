@@ -505,6 +505,85 @@ class Setting_model extends MY_Model {
 			}
 			return $count;
 		}
+		if($checkData['menu'] == 'createexam')
+		{
+			//echo "<pre>";print_r($checkData);die;
+			$this->db->where($checkData['field'], $checkData['id']);
+			$query = $this->db->get($checkData['table']);
+			if($query->num_rows() > 0)
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		if($checkData['menu'] == 'assessment')
+		{
+			
+			$this->db->select('id');
+			$this->db->where('exam_group_id', $checkData['id']);
+			$exam_ids = $this->db->get('exam_group_class_batch_exams');
+			//echo "<pre>";print_r($exam_ids->result_array());
+			$batch_exam_student_arr = [];
+			$batch_exam_subject_arr = [];
+			foreach($exam_ids->result_array() as $exams)
+			{
+				$this->db->select('id');
+				$this->db->where('exam_group_class_batch_exam_id', $exams['id']);
+				$query = $this->db->get('exam_group_class_batch_exam_students');
+
+				foreach ($query->result_array() as $row) {
+					$batch_exam_student_arr[] = $row['id'];
+				}
+			}
+			echo "<pre>";print_r($batch_exam_student_arr);
+			
+			foreach($exam_ids->result_array() as $exams)
+			{
+				
+				$this->db->select('id');
+				$this->db->where('exam_group_class_batch_exams_id', $exams['id']);
+				$query = $this->db->get('exam_group_class_batch_exam_subjects');
+				
+				foreach ($query->result_array() as $row) {
+					$batch_exam_subject_arr[] = $row['id'];
+				}
+			}
+			
+			echo "<pre>";print_r($batch_exam_subject_arr);
+			$count =0;
+			//  check from field class_batch_exam_subject_id
+			$this->db->where_in('exam_group_class_batch_exam_subject_id', $batch_exam_subject_arr);
+			$subj = $this->db->get('exam_group_exam_results');
+			if($subj->num_rows() > 0)
+			{
+				echo 'yes';die;
+				$count = 1;
+				return true;
+			}
+			else{
+				echo 'no';die;
+				return false;
+			}
+			
+			// check from field class_batch_exam_student_id
+			$this->db->where_in('exam_group_class_batch_exam_student_id ', $batch_exam_student_arr);
+			$studt = $this->db->get('exam_group_exam_results');
+			if($studt->num_rows() > 0)
+			{
+				echo 'yes';die;
+				$count = 1;
+				return true;
+			}
+			else{
+				echo 'no';die;
+				return false;
+			}
+			
+			return $count;
+			
+		}
 		else{
 			$this->db->where($checkData['field'], $checkData['id']);
 			$query = $this->db->get($checkData['table']);
