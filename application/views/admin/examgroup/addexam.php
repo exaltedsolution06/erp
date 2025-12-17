@@ -376,6 +376,7 @@ if (set_value('class_id') == $class['id']) {
                     $modalDiv.addClass('modalloading');
                 },
                 success: function (data) {
+					//alert(data.message);
                     if (data.status == 1) {
                         successMsg(data.message);
                         all_records();

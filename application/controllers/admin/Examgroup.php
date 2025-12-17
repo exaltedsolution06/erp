@@ -156,11 +156,45 @@ class Examgroup extends Admin_Controller {
 
         $data['title'] = 'deleteExam';
         $id = $this->input->post('id');
-        if (!$this->examgroup_model->delete_exam($id)) {
+		//echo 'hello del'.$id;
+		
+		// ES
+		//$checkData['menu'] = 'assessment';
+		$checkDataSubject['tableSubject'] = 'exam_group_class_batch_exam_subjects';
+		
+		$checkDataSubject['id'] = $id;
+		$checkDataSubject['field'] = 'exam_group_class_batch_exams_id ';
+		
+		$checkDataStudent['tableStudent'] = 'exam_group_class_batch_exam_students';
+		$checkDataStudent['id'] = $id;
+		$checkDataStudent['field'] = 'exam_group_class_batch_exam_id ';
+		$ifstudent = $this->Setting_model->checkDeleteListStudent($checkDataStudent);
+		$ifsubject = $this->Setting_model->checkDeleteListSubject($checkDataSubject);
+		
+		//echo $ifstudent.'-'.$ifsubject;die;
+		if($ifstudent > 0 && $ifsubject > 0)
+		{
+			echo json_encode(array('status' => 0, 'message' => $this->lang->line('student_subject_has_assessment')));
+		}
+		elseif($ifstudent == 0 && $ifsubject > 0)
+		{
+			echo json_encode(array('status' => 0, 'message' => $this->lang->line('subject_has_assessment')));
+		}
+		elseif($ifstudent > 0 && $ifsubject == 0)
+		{
+			echo json_encode(array('status' => 0, 'message' => $this->lang->line('student_has_assessment')));
+		}
+		elseif($ifstudent == 0 && $ifsubject == 0){
+			//$this->examgroup_model->remove($id);
+			$this->examgroup_model->remove_assessment($id);
+			echo json_encode(array('status' => 1, 'message' => $this->lang->line('record_deleted_successfully')));
+		}
+		//echo "<pre>";print_r($ifrecord);die;
+		/*if (!$this->examgroup_model->delete_exam($id)) {
             echo json_encode(array('status' => 0, 'message' => $this->lang->line('something_wrong')));
         } else {
             echo json_encode(array('status' => 1, 'message' => $this->lang->line('record_deleted_successfully')));
-        }
+        }*/
     }
 
     public function exam($id) {
