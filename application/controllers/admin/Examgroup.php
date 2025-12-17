@@ -190,17 +190,7 @@ class Examgroup extends Admin_Controller {
 			echo json_encode(array('status' => 1, 'message' => $this->lang->line('record_deleted_successfully')));
 		}
 		//echo "<pre>";print_r($ifrecord);die;
-		/*if($ifsection > 0)
-		{
-			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Exam term already used</div>');
-		}
-		else{
-			$this->examgroup_model->remove($id);
-			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Exam term deleted successfully</div>');
-		}*/
-		
-		
-        /*if (!$this->examgroup_model->delete_exam($id)) {
+		/*if (!$this->examgroup_model->delete_exam($id)) {
             echo json_encode(array('status' => 0, 'message' => $this->lang->line('something_wrong')));
         } else {
             echo json_encode(array('status' => 1, 'message' => $this->lang->line('record_deleted_successfully')));
