@@ -240,13 +240,13 @@
                     <div class="box-header ptbnull">
                         <h3 class="box-title titlefix">Fees Head List</h3>
                     </div>
+                    <div class="box-body">
+                        <div class="mt-5">
 					<?php if ($this->session->flashdata('editmsg')) { ?>
                                     <?php echo $this->session->flashdata('editmsg') ?>
 						<?php 
 					    $this->session->unset_userdata('editmsg');
 						} ?> 
-                    <div class="box-body">
-                        <div class="mt-5">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped mt-3">
                                     <thead class="table-light">
