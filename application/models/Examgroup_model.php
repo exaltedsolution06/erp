@@ -665,5 +665,20 @@ class Examgroup_model extends MY_Model {
         $result = $query->result();
         return $result;
     }
+	public function remove_assessment($id) {
+        $this->db->trans_begin();
+        $this->db->where('id', $id);
+        $this->db->delete('exam_group_class_batch_exams'); //class record delete.
+        $message = DELETE_RECORD_CONSTANT . " On exam groups id " . $id;
+        $action = "Delete";
+        $record_id = $id;
+        $this->log($message, $record_id, $action);
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+        } else {
+            $this->db->trans_commit();
+        }
+        return true;
+    }
 
 }
