@@ -100,14 +100,14 @@ class Vehicle extends Admin_Controller {
 		
 		// by ES 
 		$checkData['menu'] = 'addvehicle';
-		$checkData['table'] = 'students';
+		$checkData['table'] = 'vehicle_routes';
 		$checkData['id'] = $id;
-		$checkData['field'] = 'vehroute_id';
+		$checkData['field'] = 'vehicle_id';
 		$ifsection = $this->Setting_model->checkDeleteList($checkData);
 		
 		if($ifsection > 0)
 		{
-			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Vehicle already used in student</div>');
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Vehicle already assign in route</div>');
 		}
 		else{
 			$this->vehicle_model->remove($id);
