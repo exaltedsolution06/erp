@@ -41,13 +41,13 @@
                     <div class="box-header ptbnull">
                         <h3 class="box-title titlefix">Account List</h3>
                     </div>
+                    <div class="box-body ">
+                        <div class="table-responsive mailbox-messages">
 					<?php if ($this->session->flashdata('editmsg')) { ?>
                                     <?php echo $this->session->flashdata('editmsg') ?>
 						<?php 
 					    $this->session->unset_userdata('editmsg');
 						} ?> 
-                    <div class="box-body ">
-                        <div class="table-responsive mailbox-messages">
                             <div class="download_label"><?php echo $this->lang->line('section_list'); ?></div>
                             <table class="table table-striped table-bordered table-hover example">
                                 <thead>
