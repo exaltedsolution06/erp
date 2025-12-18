@@ -792,6 +792,25 @@
 
 
                                 </div><!--./row-->
+								
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="settinghr"></div>
+                                        <div class="relative">
+                                            <h4 class="session-head"><?php echo $this->lang->line('main_domain'); ?></h4>
+                                        </div>
+                                    </div><!--./col-md-12-->
+
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label class="col-sm-2"> <?php echo $this->lang->line('main_domain_url') ?></label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="main_domain_url" id="main_domain_url" class="form-control" value="<?php echo $result->main_domain_url; ?>">
+                                                <span class="text-danger"><?php echo form_error('main_domain_url'); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--./row-->
 
                                 <div class="row">
                                     <div class="col-md-12">

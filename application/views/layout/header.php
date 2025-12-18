@@ -139,6 +139,22 @@ if ($this->config->item('SSLK') == "") {
  
                                 </form>
                             <?php }?>
+							<?php
+								$baseUrl = $this->setting_model->get_main_domain_url();
+								if (!empty($baseUrl)) {
+									$apiUrl = $baseUrl . '/api/branch';
+									$branches = call_api_get($apiUrl);
+							?>
+									<select>
+									<?php foreach ($branches['data'] as $branch) { ?>
+										<option value="<?= $branch['id']; ?>">
+											<?= $branch['branch_name']; ?>
+										</option>
+									<?php } ?>
+									</select>
+							<?php 
+								}
+							?>
                             <div class="navbar-custom-menu">
                                 <?php if($this->rbac->hasPrivilege('language_switcher','can_view')){
                                     ?>
