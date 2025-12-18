@@ -1666,3 +1666,4 @@ $lang['admission_form_header_footer'] = 'Admission form header footer';
 $lang['student_subject_has_assessment'] = "Student and Subject inserted with respect to the assessment";
 $lang['subject_has_assessment'] = "Subject inserted with respect to the assessment";
 $lang['student_has_assessment'] = "Student inserted with respect to the assessment";
+$lang['scholastic_has_class'] = "Classes inserted with respect to the assessment";

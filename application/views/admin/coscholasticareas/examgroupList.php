@@ -98,6 +98,11 @@
                     <div class="box-body">
                         <div class="mailbox-messages table-responsive">
                             <div class="download_label"> <?php echo $this->lang->line('exam') . " " . $this->lang->line('group') . " " . $this->lang->line('list') ?></div>
+							<?php if ($this->session->flashdata('editmsg')) { ?>
+                                    <?php echo $this->session->flashdata('editmsg') ?>
+							<?php 
+								$this->session->unset_userdata('editmsg');
+							} ?> 
                             <table class="table table-hover table-striped table-bordered example">
                                 <thead>
                                     <tr>

@@ -518,6 +518,30 @@ class Setting_model extends MY_Model {
 				return false;
 			}
 		}
+		if($checkData['menu'] == 'coscholasticareas')
+		{
+			$this->db->where($checkData['field'], $checkData['id']);
+			$query = $this->db->get($checkData['table']);
+			if($query->num_rows() > 0)
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		if($checkData['menu'] == 'scholasticAssessment')
+		{
+			$this->db->where($checkData['field'], $checkData['id']);
+			$query = $this->db->get($checkData['table']);
+			if($query->num_rows() > 0)
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
 		else{
 			$this->db->where($checkData['field'], $checkData['id']);
 			$query = $this->db->get($checkData['table']);
