@@ -17,7 +17,7 @@ class MY_Controller extends CI_Controller {
         $this->load->library('pushnotification');
         $this->load->library('jsonlib');
         $this->load->helper(array('directory', 'customfield', 'custom'));
-        $this->load->model(array('setting_model', 'customfield_model', 'onlinestudent_model', 'houselist_model', 'onlineexam_model', 'onlineexamquestion_model', 'onlineexamresult_model', 'examstudent_model', 'admitcard_model', 'marksheet_model', 'reportcard_model', 'chatuser_model', 'examgroupstudent_model', 'examgroup_model', 'batchsubject_model'));
+        $this->load->model(array('setting_model', 'customfield_model', 'onlinestudent_model', 'houselist_model', 'onlineexam_model', 'onlineexamquestion_model', 'onlineexamresult_model', 'examstudent_model', 'admitcard_model', 'marksheet_model', 'reportcard_model', 'chatuser_model', 'examgroupstudent_model', 'examgroup_model', 'batchsubject_model', 'branch_model'));
 
         if ($this->session->has_userdata('admin')) {
 

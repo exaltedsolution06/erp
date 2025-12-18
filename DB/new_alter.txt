@@ -4,6 +4,7 @@ New table -
 2) template_reportcard
 3) fee_discounts
 4) receipt_sr_no (id, sr_no(bigint))
+5) branches
 
 ==============================Alter script==============================
 ALTER TABLE `subjects` ADD `type_one` VARCHAR(100) NOT NULL AFTER `type`;
@@ -21,6 +22,9 @@ ALTER TABLE `template_reportcard` ADD `exam_group_marks_obtained` JSON NULL DEFA
 
 -- 09-12-2025---
 ALTER TABLE `sch_settings` ADD `receipt_sr_no` BIGINT(20) NULL DEFAULT NULL AFTER `id`;
+
+-- 18-12-2025 ---
+ALTER TABLE `sch_settings` ADD `main_domain_url` TINYTEXT NOT NULL AFTER `mobile_api_url`;
 
 
 ===============================
