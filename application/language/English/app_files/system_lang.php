@@ -1677,3 +1677,4 @@ $lang['db_password'] = 'Database Password';
 $lang['add_branch'] = 'Add Branch';
 $lang['main_domain'] = 'Main Domain';
 $lang['main_domain_url'] = 'Main Domain URL';
+$lang['scholastic_has_class'] = "Classes inserted with respect to the assessment";
