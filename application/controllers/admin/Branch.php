@@ -120,5 +120,13 @@ class Branch extends Admin_Controller
 		}
 	}
 
+	public function switch_branch()
+	{
+		// $url = 'http://localhost/erp1';
+		$url = $this->input->post('branch');
+		redirect($url.'/site/login');
+		// echo $this->input->post('branch'); exit;
+	}
+
 
 }

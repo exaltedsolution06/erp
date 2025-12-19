@@ -209,6 +209,70 @@ if ($this->session->flashdata('success_msg')) {
             </div>
         </form>
     </div>
+    <div class="modal fade" id="switchBranchModal" tabindex="-1" role="dialog" aria-labelledby="branchModalLabel">
+        <form action="<?php echo site_url('admin/branch/switch_branch') ?>" method="POST" id="form_switch_branch">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="branchModalLabel"><?php echo $this->lang->line('switch_branch'); ?></h4>
+                    </div>
+                    <div class="modal-body pb0">
+					<?php
+						$baseUrl = $this->setting_model->get_main_domain_url();
+					?>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="well well-sm">
+									<div class="row">
+										 <div class="col-xs-12 col-md-12 section-box">
+											 <div class="row rating-desc">
+												<div class="col-md-12">
+													<label class="radio-inline">
+														<input type="radio" value="<?= $baseUrl; ?>" name="branch" <?php echo $baseUrl.'/' == base_url() ? 'checked' : ''; ?>><?= $this->lang->line('home_branch'); ?></label>
+												</div>
+											</div>
+										</div>                   
+									</div>
+								</div>
+							</div>        
+						</div>
+					<?php
+						if (!empty($baseUrl)) {
+							$apiUrl = $baseUrl . '/api/branch';
+							$branches = call_api_get($apiUrl);
+							foreach ($branches['data'] as $branch) {
+					?>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="well well-sm">
+									<div class="row">
+										 <div class="col-xs-12 col-md-12 section-box">
+											 <div class="row rating-desc">
+												<div class="col-md-12">
+													<label class="radio-inline">
+														<input type="radio" value="<?= $branch['branch_url']; ?>" name="branch" <?php echo $branch['branch_url'].'/' == base_url() ? 'checked' : '' ?>><?= $branch['branch_name']; ?></label>
+												</div>
+											</div>
+										</div>                   
+									</div>
+								</div>
+							</div>        
+						</div>
+					<?php 
+							}
+						}
+					?>	
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-md-12"> 
+                            <button type="submit" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> <?php echo $this->lang->line('please_wait'); ?>"><?php echo $this->lang->line('update'); ?></button>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 
