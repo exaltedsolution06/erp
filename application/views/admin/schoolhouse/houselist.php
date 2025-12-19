@@ -57,15 +57,17 @@
             ?>">             
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
-                        <h3 class="box-title titlefix"><?php echo $this->lang->line('house_list'); ?></h3>                   
+                        <h3 class="box-title titlefix"><?php echo $this->lang->line('house_list'); ?></h3>      
+						
                     </div>
                     <div class="box-body">
                         <div class="download_label"><?php echo $this->lang->line('house_list'); ?></div>
                         <div class="mailbox-messages table-responsive">
-                            <?php if ($this->session->flashdata('msgdelete')) { ?>
-                                <?php echo $this->session->flashdata('msgdelete') ?>
-								<?php $this->session->unset_userdata('msgdelete'); ?>
-                            <?php } ?>
+                            <?php if ($this->session->flashdata('editmsg')) { ?>
+                                    <?php echo $this->session->flashdata('editmsg') ?>
+							<?php 
+							$this->session->unset_userdata('editmsg');
+							} ?> 
                             <table class="table table-striped table-bordered table-hover example">
                                 <thead>
                                     <tr>

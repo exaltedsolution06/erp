@@ -17,6 +17,7 @@ class Sections extends Admin_Controller
         if (!$this->rbac->hasPrivilege('section', 'can_view')) {
             access_denied();
         }
+		
         $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'sections/index');
         $data['title'] = 'Section List';
@@ -67,19 +68,24 @@ class Sections extends Admin_Controller
             access_denied();
         }
         $data['title'] = 'Section List';
-		//$table = 'class_sections';
+		
+		// by ES
+		$checkData['menu'] = 'section';		
 		$checkData['table'] = 'class_sections';
 		$checkData['id'] = $id;
 		$checkData['field'] = 'section_id ';
 		$ifsection = $this->Setting_model->checkDeleteList($checkData);
-		
-		if($ifsection)
+		$this->session->unset_userdata('deleteRecord', 1);
+		if($ifsection > 0)
 		{
-			$this->session->set_flashdata('errmsg', '<div class="alert alert-danger text-left">Section already added in the class list</div>');
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Section already added in the class list</div>');
+			
 		}
 		else{
-			 //$this->section_model->remove($id);
+			 $this->section_model->remove($id);
+			 $this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Section deleted successfully</div>');
 		}
+		
 		
         //$this->section_model->remove($id);
         redirect('sections/index');

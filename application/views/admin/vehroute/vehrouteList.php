@@ -96,6 +96,11 @@
                     <div class="box-body">
                         <div class="mailbox-messages">
                             <div class="download_label"><?php echo $this->lang->line('vehicle_route_list'); ?></div>
+							<?php if ($this->session->flashdata('editmsg')) { ?>
+                                    <?php echo $this->session->flashdata('editmsg') ?>
+							<?php 
+							$this->session->unset_userdata('editmsg');
+							} ?> 
                             <div class="table-responsive">  
                                 <table class="table table-striped table-bordered table-hover example">
                                     <thead>

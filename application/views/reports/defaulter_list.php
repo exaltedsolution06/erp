@@ -598,6 +598,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
+                                                <td></td>
                                                 <td colspan="" style="text-align:right;">Total</td>
 
                                                 <?php if (in_array('Consider Old Bal', $filters)): ?>
@@ -617,7 +618,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td style="text-align:right"><?= number_format($grand_total, 2) ?></td>
                                             </tr>
                                         <?php else: ?>
-                                            <tr><td colspan="21" class="text-center">No records found</td></tr>
+                                            <!--<tr><td colspan="21" class="text-center">No records found</td></tr>-->
                                         <?php endif; ?>
                                     </tbody>
                                     

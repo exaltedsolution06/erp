@@ -57,7 +57,24 @@ class Classes extends Admin_Controller
             access_denied();
         }
         $data['title'] = 'Fees Master List';
-        $this->class_model->remove($id);
+		
+		// by ES
+		$checkData['menu'] = 'class';		
+		$checkData['table'] = 'student_session';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'class_id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Student already added in this class</div>');
+		}
+		else{
+			 $this->class_model->remove($id);
+			 $this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Class deleted successfully</div>');
+		}
+		
+        //$this->class_model->remove($id);
         redirect('classes');
     }
 

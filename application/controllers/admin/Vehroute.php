@@ -66,8 +66,25 @@ class Vehroute extends Admin_Controller {
     }
 
     function delete($id) {
-
-        $this->vehroute_model->removeByroute($id);
+		
+		
+		// by ES 
+		$checkData['menu'] = 'assignvehicle';
+		$checkData['table'] = 'students';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'vehroute_id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Vehicle already assigned in student</div>');
+		}
+		else{
+			$this->vehroute_model->removeByroute($id);
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Vehicle removed assign successfully</div>');
+		}
+		
+        //$this->vehroute_model->removeByroute($id);
         redirect('admin/vehroute');
     }
 

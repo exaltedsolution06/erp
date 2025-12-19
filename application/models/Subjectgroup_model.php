@@ -287,6 +287,13 @@ class Subjectgroup_model extends MY_Model {
         //=======================Code Start===========================
         $this->db->where('id', $id);
         $this->db->delete('subject_groups');
+		
+		$this->db->where('subject_group_id ', $id);
+		$this->db->delete('subject_group_class_sections');
+		
+		$this->db->where('subject_group_id ', $id);
+		$this->db->delete('subject_group_subjects');
+		
         $message = DELETE_RECORD_CONSTANT . " On subject groups id " . $id;
         $action = "Delete";
         $record_id = $id;

@@ -233,11 +233,39 @@ class Feemaster extends Admin_Controller {
         // if (!$this->rbac->hasPrivilege('fees_master', 'can_delete')) {
         //     access_denied();
         // }
+		
         $data['title'] = 'Fees Master List';
-        // $this->feegrouptype_model->remove($id);
-        $this->db->where('id', $id);
-        // $this->db->where('is_system', 0);
-        $this->db->delete('fees_plan');
+        
+        //$this->db->where('id', $id);
+        //$this->db->delete('fees_plan');
+		
+		// ES
+		$this->db->where('id', $id);
+		$query = $this->db->get('fees_plan');
+		$res = $query->row_array();
+		$class = json_decode($res['class_ids']);
+		$categories = json_decode($res['category_ids']);
+		//echo "<pre>";print_r($class);
+		//echo "<pre>";print_r($categories);
+		//echo "<pre>";print_r($query->row_array());die;
+		$checkData['menu'] = 'feeplan';
+		$checkData['parenttable'] = 'students';
+		$checkData['table'] = 'fees_plan';
+		$checkData['id'] = $id;
+		$checkData['class'] = $class;
+		$checkData['categories'] = $categories;
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		//echo $ifsection;die;
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Class with respect to category already has students</div>');
+		}
+		else{
+			$this->db->where('id', $id);
+			$this->db->delete('fees_plan');
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Fee plan deleted successfully</div>');
+		}
+		
         redirect('admin/feemaster/index');
     }
 

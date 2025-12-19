@@ -156,11 +156,45 @@ class Examgroup extends Admin_Controller {
 
         $data['title'] = 'deleteExam';
         $id = $this->input->post('id');
-        if (!$this->examgroup_model->delete_exam($id)) {
+		//echo 'hello del'.$id;
+		
+		// ES
+		//$checkData['menu'] = 'assessment';
+		$checkDataSubject['tableSubject'] = 'exam_group_class_batch_exam_subjects';
+		
+		$checkDataSubject['id'] = $id;
+		$checkDataSubject['field'] = 'exam_group_class_batch_exams_id ';
+		
+		$checkDataStudent['tableStudent'] = 'exam_group_class_batch_exam_students';
+		$checkDataStudent['id'] = $id;
+		$checkDataStudent['field'] = 'exam_group_class_batch_exam_id ';
+		$ifstudent = $this->Setting_model->checkDeleteListStudent($checkDataStudent);
+		$ifsubject = $this->Setting_model->checkDeleteListSubject($checkDataSubject);
+		
+		//echo $ifstudent.'-'.$ifsubject;die;
+		if($ifstudent > 0 && $ifsubject > 0)
+		{
+			echo json_encode(array('status' => 0, 'message' => $this->lang->line('student_subject_has_assessment')));
+		}
+		elseif($ifstudent == 0 && $ifsubject > 0)
+		{
+			echo json_encode(array('status' => 0, 'message' => $this->lang->line('subject_has_assessment')));
+		}
+		elseif($ifstudent > 0 && $ifsubject == 0)
+		{
+			echo json_encode(array('status' => 0, 'message' => $this->lang->line('student_has_assessment')));
+		}
+		elseif($ifstudent == 0 && $ifsubject == 0){
+			//$this->examgroup_model->remove($id);
+			$this->examgroup_model->remove_assessment($id);
+			echo json_encode(array('status' => 1, 'message' => $this->lang->line('record_deleted_successfully')));
+		}
+		//echo "<pre>";print_r($ifrecord);die;
+		/*if (!$this->examgroup_model->delete_exam($id)) {
             echo json_encode(array('status' => 0, 'message' => $this->lang->line('something_wrong')));
         } else {
             echo json_encode(array('status' => 1, 'message' => $this->lang->line('record_deleted_successfully')));
-        }
+        }*/
     }
 
     public function exam($id) {
@@ -238,7 +272,24 @@ class Examgroup extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Delete Batch';
-        $this->examgroup_model->remove($id);
+		
+		// ES
+		$checkData['menu'] = 'createexam';
+		$checkData['table'] = 'exam_group_class_batch_exams';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'exam_group_id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Exam term already used</div>');
+		}
+		else{
+			$this->examgroup_model->remove($id);
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Exam term deleted successfully</div>');
+		}
+		
+        //$this->examgroup_model->remove($id);
         redirect('admin/examgroup');
     }
 
@@ -284,7 +335,6 @@ class Examgroup extends Admin_Controller {
     }
 
     public function addexam($id) {
-
         if (!$this->rbac->hasPrivilege('exam', 'can_view')) {
             access_denied();
         }
@@ -436,6 +486,8 @@ class Examgroup extends Admin_Controller {
                 'is_publish' => $is_publish,
                 'description' => $this->input->post('description'),
             );
+			
+			
 
             if ($exam_id != 0) {
                 $postarray['id'] = $exam_id;

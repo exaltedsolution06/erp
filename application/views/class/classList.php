@@ -77,11 +77,17 @@
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
                         <h3 class="box-title titlefix"><?php echo $this->lang->line('class_list'); ?></h3>
+						 
                         <div class="box-tools pull-right">
                         </div><!-- /.box-tools -->
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <div class="table-responsive mailbox-messages">
+						<?php if ($this->session->flashdata('editmsg')) { ?>
+                                    <?php echo $this->session->flashdata('editmsg') ?>
+						<?php 
+					    $this->session->unset_userdata('editmsg');
+						} ?> 
                             <div class="download_label"><?php echo $this->lang->line('class_list'); ?></div>
                             <table class="table table-striped table-bordered table-hover example">
                                 <thead>

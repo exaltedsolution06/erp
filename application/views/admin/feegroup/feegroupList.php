@@ -64,12 +64,17 @@
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
                         <h3 class="box-title titlefix">Fee Category List</h3>
-                        <div class="box-tools pull-right">
+						<div class="box-tools pull-right">
                         </div><!-- /.box-tools -->
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <div class="download_label">Fee Category List</div>
                         <div class="mailbox-messages table-responsive">
+						<?php if ($this->session->flashdata('editmsg')) { ?>
+                                    <?php echo $this->session->flashdata('editmsg') ?>
+						<?php 
+					    $this->session->unset_userdata('editmsg');
+						} ?> 
                             <table class="table table-striped table-bordered table-hover example">
                                 <thead>
                                     <tr>

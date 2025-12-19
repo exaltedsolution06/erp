@@ -447,7 +447,7 @@ class Student extends Admin_Controller
         if (!$this->rbac->hasPrivilege('student', 'can_add')) {
             access_denied();
         }
-
+		//class_id
         $this->session->set_userdata('top_menu', 'Student Information');
         $this->session->set_userdata('sub_menu', 'student/create');
         $genderList                 = $this->customlib->getGender();
@@ -536,7 +536,7 @@ class Student extends Admin_Controller
             $this->load->view('layout/footer', $data);
         } else {
 
-            // echo "ok";
+            // echo "ok";vehroute_id  route_id
             // die;
              $custom_field_post  = $this->input->post("custom_fields[students]");
              $custom_value_array = array();
@@ -2292,6 +2292,8 @@ class Student extends Admin_Controller
 
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules('student[]', $this->lang->line('student'), 'trim|required|xss_clean');
+		
+		$studentArr = [];
 
         if ($this->form_validation->run() == false) {
 
@@ -2301,12 +2303,18 @@ class Student extends Admin_Controller
             $array = array('status' => 0, 'error' => $msg, 'message' => '');
         } else {
             $students = $this->input->post('student');
-
-            foreach ($students as $student_key => $student_value) {
-
+			
+			
+			foreach ($students as $student_key => $student_value) {
+				$hasReceipt = $this->student_model->checkStudentFee($student_value);
+				if(!$hasReceipt)
+				{
+					$studentArr[] = $student_value;
+				}
             }
-
-            $this->student_model->bulkdelete($students);
+			
+			//echo "<pre>";print_r($studentArr);die;
+			$this->student_model->bulkdelete($studentArr);
 
             $array = array('status' => 1, 'error' => '', 'message' => $this->lang->line('delete_message'));
         }

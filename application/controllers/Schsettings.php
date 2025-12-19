@@ -242,6 +242,7 @@ class Schsettings extends Admin_Controller {
         $this->form_validation->set_rules('attendence_type', $this->lang->line('attendance') . " " . $this->lang->line('type'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('online_admission', $this->lang->line('online') . " " . $this->lang->line('admission'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('is_duplicate_fees_invoice', $this->lang->line('duplicate') . " " . $this->lang->line('fees') . " " . $this->lang->line('invoice'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('main_domain_url', $this->lang->line('main_domain_url'), 'trim|required|xss_clean');
 
 
         if ($this->input->post('adm_auto_insert')) {
@@ -287,6 +288,7 @@ class Schsettings extends Admin_Controller {
                 'is_duplicate_fees_invoice' => form_error('is_duplicate_fees_invoice'),
                 'attendence_type' => form_error('attendence_type'),
                 'fee_due_days' => form_error('fee_due_days'),
+                'main_domain_url' => form_error('main_domain_url'),
             );
             $array = array('status' => 'fail', 'error' => $data);
             echo json_encode($array);
@@ -329,6 +331,7 @@ class Schsettings extends Admin_Controller {
                 'app_secondary_color_code' => $this->input->post('app_secondary_color_code'),
                 'mobile_api_url' => $this->input->post('mobile_api_url'),
                 'my_question' => $this->input->post('my_question'),
+                'main_domain_url' => $this->input->post('main_domain_url'),
             );
             $this->session->userdata['admin']['is_rtl'] = $this->input->post('sch_is_rtl');
             $language_result = $this->language_model->get($this->input->post('sch_lang_id'));

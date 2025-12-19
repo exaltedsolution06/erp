@@ -242,6 +242,11 @@
                     </div>
                     <div class="box-body">
                         <div class="mt-5">
+					<?php if ($this->session->flashdata('editmsg')) { ?>
+                                    <?php echo $this->session->flashdata('editmsg') ?>
+						<?php 
+					    $this->session->unset_userdata('editmsg');
+						} ?> 
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped mt-3">
                                     <thead class="table-light">
@@ -284,7 +289,9 @@
                                                  <td class="text-left">
                                                     <i class="fa-solid <?= $isChecked ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger' ?>"></i>
                                                 </td>
-                                                <?php endforeach; ?>
+                                                <?php 
+												
+												endforeach; ?>
                                             <td>
                                                 <a data-placement="left" href="<?php echo site_url('admin/feetype/edit/' . $fee['id']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                     <i class="fa fa-pencil"></i>

@@ -89,7 +89,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 <div class="box box-primary" id="vehicle">
                     <div class="box-header ptbnull">
                         <h3 class="box-title titlefix"><?php echo $this->lang->line('vehicle_list'); ?></h3>
-                    </div>
+					</div>
                     <div class="box-body">
                         <div class="mailbox-controls">                         
                             <div class="pull-right">
@@ -97,6 +97,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         </div>
                         <div class="mailbox-messages table-responsive">
                             <div class="download_label"><?php echo $this->lang->line('vehicle_list'); ?></div>
+							<?php if ($this->session->flashdata('editmsg')) { ?>
+                                    <?php echo $this->session->flashdata('editmsg') ?>
+						<?php 
+					    $this->session->unset_userdata('editmsg');
+						} ?>
                             <table class="table table-striped table-bordered table-hover example">
                                 <thead>
                                     <tr>

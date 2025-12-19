@@ -1730,6 +1730,16 @@ class Student_model extends MY_Model
     }
 
     //===========
+	public function checkStudentFee($id='')
+	{
+		$this->db->where('student_id', $id);
+		$query = $this->db->get('receipts');
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+	}
 
 
 

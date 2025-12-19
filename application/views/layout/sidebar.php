@@ -1162,7 +1162,9 @@
                     $this->rbac->hasPrivilege('multi_branch_report', 'can_view')
                 ) {
 					$activeMbMenu="";
-					if(set_Submenu('report/multi-branch')
+					if (
+						set_Submenu('admin/branch/index')
+						|| set_Submenu('report/multi-branch')
 					){
 						$activeMbMenu="active";
 					}
@@ -1174,7 +1176,7 @@
                         </a>
                         <ul class="treeview-menu">
                             <?php if ($this->rbac->hasPrivilege('add_branch', 'can_view')) { ?>
-                                <li class="<?php echo set_Submenu('MultiBranch/add'); ?>"><a href="#"><i class="fa fa-angle-double-right"></i> Add Branch</a></li>
+                                <li class="<?php echo set_Submenu('admin/branch/index'); ?>"><a href="<?php echo base_url(); ?>admin/branch/index"><i class="fa fa-angle-double-right"></i> Add Branch</a></li>
                             <?php } if ($this->rbac->hasPrivilege('overview', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('MultiBranch/overview'); ?>"><a href="#"><i class="fa fa-angle-double-right"></i> Overview</a></li>
                             <?php } if ($this->rbac->hasPrivilege('multi_branch_report', 'can_view')) { ?>

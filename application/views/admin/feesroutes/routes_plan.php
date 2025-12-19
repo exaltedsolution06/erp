@@ -252,7 +252,11 @@
                     </div><!-- /.box-header -->
 
                     <div class="box-body">
-
+						<?php if ($this->session->flashdata('editmsg')) { ?>
+                                    <?php echo $this->session->flashdata('editmsg') ?>
+							<?php 
+								$this->session->unset_userdata('editmsg');
+							} ?>
                         <form method="get" action="">
                             <div class="row mb-3">
 

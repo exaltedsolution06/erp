@@ -58,7 +58,26 @@ class Account extends Admin_Controller
     public function delete($id)
     {
         $data['title'] = 'Section List';
-        $this->account_model->remove($id);
+		
+		// by ES 
+		$getNameById = $this->Setting_model->getNameById('account', 'id', $id);
+		//echo $getNameById['account'];die;
+		
+		$checkData['menu'] = 'account';
+		$checkData['table'] = 'fee_head';
+		$checkData['id'] = $getNameById['account'];
+		$checkData['field'] = 'account_name';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Account already added in Fee heads</div>');
+		}
+		else{
+			 $this->account_model->remove($id);
+			 $this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Account deleted successfully</div>');
+		}
+        //$this->account_model->remove($id);
         redirect('account/index');
     }
 

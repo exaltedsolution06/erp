@@ -140,7 +140,7 @@ class Coscholasticareas extends Admin_Controller {
             redirect('admin/coscholasticareas/index');
         }
         $examgroup_result = $this->examgroup_model->get_c();
-		// echo '<pre>';print_r($examgroup_result);exit;
+		//echo '<pre>';print_r($examgroup_result);exit;
         $data['examgrouplist'] = $examgroup_result;
         $data['exam_group_list'] = $this->examgroup_model->get();
         $this->load->view('layout/header', $data);
@@ -158,11 +158,29 @@ class Coscholasticareas extends Admin_Controller {
 
         $data['title'] = 'deleteExam';
         $id = $this->input->post('id');
-        if (!$this->examgroup_model->delete_exam($id)) {
+		
+		// ES
+		$checkData['menu'] = 'scholasticAssessment';
+		$checkData['table'] = 'exam_group_class_batch_exam_students';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'exam_group_class_batch_exam_id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			echo json_encode(array('status' => 0, 'message' => $this->lang->line('scholastic_has_class')));
+		}
+		else{
+			$this->examgroup_model->delete_exam($id);
+			echo json_encode(array('status' => 1, 'message' => $this->lang->line('record_deleted_successfully')));
+		}
+		
+		
+        /*if (!$this->examgroup_model->delete_exam($id)) {
             echo json_encode(array('status' => 0, 'message' => $this->lang->line('something_wrong')));
         } else {
             echo json_encode(array('status' => 1, 'message' => $this->lang->line('record_deleted_successfully')));
-        }
+        }*/
     }
 
     public function exam($id) {
@@ -240,7 +258,24 @@ class Coscholasticareas extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Delete Batch';
-        $this->examgroup_model->remove1($id);
+		
+		// ES
+		$checkData['menu'] = 'coscholasticareas';
+		$checkData['table'] = 'exam_group_class_batch_exams';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'exam_group_id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Co-scholastic has Assessment</div>');
+		}
+		else{
+			$this->examgroup_model->remove1($id);
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Co-scholasticArea deleted successfully</div>');
+		}
+		
+        //$this->examgroup_model->remove1($id);
         redirect('admin/coscholasticareas');
     }
 

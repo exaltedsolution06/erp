@@ -96,9 +96,25 @@ class Schoolhouse extends Admin_Controller {
             access_denied();
         }
         if (!empty($id)) {
-
-            $this->schoolhouse_model->delete($id);
-            $this->session->set_flashdata('msgdelete', '<div class="alert alert-success text-left">' . $this->lang->line('delete_message') . '</div>');
+			
+			// by ES
+			$checkData['menu'] = 'studenthouse';		
+			$checkData['table'] = 'students';
+			$checkData['id'] = $id;
+			$checkData['field'] = 'school_house_id';
+			$ifsection = $this->Setting_model->checkDeleteList($checkData);
+			//echo $ifsection; die;
+			if($ifsection > 0)
+			{
+				$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">House already used in student</div>');
+			}
+			else{
+				$this->schoolhouse_model->delete($id);
+				 $this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">House deleted successfully</div>');
+			}
+			
+			//$this->schoolhouse_model->delete($id);
+            //$this->session->set_flashdata('msgdelete', '<div class="alert alert-success text-left">' . $this->lang->line('delete_message') . '</div>');
         }
         redirect('admin/schoolhouse/');
     }

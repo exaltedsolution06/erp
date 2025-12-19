@@ -62,7 +62,24 @@ class Subject extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Subject List';
-        $this->subject_model->remove($id);
+		
+		// by ES 
+		$checkData['menu'] = 'addsubject';
+		$checkData['table'] = 'subject_group_subjects';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'subject_id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Subject already used in subject group</div>');
+		}
+		else{
+			 $this->subject_model->remove($id);
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Subject deleted successfully</div>');
+		}
+		
+        //$this->subject_model->remove($id);
         redirect('admin/subject/index');
     }
 

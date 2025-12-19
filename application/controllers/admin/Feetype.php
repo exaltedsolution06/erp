@@ -234,7 +234,24 @@ class Feetype extends Admin_Controller {
         //     access_denied();
         // }
         $data['title'] = 'Fees Master List';
-        $this->feetype_model->remove($id);
+		
+		// by ES 
+		$checkData['table'] = 'feeshead';
+		$checkData['table'] = 'fees_plan';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'fee_group_id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Fee head already used in fee plan</div>');
+		}
+		else{
+			 $this->feetype_model->remove($id);
+			 $this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Fee head deleted successfully</div>');
+		}
+		
+        //$this->feetype_model->remove($id);
         redirect('admin/feetype/index');
     }
 
