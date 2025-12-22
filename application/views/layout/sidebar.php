@@ -1144,7 +1144,7 @@
                             <?php } if ($this->rbac->hasPrivilege('change_session', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('System/change_session'); ?>"><a href="#<?php //echo base_url(); ?>system/change_session"><i class="fa fa-angle-double-right"></i> Change Session</a></li>
                             <?php } if ($this->rbac->hasPrivilege('change_session', 'can_view')) { ?>
-                                <li class="<?php echo set_Submenu('admin/backup'); ?>"><a href="<?php //echo base_url(); ?>admin/backup"><i class="fa fa-angle-double-right"></i> Data Backup</a></li>
+                                <li class="<?php echo set_Submenu('admin/backup'); ?>"><a href="<?php echo base_url(); ?>admin/admin/backup"><i class="fa fa-angle-double-right"></i> Data Backup</a></li>
                             <?php } ?>
                         </ul>
                     </li>
