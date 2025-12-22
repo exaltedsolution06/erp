@@ -10,6 +10,7 @@ class Classes extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index()
@@ -36,6 +37,7 @@ class Classes extends Admin_Controller
             $class       = $this->input->post('class');
             $class_array = array(
                 'class' => $this->input->post('class'),
+                'session_id' => $this->current_session,
             );
             $sections = $this->input->post('sections');
             $this->classsection_model->add($class_array, $sections);
@@ -88,6 +90,9 @@ class Classes extends Admin_Controller
         $data['title']      = 'Edit Class';
         $data['id']         = $id;
         $vehroute           = $this->classsection_model->getByID($id);
+		if(!$vehroute){
+			redirect('classes/index');
+		}
         $data['vehroute']   = $vehroute;
         $data['title_list'] = 'Fees Master List';
 

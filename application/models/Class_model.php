@@ -20,6 +20,7 @@ class Class_model extends MY_Model {
     public function getAll($id = null) {
 
         $this->db->select()->from('classes');
+		$this->db->where('session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('id', $id);
         } else {
@@ -48,6 +49,7 @@ class Class_model extends MY_Model {
         } else {
 
             $this->db->select()->from('classes');
+			$this->db->where('session_id', $this->current_session);
             if ($id != null) {
                 $this->db->where('id', $id);
             } else {
@@ -73,6 +75,7 @@ class Class_model extends MY_Model {
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
+		$this->db->where('session_id', $this->current_session);
         $this->db->delete('classes'); //class record delete.
 
         $this->db->where('class_id', $id);
@@ -111,6 +114,7 @@ class Class_model extends MY_Model {
 
     public function check_data_exists($data) {
         $this->db->where('class', $data);
+		$this->db->where('session_id', $this->current_session);
 
         $query = $this->db->get('classes');
         if ($query->num_rows() > 0) {

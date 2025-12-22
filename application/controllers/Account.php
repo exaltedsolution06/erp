@@ -11,6 +11,7 @@ class Account extends Admin_Controller
     {
         parent::__construct();
         $this->load->model('account_model');
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index()
@@ -35,6 +36,7 @@ class Account extends Admin_Controller
         } else {
             $data = array(
                 'account' => $this->input->post('section'),
+                'session_id' => $this->current_session,
             );
             $this->account_model->add($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
@@ -49,6 +51,9 @@ class Account extends Admin_Controller
         }
         $data['title']   = 'Section List';
         $section         = $this->account_model->get($id);
+		if(!$section){
+			redirect('account/index');
+		}
         $data['section'] = $section;
         $this->load->view('layout/header', $data);
         $this->load->view('section/sectionShow', $data);
@@ -119,6 +124,9 @@ class Account extends Admin_Controller
         $data['title']       = 'Edit Section';
         $data['id']          = $id;
         $section             = $this->account_model->get($id);
+		if(!$section){
+			redirect('account/index');
+		}
         $data['section']     = $section;
        
         //$this->form_validation->set_rules('section', $this->lang->line('section'), 'trim|required|xss_clean');

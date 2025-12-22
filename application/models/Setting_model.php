@@ -201,6 +201,12 @@ class Setting_model extends MY_Model {
         return $session_result[0]['currency_symbol'];
     }
 
+    public function getCurrentActiveSession() {
+		$query = $this->db->select('session_id')->get('sch_settings');
+        $session = $query->row_array();
+        return $session['session_id'];
+    }
+
     public function getDateYmd() {
         return date('Y-m-d');
     }

@@ -12,6 +12,7 @@ class Feegroup_model extends MY_Model {
 
     public function get($id = null) {
         $this->db->select()->from('fee_groups');
+		$this->db->where('session_id', $this->current_session);
         $this->db->where('is_system', 0);
         if ($id != null) {
             $this->db->where('id', $id);
@@ -35,6 +36,7 @@ class Feegroup_model extends MY_Model {
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
+		$this->db->where('session_id', $this->current_session);
         $this->db->where('is_system', 0);
         $this->db->delete('fee_groups');
         $message = DELETE_RECORD_CONSTANT . " On  fee groups id " . $id;
@@ -112,6 +114,7 @@ class Feegroup_model extends MY_Model {
 
     function check_data_exists($name, $id) {
         $this->db->where('name', $name);
+		$this->db->where('session_id', $this->current_session);
         $this->db->where('id !=', $id);
 
         $query = $this->db->get('fee_groups');
@@ -124,6 +127,7 @@ class Feegroup_model extends MY_Model {
 
     function checkGroupExistsByName($name) {
         $this->db->where('name', $name);
+		$this->db->where('session_id', $this->current_session);
         $query = $this->db->get('fee_groups');
         if ($query->num_rows() > 0) {
             return $query->row();

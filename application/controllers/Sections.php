@@ -10,6 +10,7 @@ class Sections extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index()
@@ -40,6 +41,7 @@ class Sections extends Admin_Controller
         } else {
             $data = array(
                 'section' => $this->input->post('section'),
+                'session_id' => $this->current_session,
             );
             $this->section_model->add($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
@@ -131,6 +133,9 @@ class Sections extends Admin_Controller
         $data['title']       = 'Edit Section';
         $data['id']          = $id;
         $section             = $this->section_model->get($id);
+		if(!$section){
+			redirect('sections/index');
+		}
         $data['section']     = $section;
         //$this->form_validation->set_rules('section', $this->lang->line('section'), 'trim|required|xss_clean');
 		

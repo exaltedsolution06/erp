@@ -8,6 +8,7 @@ class Classsection_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     /**
@@ -124,6 +125,7 @@ class Classsection_model extends MY_Model {
 
     public function getByID($id = null) {
         $this->db->select('classes.*')->from('classes');
+		$this->db->where('classes.session_id', $this->current_session);
 
         if ($id != null) {
             $this->db->where('classes.id', $id);

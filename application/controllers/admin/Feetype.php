@@ -7,6 +7,7 @@ class Feetype extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
         $this->load->model('account_model');
     }
 
@@ -54,7 +55,7 @@ class Feetype extends Admin_Controller {
 		
         $feegroup_result = $this->feetype_model->get();
         $data['feetypeList'] = $feegroup_result;
-        $data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('fee_head')->result_array();
+        $data['fee_heads'] = $this->db->order_by('id', 'DESC')->where('session_id', $this->current_session)->get('fee_head')->result_array();
         $section_result      = $this->account_model->get();
         $data['account'] = $section_result;
         $this->load->view('layout/header', $data);
@@ -194,7 +195,8 @@ class Feetype extends Admin_Controller {
 			'fees_heading' => $this->input->post('fees_heading'),
 			'frequency' => $frequency,
 			'account_name' => $this->input->post('account_name'),
-			'months' => json_encode($months)
+			'months' => json_encode($months),
+            'session_id' => $this->current_session,
 		];
 
 		// --- Insert or update ---
@@ -263,10 +265,12 @@ class Feetype extends Admin_Controller {
         $this->session->set_userdata('sub_menu', 'feetype/index');
         $data['id'] = $id;
         $feetype = $this->feetype_model->get($id);
-
+		if(!$feetype){
+			redirect('admin/feetype/index');
+		}
        
         $data['feetype'] = $feetype;
-         $section_result      = $this->account_model->get();
+        $section_result      = $this->account_model->get();
         $data['account'] = $section_result;
         $feegroup_result = $this->feetype_model->get();
         $data['feetypeList'] = $feegroup_result;

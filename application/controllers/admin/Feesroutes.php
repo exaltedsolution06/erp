@@ -10,6 +10,7 @@ class Feesroutes extends Admin_Controller
     {
         parent::__construct();
 		$this->load->model('account_model');
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index()
@@ -38,7 +39,7 @@ class Feesroutes extends Admin_Controller
 
         $feegroup_result = $this->feetype_model->get();
         $data['feetypeList'] = $feegroup_result;
-        $data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('route_head')->result_array();
+        $data['fee_heads'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
 		$section_result      = $this->account_model->get();
         $data['account'] = $section_result;
         $this->load->view('layout/header', $data);
@@ -177,7 +178,8 @@ class Feesroutes extends Admin_Controller
 			'fees_heading' => $this->input->post('fees_heading'),
 			'frequency'    => $frequency,
 			'account_name' => $this->input->post('account_name'),
-			'months'       => json_encode($months)
+			'months'       => json_encode($months),
+			'session_id' => $this->current_session,
 		];
 
 		// --- Insert or Update ---
@@ -230,6 +232,7 @@ class Feesroutes extends Admin_Controller
 		}
 		else{
 			$this->db->where('id',$id);
+			$this->db->where('session_id', $this->current_session);
 			$this->db->delete('route_head');
 			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Route deleted successfully</div>');
 		}
@@ -246,7 +249,10 @@ class Feesroutes extends Admin_Controller
         $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'feetype/setroute');
         $data['id'] = $id;
-        $feetype = $this->db->where('id',$id)->order_by('id', 'DESC')->get('route_head')->result_array();
+        $feetype = $this->db->where('id',$id)->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
+		if(!$feetype){
+			redirect('admin/feesroutes/index');
+		}
         $data['feedata'] = $feetype;
 		$section_result      = $this->account_model->get();
         $data['account'] = $section_result;
@@ -342,6 +348,7 @@ class Feesroutes extends Admin_Controller
 				
 				// Duplicate check (if any class overlaps in same fee_group)
 				$this->db->where('fee_group_id', $fee_group_id);
+				$this->db->where('session_id', $this->current_session);
 				if (!empty($update_id)) {
 					$this->db->where('id !=', $update_id);
 				}
@@ -380,7 +387,8 @@ class Feesroutes extends Admin_Controller
 					'fee_group_id' => $fee_group_id,
 					'amount'       => $amount,
 					'class_ids'    => $class_json,
-					'category_ids' => $feetype_json
+					'category_ids' => $feetype_json,
+					'session_id' => $this->current_session,
 				];
 			
 			
@@ -412,12 +420,13 @@ class Feesroutes extends Admin_Controller
                 
             }*/
         }
-        $data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('route_head')->result_array();
-        $data['classes'] = $this->db->order_by('id', 'DESC')->get('classes')->result_array();
+        $data['fee_heads'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
+        $data['classes'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('classes')->result_array();
         // $data['fees_plan'] = $this->db->order_by('id', 'DESC')->get('fees_plan')->result_array();
         $this->db->select('route_plan.*, route_head.fees_heading as fee_head_name');
         $this->db->from('route_plan');
         $this->db->join('route_head', 'route_head.id = route_plan.fee_group_id', 'left');
+		$this->db->where('route_plan.session_id', $this->current_session);
         if ($this->input->get('fee_head')) {
             $this->db->where('fee_group_id', $this->input->get('fee_head'));
         }
@@ -453,6 +462,7 @@ class Feesroutes extends Admin_Controller
 		
 		// ES
 		$this->db->where('id', $id);
+		$this->db->where('session_id', $this->current_session);
 		$query = $this->db->get('route_plan');
 		$res = $query->row_array();
 		$class = json_decode($res['class_ids']);
@@ -473,6 +483,7 @@ class Feesroutes extends Admin_Controller
 		}
 		else{
 			$this->db->where('id',$id);
+			$this->db->where('session_id', $this->current_session);
 			$this->db->delete('route_plan');
 			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Route plan deleted successfully</div>');
 		}
@@ -487,13 +498,16 @@ class Feesroutes extends Admin_Controller
         $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'feetype/setroute');
         $data['id'] = $id;
-        $data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('route_head')->result_array();
-        $data['classes'] = $this->db->order_by('id', 'DESC')->get('classes')->result_array();
+        $data['fee_heads'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
+        $data['classes'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('classes')->result_array();
         $feegroup = $this->feegroup_model->get();
         $data['feegroupList'] = $feegroup;
         $feetype = $this->feetype_model->get();
         $data['feetypeList'] = $feetype;
-        $feetype = $this->db->where('id',$id)->order_by('id', 'DESC')->get('route_plan')->result_array();
+        $feetype = $this->db->where('id',$id)->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_plan')->result_array();
+		if(!$feetype){
+			redirect('admin/feesroutes/plan');
+		}
         $data['update_data'] = $feetype;
         $data['type']='edit';
         $this->load->view('layout/header', $data);

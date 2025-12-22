@@ -1,0 +1,7 @@
+1) Add 'session_id' column in database table.(Alter script)
+2) Add 'session_id' value when new insert.
+3) 'session_id' added in where clause for list page
+4) unique section name check with 'session_id'
+5) redirect in list page when in url another session's section will get.
+6) 'session_id' added in where clause for delete
+

@@ -8,6 +8,7 @@ class Feemaster extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->helper('custom');
+        $this->current_session = $this->setting_model->getCurrentSession();
         $this->sch_setting_detail = $this->setting_model->getSetting();
     }
 
@@ -103,8 +104,8 @@ class Feemaster extends Admin_Controller {
 		$data['feegroupList'] = $this->feegroup_model->get();
 		$data['feetypeList']  = $this->feetype_model->get();
 		$data['feemasterList'] = $this->feesessiongroup_model->getFeesByGroup();
-		$data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('fee_head')->result_array();
-		$data['classes']   = $this->db->order_by('id', 'DESC')->get('classes')->result_array();
+		$data['fee_heads'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('fee_head')->result_array();
+		$data['classes']   = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('classes')->result_array();
 
 		// Handle form submission
 		if ($this->input->server('REQUEST_METHOD') === 'POST') {
@@ -141,7 +142,7 @@ class Feemaster extends Admin_Controller {
 			if (!empty($update_id)) {
 				$this->db->where('id !=', $update_id);
 			}
-			$existing_records = $this->db->get('fees_plan')->result_array();
+			$existing_records = $this->db->where('session_id', $this->current_session)->get('fees_plan')->result_array();
 
 			$is_duplicate = false;
 			$duplicate_classes = [];
@@ -176,7 +177,8 @@ class Feemaster extends Admin_Controller {
 				'fee_group_id' => $fee_group_id,
 				'amount'       => $amount,
 				'class_ids'    => $class_json,
-				'category_ids' => $feetype_json
+				'category_ids' => $feetype_json,
+				'session_id' => $this->current_session,
 			];
 
 			// Update or insert
@@ -203,12 +205,13 @@ class Feemaster extends Admin_Controller {
         $filter_fee_head = $this->input->get('filter_fee_head');
         $filter_class = $this->input->get('filter_class');
         $filter_category = $this->input->get('filter_category');
-        $data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('fee_head')->result_array();
-        $data['classes'] = $this->db->order_by('id', 'DESC')->get('classes')->result_array();
+        $data['fee_heads'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('fee_head')->result_array();
+        $data['classes'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('classes')->result_array();
         // $data['fees_plan'] = $this->db->order_by('id', 'DESC')->get('fees_plan')->result_array();
         $this->db->select('fees_plan.*, fee_head.fees_heading as fee_head_name');
         $this->db->from('fees_plan');
         $this->db->join('fee_head', 'fee_head.id = fees_plan.fee_group_id', 'left');
+		$this->db->where('fees_plan.session_id', $this->current_session);
         if (!empty($filter_fee_head)) {
             $this->db->where('fees_plan.fee_group_id', $filter_fee_head);
         }
@@ -241,6 +244,7 @@ class Feemaster extends Admin_Controller {
 		
 		// ES
 		$this->db->where('id', $id);
+		$this->db->where('session_id', $this->current_session);
 		$query = $this->db->get('fees_plan');
 		$res = $query->row_array();
 		$class = json_decode($res['class_ids']);
@@ -262,6 +266,7 @@ class Feemaster extends Admin_Controller {
 		}
 		else{
 			$this->db->where('id', $id);
+			$this->db->where('session_id', $this->current_session);
 			$this->db->delete('fees_plan');
 			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Fee plan deleted successfully</div>');
 		}
@@ -279,14 +284,16 @@ class Feemaster extends Admin_Controller {
          $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'admin/feemaster');
         $data['id'] = $id;
-        $feegroup_type = $this->db->where('id',$id)->order_by('id', 'DESC')->get('fees_plan')->result_array();
-
+        $feegroup_type = $this->db->where('session_id', $this->current_session)->where('id',$id)->order_by('id', 'DESC')->get('fees_plan')->result_array();
+		if(!$feegroup_type){
+			redirect('admin/feemaster');
+		}
 
        
         $data['feegroup_type'] = $feegroup_type;
 
-        $data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('fee_head')->result_array();
-        $data['classes'] = $this->db->order_by('id', 'DESC')->get('classes')->result_array();
+        $data['fee_heads'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('fee_head')->result_array();
+        $data['classes'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('classes')->result_array();
         $feegroup = $this->feegroup_model->get();
         $data['feegroupList'] = $feegroup;
         $feetype = $this->feetype_model->get();

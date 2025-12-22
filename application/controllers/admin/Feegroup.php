@@ -7,6 +7,7 @@ class FeeGroup extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index() {
@@ -30,6 +31,7 @@ class FeeGroup extends Admin_Controller {
             $data = array(
                 'name' => $this->input->post('name'),
                 'description' => $this->input->post('description'),
+                'session_id' => $this->current_session,
             );
             $this->feegroup_model->add($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
@@ -78,6 +80,9 @@ class FeeGroup extends Admin_Controller {
         $this->session->set_userdata('sub_menu', 'admin/feegroup');
         $data['id'] = $id;
         $feegroup = $this->feegroup_model->get($id);
+		if(!$feegroup){
+			redirect('admin/feegroup/index');
+		}
         $data['feegroup'] = $feegroup;
         $feegroup_result = $this->feegroup_model->get();
         $data['feegroupList'] = $feegroup_result;
