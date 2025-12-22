@@ -30,7 +30,7 @@
                                     <input autofocus="" id="branch_url" name="branch_url" placeholder="" type="text" class="form-control"  value="<?php echo set_value('branch_url', $branch['branch_url']); ?>" />
                                     <span class="text-danger"><?php echo form_error('branch_url'); ?></span>
                                 </div>
-                                <div class="form-group">
+                                <!--<div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('db_host'); ?></label><small class="req"> *</small>
                                     <input autofocus="" id="db_host" name="db_host" placeholder="" type="text" class="form-control"  value="<?php echo set_value('db_host', $branch['db_host']); ?>" />
                                     <span class="text-danger"><?php echo form_error('db_host'); ?></span>
@@ -49,7 +49,7 @@
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('db_password'); ?></label><small class="req"> *</small>
                                     <input autofocus="" id="db_password" name="db_password" placeholder="" type="text" class="form-control"  value="<?php echo set_value('db_password', $branch['db_password']); ?>" />
                                     <span class="text-danger"><?php echo form_error('db_password'); ?></span>
-                                </div>
+                                </div>-->
                             </div>
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
