@@ -153,7 +153,6 @@ if ($this->config->item('SSLK') == "") {
                                      
                                 <ul class="nav navbar-nav headertopmenu">
 									<?php
-										$admin = $this->session->userdata('branch_switch');
 										$mainUrl = $this->setting_model->get_main_domain_url();
 										if($this->session->userdata('branch_switch') || $mainUrl.'/' == base_url()){
 									?>
