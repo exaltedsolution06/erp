@@ -219,7 +219,7 @@ if ($this->session->flashdata('success_msg')) {
                     </div>
                     <div class="modal-body pb0">
 					<?php
-						$baseUrl = $this->setting_model->get_main_domain_url();
+						$mainUrl = $this->setting_model->get_main_domain_url();
 					?>
 						<div class="row">
 							<div class="col-md-12">
@@ -229,7 +229,7 @@ if ($this->session->flashdata('success_msg')) {
 											 <div class="row rating-desc">
 												<div class="col-md-12">
 													<label class="radio-inline">
-														<input type="radio" value="<?= $baseUrl; ?>" name="branch" <?php echo $baseUrl.'/' == base_url() ? 'checked' : ''; ?>><?= $this->lang->line('home_branch'); ?></label>
+														<input type="radio" value="<?= $mainUrl; ?>" name="branch" <?php echo $mainUrl.'/' == base_url() ? 'checked' : ''; ?>><?= $this->lang->line('home_branch'); ?></label>
 												</div>
 											</div>
 										</div>                   
@@ -238,8 +238,8 @@ if ($this->session->flashdata('success_msg')) {
 							</div>        
 						</div>
 					<?php
-						if (!empty($baseUrl)) {
-							$apiUrl = $baseUrl . '/api/branch';
+						if (!empty($mainUrl)) {
+							$apiUrl = $mainUrl . '/api/branch';
 							$branches = call_api_get($apiUrl);
 							foreach ($branches['data'] as $branch) {
 					?>

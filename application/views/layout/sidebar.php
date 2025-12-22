@@ -1155,6 +1155,8 @@
 		<!-- 20th Menu end -->
 		<!-- 21th Menu start --> 
         <?php
+			$mainUrl = $this->setting_model->get_main_domain_url();
+			if($mainUrl.'/' == base_url()){
             if ($this->module_lib->hasActive('multi_branch') or 1==1) {
                 if (
                     $this->rbac->hasPrivilege('add_branch', 'can_view') ||
@@ -1186,6 +1188,7 @@
                     </li>
                     <?php
                 }
+            }
             }
         ?>
 
