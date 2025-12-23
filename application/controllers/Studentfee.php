@@ -17,6 +17,7 @@ class Studentfee extends Admin_Controller
         $this->search_type        = $this->config->item('search_type');
         $this->sch_setting_detail = $this->setting_model->getSetting();
 		$this->load->model('fee_discount_model');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
 

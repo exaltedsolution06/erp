@@ -19,6 +19,7 @@ class Staffattendance extends Admin_Controller {
         $this->load->model("staffattendancemodel");
         $this->load->model("staff_model");
         $this->load->model("payroll_model");
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index() {
@@ -54,7 +55,7 @@ class Staffattendance extends Admin_Controller {
             $data['date'] = $date;
             $search = $this->input->post('search');
             $holiday = $this->input->post('holiday');
-            $this->session->set_flashdata('msg', '');
+            $this->session->set_flashdata('msg', ''); 
             if ($search == "saveattendence") {
                 $user_type_ary = $this->input->post('student_session');
                 $absent_student_list = array();
@@ -64,6 +65,7 @@ class Staffattendance extends Admin_Controller {
                         if (isset($holiday)) {
                             $arr = array(
                                 'id' => $checkForUpdate,
+								'session_id' => $this->current_session,
                                 'staff_id' => $value,
                                 'staff_attendance_type_id' => 5,
                                 'remark' => $this->input->post("remark" . $value),
@@ -72,6 +74,7 @@ class Staffattendance extends Admin_Controller {
                         } else {
                             $arr = array(
                                 'id' => $checkForUpdate,
+                                'session_id' => $this->current_session,
                                 'staff_id' => $value,
                                 'staff_attendance_type_id' => $this->input->post('attendencetype' . $value),
                                 'remark' => $this->input->post("remark" . $value),
@@ -84,6 +87,7 @@ class Staffattendance extends Admin_Controller {
                         if (isset($holiday)) {
                             $arr = array(
                                 'staff_id' => $value,
+								'session_id' => $this->current_session,
                                 'staff_attendance_type_id' => 5,
                                 'date' => date('Y-m-d', $this->customlib->datetostrtotime($date)),
                                 'remark' => ''
@@ -91,6 +95,7 @@ class Staffattendance extends Admin_Controller {
                         } else {
                             $arr = array(
                                 'staff_id' => $value,
+								'session_id' => $this->current_session,
                                 'staff_attendance_type_id' => $this->input->post('attendencetype' . $value),
                                 'date' => date('Y-m-d', $this->customlib->datetostrtotime($date)),
                                 'remark' => $this->input->post("remark" . $value),
