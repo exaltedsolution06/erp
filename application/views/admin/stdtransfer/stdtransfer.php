@@ -138,7 +138,7 @@
                                                     <td><?php echo $student['admission_no']; ?></td>
                                                     <td><?php echo $this->customlib->getFullName($student['firstname'],$student['middlename'],$student['lastname'],$sch_setting->middlename,$sch_setting->lastname); ?></td>
                                                     <td><?php echo $student['father_name']; ?></td>
-                                                    <td><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($student['dob'])); ?></td>
+                                                    <td><?php echo $student['dob'] ? date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($student['dob'])) : ''; ?></td>
                                                     <td>
                                                         <div class="radio-inline">
                                                             <label>

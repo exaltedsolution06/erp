@@ -48,6 +48,7 @@ class Staffattendance extends Admin_Controller {
             $user_type = $this->input->post('user_id');
             $date = $this->input->post('date');
             $user_list = $this->staffattendancemodel->get();
+			//echo "<pre>";print_r($user_list);die;
             $data['userlist'] = $user_list;
             $data['class_id'] = $user_list;
             $data['user_type_id'] = $user_type_id;

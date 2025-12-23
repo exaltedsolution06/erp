@@ -39,6 +39,7 @@ class Feesforward extends Admin_Controller {
             $current_session = $setting_result[0]['session_id'];
             $data['current_session'] = $current_session;
             $pre_session = $this->session_model->getPreSession($current_session);
+			
             $data['pre_session'] = $pre_session;
             //=========date==============
             $fees_due_days = $setting_result[0]['fee_due_days'];

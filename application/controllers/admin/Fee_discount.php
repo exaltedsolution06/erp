@@ -25,7 +25,7 @@ class Fee_discount extends Admin_Controller {
         $id=$_GET['id']??0;
 		
 		
-		$data['student_data'] =$student_data= $this->student_model->getByStudentSession($id);
+		$data['student_data'] = $student_data= $this->student_model->getByStudentSession($id);
         $category                     = $this->category_model->get();
         $data['categorylist']         = $category;
 		
