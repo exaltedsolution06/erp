@@ -157,5 +157,16 @@ class Script extends Admin_Controller
 			$update_sql = "UPDATE `department` SET `session_id` = ?";
 			$this->db->query($update_sql, [$session_id]);
 		}
+		
+		//For 'staff_designation'.
+		$session_exists = "SHOW COLUMNS FROM `staff_designation` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `staff_designation` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `staff_designation` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
     }
 }

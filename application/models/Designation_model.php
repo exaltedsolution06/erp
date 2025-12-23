@@ -4,14 +4,18 @@
  * 
  */
 class Designation_model extends MY_model {
+	public function __construct() {
+        parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
+    }
 
     public function get($id = null) {
 
         if (!empty($id)) {
-            $query = $this->db->where("id", $id)->get("staff_designation");
+            $query = $this->db->where("id", $id)->where('session_id', $this->current_session)->get("staff_designation");
             return $query->row_array();
         } else {
-            $query = $this->db->where("is_active", "yes")->get("staff_designation");
+            $query = $this->db->where("is_active", "yes")->where('session_id', $this->current_session)->get("staff_designation");
 
             return $query->result_array();
         }
@@ -36,7 +40,7 @@ class Designation_model extends MY_model {
 
         if ($id != 0) {
             $data = array('id != ' => $id, 'designation' => $name);
-            $query = $this->db->where($data)->get('staff_designation');
+            $query = $this->db->where($data)->where('session_id', $this->current_session)->get('staff_designation');
             if ($query->num_rows() > 0) {
                 return TRUE;
             } else {
@@ -45,7 +49,7 @@ class Designation_model extends MY_model {
         } else {
 
             $this->db->where('designation', $name);
-            $query = $this->db->get('staff_designation');
+            $query = $this->db->where('session_id', $this->current_session)->get('staff_designation');
             if ($query->num_rows() > 0) {
                 return TRUE;
             } else {
@@ -58,7 +62,7 @@ class Designation_model extends MY_model {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        $this->db->where("id", $id)->delete("staff_designation");
+        $this->db->where("id", $id)->where('session_id', $this->current_session)->delete("staff_designation");
         $message = DELETE_RECORD_CONSTANT . " On staff designation id " . $id;
         $action = "Delete";
         $record_id = $id;

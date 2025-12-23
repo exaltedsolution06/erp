@@ -14,6 +14,7 @@ class Designation extends Admin_Controller {
 
         $this->load->model('designation_model');
         $this->load->model('staff_model');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function designation() {
@@ -46,10 +47,10 @@ class Designation extends Admin_Controller {
             }
 
             if (!empty($designationid)) {
-                $data = array('designation' => $type, 'is_active' => 'yes', 'id' => $designationid);
+                $data = array('designation' => $type, 'is_active' => 'yes', 'id' => $designationid, 'session_id'=> $this->current_session);
             } else {
 
-                $data = array('designation' => $type, 'is_active' => 'yes');
+                $data = array('designation' => $type, 'is_active' => 'yes', 'session_id'=> $this->current_session);
             }
             $insert_id = $this->designation_model->addDesignation($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('success_message') . '</div>');
@@ -65,6 +66,10 @@ class Designation extends Admin_Controller {
     function designationedit($id) {
 
         $result = $this->designation_model->get($id);
+		if(!$result)
+		{
+			redirect('admin/designation/designation');
+		}
         $data["title"] = $this->lang->line('edit') . " " . $this->lang->line('designation');
         $data["result"] = $result;
 

@@ -37,7 +37,7 @@ class Department_model extends MY_model {
         } else {
 
             $this->db->where('department_name', $name);
-            $query = $this->db->get('department');
+            $query = $this->db->where('session_id', $this->current_session)->get('department');
             if ($query->num_rows() > 0) {
                 return TRUE;
             } else {
