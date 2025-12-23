@@ -455,7 +455,10 @@ class Teacher extends Admin_Controller {
 
         if ($this->form_validation->run() == false) {
             $result = $this->classteacher_model->teacherByClassSection($class_id, $section_id);
-
+			if(empty($result))
+			{
+				redirect('admin/teacher/assign_class_teacher');
+			}
             $data["result"] = $result;
 
             $assignteacherlist = $this->class_model->getClassTeacher();
@@ -466,7 +469,7 @@ class Teacher extends Admin_Controller {
 
                 $tlist[] = $this->classteacher_model->teacherByClassSection($classid, $sectionid);
             }
-
+			
             $data["tlist"] = $tlist;
             $teacherlist = $this->staff_model->getStaffbyrole($role = 2);
             $data['teacherlist'] = $teacherlist;
@@ -484,7 +487,6 @@ class Teacher extends Admin_Controller {
             $sectionlist = $this->section_model->get();
             $data['sectionlist'] = $sectionlist;
         } else {
-
             $section = $this->input->post('section');
             $prev_teacher = $this->input->post('classteacherid');
             $staff_id = $this->input->post('teachers');
