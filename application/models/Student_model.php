@@ -1191,7 +1191,7 @@ class Student_model extends MY_Model
     public function gethouselist()
     {
 
-        $query = $this->db->where("is_active", "yes")->get("school_houses");
+        $query = $this->db->where("is_active", "yes")->where('session_id', $this->current_session)->get("school_houses");
 
         return $query->result_array();
     }

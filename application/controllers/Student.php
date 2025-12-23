@@ -21,6 +21,7 @@ class Student extends Admin_Controller
         $this->blood_group        = $this->config->item('bloodgroup');
         $this->sch_setting_detail = $this->setting_model->getSetting();
         $this->role;
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index()
@@ -447,7 +448,7 @@ class Student extends Admin_Controller
         if (!$this->rbac->hasPrivilege('student', 'can_add')) {
             access_denied();
         }
-		//class_id
+		//houses
         $this->session->set_userdata('top_menu', 'Student Information');
         $this->session->set_userdata('sub_menu', 'student/create');
         $genderList                 = $this->customlib->getGender();
@@ -470,7 +471,7 @@ class Student extends Admin_Controller
         $data["bloodgroup"]         = $this->blood_group;
         $hostelList                 = $this->hostel_model->get();
         $data['hostelList']         = $hostelList;
-        $vehroute_result            = $this->db->order_by('id', 'DESC')->get('route_head')->result_array();
+        $vehroute_result            = $this->db->order_by('id', 'DESC')->where('session_id', $this->current_session)->get('route_head')->result_array();
         $data['vehroutelist']       = $vehroute_result;
 		
 		
