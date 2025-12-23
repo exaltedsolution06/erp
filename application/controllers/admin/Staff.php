@@ -26,6 +26,7 @@ class Staff extends Admin_Controller
         $this->payment_mode       = $this->config->item('payment_mode');
         $this->status             = $this->config->item('status');
         $this->sch_setting_detail = $this->setting_model->getSetting();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index()
@@ -142,6 +143,10 @@ class Staff extends Admin_Controller
         $data["id"]    = $id;
         $data['title'] = 'Staff Details';
         $staff_info    = $this->staff_model->getProfile($id);
+		if(!$staff_info)
+		{
+			redirect('admin/staff/index');
+		}
         $userdata      = $this->customlib->getUserData();
 
         $userid          = $userdata['id'];
@@ -498,6 +503,7 @@ class Staff extends Admin_Controller
                 'gender'          => $gender,
                 'payscale'        => '',
                 'is_active'       => 1,
+                'session_id'       => $this->current_session,
             );
 
             if (isset($surname)) {
@@ -1017,6 +1023,10 @@ class Staff extends Admin_Controller
         $data["marital_status"]      = $marital_status;
         $data['title']               = 'Edit Staff';
         $staff                       = $this->staff_model->get($id);
+		if(!$staff)
+		{
+			redirect('admin/staff/index');
+		}
         $data['staff']               = $staff;
         $data["contract_type"]       = $this->contract_type;
         $data['sch_setting']         = $this->sch_setting_detail;

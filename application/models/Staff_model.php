@@ -6,12 +6,14 @@ class Staff_model extends MY_Model
     public function __construct()
     {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function get($id = null)
     {
 
         $this->db->select('staff.*,languages.language,roles.name as user_type,roles.id as role_id')->from('staff')->join("staff_roles", "staff_roles.staff_id = staff.id", "left")->join("roles", "staff_roles.role_id = roles.id", "left")->join("languages", "languages.id = staff.lang_id", "left");
+		$this->db->where('session_id', $this->current_session);
 
         if ($id != null) {
             $this->db->where('staff.id', $id);
@@ -564,6 +566,7 @@ class Staff_model extends MY_Model
         }
 
         $this->db->where("staff.is_active", $active);      
+        $this->db->where("staff.session_id", $this->current_session);      
 
         $this->db->where("roles.id", $role);
         $query = $this->db->get();
@@ -617,7 +620,7 @@ class Staff_model extends MY_Model
         $this->db->join("staff_roles", "staff_roles.staff_id = staff.id", "left");
         $this->db->join("roles", "staff_roles.role_id = roles.id", "left");
         $this->db->where("staff.id", $id);
-        $this->db->from('staff');
+        $this->db->from('staff')->where('staff.session_id', $this->current_session);
         $query = $this->db->get();
         return $query->row_array();
     }
@@ -646,7 +649,7 @@ class Staff_model extends MY_Model
        
         $field_var = count($field_k_array) > 0 ? "," . implode(',', $field_k_array) : "";
 
-        $query = "SELECT `staff`.*, `staff_designation`.`designation` as `designation`, `department`.`department_name` as `department`,`roles`.`name` as user_type " . $field_var . "  FROM `staff` " . $join_array . " LEFT JOIN `staff_designation` ON `staff_designation`.`id` = `staff`.`designation` LEFT JOIN `staff_roles` ON `staff_roles`.`staff_id` = `staff`.`id` LEFT JOIN `roles` ON `staff_roles`.`role_id` = `roles`.`id` LEFT JOIN `department` ON `department`.`id` = `staff`.`department` WHERE  `staff`.`is_active` = '$active' and (CONCAT(`staff`.`name`,' ',`staff`.`surname`) LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`surname` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`employee_id` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`local_address` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!'  OR `staff`.`contact_no` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`email` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `roles`.`name` LIKE '%".$this->db->escape_like_str($searchterm)."' ESCAPE '!')";
+        $query = "SELECT `staff`.*, `staff_designation`.`designation` as `designation`, `department`.`department_name` as `department`,`roles`.`name` as user_type " . $field_var . "  FROM `staff` " . $join_array . " LEFT JOIN `staff_designation` ON `staff_designation`.`id` = `staff`.`designation` LEFT JOIN `staff_roles` ON `staff_roles`.`staff_id` = `staff`.`id` LEFT JOIN `roles` ON `staff_roles`.`role_id` = `roles`.`id` LEFT JOIN `department` ON `department`.`id` = `staff`.`department` WHERE  `staff`.`is_active` = '$active' and staff.session_id='$this->current_session' and (CONCAT(`staff`.`name`,' ',`staff`.`surname`) LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`surname` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`employee_id` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`local_address` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!'  OR `staff`.`contact_no` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`email` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `roles`.`name` LIKE '%".$this->db->escape_like_str($searchterm)."' ESCAPE '!')";
 
         $query = $this->db->query($query);
         return $query->result_array();
@@ -654,11 +657,11 @@ class Staff_model extends MY_Model
 
     public function searchByEmployeeId($employee_id)
     {
-
         $this->db->select('*');
         $this->db->from('staff');
         $this->db->like('staff.employee_id', $employee_id);
         $this->db->like('staff.is_active', 1);
+		$this->db->where('staff.session_id', $this->current_session);
         $query = $this->db->get();
         return $query->result_array();
     }
