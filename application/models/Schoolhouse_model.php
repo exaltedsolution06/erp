@@ -2,16 +2,19 @@
 
 class Schoolhouse_model extends MY_model {
 
+	public function __construct() {
+        parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
+    }
     public function get($id = null) {
 
         if (!empty($id)) {
-
-            $query = $this->db->where("id", $id)->get("school_houses");
+            $query = $this->db->where("id", $id)->where('session_id', $this->current_session)->get("school_houses");
 
             return $query->row_array();
         } else {
 
-            $query = $this->db->get("school_houses");
+            $query = $this->db->where('session_id', $this->current_session)->get("school_houses");
             return $query->result_array();
         }
     }
@@ -60,7 +63,7 @@ class Schoolhouse_model extends MY_model {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        $this->db->where("id", $id)->delete("school_houses");
+        $this->db->where("id", $id)->where('session_id', $this->current_session)->delete("school_houses");
         $message = DELETE_RECORD_CONSTANT . " On school houses id " . $id;
         $action = "Delete";
         $record_id = $id;
@@ -86,7 +89,7 @@ class Schoolhouse_model extends MY_model {
 		if ($id !== null) {
 			$this->db->where('id !=', $id); // ignore the current record
 		}
-		$query = $this->db->get('school_houses');
+		$query = $this->db->where('session_id', $this->current_session)->get('school_houses');
 		return $query->num_rows() > 0;
 	}
 

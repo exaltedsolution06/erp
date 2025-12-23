@@ -5,6 +5,7 @@ class Schoolhouse extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model("schoolhouse_model");
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index() {
@@ -47,7 +48,8 @@ class Schoolhouse extends Admin_Controller {
             $data = array(
                 'house_name' => $this->input->post('house_name'),
                 'is_active' => 'yes',
-                'description' => $this->input->post('description')
+                'description' => $this->input->post('description'),
+                'session_id' => $this->current_session
             );
             $this->schoolhouse_model->add($data);
 
@@ -65,6 +67,10 @@ class Schoolhouse extends Admin_Controller {
         $data["houselist"] = $houselist;
         $data['id'] = $id;
         $house = $this->schoolhouse_model->get($id);
+		if(!$house)
+		{
+			redirect('admin/schoolhouse/index');
+		}
         $data["house"] = $house;
         $data["house_name"] = $house["house_name"];
         $data["description"] = $house["description"];
