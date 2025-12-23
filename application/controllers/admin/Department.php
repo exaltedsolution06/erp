@@ -10,6 +10,7 @@ class Department extends Admin_Controller {
         $this->config->load("payroll");
         $this->load->model('department_model');
         $this->load->model('staff_model');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function department() {
@@ -19,6 +20,7 @@ class Department extends Admin_Controller {
 
         $departmenttypeid = $this->input->post("departmenttypeid");
         $DepartmentTypes = $this->department_model->getDepartmentType();
+		
         $data["departmenttype"] = $DepartmentTypes;
         $this->form_validation->set_rules(
                 'type', $this->lang->line('name'), array('required',
@@ -43,16 +45,15 @@ class Department extends Admin_Controller {
                 }
             }
             if (!empty($departmenttypeid)) {
-                $data = array('department_name' => $type, 'is_active' => 'yes', 'id' => $departmenttypeid);
+                $data = array('department_name' => $type, 'is_active' => 'yes', 'id' => $departmenttypeid, 'session_id'=> $this->current_session);
             } else {
 
-                $data = array('department_name' => $type, 'is_active' => 'yes');
+                $data = array('department_name' => $type, 'is_active' => 'yes', 'session_id'=> $this->current_session);
             }
             $insert_id = $this->department_model->addDepartmentType($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('success_message') . '</div>');
             redirect("admin/department/department");
         } else {
-
             $this->load->view("layout/header");
             $this->load->view("admin/staff/departmentType", $data);
             $this->load->view("layout/footer");
@@ -62,6 +63,10 @@ class Department extends Admin_Controller {
     function departmentedit($id) {
 
         $result = $this->department_model->getDepartmentType($id);
+		if(!$result)
+		{
+			redirect('admin/department/department');
+		}
 
         $data["result"] = $result;
         $data["title"] = $this->lang->line('edit') . " " . $this->lang->line('department');

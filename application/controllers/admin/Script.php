@@ -113,5 +113,49 @@ class Script extends Admin_Controller
 			$update_sql = "UPDATE `school_houses` SET `session_id` = ?";
 			$this->db->query($update_sql, [$session_id]);
 		}
+		
+		//For 'vehicles'.
+		$session_exists = "SHOW COLUMNS FROM `vehicles` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `vehicles` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `vehicles` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+		//For 'vehicle_routes'.
+		$session_exists = "SHOW COLUMNS FROM `vehicle_routes` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `vehicle_routes` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `vehicle_routes` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+		//For 'subjects'.
+		$session_exists = "SHOW COLUMNS FROM `subjects` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `subjects` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `subjects` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+		//For 'department'.
+		$session_exists = "SHOW COLUMNS FROM `department` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `department` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `department` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
     }
 }

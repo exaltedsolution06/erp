@@ -7,6 +7,7 @@ class Vehroute extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index() {
@@ -40,6 +41,7 @@ class Vehroute extends Admin_Controller {
                 $vehicle_array = array(
                     'route_id' => $route_id,
                     'vehicle_id' => $vec_value,
+                    'session_id' => $this->current_session,
                 );
 
                 $vehicle_batch_array[] = $vehicle_array;
@@ -94,6 +96,10 @@ class Vehroute extends Admin_Controller {
         $data['title'] = 'Edit Fees Master';
         $data['id'] = $id;
         $vehroute = $this->vehroute_model->get($id);
+		if(!$vehroute)
+		{
+			redirect('admin/vehroute');
+		}
 
         $data['vehroute'] = $vehroute;
         $data['title_list'] = 'Fees Master List';
@@ -134,6 +140,7 @@ class Vehroute extends Admin_Controller {
                     $vehicle_array = array(
                         'route_id' => $route_id,
                         'vehicle_id' => $vec_value,
+						'session_id' => $this->current_session,
                     );
 
                     $vehicle_batch_array[] = $vehicle_array;
@@ -150,6 +157,7 @@ class Vehroute extends Admin_Controller {
                         $vehicle_array = array(
                             'route_id' => $pre_route_id,
                             'vehicle_id' => $vec_add_value,
+							'session_id' => $this->current_session,
                         );
 
                         $vehicle_batch_array[] = $vehicle_array;

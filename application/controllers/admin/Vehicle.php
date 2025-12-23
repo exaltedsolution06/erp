@@ -7,6 +7,7 @@ class Vehicle extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index() {
@@ -35,6 +36,7 @@ class Vehicle extends Admin_Controller {
 
 
             $data = array(
+				'session_id' => $this->current_session,
                 'vehicle_no' => $this->input->post('vehicle_no'),
                 'vehicle_model' => $this->input->post('vehicle_model'),
                 'driver_name' => $this->input->post('driver_name'),
@@ -58,9 +60,15 @@ class Vehicle extends Admin_Controller {
         $data['title'] = 'Add Vehicle';
         $data['id'] = $id;
         $editvehicle = $this->vehicle_model->get($id);
+		
+		if(!$editvehicle)
+		{
+			redirect('admin/vehicle/index');
+		}
 
         $data['editvehicle'] = $editvehicle;
         $listVehicle = $this->vehicle_model->get();
+		
         $data['listVehicle'] = $listVehicle;
        // $this->form_validation->set_rules('vehicle_no', $this->lang->line('vehicle_no'), 'trim|required|xss_clean');
 		$this->form_validation->set_rules(
@@ -77,6 +85,7 @@ class Vehicle extends Admin_Controller {
             $manufacture_year = $this->input->post('manufacture_year');
             $data = array(
                 'id' => $this->input->post('id'),
+				'session_id' => $this->current_session,
                 'vehicle_no' => $this->input->post('vehicle_no'),
                 'vehicle_model' => $this->input->post('vehicle_model'),
                 'driver_name' => $this->input->post('driver_name'),

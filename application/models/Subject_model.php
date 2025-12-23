@@ -7,6 +7,7 @@ class Subject_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function get($id = null) {
@@ -33,7 +34,7 @@ class Subject_model extends MY_Model {
                 }
             }
         }
-        $this->db->select()->from('subjects');
+        $this->db->select()->from('subjects')->where('session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('id', $id);
         } else {
@@ -54,7 +55,7 @@ class Subject_model extends MY_Model {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        $this->db->where('id', $id);
+        $this->db->where('id', $id)->where('session_id', $this->current_session);
         $this->db->delete('subjects');
         $message = DELETE_RECORD_CONSTANT . " On subjects id " . $id;
         $action = "Delete";
@@ -119,7 +120,7 @@ class Subject_model extends MY_Model {
     }
 
     function check_data_exists($data) {
-        $this->db->where('name', $data['name']);
+        $this->db->where('name', $data['name'])->where('session_id', $this->current_session);
         $query = $this->db->get('subjects');
         if ($query->num_rows() > 0) {
             return TRUE;
@@ -129,7 +130,7 @@ class Subject_model extends MY_Model {
     }
 
     function check_code_exists($data) {
-        $this->db->where('code', $data['code']);
+        $this->db->where('code', $data['code'])->where('session_id', $this->current_session);
         $query = $this->db->get('subjects');
         if ($query->num_rows() > 0) {
             return TRUE;
@@ -142,6 +143,7 @@ class Subject_model extends MY_Model {
 		return $this->db->where('name', $name)
 						->where('type', $type)
 						->where('type_one', $type_one)
+						->where('session_id', $this->current_session)
 						->get('subjects')->num_rows() > 0;
 	}
 	
@@ -152,6 +154,7 @@ class Subject_model extends MY_Model {
 					->where('type', $type)
 					->where('type_one', $type_one)
 					->where('id !=', $id)
+					->where('session_id', $this->current_session)
 					->get('subjects')
 					->num_rows() > 0;
 	}

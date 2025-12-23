@@ -275,7 +275,8 @@ class Subjectgroup_model extends MY_Model {
             }
         }
 
-        $sql = "SELECT subject_group_subjects.*,subjects.name,subjects.code,subjects.type FROM `subject_group_subjects` INNER JOIN subjects on subjects.id=subject_group_subjects.subject_id WHERE subject_group_id =" . $this->db->escape($subject_group_id) . " and session_id =" . $this->db->escape($this->current_session) . "" . $subject_groupid_condition;
+        $sql = "SELECT subject_group_subjects.*,subjects.name,subjects.code,subjects.type FROM `subject_group_subjects` INNER JOIN subjects on subjects.id=subject_group_subjects.subject_id WHERE subject_group_id =" . $this->db->escape($subject_group_id) . " and subject_group_subjects.session_id =" . $this->db->escape($this->current_session) . "" . $subject_groupid_condition;
+	
         $query = $this->db->query($sql);
 
         return $query->result();
@@ -285,13 +286,13 @@ class Subjectgroup_model extends MY_Model {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        $this->db->where('id', $id);
+        $this->db->where('id', $id)->where('session_id', $this->current_session);
         $this->db->delete('subject_groups');
 		
-		$this->db->where('subject_group_id ', $id);
+		$this->db->where('subject_group_id ', $id)->where('session_id', $this->current_session);
 		$this->db->delete('subject_group_class_sections');
 		
-		$this->db->where('subject_group_id ', $id);
+		$this->db->where('subject_group_id ', $id)->where('session_id', $this->current_session);
 		$this->db->delete('subject_group_subjects');
 		
         $message = DELETE_RECORD_CONSTANT . " On subject groups id " . $id;

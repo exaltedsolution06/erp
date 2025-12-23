@@ -8,6 +8,7 @@ class Subject extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->helper('file');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index() {
@@ -38,6 +39,7 @@ class Subject extends Admin_Controller {
                 'code' => $this->input->post('code'),
                 'type' => $this->input->post('type'),
                 'type_one' => $this->input->post('type_one'),
+				'session_id' => $this->current_session
             );
             $this->subject_model->add($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
@@ -141,6 +143,10 @@ class Subject extends Admin_Controller {
         $data['title'] = 'Edit Subject';
         $data['id'] = $id;
         $subject = $this->subject_model->get($id);
+		if(!$subject)
+		{
+			redirect('admin/subject/index');
+		}
         $data['subject'] = $subject;
         $data['subject_types'] = $this->customlib->subjectType();
         $data['subject_types_one'] = $this->customlib->subjectTypeOne();
@@ -162,6 +168,7 @@ class Subject extends Admin_Controller {
                 'code' => $this->input->post('code'),
                 'type' => $this->input->post('type'),
                 'type_one' => $this->input->post('type_one'),
+				'session_id' => $this->current_session
             );
             $this->subject_model->add($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');

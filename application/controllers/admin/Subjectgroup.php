@@ -145,6 +145,10 @@ class Subjectgroup extends Admin_Controller {
         $data['subjectgroupList'] = $subjectgroupList;
         $subjectgroup = $this->subjectgroup_model->getByID($id);
 		
+		if(empty($subjectgroup))
+		{
+			redirect('admin/subjectgroup/index');
+		}
 
         if (!empty($subjectgroup[0]->sections)) {
 
@@ -234,6 +238,7 @@ class Subjectgroup extends Admin_Controller {
                     $insert_array = array(
                         'student_session_id' => $value,
                         'subject_group_id' => $subject_group_id,
+                        'session_id' => $this->current_session
                     );
                     $inserted_id = $this->studentsubjectgroup_model->add($insert_array);
 

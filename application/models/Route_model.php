@@ -12,7 +12,7 @@ class Route_model extends MY_Model {
 
     public function get($id = null) {
         //$this->db->select()->from('transport_route');
-        $this->db->select('id, fees_heading as  route_title')->from('route_head');
+        $this->db->select('id, fees_heading as  route_title')->from('route_head')->where('session_id', $this->current_session);
         if ($id != null) {
             //$this->db->where('transport_route.id', $id);
             $this->db->where('route_head.id', $id);

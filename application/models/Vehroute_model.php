@@ -13,6 +13,7 @@ class Vehroute_model extends MY_Model {
     public function get($id = null) {
         $this->db->select('vehicle_routes.*,route_head.id as transport_id,route_head.fees_heading')->from('vehicle_routes');
         $this->db->join('route_head', 'route_head.id = vehicle_routes.route_id');
+		$this->db->where('vehicle_routes.session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('vehicle_routes.route_id', $id);
         } else {
@@ -126,7 +127,7 @@ class Vehroute_model extends MY_Model {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        $this->db->where('route_id', $route_id);
+        $this->db->where('route_id', $route_id)->where('session_id', $this->current_session);
         $this->db->delete('vehicle_routes');
         $message = DELETE_RECORD_CONSTANT . " On vehicle routes id " . $route_id;
         $action = "Delete";
@@ -198,7 +199,7 @@ class Vehroute_model extends MY_Model {
     function check_data_exists($route_id) {
         $this->db->where('route_id', $route_id);
 
-        $query = $this->db->get('vehicle_routes');
+        $query = $this->db->where('session_id', $this->current_session)->get('vehicle_routes');
         if ($query->num_rows() > 0) {
             return TRUE;
         } else {

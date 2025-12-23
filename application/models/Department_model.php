@@ -4,7 +4,12 @@
  * 
  */
 class Department_model extends MY_model {
-
+	
+	public function __construct() {
+        parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
+    }
+	
     public function valid_department($str) {
         $type = $this->input->post('type');
         $id = $this->input->post('departmenttypeid');
@@ -23,7 +28,7 @@ class Department_model extends MY_model {
 
         if ($id != 0) {
             $data = array('id != ' => $id, 'department_name' => $name);
-            $query = $this->db->where($data)->get('department');
+            $query = $this->db->where($data)->where('session_id', $this->current_session)->get('department');
             if ($query->num_rows() > 0) {
                 return TRUE;
             } else {
@@ -45,7 +50,7 @@ class Department_model extends MY_model {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        $this->db->where("id", $id)->delete("department");
+        $this->db->where("id", $id)->where('session_id', $this->current_session)->delete("department");
         $message = DELETE_RECORD_CONSTANT . " On department id " . $id;
         $action = "Delete";
         $record_id = $id;
@@ -66,11 +71,11 @@ class Department_model extends MY_model {
 
         if (!empty($id)) {
 
-            $query = $this->db->where("id", $id)->get('department');
+            $query = $this->db->where("id", $id)->where('session_id', $this->current_session)->get('department');
             return $query->row_array();
         } else {
 
-            $query = $this->db->get("department");
+            $query = $this->db->where('session_id', $this->current_session)->get("department");
             return $query->result_array();
         }
     }

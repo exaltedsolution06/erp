@@ -11,7 +11,7 @@ class Vehicle_model extends MY_Model {
     }
 
     public function get($id = null) {
-        $this->db->select()->from('vehicles');
+        $this->db->select()->from('vehicles')->where('session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('vehicles.id', $id);
         } else {
@@ -29,7 +29,7 @@ class Vehicle_model extends MY_Model {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        $this->db->where('id', $id);
+        $this->db->where('id', $id)->where('session_id', $this->current_session);
         $this->db->delete('vehicles');
         $message = DELETE_RECORD_CONSTANT . " On vehicles id " . $id;
         $action = "Delete";
@@ -111,7 +111,7 @@ class Vehicle_model extends MY_Model {
 		if ($id !== null) {
 			$this->db->where('id !=', $id); // ignore the current record
 		}
-		$query = $this->db->get('vehicles');
+		$query = $this->db->where('session_id', $this->current_session)->get('vehicles');
 		return $query->num_rows() > 0;
 	}
 
