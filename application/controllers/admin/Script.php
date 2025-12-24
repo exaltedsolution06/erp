@@ -245,5 +245,27 @@ class Script extends Admin_Controller
 			$update_sql = "UPDATE `template_marksheets` SET `session_id` = ?";
 			$this->db->query($update_sql, [$session_id]);
 		}
+		
+		//For 'template_reportcard'.
+		$session_exists = "SHOW COLUMNS FROM `template_reportcard` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `template_reportcard` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `template_reportcard` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+		//For 'grades'.
+		$session_exists = "SHOW COLUMNS FROM `grades` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `grades` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `grades` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
     }
 }

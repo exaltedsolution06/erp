@@ -44,7 +44,6 @@
                                     <span class="text-danger"><?php echo form_error('session_id'); ?></span>
                                 </div>  
                             </div>-->
-							<input type="hidden" name="session_id" id="session_id" value="<?php echo $current_session; ?>">
                             <div class="col-sm-6 col-lg-6 col-md-6">
                                 <div class="form-group">   
                                     <label><?php echo $this->lang->line('class'); ?></label><small class="req"> *</small>

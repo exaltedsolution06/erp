@@ -175,7 +175,7 @@ class Examresult extends Admin_Controller {
 		
 		// var_dump($_POST);
 		
-		$session_id = $this->input->post('session_id');
+		$session_id = $this->current_session;
         $section_id = $this->input->post('section_id');
         $class_id = $this->input->post('class_id');
        
@@ -474,7 +474,7 @@ class Examresult extends Admin_Controller {
         $data['sessionlist'] = $session;
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('session_id', $this->lang->line('session'), 'trim|required|xss_clean');
+        // $this->form_validation->set_rules('session_id', $this->lang->line('session'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('exam_group_id', $this->lang->line('exam') . " " . $this->lang->line('group'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('exam_id', $this->lang->line('exam'), 'trim|required|xss_clean');
 
@@ -483,7 +483,7 @@ class Examresult extends Admin_Controller {
         } else {
             $exam_group_id = $this->input->post('exam_group_id');
             $exam_id = $this->input->post('exam_id');
-            $session_id = $this->input->post('session_id');
+            $session_id = $this->current_session;
             $class_id = $this->input->post('class_id');
             $section_id = $this->input->post('section_id');
 
@@ -555,14 +555,14 @@ class Examresult extends Admin_Controller {
         $data['sessionlist'] = $session;
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('session_id', $this->lang->line('student'), 'trim|required|xss_clean');
+        // $this->form_validation->set_rules('session_id', $this->lang->line('student'), 'trim|required|xss_clean');
     
         if ($this->form_validation->run() == false) {
             
         } else {
         
             $exam_group_id = $this->input->post('exam_group_id');
-            $session_id = $this->input->post('session_id');
+            $session_id = $this->current_session;
             $class_id = $this->input->post('class_id');
             $section_id = $this->input->post('section_id');
             
@@ -645,7 +645,7 @@ class Examresult extends Admin_Controller {
         
         */
             
-        $session_id = $this->input->post('session_id');
+        $session_id = $this->current_session;
         $section_id = $this->input->post('section_id');
         $class_id = $this->input->post('class_id');
        

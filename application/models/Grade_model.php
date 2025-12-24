@@ -46,6 +46,7 @@ class Grade_model extends MY_Model {
 
     public function getfeeTypeByGroup($exm_type_key) {
         $this->db->select()->from('grades');
+        $this->db->where('grades.session_id', $this->current_session);
         $this->db->where('grades.exam_type', $exm_type_key);
         $this->db->order_by('grades.id');
         $query = $this->db->get();
@@ -54,6 +55,7 @@ class Grade_model extends MY_Model {
 
     public function get($id = null) {
         $this->db->select()->from('grades');
+        $this->db->where('grades.session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('grades.id', $id);
         } else {
@@ -69,6 +71,7 @@ class Grade_model extends MY_Model {
 
     public function getByExamType($exam_type = null) {
         $this->db->select()->from('grades');
+        $this->db->where('grades.session_id', $this->current_session);
         $this->db->where('grades.exam_type', $exam_type);
         $this->db->order_by('grades.id');
         $query = $this->db->get();
@@ -84,6 +87,7 @@ class Grade_model extends MY_Model {
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
+        $this->db->where('session_id', $this->current_session);
         $this->db->delete('grades');
         $message = DELETE_RECORD_CONSTANT . " On grades id " . $id;
         $action = "Delete";

@@ -11,6 +11,7 @@ class Grade extends Admin_Controller
     {
         parent::__construct();
         $this->exam_type = $this->config->item('exam_type');
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
    
@@ -46,6 +47,7 @@ class Grade extends Admin_Controller
                 'point'       => $this->input->post('grade_point'),
 
                 'description' => $this->input->post('description'),
+				'session_id' => $this->current_session
             );
             $this->grade_model->add($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
@@ -67,6 +69,9 @@ class Grade extends Admin_Controller
 
         $data['id']         = $id;
         $editgrade          = $this->grade_model->get($id);
+		if(!$editgrade){
+			redirect('admin/grade/index');
+		}
         $data['editgrade']  = $editgrade;
          $this->form_validation->set_rules('exam_type', $this->lang->line('exam')." ".$this->lang->line('type'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('name', $this->lang->line('grade'), 'trim|required|xss_clean');
