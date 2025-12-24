@@ -59,7 +59,10 @@ class Stdtransfer extends Admin_Controller {
             echo json_encode(array('status' => 'fail', 'msg' => $errors));
         } else {
             $student_list = $this->input->post('student_list');
+			//echo "<pre>";print_r($student_list);die;
             foreach ($student_list as $key => $value) {
+				if($key==1)
+				{
                 $student_id = $value;
                 $result = $this->input->post('result_' . $value);
                 $session_status = $this->input->post('next_working_' . $value);
@@ -98,6 +101,7 @@ class Stdtransfer extends Admin_Controller {
                     );
                     $this->student_model->alumni_student_status($alumni_data);
                 }
+				}
             }
             echo json_encode(array('status' => 'success', 'msg' => ""));
         }

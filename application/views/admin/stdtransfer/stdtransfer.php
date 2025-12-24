@@ -90,12 +90,12 @@
                                             <select  id="class_promote_id" name="class_promote_id" class="form-control" >
                                                 <option value=""><?php echo $this->lang->line('select'); ?></option>
                                                 <?php
-                                                foreach ($classlist as $class) {
+                                                /*foreach ($classlist as $class) {
                                                     ?>
                                                     <option value="<?php echo $class['id'] ?>" ><?php echo $class['class'] ?></option>
                                                     <?php
                                                     $count++;
-                                                }
+                                                }*/
                                                 ?>
                                             </select>
                                             <span class="text-danger" id="class_promote_id_error"></span>
@@ -308,6 +308,27 @@
                     $('#feetype_id').append(div_data);
                 }
             });
+        });
+    });
+	
+	
+	$(document).on('change', '#session_id', function (e) {
+        $('#class_promote_id').html("");
+        var session_id = $(this).val();
+        var base_url = '<?php echo base_url() ?>';
+        var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+        $.ajax({
+            type: "GET",
+            url: base_url + "classes/getClassBySession",
+            data: {'session_id': session_id},
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, obj)
+                {
+                    div_data += "<option value=" + obj.id + ">" + obj.class + "</option>";
+                });
+                $('#class_promote_id').append(div_data);
+            }
         });
     });
 

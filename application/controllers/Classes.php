@@ -161,5 +161,12 @@ class Classes extends Admin_Controller
         $data['sections'] = $this->class_model->get_section($id);
         $this->load->view('class/_section_list', $data);
     }
+	public function getClassBySession()
+    {
+        $session_id = $this->input->get('session_id');
+        $data     = $this->class_model->getClassBySession($session_id);
+		//echo "<pre>";print_r($data);die;
+        echo json_encode($data);
+    }
 
 }
