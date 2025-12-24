@@ -156,11 +156,13 @@
                             <?php
                             if (!empty($resultlist)) {
                                 $checked = "";
+								
                                 if (!isset($msg)) {
+									
                                     if ($resultlist[0]['staff_attendance_type_id'] != "") {
                                         if ($resultlist[0]['staff_attendance_type_id'] != 5) {
                                             ?>
-                                            <div class="alert alert-success"><?php echo $this->lang->line('attendance_already_submitted_you_can_edit_record'); ?></div>
+                                            <!--<div class="alert alert-success"><?php echo $this->lang->line('attendance_already_submitted_you_can_edit_record'); ?></div>-->
                                             <?php
                                         } else {
                                             $checked = "checked='checked'";

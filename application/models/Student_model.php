@@ -1120,7 +1120,7 @@ class Student_model extends MY_Model
         } else {
             $data = array('student_session.class_id' => $class_id);
         }
-
+		
         $query = $this->db->SELECT("students.firstname,students.middlename,students.lastname,students.is_active, students.mobileno, students.id as sid ,students.admission_no, students.admission_date, students.guardian_name, students.guardian_relation, students.guardian_phone, classes.class, sessions.id, sections.section")->join("student_session", "students.id = student_session.student_id")->join("classes", "student_session.class_id = classes.id")->join("sections", "student_session.section_id = sections.id")->join("sessions", "student_session.session_id = sessions.id")->where($data)->group_by("students.id")->get("students");
 
         return $query->result_array();

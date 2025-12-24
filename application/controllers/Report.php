@@ -1272,7 +1272,7 @@ class Report extends Admin_Controller
 
         $data['head_data'] = $this->db->get('fee_head')->result();
         $data['classes_data'] = $this->db->get('classes')->result();
-        $data['route_head'] = $this->db->get('route_head')->result();
+        $data['route_head'] = $this->db->where('session_id', $this->current_session)->get('route_head')->result();
         
 
         $data['category_head'] = $this->feegroup_model->get();
@@ -1367,7 +1367,7 @@ class Report extends Admin_Controller
 
         $data['head_data'] = $this->db->get('fee_head')->result();
         $data['classes_data'] = $this->db->get('classes')->result();
-        $data['route_head'] = $this->db->get('route_head')->result();
+        $data['route_head'] = $this->db->where('session_id', $this->current_session)->get('route_head')->result();
         
         $data['category_head'] = $this->feegroup_model->get();
          
@@ -1463,7 +1463,7 @@ class Report extends Admin_Controller
 
         $data['head_data'] = $this->db->get('fee_head')->result();
         $data['classes_data'] = $this->db->get('classes')->result();
-        $data['route_head'] = $this->db->get('route_head')->result();
+        $data['route_head'] = $this->db->where('session_id', $this->current_session)->get('route_head')->result();
          $data['category_head'] = $this->feegroup_model->get();
          
         // end paginate
@@ -1486,7 +1486,7 @@ class Report extends Admin_Controller
         $feegroup_result = $this->feegroup_model->get();
         $data['category'] = $feegroup_result;
 
-        $data['routes'] = $this->db->order_by('id', 'DESC')->get('route_head')->result_array();
+        $data['routes'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
         $data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('fee_head')->result_array();
 
         $selectedFeeCat = $_POST['fee_cat'] ?? [];
@@ -1557,7 +1557,7 @@ class Report extends Admin_Controller
 
        
 
-        $data['routes'] = $this->db->order_by('id', 'DESC')->get('route_head')->result_array();
+        $data['routes'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
         $data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('fee_head')->result_array();
        
 
@@ -1631,7 +1631,7 @@ class Report extends Admin_Controller
         $data['category'] = $feegroup_result;
 
        
-        $data['routes'] = $this->db->order_by('id', 'DESC')->get('route_head')->result_array();
+        $data['routes'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
        
         $data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('fee_head')->result_array();
 

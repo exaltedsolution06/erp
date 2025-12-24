@@ -104,6 +104,7 @@ class Route_model extends MY_Model {
 
     public function listvehicles() {
         $this->db->select()->from('vehicles');
+        $this->db->where('session_id', $this->current_session);
         $listvehicles = $this->db->get();
         return $listvehicles->result_array();
     }

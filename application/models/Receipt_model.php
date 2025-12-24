@@ -300,7 +300,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('sections', 'sections.id = student_session.section_id');
         $this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
-
+		$this->db->where('student_session.session_id', $this->current_session);
         
         if (!empty($from_date) && !empty($to_date)) {
             $this->db->where('DATE(receipts.date_time) >=', $from_date);
@@ -329,6 +329,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('students', 'students.id = receipts.student_id');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('users', 'users.user_id = students.id', 'left');
+		$this->db->where('student_session.session_id', $this->current_session);
          if (!empty($from_date) && !empty($to_date)) {
             $this->db->where('DATE(receipts.date_time) >=', $from_date);
             $this->db->where('DATE(receipts.date_time) <=', $to_date);
@@ -553,6 +554,9 @@ class Receipt_model extends CI_Model {
             $this->db->where('DATE(receipts.date_time) >=', $filters['from_date']);
             $this->db->where('DATE(receipts.date_time) <=', $filters['to_date']);
         }
+		
+		$this->db->where('student_session.session_id', $this->current_session);
+		
         $this->db->group_by('receipts.receipt_no');
         $this->db->order_by('receipts.id', 'DESC');
         $this->db->limit($limit, $offset);
@@ -632,6 +636,9 @@ class Receipt_model extends CI_Model {
             $this->db->where('DATE(fee_discounts.updated_date) >=', $filters['from_date']);
             $this->db->where('DATE(fee_discounts.updated_date) <=', $filters['to_date']);
         }
+		
+		$this->db->where('student_session.session_id', $this->current_session);
+		
         $this->db->group_by('fee_discounts.student_session_id');
         $this->db->order_by('fee_discounts.id', 'DESC');
         $this->db->limit($limit, $offset);
@@ -661,6 +668,9 @@ class Receipt_model extends CI_Model {
             $this->db->where('DATE(fee_discounts.updated_date) >=', $filters['from_date']);
             $this->db->where('DATE(fee_discounts.updated_date) <=', $filters['to_date']);
         }
+		
+		$this->db->where('student_session.session_id', $this->current_session);
+		
         $this->db->group_by('fee_discounts.student_session_id');
         
         $query = $this->db->get();
@@ -695,6 +705,9 @@ class Receipt_model extends CI_Model {
             $this->db->where('DATE(receipts.date_time) >=', $filters['from_date']);
             $this->db->where('DATE(receipts.date_time) <=', $filters['to_date']);
         }
+		
+		$this->db->where('student_session.session_id', $this->current_session);
+		
         $this->db->group_by('receipts.receipt_no');
         
         $query = $this->db->get();
@@ -768,6 +781,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
         $this->db->where('receipts.student_id', $id);
+		$this->db->where('student_session.session_id', $this->current_session);
         $this->db->group_by('receipts.receipt_no');
         $this->db->order_by('receipts.id', 'DESC');
         $this->db->limit($limit, $offset);
@@ -799,6 +813,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('users', 'users.user_id = students.id', 'left');
         $this->db->where('receipts.student_id', $id);
+		$this->db->where('student_session.session_id', $this->current_session);
         $this->db->group_by('receipts.receipt_no');
         
         $query = $this->db->get();
@@ -901,6 +916,8 @@ class Receipt_model extends CI_Model {
             $this->db->where('DATE(receipts.date_time) >=', $filters['from_date']);
             $this->db->where('DATE(receipts.date_time) <=', $filters['to_date']);
         }
+		
+		$this->db->where('student_session.session_id', $this->current_session);
 
         $this->db->group_by(['receipts.receipt_no', 'receipts.fee_head_name']);
         $this->db->order_by('MAX(receipts.id)', 'DESC');
@@ -1076,6 +1093,8 @@ class Receipt_model extends CI_Model {
             $this->db->where('DATE(receipts.date_time) >=', $filters['from_date']);
             $this->db->where('DATE(receipts.date_time) <=', $filters['to_date']);
         }
+		
+		$this->db->where('student_session.session_id', $this->current_session);
 
         $this->db->group_by(['receipts.receipt_no', 'receipts.fee_head_name']);
 
@@ -1224,7 +1243,8 @@ class Receipt_model extends CI_Model {
             $this->db->where('DATE(receipts.date_time) >=', $filters['from_date']);
             $this->db->where('DATE(receipts.date_time) <=', $filters['to_date']);
         }
-
+		
+		$this->db->where('student_session.session_id', $this->current_session);
 
         $this->db->group_by(['receipts.receipt_no', 'receipts.fee_head_name']);
 
@@ -1418,6 +1438,8 @@ class Receipt_model extends CI_Model {
 
         $this->db->where('students.is_active', 'yes');
         $this->db->where('users.role', 'student');
+		
+		$this->db->where('student_session.session_id', $this->current_session);
 
         // Optionally group if needed, e.g., by student ID
         $this->db->group_by('students.id');
