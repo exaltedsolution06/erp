@@ -14,6 +14,7 @@ class Vehroute_model extends MY_Model {
         $this->db->select('vehicle_routes.*,route_head.id as transport_id,route_head.fees_heading')->from('vehicle_routes');
         $this->db->join('route_head', 'route_head.id = vehicle_routes.route_id');
 		$this->db->where('vehicle_routes.session_id', $this->current_session);
+		//$this->db->where('route_head.session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('vehicle_routes.route_id', $id);
         } else {
@@ -39,7 +40,6 @@ class Vehroute_model extends MY_Model {
             return $array;
         } else {
             $vehicle_routes = $query->result_array();
-
             $array = array();
             if (!empty($vehicle_routes)) {
                 foreach ($vehicle_routes as $vehicle_key => $vehicle_value) {
@@ -55,6 +55,7 @@ class Vehroute_model extends MY_Model {
                     $array[$vehicle_value['route_id']] = $vec_route;
                 }
             }
+			
             return $array;
         }
     }

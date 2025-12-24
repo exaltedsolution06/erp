@@ -471,7 +471,8 @@ class Student extends Admin_Controller
         $data["bloodgroup"]         = $this->blood_group;
         $hostelList                 = $this->hostel_model->get();
         $data['hostelList']         = $hostelList;
-        $vehroute_result            = $this->db->order_by('id', 'DESC')->where('session_id', $this->current_session)->get('route_head')->result_array();
+        //$vehroute_result            = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
+        $vehroute_result            = $this->vehroute_model->get();
         $data['vehroutelist']       = $vehroute_result;
 		
 		
@@ -531,13 +532,12 @@ class Student extends Admin_Controller
         $this->form_validation->set_rules('file', $this->lang->line('image'), 'callback_handle_upload');
         
         if ($this->form_validation->run() == false) {
-
             $this->load->view('layout/header', $data);
             $this->load->view('student/studentCreate', $data);
             $this->load->view('layout/footer', $data);
         } else {
-
-            // echo "ok";vehroute_id  route_id
+			
+            //echo "ok";vehroute_id  route_id
             // die;
              $custom_field_post  = $this->input->post("custom_fields[students]");
              $custom_value_array = array();
@@ -568,7 +568,7 @@ class Student extends Admin_Controller
             if (empty($hostel_room_id)) {
                 $hostel_room_id = 0;
             }
-
+			// category_id
             $data_insert = array(
                 'firstname'           => $this->input->post('firstname'),
                 'rte'                 => $this->input->post('rte'),
@@ -592,8 +592,9 @@ class Student extends Admin_Controller
                 'guardian_relation'   => $this->input->post('guardian_relation'),
                 'guardian_phone'      => $this->input->post('guardian_phone'),
                 'guardian_address'    => $this->input->post('guardian_address'),
-                'route_id'         => $vehroute_id,
-                'vehroute_id'         => $vehroute_id,
+                //'route_id'         	  => $vehroute_id,
+                'route_id'         	  => 0,
+                'vehroute_id'         => 0,
                 'hostel_room_id'      => $hostel_room_id,
                 'note'                => $this->input->post('note'),
                 'is_active'           => 'yes',
@@ -649,7 +650,8 @@ class Student extends Admin_Controller
             }
 
             if (isset($house)) {
-                $data_insert['school_house_id'] = $this->input->post('house');
+                //$data_insert['school_house_id'] = $this->input->post('house');
+                $data_insert['school_house_id'] = 0;
             }
             if (isset($blood_group)) {
 
@@ -671,7 +673,8 @@ class Student extends Admin_Controller
             }
             if (isset($category_id)) {
 
-                $data_insert['category_id'] = $this->input->post('category_id');
+                //$data_insert['category_id'] = $this->input->post('category_id');
+                $data_insert['category_id'] = 0;
             }
 
             if (isset($religion)) {
@@ -768,6 +771,7 @@ class Student extends Admin_Controller
 
           
             if ($insert) {
+				//echo "<pre>";print_r($data_insert);die;
                 $insert_id = $this->student_model->add($data_insert, $data_setting);
                 if (!empty($custom_value_array)) {
                     $this->customfield_model->insertRecord($custom_value_array, $insert_id);
@@ -778,6 +782,9 @@ class Student extends Admin_Controller
                     'section_id'    => $section_id,
                     'session_id'    => $session,
                     'fees_discount' => $fees_discount,
+                    'route_id' => $vehroute_id,
+                    'fee_category_id' => $this->input->post('category_id'),
+                    'school_house_id' => $this->input->post('house'),
                 );
                 $this->student_model->add_student_session($data_new);
                 $user_password = $this->role->get_random_password($chars_min = 6, $chars_max = 6, $use_upper_case = false, $include_numbers = true, $include_special_chars = false);
@@ -1485,14 +1492,19 @@ class Student extends Admin_Controller
         $data['title']   = 'Edit Student';
         $data['id']      = $id;
         $student         = $this->student_model->get($id);
-        
+        $studentDetails  = $this->student_model->get_student_more_details($id);
+		//echo "<pre>";print_r($studentDetails);die;
+        //vehroutelist
         $genderList      = $this->customlib->getGender();
         $data['student'] = $student;
+        $data['studentDetails'] = $studentDetails;
+		
 
         $data['adm_auto_insert'] = $this->sch_setting_detail->adm_auto_insert;
         $data['genderList']      = $genderList;
         $session                 = $this->setting_model->getCurrentSession();
         $vehroute_result         = $this->vehroute_model->get();
+		//echo "<pre>";print_r($vehroute_result);sie;
         $data['vehroutelist']    = $vehroute_result;
         $class                   = $this->class_model->get();
         $setting_result          = $this->setting_model->get();
@@ -1512,8 +1524,9 @@ class Student extends Admin_Controller
         $custom_fields              = $this->customfield_model->getByBelong('students');
         $data['sch_setting']        = $this->sch_setting_detail;
 
-         $vehroute_result            = $this->db->order_by('id', 'DESC')->get('route_head')->result_array();
-        $data['vehroutelist']       = $vehroute_result;
+        //$vehroute_result            = $this->db->order_by('id', 'DESC')->get('route_head')->result_array();
+       // $data['vehroutelist']       = $vehroute_result;
+		
         foreach ($custom_fields as $custom_fields_key => $custom_fields_value) {
             if ($custom_fields_value['validation']) {
                 $custom_fields_id   = $custom_fields_value['id'];
@@ -1619,8 +1632,9 @@ class Student extends Admin_Controller
                 'guardian_relation'   => $this->input->post('guardian_relation'),
                 'guardian_phone'      => $this->input->post('guardian_phone'),
                 'guardian_address'    => $this->input->post('guardian_address'),
-                'route_id'         => $vehroute_id,
-                'vehroute_id'         => $vehroute_id,
+                //'route_id'         => $vehroute_id,
+                'route_id'         => 0,
+                'vehroute_id'         => 0,
                 'hostel_room_id'      => $hostel_room_id,
                 'note'                => $this->input->post('note'),
                 'is_active'           => 'yes',
@@ -1666,7 +1680,8 @@ class Student extends Admin_Controller
             }
 
             if (isset($house)) {
-                $data['school_house_id'] = $this->input->post('house');
+                //$data['school_house_id'] = $this->input->post('house');
+                $data['school_house_id'] = 0;
             }
             if (isset($blood_group)) {
 
@@ -1689,7 +1704,8 @@ class Student extends Admin_Controller
 
             if (isset($category_id)) {
 
-                $data['category_id'] = $this->input->post('category_id');
+                //$data['category_id'] = $this->input->post('category_id');
+                $data['category_id'] = 0;
             }
 
             if (isset($religion)) {
@@ -1775,6 +1791,9 @@ class Student extends Admin_Controller
                 'section_id'    => $section_id,
                 'session_id'    => $session,
                 'fees_discount' => $fees_discount,
+				'route_id' => $vehroute_id,
+                'fee_category_id' => $this->input->post('category_id'),
+                'school_house_id' => $this->input->post('house'),
             );
             $insert_id = $this->student_model->add_student_session($data_new);
             if (isset($_FILES["file"]) && !empty($_FILES['file']['name'])) {

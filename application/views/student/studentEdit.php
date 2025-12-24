@@ -1,5 +1,6 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
+//echo "<pre>";print_r($vehroutelist);die;
 ?>
 <div class="content-wrapper">
     <section class="content-header">
@@ -284,7 +285,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         <?php foreach ($houses as $hkey => $hvalue) {
                                                             ?>
                                                             <option value="<?php echo $hvalue["id"] ?>" <?php
-                                                            if ($hvalue["id"] == $student["school_house_id"]) {
+                                                            if ($hvalue["id"] == $studentDetails["school_house_id"]) {
                                                                 echo "selected";
                                                             }
                                                             ?> ><?php echo $hvalue["house_name"] ?></option>
@@ -357,7 +358,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                                         <?php foreach ($categorylist as $category) { ?>
                                                             <option value="<?php echo $category['id'] ?>" <?php
-                                                            if ($student['category_id'] == $category['id']) {
+                                                            if ($studentDetails['fee_category_id'] == $category['id']) {
                                                                 echo "selected=selected";
                                                             }
                                                             ?>><?php echo $category['name'] ?></option>
@@ -377,7 +378,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                                         <?php
                                                         // echo json_encode($vehroutelist);
-                                                        foreach ($vehroutelist as $vehroute) {
+                                                        /*foreach ($vehroutelist as $vehroute) {
                                                             if($student['route_id']==$vehroute['id']){
                                                                 ?>
                                                             <option selected value="<?=$vehroute['id']?>"><?=$vehroute['fees_heading']?></option>
@@ -388,8 +389,21 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             <?php
                                                             }
                                                             
-                                                        }
-                                                        ?>
+                                                        }*/
+														foreach ($vehroutelist as $vehroute) { ?>
+
+														<?php if ($studentDetails['route_id'] == $vehroute->route_id) { ?>
+															<option selected value="<?= $vehroute->route_id ?>">
+																<?= $vehroute->route_title ?>
+															</option>
+														<?php } else { ?>
+															<option value="<?= $vehroute->route_id ?>">
+																<?= $vehroute->route_title ?>
+															</option>
+														<?php } ?>
+
+													<?php } ?>
+                                                       
                                                     </select>
                                                     <span class="text-danger"><?php echo form_error('transport_fees'); ?></span>
                                                 </div>

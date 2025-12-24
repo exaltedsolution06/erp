@@ -360,11 +360,20 @@
                                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('route_list'); ?></label>
                                                     <select class="form-control" id="vehroute_id" name="vehroute_id">
                                                         <option value="N.A">N.A</option>
-                                                        <?php foreach ($vehroutelist as $vehroute): ?>
-                                                            <option value="<?= $vehroute['id'] ?>" <?= set_value('vehroute_id') == $vehroute['id'] ? 'selected' : '' ?>>
-                                                                <?= $vehroute['fees_heading'] ?>
-                                                            </option>
-                                                        <?php endforeach; ?>
+														<?php
+                                                        foreach ($vehroutelist as $vehroute) { ?>
+
+														<?php if ($student['route_id'] == $vehroute->route_id) { ?>
+															<option selected value="<?= $vehroute->route_id ?>">
+																<?= $vehroute->route_title ?>
+															</option>
+														<?php } else { ?>
+															<option value="<?= $vehroute->route_id ?>">
+																<?= $vehroute->route_title ?>
+															</option>
+														<?php } ?>
+
+													<?php } ?>
                                                     </select>
                                                     <span class="text-danger"><?php echo form_error('vehroute_id'); ?></span>
                                                 </div>

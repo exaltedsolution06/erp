@@ -778,7 +778,7 @@ class Student_model extends MY_Model
 
     public function add($data, $data_setting = array())
     {
-
+		//echo "<pre>";print_r($data);die;
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
             $this->db->update('students', $data);
@@ -1739,6 +1739,19 @@ class Student_model extends MY_Model
         } else {
             return false;
         }
+	}
+	public function get_student_more_details($id='')
+	{
+		$this->db->where('student_id', $id);
+		$this->db->where('session_id', $this->current_session);
+		$query = $this->db->get('student_session');
+		if($query->num_rows() > 0)
+		{
+			return $query->row_array();
+		}
+		else{
+			return null;
+		}
 	}
 
 
