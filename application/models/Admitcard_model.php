@@ -23,6 +23,7 @@ class Admitcard_model extends MY_model
     public function get($id = null)
     {
         $this->db->select()->from('template_admitcards');
+		$this->db->where('session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('id', $id);
         } else {
@@ -41,6 +42,7 @@ class Admitcard_model extends MY_model
         $this->db->select('*');
         $this->db->from('template_admitcards');
         $this->db->where('id', $idcard);
+		$this->db->where('session_id', $this->current_session);
         $query = $this->db->get();
         return $query->result();
     }
@@ -86,6 +88,7 @@ class Admitcard_model extends MY_model
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
+		$this->db->where('session_id', $this->current_session);
         $this->db->delete('template_admitcards');
         $message   = DELETE_RECORD_CONSTANT . " On admit cards id " . $id;
         $action    = "Delete";

@@ -10,6 +10,7 @@ class Admitcard extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index()
@@ -121,6 +122,7 @@ class Admitcard extends Admin_Controller
                 'right_logo'      => "",
                 'sign'            => "",
                 'background_img'  => "",
+				'session_id' => $this->current_session
             );
 
             if (isset($_FILES["left_logo"]) && !empty($_FILES["left_logo"]['name'])) {
@@ -214,8 +216,11 @@ class Admitcard extends Admin_Controller
         $this->session->set_userdata('top_menu', 'Examinations');
         $this->session->set_userdata('sub_menu', 'Examinations/admitcard');
         $this->data['admitcardList'] = $this->admitcard_model->get();
-        $this->data['admitcard']     = $this->admitcard_model->get($id);
-
+        $get_admitcard     = $this->admitcard_model->get($id);
+		if(!$get_admitcard){
+			redirect('admin/admitcard/index');
+		}
+        $this->data['admitcard']     = $get_admitcard;
         $this->form_validation->set_rules('template', $this->lang->line('template'), 'trim|required|xss_clean');
 
         $this->form_validation->set_rules('left_logo', $this->lang->line('left') . " " . $this->lang->line('logo'), 'callback_handle_upload[left_logo]');
