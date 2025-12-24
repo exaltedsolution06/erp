@@ -201,5 +201,49 @@ class Script extends Admin_Controller
 			$update_sql = "UPDATE `staff_attendance` SET `session_id` = ?";
 			$this->db->query($update_sql, [$session_id]);
 		}
+		
+		//For 'exam_groups'.
+		$session_exists = "SHOW COLUMNS FROM `exam_groups` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `exam_groups` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `exam_groups` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+		//For 'coscholasticareas'.
+		$session_exists = "SHOW COLUMNS FROM `coscholasticareas` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `coscholasticareas` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `coscholasticareas` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+		//For 'template_admitcards'.
+		$session_exists = "SHOW COLUMNS FROM `template_admitcards` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `template_admitcards` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `template_admitcards` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+		//For 'template_marksheets'.
+		$session_exists = "SHOW COLUMNS FROM `template_marksheets` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `template_marksheets` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `template_marksheets` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
     }
 }

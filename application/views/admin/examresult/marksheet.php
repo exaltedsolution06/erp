@@ -17,7 +17,7 @@
                         <form role="form" action="<?php echo site_url('admin/examresult/marksheet') ?>" method="post" class="row">
 
                             <?php echo $this->customlib->getCSRF(); ?>
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            <div class="col-sm-6 col-lg-4 col-md-4 col20">
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('exam') . " " . $this->lang->line('group'); ?></label><small class="req"> *</small>
                                     <select autofocus="" id="exam_group_id" name="exam_group_id" class="form-control select2" >
@@ -37,7 +37,7 @@
                                     <span class="text-danger"><?php echo form_error('exam_group_id'); ?></span>
                                 </div>  
                             </div><!--./col-md-3-->
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            <div class="col-sm-6 col-lg-4 col-md-4 col20">
                                 <div class="form-group">   
                                     <label><?php echo $this->lang->line('exam'); ?></label><small class="req"> *</small>
                                     <select  id="exam_id" name="exam_id" class="form-control select21" >
@@ -46,7 +46,7 @@
                                     <span class="text-danger"><?php echo form_error('exam_id'); ?></span>
                                 </div>  
                             </div><!--./col-md-3-->
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            <!--<div class="col-sm-6 col-lg-4 col-md-4">
                                 <div class="form-group">  
                                     <label><?php echo $this->lang->line('session'); ?></label><small class="req"> *</small>
                                     <select  id="session_id" name="session_id" class="form-control" >
@@ -66,8 +66,8 @@
                                     </select>
                                     <span class="text-danger"><?php echo form_error('session_id'); ?></span>
                                 </div>  
-                            </div>
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            </div>-->
+                            <div class="col-sm-6 col-lg-4 col-md-4 col20">
                                 <div class="form-group">   
                                     <label><?php echo $this->lang->line('class'); ?></label><small class="req"> *</small>
                                     <select id="class_id" name="class_id" class="form-control" >
@@ -88,7 +88,7 @@
                                 </div>  
                             </div>
 
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            <div class="col-sm-6 col-lg-4 col-md-4 col20">
                                 <div class="form-group"> 
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('section'); ?></label><small class="req"> *</small>
                                     <select  id="section_id" name="section_id" class="form-control" >
@@ -98,7 +98,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            <div class="col-sm-6 col-lg-4 col-md-4 col20">
 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('marksheet') . " " . $this->lang->line('template') ?></label><small class="req"> *</small>

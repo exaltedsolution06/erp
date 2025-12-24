@@ -8,6 +8,7 @@ class Examgroup_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     /**
@@ -19,6 +20,7 @@ class Examgroup_model extends MY_Model {
     public function get($id = null) {
 
         $this->db->select('exam_groups.*,(select count(*) from exam_group_class_batch_exams WHERE exam_group_class_batch_exams.exam_group_id=exam_groups.id and exam_group_class_batch_exams.coscholasticareas=0) as `counter`')->from('exam_groups');
+		$this->db->where('exam_groups.session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('id', $id);
         } else {
@@ -59,6 +61,7 @@ class Examgroup_model extends MY_Model {
 		');
 		$this->db->from('coscholasticareas');
 		$this->db->join('exam_groups', 'exam_groups.id = coscholasticareas.exam_group', 'left');
+		$this->db->where('coscholasticareas.session_id', $this->current_session);
 
 		if ($id != null) {
 			$this->db->where('coscholasticareas.id', $id);
@@ -86,6 +89,7 @@ class Examgroup_model extends MY_Model {
 		');
 		$this->db->from('coscholasticareas');
 		$this->db->join('exam_groups', 'exam_groups.id = coscholasticareas.exam_group', 'left');
+		$this->db->where('coscholasticareas.session_id', $this->current_session);
 		// If array → use WHERE IN
 		if (is_array($post_exam_group_id)) {
 			$this->db->where_in('coscholasticareas.exam_group', $post_exam_group_id);
@@ -140,6 +144,7 @@ class Examgroup_model extends MY_Model {
     public function remove($id) {
         $this->db->trans_begin();
         $this->db->where('id', $id);
+		$this->db->where('session_id', $this->current_session);
         $this->db->delete('exam_groups'); //class record delete.
         $message = DELETE_RECORD_CONSTANT . " On exam groups id " . $id;
         $action = "Delete";
@@ -156,6 +161,7 @@ class Examgroup_model extends MY_Model {
     public function remove1($id) {
         $this->db->trans_begin();
         $this->db->where('id', $id);
+		$this->db->where('session_id', $this->current_session);
         $this->db->delete('coscholasticareas'); //class record delete.
         $message = DELETE_RECORD_CONSTANT . " On exam groups id " . $id;
         $action = "Delete";

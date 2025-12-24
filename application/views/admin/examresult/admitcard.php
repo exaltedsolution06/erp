@@ -18,7 +18,7 @@
                             <?php echo $this->customlib->getCSRF(); ?>
 
 
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            <div class="col-sm-6 col-lg-4 col-md-4 col20">
                                 <div class="form-group">
                                     <label ><?php echo $this->lang->line('exam') . " " . $this->lang->line('group'); ?><small class="req"> *</small></label>
                                     <select autofocus="" id="exam_group_id" name="exam_group_id" class="form-control" >
@@ -38,7 +38,7 @@
                                     <span class="text-danger"><?php echo form_error('exam_group_id'); ?></span>
                                 </div>  
                             </div>
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            <div class="col-sm-6 col-lg-4 col-md-4 col20">
                                 <div class="form-group">  
                                     <label><?php echo $this->lang->line('exam'); ?><small class="req"> *</small></label>
                                     <select  id="exam_id" name="exam_id" class="form-control" >
@@ -47,7 +47,7 @@
                                     <span class="text-danger"><?php echo form_error('exam_id'); ?></span>
                                 </div>  
                             </div>
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            <!--<div class="col-sm-6 col-lg-4 col-md-4">
                                 <div class="form-group">  
                                     <label><?php echo $this->lang->line('session'); ?><small class="req"> *</small></label>
                                     <select  id="session_id" name="session_id" class="form-control" >
@@ -66,9 +66,9 @@
                                     </select>
                                     <span class="text-danger"><?php echo form_error('session_id'); ?></span>
                                 </div>  
-                            </div>
+                            </div>-->
 
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            <div class="col-sm-6 col-lg-4 col-md-4 col20">
                                 <div class="form-group">  
                                     <label><?php echo $this->lang->line('class'); ?><small class="req"> *</small></label>
                                     <select id="class_id" name="class_id" class="form-control" >
@@ -89,7 +89,7 @@
                                 </div>  
                             </div>
 
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            <div class="col-sm-6 col-lg-4 col-md-4 col20">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('section'); ?><small class="req"> *</small></label>
                                     <select  id="section_id" name="section_id" class="form-control" >
@@ -98,7 +98,7 @@
                                     <span class="text-danger"><?php echo form_error('section_id'); ?></span>
                                 </div>   
                             </div>
-                            <div class="col-sm-6 col-lg-4 col-md-4">
+                            <div class="col-sm-6 col-lg-4 col-md-4 col20">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('admit') . " " . $this->lang->line('card') . " " . $this->lang->line('template'); ?><small class="req"> *</small></label>
                                     <select  id="admitcard" name="admitcard" class="form-control" >

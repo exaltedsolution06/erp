@@ -17,6 +17,7 @@ class Examgroup extends Admin_Controller {
         $this->sch_current_session = $this->setting_model->getCurrentSession();
         $this->attendence_exam = $this->config->item('attendence_exam');
         $this->sch_setting_detail = $this->setting_model->getSetting();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function exportformat() {
@@ -131,6 +132,7 @@ class Examgroup extends Admin_Controller {
                 'exam_type' => $this->input->post('exam_type'),
                 'is_active' => $is_active,
                 'description' => $this->input->post('description'),
+				'session_id' => $this->current_session
             );
 
             $insert_id = $this->examgroup_model->add($data);
@@ -300,6 +302,9 @@ class Examgroup extends Admin_Controller {
 
         $data['id'] = $id;
         $examgroup = $this->examgroup_model->get($id);
+		if(!$examgroup){
+			redirect('admin/examgroup');
+		}
         $data['examgroup'] = $examgroup;
         $data['examType'] = $this->exam_type;
         $examgroup_result = $this->examgroup_model->get();
@@ -353,7 +358,9 @@ class Examgroup extends Admin_Controller {
 
         $data['current_session'] = $this->sch_current_session;
         $data['examgroup'] = $this->examgroup_model->get($id);
-
+		if(!$data['examgroup']){
+			redirect('admin/examgroup/index');
+		}
         $this->load->view('layout/header', $data);
         $this->load->view('admin/examgroup/addexam', $data);
         $this->load->view('layout/footer', $data);

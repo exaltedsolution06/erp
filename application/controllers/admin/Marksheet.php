@@ -8,6 +8,7 @@ class Marksheet extends Admin_Controller {
 
     public function __construct() {
         parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index() {
@@ -139,6 +140,7 @@ class Marksheet extends Admin_Controller {
                 'background_img' => "",
                 'header_img'=>"",
                 'footer_img'=>"",
+				'session_id' => $this->current_session
             );
 
 
@@ -266,7 +268,9 @@ class Marksheet extends Admin_Controller {
         $this->data['certificateList'] = $this->marksheet_model->get();
 
         $marksheet = $this->marksheet_model->get($id);
-
+		if(!$marksheet){
+			redirect('admin/marksheet/index');
+		}
         $this->data['marksheet'] = $marksheet;
 
         $this->form_validation->set_rules('template', 'template', 'trim|required|xss_clean');
