@@ -78,7 +78,7 @@ class Stdtransfer extends Admin_Controller {
                     );
 					
 					// fetch all previous student_session record of this student_id
-					$this->db->where('student_id', $student_id);
+					/*$this->db->where('student_id', $student_id);
 					$qr = $this->db->get('student_session');
 					if($qr->num_rows() > 0)
 					{
@@ -92,7 +92,7 @@ class Stdtransfer extends Admin_Controller {
 						$data_new['route_id'] = 0;
 						$data_new['school_house_id'] = 0;
 						$data_new['fee_category_id'] = 0;
-					}
+					}*/
 					//echo "<pre>";print_r($data_new);die;
 					//----------------
 					
