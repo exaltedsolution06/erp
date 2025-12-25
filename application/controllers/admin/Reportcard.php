@@ -8,6 +8,7 @@ class Reportcard extends Admin_Controller {
 
     public function __construct() {
         parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index() {
@@ -138,6 +139,7 @@ class Reportcard extends Admin_Controller {
                 'middle_sign' => "",
                 'background_image' => "",
                 'header_img'=>"",
+				'session_id' => $this->current_session
             );
 
 
@@ -238,7 +240,9 @@ class Reportcard extends Admin_Controller {
         $this->data['certificateList'] = $this->reportcard_model->get();
 
         $reportcard = $this->reportcard_model->get($id);
-
+		if(!$reportcard){
+			redirect('admin/reportcard/index');
+		}
         $this->data['reportcard'] = $reportcard;
 
         $this->form_validation->set_rules('template', 'template', 'trim|required|xss_clean');

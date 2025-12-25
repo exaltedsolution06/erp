@@ -49,8 +49,8 @@ class Studentsession_model extends CI_Model
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
         $this->db->join('students', 'students.id = student_session.student_id');
-        $this->db->where('student_id', $id);
-        $this->db->where('session_id', $this->current_session);
+        $this->db->where('student_session.student_id', $id);
+        $this->db->where('student_session.session_id', $this->current_session);
         $this->db->order_by('id');
         $query = $this->db->get();
         return $query->row_array();

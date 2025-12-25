@@ -80,7 +80,7 @@
 	<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px">
 		<div class="text-danger text-center"><h4><?php echo $this->lang->line('grade_system'); ?></h4></div>
 		<?php
-			$grades = $this->db->order_by('mark_from', 'DESC')->get('grades')->result();
+			$grades = $this->db->order_by('mark_from', 'DESC')->where('session_id', $current_session['id'])->get('grades')->result();
 			$half = ceil(count($grades) / 2);
 
 			$left  = array_slice($grades, 0, $half);
