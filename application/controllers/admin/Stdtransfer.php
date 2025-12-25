@@ -63,7 +63,8 @@ class Stdtransfer extends Admin_Controller {
                 $student_id = $value;
                 $result = $this->input->post('result_' . $value);
                 $session_status = $this->input->post('next_working_' . $value);
-                if ($result == "pass" && $session_status == "countinue") {
+				
+				if ($result == "pass" && $session_status == "countinue") {
                     $promoted_class = $this->input->post('class_promote_id');
                     $promoted_section = $this->input->post('section_promote_id');
                     $promoted_session = $this->input->post('session_id');
@@ -75,6 +76,26 @@ class Stdtransfer extends Admin_Controller {
                         'transport_fees' => 0,
                         'fees_discount' => 0
                     );
+					
+					// fetch all previous student_session record of this student_id
+					$this->db->where('student_id', $student_id);
+					$qr = $this->db->get('student_session');
+					if($qr->num_rows() > 0)
+					{
+						$res = $qr->row_array();
+						$data_new['route_id'] = $res['route_id'];
+						$data_new['school_house_id'] = $res['school_house_id'];
+						$data_new['fee_category_id'] = $res['fee_category_id'];
+					}
+					else{
+						$res = $qr->row_array();
+						$data_new['route_id'] = 0;
+						$data_new['school_house_id'] = 0;
+						$data_new['fee_category_id'] = 0;
+					}
+					//echo "<pre>";print_r($data_new);die;
+					//----------------
+					
                     $this->student_model->add_student_session($data_new);
                 } elseif ($result == "fail" && $session_status == "countinue") {
                     $promoted_session = $this->input->post('session_id');
