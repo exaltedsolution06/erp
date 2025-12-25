@@ -87,10 +87,10 @@ class Setting_model extends MY_Model {
 
     public function getSetting() {
 
-        $this->db->select('sch_settings.id,sch_settings.receipt_sr_no,sch_settings.attendence_type,sch_settings.lang_id,sch_settings.is_rtl,sch_settings.fee_due_days,sch_settings.class_teacher,sch_settings.cron_secret_key,sch_settings.timezone,
+        $this->db->select('sch_settings.id,sch_settings.attendence_type,sch_settings.lang_id,sch_settings.is_rtl,sch_settings.fee_due_days,sch_settings.class_teacher,sch_settings.cron_secret_key,sch_settings.timezone,
           sch_settings.name,sch_settings.email,sch_settings.biometric,sch_settings.biometric_device,sch_settings.phone,sch_settings.adm_prefix,sch_settings.adm_start_from,languages.language,sch_settings.adm_no_digit,sch_settings.adm_update_status,sch_settings.adm_auto_insert,sch_settings.staffid_prefix,sch_settings.staffid_start_from,sch_settings.staffid_auto_insert,sch_settings.staffid_no_digit,sch_settings.staffid_update_status,
           sch_settings.address,sch_settings.dise_code,sch_settings.date_format,sch_settings.currency,sch_settings.currency_place,sch_settings.currency_symbol,sch_settings.start_month,sch_settings.start_week,sch_settings.session_id,sch_settings.image,sch_settings.theme,sessions.session,online_admission,sch_settings.is_duplicate_fees_invoice,sch_settings.is_student_house,sch_settings.is_blood_group,sch_settings.roll_no,sch_settings.lastname,sch_settings.middlename,sch_settings.category,sch_settings.cast,sch_settings.religion,sch_settings.mobile_no,sch_settings.student_email,sch_settings.admission_date,sch_settings.student_photo,sch_settings.student_height,sch_settings.student_weight,sch_settings.measurement_date,sch_settings.father_name,sch_settings.father_phone,sch_settings.father_occupation,sch_settings.father_pic,sch_settings.mother_name,sch_settings.mother_phone,sch_settings.mother_occupation,sch_settings.mother_pic,sch_settings.guardian_phone,sch_settings.guardian_name,sch_settings.guardian_relation,sch_settings.guardian_email,sch_settings.guardian_pic,sch_settings.guardian_occupation,sch_settings.guardian_address,sch_settings.current_address,sch_settings.permanent_address,sch_settings.route_list,sch_settings.hostel_id,sch_settings.bank_account_no,sch_settings.bank_name,sch_settings.ifsc_code,sch_settings.national_identification_no,sch_settings.local_identification_no,sch_settings.rte,sch_settings.previous_school_details,sch_settings.student_note,sch_settings.upload_documents,sch_settings.staff_designation,sch_settings.staff_department,sch_settings.staff_last_name,sch_settings.staff_father_name,sch_settings.staff_mother_name,sch_settings.staff_date_of_joining,sch_settings.staff_phone,sch_settings.staff_emergency_contact,sch_settings.staff_marital_status,sch_settings.staff_photo,sch_settings.staff_current_address,sch_settings.staff_permanent_address,sch_settings.staff_qualification,sch_settings.staff_work_experience,sch_settings.staff_note,sch_settings.staff_epf_no,sch_settings.staff_basic_salary,sch_settings.staff_contract_type,sch_settings.staff_work_shift,sch_settings.staff_work_location,sch_settings.staff_leaves,sch_settings.staff_account_details,sch_settings.staff_social_media,sch_settings.staff_upload_documents,sch_settings.admin_logo,sch_settings.admin_small_logo,sch_settings.mobile_api_url,sch_settings.main_domain_url,sch_settings.app_primary_color_code,sch_settings.app_secondary_color_code,sch_settings.app_logo,languages.short_code as `language_code`,sch_settings.student_profile_edit,sch_settings.my_question');
-
+		//,sch_settings.receipt_sr_no
         $this->db->from('sch_settings');
         $this->db->join('sessions', 'sessions.id = sch_settings.session_id');
         $this->db->join('languages', 'languages.id = sch_settings.lang_id');
@@ -352,13 +352,16 @@ class Setting_model extends MY_Model {
 	}
 	public function check_setting_receipt_no($data)
 	{
+		$session_result = $this->get();
+		$current_session_id = $session_result[0]['current_session']['session_id'];
+		
 		$receipt_status = $data['receipt_status'];
 		$receipt_start_sequence = $data['receipt_start_sequence'];
 		$receipt_start_sequence_existing = $data['receipt_start_sequence_existing'];
 		
 		$num_rows = '';
 		if($receipt_status == 1 && ($receipt_start_sequence_existing == '' || $receipt_start_sequence != $receipt_start_sequence_existing)) { 
-			$query = $this->db->get('receipt_sr_no');
+			$query = $this->db->where('session_id', $current_session_id)->get('receipt_sr_no');
 			$num_rows = $query->num_rows();
 		}
         if ($num_rows > 0) {
@@ -590,6 +593,23 @@ class Setting_model extends MY_Model {
 	{
 			$hasSubject = $this->db->where($checkData['field'], $checkData['id'])->get($checkData['tableSubject'])->num_rows() > 0 ? 1 : 0;
 			return $hasSubject;
+	}
+	public function addSettingSession($data)
+	{
+		$this->db->trans_start(); # Starting Transaction
+        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+        //=======================Code Start===========================
+        if (isset($data['id'])) {
+            $this->db->where('id', $data['id']);
+            $this->db->update('sch_settings_session', $data);
+            
+        } else {
+			
+            $this->db->insert('sch_settings_session', $data);
+         }
+        //======================Code End==============================
+
+        $this->db->trans_complete(); # Completing transaction
 	}
 
 }
