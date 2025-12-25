@@ -1612,6 +1612,7 @@ class Staff extends Admin_Controller
                                 $result[$r_key]['designation']          = $this->input->post('designation');
                                 $result[$r_key]['department']           = $this->input->post('department');
                                 $result[$r_key]['is_active']            = 1;
+                                $result[$r_key]['session_id']           = $this->current_session;
 
                                 $password = $this->role->get_random_password($chars_min = 6, $chars_max = 6, $use_upper_case = false, $include_numbers = true, $include_special_chars = false);
 
