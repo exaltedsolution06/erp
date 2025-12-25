@@ -160,8 +160,7 @@ class Receipt_model extends CI_Model {
             students.dob,
             students.current_address,
             students.permanent_address,
-            IFNULL(students.category_id, 0) as category_id,
-            IFNULL(categories.category, "") as category,
+            IFNULL(student_session.fee_category_id, 0) as category_id,
             students.adhar_no,
             students.samagra_id,
             students.bank_account_no,
@@ -186,7 +185,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
 
         // $this->db->where('student_session.session_id', $this->current_session);
@@ -261,7 +260,7 @@ class Receipt_model extends CI_Model {
             students.lastname,
             students.image,
             students.mobileno,
-            students.vehroute_id,
+            student_session.route_id,
             students.email,
             students.state,
             students.city,
@@ -270,8 +269,7 @@ class Receipt_model extends CI_Model {
             students.dob,
             students.current_address,
             students.permanent_address,
-            IFNULL(students.category_id, 0) as category_id,
-            IFNULL(categories.category, "") as category,
+            IFNULL(student_session.fee_category_id, 0) as category_id,
             students.adhar_no,
             students.samagra_id,
             students.bank_account_no,
@@ -298,7 +296,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
 		$this->db->where('student_session.session_id', $this->current_session);
         
@@ -371,7 +369,7 @@ class Receipt_model extends CI_Model {
             students.lastname,
             students.image,
             students.mobileno,
-            students.vehroute_id,
+            student_session.route_id,
             students.email,
             students.state,
             students.city,
@@ -380,8 +378,7 @@ class Receipt_model extends CI_Model {
             students.dob,
             students.current_address,
             students.permanent_address,
-            IFNULL(students.category_id, 0) as category_id,
-            IFNULL(categories.category, "") as category,
+            IFNULL(student_session.fee_category_id, 0) as category_id,
             students.adhar_no,
             students.samagra_id,
             students.bank_account_no,
@@ -408,7 +405,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
 
         
@@ -497,7 +494,7 @@ class Receipt_model extends CI_Model {
             students.lastname,
             students.image,
             students.mobileno,
-            students.vehroute_id,
+            student_session.route_id,
             students.email,
             students.state,
             students.city,
@@ -506,8 +503,7 @@ class Receipt_model extends CI_Model {
             students.dob,
             students.current_address,
             students.permanent_address,
-            IFNULL(students.category_id, 0) as category_id,
-            IFNULL(categories.category, "") as category,
+            IFNULL(student_session.fee_category_id, 0) as category_id,
             students.adhar_no,
             students.samagra_id,
             students.bank_account_no,
@@ -534,7 +530,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
 
         
@@ -545,7 +541,7 @@ class Receipt_model extends CI_Model {
             $this->db->where('receipts.fee_head_name', $filters['routeHead']);
         }
         if (!empty($filters['categoryHead']) and $filters['categoryHead']!='All') {
-            $this->db->where('students.category_id', $filters['categoryHead']);
+            $this->db->where('student_session.fee_category_id', $filters['categoryHead']);
         }
         if (!empty($filters['class_id']) and $filters['class_id']!='All') {
             $this->db->where('student_session.class_id', $filters['class_id']);
@@ -595,8 +591,7 @@ class Receipt_model extends CI_Model {
             students.dob,
             students.current_address,
             students.permanent_address,
-            IFNULL(students.category_id, 0) as category_id,
-            IFNULL(categories.category, "") as category,
+            IFNULL(student_session.fee_category_id, 0) as category_id,
             students.adhar_no,
             students.samagra_id,
             students.bank_account_no,
@@ -623,11 +618,11 @@ class Receipt_model extends CI_Model {
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
 
         if (!empty($filters['categoryHead']) and $filters['categoryHead']!='All') {
-            $this->db->where('students.category_id', $filters['categoryHead']);
+            $this->db->where('student_session.fee_category_id', $filters['categoryHead']);
         }
         if (!empty($filters['class_id']) and $filters['class_id']!='All') {
             $this->db->where('student_session.class_id', $filters['class_id']);
@@ -659,7 +654,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('users', 'users.user_id = students.id', 'left');
         if (!empty($filters['categoryHead']) and $filters['categoryHead']!='All') {
-            $this->db->where('students.category_id', $filters['categoryHead']);
+            $this->db->where('student_session.fee_category_id', $filters['categoryHead']);
         }
         if (!empty($filters['class_id']) and $filters['class_id']!='All') {
             $this->db->where('student_session.class_id', $filters['class_id']);
@@ -696,7 +691,7 @@ class Receipt_model extends CI_Model {
             $this->db->where('receipts.fee_head_name', $filters['routeHead']);
         }
         if (!empty($filters['categoryHead']) and $filters['categoryHead']!='All') {
-            $this->db->where('students.category_id', $filters['categoryHead']);
+            $this->db->where('student_session.fee_category_id', $filters['categoryHead']);
         }
         if (!empty($filters['class_id']) and $filters['class_id']!='All') {
             $this->db->where('student_session.class_id', $filters['class_id']);
@@ -741,7 +736,7 @@ class Receipt_model extends CI_Model {
             students.lastname,
             students.image,
             students.mobileno,
-            students.vehroute_id,
+            student_session.route_id,
             students.email,
             students.state,
             students.city,
@@ -750,8 +745,7 @@ class Receipt_model extends CI_Model {
             students.dob,
             students.current_address,
             students.permanent_address,
-            IFNULL(students.category_id, 0) as category_id,
-            IFNULL(categories.category, "") as category,
+            IFNULL(student_session.fee_category_id, 0) as category_id,
             students.adhar_no,
             students.samagra_id,
             students.bank_account_no,
@@ -778,7 +772,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
         $this->db->where('receipts.student_id', $id);
 		$this->db->where('student_session.session_id', $this->current_session);
@@ -842,7 +836,7 @@ class Receipt_model extends CI_Model {
             MAX(students.lastname) as lastname,
             MAX(students.image) as image,
             MAX(students.mobileno) as mobileno,
-            MAX(students.vehroute_id) as vehroute_id,
+            MAX(student_session.route_id) as vehroute_id,
             MAX(students.email) as email,
             MAX(students.state) as state,
             MAX(students.city) as city,
@@ -851,8 +845,7 @@ class Receipt_model extends CI_Model {
             MAX(students.dob) as dob,
             MAX(students.current_address) as current_address,
             MAX(students.permanent_address) as permanent_address,
-            IFNULL(MAX(students.category_id), 0) as category_id,
-            IFNULL(MAX(categories.category), "") as category,
+            IFNULL(MAX(student_session.fee_category_id), 0) as category_id,
             MAX(students.adhar_no) as adhar_no,
             MAX(students.samagra_id) as samagra_id,
             MAX(students.bank_account_no) as bank_account_no,
@@ -893,7 +886,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
         // $this->db->join('route_head', 'route_head.fees_heading = receipts.fee_head_name', 'left');
         
@@ -907,7 +900,7 @@ class Receipt_model extends CI_Model {
             $this->db->where('receipts.fee_head_name', $filters['routeHead']);
         }
         if (!empty($filters['categoryHead']) and $filters['categoryHead']!='All') {
-            $this->db->where('students.category_id', $filters['categoryHead']);
+            $this->db->where('student_session.fee_category_id', $filters['categoryHead']);
         }
         if (!empty($filters['class_id']) and $filters['class_id']!='All') {
             $this->db->where('student_session.class_id', $filters['class_id']);
@@ -1027,7 +1020,7 @@ class Receipt_model extends CI_Model {
             MAX(students.lastname) as lastname,
             MAX(students.image) as image,
             MAX(students.mobileno) as mobileno,
-            MAX(students.vehroute_id) as vehroute_id,
+            MAX(student_session.route_id) as vehroute_id,
             MAX(students.email) as email,
             MAX(students.state) as state,
             MAX(students.city) as city,
@@ -1036,8 +1029,7 @@ class Receipt_model extends CI_Model {
             MAX(students.dob) as dob,
             MAX(students.current_address) as current_address,
             MAX(students.permanent_address) as permanent_address,
-            IFNULL(MAX(students.category_id), 0) as category_id,
-            IFNULL(MAX(categories.category), "") as category,
+            IFNULL(MAX(student_session.fee_category_id), 0) as category_id,
             MAX(students.adhar_no) as adhar_no,
             MAX(students.samagra_id) as samagra_id,
             MAX(students.bank_account_no) as bank_account_no,
@@ -1071,7 +1063,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
         
         $this->db->where('receipts.fee_head_name !=', 'Ledger Amount');
@@ -1084,7 +1076,7 @@ class Receipt_model extends CI_Model {
             $this->db->where('receipts.fee_head_name', $filters['routeHead']);
         }
         if (!empty($filters['categoryHead']) and $filters['categoryHead']!='All') {
-            $this->db->where('students.category_id', $filters['categoryHead']);
+            $this->db->where('student_session.fee_category_id', $filters['categoryHead']);
         }
         if (!empty($filters['class_id']) and $filters['class_id']!='All') {
             $this->db->where('student_session.class_id', $filters['class_id']);
@@ -1234,7 +1226,7 @@ class Receipt_model extends CI_Model {
             $this->db->where('receipts.fee_head_name', $filters['routeHead']);
         }
         if (!empty($filters['categoryHead']) and $filters['categoryHead']!='All') {
-            $this->db->where('students.category_id', $filters['categoryHead']);
+            $this->db->where('student_session.fee_category_id', $filters['categoryHead']);
         }
         if (!empty($filters['class_id']) and $filters['class_id']!='All') {
             $this->db->where('student_session.class_id', $filters['class_id']);
@@ -1281,7 +1273,7 @@ class Receipt_model extends CI_Model {
 
         $this->db->select('
             student_session.transport_fees,
-            students.vehroute_id,
+            student_session.route_id,
             vehicle_routes.route_id,
             vehicle_routes.vehicle_id,
             transport_route.route_title,
@@ -1324,7 +1316,7 @@ class Receipt_model extends CI_Model {
             students.guardian_is,
             students.parent_id,
             students.permanent_address,
-            students.category_id,
+            student_session.fee_category_id,
             students.adhar_no,
             students.samagra_id,
             students.bank_account_no,
@@ -1370,7 +1362,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('hostel_rooms', 'hostel_rooms.id = students.hostel_room_id', 'left');
         $this->db->join('hostel', 'hostel.id = hostel_rooms.hostel_id', 'left');
         $this->db->join('room_types', 'room_types.id = hostel_rooms.room_type_id', 'left');
-        $this->db->join('vehicle_routes', 'vehicle_routes.id = students.vehroute_id', 'left');
+        $this->db->join('vehicle_routes', 'vehicle_routes.id = student_session.route_id', 'left');
         $this->db->join('transport_route', 'vehicle_routes.route_id = transport_route.id', 'left');
         $this->db->join('vehicles', 'vehicles.id = vehicle_routes.vehicle_id', 'left');
         $this->db->join('school_houses', 'school_houses.id = students.school_house_id', 'left');
@@ -1385,10 +1377,10 @@ class Receipt_model extends CI_Model {
         }
 
         if (!empty($section_id)) {
-            $this->db->where_in('students.category_id', $section_id);
+            $this->db->where_in('student_session.fee_category_id', $section_id);
         }
         if (!empty($selectedroutes)) {
-            $this->db->where_in('students.vehroute_id', $selectedroutes);
+            $this->db->where_in('student_session.route_id', $selectedroutes);
         }
 
         
@@ -1433,7 +1425,7 @@ class Receipt_model extends CI_Model {
             $this->db->where_in('student_session.section_id', $section_id);
         }
         if (!empty($selectedroutes)) {
-            $this->db->where_in('students.vehroute_id', $selectedroutes);
+            $this->db->where_in('student_session.route_id', $selectedroutes);
         }
 
         $this->db->where('students.is_active', 'yes');
@@ -1509,7 +1501,7 @@ class Receipt_model extends CI_Model {
             students.lastname,
             students.image,
             students.mobileno,
-            students.vehroute_id,
+            student_session.route_id,
             students.email,
             students.state,
             students.city,
@@ -1518,8 +1510,7 @@ class Receipt_model extends CI_Model {
             students.dob,
             students.current_address,
             students.permanent_address,
-            IFNULL(students.category_id, 0) as category_id,
-            IFNULL(categories.category, "") as category,
+            IFNULL(student_session.fee_category_id, 0) as category_id,
             students.adhar_no,
             students.samagra_id,
             students.bank_account_no,
@@ -1546,7 +1537,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
 
         if (!empty($receipt_no)) {
