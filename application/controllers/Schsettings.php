@@ -9,6 +9,7 @@ class Schsettings extends Admin_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('upload');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index_old() {
@@ -256,7 +257,7 @@ class Schsettings extends Admin_Controller {
             $this->form_validation->set_rules('staffid_start_from', $this->lang->line('staff_id_start_from'), 'trim|integer|required|xss_clean');
             $this->form_validation->set_rules('staffid_no_digit', $this->lang->line('staff_id_digit'), 'trim|integer|required|xss_clean|callback_check_staff_id_digit');
         }
-
+          //receipt_sr_no check_receipt_no
         if ($this->form_validation->run() == false) {
             $data = array(
                 'is_student_house' => form_error('is_student_house'),
@@ -397,7 +398,7 @@ class Schsettings extends Admin_Controller {
 			$receipt_sequence['receipt_start_sequence']	= $receipt_start_sequence;
 			$receipt_sequence['receipt_start_sequence_existing']	= $receipt_start_sequence_existing;
 			$check_receipt_no = $this->setting_model->check_setting_receipt_no($receipt_sequence);
-			
+			//echo $receipt_status.'-'.$receipt_start_sequence.'-'.$receipt_start_sequence_existing;die;
 			if($check_receipt_no)
 			{
 				$array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'),'check_receipt_no'=> $check_receipt_no);
@@ -405,9 +406,13 @@ class Schsettings extends Admin_Controller {
 			}
 			else
 			{
-				$editdata['id'] = $this->input->post('sch_id');
-				$editdata['receipt_sr_no'] = $this->input->post('receipt_start_sequence');
-				$this->setting_model->add($editdata);
+				//$editdata['id'] = $this->input->post('sch_id');
+				//$editdata['receipt_sr_no'] = $this->input->post('receipt_start_sequence');
+				//$this->setting_model->add($editdata);
+				$editSettingSessiondata['session_id'] = $this->current_session;
+				$editSettingSessiondata['id'] = $this->input->post('sch_id');
+				$editSettingSessiondata['receipt_sr_no'] = $this->input->post('receipt_start_sequence');
+				$this->setting_model->addSettingSession($editSettingSessiondata);
 				$array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'),'check_receipt_no'=> $check_receipt_no);
 				echo json_encode($array);
 			}

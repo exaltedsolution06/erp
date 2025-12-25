@@ -381,5 +381,57 @@ class Script extends Admin_Controller
 			$this->db->query($update_sql, [$session_id]);
 
 		}
+		
+		//create table sch_settings_session		
+		$this->load->dbforge();
+		if ( ! $this->db->table_exists('sch_settings_session') )
+		{
+			$fields = [
+				'id' => [
+					'type'           => 'INT',
+					'constraint'     => 11,
+					'unsigned'       => TRUE,
+					'auto_increment' => TRUE,
+				],
+				'session_id' => [
+					'type'       => 'INT',
+					'constraint' => 11,
+					'null'       => FALSE,
+				],
+				'receipt_sr_no' => [
+					'type'       => 'BIGINT',   // long integer
+					'constraint' => 20,
+					'null'       => FALSE,
+					'default'    => 0,
+				],
+			];
+
+			$this->dbforge->add_field($fields);
+			$this->dbforge->add_key('id', TRUE); // PRIMARY KEY
+			$this->dbforge->create_table('sch_settings_session', TRUE);
+			
+			if ($this->db->field_exists('receipt_sr_no', 'sch_settings')) {
+				$this->dbforge->drop_column('sch_settings', 'receipt_sr_no');
+			}
+		}
+		
+		//create add new field session_id table receipt_sr_no		
+		$this->load->dbforge();
+		if ($this->db->table_exists('receipt_sr_no'))
+		{
+			if ( ! $this->db->field_exists('session_id', 'receipt_sr_no') )
+			{
+				$fields = [
+					'session_id' => [
+						'type'       => 'INT',
+						'constraint' => 11,
+						'null'       => FALSE,
+						'after'      => 'id'  
+					]
+				];
+
+				$this->dbforge->add_column('receipt_sr_no', $fields);
+			}
+		}
     }
 }
