@@ -1278,7 +1278,7 @@ class Student extends Admin_Controller
 								$insert_student_data[$i]['cast'] = $result[$i]['Caste'];
 								$insert_student_data[$i]['mobileno'] = $this->normalizeNumber($result[$i]['Mobile Number']);
 								$insert_student_data[$i]['email'] = $result[$i]['Email'];
-								$insert_student_data[$i]['admission_date'] = $result[$i]['Admission Date (dd-mm-yyyy)'] ? date('Y-m-d', strtotime($result[$i]['Admission Date (dd-mm-yyyy)'])) : null;							
+								$insert_student_data[$i]['admission_date'] = $result[$i]['Admission Date (dd-mm-yyyy)'] ? date('Y-m-d', strtotime($result[$i]['Admission Date (dd-mm-yyyy)'])) : date('Y-m-d');							
 								
 								$insert_student_data[$i]['image'] = $result[$i]['Student Photo'];
 								$insert_student_data[$i]['blood_group'] = $result[$i]['Blood Group'];
