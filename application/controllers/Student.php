@@ -216,7 +216,7 @@ class Student extends Admin_Controller
 		
 		$monthsPost = $months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
 		$class_id=$student_data['class_id'];
-		$route_id=$student_data['vehroute_id'];
+		$route_id=$student_data['route_id'];
 		$category_id=$student_data['category_id'];
 		
 		$this->db->from('fee_head');
@@ -594,7 +594,7 @@ class Student extends Admin_Controller
                 'guardian_address'    => $this->input->post('guardian_address'),
                 //'route_id'         	  => $vehroute_id,
                 //'route_id'         	  => 0,
-                'vehroute_id'         => 0,
+                //'vehroute_id'         => 0,
                 'hostel_room_id'      => $hostel_room_id,
                 'note'                => $this->input->post('note'),
                 'is_active'           => 'yes',
@@ -1634,7 +1634,7 @@ class Student extends Admin_Controller
                 'guardian_address'    => $this->input->post('guardian_address'),
                 //'route_id'         => $vehroute_id,
                 'route_id'         => 0,
-                'vehroute_id'         => 0,
+                //'vehroute_id'         => 0,
                 'hostel_room_id'      => $hostel_room_id,
                 'note'                => $this->input->post('note'),
                 'is_active'           => 'yes',

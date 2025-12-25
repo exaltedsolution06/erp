@@ -1338,7 +1338,7 @@ class Receipt_model extends CI_Model {
             students.father_name,
             students.father_phone,
             students.blood_group,
-            students.school_house_id,
+            student_session.school_house_id,
             students.father_occupation,
             students.mother_name,
             students.mother_phone,
@@ -1365,7 +1365,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('vehicle_routes', 'vehicle_routes.id = student_session.route_id', 'left');
         $this->db->join('transport_route', 'vehicle_routes.route_id = transport_route.id', 'left');
         $this->db->join('vehicles', 'vehicles.id = vehicle_routes.vehicle_id', 'left');
-        $this->db->join('school_houses', 'school_houses.id = students.school_house_id', 'left');
+        $this->db->join('school_houses', 'school_houses.id = student_session.school_house_id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
 
         // Filters
