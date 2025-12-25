@@ -16,11 +16,11 @@ class Student_model extends MY_Model
 
     public function getBirthDayStudents($date, $email = false, $contact_no = false)
     {
-        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender,users.id as `user_tbl_id`,users.username,users.password as `user_tbl_password`,users.is_active as `user_tbl_active`,students.app_key,students.parent_app_key')->from('students');
+        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender,users.id as `user_tbl_id`,users.username,users.password as `user_tbl_password`,users.is_active as `user_tbl_active`,students.app_key,students.parent_app_key')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
@@ -42,11 +42,11 @@ class Student_model extends MY_Model
 
     public function getStudents()
     {
-        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender,users.id as `user_tbl_id`,users.username,users.password as `user_tbl_password`,users.is_active as `user_tbl_active`')->from('students');
+        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender,users.id as `user_tbl_id`,users.username,users.password as `user_tbl_password`,users.is_active as `user_tbl_active`')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
@@ -60,11 +60,11 @@ class Student_model extends MY_Model
 
     public function getAppStudents()
     {
-        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,  students.middlename,students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.app_key ,students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender,users.id as `user_tbl_id`,users.username,users.password as `user_tbl_password`,users.is_active as `user_tbl_active`')->from('students');
+        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,  students.middlename,students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.app_key ,students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender,users.id as `user_tbl_id`,users.username,users.password as `user_tbl_password`,users.is_active as `user_tbl_active`')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
@@ -79,7 +79,7 @@ class Student_model extends MY_Model
 
     public function getRecentRecord($id = null)
     {
-        $this->db->select('classes.id AS `class_id`,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname, students.middlename, students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,students.category_id,    students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.father_phone,students.father_occupation,students.mother_name,students.mother_phone,students.mother_occupation,students.guardian_occupation,students.gender,students.guardian_is')->from('students');
+        $this->db->select('classes.id AS `class_id`,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname, students.middlename, students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,    students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.father_phone,students.father_occupation,students.mother_name,students.mother_phone,students.mother_occupation,students.guardian_occupation,students.gender,students.guardian_is')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
@@ -118,7 +118,7 @@ class Student_model extends MY_Model
 
     public function getStudentByClassSectionID($class_id = null, $section_id = null, $id = null)
     {
-        $this->db->select('student_session.transport_fees,students.vehroute_id,vehicle_routes.route_id,vehicle_routes.vehicle_id,transport_route.route_title,vehicles.vehicle_no,hostel_rooms.room_no,vehicles.driver_name,vehicles.driver_contact,hostel.id as `hostel_id`,hostel.hostel_name,room_types.id as `room_type_id`,room_types.room_type ,students.hostel_room_id,student_session.id as `student_session_id`,student_session.fees_discount,classes.id AS `class_id`,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname, students.middlename, students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode , students.note, students.religion, students.cast, school_houses.house_name,   students.dob ,students.current_address, students.previous_school,
+        $this->db->select('student_session.transport_fees,vehicle_routes.route_id,vehicle_routes.vehicle_id,transport_route.route_title,vehicles.vehicle_no,hostel_rooms.room_no,vehicles.driver_name,vehicles.driver_contact,hostel.id as `hostel_id`,hostel.hostel_name,room_types.id as `room_type_id`,room_types.room_type ,students.hostel_room_id,student_session.id as `student_session_id`,student_session.fees_discount,classes.id AS `class_id`,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname, students.middlename, students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode , students.note, students.religion, students.cast, school_houses.house_name,   students.dob ,students.current_address, students.previous_school,
             students.guardian_is,students.parent_id,
             students.permanent_address,students.category_id,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.father_pic ,students.height ,students.weight,students.measurement_date, students.mother_pic , students.guardian_pic , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.father_phone,students.blood_group,students.school_house_id,students.father_occupation,students.mother_name,students.mother_phone,students.mother_occupation,students.guardian_occupation,students.gender,students.guardian_is,students.rte,students.guardian_email, users.username,users.password,students.dis_reason,students.dis_note,students.app_key,students.parent_app_key')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
@@ -127,7 +127,7 @@ class Student_model extends MY_Model
         $this->db->join('hostel_rooms', 'hostel_rooms.id = students.hostel_room_id', 'left');
         $this->db->join('hostel', 'hostel.id = hostel_rooms.hostel_id', 'left');
         $this->db->join('room_types', 'room_types.id = hostel_rooms.room_type_id', 'left');
-        $this->db->join('vehicle_routes', 'vehicle_routes.id = students.vehroute_id', 'left');
+        //$this->db->join('vehicle_routes', 'vehicle_routes.id = students.vehroute_id', 'left');
         $this->db->join('transport_route', 'vehicle_routes.route_id = transport_route.id', 'left');
         $this->db->join('vehicles', 'vehicles.id = vehicle_routes.vehicle_id', 'left');
         $this->db->join('school_houses', 'school_houses.id = students.school_house_id', 'left');
@@ -154,7 +154,7 @@ class Student_model extends MY_Model
 
     public function getByStudentSession($student_session_id)
     {
-        $this->db->select('student_session.transport_fees,students.app_key,students.vehroute_id,vehicle_routes.route_id,vehicle_routes.vehicle_id,transport_route.route_title,vehicles.vehicle_no,hostel_rooms.room_no,vehicles.driver_name,vehicles.driver_contact,hostel.id as `hostel_id`,hostel.hostel_name,room_types.id as `room_type_id`,room_types.room_type ,students.hostel_room_id,student_session.id as `student_session_id`,student_session.fees_discount,classes.id AS `class_id`,classes.class,sections.id AS `section_id`,sections.section,class_sections.id as `class_section_id`,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode , students.note, students.religion, students.cast, school_houses.house_name,   students.dob ,students.current_address, students.previous_school,
+        $this->db->select('student_session.transport_fees,students.app_key,vehicle_routes.route_id,vehicle_routes.vehicle_id,transport_route.route_title,vehicles.vehicle_no,hostel_rooms.room_no,vehicles.driver_name,vehicles.driver_contact,hostel.id as `hostel_id`,hostel.hostel_name,room_types.id as `room_type_id`,room_types.room_type ,students.hostel_room_id,student_session.id as `student_session_id`,student_session.fees_discount,classes.id AS `class_id`,classes.class,sections.id AS `section_id`,sections.section,class_sections.id as `class_section_id`,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode , students.note, students.religion, students.cast, school_houses.house_name,   students.dob ,students.current_address, students.previous_school,
             students.guardian_is,students.parent_id,
             students.permanent_address,students.category_id,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.father_pic ,students.height ,students.weight,students.measurement_date, students.mother_pic , students.guardian_pic , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.father_phone,students.blood_group,students.school_house_id,students.father_occupation,students.mother_name,students.mother_phone,students.mother_occupation,students.guardian_occupation,students.gender,students.guardian_is,students.rte,students.guardian_email, users.username,users.password,students.dis_reason,students.dis_note,students.app_key,students.parent_app_key')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
@@ -165,7 +165,7 @@ class Student_model extends MY_Model
         $this->db->join('hostel_rooms', 'hostel_rooms.id = students.hostel_room_id', 'left');
         $this->db->join('hostel', 'hostel.id = hostel_rooms.hostel_id', 'left');
         $this->db->join('room_types', 'room_types.id = hostel_rooms.room_type_id', 'left');
-        $this->db->join('vehicle_routes', 'vehicle_routes.id = students.vehroute_id', 'left');
+        //$this->db->join('vehicle_routes', 'vehicle_routes.id = students.vehroute_id', 'left');
         $this->db->join('transport_route', 'vehicle_routes.route_id = transport_route.id', 'left');
         $this->db->join('vehicles', 'vehicles.id = vehicle_routes.vehicle_id', 'left');
         $this->db->join('school_houses', 'school_houses.id = students.school_house_id', 'left');
@@ -183,20 +183,20 @@ class Student_model extends MY_Model
 
     public function get($id = null)
     {
-        $this->db->select('student_session.transport_fees,students.app_key,students.parent_app_key,students.vehroute_id,vehicle_routes.route_id,vehicle_routes.vehicle_id,transport_route.route_title,vehicles.vehicle_no,hostel_rooms.room_no,vehicles.driver_name,vehicles.driver_contact,hostel.id as `hostel_id`,hostel.hostel_name,room_types.id as `room_type_id`,room_types.room_type ,students.hostel_room_id,student_session.id as `student_session_id`,student_session.fees_discount,classes.id AS `class_id`,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode , students.note, students.religion, students.cast, school_houses.house_name,   students.dob ,students.current_address, students.previous_school,
+        $this->db->select('student_session.transport_fees,students.app_key,students.parent_app_key,vehicle_routes.route_id,vehicle_routes.vehicle_id,transport_route.route_title,vehicles.vehicle_no,hostel_rooms.room_no,vehicles.driver_name,vehicles.driver_contact,hostel.id as `hostel_id`,hostel.hostel_name,room_types.id as `room_type_id`,room_types.room_type ,students.hostel_room_id,student_session.id as `student_session_id`,student_session.fees_discount,classes.id AS `class_id`,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode , students.note, students.religion, students.cast, school_houses.house_name,   students.dob ,students.current_address, students.previous_school,
             students.guardian_is,students.parent_id,
-            students.permanent_address,students.category_id,students.pan_no,students.aadhan_no,students.other_no,students.route_id,students.father_pan_no,students.father_aadhar_no,students.father_other_no,students.father_id_no,students.mother_pan_no,students.mother_aadhar_no,students.mother_other_no,students.mother_id_no,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.father_pic ,students.height ,students.weight,students.measurement_date, students.mother_pic , students.guardian_pic , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.father_phone,students.blood_group,students.school_house_id,students.father_occupation,students.mother_name,students.mother_phone,students.mother_occupation,students.guardian_occupation,students.gender,students.guardian_is,students.rte,students.guardian_email, users.username,users.password,students.dis_reason,students.dis_note,students.disable_at,students.cast_category,IFNULL(fee_groups.name, "") as `category`')->from('students');
+            students.permanent_address,students.pan_no,students.aadhan_no,students.other_no,students.route_id,students.father_pan_no,students.father_aadhar_no,students.father_other_no,students.father_id_no,students.mother_pan_no,students.mother_aadhar_no,students.mother_other_no,students.mother_id_no,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.father_pic ,students.height ,students.weight,students.measurement_date, students.mother_pic , students.guardian_pic , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.father_phone,students.blood_group,students.school_house_id,students.father_occupation,students.mother_name,students.mother_phone,students.mother_occupation,students.guardian_occupation,students.gender,students.guardian_is,students.rte,students.guardian_email, users.username,users.password,students.dis_reason,students.dis_note,students.disable_at,students.cast_category,IFNULL(fee_groups.name, "") as `category`')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
         $this->db->join('hostel_rooms', 'hostel_rooms.id = students.hostel_room_id', 'left');
         $this->db->join('hostel', 'hostel.id = hostel_rooms.hostel_id', 'left');
         $this->db->join('room_types', 'room_types.id = hostel_rooms.room_type_id', 'left');
-        $this->db->join('vehicle_routes', 'vehicle_routes.id = students.vehroute_id', 'left');
+        //$this->db->join('vehicle_routes', 'vehicle_routes.id = students.vehroute_id', 'left');
         $this->db->join('transport_route', 'vehicle_routes.route_id = transport_route.id', 'left');
         $this->db->join('vehicles', 'vehicles.id = vehicle_routes.vehicle_id', 'left');
         $this->db->join('school_houses', 'school_houses.id = students.school_house_id', 'left');
-		$this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
+		//$this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
 
         $this->db->where('student_session.session_id', $this->current_session);
@@ -218,7 +218,7 @@ class Student_model extends MY_Model
     public function findByAdmission($admission_no = null)
     {
 
-        $this->db->select('student_session.transport_fees,students.vehroute_id,vehicle_routes.route_id,vehicle_routes.vehicle_id,transport_route.route_title,vehicles.vehicle_no,hostel_rooms.room_no,vehicles.driver_name,vehicles.driver_contact,hostel.id as `hostel_id`,hostel.hostel_name,room_types.id as `room_type_id`,room_types.room_type ,students.hostel_room_id,student_session.id as `student_session_id`,student_session.fees_discount,classes.id AS `class_id`,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname, students.middlename, students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode , students.note, students.religion, students.cast, school_houses.house_name,   students.dob ,students.current_address, students.previous_school,
+        $this->db->select('student_session.transport_fees,vehicle_routes.route_id,vehicle_routes.vehicle_id,transport_route.route_title,vehicles.vehicle_no,hostel_rooms.room_no,vehicles.driver_name,vehicles.driver_contact,hostel.id as `hostel_id`,hostel.hostel_name,room_types.id as `room_type_id`,room_types.room_type ,students.hostel_room_id,student_session.id as `student_session_id`,student_session.fees_discount,classes.id AS `class_id`,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname, students.middlename, students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode , students.note, students.religion, students.cast, school_houses.house_name,   students.dob ,students.current_address, students.previous_school,
             students.guardian_is,students.parent_id,
             students.permanent_address,students.category_id,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.father_pic ,students.height ,students.weight,students.measurement_date, students.mother_pic , students.guardian_pic , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.father_phone,students.blood_group,students.school_house_id,students.father_occupation,students.mother_name,students.mother_phone,students.mother_occupation,students.guardian_occupation,students.gender,students.guardian_is,students.rte,students.guardian_email, users.username,users.password,students.dis_reason,students.dis_note')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
@@ -227,7 +227,7 @@ class Student_model extends MY_Model
         $this->db->join('hostel_rooms', 'hostel_rooms.id = students.hostel_room_id', 'left');
         $this->db->join('hostel', 'hostel.id = hostel_rooms.hostel_id', 'left');
         $this->db->join('room_types', 'room_types.id = hostel_rooms.room_type_id', 'left');
-        $this->db->join('vehicle_routes', 'vehicle_routes.id = students.vehroute_id', 'left');
+        //$this->db->join('vehicle_routes', 'vehicle_routes.id = students.vehroute_id', 'left');
         $this->db->join('transport_route', 'vehicle_routes.route_id = transport_route.id', 'left');
         $this->db->join('vehicles', 'vehicles.id = vehicle_routes.vehicle_id', 'left');
         $this->db->join('school_houses', 'school_houses.id = students.school_house_id', 'left');
@@ -264,11 +264,11 @@ class Student_model extends MY_Model
 
         $field_variable = implode(',', $field_var_array);
 
-        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,GROUP_CONCAT(classes.class,"(",sections.section,")") as class,sections.id AS `section_id`,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender,' . $field_variable)->from('students');
+        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,GROUP_CONCAT(classes.class,"(",sections.section,")") as class,sections.id AS `section_id`,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender,' . $field_variable)->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.is_alumni', 1);
         $this->db->where('students.is_active', "yes");
         if ($class_id != null) {
@@ -321,11 +321,11 @@ class Student_model extends MY_Model
                 $this->db->where_in("student_session.class_id", "");
             }
         }
-        $this->db->select('classes.id AS `class_id`,students.id,student_session.id as student_session_id,GROUP_CONCAT(classes.class,"(",sections.section,")") as class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,' . $field_variable)->from('students');
+        $this->db->select('classes.id AS `class_id`,students.id,student_session.id as student_session_id,GROUP_CONCAT(classes.class,"(",sections.section,")") as class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,' . $field_variable)->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
         $this->db->where('student_session.is_alumni', '1');
@@ -394,11 +394,11 @@ class Student_model extends MY_Model
 
         $field_variable = implode(',', $field_var_array);
 
-        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(fee_groups.name, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.app_key,students.parent_app_key,students.rte,students.gender,students.cast_category,' . $field_variable)->from('students');
+        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(fee_groups.name, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.app_key,students.parent_app_key,students.rte,students.gender,students.cast_category,' . $field_variable)->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
+        //$this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', "yes");
         if ($class_id != null) {
@@ -417,11 +417,11 @@ class Student_model extends MY_Model
 
     public function searchByClassSectionWithoutCurrent($class_id = null, $section_id = null, $student_id = null)
     {
-        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender')->from('students');
+        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', "yes");
         $this->db->where('students.id !=', $student_id);
@@ -440,11 +440,11 @@ class Student_model extends MY_Model
 
     public function searchByClassSectionCategoryGenderRte($class_id = null, $section_id = null
         , $category = null, $gender = null, $rte = null) {
-        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,students.category_id, IFNULL(fee_groups.name, "") as `category`,   students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender')->from('students');
+        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address, IFNULL(fee_groups.name, "") as `category`,   students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
+        //$this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
         if ($class_id != null) {
@@ -453,9 +453,9 @@ class Student_model extends MY_Model
         if ($section_id != null) {
             $this->db->where('student_session.section_id', $section_id);
         }
-        if ($category != null) {
+        /*if ($category != null) {
             $this->db->where('students.category_id', $category);
-        }
+        }*/
         if ($gender != null) {
             $this->db->where('students.gender', $gender);
         }
@@ -501,11 +501,11 @@ class Student_model extends MY_Model
             }
         }
 
-        $this->db->select('classes.id AS `class_id`,students.id,student_session.id as student_session_id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(fee_groups.name, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,students.cast_category,' . $field_variable)->from('students');
+        $this->db->select('classes.id AS `class_id`,students.id,student_session.id as student_session_id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(fee_groups.name, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,students.cast_category,' . $field_variable)->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
+        //$this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
         $this->db->join('school_houses', 'students.school_house_id = school_houses.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
@@ -577,11 +577,11 @@ class Student_model extends MY_Model
             }
         }
 
-        $this->db->select('classes.id AS `class_id`,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(fee_groups.name, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,' . $field_variable)->from('students');
+        $this->db->select('classes.id AS `class_id`,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(fee_groups.name, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,' . $field_variable)->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
+        //$this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
         $this->db->group_start();
@@ -625,7 +625,7 @@ class Student_model extends MY_Model
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('class_sections', 'class_sections.class_id = classes.id and class_sections.section_id=sections.id', 'inner');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
@@ -660,11 +660,11 @@ class Student_model extends MY_Model
                 $this->db->where_in("student_session.class_id", "");
             }
         }
-        $this->db->select('classes.id AS `class_id`,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name,students.mother_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,students.parent_id,' . $field_variable)->from('students');
+        $this->db->select('classes.id AS `class_id`,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name,students.mother_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,students.parent_id,' . $field_variable)->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
         if ($condition != null) {
@@ -707,7 +707,7 @@ class Student_model extends MY_Model
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
         if ($condition != null) {
@@ -923,7 +923,7 @@ class Student_model extends MY_Model
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where_not_in('students.id', $student_id);
         $this->db->where('students.parent_id', $parent_id);
@@ -941,7 +941,7 @@ class Student_model extends MY_Model
 
     public function searchCurrentSessionStudents()
     {
-        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender')->from('students');
+        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
@@ -958,11 +958,11 @@ class Student_model extends MY_Model
     {
         $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,
            IFNULL(libarary_members.id,0) as `libarary_member_id`,
-           IFNULL(libarary_members.library_card_no,0) as `library_card_no`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname, students.middlename, students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender')->from('students');
+           IFNULL(libarary_members.library_card_no,0) as `library_card_no`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname, students.middlename, students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('libarary_members', 'libarary_members.member_id = students.id and libarary_members.member_type = "student"', 'left');
 
         $this->db->where('student_session.session_id', $this->current_session);
@@ -981,11 +981,11 @@ class Student_model extends MY_Model
 
     public function searchNameLike($searchterm)
     {
-        $this->db->select('classes.id AS `class_id`,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_email,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,students.app_key,students.parent_app_key,student_session.session_id')->from('students');
+        $this->db->select('classes.id AS `class_id`,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_email,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,students.app_key,students.parent_app_key,student_session.session_id')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
         $this->db->group_start();
@@ -1000,11 +1000,11 @@ class Student_model extends MY_Model
 
     public function searchGuardianNameLike($searchterm)
     {
-        $this->db->select('classes.id AS `class_id`,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.guardian_email,students.rte,student_session.session_id,students.app_key,students.parent_app_key')->from('students');
+        $this->db->select('classes.id AS `class_id`,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.guardian_email,students.rte,student_session.session_id,students.app_key,students.parent_app_key')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
         $this->db->group_start();
@@ -1019,11 +1019,11 @@ class Student_model extends MY_Model
 
     public function searchByClassSectionWithSession($class_id = null, $section_id = null, $session_id = null)
     {
-        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender')->from('students');
+        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
         if ($class_id != null) {
@@ -1205,11 +1205,11 @@ class Student_model extends MY_Model
     public function getdisableStudent()
     {
 
-        $this->db->select('classes.id AS `class_id`,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename, students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,dis_reason,dis_note')->from('students');
+        $this->db->select('classes.id AS `class_id`,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename, students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,dis_reason,dis_note')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'no');
         $this->db->order_by('students.id');
@@ -1220,11 +1220,11 @@ class Student_model extends MY_Model
     public function disablestudentByClassSection($class, $section)
     {
 
-        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender,dis_reason,dis_note')->from('students');
+        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender,dis_reason,dis_note')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', "no");
         if ($class != null) {
@@ -1249,11 +1249,11 @@ class Student_model extends MY_Model
                 $carray[] = $cvalue["id"];
             }
         }
-        $this->db->select('classes.id AS `class_id`,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname, students.middlename, students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,dis_reason,dis_note')->from('students');
+        $this->db->select('classes.id AS `class_id`,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname, students.middlename, students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,dis_reason,dis_note')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->join('school_houses', 'students.school_house_id = school_houses.id', 'left');
         $this->db->where('students.is_active', 'no');
@@ -1340,11 +1340,11 @@ class Student_model extends MY_Model
 
         $field_variable = implode(',', $field_var_array);
 
-        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname, students.middlename, students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,students.blood_group ,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.cast,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.mother_name,students.updated_at,students.father_name,students.rte,students.gender,users.id as `user_tbl_id`,users.username,users.password as `user_tbl_password`,users.is_active as `user_tbl_active`,' . $field_variable)->from('students');
+        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname, students.middlename, students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,students.blood_group ,    students.permanent_address,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.cast,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.mother_name,students.updated_at,students.father_name,students.rte,students.gender,users.id as `user_tbl_id`,users.username,users.password as `user_tbl_password`,users.is_active as `user_tbl_active`,' . $field_variable)->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('users.role', 'student');
@@ -1403,11 +1403,11 @@ class Student_model extends MY_Model
 
         $field_variable = implode(',', $field_var_array);
 
-        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender,' . $field_variable)->from('students');
+        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender,' . $field_variable)->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', "yes");
 
@@ -1442,21 +1442,21 @@ class Student_model extends MY_Model
     public function student_profile($condition)
     {
 
-        $this->db->select('student_session.transport_fees,students.vehroute_id,vehicle_routes.route_id,vehicle_routes.vehicle_id,transport_route.route_title,vehicles.vehicle_no,hostel_rooms.room_no,vehicles.driver_name,vehicles.driver_contact,hostel.id as `hostel_id`,hostel.hostel_name,room_types.id as `room_type_id`,room_types.room_type ,students.hostel_room_id,student_session.id as `student_session_id`,student_session.fees_discount,classes.id AS `class_id`,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode , students.note, students.religion, students.cast, school_houses.house_name,   students.dob ,students.current_address, students.previous_school,
+        $this->db->select('student_session.transport_fees,vehicle_routes.route_id,vehicle_routes.vehicle_id,transport_route.route_title,vehicles.vehicle_no,hostel_rooms.room_no,vehicles.driver_name,vehicles.driver_contact,hostel.id as `hostel_id`,hostel.hostel_name,room_types.id as `room_type_id`,room_types.room_type ,students.hostel_room_id,student_session.id as `student_session_id`,student_session.fees_discount,classes.id AS `class_id`,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode , students.note, students.religion, students.cast, school_houses.house_name,   students.dob ,students.current_address, students.previous_school,
             students.guardian_is,students.parent_id,
-            students.permanent_address,students.category_id,fee_groups.name, students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.father_pic ,students.height ,students.weight,students.measurement_date, students.mother_pic , students.guardian_pic , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.father_phone,students.blood_group,students.school_house_id,students.father_occupation,students.mother_name,students.mother_phone,students.mother_occupation,students.guardian_occupation,students.gender,students.guardian_is,students.rte,students.guardian_email, users.username,users.password,students.dis_reason,students.dis_note,IFNULL(fee_groups.name, "") as `category`')->from('students');
+            students.permanent_address,fee_groups.name, students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.father_pic ,students.height ,students.weight,students.measurement_date, students.mother_pic , students.guardian_pic , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.father_phone,students.blood_group,students.school_house_id,students.father_occupation,students.mother_name,students.mother_phone,students.mother_occupation,students.guardian_occupation,students.gender,students.guardian_is,students.rte,students.guardian_email, users.username,users.password,students.dis_reason,students.dis_note,IFNULL(fee_groups.name, "") as `category`')->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
         $this->db->join('hostel_rooms', 'hostel_rooms.id = students.hostel_room_id', 'left');
         $this->db->join('hostel', 'hostel.id = hostel_rooms.hostel_id', 'left');
         $this->db->join('room_types', 'room_types.id = hostel_rooms.room_type_id', 'left');
-        $this->db->join('vehicle_routes', 'vehicle_routes.id = students.vehroute_id', 'left');
+        //$this->db->join('vehicle_routes', 'vehicle_routes.id = students.vehroute_id', 'left');
         $this->db->join('transport_route', 'vehicle_routes.route_id = transport_route.id', 'left');
         $this->db->join('vehicles', 'vehicles.id = vehicle_routes.vehicle_id', 'left');
         $this->db->join('school_houses', 'school_houses.id = students.school_house_id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
-        $this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
+        //$this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('users.role', 'student');
         $this->db->where('students.is_active', 'yes');
@@ -1551,13 +1551,13 @@ class Student_model extends MY_Model
     public function search_alumniStudentReport($class_id = null, $section_id = null, $session_id = null)
     {
 
-        $this->db->select('classes.id AS `class_id`,students.id,student_session.id as student_session_id,GROUP_CONCAT(classes.class,"(",sections.section,")") as class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id')->from('alumni_students');
+        $this->db->select('classes.id AS `class_id`,students.id,student_session.id as student_session_id,GROUP_CONCAT(classes.class,"(",sections.section,")") as class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id')->from('alumni_students');
 
         $this->db->join('students', 'students.id = alumni_students.student_id');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.is_alumni', 1);
         $this->db->where('students.is_active', "yes");
         if ($class_id != null) {
@@ -1596,13 +1596,13 @@ class Student_model extends MY_Model
                 $this->db->where_in("student_session.class_id", "");
             }
         }
-        $this->db->select('classes.id AS `class_id`,students.id,student_session.id as student_session_id,GROUP_CONCAT(classes.class,"(",sections.section,")") as class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id')->from('alumni_students');
+        $this->db->select('classes.id AS `class_id`,students.id,student_session.id as student_session_id,GROUP_CONCAT(classes.class,"(",sections.section,")") as class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(categories.category, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id')->from('alumni_students');
 
         $this->db->join('students', 'students.id = alumni_students.student_id');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
+        //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
         $this->db->where('student_session.is_alumni', '1');
@@ -1712,11 +1712,11 @@ class Student_model extends MY_Model
             }
         }
 
-        $this->db->select('classes.id AS `class_id`,students.id,student_session.id as student_session_id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(fee_groups.name, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,students.cast_category,' . $field_variable)->from('students');
+        $this->db->select('classes.id AS `class_id`,students.id,student_session.id as student_session_id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(fee_groups.name, "") as `category`,      students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code ,students.father_name , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.gender,students.rte,student_session.session_id,students.cast_category,' . $field_variable)->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
+        //$this->db->join('fee_groups', 'students.category_id = fee_groups.id', 'left');
         $this->db->join('school_houses', 'students.school_house_id = school_houses.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
