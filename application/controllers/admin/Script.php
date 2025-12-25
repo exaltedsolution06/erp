@@ -370,6 +370,36 @@ class Script extends Admin_Controller
 
 		}
 		
+		//create table sch_settings_session
+		
+		$this->load->dbforge();
+		if ( ! $this->db->table_exists('sch_settings_session') )
+		{
+			$fields = [
+				'id' => [
+					'type'           => 'INT',
+					'constraint'     => 11,
+					'unsigned'       => TRUE,
+					'auto_increment' => TRUE,
+				],
+				'session_id' => [
+					'type'       => 'INT',
+					'constraint' => 11,
+					'null'       => FALSE,
+				],
+				'receipt_sequence' => [
+					'type'       => 'BIGINT',   // long integer
+					'constraint' => 20,
+					'null'       => FALSE,
+					'default'    => 0,
+				],
+			];
+
+			$this->dbforge->add_field($fields);
+			$this->dbforge->add_key('id', TRUE); // PRIMARY KEY
+			$this->dbforge->create_table('sch_settings_session', TRUE);
+		}
+
 		
     }
 }
