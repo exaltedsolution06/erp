@@ -359,7 +359,7 @@
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('route_list'); ?></label>
                                                     <select class="form-control" id="vehroute_id" name="vehroute_id">
-                                                        <option value="N.A">N.A</option>
+                                                        <option value="">N.A</option>
 														<?php
                                                         foreach ($vehroutelist as $vehroute) { ?>
 
