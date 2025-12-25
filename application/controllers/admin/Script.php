@@ -169,6 +169,18 @@ class Script extends Admin_Controller
 			$this->db->query($update_sql, [$session_id]);
 		}
 		
+		// Remove index exists in 'staff' table
+		$index_exists_sql = "
+			SHOW INDEX FROM `staff`
+			WHERE Key_name = 'employee_id'
+		";
+		$index_exists = $this->db->query($index_exists_sql);
+		if ($index_exists->num_rows() > 0) {
+			// Drop the index
+			$drop_index_sql = "ALTER TABLE `staff` DROP INDEX `employee_id`";
+			$this->db->query($drop_index_sql);
+		}
+		
 		//For 'staff'.
 		$session_exists = "SHOW COLUMNS FROM `staff` LIKE 'session_id'";
 		$session_exists_sql = $this->db->query($session_exists);		

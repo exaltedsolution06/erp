@@ -81,8 +81,22 @@ class Designation extends Admin_Controller {
     }
 
     function designationdelete($id) {
-
-        $this->designation_model->deleteDesignation($id);
+		// by ES
+		$checkData['menu'] = 'staff';		
+		$checkData['table'] = 'staff';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'designation';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Designation already added with staff</div>');
+		}
+		else{
+			$this->designation_model->deleteDesignation($id);
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Designation deleted successfully</div>');
+		}
+        
         redirect('admin/designation/designation');
     }
 

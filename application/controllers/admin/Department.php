@@ -78,8 +78,22 @@ class Department extends Admin_Controller {
     }
 
     function departmentdelete($id) {
-
-        $this->department_model->deleteDepartment($id);
+		
+		// by ES
+		$checkData['menu'] = 'staff';		
+		$checkData['table'] = 'staff';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'department';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Department already added with staff</div>');
+		}
+		else{
+			$this->department_model->deleteDepartment($id);
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Department deleted successfully</div>');
+		}
         redirect('admin/department/department');
     }
 

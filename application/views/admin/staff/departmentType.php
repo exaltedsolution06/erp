@@ -87,6 +87,11 @@
                         <div class="mailbox-controls">
                         </div>
                         <div class="table-responsive mailbox-messages">
+							<?php if ($this->session->flashdata('editmsg')) { ?>
+                                    <?php echo $this->session->flashdata('editmsg') ?>
+							<?php 
+							$this->session->unset_userdata('editmsg');
+							} ?>
                             <div class="download_label"><?php echo $this->lang->line('department'); ?> <?php echo $this->lang->line('list'); ?></div>
                             <table class="table table-striped table-bordered table-hover example">
                                 <thead>
