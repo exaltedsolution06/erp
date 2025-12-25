@@ -433,7 +433,7 @@ class Setting_model extends MY_Model {
 		if($checkData['menu'] == 'feeplan')
 		{
 			//echo "<pre>";print_r($checkData);
-			$this->db->select('distinct(student_session.student_id) as student_id,students.category_id');
+			$this->db->select('distinct(student_session.student_id) as student_id,student_session.fee_category_id');
 			$this->db->from('student_session');
 			$this->db->join('students', 'students.id = student_session.student_id');
 			$this->db->where_in('student_session.class_id', $checkData['class']);
@@ -445,9 +445,9 @@ class Setting_model extends MY_Model {
 			$existsStudent = 0;
 			foreach($result as $res)
 			{
-				$this->db->where('id', $res['student_id']);
-				$this->db->where_in('category_id', $checkData['categories']);
-				$qr = $this->db->get('students');
+				$this->db->where('student_id', $res['student_id']);
+				$this->db->where_in('fee_category_id', $checkData['categories']);
+				$qr = $this->db->get('student_session');
 				if($qr->num_rows() > 0)
 				{
 					$existsStudent++;
@@ -466,15 +466,15 @@ class Setting_model extends MY_Model {
 			$this->db->order_by('student_session.student_id', 'ASC');
 			$query = $this->db->get();
 			$result = $query->result_array();
-			//echo "<pre>";print_r($result);die;
+			//echo "<pre>";print_r($result);die; category_id
 			
 			$existsStudent = 0;
 			foreach($result as $res)
 			{
-				$this->db->where('id', $res['student_id']);
+				$this->db->where('student_id', $res['student_id']);
 				$this->db->where('route_id', $checkData['route_id']);
-				$this->db->where_in('category_id', $checkData['categories']);
-				$qr = $this->db->get('students');
+				$this->db->where_in('fee_category_id', $checkData['categories']);
+				$qr = $this->db->get('student_session');
 				if($qr->num_rows() > 0)
 				{
 					$existsStudent++;

@@ -452,6 +452,7 @@ class Report extends Admin_Controller
         //$this->session->set_userdata('subsub_menu', 'Reports/finance/onlinefees_report');
         $id=$_GET['id']??0;
         $data['student_data'] =$student_data= $this->student_model->getByStudentSession($id);
+		//echo "<pre>";print_r($student_data);die;
         // $data['student_data'] = $this->student_model->getRecentRecord($id);        
         $category                     = $this->category_model->get();
         $data['categorylist']         = $category;
@@ -508,9 +509,10 @@ class Report extends Admin_Controller
             $this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
             $query = $this->db->get();
             $data['data_list'] = $query->result();
-			
+			//echo "<pre>";print_r($data['data_list']);die;
 			//---- 20-11-2025---ES--
 			$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($id);
+			//echo "<pre>";print_r($feeDiscountsArr);die;
 			$routeDiscountsArr    = $this->fee_discount_model->get_all_routes($id);
 			
 			$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr);
