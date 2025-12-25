@@ -58,7 +58,7 @@ class Leavetypes_model extends MY_model {
 
     public function getLeaveType() {
 
-        $query = $this->db->get('leave_types');
+        $query = $this->db->where('session_id', $this->current_session)->get('leave_types');
         return $query->result_array();
     }
 
@@ -66,7 +66,7 @@ class Leavetypes_model extends MY_model {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        $this->db->where('id', $id);
+        $this->db->where('id', $id)->where('session_id', $this->current_session);
         $this->db->delete('leave_types');
         $message = DELETE_RECORD_CONSTANT . " On subjects id " . $id;
         $action = "Delete";
@@ -102,7 +102,7 @@ class Leavetypes_model extends MY_model {
 
         if ($id != 0) {
             $data = array('id != ' => $id, 'type' => $name);
-            $query = $this->db->where($data)->get('leave_types');
+            $query = $this->db->where($data)->where('session_id', $this->current_session)->get('leave_types');
             if ($query->num_rows() > 0) {
                 return TRUE;
             } else {
@@ -111,7 +111,7 @@ class Leavetypes_model extends MY_model {
         } else {
 
             $this->db->where('type', $name);
-            $query = $this->db->get('leave_types');
+            $query = $this->db->where('session_id', $this->current_session)->get('leave_types');
             if ($query->num_rows() > 0) {
                 return TRUE;
             } else {
