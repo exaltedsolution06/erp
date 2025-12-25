@@ -245,5 +245,95 @@ class Script extends Admin_Controller
 			$update_sql = "UPDATE `template_marksheets` SET `session_id` = ?";
 			$this->db->query($update_sql, [$session_id]);
 		}
+		
+		// transfer category_id, route_id, school_house_id from student to student to student_session table
+		$this->db->query('FLUSH TABLES');
+		$this->db->close();
+		$this->db->initialize();
+		$this->load->dbforge();
+		$altered = false;
+		if (
+			$this->db->field_exists('hostel_room_id', 'student_session') &&
+			!$this->db->field_exists('school_house_id', 'student_session')
+		) {
+			$fields = [
+				'hostel_room_id' => [
+					'name' => 'school_house_id',
+					'type' => 'INT',
+					'constraint' => 11,
+					'null' => FALSE,
+				]
+			];
+
+			$this->dbforge->modify_column('student_session', $fields);
+			$altered = true;
+		}
+		
+		
+		if (
+			$this->db->field_exists('vehroute_id', 'student_session') &&
+			!$this->db->field_exists('fee_category_id', 'student_session')
+		) {
+			$fields = [
+				'vehroute_id' => [
+					'name' => 'fee_category_id',
+					'type' => 'INT',
+					'constraint' => 11,
+					'null' => TRUE,
+					'default' => NULL,
+				]
+			];
+
+			$this->dbforge->modify_column('student_session', $fields);
+			$altered = true;
+		}
+		
+		if($altered)	
+		{
+			$query = $this->db->select('id,category_id,route_id,school_house_id')->get('students');
+			$studentArr = [];
+			$studentDtlsArr = [];
+			foreach($query->result_array() as $students)
+			{
+				$studentArr[] = $students;
+				$qr = $this->db->where('student_id', $students['id'])->get('student_session');
+				if($qr->num_rows() > 0)
+				{
+					$studentDtlsArr[] = $students;
+					$data = [
+						'route_id' =>$students['route_id'],
+						'school_house_id' =>$students['school_house_id'],
+						'fee_category_id' =>$students['category_id'],
+					];
+					$this->db->where('student_id', $students['id']);
+					$this->db->update('student_session', $data);
+				}
+			}
+		}
+		
+		if ($altered)
+		{
+			$this->load->dbforge();
+	
+			//$this->db->close();
+			//$this->db->initialize();
+
+			if ($this->db->field_exists('category_id', 'students')) {
+				$this->dbforge->drop_column('students', 'category_id');
+			}
+
+			if ($this->db->field_exists('route_id', 'students')) {
+				$this->dbforge->drop_column('students', 'route_id');
+			}
+
+			if ($this->db->field_exists('school_house_id', 'students')) {
+				$this->dbforge->drop_column('students', 'school_house_id');
+			}
+			
+			if ($this->db->field_exists('vehroute_id', 'students')) {
+				$this->dbforge->drop_column('students', 'vehroute_id');
+			}
+			
+		}
     }
 }

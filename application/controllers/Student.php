@@ -593,7 +593,7 @@ class Student extends Admin_Controller
                 'guardian_phone'      => $this->input->post('guardian_phone'),
                 'guardian_address'    => $this->input->post('guardian_address'),
                 //'route_id'         	  => $vehroute_id,
-                'route_id'         	  => 0,
+                //'route_id'         	  => 0,
                 'vehroute_id'         => 0,
                 'hostel_room_id'      => $hostel_room_id,
                 'note'                => $this->input->post('note'),
@@ -651,7 +651,7 @@ class Student extends Admin_Controller
 
             if (isset($house)) {
                 //$data_insert['school_house_id'] = $this->input->post('house');
-                $data_insert['school_house_id'] = 0;
+                //$data_insert['school_house_id'] = 0;
             }
             if (isset($blood_group)) {
 
@@ -674,7 +674,7 @@ class Student extends Admin_Controller
             if (isset($category_id)) {
 
                 //$data_insert['category_id'] = $this->input->post('category_id');
-                $data_insert['category_id'] = 0;
+                //$data_insert['category_id'] = 0;
             }
 
             if (isset($religion)) {
