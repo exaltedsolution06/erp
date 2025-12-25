@@ -61,7 +61,7 @@
 	ini_set('file_uploads', 'On');
 	ini_set('file_uploads', 'On');
  
-	//development
+	
 	define('ENVIRONMENT', 'production');
 	
 	
