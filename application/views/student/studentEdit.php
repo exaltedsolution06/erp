@@ -1,6 +1,6 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
-//echo "<pre>";print_r($vehroutelist);die;
+//echo "<pre>";print_r($studentDetails);die;
 ?>
 <div class="content-wrapper">
     <section class="content-header">
