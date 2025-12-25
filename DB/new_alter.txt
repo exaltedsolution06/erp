@@ -26,6 +26,8 @@ ALTER TABLE `sch_settings` ADD `receipt_sr_no` BIGINT(20) NULL DEFAULT NULL AFTE
 -- 18-12-2025 ---
 ALTER TABLE `sch_settings` ADD `main_domain_url` TINYTEXT NOT NULL AFTER `mobile_api_url`;
 
+--- 25-12-2025 ---
+ALTER TABLE `staff` DROP INDEX `employee_id`;
 
 ===============================
 File change outside of application folder
