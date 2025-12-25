@@ -1284,13 +1284,13 @@ class Student extends Admin_Controller
 								
 								$insert_student_data[$i]['image'] = $result[$i]['Student Photo'];
 								$insert_student_data[$i]['blood_group'] = $result[$i]['Blood Group'];
-								$insert_student_data[$i]['school_house_id'] = $result[$i]['Student House ID'];
+								// $insert_student_data[$i]['school_house_id'] = $result[$i]['Student House ID'];
 								$insert_student_data[$i]['height'] = $result[$i]['Height'];
 								$insert_student_data[$i]['weight'] = $result[$i]['Weight'];
 								$insert_student_data[$i]['measurement_date'] = date('Y-m-d');
-								$insert_student_data[$i]['category_id'] = $result[$i]['Fee Category ID'];
-								$insert_student_data[$i]['route_id'] = $result[$i]['Route List ID'];
-								$insert_student_data[$i]['vehroute_id'] = $result[$i]['Route List ID'];
+								// $insert_student_data[$i]['category_id'] = $result[$i]['Fee Category ID'];
+								// $insert_student_data[$i]['route_id'] = $result[$i]['Route List ID'];
+								// $insert_student_data[$i]['vehroute_id'] = $result[$i]['Route List ID'];
 								$insert_student_data[$i]['father_name'] = $result[$i]['Father Name'];
 								$insert_student_data[$i]['father_phone'] = $this->normalizeNumber($result[$i]['Father Phone']);
 								$insert_student_data[$i]['father_occupation'] = $result[$i]['Father Occupation'];
@@ -1375,7 +1375,10 @@ class Student extends Admin_Controller
                                     'class_id'   => $class_id,
                                     'section_id' => $section_id,
                                     'session_id' => $session,
-                                    'fees_discount' => $ledger_amt
+                                    'fees_discount' => $ledger_amt,
+                                    'route_id' => $result[$i]['Route List ID'],
+                                    'school_house_id' => $result[$i]['Student House ID'],
+                                    'fee_category_id' => $result[$i]['Fee Category ID'],
                                 );
 
                                 $this->student_model->add_student_session($data_new);
