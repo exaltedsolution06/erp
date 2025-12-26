@@ -427,8 +427,9 @@ class Receipt_model extends CI_Model {
 
         $this->db->group_by('deleted_receipts.receipt_no');
         //$this->db->order_by('deleted_receipts.id', 'DESC');
-		$this->db->order_by('deleted_receipts.date_time', 'DESC');
-		$this->db->order_by('deleted_receipts.sr_no', 'DESC');
+		//$this->db->order_by('deleted_receipts.date_time', 'DESC');
+		//$this->db->order_by('deleted_receipts.sr_no', 'DESC');
+		$this->db->order_by('CAST(deleted_receipts.sr_no AS UNSIGNED)', 'DESC', false);
         $this->db->limit($limit, $offset);
 
         $query = $this->db->get();
