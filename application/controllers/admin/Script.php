@@ -192,6 +192,28 @@ class Script extends Admin_Controller
 			$this->db->query($update_sql, [$session_id]);
 		}
 		
+		//Set session_id = NULL for Super Admin in 'staff' table
+		$checks_sql = "
+			SELECT staff.id
+			FROM staff
+			INNER JOIN staff_roles ON staff_roles.staff_id = staff.id
+			INNER JOIN roles ON roles.id = staff_roles.role_id
+			WHERE roles.name = 'Super Admin'
+			  AND staff.session_id IS NOT NULL
+			LIMIT 1
+		";
+		$check = $this->db->query($checks_sql);
+		if ($check->num_rows() > 0) {
+			$update_sql = "
+				UPDATE staff
+				INNER JOIN staff_roles ON staff_roles.staff_id = staff.id
+				INNER JOIN roles ON roles.id = staff_roles.role_id
+				SET staff.session_id = NULL
+				WHERE roles.name = 'Super Admin'
+			";
+			$this->db->query($update_sql);
+		}
+		
 		//For 'class_teacher'.
 		$session_exists = "SHOW COLUMNS FROM `class_teacher` LIKE 'session_id'";
 		$session_exists_sql = $this->db->query($session_exists);		
@@ -556,5 +578,6 @@ class Script extends Admin_Controller
 			$this->db->query($update_sql, [$session_id]);
 		}
 		
+		echo 'Success';
     }
 }
