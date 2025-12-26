@@ -12,6 +12,8 @@ class LeaveTypes extends Admin_Controller {
 
         $this->load->model('leavetypes_model');
         $this->load->model('staff_model');
+		
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index() {
@@ -58,7 +60,7 @@ class LeaveTypes extends Admin_Controller {
                 $data = array('type' => $type, 'is_active' => 'yes', 'id' => $leavetypeid);
             } else {
 
-                $data = array('type' => $type, 'is_active' => 'yes');
+                $data = array('type' => $type, 'is_active' => 'yes', 'session_id' => $this->current_session);
             }
 
             $insert_id = $this->leavetypes_model->addLeaveType($data);
@@ -77,7 +79,9 @@ class LeaveTypes extends Admin_Controller {
     function leaveedit($id) {
 
         $result = $this->staff_model->getLeaveType($id);
-
+		if(!$result){
+			redirect("admin/leavetypes");
+		}
         $data["title"] = $this->lang->line('edit') . " " . $this->lang->line('leave') . " " . $this->lang->line('type');
         $data["result"] = $result;
 
@@ -89,8 +93,23 @@ class LeaveTypes extends Admin_Controller {
     }
 
     function leavedelete($id) {
-
-        $this->leavetypes_model->deleteLeaveType($id);
+		// by ES
+		$checkData['menu'] = 'leave_type';		
+		$checkData['table'] = 'staff_leave_request';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'leave_type_id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Leave Type already added in Leave Request</div>');
+		}
+		else{
+			$this->leavetypes_model->deleteLeaveType($id);
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Leave Type deleted successfully</div>');
+		}
+		
+        
         redirect('admin/leavetypes');
     }
 

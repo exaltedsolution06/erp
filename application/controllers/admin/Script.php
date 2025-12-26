@@ -370,8 +370,19 @@ class Script extends Admin_Controller
 
 		}
 		
-		//create table sch_settings_session
+		//For 'leave_types'.
+		$session_exists = "SHOW COLUMNS FROM `leave_types` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `leave_types` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `leave_types` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+
+		}
 		
+		//create table sch_settings_session		
 		$this->load->dbforge();
 		if ( ! $this->db->table_exists('sch_settings_session') )
 		{
@@ -404,10 +415,8 @@ class Script extends Admin_Controller
 			}
 		}
 		
-		//create add new field session_id table receipt_sr_no
-		
+		//create add new field session_id table receipt_sr_no		
 		$this->load->dbforge();
-
 		if ($this->db->table_exists('receipt_sr_no'))
 		{
 			if ( ! $this->db->field_exists('session_id', 'receipt_sr_no') )
@@ -424,7 +433,5 @@ class Script extends Admin_Controller
 				$this->dbforge->add_column('receipt_sr_no', $fields);
 			}
 		}
-
-		
     }
 }

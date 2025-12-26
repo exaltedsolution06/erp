@@ -13,11 +13,14 @@ class Staff_model extends MY_Model
     {
 
         $this->db->select('staff.*,languages.language,roles.name as user_type,roles.id as role_id')->from('staff')->join("staff_roles", "staff_roles.staff_id = staff.id", "left")->join("roles", "staff_roles.role_id = roles.id", "left")->join("languages", "languages.id = staff.lang_id", "left");
-		$this->db->where('staff.session_id', $this->current_session);
 
         if ($id != null) {
             $this->db->where('staff.id', $id);
         } else {
+			$this->db->group_start()
+				->where('staff.session_id', $this->current_session)
+				->or_where('staff.session_id IS NULL', null, false)
+			->group_end();
             $this->db->where('staff.is_active', 1);
             $this->db->order_by('staff.id');
         }
@@ -33,7 +36,10 @@ class Staff_model extends MY_Model
     {
 
         $this->db->select('staff.id,staff.employee_id,CONCAT_WS(" ",staff.name,staff.surname,"(",staff.employee_id,")") as name,roles.name as user_type,roles.id as role_id,staff_rating.rate,staff_rating.status,staff_rating.comment,staff_rating.id as rate_id,CONCAT_WS(" ",students.firstname,students.middlename,students.lastname,"(",students.admission_no,")") as student_name')->from('staff')->join("staff_roles", "staff_roles.staff_id = staff.id", "left")->join("roles", "staff_roles.role_id = roles.id", "left")->join("staff_rating", "staff_rating.staff_id = staff.id", "inner")->join("users", "users.id=staff_rating.user_id", "left")->join("students", "students.id=users.user_id", "left");
-		$this->db->where('staff.session_id', $this->current_session);
+		$this->db->group_start()
+			->where('staff.session_id', $this->current_session)
+			->or_where('staff.session_id IS NULL', null, false)
+		->group_end();
         $this->db->where('staff.is_active', 1);
         $this->db->where_not_in('roles.id', 7);
 
@@ -63,7 +69,10 @@ class Staff_model extends MY_Model
 
         $this->db->select('staff.id');
         $this->db->from("staff");
-		$this->db->where('staff.session_id', $this->current_session);
+		$this->db->group_start()
+			->where('staff.session_id', $this->current_session)
+			->or_where('staff.session_id IS NULL', null, false)
+		->group_end();
         $this->db->where("staff.is_active", 1);
 
         $query = $this->db->get();
@@ -91,7 +100,10 @@ class Staff_model extends MY_Model
         $this->db->join('staff_roles', "staff_roles.staff_id = staff.id", "left");
         $this->db->join('roles', "roles.id = staff_roles.role_id", "left");
         $this->db->join('department', "department.id = staff.department", "left");
-		$this->db->where('staff.session_id', $this->current_session);
+		$this->db->group_start()
+			->where('staff.session_id', $this->current_session)
+			->or_where('staff.session_id IS NULL', null, false)
+		->group_end();
         if ($id != null) {
             $this->db->where('staff.id', $id);
         } else {
@@ -118,7 +130,10 @@ class Staff_model extends MY_Model
         $this->db->join('staff_roles', "staff_roles.staff_id = staff.id", "left");
         $this->db->join('roles', "roles.id = staff_roles.role_id", "left");
         $this->db->join('department', "department.id = staff.department", "left");
-		$this->db->where('staff.session_id', $this->current_session);
+		$this->db->group_start()
+			->where('staff.session_id', $this->current_session)
+			->or_where('staff.session_id IS NULL', null, false)
+		->group_end();
         if ($id != null) {
             $this->db->where('staff.id', $id);
         } else {
@@ -146,7 +161,10 @@ class Staff_model extends MY_Model
         $this->db->join('staff_roles', "staff_roles.staff_id = staff.id", "left");
         $this->db->join('roles', "roles.id = staff_roles.role_id", "left");
         $this->db->join('department', "department.id = staff.department", "left");
-		$this->db->where('staff.session_id', $this->current_session);
+		$this->db->group_start()
+			->where('staff.session_id', $this->current_session)
+			->or_where('staff.session_id IS NULL', null, false)
+		->group_end();
         $this->db->where('staff.is_active', $is_active);
         $this->db->where("DATE_FORMAT(staff.dob,'%m-%d') = DATE_FORMAT('" . $dob . "','%m-%d')");
         if ($email) {
@@ -235,7 +253,10 @@ class Staff_model extends MY_Model
         $condition = "verification_code =" . "'" . $ver_code . "'";
         $this->db->select('*');
         $this->db->from('staff');
-		$this->db->where('staff.session_id', $this->current_session);
+		$this->db->group_start()
+			->where('session_id', $this->current_session)
+			->or_where('session_id IS NULL', null, false)
+		->group_end();
         $this->db->where($condition);
         $this->db->limit(1);
         $query = $this->db->get();
@@ -306,7 +327,10 @@ class Staff_model extends MY_Model
         $query = $this->db->query($sql);
 
         $this->db->where('id', $id);
-		$this->db->where('session_id', $this->current_session);
+		$this->db->group_start()
+			->where('session_id', $this->current_session)
+			->or_where('session_id IS NULL', null, false)
+		->group_end();
         $this->db->delete('staff');
 
         $this->db->trans_complete();
@@ -355,7 +379,7 @@ class Staff_model extends MY_Model
     public function getLeaveType($id = null)
     {
 
-        $this->db->select()->from('leave_types');
+        $this->db->select()->from('leave_types')->where('session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('id', $id);
         } else {
@@ -399,7 +423,11 @@ class Staff_model extends MY_Model
 
         if ($staff_id != 0) {
             $data  = array('id != ' => $staff_id, 'employee_id' => $id);
-            $query = $this->db->where($data)->where('session_id', $this->current_session)->get('staff');
+            $query = $this->db->where($data)
+			->group_start()
+				->where('session_id', $this->current_session)
+				->or_where('session_id IS NULL', null, false)
+			->group_end()->get('staff');
             if ($query->num_rows() > 0) {
                 return true;
             } else {
@@ -408,7 +436,10 @@ class Staff_model extends MY_Model
         } else {
 
             $this->db->where('employee_id', $id);
-			$this->db->where('session_id', $this->current_session);
+			$this->db->group_start()
+				->where('session_id', $this->current_session)
+				->or_where('session_id IS NULL', null, false)
+			->group_end();
             $query = $this->db->get('staff');
             if ($query->num_rows() > 0) {
                 return true;
@@ -421,7 +452,10 @@ class Staff_model extends MY_Model
     public function import_check_data_exists($name, $id)
     {
         $this->db->where('employee_id', $id);
-		$this->db->where('session_id', $this->current_session);
+		$this->db->group_start()
+			->where('session_id', $this->current_session)
+			->or_where('session_id IS NULL', null, false)
+		->group_end();
         $query = $this->db->get('staff');
         if ($query->num_rows() > 0) {
             return 1;
@@ -433,7 +467,10 @@ class Staff_model extends MY_Model
     public function import_check_email_exists($name, $id)
     {
         $this->db->where('email', $email);
-		$this->db->where('session_id', $this->current_session);
+		$this->db->group_start()
+			->where('session_id', $this->current_session)
+			->or_where('session_id IS NULL', null, false)
+		->group_end();
         $query = $this->db->get('staff');
         if ($query->num_rows() > 0) {
             return 1;
@@ -468,7 +505,11 @@ class Staff_model extends MY_Model
 
         if ($staff_id != 0) {
             $data  = array('id != ' => $staff_id, 'email' => $email);
-            $query = $this->db->where($data)->where('session_id', $this->current_session)->get('staff');
+            $query = $this->db->where($data)
+			->group_start()
+				->where('session_id', $this->current_session)
+				->or_where('session_id IS NULL', null, false)
+			->group_end()->get('staff');
             if ($query->num_rows() > 0) {
                 return true;
             } else {
@@ -477,7 +518,10 @@ class Staff_model extends MY_Model
         } else {
 
             $this->db->where('email', $email);
-            $query = $this->db->where('session_id', $this->current_session)->get('staff');
+            $query = $this->db->group_start()
+				->where('session_id', $this->current_session)
+				->or_where('session_id IS NULL', null, false)
+			->group_end()->get('staff');
             if ($query->num_rows() > 0) {
                 return true;
             } else {
@@ -572,7 +616,10 @@ class Staff_model extends MY_Model
         }
 
         $this->db->where("staff.is_active", $active);      
-        $this->db->where("staff.session_id", $this->current_session);      
+        $this->db->group_start()
+			->where('staff.session_id', $this->current_session)
+			->or_where('staff.session_id IS NULL', null, false)
+		->group_end();      
 
         $this->db->where("roles.id", $role);
         $query = $this->db->get();
@@ -583,7 +630,11 @@ class Staff_model extends MY_Model
     public function getEmployeeByRoleID($role, $active = 1)
     {
 
-        $query = $this->db->select("staff.*,staff_designation.designation,department.department_name as department, roles.id as role_id, roles.name as role")->join('staff_designation', "staff_designation.id = staff.designation", "left")->join('staff_roles', "staff_roles.staff_id = staff.id", "left")->join('roles', "roles.id = staff_roles.role_id", "left")->join('department', "department.id = staff.department", "left")->where("staff.is_active", $active)->where("roles.id", $role)->where('staff.session_id', $this->current_session)->get("staff");
+        $query = $this->db->select("staff.*,staff_designation.designation,department.department_name as department, roles.id as role_id, roles.name as role")->join('staff_designation', "staff_designation.id = staff.designation", "left")->join('staff_roles', "staff_roles.staff_id = staff.id", "left")->join('roles', "roles.id = staff_roles.role_id", "left")->join('department', "department.id = staff.department", "left")->where("staff.is_active", $active)->where("roles.id", $role)
+		->group_start()
+			->where('staff.session_id', $this->current_session)
+			->or_where('staff.session_id IS NULL', null, false)
+		->group_end()->get("staff");
 
         return $query->result_array();
     }
@@ -591,13 +642,21 @@ class Staff_model extends MY_Model
     public function getStaffDesignation()
     {
 
-        $query = $this->db->select('*')->where("is_active", "yes")->where('session_id', $this->current_session)->get("staff_designation");
+        $query = $this->db->select('*')->where("is_active", "yes")
+		->group_start()
+			->where('session_id', $this->current_session)
+			->or_where('session_id IS NULL', null, false)
+		->group_end()->get("staff_designation");
         return $query->result_array();
     }
 
     public function getDepartment()
     {
-        $query = $this->db->select('*')->where("is_active", "yes")->where('session_id', $this->current_session)->get('department');
+        $query = $this->db->select('*')->where("is_active", "yes")
+		->group_start()
+			->where('session_id', $this->current_session)
+			->or_where('session_id IS NULL', null, false)
+		->group_end()->get('department');
         return $query->result_array();
     }
 
@@ -613,7 +672,11 @@ class Staff_model extends MY_Model
     {
 
         $data  = array('employee_id' => $empid);
-        $query = $this->db->select('id')->where($data)->where('session_id', $this->current_session)->get("staff");
+        $query = $this->db->select('id')->where($data)
+		->group_start()
+			->where('session_id', $this->current_session)
+			->or_where('session_id IS NULL', null, false)
+		->group_end()->get("staff");
         return $query->row_array();
     }
 
@@ -626,7 +689,10 @@ class Staff_model extends MY_Model
         $this->db->join("staff_roles", "staff_roles.staff_id = staff.id", "left");
         $this->db->join("roles", "staff_roles.role_id = roles.id", "left");
         $this->db->where("staff.id", $id);
-        $this->db->from('staff')->where('staff.session_id', $this->current_session);
+        $this->db->from('staff')->group_start()
+			->where('staff.session_id', $this->current_session)
+			->or_where('staff.session_id IS NULL', null, false)
+		->group_end();
         $query = $this->db->get();
         return $query->row_array();
     }
@@ -655,7 +721,7 @@ class Staff_model extends MY_Model
        
         $field_var = count($field_k_array) > 0 ? "," . implode(',', $field_k_array) : "";
 
-        $query = "SELECT `staff`.*, `staff_designation`.`designation` as `designation`, `department`.`department_name` as `department`,`roles`.`name` as user_type " . $field_var . "  FROM `staff` " . $join_array . " LEFT JOIN `staff_designation` ON `staff_designation`.`id` = `staff`.`designation` LEFT JOIN `staff_roles` ON `staff_roles`.`staff_id` = `staff`.`id` LEFT JOIN `roles` ON `staff_roles`.`role_id` = `roles`.`id` LEFT JOIN `department` ON `department`.`id` = `staff`.`department` WHERE  `staff`.`is_active` = '$active' and staff.session_id='$this->current_session' and (CONCAT(`staff`.`name`,' ',`staff`.`surname`) LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`surname` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`employee_id` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`local_address` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!'  OR `staff`.`contact_no` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`email` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `roles`.`name` LIKE '%".$this->db->escape_like_str($searchterm)."' ESCAPE '!')";
+        $query = "SELECT `staff`.*, `staff_designation`.`designation` as `designation`, `department`.`department_name` as `department`,`roles`.`name` as user_type " . $field_var . "  FROM `staff` " . $join_array . " LEFT JOIN `staff_designation` ON `staff_designation`.`id` = `staff`.`designation` LEFT JOIN `staff_roles` ON `staff_roles`.`staff_id` = `staff`.`id` LEFT JOIN `roles` ON `staff_roles`.`role_id` = `roles`.`id` LEFT JOIN `department` ON `department`.`id` = `staff`.`department` WHERE  `staff`.`is_active` = '$active' and (staff.session_id = '$this->current_session' OR staff.session_id IS NULL) and (CONCAT(`staff`.`name`,' ',`staff`.`surname`) LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`surname` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`employee_id` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`local_address` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!'  OR `staff`.`contact_no` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `staff`.`email` LIKE '%".$this->db->escape_like_str($searchterm)."%' ESCAPE '!' OR `roles`.`name` LIKE '%".$this->db->escape_like_str($searchterm)."' ESCAPE '!')";
 
         $query = $this->db->query($query);
         return $query->result_array();
@@ -667,7 +733,10 @@ class Staff_model extends MY_Model
         $this->db->from('staff');
         $this->db->like('staff.employee_id', $employee_id);
         $this->db->like('staff.is_active', 1);
-		$this->db->where('staff.session_id', $this->current_session);
+		$this->db->group_start()
+			->where('staff.session_id', $this->current_session)
+			->or_where('staff.session_id IS NULL', null, false)
+		->group_end();
         $query = $this->db->get();
         return $query->result_array();
     }
@@ -769,7 +838,10 @@ class Staff_model extends MY_Model
         $this->db->select('staff.*,languages.language,languages.id as language_id');
         $this->db->from('staff')->join('languages', 'languages.id=staff.lang_id', 'left');
         $this->db->where('email', $email);
-        $this->db->where('session_id', $this->current_session);
+        $this->db->group_start()
+			->where('session_id', $this->current_session)
+			->or_where('session_id IS NULL', null, false)
+		->group_end();
         $query = $this->db->get();
         if ($query->num_rows() == 1) {
             return $query->row();
@@ -803,7 +875,10 @@ class Staff_model extends MY_Model
         $this->db->join("roles", "staff_roles.role_id = roles.id", "left");
         $this->db->where("staff_roles.role_id", $id);
         $this->db->where("staff.is_active", "1");
-        $this->db->where("staff.session_id", $this->current_session);
+        $this->db->group_start()
+			->where('staff.session_id', $this->current_session)
+			->or_where('staff.session_id IS NULL', null, false)
+		->group_end();
         $this->db->from('staff');
         $query = $this->db->get();
         return $query->result_array();
@@ -816,7 +891,10 @@ class Staff_model extends MY_Model
         $this->db->like('staff.name', $searchterm);
         $this->db->group_end();
         $this->db->where("staff.is_active", "1");
-        $this->db->where('staff.session_id', $this->current_session);
+        $this->db->group_start()
+			->where('staff.session_id', $this->current_session)
+			->or_where('staff.session_id IS NULL', null, false)
+		->group_end();
         $this->db->order_by('staff.id');
         $query = $this->db->get();
         return $query->result_array();
@@ -830,7 +908,11 @@ class Staff_model extends MY_Model
     public function check_staffid_exists($employee_id)
     {
         $this->db->where(array('employee_id' => $employee_id, 'session_id'=> $this->current_session));
-        $query = $this->db->where('session_id', $this->current_session)->get('staff');
+        $query = $this->db
+		->group_start()
+			->where('session_id', $this->current_session)
+			->or_where('session_id IS NULL', null, false)
+		->group_end()->get('staff');
         if ($query->num_rows() > 0) {
             return true;
         } else {
@@ -952,7 +1034,7 @@ class Staff_model extends MY_Model
       
         $field_var = count($field_k_array) > 0 ? "," . implode(',', $field_k_array) : "";
 
-        $query = "SELECT `staff`.*, `staff_designation`.`designation` as `designation`, `department`.`department_name` as `department`,`roles`.`name` as user_type " . $field_var . ",GROUP_CONCAT(leave_type_id,'@',alloted_leave) as leaves  FROM `staff` " . $join_array . " LEFT JOIN `staff_designation` ON `staff_designation`.`id` = `staff`.`designation` LEFT JOIN `staff_roles` ON `staff_roles`.`staff_id` = `staff`.`id` LEFT JOIN `roles` ON `staff_roles`.`role_id` = `roles`.`id` LEFT JOIN `department` ON `department`.`id` = `staff`.`department` left join staff_leave_details ON staff_leave_details.staff_id=staff.id WHERE staff.session_id = ".$this->current_session."  " . $condition . " group by staff.id";
+        $query = "SELECT `staff`.*, `staff_designation`.`designation` as `designation`, `department`.`department_name` as `department`,`roles`.`name` as user_type " . $field_var . ",GROUP_CONCAT(leave_type_id,'@',alloted_leave) as leaves  FROM `staff` " . $join_array . " LEFT JOIN `staff_designation` ON `staff_designation`.`id` = `staff`.`designation` LEFT JOIN `staff_roles` ON `staff_roles`.`staff_id` = `staff`.`id` LEFT JOIN `roles` ON `staff_roles`.`role_id` = `roles`.`id` LEFT JOIN `department` ON `department`.`id` = `staff`.`department` left join staff_leave_details ON staff_leave_details.staff_id=staff.id WHERE (staff.session_id = ".$this->current_session." OR staff.session_id IS NULL)  " . $condition . " group by staff.id";
 
         $query = $this->db->query($query);
 
@@ -961,7 +1043,11 @@ class Staff_model extends MY_Model
 
     public function inventry_staff()
     {
-        return $this->db->select("CONCAT_WS(' ',staff.name,staff.surname) as name,staff.employee_id")->from('staff')->where('staff.is_active', 1)->where('staff.session_id', $this->current_session)->get()->result_array();
+        return $this->db->select("CONCAT_WS(' ',staff.name,staff.surname) as name,staff.employee_id")->from('staff')->where('staff.is_active', 1)
+		->group_start()
+			->where('staff.session_id', $this->current_session)
+			->or_where('staff.session_id IS NULL', null, false)
+		->group_end()->get()->result_array();
 
     }
 
