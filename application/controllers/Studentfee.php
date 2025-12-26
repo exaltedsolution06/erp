@@ -426,7 +426,7 @@ class Studentfee extends Admin_Controller
         }
 		$this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/receipt-book');
-        //$this->session->set_userdata('subsub_menu', 'Reports/finance/receipt-book');
+        //$this->session->set_userdata('subsub_menu', 'Reports/finance/receipt-book');receipt_data
 		
         $data['collect_by'] = $this->studentfeemaster_model->get_feesreceived_by();
         $data['searchlist'] = $this->customlib->get_searchtype();
