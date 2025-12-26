@@ -391,11 +391,11 @@ class Setting_model extends MY_Model {
 			return false;
 		}
 	}
-	public function get_last_receipt_id()
+	public function get_last_receipt_id($current_session_id='')
 	{
 		$this->db->select_max('sr_no'); 
 		$this->db->limit(1);
-		$query = $this->db->get('receipt_sr_no');
+		$query = $this->db->where('session_id', $current_session_id)->get('receipt_sr_no');
 
         if ($query->num_rows() > 0) {
 			$row = $query->row();

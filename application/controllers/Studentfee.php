@@ -25,6 +25,7 @@ class Studentfee extends Admin_Controller
 
         $data = $this->input->post(); 
         //echo "<pre>";print_r($data);die;receipt_sr_no
+		//echo $current_session_id = $this->current_session;die;
        
         if (empty($data['receipt_no']) || empty($data['student_id'])) {
             
@@ -1081,6 +1082,7 @@ class Studentfee extends Admin_Controller
             access_denied();
         }
 		
+		
         $data['back_id']=$id;
         $data['sch_setting'] = $this->sch_setting_detail;
         $data['title'] = 'Student Detail';
@@ -1124,7 +1126,7 @@ class Studentfee extends Admin_Controller
 			}
 		}
 		else{
-			$last_receipt_id = $this->Setting_model->get_last_receipt_id();
+			$last_receipt_id = $this->Setting_model->get_last_receipt_id($current_session_id);
 		}
 		
 		//----------------------------
