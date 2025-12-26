@@ -44,19 +44,19 @@ foreach ($students as $student) {
 
         if ($std_key == "dob") {
 
-            if ($std_value != "0000-00-00") {
+            if ($std_value != null) {
                 $std_value = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($std_value));
             }
         }
         if ($std_key == "admission_date") {
 
-            if ($std_value != "0000-00-00") {
+            if ($std_value != null) {
                 $std_value = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($std_value));
             }
         }
         if ($std_key == "created_at") {
 
-            if ($std_value != "0000-00-00") {
+            if ($std_value != null) {
                 $std_value = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($std_value));
             }
         }

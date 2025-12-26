@@ -6,6 +6,7 @@ class Staffidcard extends Admin_Controller {
 
     public function __construct() {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index() {
@@ -92,6 +93,7 @@ class Staffidcard extends Admin_Controller {
                 'enable_staff_dob' => $dob,
                 'enable_staff_phone' => $phone,
                 'status' => 1,
+                'session_id' => $this->current_session,
             );
             $insert_id = $this->Staffidcard_model->addstaffidcard($data);
             if (!empty($_FILES['background_image']['name'])) {
@@ -160,6 +162,9 @@ class Staffidcard extends Admin_Controller {
         }
         $data['id'] = $id;
         $editstaffidcard = $this->Staffidcard_model->get($id);
+		if(!$editstaffidcard){
+			redirect('admin/staffidcard/index');
+		}
         $this->data['editstaffidcard'] = $editstaffidcard;
         $this->form_validation->set_rules('school_name', $this->lang->line('school_name'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('address', $this->lang->line('address_phone_email'), 'trim|required|xss_clean');
