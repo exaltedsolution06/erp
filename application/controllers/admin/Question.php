@@ -364,7 +364,22 @@ class Question extends Admin_Controller
         if (!$this->rbac->hasPrivilege('question_bank', 'can_delete')) {
             access_denied();
         }
-        $this->question_model->remove($id);
+		// by ES
+		$checkData['menu'] = 'question';		
+		$checkData['table'] = 'onlineexam_questions';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'question_id';
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Question already added with exam</div>');
+		}
+		else{
+			$this->question_model->remove($id);
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-success text-left">Question deleted successfully</div>');
+		}
+        
         redirect('admin/question', 'refresh');
     }
 
