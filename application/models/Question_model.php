@@ -6,7 +6,12 @@ if (!defined('BASEPATH')) {
 
 class Question_model extends MY_model
 {
-
+	public function __construct()
+    {
+        parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
+    }
+	
     public function add($data)
     {
         $this->db->trans_start(); # Starting Transaction
@@ -78,6 +83,7 @@ class Question_model extends MY_model
         $this->db->join('subjects', 'subjects.id = questions.subject_id');
         $this->db->join('classes', 'classes.id = questions.class_id','left');
         $this->db->join('sections', 'sections.id = questions.section_id','left');
+        $this->db->where('subjects.session_id', $this->current_session);
         if(!empty($class_section_id)){
              $this->db->where_in('questions.class_section_id', $class_section_id);
         }
@@ -104,6 +110,7 @@ class Question_model extends MY_model
         $this->db->join('subjects', 'subjects.id = questions.subject_id');
         $this->db->join('classes', 'classes.id = questions.class_id','left');
         $this->db->join('sections', 'sections.id = questions.section_id','left');
+        $this->db->where('subjects.session_id', $this->current_session);
         $this->db->limit($limit, $offset);
         $this->db->order_by('questions.id');
         $query = $this->db->get();
@@ -122,6 +129,7 @@ class Question_model extends MY_model
                 ->searchable('questions.id,subjects.name,questions.question_type,questions.level,questions.question,classes.class')
                 ->orderable('questions.id,subjects.name,questions.question_type,questions.level,questions.question,classes.class')
                 ->from('questions');
+        $this->datatables->where('subjects.session_id', $this->current_session);
                 if(isset($role_id) && ($userdata["role_id"] == 2) && ($userdata["class_teacher"] == "yes")){
                    $carray = array();
         $class_list=array();
