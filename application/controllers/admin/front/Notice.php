@@ -19,6 +19,7 @@ class Notice extends Admin_Controller
         $this->load->library('slug', $config);
         $this->load->config('ci-blog');
         $this->load->library('imageResize');
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index()
@@ -73,6 +74,7 @@ class Notice extends Admin_Controller
                 'sidebar'          => $this->input->post('sidebar'),
                 'type'             => $this->config->item('ci_front_notice_content'),
                 'meta_description' => $this->input->post('meta_description'),
+                'session_id' 	   => $this->current_session,
             );
 
             $data['slug'] = $this->slug->create_uri($data);
@@ -93,6 +95,9 @@ class Notice extends Admin_Controller
         $this->session->set_userdata('top_menu', 'Front CMS');
         $this->session->set_userdata('sub_menu', 'admin/front/notice');
         $result         = $this->cms_program_model->getBySlug(urldecode($slug));
+		if(!$result){
+			redirect('admin/front/notice');
+		}
         $data['result'] = $result;
         $this->form_validation->set_rules('title', $this->lang->line('title'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('description', $this->lang->line('description'), 'trim|required');

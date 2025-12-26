@@ -22,6 +22,7 @@ class Cms_program_model extends MY_Model
     public function get($id = null)
     {
         $this->db->select()->from('front_cms_programs');
+		$this->db->where('session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('id', $id);
         } else {
@@ -40,6 +41,7 @@ class Cms_program_model extends MY_Model
         $this->db->select('*');
         $this->db->from('front_cms_programs');
         $this->db->order_by('created_at', 'desc');
+		$this->db->where('session_id', $this->current_session);
         $this->db->where('type', $category);
         if (array_key_exists("start", $params) && array_key_exists("limit", $params)) {
             $this->db->limit($params['limit'], $params['start']);
@@ -91,6 +93,7 @@ class Cms_program_model extends MY_Model
     public function getBySlug($slug = null)
     {
         $this->db->select()->from('front_cms_programs');
+		$this->db->where('session_id', $this->current_session);
         if ($slug != null) {
             $this->db->where('slug', $slug);
         }
@@ -123,6 +126,7 @@ class Cms_program_model extends MY_Model
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('slug', $slug);
+		$this->db->where('session_id', $this->current_session);
         $this->db->delete('front_cms_programs');
         $message   = DELETE_RECORD_CONSTANT . " On event id " . $slug;
         $action    = "Delete";
@@ -308,6 +312,7 @@ class Cms_program_model extends MY_Model
         //=======================Code Start===========================
         $this->db->where('slug', $slug);
         $this->db->where('type', $type);
+		$this->db->where('session_id', $this->current_session);
         $this->db->delete('front_cms_programs');
         $message   = DELETE_RECORD_CONSTANT . " On event title " . $slug;
         $action    = "Delete";

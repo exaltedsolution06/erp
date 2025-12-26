@@ -478,5 +478,16 @@ class Script extends Admin_Controller
 			$this->db->query($update_sql, [$session_id]);
 		}
 		
+		//For 'front_cms_programs'.
+		$session_exists = "SHOW COLUMNS FROM `front_cms_programs` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `front_cms_programs` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `front_cms_programs` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
     }
 }

@@ -19,6 +19,7 @@ class Events extends Admin_Controller
         $this->load->library('slug', $config);
 
         $this->load->library('imageResize');
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index()
@@ -76,6 +77,7 @@ class Events extends Admin_Controller
                 'sidebar'          => $this->input->post('sidebar'),
                 'type'             => $this->config->item('ci_front_event_content'),
                 'meta_description' => $this->input->post('meta_description'),
+                'session_id' 	   => $this->current_session,
             );
             $data['slug'] = $this->slug->create_uri($data);
             $data['url']  = $this->config->item('ci_front_page_read_url') . $data['slug'];
@@ -162,7 +164,9 @@ class Events extends Admin_Controller
         $data['title']      = 'Edit Book';
         $data['title_list'] = 'Book Details';
         $result             = $this->cms_program_model->getBySlug(urldecode($slug));
-
+		if(!$result){
+			redirect('admin/front/events');
+		}
         $data['result'] = $result;
         $this->form_validation->set_rules('title', $this->lang->line('title'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('start_date', $this->lang->line('start_date'), 'trim|required|xss_clean');
