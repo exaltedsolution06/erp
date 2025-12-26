@@ -102,8 +102,20 @@ class Studentfee extends Admin_Controller
 			
 			// by exaltedsol
 			$expld_receipt_no = explode('/', $data['receipt_no']);
+			//echo "<pre>";print_r($data['receipt_no']);die;
 			$receipt_sr_no = $expld_receipt_no[1];
-			$this->setting_model->insert_receipt_sr_no($receipt_sr_no);
+			
+			
+			$current_session  = $expld_receipt_no[0];
+			$qr = $this->db->where('session', $current_session)->get('sessions');
+			$current_session_id = 0;
+			if($qr->num_rows())
+			{
+				$res = $qr->row_array();
+				$current_session_id = $res['id'];
+			}
+			
+			$this->setting_model->insert_receipt_sr_no($receipt_sr_no, $current_session_id);
 			
         }else{
 
@@ -144,8 +156,18 @@ class Studentfee extends Admin_Controller
 			
 			// by exaltedsol
 			$expld_receipt_no = explode('/', $data['receipt_no']);
+			//echo "<pre>";print_r($data['receipt_no']);die;
 			$receipt_sr_no = $expld_receipt_no[1];
-			$this->setting_model->insert_receipt_sr_no($receipt_sr_no);
+			$current_session  = $expld_receipt_no[0];
+			$qr = $this->db->where('session', $current_session)->get('sessions');
+			$current_session_id = 0;
+			if($qr->num_rows())
+			{
+				$res = $qr->row_array();
+				$current_session_id = $res['id'];
+			}
+			
+			$this->setting_model->insert_receipt_sr_no($receipt_sr_no, $current_session_id);
 		}
 
 
@@ -1077,8 +1099,13 @@ class Studentfee extends Admin_Controller
         $studentlistbysection         = $this->student_model->getStudentClassSection($student["class_id"], $session);
         $data["studentlistbysection"] = $studentlistbysection;
 		
-		//--- exaltedsol 09-12-2025--- 
-		$check_receipt_no = $this->setting_model->check_receipt_no();
+		//--- exaltedsol 09-12-2025---
+		//$expld_receipt_no = explode('/', $data['receipt_no']);
+		//echo $expld_receipt_no = $this->input->post('receipt_no');die;
+		//$p = $this->setting_model->getCurrentSession();
+		$current_session_id = $this->current_session;
+		//echo print_r($p) ; die;
+		$check_receipt_no = $this->setting_model->check_receipt_no($current_session_id);
 		if($check_receipt_no == false)
 		{
 			$get_receipt_no = $this->setting_model->check_sch_setting_receipt_no();

@@ -339,10 +339,11 @@ class Setting_model extends MY_Model {
         $image = $this->db->select('footer_content')->from('print_headerfooter')->where('print_type', 'staff_payslip')->get()->row_array();
         echo $image['footer_content'];
     }
-	public function check_receipt_no()
+	public function check_receipt_no($current_session_id='')
 	{
-		$session_result = $this->get();
-		$current_session_id = $session_result[0]['current_session']['session_id'];
+		//$session_result = $this->get();
+		//$current_session_id = $session_result[0]['current_session']['session_id'];
+		//echo $current_session_id; die;
 		$query = $this->db->where('session_id', $current_session_id)->get('receipt_sr_no');
 		$num_rows = $query->num_rows();
 
@@ -405,12 +406,12 @@ class Setting_model extends MY_Model {
             return 1; // Or 0, depending on your logic
         }
 	}
-	public function insert_receipt_sr_no($recpt = '')
+	public function insert_receipt_sr_no($recpt = '', $session_id='')
 	{
-		$session_result = $this->get();
-		$current_session_id = $session_result[0]['current_session']['session_id'];
+		//$session_result = $this->get();
+		//$current_session_id = $session_result[0]['current_session']['session_id'];
 		$data['sr_no'] = $recpt;
-		$data['session_id'] = $current_session_id;
+		$data['session_id'] = $session_id;
 		$this->db->insert('receipt_sr_no', $data);
 		
 		
