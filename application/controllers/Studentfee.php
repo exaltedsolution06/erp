@@ -2078,8 +2078,7 @@ class Studentfee extends Admin_Controller
         if ($_GET['type'] == 'delete' && !empty($_GET['receipt_no'])) {
             $receipt_no = $_GET['receipt_no'];
 			
-
-            $res_del=$this->db
+			$res_del=$this->db
                 ->select('student_id,date_time,back_id,receipt_no,mode,fee_head,late_fees,ledger_amt,total_fees,discount_amt,net_fees,receipt_amt,balance_amt,remarks,fee_head_name,SUM(balance_amount) as balance_amount,(total) as total, SUM(rec_discount) as rec_discount, SUM(rec_amount) as rec_amount')
                 ->where_in('receipt_no', $receipt_no)
                 ->group_by('fee_head')
