@@ -7,6 +7,7 @@ class Content extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index() {
@@ -81,7 +82,8 @@ class Content extends Admin_Controller {
                 'created_by'=> $this->customlib->getStaffID(),
                 //'date' => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('upload_date'))),
                 'file' => $this->input->post('file'),
-                'is_public' => $visibility
+                'is_public' => $visibility,
+                'session_id' => $this->current_session
             );
 
             if(isset($_POST['upload_date']) && $_POST['upload_date']!=''){
@@ -166,7 +168,8 @@ class Content extends Admin_Controller {
                 'cls_sec_id' => $section_id,
                 'date' => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('upload_date'))),
                 'file' => $this->input->post('file'),
-                'is_public' => $visibility
+                'is_public' => $visibility,
+                'session_id' => $this->current_session
             );
 
             $insert_id = $this->content_model->add($data, $content_for);
@@ -237,6 +240,9 @@ class Content extends Admin_Controller {
         $data['title'] = 'Add Content';
         $data['id'] = $id;
         $editpost = $this->content_model->get($id);
+		if(!$editpost){
+			redirect('admin/content');
+		}
         $data['editpost'] = $editpost;
         $ght = $this->customlib->getcontenttype();
         $data['ght'] = $ght;

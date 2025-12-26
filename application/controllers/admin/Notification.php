@@ -10,6 +10,7 @@ class Notification extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index()
@@ -115,6 +116,7 @@ class Notification extends Admin_Controller
                 'visible_staff'   => $staff,
                 'visible_parent'  => $parent,
                 'publish_date'    => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('publish_date'))),
+                'session_id'   	  => $this->current_session,
             );
 
             $this->notification_model->insertBatch($data, $staff_roles);
@@ -142,7 +144,9 @@ class Notification extends Admin_Controller
         }
         $data['id']   = $id;
         $notification = $this->notification_model->get($id);
-
+		if(!$notification){
+			redirect('admin/notification/index');
+		}
         $data['notification'] = $notification;
         $data['roles']        = $this->role_model->get();
         $data['title']        = 'Edit Notification';

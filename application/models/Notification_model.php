@@ -9,6 +9,8 @@ class Notification_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
+		$this->load->model('setting_model');
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     /**
@@ -23,9 +25,10 @@ class Notification_model extends MY_Model {
         $role_id = $userdata["role_id"];
         $sql = "SELECT * from send_notification left JOIN (SELECT send_notification_id, GROUP_CONCAT(role_id) as roles  FROM notification_roles  group by send_notification_id) as notification_roles on notification_roles.send_notification_id = send_notification.id ";
 
+        $sql .= "where send_notification.session_id =" . $this->current_session;
         if ($id != null) {
 
-            $sql .= "where send_notification.id =" . $id;
+            $sql .= " and send_notification.id =" . $id;
         }
 
         $query = $this->db->query($sql);
@@ -45,7 +48,7 @@ class Notification_model extends MY_Model {
     public function getUnreadStaffNotification($staffid = null, $role_id = null) {
 
 
-        $sql = "select send_notification.* from send_notification INNER JOIN notification_roles on notification_roles.send_notification_id = send_notification.id left JOIN read_notification on read_notification.staff_id=" . $this->db->escape($staffid) . " and read_notification.notification_id = send_notification.id WHERE send_notification.created_id !=" . $this->db->escape($staffid) . " and send_notification.visible_staff='yes' and read_notification.id IS NULL and notification_roles.role_id=" . $this->db->escape($role_id) . " order by send_notification.id desc";
+        $sql = "select send_notification.* from send_notification INNER JOIN notification_roles on notification_roles.send_notification_id = send_notification.id left JOIN read_notification on read_notification.staff_id=" . $this->db->escape($staffid) . " and read_notification.notification_id = send_notification.id WHERE send_notification.created_id !=" . $this->db->escape($staffid) . " and send_notification.visible_staff='yes' and read_notification.id IS NULL and notification_roles.role_id=" . $this->db->escape($role_id) . " and send_notification.session_id=" . $this->current_session . " order by send_notification.id desc";
 
 
         $query = $this->db->query($sql);
@@ -55,13 +58,13 @@ class Notification_model extends MY_Model {
     public function getUnreadStudentNotification() {
 
 
-        $sql = "select send_notification.* from send_notification  left JOIN read_notification on  read_notification.student_id=".$this->customlib->getStudentSessionUserID()." and read_notification.notification_id = send_notification.id WHERE  send_notification.visible_student='yes' and read_notification.id IS NULL  group by send_notification.id order by send_notification.id desc";
+        $sql = "select send_notification.* from send_notification  left JOIN read_notification on  read_notification.student_id=".$this->customlib->getStudentSessionUserID()." and read_notification.notification_id = send_notification.id WHERE  send_notification.visible_student='yes' and read_notification.id IS NULL and send_notification.session_id=" . $this->current_session . " group by send_notification.id order by send_notification.id desc";
         $query = $this->db->query($sql);
         return $query->result();
     }
 
     public function getUnreadParentNotification() {
-        $sql = "select send_notification.* from send_notification  left JOIN read_notification on  read_notification.notification_id = send_notification.id WHERE  send_notification.visible_parent='yes' and read_notification.id IS NULL   order by send_notification.id desc";
+        $sql = "select send_notification.* from send_notification  left JOIN read_notification on  read_notification.notification_id = send_notification.id WHERE  send_notification.visible_parent='yes' and read_notification.id IS NULL  and send_notification.session_id=" . $this->current_session . "  order by send_notification.id desc";
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -108,6 +111,7 @@ LEFT JOIN read_notification ON send_notification.id = read_notification.notifica
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
+        $this->db->where('session_id', $this->current_session);
         $this->db->delete('send_notification');
         $message = DELETE_RECORD_CONSTANT . " On send notification id " . $id;
         $action = "Delete";

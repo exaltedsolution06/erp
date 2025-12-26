@@ -21,6 +21,7 @@ class Content_model extends MY_Model {
         $this->db->join('class_sections', 'contents.cls_sec_id = class_sections.id', 'left outer');
         $this->db->join('classes', 'class_sections.class_id = classes.id', 'left outer');
         $this->db->join('sections', 'class_sections.section_id = sections.id', 'left outer');
+		$this->db->where('contents.session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('contents.id', $id);
         }
@@ -34,7 +35,7 @@ class Content_model extends MY_Model {
         }
     }
 
-    public function getContentByRole($id = null, $role = null) {
+    /*public function getContentByRole($id = null, $role = null) {
         $inner_sql = "";
      
         if ($role == "student") {
@@ -46,12 +47,55 @@ class Content_model extends MY_Model {
 
         $query = $this->db->query($query);
         return $query->result_array();
-    }
+    }*/
+	public function getContentByRole($id = null, $role = null)
+	{
+		$inner_sql = "";
+		$params = [$this->current_session];
+
+		if ($role === "student") {
+			$inner_sql = "
+				AND (
+					(content_for.role = 'student' AND content_for.created_by = ?)
+					OR (content_for.created_by = 0 AND content_for.role = 'student')
+				)
+			";
+			$params[] = $id;
+		} elseif ($role === "Teacher") {
+			$inner_sql = "
+				AND (
+					(content_for.role = 'Teacher' AND content_for.created_by = ?)
+					OR (content_for.created_by = 0 AND content_for.role = 'Teacher')
+				)
+			";
+			$params[] = $id;
+		}
+
+		$sql = "
+			SELECT 
+				contents.*,
+				(SELECT GROUP_CONCAT(role) FROM content_for WHERE content_id = contents.id) AS role,
+				class_sections.id AS class_section_id,
+				classes.class,
+				sections.section
+			FROM content_for
+			INNER JOIN contents ON contents.id = content_for.content_id
+			LEFT JOIN class_sections ON class_sections.id = contents.cls_sec_id
+			LEFT JOIN classes ON classes.id = class_sections.class_id
+			LEFT JOIN sections ON sections.id = class_sections.section_id
+			WHERE contents.session_id = ?
+			{$inner_sql}
+			GROUP BY contents.id
+		";
+
+		return $this->db->query($sql, $params)->result_array();
+	}
 
     public function getListByCategory($category) {
         $this->db->select('contents.*,classes.class')->from('contents');
         $this->db->join('classes', 'contents.class_id = classes.id', 'left outer');
         $this->db->where('contents.type', $category);
+		$this->db->where('contents.session_id', $this->current_session);
         $this->db->order_by('contents.id');
         $query = $this->db->get();
         return $query->result_array();
@@ -68,7 +112,7 @@ class Content_model extends MY_Model {
 
             $section_id = "0";
         }
-        $query = "SELECT contents.*,class_sections.id as `class_section_id`,classes.class,sections.section FROM `content_for` INNER JOIN contents on content_for.content_id=contents.id left JOIN class_sections on class_sections.id=contents.cls_sec_id left join classes on classes.id=class_sections.class_id LEFT JOIN sections on sections.id=class_sections.section_id WHERE  (role='student' and contents.type='" . $category . "' and contents.is_public='yes') or (classes.id =" . $class_id . " and sections.id=" . $section_id . " and role='student' and contents.type='" . $category . "')";
+        $query = "SELECT contents.*,class_sections.id as `class_section_id`,classes.class,sections.section FROM `content_for` INNER JOIN contents on content_for.content_id=contents.id left JOIN class_sections on class_sections.id=contents.cls_sec_id left join classes on classes.id=class_sections.class_id LEFT JOIN sections on sections.id=class_sections.section_id WHERE  ((content_for.role='student' and contents.type='" . $category . "' and contents.is_public='yes') or (classes.id =" . $class_id . " and sections.id=" . $section_id . " and content_for.role='student' and contents.type='" . $category . "')) AND contents.session_id = ". $this->current_session;
         $query = $this->db->query($query);
         return $query->result_array();
     }
@@ -84,7 +128,7 @@ class Content_model extends MY_Model {
 
             $section_id = "0";
         }
-        $query = "SELECT contents.*,class_sections.id as `class_section_id`,classes.class,sections.section FROM `content_for` INNER JOIN contents on content_for.content_id=contents.id left JOIN class_sections on class_sections.id=contents.cls_sec_id left join classes on classes.id=class_sections.class_id LEFT JOIN sections on sections.id=class_sections.section_id WHERE  (role='student' and contents.is_public='yes') or (classes.id =" . $class_id . " and sections.id=" . $section_id . " and role='student')";
+        $query = "SELECT contents.*,class_sections.id as `class_section_id`,classes.class,sections.section FROM `content_for` INNER JOIN contents on content_for.content_id=contents.id left JOIN class_sections on class_sections.id=contents.cls_sec_id left join classes on classes.id=class_sections.class_id LEFT JOIN sections on sections.id=class_sections.section_id WHERE  ((content_for.role='student' and contents.is_public='yes') or (classes.id =" . $class_id . " and sections.id=" . $section_id . " and content_for.role='student')) AND contents.session_id = ". $this->current_session;
         $query = $this->db->query($query);
         return $query->result_array();
     }
@@ -98,6 +142,7 @@ class Content_model extends MY_Model {
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
+		$this->db->where('session_id', $this->current_session);
         $this->db->delete('contents');
         $message = DELETE_RECORD_CONSTANT . " On contents id " . $id;
         $action = "Delete";
@@ -117,6 +162,7 @@ class Content_model extends MY_Model {
 
     public function search_by_content_type($text) {
         $this->db->select()->from('contents');
+		$this->db->where('contents.session_id', $this->current_session);
         $this->db->or_like('contents.content_type', $text);
         $query = $this->db->get();
         return $query->result_array();
