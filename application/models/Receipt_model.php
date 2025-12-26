@@ -93,7 +93,7 @@ class Receipt_model extends CI_Model {
         );
 
         // Perform the update
-        $this->db->where('student_id', $id); // Condition to match the student ID
+        $this->db->where('student_id', $id)->where('session_id', $this->current_session); // Condition to match the student ID
         $this->db->update('student_session', $data); // Update the `students` table
 
         // Check if update was successful
@@ -188,7 +188,7 @@ class Receipt_model extends CI_Model {
         //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
 
-        // $this->db->where('student_session.session_id', $this->current_session);
+        $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
         $this->db->where('users.role', 'student');
 

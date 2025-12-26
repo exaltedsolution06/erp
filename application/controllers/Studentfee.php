@@ -24,7 +24,7 @@ class Studentfee extends Admin_Controller
     public function saveFee(){
 
         $data = $this->input->post(); 
-        //echo "<pre>";print_r($data);die;
+        //echo "<pre>";print_r($data);die;receipt_sr_no
        
         if (empty($data['receipt_no']) || empty($data['student_id'])) {
             

@@ -146,7 +146,7 @@ $language_name = $language["short_code"];
                                                         
                                                         <tr>
                                                             <th>Route - <?php
-                                                                        $this->db->where('id', $student['vehroute_id']);
+                                                                        $this->db->where('id', $student['route_id']);
                                                                         $query = $this->db->get('route_head')->row_array();
                                                                         echo (($query['fees_heading']));
                                                                     ?></th>

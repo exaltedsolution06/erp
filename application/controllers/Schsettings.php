@@ -73,6 +73,8 @@ class Schsettings extends Admin_Controller {
         $currencyPlace = $this->customlib->getCurrencyPlace();
         $data['currencyPlace'] = $currencyPlace;
         $data['result'] = $this->setting_model->getSetting();
+        $data['receiptnumber'] = $this->setting_model->getReceiptNo();
+		//echo $receiptnumber['receipt_sr_no']; die;
         $this->load->view('layout/header', $data);
         $this->load->view('setting/settingList', $data);
         $this->load->view('layout/footer', $data);
@@ -406,12 +408,13 @@ class Schsettings extends Admin_Controller {
 			}
 			else
 			{
-				$editdata['id'] = $this->input->post('sch_id');
-				$editdata['receipt_sr_no'] = $this->input->post('receipt_start_sequence');
-				$this->setting_model->add($editdata);
-				//-----26-12-2025----
-				$editSettingSessiondata['session_id'] = $this->current_session;
-				$editSettingSessiondata['id'] = $this->input->post('sch_id');
+				//$editdata['id'] = $this->input->post('sch_id');
+				//$editdata['receipt_sr_no'] = $this->input->post('receipt_start_sequence');
+				//$this->setting_model->add($editdata); 
+				//-----26-12-2025----sch_session_id
+				//$editSettingSessiondata['session_id'] = $this->current_session;
+				$editSettingSessiondata['session_id'] = $this->input->post('sch_session_id');
+				//$editSettingSessiondata['id'] = $this->input->post('sch_id');
 				$editSettingSessiondata['receipt_sr_no'] = $this->input->post('receipt_start_sequence');
 				$this->setting_model->addSettingSession($editSettingSessiondata);
 				$array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'),'check_receipt_no'=> $check_receipt_no);

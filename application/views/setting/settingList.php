@@ -607,8 +607,8 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2"><?php echo $this->lang->line('receipt_start_sequence') ?><small class="req"></small></label>
                                             <div class="col-sm-8">				
-												<input value="<?php echo $result->receipt_sr_no != 0 ? $result->receipt_sr_no : ''; ?>" name="receipt_start_sequence_existing" id="receipt_start_sequence_existing" type="hidden"/>
-                                                <input type="text" class="form-control" id="receipt_start_sequence" name="receipt_start_sequence" value="<?php echo $result->receipt_sr_no != 0 ? $result->receipt_sr_no : ''; ?>"/>
+												<input value="<?php echo $receiptnumber['receipt_sr_no'] != 0 ? $receiptnumber['receipt_sr_no'] : ''; ?>" name="receipt_start_sequence_existing" id="receipt_start_sequence_existing" type="hidden"/>
+                                                <input type="text" class="form-control" id="receipt_start_sequence" name="receipt_start_sequence" value="<?php echo $receiptnumber['receipt_sr_no'] != 0 ? $receiptnumber['receipt_sr_no'] : ''; ?>"/>
 												<span class="text-danger" id="receipt_error"></span>
                                                 
                                             </div>

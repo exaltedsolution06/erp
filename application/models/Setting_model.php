@@ -341,7 +341,9 @@ class Setting_model extends MY_Model {
     }
 	public function check_receipt_no()
 	{
-		$query = $this->db->get('receipt_sr_no');
+		$session_result = $this->get();
+		$current_session_id = $session_result[0]['current_session']['session_id'];
+		$query = $this->db->where('session_id', $current_session_id)->get('receipt_sr_no');
 		$num_rows = $query->num_rows();
 
         if ($num_rows > 0) {
@@ -354,6 +356,8 @@ class Setting_model extends MY_Model {
 	{
 		$session_result = $this->get();
 		$current_session_id = $session_result[0]['current_session']['session_id'];
+		
+		//echo $session_result[0]['session_id']; die;
 		//echo $current_session_id; die;
 		$receipt_status = $data['receipt_status'];
 		$receipt_start_sequence = $data['receipt_start_sequence'];
@@ -372,9 +376,13 @@ class Setting_model extends MY_Model {
 	}
 	public function check_sch_setting_receipt_no()
 	{
-
-        $receipt_sr_no = $this->db->select('receipt_sr_no')->from('sch_settings')
-        ->get()->row_array();
+		$session_result = $this->get();
+		$current_session_id = $session_result[0]['current_session']['session_id'];
+        //$receipt_sr_no = $this->db->select('receipt_sr_no')->from('sch_settings')
+        //->get()->row_array();
+		
+		$receipt_sr_no = $this->db->select('receipt_sr_no')->from('sch_settings_session')->where('session_id', $current_session_id)->get()->row_array();
+        
 
 		if (!empty($receipt_sr_no) && !empty($receipt_sr_no['receipt_sr_no'])) {
 			return $receipt_sr_no['receipt_sr_no'];
@@ -399,7 +407,10 @@ class Setting_model extends MY_Model {
 	}
 	public function insert_receipt_sr_no($recpt = '')
 	{
+		$session_result = $this->get();
+		$current_session_id = $session_result[0]['current_session']['session_id'];
 		$data['sr_no'] = $recpt;
+		$data['session_id'] = $current_session_id;
 		$this->db->insert('receipt_sr_no', $data);
 		
 		
@@ -596,21 +607,43 @@ class Setting_model extends MY_Model {
 	}
 	public function addSettingSession($data)
 	{
+		$session_result = $this->get();
+		$current_session_id = $session_result[0]['current_session']['session_id'];
 		//echo "<pre>";print_r($data);die;
-		$this->db->trans_start(); # Starting Transaction
-        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+		
         //=======================Code Start===========================
-        //if (isset($data['id'])) {
-            //$this->db->where('id', $data['id']);
-            //$this->db->update('sch_settings_session', $data);
-            
-        //} else {
-			
-            $this->db->insert('sch_settings_session', $data);
-         //}
+		$query = $this->db->where('session_id', $current_session_id)->get('sch_settings_session');
+		if($query->num_rows()== 0)
+		{
+			//echo "<pre>";print_r($data);die;
+			if($data['receipt_sr_no'] != '')
+			{
+				$this->db->trans_start(); # Starting Transaction
+				$this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+				$this->db->insert('sch_settings_session', $data);
+				$this->db->trans_complete();
+			}
+			return true;
+		}
+		else{
+			return false;
+		}
         //======================Code End==============================
 
         $this->db->trans_complete(); # Completing transaction
+	}
+	public function getReceiptNo()
+	{
+		$session_result = $this->get();
+		$current_session_id = $session_result[0]['current_session']['session_id'];
+		$qr = $this->db->select('receipt_sr_no')->where('session_id', $current_session_id)->get('sch_settings_session');
+		if($qr->num_rows() > 0)
+		{
+			return $qr->row_array();
+		}
+		else{
+			return null;
+		}
 	}
 
 }
