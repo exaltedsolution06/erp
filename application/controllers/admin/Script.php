@@ -433,5 +433,28 @@ class Script extends Admin_Controller
 				$this->dbforge->add_column('receipt_sr_no', $fields);
 			}
 		}
+		
+		//For 'receipts'.
+		$session_exists = "SHOW COLUMNS FROM `receipts` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `receipts` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `receipts` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+		//For 'deleted_receipts'.
+		$session_exists = "SHOW COLUMNS FROM `deleted_receipts` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `deleted_receipts` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `deleted_receipts` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
     }
 }

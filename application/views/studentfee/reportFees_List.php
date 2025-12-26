@@ -2,6 +2,7 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 $payment_mode_type = $this->customlib->payment_mode_type();
+//echo "<pre>";print_r($receipt_data);die;
 ?>
 <div class="content-wrapper" style="min-height: 1126px;">
     <section class="content-header">

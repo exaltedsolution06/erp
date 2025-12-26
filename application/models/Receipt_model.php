@@ -240,6 +240,7 @@ class Receipt_model extends CI_Model {
     public function get_receipt($limit, $offset,$from_date = null, $to_date = null, $mode = null)
     {
          //    echo $from_date;
+		 //echo $this->current_session; die;
         // die;
         $this->db->select('
             receipts.*,
@@ -298,6 +299,9 @@ class Receipt_model extends CI_Model {
         $this->db->join('sections', 'sections.id = student_session.section_id');
         //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
+		
+		
+		$this->db->where('receipts.session_id', $this->current_session);
 		$this->db->where('student_session.session_id', $this->current_session);
         
         if (!empty($from_date) && !empty($to_date)) {
@@ -316,6 +320,8 @@ class Receipt_model extends CI_Model {
         $this->db->limit($limit, $offset);
 
         $query = $this->db->get();
+		
+		//echo $this->db->last_query();die;
         return $query->result();
 
     }

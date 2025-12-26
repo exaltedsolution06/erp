@@ -85,6 +85,8 @@ class Studentfee extends Admin_Controller
                              'create_by'     => $this->customlib->getUserData()['email'],
                              'total_month'  => $total_month,
                         );
+						
+						$insert_data['session_id'] = $this->current_session;
                         // var_dump($insert_data);
                         // die;
 
@@ -146,7 +148,7 @@ class Studentfee extends Admin_Controller
                 'create_by'     => $this->customlib->getUserData()['email'],
             );
             
-
+			$insert_data['session_id'] = $this->current_session;
 
            $id=$this->Receipt_model->insert_receipt($insert_data);
 		   
@@ -245,6 +247,7 @@ class Studentfee extends Admin_Controller
 						//echo '<pre>'; print_r($insert_data); echo '</pre>';die;
 
                         // echo "<hr>";
+						$insert_data['session_id'] = $this->current_session;
                         
                         $insid=$this->Receipt_model->insert_receipt($insert_data);
 
@@ -284,6 +287,8 @@ class Studentfee extends Admin_Controller
                 'sr_no'        => $data['sr_no'] ? $data['sr_no'] : 1,
                 'create_by'     => $this->customlib->getUserData()['email'],
             );
+			
+			$insert_data['session_id'] = $this->current_session;
 			$id=$this->Receipt_model->insert_receipt($insert_data); 
             array_push($last_id,$id);
             $this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt']));
@@ -2066,7 +2071,7 @@ class Studentfee extends Admin_Controller
         //     } else {
         //         $this->session->set_flashdata('error', 'Failed to delete receipt.');
         //     }
-        //     redirect('studentfee/studentfeelist');
+        //     redirect('studentfee/studentfeelist'); receipt_data
         // }
 		$this->session->unset_userdata('success');
 
