@@ -71,6 +71,11 @@ if ($this->rbac->hasPrivilege('question_bank', 'can_add')) {
                             </div>
                         </div>
                         <div class="mailbox-messages table-responsive">
+						<?php if ($this->session->flashdata('editmsg')) { ?>
+                                    <?php echo $this->session->flashdata('editmsg') ?>
+						<?php 
+					    $this->session->unset_userdata('editmsg');
+						} ?>
                             <div class="download_label"><?php echo $this->lang->line('question') . " " . $this->lang->line('bank'); ?></div>
 
                             <!-- <textarea class="form-control question" id="question" name="question"></textarea> -->

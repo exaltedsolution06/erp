@@ -20,6 +20,7 @@ class Onlineexamquestion_model extends CI_Model
 
         $this->db->join('subjects', 'subjects.id = questions.subject_id');
         $this->db->join('onlineexam_questions', '(onlineexam_questions.question_id = questions.id AND onlineexam_questions.onlineexam_id=' . $this->db->escape($exam_id) . ')', 'LEFT');
+        $this->db->where('subjects.session_id', $this->current_session);
         
         if (!empty($where_search)) {
             if (isset($where_search['subject']) && $where_search['subject'] != "") {
