@@ -531,6 +531,8 @@ class Script extends Admin_Controller
 			$this->db->query($add_sql);
 			
 			$update_sql = "UPDATE `book_issues` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
 
 		//For 'id_card'.
 		$session_exists = "SHOW COLUMNS FROM `id_card` LIKE 'session_id'";
