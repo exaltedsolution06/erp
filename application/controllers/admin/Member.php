@@ -9,6 +9,7 @@ class Member extends Admin_Controller {
     public function __construct() {
         parent::__construct();
         $this->sch_setting_detail = $this->setting_model->getSetting();
+		$this->current_session = $this->setting_model->getCurrentSession();
     } 
 
     public function index() {
@@ -60,6 +61,7 @@ class Member extends Admin_Controller {
                 'duereturn_date' => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('return_date'))),
                 'issue_date' => date('Y-m-d'),
                 'member_id' => $this->input->post('member_id'),
+                'session_id' => $this->current_session,
             );
             $this->bookissue_model->add($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
@@ -167,6 +169,7 @@ class Member extends Admin_Controller {
                     'member_type' => 'student',
                     'member_id' => $student,
                     'library_card_no' => $library_card_no,
+                    'session_id' => $this->current_session,
                 );
 
                 $inserted_id = $this->librarymanagement_model->add($data);
@@ -180,6 +183,7 @@ class Member extends Admin_Controller {
                 'member_type' => 'student',
                 'member_id' => $student,
                 'library_card_no' => $library_card_no,
+				'session_id' => $this->current_session,
             );
 
             $inserted_id = $this->librarymanagement_model->add($data);

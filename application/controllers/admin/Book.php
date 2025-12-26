@@ -8,6 +8,7 @@ class Book extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->library('encoding_lib');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index() {
@@ -78,6 +79,8 @@ class Book extends Admin_Controller {
             }else{
                 $data['postdate'] = NULL;
             }
+			
+			$data['session_id'] = $this->current_session;
             $this->book_model->addbooks($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
             redirect('admin/book/index');

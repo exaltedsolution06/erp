@@ -96,6 +96,7 @@ class Bookissue_model extends MY_Model {
             $this->db->where('book_issues.member_id', $member_id);
             $this->db->order_by("book_issues.is_returned", "asc");
         }
+		$this->db->where('book_issues.session_id', $this->current_session);
         $query = $this->db->get();
         return $query->result_array();
     }

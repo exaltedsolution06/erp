@@ -18,6 +18,7 @@ class Book_model extends MY_Model {
      */
     public function get($id = null) {
         $this->db->select()->from('books');
+		$this->db->where('books.session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('books.id', $id);
         } else {
@@ -33,7 +34,7 @@ class Book_model extends MY_Model {
 
     public function bookgetall() {
 
-        $sql = "SELECT books.*,IFNULL(total_issue, '0') as `total_issue` FROM books LEFT JOIN (SELECT COUNT(*) as `total_issue`, book_id from book_issues  where is_returned= 0  GROUP by book_id) as `book_count` on books.id=book_count.book_id where 0=0  ";
+        $sql = "SELECT books.*,IFNULL(total_issue, '0') as `total_issue` FROM books LEFT JOIN (SELECT COUNT(*) as `total_issue`, book_id from book_issues  where is_returned= 0  GROUP by book_id) as `book_count` on books.id=book_count.book_id where session_id=" . $this->current_session;
 
         $query = $this->db->query($sql);
 

@@ -500,5 +500,38 @@ class Script extends Admin_Controller
 			$this->db->query($update_sql, [$session_id]);
 		}
 		
+		//For 'books'.
+		$session_exists = "SHOW COLUMNS FROM `books` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `books` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `books` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+		//For ' libarary_members '.
+		$session_exists = "SHOW COLUMNS FROM `libarary_members` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `libarary_members` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `libarary_members` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+		//For ' book_issues '.
+		$session_exists = "SHOW COLUMNS FROM `book_issues` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `book_issues` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `book_issues` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
     }
 }

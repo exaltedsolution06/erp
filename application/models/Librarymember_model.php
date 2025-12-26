@@ -7,6 +7,7 @@ class Librarymember_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     /**
@@ -16,8 +17,7 @@ class Librarymember_model extends MY_Model {
      * @return mixed
      */
     public function get() {
-
-       $query = "SELECT libarary_members.id as `lib_member_id`,libarary_members.library_card_no,libarary_members.member_type,students.admission_no,students.firstname,students.lastname,students.guardian_phone,null as `teacher_name`,null as `teacher_email`,null as `teacher_sex`,null as `teacher_phone`,students.middlename FROM `libarary_members` INNER JOIN students on libarary_members.member_id= students.id WHERE libarary_members.member_type='student' and students.is_active = 'yes' UNION SELECT libarary_members.id as `lib_member_id`,libarary_members.library_card_no,libarary_members.member_type,null,null,null,null,CONCAT_WS(' ',staff.name,staff.surname) as name,staff.email,null,staff.contact_no,null FROM `libarary_members` INNER JOIN staff on libarary_members.member_id= staff.id WHERE libarary_members.member_type='teacher' ";
+       $query = "SELECT libarary_members.id as `lib_member_id`,libarary_members.library_card_no,libarary_members.member_type,students.admission_no,students.firstname,students.lastname,students.guardian_phone,null as `teacher_name`,null as `teacher_email`,null as `teacher_sex`,null as `teacher_phone`,students.middlename FROM `libarary_members` INNER JOIN students on libarary_members.member_id= students.id WHERE libarary_members.member_type='student' and students.is_active = 'yes' and libarary_members.session_id = ". $this->current_session . " UNION SELECT libarary_members.id as `lib_member_id`,libarary_members.library_card_no,libarary_members.member_type,null,null,null,null,CONCAT_WS(' ',staff.name,staff.surname) as name,staff.email,null,staff.contact_no,null FROM `libarary_members` INNER JOIN staff on libarary_members.member_id= staff.id WHERE libarary_members.member_type='teacher'";
 
         $query = $this->db->query($query);
         return $query->result_array();
