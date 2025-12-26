@@ -556,5 +556,6 @@ class Script extends Admin_Controller
 			$this->db->query($update_sql, [$session_id]);
 		}
 		
+		echo 'Success';
     }
 }
