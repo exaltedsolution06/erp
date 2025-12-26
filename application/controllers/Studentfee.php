@@ -2078,9 +2078,8 @@ class Studentfee extends Admin_Controller
         if ($_GET['type'] == 'delete' && !empty($_GET['receipt_no'])) {
             $receipt_no = $_GET['receipt_no'];
 			
-
-            $res_del=$this->db
-                ->select('student_id,date_time,back_id,receipt_no,mode,fee_head,late_fees,ledger_amt,total_fees,discount_amt,net_fees,receipt_amt,balance_amt,remarks,fee_head_name,SUM(balance_amount) as balance_amount,(total) as total, SUM(rec_discount) as rec_discount, SUM(rec_amount) as rec_amount')
+			$res_del=$this->db
+                ->select('student_id,session_id,date_time,back_id,receipt_no,mode,fee_head,late_fees,ledger_amt,total_fees,discount_amt,net_fees,receipt_amt,balance_amt,remarks,fee_head_name,SUM(balance_amount) as balance_amount,(total) as total, SUM(rec_discount) as rec_discount, SUM(rec_amount) as rec_amount')
                 ->where_in('receipt_no', $receipt_no)
                 ->group_by('fee_head')
                 ->get('receipts')
@@ -2097,6 +2096,7 @@ class Studentfee extends Admin_Controller
 				
 				
                 $this->db->where('student_id', $res_del->student_id);
+                $this->db->where('session_id', $res_del->session_id);
                 $query = $this->db->get('student_session');
 
                 if ($query->num_rows() > 0) {
@@ -2109,6 +2109,7 @@ class Studentfee extends Admin_Controller
 
                     // Step 3: Update the `fees_discount`
                     $this->db->where('student_id', $res_del->student_id);
+					$this->db->where('session_id', $res_del->session_id);
                     $this->db->update('student_session', array('fees_discount' => $new_discount));
 
                     if ($this->db->affected_rows() > 0) {
@@ -2285,7 +2286,7 @@ class Studentfee extends Admin_Controller
         }
         // $this->session->set_userdata('top_menu', 'Reports');
         // $this->session->set_userdata('sub_menu', 'Reports/finance');
-        // $this->session->set_userdata('subsub_menu', 'Reports/finance/studentfeelist');
+        // $this->session->set_userdata('subsub_menu', 'Reports/finance/studentfeelist'); receipt_data
 		
 		
         $this->session->set_userdata('top_menu', $this->lang->line('fees_collection'));
@@ -2316,7 +2317,7 @@ class Studentfee extends Admin_Controller
 			
 			// update table student_session table 
 				$res_del=$this->db
-					->select('student_id,date_time,back_id,receipt_no,mode,fee_head,late_fees,ledger_amt,total_fees,discount_amt,net_fees,receipt_amt,balance_amt,remarks,fee_head_name,SUM(balance_amount) as balance_amount,(total) as total, SUM(rec_discount) as rec_discount, SUM(rec_amount) as rec_amount')
+					->select('student_id,session_id,date_time,back_id,receipt_no,mode,fee_head,late_fees,ledger_amt,total_fees,discount_amt,net_fees,receipt_amt,balance_amt,remarks,fee_head_name,SUM(balance_amount) as balance_amount,(total) as total, SUM(rec_discount) as rec_discount, SUM(rec_amount) as rec_amount')
 					->where_in('receipt_no', $receipt_no)
 					->group_by('fee_head')
 					->get('deleted_receipts')
@@ -2328,6 +2329,7 @@ class Studentfee extends Admin_Controller
 				$balance_amount= (int)$res_del->balance_amt;
 				
 				$this->db->where('student_id', $res_del->student_id);
+				$this->db->where('session_id', $res_del->session_id);
 				$query = $this->db->get('student_session');
 				
 				if ($query->num_rows() > 0) {
@@ -2338,6 +2340,7 @@ class Studentfee extends Admin_Controller
 
 					// Step 3: Update the `fees_discount`
 					$this->db->where('student_id', $res_del->student_id);
+					$this->db->where('session_id', $res_del->session_id);
 					$this->db->update('student_session', array('fees_discount' => $new_discount));
 				}
 			
