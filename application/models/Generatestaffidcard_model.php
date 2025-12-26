@@ -6,11 +6,13 @@ class Generatestaffidcard_model extends CI_model {
 
     public function __construct() {
         parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function getstaffidcard() {
         $this->db->select('*');
         $this->db->from('staff_id_card');
+		$this->db->where('session_id', $this->current_session);
         $query = $this->db->get();        
         return $query->result();
     }
@@ -19,6 +21,7 @@ class Generatestaffidcard_model extends CI_model {
         $this->db->select('*');
         $this->db->from('staff_id_card');
         $this->db->where('id', $idcard);
+		$this->db->where('session_id', $this->current_session);
         $query = $this->db->get();
         return $query->result();
     }

@@ -2,9 +2,15 @@
 
 class Student_id_card_model extends MY_model {
 
+	function __construct() {
+        parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
+    }
+	
     public function idcardlist() {
         $this->db->select('*');
         $this->db->from('id_card');
+		$this->db->where('session_id', $this->current_session);
         $query = $this->db->get();
         return $query->result();
     }
@@ -59,6 +65,7 @@ class Student_id_card_model extends MY_model {
         $this->db->select('*');
         $this->db->from('id_card');
         $this->db->where('id', $id);
+		$this->db->where('session_id', $this->current_session);
         $query = $this->db->get();
         return $query->row();
     }
@@ -66,6 +73,7 @@ class Student_id_card_model extends MY_model {
     public function get($id) {
         $this->db->select('*');
         $this->db->from('id_card');
+		$this->db->where('session_id', $this->current_session);
         $this->db->where('status = 1');
         $this->db->where('id', $id);
         $query = $this->db->get();

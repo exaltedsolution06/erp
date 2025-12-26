@@ -9,6 +9,7 @@ class Certificate extends Admin_Controller {
 
         $this->load->library('Customlib');
         $this->load->model('certificate_model');
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index() {
@@ -88,6 +89,7 @@ class Certificate extends Admin_Controller {
                 'content_width' => $this->input->post('content_width'),
                 'enable_student_image' => $enableimg,
                 'enable_image_height' => $imgHeight,
+                'session_id' => $this->current_session,
             );
             $this->certificate_model->addcertificate($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
@@ -103,6 +105,9 @@ class Certificate extends Admin_Controller {
         $data['title'] = 'Add Hostel';
         $data['id'] = $id;
         $editcertificate = $this->certificate_model->get($id);
+		if(!$editcertificate){
+			redirect('admin/certificate/index');
+		}
         $this->data['editcertificate'] = $editcertificate;
 
         $custom_fields = $this->customfield_model->get_custom_fields('students');

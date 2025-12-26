@@ -3,10 +3,16 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class Staffidcard_model extends MY_model {
-
+	
+	function __construct() {
+        parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
+    }
+	
     public function staffidcardlist() {
         $this->db->select('*');
         $this->db->from('staff_id_card');
+		$this->db->where('session_id', $this->current_session);
         $query = $this->db->get();
         return $query->result();
     }
@@ -54,6 +60,7 @@ class Staffidcard_model extends MY_model {
         $this->db->select('*');
         $this->db->from('staff_id_card');
         $this->db->where('id', $id);
+		$this->db->where('session_id', $this->current_session);
         $query = $this->db->get();
         return $query->row();
     }
@@ -63,6 +70,7 @@ class Staffidcard_model extends MY_model {
         $this->db->from('staff_id_card');
         $this->db->where('status = 1');
         $this->db->where('id', $id);
+		$this->db->where('session_id', $this->current_session);
         $query = $this->db->get();
         return $query->result();
     }
@@ -72,6 +80,7 @@ class Staffidcard_model extends MY_model {
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
+		$this->db->where('session_id', $this->current_session);
         $this->db->delete('staff_id_card');
 		$message      = DELETE_RECORD_CONSTANT." On id card id ".$id;
         $action       = "Delete";

@@ -6,6 +6,7 @@ class studentidcard extends Admin_Controller {
         parent::__construct();
 
         $this->load->library('Customlib');
+        $this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index() {
@@ -95,6 +96,7 @@ class studentidcard extends Admin_Controller {
                 'enable_dob' => $dob,
                 'enable_blood_group' => $bloodgroup,
                 'status' => 1,
+                'session_id' => $this->current_session,
             );
             $insert_id = $this->Student_id_card_model->addidcard($data);
 
@@ -177,6 +179,9 @@ class studentidcard extends Admin_Controller {
         $data['title'] = 'Edit ID Card';
         $data['id'] = $id;
         $editidcard = $this->Student_id_card_model->get($id);
+		if(!$editidcard){
+			redirect('admin/studentidcard/index');
+		}
         $this->data['editidcard'] = $editidcard;
         $this->form_validation->set_rules('school_name', $this->lang->line('school_name'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('address', $this->lang->line('address_phone_email'), 'trim|required|xss_clean');

@@ -500,5 +500,27 @@ class Script extends Admin_Controller
 			$this->db->query($update_sql, [$session_id]);
 		}
 		
+		//For 'id_card'.
+		$session_exists = "SHOW COLUMNS FROM `id_card` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `id_card` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `id_card` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+		//For 'staff_id_card'.
+		$session_exists = "SHOW COLUMNS FROM `staff_id_card` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `staff_id_card` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `staff_id_card` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
     }
 }

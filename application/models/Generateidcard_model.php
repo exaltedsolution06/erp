@@ -12,6 +12,7 @@ class Generateidcard_model extends CI_model {
     public function getstudentidcard() {
         $this->db->select('*');
         $this->db->from('id_card');
+		$this->db->where('session_id', $this->current_session);
         $query = $this->db->get();
         return $query->result();
     }
@@ -20,6 +21,7 @@ class Generateidcard_model extends CI_model {
         $this->db->select('*');
         $this->db->from('id_card');
         $this->db->where('id', $idcard);
+		$this->db->where('session_id', $this->current_session);
         $query = $this->db->get();
         return $query->result();
     }

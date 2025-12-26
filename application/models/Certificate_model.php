@@ -59,6 +59,7 @@ class Certificate_model extends MY_Model {
     public function certificateList() {
         $this->db->select('*');
         $this->db->from('certificates');
+		$this->db->where('session_id', $this->current_session);
         $this->db->where('status = 1');
         $this->db->where('created_for = 2');
         $query = $this->db->get();
@@ -68,6 +69,7 @@ class Certificate_model extends MY_Model {
     public function get($id) {
         $this->db->select('*');
         $this->db->from('certificates');
+		$this->db->where('session_id', $this->current_session);
         $this->db->where('status = 1');
         $this->db->where('id', $id);
         $query = $this->db->get();
@@ -79,6 +81,7 @@ class Certificate_model extends MY_Model {
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
+		$this->db->where('session_id', $this->current_session);
         $this->db->delete('certificates');
         $message = DELETE_RECORD_CONSTANT . " On certificates id " . $id;
         $action = "Delete";
@@ -99,6 +102,7 @@ class Certificate_model extends MY_Model {
     public function getstudentcertificate() {
         $this->db->select('*');
         $this->db->from('certificates');
+		$this->db->where('session_id', $this->current_session);
         $this->db->where('created_for = 2');
         $query = $this->db->get();
         return $query->result();
@@ -107,6 +111,7 @@ class Certificate_model extends MY_Model {
     public function certifiatebyid($id) {
         $this->db->select('*');
         $this->db->from('certificates');
+		$this->db->where('session_id', $this->current_session);
         $this->db->where('id', $id);
         $query = $this->db->get();
         return $query->row();
