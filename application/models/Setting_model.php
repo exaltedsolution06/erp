@@ -354,7 +354,7 @@ class Setting_model extends MY_Model {
 	{
 		$session_result = $this->get();
 		$current_session_id = $session_result[0]['current_session']['session_id'];
-		
+		//echo $current_session_id; die;
 		$receipt_status = $data['receipt_status'];
 		$receipt_start_sequence = $data['receipt_start_sequence'];
 		$receipt_start_sequence_existing = $data['receipt_start_sequence_existing'];
@@ -596,17 +596,18 @@ class Setting_model extends MY_Model {
 	}
 	public function addSettingSession($data)
 	{
+		//echo "<pre>";print_r($data);die;
 		$this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        if (isset($data['id'])) {
-            $this->db->where('id', $data['id']);
-            $this->db->update('sch_settings_session', $data);
+        //if (isset($data['id'])) {
+            //$this->db->where('id', $data['id']);
+            //$this->db->update('sch_settings_session', $data);
             
-        } else {
+        //} else {
 			
             $this->db->insert('sch_settings_session', $data);
-         }
+         //}
         //======================Code End==============================
 
         $this->db->trans_complete(); # Completing transaction

@@ -406,9 +406,10 @@ class Schsettings extends Admin_Controller {
 			}
 			else
 			{
-				//$editdata['id'] = $this->input->post('sch_id');
-				//$editdata['receipt_sr_no'] = $this->input->post('receipt_start_sequence');
-				//$this->setting_model->add($editdata);
+				$editdata['id'] = $this->input->post('sch_id');
+				$editdata['receipt_sr_no'] = $this->input->post('receipt_start_sequence');
+				$this->setting_model->add($editdata);
+				//-----26-12-2025----
 				$editSettingSessiondata['session_id'] = $this->current_session;
 				$editSettingSessiondata['id'] = $this->input->post('sch_id');
 				$editSettingSessiondata['receipt_sr_no'] = $this->input->post('receipt_start_sequence');
