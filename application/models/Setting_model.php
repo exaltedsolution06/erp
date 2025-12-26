@@ -341,9 +341,6 @@ class Setting_model extends MY_Model {
     }
 	public function check_receipt_no($current_session_id='')
 	{
-		//$session_result = $this->get();
-		//$current_session_id = $session_result[0]['current_session']['session_id'];
-		//echo $current_session_id; die;
 		$query = $this->db->where('session_id', $current_session_id)->get('receipt_sr_no');
 		$num_rows = $query->num_rows();
 
@@ -358,8 +355,6 @@ class Setting_model extends MY_Model {
 		$session_result = $this->get();
 		$current_session_id = $session_result[0]['current_session']['session_id'];
 		
-		//echo $session_result[0]['session_id']; die;
-		//echo $current_session_id; die;
 		$receipt_status = $data['receipt_status'];
 		$receipt_start_sequence = $data['receipt_start_sequence'];
 		$receipt_start_sequence_existing = $data['receipt_start_sequence_existing'];
@@ -408,8 +403,6 @@ class Setting_model extends MY_Model {
 	}
 	public function insert_receipt_sr_no($recpt = '', $session_id='')
 	{
-		//$session_result = $this->get();
-		//$current_session_id = $session_result[0]['current_session']['session_id'];
 		$data['sr_no'] = $recpt;
 		$data['session_id'] = $session_id;
 		$this->db->insert('receipt_sr_no', $data);
