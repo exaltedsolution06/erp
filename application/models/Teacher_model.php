@@ -58,6 +58,7 @@ class Teacher_model extends CI_Model {
 
         $this->db->join('libarary_members', 'libarary_members.member_id = staff.id and libarary_members.member_type = "teacher"', 'left');
         $this->db->where('staff.is_active', 1);
+        $this->db->where('staff.session_id', $this->current_session);
         $this->db->order_by('staff.id');
 
         $query = $this->db->get();

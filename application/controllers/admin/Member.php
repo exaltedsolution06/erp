@@ -234,6 +234,7 @@ class Member extends Admin_Controller {
                     'member_type' => 'teacher',
                     'member_id' => $student,
                     'library_card_no' => $library_card_no,
+                    'session_id' => $this->current_session,
                 );
 
                 $inserted_id = $this->librarymanagement_model->add($data);
