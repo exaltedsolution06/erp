@@ -155,8 +155,8 @@ class Feediscount_model extends MY_Model {
                 . " `students`.`lastname`,`students`.`middlename`, `students`.`image`, `students`.`mobileno`,"
                 . " `students`.`email`, `students`.`state`, `students`.`city`, `students`.`pincode`,"
                 . " `students`.`religion`, `students`.`dob`, `students`.`current_address`,"
-                . " `students`.`permanent_address`, IFNULL(students.category_id, 0) as `category_id`,"
-                . " IFNULL(categories.category, '') as `category`, `students`.`adhar_no`,"
+                . " `students`.`permanent_address`, IFNULL(student_session.fee_category_id, 0) as `category_id`,"
+                . " IFNULL(fee_groups.name, '') as `category`, `students`.`adhar_no`,"
                 . " `students`.`samagra_id`, `students`.`bank_account_no`, `students`.`bank_name`,"
                 . " `students`.`ifsc_code`, `students`.`guardian_name`, `students`.`guardian_relation`,"
                 . " `students`.`guardian_phone`, `students`.`guardian_address`, `students`.`is_active`,"
@@ -164,8 +164,8 @@ class Feediscount_model extends MY_Model {
                 . " `students`.`rte`, `students`.`gender` FROM `students` JOIN `student_session` ON"
                 . " `student_session`.`student_id` = `students`.`id` JOIN `classes` ON"
                 . " `student_session`.`class_id` = `classes`.`id` JOIN `sections` ON"
-                . " `sections`.`id` = `student_session`.`section_id` LEFT JOIN `categories` ON"
-                . " `students`.`category_id` = `categories`.`id` LEFT JOIN"
+                . " `sections`.`id` = `student_session`.`section_id` LEFT JOIN `fee_groups` ON"
+                . " `student_session`.`fee_category_id` = `fee_groups`.`id` LEFT JOIN"
                 . " student_fees_discounts on student_fees_discounts.student_session_id=student_session.id"
                 . " AND student_fees_discounts.fees_discount_id=" . $this->db->escape($fees_discount_id) .
                 " WHERE `student_session`.`session_id` = " . $this->current_session;

@@ -21,8 +21,8 @@ class Studentsubjectgroup_model extends CI_Model {
                 . " `students`.`image`, `students`.`mobileno`, `students`.`email`, `students`.`state`,"
                 . " `students`.`city`, `students`.`pincode`, `students`.`religion`, `students`.`dob`, "
                 . "`students`.`current_address`, `students`.`permanent_address`,"
-                . " IFNULL(students.category_id, 0) as `category_id`,"
-                . " IFNULL(categories.category, '') as `category`,"
+                . " IFNULL(student_session.fee_category_id, 0) as `category_id`,"
+                . " IFNULL(fee_groups.name, '') as `category`,"
                 . " `students`.`adhar_no`, `students`.`samagra_id`,"
                 . " `students`.`bank_account_no`, `students`.`bank_name`, `students`.`ifsc_code`,"
                 . " `students`.`guardian_name`, `students`.`guardian_relation`, `students`.`guardian_phone`,"
@@ -31,8 +31,8 @@ class Studentsubjectgroup_model extends CI_Model {
                 . " `students`.`gender` FROM `students` JOIN `student_session` "
                 . "ON `student_session`.`student_id` = `students`.`id` JOIN `classes` "
                 . "ON `student_session`.`class_id` = `classes`.`id` JOIN `sections` "
-                . "ON `sections`.`id` = `student_session`.`section_id` LEFT JOIN `categories` "
-                . "ON `students`.`category_id` = `categories`.`id` LEFT JOIN student_subject_groups on"
+                . "ON `sections`.`id` = `student_session`.`section_id` LEFT JOIN `fee_groups` "
+                . "ON `student_session`.`fee_category_id` = `fee_groups`.`id` LEFT JOIN student_subject_groups on"
                 . " student_subject_groups.student_session_id=student_session.id"
                 . "  AND student_subject_groups.subject_group_id=" . $this->db->escape($subject_group_id)
                 . " WHERE `student_session`.`session_id` =  " . $this->current_session
