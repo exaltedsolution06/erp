@@ -7,6 +7,7 @@ class Expensehead extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index() {
@@ -60,9 +61,18 @@ class Expensehead extends Admin_Controller {
             $data = array(
                 'exp_category' => $this->input->post('expensehead'),
                 'description' => $this->input->post('description'),
+                'session_id' => $this->current_session,
             );
-            $this->expensehead_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $check = $this->expensehead_model->add($data);
+			if($check)
+			{
+				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+			}
+			else{
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Expence Head already exists</div>');
+			}
+			
+			
             redirect('admin/expensehead/index');
         }
     }
@@ -76,6 +86,9 @@ class Expensehead extends Admin_Controller {
         $data['categorylist'] = $category_result;
         $data['id'] = $id;
         $category = $this->expensehead_model->get($id);
+		if(!$category){
+			redirect('admin/expensehead/index');
+		}
         $data['expensehead'] = $category;
         $this->form_validation->set_rules('expensehead', $this->lang->line('expense_head'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
