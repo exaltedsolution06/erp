@@ -8,6 +8,7 @@ class Incomehead extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->helper('url');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index() {
@@ -41,7 +42,22 @@ class Incomehead extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Income Head List';
-        $this->incomehead_model->remove($id);
+		
+		$checkData['menu'] = 'incomehead';
+		$checkData['table'] = 'income';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'inc_head_id';
+		$checkData['session_id'] = $this->current_session;
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Income Head already used in Income</div>');
+		}
+		else{
+			$this->incomehead_model->remove($id);
+			$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+		}
         redirect('admin/incomehead/index');
     }
 
@@ -61,10 +77,18 @@ class Incomehead extends Admin_Controller {
             $data = array(
                 'income_category' => $this->input->post('incomehead'),
                 'description' => $this->input->post('description'),
+                'session_id' => $this->current_session,
             );
-            $this->incomehead_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
-            redirect('admin/incomehead/index');
+            $check = $this->incomehead_model->add($data);
+			if($check)
+			{
+				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+				redirect('admin/incomehead/index');
+			}
+			else{
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Income Head already exists</div>');
+				redirect('admin/incomehead/index');
+			}
         }
     }
 
@@ -77,6 +101,10 @@ class Incomehead extends Admin_Controller {
         $data['categorylist'] = $category_result;
         $data['id'] = $id;
         $category = $this->incomehead_model->get($id);
+		
+		if(!$category){
+			redirect('admin/incomehead');
+		}
         $data['incomehead'] = $category;
         $this->form_validation->set_rules('incomehead', $this->lang->line('income_head'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
