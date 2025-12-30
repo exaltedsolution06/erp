@@ -54,9 +54,9 @@ class FeeGroup extends Admin_Controller {
 		
 		// by ES
 		$checkData['menu'] = 'feecategory';		
-		$checkData['table'] = 'students';
+		$checkData['table'] = 'student_session';
 		$checkData['id'] = $id;
-		$checkData['field'] = 'category_id';
+		$checkData['field'] = 'fee_category_id';
 		$ifsection = $this->Setting_model->checkDeleteList($checkData);
 		
 		if($ifsection > 0)

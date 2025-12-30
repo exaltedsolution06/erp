@@ -741,7 +741,7 @@
                                 </div><!--./row-->
  
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <!--<div class="col-md-12">
                                         <div class="settinghr"></div>
                                         <div class="relative">   
 
@@ -759,7 +759,7 @@
                                         </div>
 
 
-                                    </div><!--./col-md-12-->
+                                    </div>--><!--./col-md-12-->
 
                                     <div class="col-md-12">
                                         <div class="form-group row">

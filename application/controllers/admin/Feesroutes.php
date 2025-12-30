@@ -218,10 +218,9 @@ class Feesroutes extends Admin_Controller
     
     function delete($id) {
         $data['title'] = 'Fees Master List';
-		
 		// by ES 
 		$checkData['menu'] = 'createroute';
-		$checkData['table'] = 'students';
+		$checkData['table'] = 'student_session';
 		$checkData['id'] = $id;
 		$checkData['field'] = 'route_id';
 		$ifsection = $this->Setting_model->checkDeleteList($checkData);
@@ -459,8 +458,8 @@ class Feesroutes extends Admin_Controller
         //$this->db->where('id',$id);
         //$this->db->delete('route_plan');
         //$this->session->set_flashdata('msg', '<div class="alert alert-success">Fee Master Delete successfully.</div>');
-		
 		// ES
+		//echo $id; die;
 		$this->db->where('id', $id);
 		$this->db->where('session_id', $this->current_session);
 		$query = $this->db->get('route_plan');

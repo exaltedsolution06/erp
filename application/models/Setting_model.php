@@ -465,6 +465,7 @@ class Setting_model extends MY_Model {
 		}
 		if($checkData['menu'] == 'routeplan')
 		{
+			
 			//echo "<pre>";print_r($checkData);
 			$this->db->select('distinct(student_session.student_id) as student_id,student_session.class_id');
 			$this->db->from('student_session');
@@ -566,6 +567,7 @@ class Setting_model extends MY_Model {
 			}
 		}
 		else{
+			//echo "<pre>";print_r($checkData);die;
 			$this->db->where($checkData['field'], $checkData['id']);
 			$query = $this->db->get($checkData['table']);
 			if ($query->num_rows() > 0) {
