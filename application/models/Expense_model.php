@@ -24,7 +24,7 @@ class Expense_model extends MY_Model
         if (!empty($text)) {
             $this->db->select('expenses.id,expenses.date,expenses.invoice_no,expenses.name,expenses.amount,expenses.documents,expenses.note,expense_head.exp_category,expenses.exp_head_id')->from('expenses');
             $this->db->join('expense_head', 'expenses.exp_head_id = expense_head.id');
-
+			$this->db->where('expenses.session_id', $this->current_session);
             $this->db->like('expenses.name', $text);
             $query = $this->db->get();
             return $query->result_array();
@@ -33,6 +33,7 @@ class Expense_model extends MY_Model
             $this->db->join('expense_head', 'expenses.exp_head_id = expense_head.id');
             $this->db->where('expenses.date >=', $start_date);
             $this->db->where('expenses.date <=', $end_date);
+			$this->db->where('expenses.session_id', $this->current_session);
             $query = $this->db->get();
             return $query->result_array();
         }
@@ -42,6 +43,7 @@ class Expense_model extends MY_Model
     {
         $this->db->select('expenses.id,expenses.date,expenses.name,expenses.invoice_no,expenses.amount,expenses.documents,expenses.note,expense_head.exp_category,expenses.exp_head_id')->from('expenses');
         $this->db->join('expense_head', 'expenses.exp_head_id = expense_head.id');
+		$this->db->where('expenses.session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('expenses.id', $id);
         } else {

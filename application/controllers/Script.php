@@ -632,6 +632,26 @@ class Script extends Public_Controller
 			$this->db->query($update_sql, [$session_id]);
 		}
 		
+		//For 'item_category'.
+		$session_exists = "SHOW COLUMNS FROM `item_category` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `item_category` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `item_category` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }
+		
+		//For 'item'.
+		$session_exists = "SHOW COLUMNS FROM `item` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `item` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `item` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }
+		
 		echo 'Success';
     }
 }

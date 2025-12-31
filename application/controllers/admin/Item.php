@@ -8,6 +8,7 @@ class Item extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->helper('form');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index() {
@@ -37,10 +38,17 @@ class Item extends Admin_Controller {
                 'name' => $this->input->post('name'),
                 'unit' => $this->input->post('unit'),
                 'description' => $this->input->post('description'),
+                'session_id' => $this->current_session,
             );
             $insert_id = $this->item_model->add($data);
-
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+			
+			if($insert_id)
+			{
+				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+			}
+			else{
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Item w.r.t Item category already exists</div>');
+			}
             redirect('admin/item/index');
         }
         $item_result = $this->item_model->get();
