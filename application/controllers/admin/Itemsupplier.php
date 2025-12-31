@@ -9,6 +9,7 @@ class Itemsupplier extends Admin_Controller {
         parent::__construct();
 
         $this->load->helper('url');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index() {
@@ -30,7 +31,22 @@ class Itemsupplier extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Item Supplier List';
-        $this->itemsupplier_model->remove($id);
+		
+		$checkData['menu'] = 'itemsupplier'; 
+		$checkData['table'] = 'item_stock';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'supplier_id';
+		$checkData['session_id'] = $this->current_session;
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Item supplier already used in Stock</div>');
+		}
+		else{
+			$this->itemsupplier_model->remove($id);
+			$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+		}
+        //$this->itemsupplier_model->remove($id);
         redirect('admin/itemsupplier/index');
     }
 
@@ -65,9 +81,17 @@ class Itemsupplier extends Admin_Controller {
                 'contact_person_name' => $this->input->post('contact_person_name'),
                 'contact_person_email' => $this->input->post('contact_person_email'),
                 'description' => $this->input->post('description'),
+                'session_id' => $this->current_session,
             );
-            $this->itemsupplier_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $check = $this->itemsupplier_model->add($data);
+			
+			if($check)
+			{
+				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+			}
+			else{
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Supplier name already exists</div>');
+			}
             redirect('admin/itemsupplier/index');
         }
     }
@@ -81,6 +105,11 @@ class Itemsupplier extends Admin_Controller {
         $data['itemsupplierlist'] = $itemsupplier_result;
         $data['id'] = $id;
         $store = $this->itemsupplier_model->get($id);
+		if(!$store)
+		{
+			redirect('admin/itemsupplier/index');
+		}
+		
         $data['itemsupplier'] = $store;
 
         $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');

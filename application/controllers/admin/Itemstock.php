@@ -11,6 +11,7 @@ class Itemstock extends Admin_Controller
     {
         parent::__construct();
         $this->load->helper('form');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index()
@@ -42,6 +43,7 @@ class Itemstock extends Admin_Controller
                 'purchase_price' => $this->input->post('purchase_price'),
                 'date'           => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('date'))),
                 'description'    => $this->input->post('description'),
+                'session_id'    => $this->current_session,
             );
             $insert_id = $this->itemstock_model->add($data);
             if (isset($_FILES["item_photo"]) && !empty($_FILES['item_photo']['name'])) {
@@ -51,8 +53,14 @@ class Itemstock extends Admin_Controller
                 $data_img = array('id' => $insert_id, 'attachment' => 'uploads/inventory_items/' . $img_name);
                 $this->itemstock_model->add($data_img);
             }
-
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+			
+			if($insert_id)
+			{
+				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+			}
+			else{
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Item stock already exists</div>');
+			}
             redirect('admin/itemstock/index');
         }
         $item_result = $this->itemstock_model->get();
@@ -152,6 +160,11 @@ class Itemstock extends Admin_Controller
         $data['title']        = 'Edit Fees Master';
         $data['id']           = $id;
         $item                 = $this->itemstock_model->get($id);
+		//echo "<pre>";print_r($item);die;
+		if(!$item)
+		{
+			redirect('admin/itemstock/index');
+		}
         $data['item']         = $item;
         $data['title_list']   = 'Fees Master List';
         $item_result          = $this->itemstock_model->get();
@@ -184,6 +197,7 @@ class Itemstock extends Admin_Controller
                 'purchase_price' => $this->input->post('purchase_price'),
                 'date'           => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('date'))),
                 'description'    => $this->input->post('description'),
+                'session_id'    => $this->current_session,
             );
 
             $this->itemstock_model->add($data);

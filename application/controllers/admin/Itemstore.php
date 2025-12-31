@@ -10,6 +10,7 @@ class Itemstore extends Admin_Controller {
         $this->load->helper('file');
 
         $this->load->helper('url');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index() {
@@ -31,7 +32,22 @@ class Itemstore extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Item Store List';
-        $this->itemstore_model->remove($id);
+		
+		$checkData['menu'] = 'itemstore'; 
+		$checkData['table'] = 'item_stock';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'store_id';
+		$checkData['session_id'] = $this->current_session;
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Item store already used in Stock</div>');
+		}
+		else{
+			$this->itemstore_model->remove($id);
+			$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+		}
+        //$this->itemstore_model->remove($id);
         redirect('admin/itemstore/index');
     }
 
@@ -54,9 +70,19 @@ class Itemstore extends Admin_Controller {
                 'item_store' => $this->input->post('name'),
                 'code' => $this->input->post('code'),
                 'description' => $this->input->post('description'),
+                'session_id' => $this->current_session,
             );
-            $this->itemstore_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+			
+            $check = $this->itemstore_model->add($data);
+			
+			if($check)
+			{
+				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+			}
+			else{
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Stock name and code already exists</div>');
+			}
+			
             redirect('admin/itemstore/index');
         }
     }
@@ -72,6 +98,11 @@ class Itemstore extends Admin_Controller {
         $data['itemstorelist'] = $itemstore_result;
         $data['id'] = $id;
         $store = $this->itemstore_model->get($id);
+		if(!$store)
+		{
+			redirect('admin/itemstore/index');
+		}
+		
         $data['itemstore'] = $store;
 
         $this->form_validation->set_rules('name', $this->lang->line('item_store_name'), 'trim|required|xss_clean');

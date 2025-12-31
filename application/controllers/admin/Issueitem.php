@@ -8,6 +8,7 @@ class Issueitem extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->helper('form');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index() {
@@ -82,6 +83,7 @@ class Issueitem extends Admin_Controller {
                 'issue_type' => $this->input->post('account_type'),
                 'item_category_id' => $this->input->post('item_category_id'),
                 'item_id' => $this->input->post('item_id'),
+                'session_id' => $this->current_session,
             );
             $this->itemissue_model->add($data);
             $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));

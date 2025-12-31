@@ -610,6 +610,45 @@ class Setting_model extends MY_Model {
 				return false;
 			}
 		}
+		if($checkData['menu'] == 'stockitem')
+		{
+			$this->db->where($checkData['field'], $checkData['id']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get($checkData['table']);
+			if($query->num_rows() > 0)
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		if($checkData['menu'] == 'itemstore')
+		{
+			$this->db->where($checkData['field'], $checkData['id']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get($checkData['table']);
+			if($query->num_rows() > 0)
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		if($checkData['menu'] == 'itemsupplier')
+		{
+			$this->db->where($checkData['field'], $checkData['id']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get($checkData['table']);
+			if($query->num_rows() > 0)
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
 		else{
 			//echo "<pre>";print_r($checkData);die;
 			$this->db->where($checkData['field'], $checkData['id']);
