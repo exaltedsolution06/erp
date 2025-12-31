@@ -133,6 +133,9 @@ class Item extends Admin_Controller {
         $data['title'] = 'Edit Fees Master';
         $data['id'] = $id;
         $item = $this->item_model->get($id);
+		/*if(!$item){
+			redirect('admin/item/index');
+		}*/
         $data['item'] = $item;
         $item_result = $this->item_model->get();
         $data['itemlist'] = $item_result;
