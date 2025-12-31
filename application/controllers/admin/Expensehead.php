@@ -41,6 +41,13 @@ class Expensehead extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Expense Head List';
+		
+		$checkData['menu'] = 'incomehead';
+		$checkData['table'] = 'income';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'inc_head_id';
+		$checkData['session_id'] = $this->current_session;
+		
         $this->expensehead_model->remove($id);
         redirect('admin/expensehead/index');
     }
