@@ -30,7 +30,21 @@ class Itemcategory extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Item Categorey List';
-        $this->itemcategory_model->remove($id);
+		
+		$checkData['menu'] = 'itemcategory';
+		$checkData['table'] = 'item';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'item_category_id';
+		$checkData['session_id'] = $this->current_session;
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Item category already used in Item</div>');
+		}
+		else{
+			$this->itemcategory_model->remove($id);
+			$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+		}
         redirect('admin/itemcategory/index');
     }
 
@@ -52,8 +66,14 @@ class Itemcategory extends Admin_Controller {
                 'description' => $this->input->post('description'),
                 'session_id' => $this->current_session,
             );
-            $this->itemcategory_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            $check = $this->itemcategory_model->add($data);
+			if($check)
+			{
+				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+			}
+			else{
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Item category already exists</div>');
+			}
             redirect('admin/itemcategory/index');
         }
     }

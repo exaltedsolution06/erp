@@ -73,45 +73,55 @@ class Itemcategory_model extends MY_Model
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        if (isset($data['id'])) {
-            $this->db->where('id', $data['id']);
-            $this->db->update('item_category', $data);
-            $message   = UPDATE_RECORD_CONSTANT . " On  item category id " . $data['id'];
-            $action    = "Update";
-            $record_id = $data['id'];
-            $this->log($message, $record_id, $action);
-            //======================Code End==============================
+		$this->db->where('session_id', $this->current_session);
+		$this->db->where('item_category', $data['item_category']);
+		$check = $this->db->get('item_category');
+		if($check->num_rows() > 0)
+		{
+			return false;
+		}
+		else
+		{
+			if (isset($data['id'])) {
+				$this->db->where('id', $data['id']);
+				$this->db->update('item_category', $data);
+				$message   = UPDATE_RECORD_CONSTANT . " On  item category id " . $data['id'];
+				$action    = "Update";
+				$record_id = $data['id'];
+				$this->log($message, $record_id, $action);
+				//======================Code End==============================
 
-            $this->db->trans_complete(); # Completing transaction
-            /* Optional */
+				$this->db->trans_complete(); # Completing transaction
+				/* Optional */
 
-            if ($this->db->trans_status() === false) {
-                # Something went wrong.
-                $this->db->trans_rollback();
-                return false;
-            } else {
-                //return $return_value;
-            }
-        } else {
-            $this->db->insert('item_category', $data);
-            $insert_id = $this->db->insert_id();
-            $message   = INSERT_RECORD_CONSTANT . " On item category id " . $insert_id;
-            $action    = "Insert";
-            $record_id = $insert_id;
-            $this->log($message, $record_id, $action);
-            //======================Code End==============================
+				if ($this->db->trans_status() === false) {
+					# Something went wrong.
+					$this->db->trans_rollback();
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				$this->db->insert('item_category', $data);
+				$insert_id = $this->db->insert_id();
+				$message   = INSERT_RECORD_CONSTANT . " On item category id " . $insert_id;
+				$action    = "Insert";
+				$record_id = $insert_id;
+				$this->log($message, $record_id, $action);
+				//======================Code End==============================
 
-            $this->db->trans_complete(); # Completing transaction
-            /* Optional */
+				$this->db->trans_complete(); # Completing transaction
+				/* Optional */
 
-            if ($this->db->trans_status() === false) {
-                # Something went wrong.
-                $this->db->trans_rollback();
-                return false;
-            } else {
-                //return $return_value;
-            }
-        }
+				if ($this->db->trans_status() === false) {
+					# Something went wrong.
+					$this->db->trans_rollback();
+					return false;
+				} else {
+					return true;
+				}
+			}
+		}
     }
 
 }

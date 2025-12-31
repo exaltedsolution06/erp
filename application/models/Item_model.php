@@ -55,6 +55,7 @@ class Item_model extends MY_Model
     {
         $this->db->where('name', $name);
         $this->db->where('item_category_id', $item_category_id);
+		$this->db->where('session_id', $this->current_session);
         $this->db->where('id !=', $id);
         $query = $this->db->get('item');
         if ($query->num_rows() > 0) {
@@ -69,7 +70,9 @@ class Item_model extends MY_Model
         // $where = "";
 
         $query = "SELECT item.*,item_category.item_category,item_store.item_store,item_store.code,item_supplier.item_supplier,item_supplier.phone,item_supplier.email,item_supplier.address,IFNULL(item_issues.issued,0) as `issued`,IFNULL(item_issues.returned,0) as `returned`,IFNULL(item_stock.item_stock_quantity,0) added_stock FROM `item` left JOIN item_category on item.item_category_id=item_category.id left JOIN item_store on item.item_store_id=item_store.id left JOIN item_supplier on item.item_supplier_id=item_supplier.id left JOIN (SELECT item_stock.item_id,sum(quantity) item_stock_quantity FROM `item_stock` group by item_stock.item_id) as item_stock on item_stock.item_id=item.id left JOIN (SELECT m.item_id as `issue_item_id`, IFNULL((SELECT SUM(quantity) FROM item_issue WHERE item_issue.item_id = m.item_id and item_issue.is_returned =1),0) as `issued` ,IFNULL((SELECT SUM(quantity) FROM item_issue WHERE item_issue.item_id = m.item_id and item_issue.is_returned =0),0) as `returned` FROM item_issue m GROUP BY item_id) as item_issues on item_issues.issue_item_id=item.id";
-
+		
+		$query = $query . " where item.session_id =" . $this->current_session;
+		
         if ($id != null) {
             $query = $query . " where item.id =" . $id;
         }
@@ -130,46 +133,48 @@ class Item_model extends MY_Model
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        if (isset($data['id'])) {
-            $this->db->where('id', $data['id']);
-            $this->db->update('item', $data);
-            $message   = UPDATE_RECORD_CONSTANT . " On  item id " . $data['id'];
-            $action    = "Update";
-            $record_id = $data['id'];
-            $this->log($message, $record_id, $action);
-            //======================Code End==============================
+		
+		if (isset($data['id'])) {
+			$this->db->where('id', $data['id']);
+			$this->db->update('item', $data);
+			$message   = UPDATE_RECORD_CONSTANT . " On  item id " . $data['id'];
+			$action    = "Update";
+			$record_id = $data['id'];
+			$this->log($message, $record_id, $action);
+			//======================Code End==============================
 
-            $this->db->trans_complete(); # Completing transaction
-            /* Optional */
+			$this->db->trans_complete(); # Completing transaction
+			/* Optional */
 
-            if ($this->db->trans_status() === false) {
-                # Something went wrong.
-                $this->db->trans_rollback();
-                return false;
-            } else {
-                //return $return_value;
-            }
-        } else {
-            $this->db->insert('item', $data);
-            $insert_id = $this->db->insert_id();
-            $message   = INSERT_RECORD_CONSTANT . " On item id " . $insert_id;
-            $action    = "Insert";
-            $record_id = $insert_id;
-            $this->log($message, $record_id, $action);
-            //======================Code End==============================
+			if ($this->db->trans_status() === false) {
+				# Something went wrong.
+				$this->db->trans_rollback();
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			$this->db->insert('item', $data);
+			$insert_id = $this->db->insert_id();
+			$message   = INSERT_RECORD_CONSTANT . " On item id " . $insert_id;
+			$action    = "Insert";
+			$record_id = $insert_id;
+			$this->log($message, $record_id, $action);
+			//======================Code End==============================
 
-            $this->db->trans_complete(); # Completing transaction
-            /* Optional */
+			$this->db->trans_complete(); # Completing transaction
+			/* Optional */
 
-            if ($this->db->trans_status() === false) {
-                # Something went wrong.
-                $this->db->trans_rollback();
-                return false;
-            } else {
-                //return $return_value;
-            }
-            return $insert_id;
-        }
+			if ($this->db->trans_status() === false) {
+				# Something went wrong.
+				$this->db->trans_rollback();
+				return false;
+			} else {
+				return true;
+			}
+			return $insert_id;
+		}
+		
     }
 
 }
