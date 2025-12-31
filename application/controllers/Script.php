@@ -4,7 +4,7 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Script extends Admin_Controller
+class Script extends Public_Controller
 {
 
     public function __construct()
