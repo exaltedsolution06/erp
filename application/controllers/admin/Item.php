@@ -8,6 +8,7 @@ class Item extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->helper('form');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index() {

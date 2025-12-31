@@ -8,6 +8,7 @@ class Itemcategory extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->helper('url');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index() {
@@ -49,6 +50,7 @@ class Itemcategory extends Admin_Controller {
             $data = array(
                 'item_category' => $this->input->post('itemcategory'),
                 'description' => $this->input->post('description'),
+                'session_id' => $this->current_session,
             );
             $this->itemcategory_model->add($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
@@ -65,6 +67,9 @@ class Itemcategory extends Admin_Controller {
         $data['categorylist'] = $category_result;
         $data['id'] = $id;
         $category = $this->itemcategory_model->get($id);
+		if(!$category){
+			redirect('admin/itemcategory/index');
+		}
         $data['itemcategory'] = $category;
         $this->form_validation->set_rules('itemcategory', $this->lang->line('item_categorey'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
@@ -76,6 +81,7 @@ class Itemcategory extends Admin_Controller {
                 'id' => $id,
                 'item_category' => $this->input->post('itemcategory'),
                 'description' => $this->input->post('description'),
+                'session_id' => $this->current_session,
             );
             $this->itemcategory_model->add($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success">' . $this->lang->line('update_message') . '</div>');

@@ -10,6 +10,7 @@ class Itemcategory_model extends MY_Model
     public function __construct()
     {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     /**
@@ -20,7 +21,7 @@ class Itemcategory_model extends MY_Model
      */
     public function get($id = null)
     {
-        $this->db->select()->from('item_category');
+        $this->db->select()->from('item_category')->where('session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('id', $id);
         } else {
