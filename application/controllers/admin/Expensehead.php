@@ -42,13 +42,20 @@ class Expensehead extends Admin_Controller {
         }
         $data['title'] = 'Expense Head List';
 		
-		$checkData['menu'] = 'incomehead';
-		$checkData['table'] = 'income';
+		$checkData['menu'] = 'expensehead';
+		$checkData['table'] = 'expenses';
 		$checkData['id'] = $id;
-		$checkData['field'] = 'inc_head_id';
+		$checkData['field'] = 'exp_head_id';
 		$checkData['session_id'] = $this->current_session;
-		
-        $this->expensehead_model->remove($id);
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Expence Head already used in Expences</div>');
+		}
+		else{
+			$this->expensehead_model->remove($id);
+			$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+		}
         redirect('admin/expensehead/index');
     }
 

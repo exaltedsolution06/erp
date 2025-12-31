@@ -193,6 +193,9 @@ class Expense extends Admin_Controller
         $data['title']       = 'Edit Fees Master';
         $data['id']          = $id;
         $expense             = $this->expense_model->get($id);
+		if(!$expense){
+			redirect('admin/expense/index');
+		}
         $data['expense']     = $expense;
         $data['title_list']  = 'Fees Master List';
         $expense_result      = $this->expense_model->get();
