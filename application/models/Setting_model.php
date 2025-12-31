@@ -263,7 +263,7 @@ class Setting_model extends MY_Model {
     }
 	
     public function check_haederimage($type) {
-        $check = $this->db->select('*')->from('print_headerfooter')->where('print_type', $type)->get()->row_array();
+        $check = $this->db->select('*')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', $type)->get()->row_array();
 
 
         if (empty($check['header_image'])) {
@@ -277,67 +277,68 @@ class Setting_model extends MY_Model {
 		
 		//echo '<pre>'; print_r($data); echo '</pre>';die;
 		
-		$query = $this->db->where('print_type', $data['print_type'])->get('print_headerfooter');
+		$query = $this->db->where('session_id', $this->current_session)->where('print_type', $data['print_type'])->get('print_headerfooter');
         if ($query->num_rows() > 0) {
-            $this->db->where('print_type', $data['print_type']);
+            $this->db->where('session_id', $this->current_session)->where('print_type', $data['print_type']);
 			$this->db->update('print_headerfooter', $data);
         } else {
-           $this->db->insert('print_headerfooter', $data);
+			$data['session_id'] = $this->current_session;
+			$this->db->insert('print_headerfooter', $data);
         }
     }
 
-    public function get_printheader() {
-        return $this->db->select('*')->from('print_headerfooter')->where('session_id', $this->current_session)->get()->result_array();
+    public function get_printheader($type='') {
+        return $this->db->select('*')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', $type)->get()->row_array();
     }
 
     public function get_receiptheader() {
-        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'student_receipt')->get()->row_array();
         echo $image['header_image'];
     }
 
     public function get_receiptheader_return() {
-        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'student_receipt')->get()->row_array();
         return $image['header_image'];
     }
 	
 	public function get_header_return($type='') {
-        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', $type)->get()->row_array();
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', $type)->get()->row_array();
         return $image['header_image'];
     }
 	
 
     public function unlink_receiptheader($type='') {
-        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', $type)->get()->row_array();
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', $type)->get()->row_array();
         return $image['header_image'];
     }
 
     public function get_receiptfooter() {
-        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
+        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'student_receipt')->get()->row_array();
         echo $image['footer_content'];
     }
 
     public function get_receiptfooter_return() {
-        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
+        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'student_receipt')->get()->row_array();
         return $image['footer_content'];
     }
 	
 	 public function get_footer_return($type='') {
-        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('print_type', $type)->get()->row_array();
+        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', $type)->get()->row_array();
         return $image['footer_content'];
     }
 
     public function get_payslipheader() {
-        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', 'staff_payslip')->get()->row_array();
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'staff_payslip')->get()->row_array();
         echo $image['header_image'];
     }
 
     public function unlink_payslipheader() {
-        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', 'staff_payslip')->get()->row_array();
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'staff_payslip')->get()->row_array();
         return $image['header_image'];
     }
 
     public function get_payslipfooter() {
-        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('print_type', 'staff_payslip')->get()->row_array();
+        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'staff_payslip')->get()->row_array();
         echo $image['footer_content'];
     }
 	public function check_receipt_no($current_session_id='')

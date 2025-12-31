@@ -7,19 +7,23 @@ class Print_headerfooter extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index() {
         $this->session->set_userdata('top_menu', 'System Settings');
         $this->session->set_userdata('sub_menu', 'admin/print_headerfooter');
         $data['title'] = 'SMS Config List';
-        $data['result'] = $this->setting_model->get_printheader();
+        $data['result_admission'] = $this->setting_model->get_printheader('admission_form');
+        $data['result_receipt'] = $this->setting_model->get_printheader('student_receipt');
+        $data['result_payslip'] = $this->setting_model->get_printheader('staff_payslip');
         $this->load->view('layout/header', $data);
         $this->load->view('admin/print_headerfooter/print_headerfooter', $data);
         $this->load->view('layout/footer', $data);
     }
 
     public function edit() {
+		// echo '<pre>'; print_r($_POST); die;
         $message = "";
         if (isset($_POST['type'])) {
             $is_required = $this->setting_model->check_haederimage($_POST['type']);
@@ -85,35 +89,40 @@ class Print_headerfooter extends Admin_Controller {
                     move_uploaded_file($_FILES["header_image"]["tmp_name"], "./uploads/print_headerfooter/staff_payslip/" . $img_name);
                 }
 
-                $data = array('print_type' => $_POST['type'], 'header_image' => $img_name, 'footer_content' => $_POST[$message], 'created_by' => $this->customlib->getStaffID());
+                $data = array('session_id' => $this->current_session, 'print_type' => $_POST['type'], 'header_image' => $img_name, 'footer_content' => $_POST[$message], 'created_by' => $this->customlib->getStaffID());
                 $this->setting_model->add_printheader($data);
             }			
 			else 
 			{				
-				if ($_POST['type'] == 'student_receipt') {
-					$path = $this->setting_model->unlink_receiptheader($_POST['type']);
-					$path1 = "uploads/print_headerfooter/student_receipt/" . $path;
-                    $url = FCPATH . $path1;
-                    if (file_exists($url)) {
-                        unlink($url);
-                    }
-				} else if ($_POST['type'] == 'admission_form') {	
-					$path = $this->setting_model->unlink_receiptheader($_POST['type']);
-					$path1 = "uploads/print_headerfooter/admission_form/" . $path;
-                    $url = FCPATH . $path1;
+				if ($_POST['remove_image'] == 1) {
+					if ($_POST['type'] == 'student_receipt') {
+						$path = $this->setting_model->unlink_receiptheader($_POST['type']);
+						$path1 = "uploads/print_headerfooter/student_receipt/" . $path;
+						$url = FCPATH . $path1;
+						if (file_exists($url)) {
+							unlink($url);
+						}
+					} else if ($_POST['type'] == 'admission_form') {	
+						$path = $this->setting_model->unlink_receiptheader($_POST['type']);
+						$path1 = "uploads/print_headerfooter/admission_form/" . $path;
+						$url = FCPATH . $path1;
 
-                    if (file_exists($url)) {
-                        unlink($url);
-                    }
-				} else {
-					$path = $this->setting_model->unlink_payslipheader();
-                    $path1 = "uploads/print_headerfooter/staff_payslip/" . $path;
-                    $url = FCPATH . $path1;
-                    if (file_exists($url)) {
-                        unlink($url);
-                    }
+						if (file_exists($url)) {
+							unlink($url);
+						}
+					} else {
+						$path = $this->setting_model->unlink_payslipheader();
+						$path1 = "uploads/print_headerfooter/staff_payslip/" . $path;
+						$url = FCPATH . $path1;
+						if (file_exists($url)) {
+							unlink($url);
+						}
+					}
+					$data = array('session_id' => $this->current_session, 'print_type' => $_POST['type'], 'header_image' => '', 'footer_content' => $_POST[$message], 'created_by' => $this->customlib->getStaffID());
+				}else{
+					$data = array('session_id' => $this->current_session, 'print_type' => $_POST['type'], 'footer_content' => $_POST[$message], 'created_by' => $this->customlib->getStaffID());
 				}
-				$data = array('print_type' => $_POST['type'], 'header_image' => '', 'footer_content' => $_POST[$message], 'created_by' => $this->customlib->getStaffID());
+				
 				$this->setting_model->add_printheader($data);
 			}
 			
