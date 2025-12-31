@@ -7,6 +7,7 @@ class Setting_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
+		$this->current_session = $this->getCurrentSession();
     }
 
     public function getMysqlVersion() {
@@ -286,7 +287,7 @@ class Setting_model extends MY_Model {
     }
 
     public function get_printheader() {
-        return $this->db->select('*')->from('print_headerfooter')->get()->result_array();
+        return $this->db->select('*')->from('print_headerfooter')->where('session_id', $this->current_session)->get()->result_array();
     }
 
     public function get_receiptheader() {
