@@ -45,13 +45,14 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label><?php echo $this->lang->line('header') . " " . $this->lang->line('image') . " (2230px X 300px)"; ?></label>
-                                            <input id="documents" data-default-file="<?php echo base_url() ?>./uploads/print_headerfooter/admission_form/<?php echo $result[2]['header_image'] ?>" placeholder="" type="file" class="filestyle form-control" data-height="180"  name="header_image">
+                                            <input id="documents" data-default-file="<?php echo base_url() ?>./uploads/print_headerfooter/admission_form/<?php echo $result_admission['header_image'] ?>" placeholder="" type="file" class="filestyle form-control" data-height="180"  name="header_image">
                                             <input  placeholder="" type="hidden" class="form-control" value="admission_form" name="type">
                                             <span class="text-danger"><?php echo form_error('header_image'); ?></span>
+											<input type="hidden" name="remove_image" class="remove_image">
                                         </div>
                                         <div class="form-group"><label><?php echo $this->lang->line('footer') . " " . $this->lang->line('content'); ?><small class="req"> *</small></label>
                                             <textarea id="admission_textarea" name="message2" class="form-control" style="height: 250px">
-                                                <?php echo set_value('message2', $result[2]['footer_content']); ?>
+                                                <?php echo set_value('message2', $result_admission['footer_content']); ?>
                                             </textarea>
                                             <span class="text-danger"><?php echo form_error('message2'); ?></span>
                                         </div>
@@ -78,13 +79,14 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label><?php echo $this->lang->line('header') . " " . $this->lang->line('image') . " (2230px X 300px)"; ?></label>
-                                            <input id="documents" data-default-file="<?php echo base_url() ?>./uploads/print_headerfooter/student_receipt/<?php echo $result[1]['header_image'] ?>" placeholder="" type="file" class="filestyle form-control" data-height="180"  name="header_image">
+                                            <input id="documents" data-default-file="<?php echo base_url() ?>./uploads/print_headerfooter/student_receipt/<?php echo $result_receipt['header_image'] ?>" placeholder="" type="file" class="filestyle form-control" data-height="180"  name="header_image">
                                             <input  placeholder="" type="hidden" class="form-control" value="student_receipt" name="type">
                                             <span class="text-danger"><?php echo form_error('header_image'); ?></span>
+											<input type="hidden" name="remove_image" class="remove_image">
                                         </div>
                                         <div class="form-group"><label><?php echo $this->lang->line('footer') . " " . $this->lang->line('content'); ?><small class="req"> *</small></label>
                                             <textarea id="student_textarea" name="message1" class="form-control" style="height: 250px">
-                                                <?php echo set_value('message1', $result[1]['footer_content']); ?>
+                                                <?php echo set_value('message1', $result_receipt['footer_content']); ?>
                                             </textarea>
                                             <span class="text-danger"><?php echo form_error('message1'); ?></span>
                                         </div>
@@ -110,13 +112,14 @@
                                     <div class="col-md-12">     
                                         <div class="form-group">
                                             <label><?php echo $this->lang->line('header') . " " . $this->lang->line('image') . " (2230px X 300px)"; ?></label>
-                                            <input id="documents" data-default-file="<?php echo base_url() ?>./uploads/print_headerfooter/staff_payslip/<?php echo $result[0]['header_image'] ?>" placeholder="" type="file" class="filestyle form-control" data-height="180"  name="header_image">
+                                            <input id="documents" data-default-file="<?php echo base_url() ?>./uploads/print_headerfooter/staff_payslip/<?php echo $result_payslip['header_image'] ?>" placeholder="" type="file" class="filestyle form-control" data-height="180"  name="header_image">
                                             <input  placeholder="" type="hidden" class="form-control" value="staff_payslip" name="type">
                                             <span class="text-danger"><?php echo form_error('header_image'); ?></span>
+											<input type="hidden" name="remove_image" class="remove_image">
                                         </div>
                                         <div class="form-group"><label><?php echo $this->lang->line('footer') . " " . $this->lang->line('content'); ?><small class="req"> *</small></label>
                                             <textarea id="staff_textarea" name="message" class="form-control" style="height: 250px">
-                                                <?php echo set_value('message', $result[0]['footer_content']); ?>
+                                                <?php echo set_value('message', $result_payslip['footer_content']); ?>
                                             </textarea>
                                             <span class="text-danger"><?php echo form_error('message'); ?></span>
                                         </div>
@@ -150,6 +153,11 @@
         $("#student_textarea").wysihtml5();
 
     });
+	$(document).ready(function (e) {
+		$("body").on('click', '.dropify-clear', function () {
+			$(this).closest('.form-group').find('.remove_image').val(1);
+		});
+	});
 </script>
 
 
