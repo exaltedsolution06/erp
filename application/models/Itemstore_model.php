@@ -7,6 +7,7 @@ class Itemstore_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     /**
@@ -16,7 +17,7 @@ class Itemstore_model extends MY_Model {
      * @return mixed
      */
     public function get($id = null) {
-        $this->db->select()->from('item_store');
+        $this->db->select()->from('item_store')->where('session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('id', $id);
         } else {
@@ -40,45 +41,56 @@ class Itemstore_model extends MY_Model {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        if (isset($data['id'])) {
-            $this->db->where('id', $data['id']);
-            $this->db->update('item_store', $data);
-            $message = UPDATE_RECORD_CONSTANT . " On  item store id " . $data['id'];
-            $action = "Update";
-            $record_id = $data['id'];
-            $this->log($message, $record_id, $action);
-            //======================Code End==============================
+		$this->db->where('session_id', $this->current_session);
+		$this->db->where('item_store', $data['item_store']);
+		$this->db->where('code', $data['code']);
+		$check = $this->db->get('item_store');
+		if($check->num_rows() > 0)
+		{
+			return false;
+		}
+		else
+		{
+			if (isset($data['id'])) {
+				$this->db->where('id', $data['id']);
+				$this->db->update('item_store', $data);
+				$message = UPDATE_RECORD_CONSTANT . " On  item store id " . $data['id'];
+				$action = "Update";
+				$record_id = $data['id'];
+				$this->log($message, $record_id, $action);
+				//======================Code End==============================
 
-            $this->db->trans_complete(); # Completing transaction
-            /* Optional */
+				$this->db->trans_complete(); # Completing transaction
+				/* Optional */
 
-            if ($this->db->trans_status() === false) {
-                # Something went wrong.
-                $this->db->trans_rollback();
-                return false;
-            } else {
-                //return $return_value;
-            }
-        } else {
-            $this->db->insert('item_store', $data);
-            $insert_id = $this->db->insert_id();
-            $message = INSERT_RECORD_CONSTANT . " On item store id " . $insert_id;
-            $action = "Insert";
-            $record_id = $insert_id;
-            $this->log($message, $record_id, $action);            
-            //======================Code End==============================
+				if ($this->db->trans_status() === false) {
+					# Something went wrong.
+					$this->db->trans_rollback();
+					return false;
+				} else {
+					//return $return_value;
+				}
+			} else {
+				$this->db->insert('item_store', $data);
+				$insert_id = $this->db->insert_id();
+				$message = INSERT_RECORD_CONSTANT . " On item store id " . $insert_id;
+				$action = "Insert";
+				$record_id = $insert_id;
+				$this->log($message, $record_id, $action);            
+				//======================Code End==============================
 
-            $this->db->trans_complete(); # Completing transaction
-            /* Optional */
+				$this->db->trans_complete(); # Completing transaction
+				/* Optional */
 
-            if ($this->db->trans_status() === false) {
-                # Something went wrong.
-                $this->db->trans_rollback();
-                return false;
-            } else {
-                //return $return_value;
-            }
-        }
+				if ($this->db->trans_status() === false) {
+					# Something went wrong.
+					$this->db->trans_rollback();
+					return false;
+				} else {
+					//return $return_value;
+				}
+			}
+		}
     }
 
     /**

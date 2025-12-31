@@ -77,7 +77,21 @@ class Item extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Fees Master List';
-        $this->item_model->remove($id);
+		
+		$checkData['menu'] = 'stockitem';
+		$checkData['table'] = 'item_stock';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'item_id';
+		$checkData['session_id'] = $this->current_session;
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Item  already used in Stock</div>');
+		}
+		else{
+			$this->item_model->remove($id);
+			$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+		}
         redirect('admin/item/index');
     }
 
@@ -133,9 +147,9 @@ class Item extends Admin_Controller {
         $data['title'] = 'Edit Fees Master';
         $data['id'] = $id;
         $item = $this->item_model->get($id);
-		/*if(!$item){
+		if(!$item){
 			redirect('admin/item/index');
-		}*/
+		}
         $data['item'] = $item;
         $item_result = $this->item_model->get();
         $data['itemlist'] = $item_result;

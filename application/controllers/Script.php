@@ -651,6 +651,44 @@ class Script extends Public_Controller
 			$update_sql = "UPDATE `item` SET `session_id` = ?";
 			$this->db->query($update_sql, [$session_id]);
         }
+		//For 'item_stock'.
+		$session_exists = "SHOW COLUMNS FROM `item_stock` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `item_stock` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `item_stock` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }
+		//For 'item_store'.
+		$session_exists = "SHOW COLUMNS FROM `item_store` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `item_store` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `item_store` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }
+		
+		//For 'item_supplier'.
+		$session_exists = "SHOW COLUMNS FROM `item_supplier` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `item_supplier` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `item_supplier` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }
+		
+		//For 'item_issue'.
+		$session_exists = "SHOW COLUMNS FROM `item_issue` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `item_issue` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `item_issue` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }
 		
 		echo 'Success';
     }

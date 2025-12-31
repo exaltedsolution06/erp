@@ -16,6 +16,8 @@ class Itemstock_model extends MY_Model {
         $this->db->join('item_category', 'item.item_category_id = item_category.id');
         $this->db->join('item_supplier', 'item_stock.supplier_id = item_supplier.id');
         $this->db->join('item_store', 'item_store.id = item_stock.store_id', 'left outer');
+		
+		$this->db->where('item_stock.session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('item_stock.id', $id);
         } else {
@@ -66,32 +68,44 @@ class Itemstock_model extends MY_Model {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        if (isset($data['id'])) {
-            $this->db->where('id', $data['id']);
-            $this->db->update('item_stock', $data);
-            $message = UPDATE_RECORD_CONSTANT . " On  item stock id " . $data['id'];
-            $action = "Update";
-            $record_id = $insert_id = $data['id'];
-            $this->log($message, $record_id, $action);
-        } else {
-            $this->db->insert('item_stock', $data);
-            $insert_id = $this->db->insert_id();
-            $message = INSERT_RECORD_CONSTANT . " On item stock id " . $insert_id;
-            $action = "Insert";
-            $record_id = $insert_id;
-            $this->log($message, $record_id, $action);
-        }
-        //======================Code End==============================
-        $this->db->trans_complete(); # Completing transaction
-        /* Optional */
-        if ($this->db->trans_status() === false) {
-            # Something went wrong.
-            $this->db->trans_rollback();
-            return false;
-        } else {
-            return $insert_id;
-        }
-        // return $insert_id;
+		$this->db->where('session_id', $this->current_session);
+		$this->db->where('item_id', $data['item_id']);
+		$this->db->where('supplier_id', $data['supplier_id']);
+		$this->db->where('store_id', $data['store_id']);
+		$check = $this->db->get('item_stock');
+		if($check->num_rows() > 0)
+		{
+			return false;
+		}
+		else
+		{
+			if (isset($data['id'])) {
+				$this->db->where('id', $data['id']);
+				$this->db->update('item_stock', $data);
+				$message = UPDATE_RECORD_CONSTANT . " On  item stock id " . $data['id'];
+				$action = "Update";
+				$record_id = $insert_id = $data['id'];
+				$this->log($message, $record_id, $action);
+			} else {
+				$this->db->insert('item_stock', $data);
+				$insert_id = $this->db->insert_id();
+				$message = INSERT_RECORD_CONSTANT . " On item stock id " . $insert_id;
+				$action = "Insert";
+				$record_id = $insert_id;
+				$this->log($message, $record_id, $action);
+			}
+			//======================Code End==============================
+			$this->db->trans_complete(); # Completing transaction
+			/* Optional */
+			if ($this->db->trans_status() === false) {
+				# Something went wrong.
+				$this->db->trans_rollback();
+				return false;
+			} else {
+				return $insert_id;
+			}
+			// return $insert_id;
+		}
     }
 
     public function get_currentstock() {
