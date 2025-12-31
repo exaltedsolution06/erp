@@ -1117,7 +1117,7 @@ $(document).ready(function(){
             dataType: 'json',
 
             success: function (data) {
-				//alert(data.check_receipt_no);
+				// alert(data.check_receipt_no);
                 if (data.status == "fail") {
                     var message = "";
                     $.each(data.error, function (index, value) {
