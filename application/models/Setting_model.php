@@ -355,7 +355,8 @@ class Setting_model extends MY_Model {
 	public function check_setting_receipt_no($data)
 	{
 		$session_result = $this->get();
-		$current_session_id = $session_result[0]['current_session']['session_id'];
+		// $current_session_id = $session_result[0]['current_session']['session_id'];
+		$current_session_id = $this->current_session;
 		
 		$receipt_status = $data['receipt_status'];
 		$receipt_start_sequence = $data['receipt_start_sequence'];
@@ -375,7 +376,8 @@ class Setting_model extends MY_Model {
 	public function check_sch_setting_receipt_no()
 	{
 		$session_result = $this->get();
-		$current_session_id = $session_result[0]['current_session']['session_id'];
+		// $current_session_id = $session_result[0]['current_session']['session_id'];
+		$current_session_id = $this->current_session;
         //$receipt_sr_no = $this->db->select('receipt_sr_no')->from('sch_settings')
         //->get()->row_array();
 		
@@ -439,7 +441,8 @@ class Setting_model extends MY_Model {
     {
 		//echo "<pre>";print_r($checkData);die;
 		$session_result = $this->get();
-		$current_session_id = $session_result[0]['current_session']['session_id'];
+		// $current_session_id = $session_result[0]['current_session']['session_id'];
+		$current_session_id = $this->current_session;
 		if($checkData['menu'] == 'feeplan')
 		{
 			//echo "<pre>";print_r($checkData);
@@ -684,14 +687,13 @@ class Setting_model extends MY_Model {
 	public function addSettingSession($data)
 	{
 		$session_result = $this->get();
-		$current_session_id = $session_result[0]['current_session']['session_id'];
-		//echo "<pre>";print_r($data);die;
+		// $current_session_id = $session_result[0]['current_session']['session_id'];
+		$current_session_id = $this->current_session;
 		
         //=======================Code Start===========================
 		$query = $this->db->where('session_id', $current_session_id)->get('sch_settings_session');
 		if($query->num_rows()== 0)
 		{
-			//echo "<pre>";print_r($data);die;
 			if($data['receipt_sr_no'] != '')
 			{
 				$this->db->trans_start(); # Starting Transaction
@@ -700,9 +702,10 @@ class Setting_model extends MY_Model {
 				$this->db->trans_complete();
 			}
 			return true;
-		}
-		else{
-			return false;
+		}else{
+			$this->db->where('session_id', $data['session_id']);
+            $this->db->update('sch_settings_session', $data);
+			return true;
 		}
         //======================Code End==============================
 
@@ -711,7 +714,9 @@ class Setting_model extends MY_Model {
 	public function getReceiptNo()
 	{
 		$session_result = $this->get();
-		$current_session_id = $session_result[0]['current_session']['session_id'];
+		// $current_session_id = $session_result[0]['current_session']['session_id'];
+		$current_session_id = $this->current_session;
+		
 		$qr = $this->db->select('receipt_sr_no')->where('session_id', $current_session_id)->get('sch_settings_session');
 		if($qr->num_rows() > 0)
 		{
