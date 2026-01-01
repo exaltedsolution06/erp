@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
+    //exit('No direct script access allowed');
 }
 
 class Script extends Admin_Controller
