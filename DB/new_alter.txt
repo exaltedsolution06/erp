@@ -26,6 +26,10 @@ ALTER TABLE `sch_settings` ADD `receipt_sr_no` BIGINT(20) NULL DEFAULT NULL AFTE
 -- 18-12-2025 ---
 ALTER TABLE `sch_settings` ADD `main_domain_url` TINYTEXT NOT NULL AFTER `mobile_api_url`;
 
+ALTER TABLE `front_cms_programs` ADD `session_id` INT(11) NOT NULL AFTER `id`; 
+ALTER TABLE `staff` ADD `session_id` INT(11) NOT NULL AFTER `id`; 
+UPDATE `staff` SET `session_id` = '30' WHERE `staff`.`id` = 1; 
+
 ===============================
 File change outside of application folder
 --------
