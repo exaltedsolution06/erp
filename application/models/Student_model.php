@@ -1619,7 +1619,7 @@ class Student_model extends MY_Model
 
     public function getParentList()
     {
-        $sql = "SELECT students.*,users.username,users.password,users.role,users.is_active FROM `students` INNER JOIN users on users.id = students.parent_id WHERE parent_id != 0 GROUP BY parent_id";
+        $sql = "SELECT students.*,users.username,users.password,users.role,users.is_active FROM `students` INNER JOIN users on users.id = students.parent_id INNER JOIN student_session on student_session.student_id = students.id WHERE parent_id != 0 and student_session.session_id = " . $this->current_session . " GROUP BY parent_id";
 
         $query   = $this->db->query($sql);
         $parents = $query->result();

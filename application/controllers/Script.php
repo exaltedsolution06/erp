@@ -4,7 +4,7 @@ if (!defined('BASEPATH')) {
     //exit('No direct script access allowed');
 }
 
-class Script extends Admin_Controller
+class Script extends Public_Controller
 {
 
     public function __construct()
@@ -577,6 +577,118 @@ class Script extends Admin_Controller
 			$update_sql = "UPDATE `staff_id_card` SET `session_id` = ?";
 			$this->db->query($update_sql, [$session_id]);
 		}
+		
+		//For 'income_head'.
+		$session_exists = "SHOW COLUMNS FROM `income_head` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `income_head` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `income_head` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+		//For 'income'.
+		$session_exists = "SHOW COLUMNS FROM `income` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `income` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `income` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+		//For 'expense_head'.
+		$session_exists = "SHOW COLUMNS FROM `expense_head` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `expense_head` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `expense_head` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+
+		//For 'expenses'.
+		$session_exists = "SHOW COLUMNS FROM `expenses` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `expenses` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `expenses` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }
+		
+		//For 'print_headerfooter'.
+		$session_exists = "SHOW COLUMNS FROM `print_headerfooter` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `print_headerfooter` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `print_headerfooter` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+		}
+		
+		//For 'item_category'.
+		$session_exists = "SHOW COLUMNS FROM `item_category` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `item_category` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `item_category` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }
+		
+		//For 'item'.
+		$session_exists = "SHOW COLUMNS FROM `item` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `item` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `item` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }
+		//For 'item_stock'.
+		$session_exists = "SHOW COLUMNS FROM `item_stock` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `item_stock` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `item_stock` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }
+		//For 'item_store'.
+		$session_exists = "SHOW COLUMNS FROM `item_store` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `item_store` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `item_store` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }
+		
+		//For 'item_supplier'.
+		$session_exists = "SHOW COLUMNS FROM `item_supplier` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `item_supplier` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `item_supplier` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }
+		
+		//For 'item_issue'.
+		$session_exists = "SHOW COLUMNS FROM `item_issue` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `item_issue` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `item_issue` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }
 		
 		echo 'Success';
     }

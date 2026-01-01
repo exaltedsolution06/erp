@@ -7,6 +7,7 @@ class Incomehead_model extends My_Model {
 
     public function __construct() {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     /**
@@ -17,6 +18,7 @@ class Incomehead_model extends My_Model {
      */
     public function get($id = null) {
         $this->db->select()->from('income_head');
+		$this->db->where('session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('id', $id);
         } else {
@@ -75,35 +77,43 @@ class Incomehead_model extends My_Model {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
-        if (isset($data['id'])) {
-            $this->db->where('id', $data['id']);
-            $this->db->update('income_head', $data);
-            $message = UPDATE_RECORD_CONSTANT . " On  income head   id " . $data['id'];
-            $action = "Update";
-            $record_id = $return_value = $data['id'];
-        } else {
-            $this->db->insert('income_head', $data);
-            $return_value = $this->db->insert_id();
-            $message = INSERT_RECORD_CONSTANT . " On  income head   id " . $return_value;
-            $action = "Insert";
-            $record_id = $return_value;
-        }
-        $this->log($message, $record_id, $action);
+		
+		$check = $this->db->where('session_id', $this->current_session)->where('income_category', $data['income_category'])->get('income_head');
+		if($check->num_rows() > 0)
+		{
+			return false;
+		}
+		else{
+			if (isset($data['id'])) {
+				$this->db->where('id', $data['id']);
+				$this->db->update('income_head', $data);
+				$message = UPDATE_RECORD_CONSTANT . " On  income head   id " . $data['id'];
+				$action = "Update";
+				$record_id = $return_value = $data['id'];
+			} else {
+				$this->db->insert('income_head', $data);
+				$return_value = $this->db->insert_id();
+				$message = INSERT_RECORD_CONSTANT . " On  income head   id " . $return_value;
+				$action = "Insert";
+				$record_id = $return_value;
+			}
+			$this->log($message, $record_id, $action);
 
-        //======================Code End==============================
+			//======================Code End==============================
 
-        $this->db->trans_complete(); # Completing transaction
-        /* Optional */
+			$this->db->trans_complete(); # Completing transaction
+			/* Optional */
 
-        if ($this->db->trans_status() === false) {
-            # Something went wrong.
-            $this->db->trans_rollback();
-            return false;
-        } else {
+			if ($this->db->trans_status() === false) {
+				# Something went wrong.
+				$this->db->trans_rollback();
+				return false;
+			} else {
 
 
-            return $return_value;
-        }
+				return $return_value;
+			}
+		}
     }
 
 }

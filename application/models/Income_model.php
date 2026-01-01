@@ -26,6 +26,7 @@ class Income_model extends My_Model
             $this->db->join('income_head', 'income.inc_head_id = income_head.id');
 
             $this->db->like('income.name', $text);
+			$this->db->where('income.session_id', $this->current_session);
             $query = $this->db->get();
             return $query->result_array();
         } else {
@@ -33,6 +34,7 @@ class Income_model extends My_Model
             $this->db->join('income_head', 'income.inc_head_id = income_head.id');
             $this->db->where('income.date >=', $start_date);
             $this->db->where('income.date <=', $end_date);
+			$this->db->where('income.session_id', $this->current_session);
             $query = $this->db->get();
             return $query->result_array();
         }
@@ -69,6 +71,8 @@ class Income_model extends My_Model
     {
         $this->db->select('income.id,income.date,income.name,income.invoice_no,income.amount,income.documents,income.note,income_head.income_category,income.inc_head_id')->from('income');
         $this->db->join('income_head', 'income.inc_head_id = income_head.id');
+		$this->db->where('income_head.session_id', $this->current_session);
+		$this->db->where('income.session_id', $this->current_session);
         if ($id != null) {
             $this->db->where('income.id', $id);
         } else {
@@ -123,40 +127,52 @@ class Income_model extends My_Model
      */
     public function add($data)
     {
+		$this->db->trans_start(); # Starting Transaction
+		$this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+			
+		$this->db->where('session_id', $this->current_session);
+		$this->db->where('inc_head_id', $data['inc_head_id']);
+		$this->db->where('name', $data['name']);
+		$check = $this->db->get('income');
+		if($check->num_rows() > 0)
+		{
+			return false;
+		}
+		else
+		{
+			
+			//=======================Code Start===========================
+			if (isset($data['id'])) {
 
-        $this->db->trans_start(); # Starting Transaction
-        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
-        //=======================Code Start===========================
-        if (isset($data['id'])) {
+				$this->db->where('id', $data['id']);
+				$this->db->update('income', $data);
+				$message   = UPDATE_RECORD_CONSTANT . " On  Income   id " . $data['id'];
+				$action    = "Update";
+				$record_id = $data['id'];
+			} else {
+				$this->db->insert('income', $data);
+				$return_value = $this->db->insert_id();
+				$message      = INSERT_RECORD_CONSTANT . " On  Income   id " . $return_value;
+				$action       = "Insert";
+				$record_id    = $return_value;
+			}
 
-            $this->db->where('id', $data['id']);
-            $this->db->update('income', $data);
-            $message   = UPDATE_RECORD_CONSTANT . " On  Income   id " . $data['id'];
-            $action    = "Update";
-            $record_id = $data['id'];
-        } else {
-            $this->db->insert('income', $data);
-            $return_value = $this->db->insert_id();
-            $message      = INSERT_RECORD_CONSTANT . " On  Income   id " . $return_value;
-            $action       = "Insert";
-            $record_id    = $return_value;
-        }
+			$this->log($message, $record_id, $action);
 
-        $this->log($message, $record_id, $action);
+			//======================Code End==============================
 
-        //======================Code End==============================
+			$this->db->trans_complete(); # Completing transaction
+			/* Optional */
 
-        $this->db->trans_complete(); # Completing transaction
-        /* Optional */
+			if ($this->db->trans_status() === false) {
+				# Something went wrong.
+				$this->db->trans_rollback();
+				return false;
+			} else {
 
-        if ($this->db->trans_status() === false) {
-            # Something went wrong.
-            $this->db->trans_rollback();
-            return false;
-        } else {
-
-            return $record_id;
-        }
+				return $record_id;
+			}
+		}
     }
 
     public function check_Exits_group($data)

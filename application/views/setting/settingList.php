@@ -741,7 +741,7 @@
                                 </div><!--./row-->
  
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <!--<div class="col-md-12">
                                         <div class="settinghr"></div>
                                         <div class="relative">   
 
@@ -759,7 +759,7 @@
                                         </div>
 
 
-                                    </div><!--./col-md-12-->
+                                    </div>--><!--./col-md-12-->
 
                                     <div class="col-md-12">
                                         <div class="form-group row">
@@ -1117,7 +1117,7 @@ $(document).ready(function(){
             dataType: 'json',
 
             success: function (data) {
-				//alert(data.check_receipt_no);
+				// alert(data.check_receipt_no);
                 if (data.status == "fail") {
                     var message = "";
                     $.each(data.error, function (index, value) {

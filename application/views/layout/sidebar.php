@@ -1009,8 +1009,8 @@
 								<li class="<?php echo set_Submenu('issueitem/index'); ?>"><a href="<?php echo base_url(); ?>admin/issueitem"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('issue_item'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('item_store', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('itemstore/index'); ?>"><a href="<?php echo base_url(); ?>admin/itemstore"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('item_store'); ?></a></li>
-							<?php //} if ($this->rbac->hasPrivilege('item_supplier', 'can_view')) { ?>
-								<!--<li class="<?php echo set_Submenu('itemsupplier/index'); ?>"><a href="<?php echo base_url(); ?>admin/itemsupplier"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('item_supplier'); ?></a></li>-->
+							<?php } if ($this->rbac->hasPrivilege('item_supplier', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('itemsupplier/index'); ?>"><a href="<?php echo base_url(); ?>admin/itemsupplier"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('item_supplier'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('stock_management_report', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('Reports/inventory'); ?>"><a href="<?php echo base_url(); ?>report/inventory"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 							<?php } ?>

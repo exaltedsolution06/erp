@@ -7,6 +7,7 @@ class Setting_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
+		$this->current_session = $this->getCurrentSession();
     }
 
     public function getMysqlVersion() {
@@ -262,7 +263,7 @@ class Setting_model extends MY_Model {
     }
 	
     public function check_haederimage($type) {
-        $check = $this->db->select('*')->from('print_headerfooter')->where('print_type', $type)->get()->row_array();
+        $check = $this->db->select('*')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', $type)->get()->row_array();
 
 
         if (empty($check['header_image'])) {
@@ -276,67 +277,68 @@ class Setting_model extends MY_Model {
 		
 		//echo '<pre>'; print_r($data); echo '</pre>';die;
 		
-		$query = $this->db->where('print_type', $data['print_type'])->get('print_headerfooter');
+		$query = $this->db->where('session_id', $this->current_session)->where('print_type', $data['print_type'])->get('print_headerfooter');
         if ($query->num_rows() > 0) {
-            $this->db->where('print_type', $data['print_type']);
+            $this->db->where('session_id', $this->current_session)->where('print_type', $data['print_type']);
 			$this->db->update('print_headerfooter', $data);
         } else {
-           $this->db->insert('print_headerfooter', $data);
+			$data['session_id'] = $this->current_session;
+			$this->db->insert('print_headerfooter', $data);
         }
     }
 
-    public function get_printheader() {
-        return $this->db->select('*')->from('print_headerfooter')->get()->result_array();
+    public function get_printheader($type='') {
+        return $this->db->select('*')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', $type)->get()->row_array();
     }
 
     public function get_receiptheader() {
-        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'student_receipt')->get()->row_array();
         echo $image['header_image'];
     }
 
     public function get_receiptheader_return() {
-        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'student_receipt')->get()->row_array();
         return $image['header_image'];
     }
 	
 	public function get_header_return($type='') {
-        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', $type)->get()->row_array();
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', $type)->get()->row_array();
         return $image['header_image'];
     }
 	
 
     public function unlink_receiptheader($type='') {
-        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', $type)->get()->row_array();
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', $type)->get()->row_array();
         return $image['header_image'];
     }
 
     public function get_receiptfooter() {
-        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
+        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'student_receipt')->get()->row_array();
         echo $image['footer_content'];
     }
 
     public function get_receiptfooter_return() {
-        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('print_type', 'student_receipt')->get()->row_array();
+        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'student_receipt')->get()->row_array();
         return $image['footer_content'];
     }
 	
 	 public function get_footer_return($type='') {
-        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('print_type', $type)->get()->row_array();
+        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', $type)->get()->row_array();
         return $image['footer_content'];
     }
 
     public function get_payslipheader() {
-        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', 'staff_payslip')->get()->row_array();
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'staff_payslip')->get()->row_array();
         echo $image['header_image'];
     }
 
     public function unlink_payslipheader() {
-        $image = $this->db->select('header_image')->from('print_headerfooter')->where('print_type', 'staff_payslip')->get()->row_array();
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'staff_payslip')->get()->row_array();
         return $image['header_image'];
     }
 
     public function get_payslipfooter() {
-        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('print_type', 'staff_payslip')->get()->row_array();
+        $image = $this->db->select('footer_content')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'staff_payslip')->get()->row_array();
         echo $image['footer_content'];
     }
 	public function check_receipt_no($current_session_id='')
@@ -353,7 +355,8 @@ class Setting_model extends MY_Model {
 	public function check_setting_receipt_no($data)
 	{
 		$session_result = $this->get();
-		$current_session_id = $session_result[0]['current_session']['session_id'];
+		// $current_session_id = $session_result[0]['current_session']['session_id'];
+		$current_session_id = $this->current_session;
 		
 		$receipt_status = $data['receipt_status'];
 		$receipt_start_sequence = $data['receipt_start_sequence'];
@@ -373,7 +376,8 @@ class Setting_model extends MY_Model {
 	public function check_sch_setting_receipt_no()
 	{
 		$session_result = $this->get();
-		$current_session_id = $session_result[0]['current_session']['session_id'];
+		// $current_session_id = $session_result[0]['current_session']['session_id'];
+		$current_session_id = $this->current_session;
         //$receipt_sr_no = $this->db->select('receipt_sr_no')->from('sch_settings')
         //->get()->row_array();
 		
@@ -437,7 +441,8 @@ class Setting_model extends MY_Model {
     {
 		//echo "<pre>";print_r($checkData);die;
 		$session_result = $this->get();
-		$current_session_id = $session_result[0]['current_session']['session_id'];
+		// $current_session_id = $session_result[0]['current_session']['session_id'];
+		$current_session_id = $this->current_session;
 		if($checkData['menu'] == 'feeplan')
 		{
 			//echo "<pre>";print_r($checkData);
@@ -465,6 +470,7 @@ class Setting_model extends MY_Model {
 		}
 		if($checkData['menu'] == 'routeplan')
 		{
+			
 			//echo "<pre>";print_r($checkData);
 			$this->db->select('distinct(student_session.student_id) as student_id,student_session.class_id');
 			$this->db->from('student_session');
@@ -565,7 +571,86 @@ class Setting_model extends MY_Model {
 				return false;
 			}
 		}
+		if($checkData['menu'] == 'incomehead')
+		{
+			$this->db->where($checkData['field'], $checkData['id']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get($checkData['table']);
+			if($query->num_rows() > 0)
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		if($checkData['menu'] == 'expensehead')
+		{
+			$this->db->where($checkData['field'], $checkData['id']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get($checkData['table']);
+			if($query->num_rows() > 0)
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		if($checkData['menu'] == 'itemcategory')
+		{
+			$this->db->where($checkData['field'], $checkData['id']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get($checkData['table']);
+			if($query->num_rows() > 0)
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		if($checkData['menu'] == 'stockitem')
+		{
+			$this->db->where($checkData['field'], $checkData['id']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get($checkData['table']);
+			if($query->num_rows() > 0)
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		if($checkData['menu'] == 'itemstore')
+		{
+			$this->db->where($checkData['field'], $checkData['id']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get($checkData['table']);
+			if($query->num_rows() > 0)
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		if($checkData['menu'] == 'itemsupplier')
+		{
+			$this->db->where($checkData['field'], $checkData['id']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get($checkData['table']);
+			if($query->num_rows() > 0)
+			{
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
 		else{
+			//echo "<pre>";print_r($checkData);die;
 			$this->db->where($checkData['field'], $checkData['id']);
 			$query = $this->db->get($checkData['table']);
 			if ($query->num_rows() > 0) {
@@ -602,14 +687,13 @@ class Setting_model extends MY_Model {
 	public function addSettingSession($data)
 	{
 		$session_result = $this->get();
-		$current_session_id = $session_result[0]['current_session']['session_id'];
-		//echo "<pre>";print_r($data);die;
+		// $current_session_id = $session_result[0]['current_session']['session_id'];
+		$current_session_id = $this->current_session;
 		
         //=======================Code Start===========================
 		$query = $this->db->where('session_id', $current_session_id)->get('sch_settings_session');
 		if($query->num_rows()== 0)
 		{
-			//echo "<pre>";print_r($data);die;
 			if($data['receipt_sr_no'] != '')
 			{
 				$this->db->trans_start(); # Starting Transaction
@@ -618,9 +702,10 @@ class Setting_model extends MY_Model {
 				$this->db->trans_complete();
 			}
 			return true;
-		}
-		else{
-			return false;
+		}else{
+			$this->db->where('session_id', $data['session_id']);
+            $this->db->update('sch_settings_session', $data);
+			return true;
 		}
         //======================Code End==============================
 
@@ -629,7 +714,9 @@ class Setting_model extends MY_Model {
 	public function getReceiptNo()
 	{
 		$session_result = $this->get();
-		$current_session_id = $session_result[0]['current_session']['session_id'];
+		// $current_session_id = $session_result[0]['current_session']['session_id'];
+		$current_session_id = $this->current_session;
+		
 		$qr = $this->db->select('receipt_sr_no')->where('session_id', $current_session_id)->get('sch_settings_session');
 		if($qr->num_rows() > 0)
 		{

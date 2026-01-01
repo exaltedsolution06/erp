@@ -12,6 +12,7 @@ class Expense extends Admin_Controller
         parent::__construct();
         $this->load->library('Customlib');
         $this->config->load('app-config');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index()
@@ -39,6 +40,7 @@ class Expense extends Admin_Controller
                 'amount'      => $this->input->post('amount'),
                 'invoice_no'  => $this->input->post('invoice_no'),
                 'note'        => $this->input->post('description'),
+                'session_id'  => $this->current_session,
             );
 
             $insert_id = $this->expense_model->add($data);
@@ -51,8 +53,14 @@ class Expense extends Admin_Controller
 
                 $this->expense_model->add($data_img);
             }
-
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+			
+			if($insert_id)
+			{
+				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+			}
+			else{
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Name w.r.t Expence Head already exists</div>');
+			}
             redirect('admin/expense/index');
         }
         $expense_result      = $this->expense_model->get();
@@ -185,6 +193,9 @@ class Expense extends Admin_Controller
         $data['title']       = 'Edit Fees Master';
         $data['id']          = $id;
         $expense             = $this->expense_model->get($id);
+		if(!$expense){
+			redirect('admin/expense/index');
+		}
         $data['expense']     = $expense;
         $data['title_list']  = 'Fees Master List';
         $expense_result      = $this->expense_model->get();

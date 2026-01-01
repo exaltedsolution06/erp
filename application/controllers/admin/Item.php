@@ -8,6 +8,7 @@ class Item extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->helper('form');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     function index() {
@@ -37,10 +38,17 @@ class Item extends Admin_Controller {
                 'name' => $this->input->post('name'),
                 'unit' => $this->input->post('unit'),
                 'description' => $this->input->post('description'),
+                'session_id' => $this->current_session,
             );
             $insert_id = $this->item_model->add($data);
-
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+			
+			if($insert_id)
+			{
+				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+			}
+			else{
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Item w.r.t Item category already exists</div>');
+			}
             redirect('admin/item/index');
         }
         $item_result = $this->item_model->get();
@@ -69,7 +77,21 @@ class Item extends Admin_Controller {
             access_denied();
         }
         $data['title'] = 'Fees Master List';
-        $this->item_model->remove($id);
+		
+		$checkData['menu'] = 'stockitem';
+		$checkData['table'] = 'item_stock';
+		$checkData['id'] = $id;
+		$checkData['field'] = 'item_id';
+		$checkData['session_id'] = $this->current_session;
+		$ifsection = $this->Setting_model->checkDeleteList($checkData);
+		if($ifsection > 0)
+		{
+			$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Item  already used in Stock</div>');
+		}
+		else{
+			$this->item_model->remove($id);
+			$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+		}
         redirect('admin/item/index');
     }
 
@@ -125,6 +147,9 @@ class Item extends Admin_Controller {
         $data['title'] = 'Edit Fees Master';
         $data['id'] = $id;
         $item = $this->item_model->get($id);
+		if(!$item){
+			redirect('admin/item/index');
+		}
         $data['item'] = $item;
         $item_result = $this->item_model->get();
         $data['itemlist'] = $item_result;

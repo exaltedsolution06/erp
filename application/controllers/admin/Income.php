@@ -10,6 +10,7 @@ class Income extends Admin_Controller {
         parent::__construct();
         $this->load->helper('form');
         $this->config->load('app-config');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index() {
@@ -38,6 +39,7 @@ class Income extends Admin_Controller {
                 'invoice_no' => $this->input->post('invoice_no'),
                 'note' => $this->input->post('description'),
                 'documents' => $this->input->post('documents'),
+                'session_id' => $this->current_session,
             );
             $insert_id = $this->income_model->add($data);
             if (isset($_FILES["documents"]) && !empty($_FILES['documents']['name'])) {
@@ -47,8 +49,16 @@ class Income extends Admin_Controller {
                 $data_img = array('id' => $insert_id, 'documents' => 'uploads/school_income/' . $img_name);
                 $this->income_model->add($data_img);
             }
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
-            redirect('admin/income/index');
+			
+			if($insert_id)
+			{
+				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+				redirect('admin/income/index');
+			}
+			else{
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Name w.r.t Income Head already exists</div>');
+				redirect('admin/income/index');
+			}
         }
 
         $income_result = $this->income_model->get();
@@ -172,6 +182,9 @@ class Income extends Admin_Controller {
         $data['title'] = 'Edit Fees Master';
         $data['id'] = $id;
         $income = $this->income_model->get($id);
+		if(!$income){
+			redirect('admin/income/index');
+		}
         $data['income'] = $income;
         $data['title_list'] = 'Fees Master List';
         $income_result = $this->income_model->get();
@@ -196,6 +209,7 @@ class Income extends Admin_Controller {
                 'amount' => $this->input->post('amount'),
                 'invoice_no' => $this->input->post('invoice_no'),
                 'note' => $this->input->post('description'),
+				'session_id' => $this->current_session,
             );
             $insert_id = $this->income_model->add($data);
             if (isset($_FILES["documents"]) && !empty($_FILES['documents']['name'])) {

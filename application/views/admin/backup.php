@@ -100,7 +100,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="box box-primary">
+                    <!--<div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title"><?php echo $this->lang->line('cron_secret_key') ?></h3>
                             <div class="box-tools pull-right">   
@@ -122,7 +122,7 @@
 
                         </div>
 
-                    </div><!--./box box-warning-->
+                    </div>--><!--./box box-warning-->
                 </div><!--./col-md-4-->
                 <!-- <div class="col-md-4"></div> -->
 <?php } ?>
