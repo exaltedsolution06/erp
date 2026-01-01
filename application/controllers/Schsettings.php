@@ -73,7 +73,7 @@ class Schsettings extends Admin_Controller {
         $currencyPlace = $this->customlib->getCurrencyPlace();
         $data['currencyPlace'] = $currencyPlace;
         $data['result'] = $this->setting_model->getSetting();
-        $data['receiptnumber'] = $this->setting_model->getReceiptNo();
+        $data['session_setting'] = $this->setting_model->get_session_setting();
 		//echo $receiptnumber['receipt_sr_no']; die;
         $this->load->view('layout/header', $data);
         $this->load->view('setting/settingList', $data);
@@ -317,15 +317,15 @@ class Schsettings extends Admin_Controller {
                 'currency_place' => $this->input->post('currency_place'),
                 'fee_due_days' => $this->input->post('fee_due_days'),
                 'theme' => $this->input->post('theme'),
-                'adm_start_from' => $this->input->post('adm_start_from'),
-                'adm_prefix' => $this->input->post('adm_prefix'),
-                'adm_no_digit' => $this->input->post('adm_no_digit'),
-                'adm_auto_insert' => $this->input->post('adm_auto_insert'),
-                'staffid_start_from' => $this->input->post('staffid_start_from'),
-                'staffid_prefix' => $this->input->post('staffid_prefix'),
-                'staffid_no_digit' => $this->input->post('staffid_no_digit'),
+                // 'adm_start_from' => $this->input->post('adm_start_from'),
+                // 'adm_prefix' => $this->input->post('adm_prefix'),
+                // 'adm_no_digit' => $this->input->post('adm_no_digit'),
+                // 'adm_auto_insert' => $this->input->post('adm_auto_insert'),
+                // 'staffid_start_from' => $this->input->post('staffid_start_from'),
+                // 'staffid_prefix' => $this->input->post('staffid_prefix'),
+                // 'staffid_no_digit' => $this->input->post('staffid_no_digit'),
                 'online_admission' => $this->input->post('online_admission'),
-                'staffid_auto_insert' => $this->input->post('staffid_auto_insert'),
+                // 'staffid_auto_insert' => $this->input->post('staffid_auto_insert'),
                 'class_teacher' => $this->input->post('class_teacher'),
                 'biometric_device' => $this->input->post('biometric_device'),
                 'biometric' => $this->input->post('biometric'),
@@ -392,6 +392,23 @@ class Schsettings extends Admin_Controller {
                 set_language($this->input->post('sch_lang_id'));
             }
 			
+			// Add student admission auto generation
+			$editStaffSessiondata['session_id'] = $this->current_session;
+			$editStaffSessiondata['adm_start_from'] = $this->input->post('adm_auto_insert') ==  0 ? null : $this->input->post('adm_start_from');
+			$editStaffSessiondata['adm_prefix'] = $this->input->post('adm_auto_insert') ==  0 ? null : $this->input->post('adm_prefix');
+			$editStaffSessiondata['adm_no_digit'] = $this->input->post('adm_auto_insert') ==  0 ? null : $this->input->post('adm_no_digit');
+			$editStaffSessiondata['adm_auto_insert'] = $this->input->post('adm_auto_insert');
+			$this->setting_model->addSettingSession($editStaffSessiondata);
+				
+			
+			// Add staff auto generation
+			$editStaffSessiondata['session_id'] = $this->current_session;
+			$editStaffSessiondata['staffid_start_from'] = $this->input->post('staffid_auto_insert') ==  0 ? null : $this->input->post('staffid_start_from');
+			$editStaffSessiondata['staffid_prefix'] = $this->input->post('staffid_auto_insert') ==  0 ? null : $this->input->post('staffid_prefix');
+			$editStaffSessiondata['staffid_no_digit'] = $this->input->post('staffid_auto_insert') ==  0 ? null : $this->input->post('staffid_no_digit');
+			$editStaffSessiondata['staffid_auto_insert'] = $this->input->post('staffid_auto_insert');
+			$this->setting_model->addSettingSession($editStaffSessiondata);
+				
 			// receipt_start_sequence
 			$receipt_status = $this->input->post('receipt_status');
 			$receipt_start_sequence = $this->input->post('receipt_start_sequence');

@@ -455,14 +455,14 @@
                                             <div class="col-sm-8">
                                                 <label class="radio-inline">
                                                     <input type="radio" name="adm_auto_insert" value="0" <?php
-                                                    if ($result->adm_auto_insert == 0) {
+                                                    if ($session_setting['adm_auto_insert'] == 0) {
                                                         echo "checked";
                                                     }
                                                     ?>  ><?php echo $this->lang->line('disabled'); ?>
                                                 </label>
                                                 <label class="radio-inline">
                                                     <input type="radio" name="adm_auto_insert" value="1" <?php
-                                                    if ($result->adm_auto_insert == 1) {
+                                                    if ($session_setting['adm_auto_insert'] == 1) {
                                                         echo "checked";
                                                     }
                                                     ?> ><?php echo $this->lang->line('enabled'); ?>
@@ -474,7 +474,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-4"><?php echo $this->lang->line('admission_no_prefix'); ?><small class="req"> *</small></label>
                                             <div class="col-sm-8">
-                                                <input type="text" name="adm_prefix" id="adm_prefix" class="form-control" value="<?php echo $result->adm_prefix; ?>">
+                                                <input type="text" name="adm_prefix" id="adm_prefix" class="form-control" value="<?php echo $session_setting['adm_prefix']; ?>">
                                                 <span class="text-danger"><?php echo form_error('adm_prefix'); ?></span>
                                             </div>
                                         </div>
@@ -489,7 +489,7 @@
                                                     <?php foreach ($digitList as $digit) {
                                                         ?>
                                                         <option value="<?php echo $digit ?>" <?php
-                                                        if ($result->adm_no_digit == $digit) {
+                                                        if ($session_setting['adm_no_digit'] == $digit) {
                                                             echo "selected";
                                                         }
                                                         ?> ><?php echo $digit; ?></option> <?php } ?>
@@ -503,7 +503,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-4"><?php echo $this->lang->line('admission') . " " . $this->lang->line('start') . " " . $this->lang->line('from') ?><small class="req"> *</small></label>
                                             <div class="col-sm-8">
-                                                <input type="text" name="adm_start_from" id="adm_start_from" class="form-control" value="<?php echo $result->adm_start_from; ?>">
+                                                <input type="text" name="adm_start_from" id="adm_start_from" class="form-control" value="<?php echo $session_setting['adm_start_from']; ?>">
                                                 <span class="text-danger"><?php echo form_error('adm_start_from'); ?></span>
                                             </div>
                                         </div>
@@ -525,14 +525,14 @@
                                             <div class="col-sm-8">
                                                 <label class="radio-inline">
                                                     <input type="radio" name="staffid_auto_insert" value="0" <?php
-                                                    if ($result->staffid_auto_insert == 0) {
+                                                    if ($session_setting['staffid_auto_insert'] == 0) {
                                                         echo "checked";
                                                     }
                                                     ?>  ><?php echo $this->lang->line('disabled'); ?>
                                                 </label>
                                                 <label class="radio-inline">
                                                     <input type="radio" name="staffid_auto_insert" value="1" <?php
-                                                    if ($result->staffid_auto_insert == 1) {
+                                                    if ($session_setting['staffid_auto_insert'] == 1) {
                                                         echo "checked";
                                                     }
                                                     ?>><?php echo $this->lang->line('enabled'); ?>
@@ -544,7 +544,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-4"><?php echo $this->lang->line('staff_id_prefix') ?><small class="req"> *</small></label>
                                             <div class="col-sm-8">
-                                                <input id="staffid_prefix" value="<?php echo $result->staffid_prefix; ?>" name="staffid_prefix" placeholder="" type="text" class="form-control" />
+                                                <input id="staffid_prefix" value="<?php echo $session_setting['staffid_prefix']; ?>" name="staffid_prefix" placeholder="" type="text" class="form-control" />
                                                 <span class="text-danger"><?php echo form_error('staffid_prefix'); ?></span>
                                             </div>
                                         </div>
@@ -558,7 +558,7 @@
                                                     <?php foreach ($digitList as $digit) {
                                                         ?>
                                                         <option value="<?php echo $digit ?>" <?php
-                                                        if ($digit == $result->staffid_no_digit) {
+                                                        if ($digit == $session_setting['staffid_no_digit']) {
                                                             echo "selected";
                                                         }
                                                         ?>><?php echo $digit; ?></option>
@@ -573,7 +573,7 @@
                                             <label class="col-sm-4"><?php echo $this->lang->line('staff_id_start_from') ?><small class="req"> *</small></label>
                                             <div class="col-sm-8">
 
-                                                <input id="staffid_start_from" value="<?php echo $result->staffid_start_from; ?>" name="staffid_start_from" placeholder="" type="text" class="form-control" />
+                                                <input id="staffid_start_from" value="<?php echo $session_setting['staffid_start_from']; ?>" name="staffid_start_from" placeholder="" type="text" class="form-control" />
                                                 <span class="text-danger"><?php echo form_error('staffid_start_from'); ?></span>
                                             </div>
                                         </div>
@@ -607,8 +607,8 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2"><?php echo $this->lang->line('receipt_start_sequence') ?><small class="req"></small></label>
                                             <div class="col-sm-8">				
-												<input value="<?php echo $receiptnumber['receipt_sr_no'] != 0 ? $receiptnumber['receipt_sr_no'] : ''; ?>" name="receipt_start_sequence_existing" id="receipt_start_sequence_existing" type="hidden"/>
-                                                <input type="text" class="form-control" id="receipt_start_sequence" name="receipt_start_sequence" value="<?php echo $receiptnumber['receipt_sr_no'] != 0 ? $receiptnumber['receipt_sr_no'] : ''; ?>"/>
+												<input value="<?php echo $session_setting['receipt_sr_no'] != 0 ? $session_setting['receipt_sr_no'] : ''; ?>" name="receipt_start_sequence_existing" id="receipt_start_sequence_existing" type="hidden"/>
+                                                <input type="text" class="form-control" id="receipt_start_sequence" name="receipt_start_sequence" value="<?php echo $session_setting['receipt_sr_no'] != 0 ? $session_setting['receipt_sr_no'] : ''; ?>"/>
 												<span class="text-danger" id="receipt_error"></span>
                                                 
                                             </div>

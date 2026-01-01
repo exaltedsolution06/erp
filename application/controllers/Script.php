@@ -406,35 +406,111 @@ class Script extends Public_Controller
 		
 		//create table sch_settings_session		
 		$this->load->dbforge();
+		$base_fields = [
+			'id' => [
+				'type'           => 'INT',
+				'constraint'     => 11,
+				'unsigned'       => TRUE,
+				'auto_increment' => TRUE,
+			],
+			'session_id' => [
+				'type'       => 'INT',
+				'constraint' => 11,
+				'null'       => FALSE,
+			],
+			'receipt_sr_no' => [
+				'type'       => 'BIGINT',
+				'constraint' => 20,
+				'null'       => FALSE,
+				'default'    => 0,
+			],
+			'staffid_auto_insert' => [
+				'type'       => 'INT',
+				'constraint' => 11,
+				'default'    => 1,
+			],
+			'staffid_prefix' => [
+				'type'       => 'VARCHAR',
+				'constraint' => 100,
+				'default'    => 'staffss/19/20',
+			],
+			'staffid_start_from' => [
+				'type'       => 'VARCHAR',
+				'constraint' => 50,
+				'null'       => TRUE,
+			],
+			'staffid_no_digit' => [
+				'type'       => 'INT',
+				'constraint' => 11,
+				'default'    => 6,
+			],
+			'adm_auto_insert' => [
+				'type'       => 'INT',
+				'constraint' => 11,
+				'default'    => 1,
+			],
+			'adm_prefix' => [
+				'type'       => 'VARCHAR',
+				'constraint' => 100,
+				'default'    => 'ssadm19/20',
+			],
+			'adm_start_from' => [
+				'type'       => 'VARCHAR',
+				'constraint' => 50,
+				'null'       => TRUE,
+			],
+			'adm_no_digit' => [
+				'type'       => 'INT',
+				'constraint' => 11,
+				'default'    => 6,
+			],
+		];
 		if ( ! $this->db->table_exists('sch_settings_session') )
 		{
-			$fields = [
-				'id' => [
-					'type'           => 'INT',
-					'constraint'     => 11,
-					'unsigned'       => TRUE,
-					'auto_increment' => TRUE,
-				],
-				'session_id' => [
-					'type'       => 'INT',
-					'constraint' => 11,
-					'null'       => FALSE,
-				],
-				'receipt_sr_no' => [
-					'type'       => 'BIGINT',   // long integer
-					'constraint' => 20,
-					'null'       => FALSE,
-					'default'    => 0,
-				],
-			];
 
-			$this->dbforge->add_field($fields);
+			$this->dbforge->add_field($base_fields);
 			$this->dbforge->add_key('id', TRUE); // PRIMARY KEY
 			$this->dbforge->create_table('sch_settings_session', TRUE);
-			
-			if ($this->db->field_exists('receipt_sr_no', 'sch_settings')) {
-				$this->dbforge->drop_column('sch_settings', 'receipt_sr_no');
+		} else {
+			foreach ($base_fields as $column => $definition) {
+
+				if ( ! $this->db->field_exists($column, 'sch_settings_session') ) {
+
+					// add_column requires single-column array
+					$this->dbforge->add_column('sch_settings_session', [
+						$column => $definition
+					]);
+				}
 			}
+		}
+		$drop_columns = [
+			'receipt_sr_no',
+			'staffid_auto_insert',
+			'staffid_prefix',
+			'staffid_start_from',
+			'staffid_no_digit',
+			'adm_auto_insert',
+			'adm_prefix',
+			'adm_start_from',
+			'adm_no_digit'
+		];
+
+		foreach ($drop_columns as $column) {
+			if ($this->db->field_exists($column, 'sch_settings')) {
+				$this->dbforge->drop_column('sch_settings', $column);
+			}
+		}
+		
+		//For 'sch_settings_session'.
+		$session_exists = "SHOW COLUMNS FROM `sch_settings_session` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `leave_types` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			
+			$update_sql = "UPDATE `leave_types` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+
 		}
 		
 		//create add new field session_id table receipt_sr_no		
