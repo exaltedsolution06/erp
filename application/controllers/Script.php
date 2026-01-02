@@ -15,7 +15,7 @@ class Script extends Public_Controller
     public function index()
     {
 		$session_id = $this->setting_model->getCurrentActiveSession();
-		
+		if($session_id){
 		//For 'sections'.
 		$session_exists = "SHOW COLUMNS FROM `sections` LIKE 'session_id'";
 		$session_exists_sql = $this->db->query($session_exists);		
@@ -427,12 +427,12 @@ class Script extends Public_Controller
 			'staffid_auto_insert' => [
 				'type'       => 'INT',
 				'constraint' => 11,
-				'default'    => 1,
+				'default'    => 0,
 			],
 			'staffid_prefix' => [
 				'type'       => 'VARCHAR',
 				'constraint' => 100,
-				'default'    => 'staffss/19/20',
+				'null'    => TRUE,
 			],
 			'staffid_start_from' => [
 				'type'       => 'VARCHAR',
@@ -442,17 +442,22 @@ class Script extends Public_Controller
 			'staffid_no_digit' => [
 				'type'       => 'INT',
 				'constraint' => 11,
-				'default'    => 6,
+				'null'       => TRUE,
+			],
+			'staffid_update_status' => [
+				'type'       => 'INT',
+				'constraint' => 11,
+				'default'    => 0,
 			],
 			'adm_auto_insert' => [
 				'type'       => 'INT',
 				'constraint' => 11,
-				'default'    => 1,
+				'default'    => 0,
 			],
 			'adm_prefix' => [
 				'type'       => 'VARCHAR',
 				'constraint' => 100,
-				'default'    => 'ssadm19/20',
+				'null'    => TRUE,
 			],
 			'adm_start_from' => [
 				'type'       => 'VARCHAR',
@@ -462,20 +467,22 @@ class Script extends Public_Controller
 			'adm_no_digit' => [
 				'type'       => 'INT',
 				'constraint' => 11,
-				'default'    => 6,
+				'null'       => TRUE,
+			],
+			'adm_update_status' => [
+				'type'       => 'INT',
+				'constraint' => 11,
+				'default'    => 0,
 			],
 		];
 		if ( ! $this->db->table_exists('sch_settings_session') )
 		{
-
 			$this->dbforge->add_field($base_fields);
 			$this->dbforge->add_key('id', TRUE); // PRIMARY KEY
 			$this->dbforge->create_table('sch_settings_session', TRUE);
 		} else {
 			foreach ($base_fields as $column => $definition) {
-
 				if ( ! $this->db->field_exists($column, 'sch_settings_session') ) {
-
 					// add_column requires single-column array
 					$this->dbforge->add_column('sch_settings_session', [
 						$column => $definition
@@ -483,18 +490,56 @@ class Script extends Public_Controller
 				}
 			}
 		}
+		// Check if row already exists for this session in 'sch_settings_session'
+		$exists = $this->db
+			->where('session_id', $session_id)
+			->get('sch_settings_session')
+			->row();
+		if(!$exists) {
+			// Fetch data from sch_settings
+			$settings = $this->db
+				->where('session_id', $session_id)
+				->get('sch_settings')
+				->row_array();
+			if (!empty($settings)) {
+				$insert_data = [
+					'session_id'             => $session_id,
+
+					// Staff ID settings
+					'staffid_auto_insert'    => $settings['staffid_auto_insert'],
+					'staffid_prefix'         => $settings['staffid_prefix'],
+					'staffid_start_from'     => $settings['staffid_start_from'],
+					'staffid_no_digit'       => $settings['staffid_no_digit'],
+					'staffid_update_status'  => $settings['staffid_update_status'],
+
+					// Admission ID settings
+					'adm_auto_insert'        => $settings['adm_auto_insert'],
+					'adm_prefix'             => $settings['adm_prefix'],
+					'adm_start_from'         => $settings['adm_start_from'],
+					'adm_no_digit'           => $settings['adm_no_digit'],
+					'adm_update_status'      => $settings['adm_update_status'],
+
+					// Receipt
+					'receipt_sr_no'          => $settings['receipt_sr_no'],
+				];
+
+				$this->db->insert('sch_settings_session', $insert_data);
+			}
+		}
+		
 		$drop_columns = [
 			'receipt_sr_no',
 			'staffid_auto_insert',
 			'staffid_prefix',
 			'staffid_start_from',
 			'staffid_no_digit',
+			'staffid_update_status',
 			'adm_auto_insert',
 			'adm_prefix',
 			'adm_start_from',
-			'adm_no_digit'
+			'adm_no_digit',
+			'adm_update_status'
 		];
-
 		foreach ($drop_columns as $column) {
 			if ($this->db->field_exists($column, 'sch_settings')) {
 				$this->dbforge->drop_column('sch_settings', $column);
@@ -767,5 +812,8 @@ class Script extends Public_Controller
         }
 		
 		echo 'Success';
+		}else{
+			echo 'You have no active session';
+		}
     }
 }

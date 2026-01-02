@@ -30,6 +30,8 @@ ALTER TABLE `front_cms_programs` ADD `session_id` INT(11) NOT NULL AFTER `id`;
 ALTER TABLE `staff` ADD `session_id` INT(11) NOT NULL AFTER `id`; 
 UPDATE `staff` SET `session_id` = '30' WHERE `staff`.`id` = 1; 
 
+--- 02-01-2026 ---
+DROP TABLE `u121972512_erp`.`sch_settings_session`;
 ===============================
 File change outside of application folder
 --------

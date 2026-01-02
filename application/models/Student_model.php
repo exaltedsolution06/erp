@@ -791,8 +791,9 @@ class Student_model extends MY_Model
 
                 if ($data_setting['adm_auto_insert']) {
                     if ($data_setting['adm_update_status'] == 0) {
-                        $data_setting['adm_update_status'] = 1;
-                        $this->setting_model->add($data_setting);
+						$data_setting['session_id'] = $this->current_session;
+						$data_setting['adm_update_status'] = 1;
+						$this->setting_model->addSettingSession($data_setting);
                     }
                 }
                 $this->db->insert('students', $data);

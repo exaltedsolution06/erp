@@ -658,7 +658,7 @@ class Staff extends Admin_Controller
 //==========================
             $insert                                = true;
             $data_setting                          = array();
-            $data_setting['id']                    = $this->sch_setting_detail->id;
+            $data_setting['id']                    = $this->sch_setting_detail->setting_session_id;
             $data_setting['staffid_auto_insert']   = $this->sch_setting_detail->staffid_auto_insert;
             $data_setting['staffid_update_status'] = $this->sch_setting_detail->staffid_update_status;
             $employee_id                           = 0;

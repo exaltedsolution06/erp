@@ -1117,6 +1117,7 @@ $(document).ready(function(){
             dataType: 'json',
 
             success: function (data) {
+				console.log(data);
 				// alert(data.check_receipt_no);
                 if (data.status == "fail") {
                     var message = "";
@@ -1126,6 +1127,20 @@ $(document).ready(function(){
                     });
                     errorMsg(message);
                 }
+				else if(data.check_staff_session == true)
+				{
+					$('html, body').animate({
+					  scrollTop: $('#staffid_start_from').offset().top
+					}, 800);
+					errorMsg(data.message);
+				}
+				else if(data.check_adm_session == true)
+				{
+					$('html, body').animate({
+					  scrollTop: $('#staffid_start_from').offset().top
+					}, 800);
+					errorMsg(data.message);
+				}
 				else if(data.check_receipt_no == true)
 				{
 					$('.receipt-enabled').click();

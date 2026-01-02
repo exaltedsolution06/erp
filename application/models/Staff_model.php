@@ -280,8 +280,9 @@ class Staff_model extends MY_Model
         if (!empty($data_setting)) {
             if ($data_setting['staffid_auto_insert']) {
                 if ($data_setting['staffid_update_status'] == 0) {
+                    $data_setting['session_id'] = $this->current_session;
                     $data_setting['staffid_update_status'] = 1;
-                    $this->setting_model->add($data_setting);
+                    $this->setting_model->addSettingSession($data_setting);
                 }
             }
         }
