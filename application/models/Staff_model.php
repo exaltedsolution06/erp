@@ -839,10 +839,10 @@ class Staff_model extends MY_Model
         $this->db->select('staff.*,languages.language,languages.id as language_id');
         $this->db->from('staff')->join('languages', 'languages.id=staff.lang_id', 'left');
         $this->db->where('email', $email);
-        $this->db->group_start()
+        /*$this->db->group_start()
 			->where('session_id', $this->current_session)
 			->or_where('session_id IS NULL', null, false)
-		->group_end();
+		->group_end();*/
         $query = $this->db->get();
         if ($query->num_rows() == 1) {
             return $query->row();
