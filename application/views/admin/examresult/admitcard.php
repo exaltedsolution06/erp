@@ -178,7 +178,7 @@
                                                             <td><?php echo $student_value->father_name;
                                             ;
                                                         ?></td>
-                                                            <td><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($student_value->dob)); ?></td>
+                                                            <td><?php echo $student_value->dob!='' ?  date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($student_value->dob)) : ''; ?></td>
                                                             <td><?php echo $student_value->gender; ?></td>
                                                             <td><?php echo $student_value->category; ?></td>
                                                             <td><?php echo $student_value->mobileno; ?></td>
