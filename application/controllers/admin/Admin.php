@@ -64,16 +64,10 @@ class Admin extends Admin_Controller
         //======================Current Month Collection ==============================
         $first_day_this_month     = date('Y-m-01');
 		//------------------------------
-		/*echo $first_day_this_month.' /// '.$Current_date."</br>"; 
 		$first_day_this_year = date('Y-01-01');
 		$last_day_this_year  = date('Y-12-31');
-		echo $first_day_this_year.' /// '.$last_day_this_year."</br>"; 
-		
 		$first_day_this_week = date('Y-m-d', strtotime('monday this week'));
 		$last_day_this_week  = date('Y-m-d', strtotime('sunday this week'));
-
-		echo $first_day_this_week . ' /// ' . $last_day_this_week . "<br>";
-		die;*/
 		//===============================================
         $current_month_collection = $this->studentfeemaster_model->getDepositAmountBetweenDate($first_day_this_month, $current_date);
         $month_collection         = $this->whatever($current_month_collection, $first_day_this_month, $current_date);
@@ -81,9 +75,28 @@ class Admin extends Admin_Controller
         if (!empty($expense)) {
             $month_expense = $month_expense + $expense->amount;
         }
-
+		
+		// yearly expences
+		$yearly_expenses = 0;
+		$expenseYearly                  = $this->expense_model->getTotalExpenseBwdateYearly($first_day_this_year, $last_day_this_year);
+        if (!empty($expenseYearly)) {
+            $yearly_expenses = $yearly_expenses + $expenseYearly->amount;
+        }
+		//echo $yearly_expenses; die;
+		$data['yearly_expenses']    = $yearly_expenses;
+		
+		// weekly expences
+		$weekly_expense = 0;
+		$expenseWeekly                  = $this->expense_model->getTotalExpenseBwdateWeekly($first_day_this_week, $last_day_this_week);
+        if (!empty($expenseWeekly)) {
+            $weekly_expense = $weekly_expense + $expenseWeekly->amount;
+        }
+		$data['weekly_expense']    = $weekly_expense;
+        //----
         $data['month_collection'] = $month_collection;
         $data['month_expense']    = $month_expense;
+		
+        $data['total_expenses']    = $yearly_expenses+$month_expense+$weekly_expense;
 
         $tot_students = $this->studentsession_model->getTotalStudentBySession();
         if (!empty($tot_students)) {

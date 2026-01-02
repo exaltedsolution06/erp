@@ -1680,3 +1680,6 @@ $lang['home_branch'] = 'Home Branch';
 $lang['main_domain'] = 'Main Domain';
 $lang['main_domain_url'] = 'Main Domain URL';
 $lang['scholastic_has_class'] = "Classes inserted with respect to the assessment";
+$lang['yearly_expenses'] = 'Yearly Expenses';
+$lang['weekly_expenses'] = 'Weekly Expenses';
+$lang['total_expenses'] = 'Total Expenses';

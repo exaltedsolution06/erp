@@ -197,7 +197,7 @@ class Role_model extends MY_Model {
 
     public function count_roles($id) {
 
-        $query = $this->db->select("*")->join("staff", "staff.id = staff_roles.staff_id")->where("staff_roles.role_id", $id)->where("staff.is_active", 1)->get("staff_roles");
+        $query = $this->db->select("*")->join("staff", "staff.id = staff_roles.staff_id")->where("staff_roles.role_id", $id)->where("staff.is_active", 1)->where('staff.session_id', $this->current_session)->get("staff_roles");
 
         return $query->num_rows();
     }
