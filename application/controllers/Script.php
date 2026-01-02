@@ -810,6 +810,15 @@ class Script extends Public_Controller
 			$update_sql = "UPDATE `item_issue` SET `session_id` = ?";
 			$this->db->query($update_sql, [$session_id]);
         }
+		//For 'custom_fields'.
+		$session_exists = "SHOW COLUMNS FROM `custom_fields` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `custom_fields` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `custom_fields` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }
 		
 		echo 'Success';
 		}else{

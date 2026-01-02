@@ -837,11 +837,14 @@
 
                                             </div>
 											
-											
+											<?php
+											//$CI =& get_instance();
+											//$CI->load->helper('studentcustomfield');
+											?>
 											<div class="row around10">
 												<div class="col-md-12">
 													<div class="form-group">
-														<?php echo display_custom_fields('students'); ?>
+														<?php echo display_student_custom_fields('students', $session_id); ?>
 													</div>
 												</div>
 											</div>

@@ -265,7 +265,7 @@
 
                                     <div class="row">                                     
                                         <?php
-                                        echo display_custom_fields('staff');
+                                        echo display_staff_custom_fields('staff', $session_id);
                                         ?>
                                     </div>
 

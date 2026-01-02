@@ -13,6 +13,7 @@ class Customfield extends Admin_Controller {
         $this->load->library('encoding_lib');
         $this->custom_fields_list = $this->config->item('custom_fields');
         $this->custom_field_table = $this->config->item('custom_field_table');
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index() {
@@ -39,6 +40,7 @@ class Customfield extends Admin_Controller {
                 'field_values' => $this->input->post('field_values'),
                 'validation' => isset($_POST['validation']) ? $_POST['validation'] : "",
                 'visible_on_table' => isset($_POST['display_tbl']) ? $_POST['display_tbl'] : "",
+				'session_id'  => $this->current_session,
             );
 
             $this->customfield_model->add($data);
