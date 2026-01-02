@@ -63,6 +63,18 @@ class Admin extends Admin_Controller
         $getDepositeAmount  = $this->studentfeemaster_model->getDepositAmountBetweenDate($year_str_month, $year_end_month);
         //======================Current Month Collection ==============================
         $first_day_this_month     = date('Y-m-01');
+		//------------------------------
+		/*echo $first_day_this_month.' /// '.$Current_date."</br>"; 
+		$first_day_this_year = date('Y-01-01');
+		$last_day_this_year  = date('Y-12-31');
+		echo $first_day_this_year.' /// '.$last_day_this_year."</br>"; 
+		
+		$first_day_this_week = date('Y-m-d', strtotime('monday this week'));
+		$last_day_this_week  = date('Y-m-d', strtotime('sunday this week'));
+
+		echo $first_day_this_week . ' /// ' . $last_day_this_week . "<br>";
+		die;*/
+		//===============================================
         $current_month_collection = $this->studentfeemaster_model->getDepositAmountBetweenDate($first_day_this_month, $current_date);
         $month_collection         = $this->whatever($current_month_collection, $first_day_this_month, $current_date);
         $expense                  = $this->expense_model->getTotalExpenseBwdate($first_day_this_month, $current_date);
@@ -313,7 +325,7 @@ class Admin extends Admin_Controller
             'dueforreturn'      => $dueforreturn,
             'forreturn'         => $forreturn,
         );
-
+		
         $Attendence                   = $this->stuattendence_model->getTodayDayAttendance($total_students);
         $data['attendence_data']      = $Attendence;
         $Staffattendence              = $this->Staff_model->getTodayDayAttendance();
@@ -690,6 +702,7 @@ class Admin extends Admin_Controller
         $return_amount = 0;
         $st_date       = strtotime($start_month_date);
         $ed_date       = strtotime($end_month_date);
+		
         if (!empty($feecollection_array)) {
             while ($st_date <= $ed_date) {
                 $date = date('Y-m-d', $st_date);
