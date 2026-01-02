@@ -520,7 +520,7 @@ class Script extends Public_Controller
 					'adm_update_status'      => $settings['adm_update_status'],
 
 					// Receipt
-					'receipt_sr_no'          => $settings['receipt_sr_no'],
+					'receipt_sr_no'          => $settings['receipt_sr_no'] ?? '',
 				];
 
 				$this->db->insert('sch_settings_session', $insert_data);
