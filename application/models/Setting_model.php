@@ -676,6 +676,30 @@ class Setting_model extends MY_Model {
 				return false;
 			}
 		}
+		if($checkData['menu'] == 'account')
+		{
+			//echo "<pre>";print_r($checkData);die;
+			$count = 0;
+			// check account present in fee_head
+			$this->db->where('account_name', $checkData['account_name']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get('fee_head');
+			if($query->num_rows() > 0)
+			{
+				$count++;
+			}
+			
+			// check account present in create route
+			$this->db->where('account_name', $checkData['account_name']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get('route_head');
+			if($query->num_rows() > 0)
+			{
+				$count++;
+			}
+			
+			return $count;
+		}
 		else{
 			//echo "<pre>";print_r($checkData);die;
 			$this->db->where($checkData['field'], $checkData['id']);

@@ -70,10 +70,12 @@ class Account extends Admin_Controller
 		
 		$checkData['menu'] = 'account';
 		$checkData['table'] = 'fee_head';
-		$checkData['id'] = $getNameById['account'];
+		$checkData['id'] = $id;
+		$checkData['account_name'] = $getNameById['account'];
 		$checkData['field'] = 'account_name';
+		$checkData['session_id'] = $this->current_session;
 		$ifsection = $this->Setting_model->checkDeleteList($checkData);
-		
+		//echo $ifsection; die;
 		if($ifsection > 0)
 		{
 			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Account already added in Fee heads</div>');
