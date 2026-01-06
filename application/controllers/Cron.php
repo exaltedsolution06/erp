@@ -15,18 +15,35 @@ class Cron extends CI_Controller
     public function __construct($key = "")
     {
         parent::__construct();
+		$this->load->model('setting_model');
         $setting_result = $this->setting_model->getSetting();
         $this->cron_key = $setting_result->cron_secret_key;
         $this->load->model('feereminder_model');
     }
+	
+	public function changeSessions()
+    {
+        //$this->load->model('Student_model');
+
+        //$this->Student_model->update_status();
+		 $key = $this->input->get('key');
+
+        /*if ($key !== $this->cron_key) {
+            exit('Invalid Key or Direct access is not allowedwwww');
+        }*/
+
+        echo 'hello';
+        die;
+        
+    }
 
     public function index($key = '')
     {
-
         if ($key != "" && $this->cron_key == $key) {
 
             $this->autobackup($key);
             $this->feereminder($key);
+            $this->changeSessions($key);
         } else {
             echo "Invalid Key or Direct access is not allowed";
             return;
@@ -35,7 +52,6 @@ class Cron extends CI_Controller
 
     public function autobackup($key = '')
     {
-
         if ($key != "") {
             if ($key != "" && $this->cron_key != $key) {
                 echo "Invalid Key or Direct access is not allowed";
@@ -153,5 +169,6 @@ class Cron extends CI_Controller
             }
         }
     }
+	
 
 }
