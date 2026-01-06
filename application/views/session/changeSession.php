@@ -68,6 +68,7 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 										<?php
 											}
 										?>
+										<option value="0">Passout</option>
 									</select>
 									<span class="text-danger" id="next_class_id_error"></span>
 								</div>
@@ -215,12 +216,12 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
     </section>
 </div>
 <script type="text/javascript">
-	$(document).on('change', '#current_class_id, #next_class_id', function (e) {
+	/*$(document).on('change', '#current_class_id, #next_class_id', function (e) {
 		var data_id = $(this).data('id');
         $('#'+data_id+'_section_id').html("");
         var class_id = $(this).val();
-        var base_url = '<?php echo base_url() ?>';
-        var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+        var base_url = '<?php //echo base_url() ?>';
+        var div_data = '<option value=""><?php //echo $this->lang->line('select'); ?></option>';
         $.ajax({
             type: "GET",
             url: base_url + "sections/getByClass",
@@ -234,7 +235,7 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
                 $('#'+data_id+'_section_id').append(div_data);
             }
         });
-    });
+    });*/
 	$(document).ready(function () {
 		$('#form1').on('click', '.add_list', function (e) {
 			var datastring = $("#form1").serialize();
@@ -263,7 +264,7 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
                         successMsg(data.msg);
 						setTimeout(function () {
 							location.reload(true);
-						}, 5000);                        
+						}, 2000);                        
                     }
                 },
             });
@@ -297,7 +298,7 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
                         successMsg(data.msg);
                         setTimeout(function () {
 							location.reload(true);
-						}, 5000);
+						}, 2000);
                     }
                 },
             });
@@ -319,7 +320,7 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
                         successMsg(data.msg);
                         setTimeout(function () {
 							location.reload(true);
-						}, 5000);
+						}, 2000);
                     }
                 },
                 error: function (xhr) { 

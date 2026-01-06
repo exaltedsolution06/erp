@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 06, 2026 at 09:30 AM
+-- Generation Time: Jan 06, 2026 at 10:11 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -33,7 +33,7 @@ CREATE TABLE `move_students` (
   `current_session_id` int(11) NOT NULL,
   `current_class_id` int(11) NOT NULL,
   `next_session_id` int(11) NOT NULL,
-  `next_class_id` int(11) NOT NULL,
+  `next_class_id` int(11) NOT NULL COMMENT '0=Passout',
   `status` tinyint(1) NOT NULL COMMENT '0=add to list, 1=Submit for cron, 2=move completed'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
