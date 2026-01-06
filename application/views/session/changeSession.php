@@ -92,14 +92,14 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
             <div class="col-md-5">                
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
-                        <h3 class="box-title titlefix">Change Category</h3>
+                        <h3 class="box-title titlefix">Change Fee Category</h3>
                     </div>
 					<form id="form2" action="" method="post" accept-charset="utf-8">
 					<input type="hidden" name="batch_id" value="<?php echo $batch_id; ?>">
 						<div class="box-body">
 							<div class="col-sm-6">
 								<div class="form-group">
-									<label>Current Session Category</label><small class="req"> *</small>
+									<label>Current Session Fee Category</label><small class="req"> *</small>
 									<select autofocus="" id="current_category_id" name="current_category_id" class="form-control" >
 										<option value=""><?php echo $this->lang->line('select'); ?></option>
 										<?php
@@ -110,12 +110,12 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 										}
 										?>
 									</select>
-									<span class="text-danger" id="current_category_error"></span>
+									<span class="text-danger" id="current_category_id_error"></span>
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
-									<label>Next Session Category</label><small class="req"> *</small>
+									<label>Next Session Fee Category</label><small class="req"> *</small>
 									<select autofocus="" id="next_category_id" name="next_category_id" class="form-control" >
 										<option value=""><?php echo $this->lang->line('select'); ?></option>
 										<?php
@@ -152,6 +152,7 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 										<th>Batch Id</th>
 										<th>Current Class</th>
 										<th>Next Class</th>
+										<th class="text-right">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -163,6 +164,11 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 												<td><?php echo $list_val['batch_id']; ?></td>
 												<td><?php echo $this->class_model->getClassNameById($list_val['current_class_id']); ?></td>
 												<td><?php echo $this->class_model->getClassNameById($list_val['next_class_id']); ?></td>
+												<td class="mailbox-date pull-right">
+													<a data-placement="left" href="<?php echo base_url(); ?>changesessions/delete_list/<?php echo $list_val['id']; ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                        <i class="fa fa-remove"></i>
+                                                    </a>
+												</td>
 											</tr>
 									<?php
 										}
@@ -171,7 +177,25 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 								</tbody>
 							</table>
 						</div>
-					</div> 
+					</div>
+					<div class="box-footer">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="discontinue_next_session" id="discontinue_next_session">Discontinue all students in next session
+									</label>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="carry_zero_balance" id="carry_zero_balance">Carry Zero Balance of all students
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div> 
 			</div> 
 			<div class="col-md-5">
@@ -187,6 +211,7 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 										<th>Batch Id</th>
 										<th>Current Category</th>
 										<th>Next Category</th>
+										<th class="text-right">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -198,6 +223,11 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 												<td><?php echo $list_cat_val['batch_id']; ?></td>
 												<td><?php echo $this->feegroup_model->getgroupNameById($list_cat_val['current_category_id']); ?></td>
 												<td><?php echo $this->feegroup_model->getgroupNameById($list_cat_val['next_category_id']); ?></td>
+												<td class="mailbox-date pull-right">
+													<a data-placement="left" href="<?php echo base_url(); ?>changesessions/delete_list_category/<?php echo $list_cat_val['id']; ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                        <i class="fa fa-remove"></i>
+                                                    </a>
+												</td>
 											</tr>
 									<?php
 										}
@@ -216,26 +246,6 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
     </section>
 </div>
 <script type="text/javascript">
-	/*$(document).on('change', '#current_class_id, #next_class_id', function (e) {
-		var data_id = $(this).data('id');
-        $('#'+data_id+'_section_id').html("");
-        var class_id = $(this).val();
-        var base_url = '<?php //echo base_url() ?>';
-        var div_data = '<option value=""><?php //echo $this->lang->line('select'); ?></option>';
-        $.ajax({
-            type: "GET",
-            url: base_url + "sections/getByClass",
-            data: {'class_id': class_id},
-            dataType: "json",
-            success: function (data) {
-                $.each(data, function (i, obj)
-                {
-                    div_data += "<option value=" + obj.section_id + ">" + obj.section + "</option>";
-                });
-                $('#'+data_id+'_section_id').append(div_data);
-            }
-        });
-    });*/
 	$(document).ready(function () {
 		$('#form1').on('click', '.add_list', function (e) {
 			var datastring = $("#form1").serialize();
@@ -304,10 +314,17 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
             });
 		});
 		$(document).on('click', '.transfer_batch', function (e) {
+			var discontinue_next_session = $('#discontinue_next_session').is(':checked') ? 1 : 0;
+			var carry_zero_balance = $('#carry_zero_balance').is(':checked') ? 1 : 0;
+			
 			$.ajax({
                 type: "POST",
 
                 url: '<?php echo site_url("changesessions/transfer_batch") ?>',
+				data: {
+					discontinue_next_session: discontinue_next_session,
+					carry_zero_balance: carry_zero_balance,
+				},
                 beforeSend: function () {
 					$(this).prop('disabled', true);
                 },
@@ -322,12 +339,6 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 							location.reload(true);
 						}, 2000);
                     }
-                },
-                error: function (xhr) { 
-					// if error occured
-                },
-                complete: function () {
-                    //
                 },
             });
 		});

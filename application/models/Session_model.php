@@ -169,6 +169,27 @@ class Session_model extends MY_Model {
         $query = $this->db->get('move_students');
 		return $query->result_array();
     }
+    public function remove_list($id) {
+        $this->db->trans_start(); # Starting Transaction
+        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+        //=======================Code Start===========================
+        $this->db->where('id', $id);
+        $this->db->delete('move_students');
+        $message = DELETE_RECORD_CONSTANT . " On move_students id " . $id;
+        $action = "Delete";
+        $record_id = $id;
+        $this->log($message, $record_id, $action);
+        //======================Code End==============================
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            //return $return_value;
+        }
+    }
     public function getAddedCategoryExists($current_category_id) {
         $this->db->where('current_session_id', $this->current_session);
         $this->db->where('current_category_id', $current_category_id);
@@ -218,13 +239,13 @@ class Session_model extends MY_Model {
 			return false;
 		}
     }
-	public function transfer_batch_next_session() {
+	public function transfer_batch_next_session($discontinue, $carry_zero) {
         $this->db->trans_start();
 
 		// Update 'move_students' table
 		$this->db->where('current_session_id', $this->current_session);
 		$this->db->where('status', 0);
-		$this->db->update('move_students', ['status' => 1]);
+		$this->db->update('move_students', ['status' => 1, 'discontinue_next_session'=>$discontinue, 'carry_zero_balance'=>$carry_zero]);
 
 		// Update 'move_students_category' table
 		$this->db->where('current_session_id', $this->current_session);
@@ -234,5 +255,26 @@ class Session_model extends MY_Model {
 		$this->db->trans_complete();
 
 		return $this->db->trans_status();
+    }
+    public function remove_list_category($id) {
+        $this->db->trans_start(); # Starting Transaction
+        $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
+        //=======================Code Start===========================
+        $this->db->where('id', $id);
+        $this->db->delete('move_students_category');
+        $message = DELETE_RECORD_CONSTANT . " On move_students_category id " . $id;
+        $action = "Delete";
+        $record_id = $id;
+        $this->log($message, $record_id, $action);
+        //======================Code End==============================
+        $this->db->trans_complete(); # Completing transaction
+        /* Optional */
+        if ($this->db->trans_status() === false) {
+            # Something went wrong.
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            //return $return_value;
+        }
     }
 }

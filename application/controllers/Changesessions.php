@@ -107,15 +107,28 @@ class Changesessions extends Admin_Controller
     }
     public function transfer_batch()
     {
+		$discontinue = $this->input->post('discontinue_next_session');
+		$carry_zero  = $this->input->post('carry_zero_balance');
+	
         $list_exists = $this->session_model->getTransferStudentExists();
 		if($list_exists){
-			$update = $this->session_model->transfer_batch_next_session();
+			$update = $this->session_model->transfer_batch_next_session($discontinue, $carry_zero);
 			if($update){
 				echo json_encode(array('status' => 'success', 'msg' => 'Transfer batch to next session set to Cronjob successfully.'));
 			}			
 		}else{
 			echo json_encode(array('status' => 'no_added_list', 'msg' => 'No class added in list.'));
 		}
+    }
+	public function delete_list($id)
+    {
+        $this->session_model->remove_list($id);
+        redirect('changesessions');
+    }
+	public function delete_list_category($id)
+    {
+        $this->session_model->remove_list_category($id);
+        redirect('changesessions');
     }
 
 }
