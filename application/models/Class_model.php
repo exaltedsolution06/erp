@@ -210,5 +210,17 @@ class Class_model extends MY_Model {
 			return null;
 		}
 	}
+	public function getClassNameById($id)
+	{
+		$this->db->where('id', $id);
+		$query = $this->db->get('classes');
+		$result = $query->row_array();
+		if($result['class'] != ''){
+			return $result['class'];
+		}
+		else{
+			return $id;
+		}
+	}
 
 }
