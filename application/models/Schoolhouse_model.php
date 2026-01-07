@@ -55,6 +55,7 @@ class Schoolhouse_model extends MY_model {
                 return false;
             } else {
                 //return $return_value;
+				return $record_id ;
             }
         }
     }
