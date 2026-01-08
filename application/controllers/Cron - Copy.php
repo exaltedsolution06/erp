@@ -162,6 +162,7 @@ class Cron extends CI_Controller
 	
 	public function changeSessions($key = "")
 	{
+		
 		$key = $this->input->get('key');
 
         if ($key !== $this->cron_key) {
@@ -171,261 +172,220 @@ class Cron extends CI_Controller
 		
 		$this->db->select('move_students.batch_id');
 		$this->db->from('move_students');
-		/*$this->db->join(
+		$this->db->join(
 			'move_students_category',
 			'move_students.batch_id = move_students_category.batch_id'
-		);*/
+		);
 		$this->db->where('move_students.status', 1);
-		// $this->db->where('move_students_category.status', 1);
+		$this->db->where('move_students_category.status', 1);
 		$this->db->where('move_students.current_session_id', $this->current_session);
 		$this->db->group_by('batch_id');
 		$query = $this->db->get();
-		// echo '<pre>'; print_r($query->result_array()); exit;
 		
 		foreach($query->result_array() as $result){
 			
 			$this->db->from('move_students');
 			$this->db->join('classes', 'classes.id = move_students.next_class_id');
+			//$this->db->join('move_students_category', 'move_students_category.batch_id = move_students.batch_id');
 			$this->db->where('move_students.batch_id', $result['batch_id']);
 			$this->db->where('move_students.status', 1);
 			$qr = $this->db->where('move_students.current_session_id', $this->current_session)->get();
 			$classData = $qr->result_array();
-			// echo "<pre>";print_r($classData);die;
+			//echo "<pre>";print_r($classData);die
 			$sectionArr = [];
 			foreach($qr->result_array() as $val){
-				$new_section_array = [];
-				$new_class_array = [];
-				$new_house_array = [];
-				$new_fee_category_array = [];
-				/*
+				//echo $val['batch_id'].'</br>';
+				//$sectionArr = [];
 				$this->db->from('move_students');
 				$this->db->join('classes', 'classes.id = move_students.next_class_id');
+				//$this->db->where('move_students.batch_id', $val['batch_id']);
 				$this->db->where('classes.id', $val['next_class_id']);
 				$this->db->where('move_students.status', 1);
 				$qr = $this->db->where('move_students.current_session_id', $this->current_session)->get();
 				$classes = $qr->row_array();
-				*/
-				
-				$classes = $val;
-				
-				// Create section start
-					$this->db->select('sections.*')->from('class_sections');
+				echo "<pre>";print_r($classes);
+				$this->db->from('classes');
+				$this->db->where('session_id',  $classes['next_session_id']);
+				$this->db->where('class', $classes['class']);
+				$query = $this->db->get();
+				if($query->num_rows() == 0)
+				{
+					$this->db->select('sections.section')->from('class_sections');
 					$this->db->join('sections', 'sections.id = class_sections.section_id');
-					$this->db->where('class_sections.class_id', $classes['current_class_id']);
+					$this->db->where('class_sections.class_id', $classes['next_class_id']);
 					$qr = $this->db->get();
 					$sectionData = $qr->result_array();
 					foreach($sectionData as $sec)
 					{
-						$this->db->where('section', $sec['section']);
-						$this->db->where('session_id', $classes['next_session_id']);
-						$sec_query = $this->db->get('sections');
-						if($sec_query->num_rows() > 0){
-							$sec_query = $sec_query->row_array();
-							$sectionArr[] = $sec_query['id'];
-							$new_section_array[] = array($sec['id'] => $sec_query['id']);
-						}else{
+						if($sec['section'] != $section_name)
+						{
 							$data = array(
 								'section' => $sec['section'],
 								'session_id' => $classes['next_session_id'],
 							);
 							$section_id = $this->section_model->add($data);
 							$sectionArr[] = $section_id;
-							$new_section_array[] = array($sec['id'] => $section_id);
+							$section_name = $sec['section'];
 						}
 					}
 					//echo "<pre>";print_r($sectionData);die;
-					// echo '<pre>'; print_r($new_section_array); exit;
 					//echo $classData['class'].'->'.$sectionData['section']."</br>";
-					// echo "<pre>";print_r($sectionArr);die;
-				// Create section end
-				
-				// Create class start
-					$this->db->from('classes');
-					$this->db->where('session_id',  $classes['next_session_id']);
-					$this->db->where('class', $classes['class']);
-					$query = $this->db->get();
-					if($query->num_rows() == 0) // If class not exists
+					//echo "<pre>";print_r($sectionArr);
+					
+					$class_array = array(
+						'class' => $classes['class'],
+						'session_id' => $classes['next_session_id'],
+					);
+					$sections = $sectionArr;
+					$class_id = $this->classsection_model->add($class_array, $sections);
+					//echo 'class_id-> '.$class_id; 
+					$this->db->select('section_id')->from('class_sections');
+					$this->db->where('class_id', $class_id);
+					$qrsection = $this->db->get()->row_array();
+					$section_id = $qrsection['section_id'];// new section_id
+					
+					// create student house
+					$this->db->from('student_session');
+					$this->db->where('class_id', $classes['current_class_id']);
+					$this->db->where('session_id', $classes['current_session_id']);
+					$qr = $this->db->get();
+					$qrhouseData = $qr->result_array();
+					echo "<pre>";print_r($qrhouseData);
+					foreach($qrhouseData as $val)
 					{
-						$class_array = array(
-							'class' => $classes['class'],
-							'session_id' => $classes['next_session_id'],
-						);
-						$class_id = $this->classsection_model->add($class_array, $sectionArr);
-					}else{ // If class exists
-						$class_query = $query->row_array();
-						$class_id = $class_query['id'];
-						foreach($sectionArr as $sectionArrVal){
-							$check_array = array(
-								'class_id' => $class_query['id'],
-								'section_id' => $sectionArrVal,
-							);
-							// echo "<pre>";print_r($sectionArr);die;
-							$check_class_sec_exists = $this->classsection_model->check_data_exists($check_array);
-							if(!$check_class_sec_exists){
-								$class_array = array(
-									'id' => $class_query['id'],
-									'class' => $class_query['class'],
-									'session_id' => $classes['next_session_id'],
+						$student_house_id = $val['school_house_id'];
+						if($student_house_id != 0)
+						{
+							echo 'hii '.$student_house_id;
+							$this->db->select('house_name')->from('school_houses');
+							$this->db->where('id', $student_house_id);
+							$this->db->where('session_id', $classes['current_session_id']);
+							$qrhouse = $this->db->get()->row_array();
+							$house_name = $qrhouse['house_name'];
+							
+							// check house name exist in next session
+							$this->db->from('school_houses');
+							$this->db->where('house_name', $house_name);
+							$this->db->where('session_id', $classes['next_session_id']);
+							$qr = $this->db->get();
+						
+							if($qr->num_rows() == 0)
+							{
+								 $data = array(
+									'house_name' => $house_name,
+									'is_active' => 'yes',
+									'description' => '',
+									'session_id' => $classes['next_session_id']
 								);
-								$class_id = $this->classsection_model->add($class_array, array($sectionArrVal));
+								//echo "<pre>";print_r($data);
+								$school_house_id = $this->schoolhouse_model->add($data);
+							}
+						}
+						
+						// create fee category
+					}
+					
+					
+				}
+				else{
+					echo 'yes';
+					//echo $classes['current_class_id'];
+					
+					// class_id and section_id
+					$this->db->from('classes');
+					$this->db->join('class_sections', 'class_sections.class_id=classes.id');
+					$this->db->where('classes.class', $classes['class']);
+					$this->db->where('classes.session_id', $classes['next_session_id']);
+					$class_section = $this->db->get()->row_array();
+					$class_id = $class_section['class_id'];
+					$section_id = $class_section['section_id'];
+					//echo $class_id.' ### '.$section_id;
+					
+					// create student house
+					$this->db->from('student_session');
+					$this->db->where('class_id', $classes['current_class_id']);
+					$this->db->where('session_id', $classes['current_session_id']);
+					$qr = $this->db->get();
+					$qrhouseData = $qr->result_array();
+					echo "<pre>";print_r($qrhouseData);
+					foreach($qrhouseData as $val)
+					{
+						$student_house_id = $val['school_house_id'];
+						$student_id = $val['student_id'];
+						$fee_category_id = $val['fee_category_id'];
+						
+						if($student_house_id != 0)
+						{
+							echo 'hii '.$student_house_id;
+							$this->db->select('house_name')->from('school_houses');
+							$this->db->where('id', $student_house_id);
+							$this->db->where('session_id', $classes['current_session_id']);
+							$qrhouse = $this->db->get()->row_array();
+							$house_name = $qrhouse['house_name'];
+							
+							// check house name exist in next session
+							$this->db->from('school_houses');
+							$this->db->where('house_name', $house_name);
+							$this->db->where('session_id', $classes['next_session_id']);
+							$qr = $this->db->get();
+						
+							if($qr->num_rows() == 0)
+							{
+								 $data = array(
+									'house_name' => $house_name,
+									'is_active' => 'yes',
+									'description' => '',
+									'session_id' => $classes['next_session_id']
+								);
+								//echo "<pre>";print_r($data);
+								$school_house_id = $this->schoolhouse_model->add($data);
+							}
+						}
+						
+						// create fee category
+						if($fee_category_id != 0)
+						{
+							$this->db->from('move_students_category');
+							$this->db->where('current_session_id', $classes['current_session_id']);
+							$this->db->where('batch_id', $result['batch_id']);
+							$this->db->where('current_category_id', $fee_category_id);
+							$qrcat = $this->db->get();
+							//echo "<pre>";print_r($qrcat);
+							//echo 'rows->'.$qrcat->num_rows();
+							if($qrcat->num_rows() > 0)
+							{
+								$next_category_data = $qrcat->row_array();
+								$next_category_id = $next_category_data['next_category_id'];
+								$this->db->from('fee_groups');
+								$this->db->where('id', $next_category_id);
+								$this->db->where('session_id', $classes['current_session_id']);
+								$qrFeegr = $this->db->get()->row_array();
+								$fee_gr_name = $qrFeegr['name'];
+								//echo 'www'.$fee_gr_name;
+								// check fee group name exists for next session
+								$this->db->from('fee_groups');
+								$this->db->where('name', $fee_gr_name);
+								$this->db->where('session_id', $classes['next_session_id']);
+								$qr_name_exist = $this->db->get();
+								//echo 'hello row->'.$qr_name_exist->num_rows();
+								if($qr_name_exist->num_rows() == 0)
+								{
+									$firstChar = substr($fee_gr_name, 0, 2); 
+									//$fee_gr_name = $firstChar.'-'.$classes['next_session_id'];
+									$data = array(
+										'name' => $fee_gr_name,
+										'description' => null,
+										'session_id' => $classes['next_session_id'],
+									);
+									$new_fee_category_id = $this->feegroup_model->add($data);
+									//echo 'fee_cat_id->'. $new_fee_category_id;
+								}
 							}
 						}
 					}
-					$new_class_array[] = array($classes['current_class_id'] => $class_id);
-					// echo '<pre>'; print_r($new_class_array); exit;
-					// echo "<pre>";print_r($class_id);die;				
-					// echo "<pre>";print_r($classes);die;
-				// Create class end	
-				
-				// create student house start
-					$new_house_array = $this->house_create($classes['current_class_id'], $classes['current_session_id'], $classes['next_session_id']);
-					// echo "<pre>";print_r($new_house_array);die;
-				// create student house end
-				
-				// create fee category start
-					$new_fee_category_array = $this->fee_category_create($classes['current_class_id'], $classes['current_session_id'], $classes['next_session_id'], $result['batch_id']);
-					echo "<pre>";print_r($new_fee_category_array);die;
-				// create fee category end
-				
-				// create 'fee_plan' start
-					// echo "<pre>";print_r($classes);die;
-					$new_fee_plan_array = $this->fee_plan_create($classes['current_class_id'], $classes['current_session_id'], $classes['next_session_id']);
-					echo "<pre>";print_r($new_fee_category_array);die;
-				// create 'fee_plan' end
-				
+				}
 			}
 		}
-	}
-	
-	public function house_create($current_class_id, $current_session_id, $next_session_id)
-    {
-		$new_house_array = [];
-		$this->db->from('student_session');
-		$this->db->join('school_houses', 'school_houses.id = student_session.school_house_id');
-		$this->db->where('student_session.class_id', $current_class_id);
-		$this->db->where('student_session.session_id', $current_session_id);
-		$this->db->where_not_in('student_session.school_house_id', [0]);
-		$this->db->group_by('student_session.school_house_id');
-		$qr = $this->db->get();
-		$qrhouseData = $qr->result_array();
-		// echo "<pre>";print_r($qrhouseData);die;
-		foreach($qrhouseData as $qrhouseDataVal){
-			$this->db->where('house_name', $qrhouseDataVal['house_name']);
-			$house_exists_query = $this->db->where('session_id', $next_session_id)->get('school_houses');
-			if($house_exists_query->num_rows() > 0){
-				$house_query = $house_exists_query->row_array();
-				$school_house_id = $house_query['id'];
-			}else{
-				$data = array(
-					'house_name' => $qrhouseDataVal['house_name'],
-					'is_active' => 'yes',
-					'description' => '',
-					'session_id' => $next_session_id
-				);
-				$school_house_id = $this->schoolhouse_model->add($data);
-			}
-			$new_house_array[] = array($qrhouseDataVal['id'] => $school_house_id);
-		}
-		return $new_house_array;
-	}
-	
-	public function fee_category_create($current_class_id, $current_session_id, $next_session_id, $batch_id)
-    {
-		$new_house_array = [];
-		/*$this->db->from('student_session');
-		$this->db->join('fee_groups', 'fee_groups.id = student_session.fee_category_id');
-		$this->db->where('student_session.class_id', $current_class_id);
-		$this->db->where('student_session.session_id', $current_session_id);
-		$this->db->where_not_in('student_session.fee_category_id', [0]);
-		$this->db->group_by('student_session.fee_category_id');
-		$qr = $this->db->get();
-		$qrArrayData = $qr->result_array();*/
-		$this->db->from('move_students_category');
-		$this->db->join('fee_groups', 'fee_groups.id = move_students_category.next_category_id');
-		$this->db->where('fee_groups.session_id', $current_session_id);
-		$this->db->where('move_students_category.batch_id', $batch_id);
-		$this->db->where('move_students_category.status', 1);
-		$qr = $this->db->get();
-		$qrArrayData = $qr->result_array();
-		// return $qrArrayData;
-		foreach($qrArrayData as $qrArrayDataVal){
-			$this->db->where('name', $qrArrayDataVal['name']);
-			$value_exists_query = $this->db->where('session_id', $next_session_id)->get('fee_groups');
-			if($value_exists_query->num_rows() > 0){
-				$value_query = $value_exists_query->row_array();
-				$value_id = $value_query['id'];
-			}else{
-				$data = array(
-					'session_id' => $next_session_id,
-					'name' => $qrArrayDataVal['name'],
-					'is_system' => $qrArrayDataVal['is_system'],
-					'description' => '',
-					'is_active' => $qrArrayDataVal['is_active'],
-				);
-				$value_id = $this->feegroup_model->add($data);
-			}
-			$new_fee_category_array[] = array($qrArrayDataVal['id'] => $value_id);
-		}
-		return $new_fee_category_array;
-	}
-	
-	public function fee_plan_create($current_class_id, $current_session_id, $next_session_id)
-    {
-		$this->db->from('fees_plan');
-		$this->db->where('fee_groups.session_id', $current_session_id);
-		$this->db->where('move_students_category.batch_id', $batch_id);
-		$this->db->where('move_students_category.status', 1);
-		$qr = $this->db->get();
-		$qrArrayData = $qr->result_array();
-		// return $qrArrayData;
-		foreach($qrArrayData as $qrArrayDataVal){
-			$this->db->where('name', $qrArrayDataVal['name']);
-			$value_exists_query = $this->db->where('session_id', $next_session_id)->get('fee_groups');
-			if($value_exists_query->num_rows() > 0){
-				$value_query = $value_exists_query->row_array();
-				$value_id = $value_query['id'];
-			}else{
-				$data = array(
-					'session_id' => $next_session_id,
-					'name' => $qrArrayDataVal['name'],
-					'is_system' => $qrArrayDataVal['is_system'],
-					'description' => '',
-					'is_active' => $qrArrayDataVal['is_active'],
-				);
-				$value_id = $this->feegroup_model->add($data);
-			}
-			$new_fee_category_array[] = array($qrArrayDataVal['id'] => $value_id);
-		}
-		return $new_fee_category_array;
-	}
-	
-	public function fee_category_create_bkp($current_class_id, $current_session_id, $next_session_id)
-    {
-		$new_fee_category_array = [];
-		$this->db->from('fee_groups');
-		$this->db->where('session_id', $current_session_id);
-		$this->db->where('is_system', 0);
-		$qr = $this->db->get();
-		$qrArrayData = $qr->result_array();
-		foreach($qrArrayData as $qrArrayDataVal){
-			$this->db->where('name', $qrArrayDataVal['name']);
-			$value_exists_query = $this->db->where('session_id', $next_session_id)->get('fee_groups');
-			if($value_exists_query->num_rows() > 0){
-				$value_query = $value_exists_query->row_array();
-				$value_id = $value_query['id'];
-			}else{
-				$data = array(
-					'session_id' => $next_session_id,
-					'name' => $qrArrayDataVal['name'],
-					'is_system' => $qrArrayDataVal['is_system'],
-					'description' => '',
-					'is_active' => $qrArrayDataVal['is_active'],
-				);
-				$value_id = $this->feegroup_model->add($data);
-			}
-			$new_fee_category_array[] = array($qrArrayDataVal['id'] => $value_id);
-		}
-		return $new_fee_category_array;
 	}
 	
 	public function changeSessions_bck($key = "")
