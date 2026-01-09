@@ -407,41 +407,53 @@ class Cron extends CI_Controller
 	
 	public function subject_create($classes, $sections, $current_session, $next_session)
 	{
-		//echo "<pre>";print_r($classes);
-		//echo "<pre>";print_r($sections);
-		
 		$classSectionArr = [];
 		foreach ($classes as $key => $classArr) {
 			$classSectionArr[$key] = $classArr + ($sections[$key] ?? []);
 		}
-		//echo "<pre>";
-		//print_r($classSectionArr);
+		//echo "<pre>";print_r($classSectionArr);
 		
 		$result = [];
-
 		foreach ($classSectionArr as $val) {
 
-			$classIds   = array_slice($val, 0, 1, true);
-			$sessionIds = array_slice($val, 1, 1, true);
+			$classKey   = null;
+			$classValue = null;
+			$sectionKey = null;
+			$sectionValue = null;
+
+			foreach ($val as $key => $value) {
+				
+				if ($key > 1) {
+					$classKey   = $key;
+					$classValue = $value;
+				} 
+				
+				else {
+					$sectionKey   = $key;
+					$sectionValue = $value;
+				}
+			}
 
 			$result[] = [
-				'current_class_id'   => key($classIds),
-				'next_class_id'      => current($classIds),
-				'current_section_id' => key($sessionIds),
-				'next_section_id'    => current($sessionIds),
+				'current_class_id'   => $classKey,
+				'next_class_id'      => $classValue,
+				'current_section_id' => $sectionKey,
+				'next_section_id'    => $sectionValue,
 			];
 		}
+
+		//echo "<pre>";print_r($result);
 		
 		$new_subject_arr = [];
 		
 		foreach($result as $val)
 		{
-			//echo $val['current_class_id'].' # '.$val['current_section_id'];
 			$this->db->where('class_id', $val['current_class_id']);
 			$this->db->where('section_id', $val['current_section_id']);
 			$qr = $this->db->get('class_sections')->row_array();
 			$class_section_id = $qr['id'];
 			$chk = $this->db->where('class_section_id', $class_section_id)->get('subject_group_class_sections');
+			
 			if($chk->num_rows() > 0)
 			{
 				$this->db->where('class_id', $val['next_class_id']);
@@ -460,9 +472,12 @@ class Cron extends CI_Controller
 					$qrSub = $this->db->get();
 					if($qrSub->num_rows() > 0)
 					{
+						//echo "<pre>";print_r($qrSub->result_array());
+						
 						foreach($qrSub->result_array() as $subjects)
 						{
 							$subject_id = $subjects['subject_id'];
+							
 							// get subject name in currect session
 							$this->db->from('subjects');
 							$this->db->where('id', $subject_id);
@@ -472,8 +487,8 @@ class Cron extends CI_Controller
 							$subject_name = $subject_data['name']; 
 							$subject_code = $subject_data['code']; 
 							$subject_type = $subject_data['type']; 
-							$subject_type_one = $subject_data['type_one']; 
-							
+							$subject_type_one = $subject_data['type_one'];
+														
 							// check subject name in next session
 							$this->db->from('subjects');
 							$this->db->where('name', $subject_name);
@@ -493,6 +508,10 @@ class Cron extends CI_Controller
 								
 								$new_subject_id = $this->subject_model->add($data);
 								$new_subject_arr[] = $new_subject_id;
+							}
+							else{
+								$s_id = $qr_subject->row_array();
+								$new_subject_arr[] = $s_id['id'];
 							}
 							
 						}
@@ -517,7 +536,7 @@ class Cron extends CI_Controller
 					{
 						$next_class_section_ids[] = $ids['id'];
 					}
-					//echo "<pre>";print_r($next_class_section_ids);
+					
 					//insert into tables subject_groups ,subject_group_subjects, subject_group_class_sections
 					
 					$class_array = array(
@@ -527,9 +546,7 @@ class Cron extends CI_Controller
 					);
 					$subject_group = $new_subject_arr;
 					$section_group = $next_class_section_ids;
-					//echo "<pre>";print_r($class_array);
-					//echo "<pre>";print_r($subject_group);
-					//echo "<pre>";print_r($section_group);
+					
 					
 					$this->db->insert('subject_groups', $class_array);
 					$subject_group_id = $this->db->insert_id();
@@ -565,14 +582,6 @@ class Cron extends CI_Controller
 				
 			} // if end
 		}
-		
-		//echo "<pre>";
-		//print_r($result);
-
-		//echo $current_session."</br>";
-		//echo $next_session."</br>";die;
-		
-		//-- for subject group
 		
 	}
 	
