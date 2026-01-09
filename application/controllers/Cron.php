@@ -25,6 +25,8 @@ class Cron extends CI_Controller
         $this->load->model('feegroup_model');
         $this->load->model('subject_model');
         $this->load->model('subjectgroup_model');
+        $this->load->model('department_model');
+        $this->load->model('designation_model');
 		$this->current_session = $this->setting_model->getCurrentSession();
     }
 	
@@ -304,6 +306,10 @@ class Cron extends CI_Controller
 			
 		}
 		//$this->subject_create($new_class_array, $new_section_array, $classes['current_session_id'], $classes['next_session_id']);
+		
+		$this->create_department();
+		$this->create_designation();
+		$this->create_staff();
 	}
 	
 	public function house_create($current_class_id, $current_session_id, $next_session_id)
@@ -498,41 +504,53 @@ class Cron extends CI_Controller
 	
 	public function subject_create($classes, $sections, $current_session, $next_session)
 	{
-		//echo "<pre>";print_r($classes);
-		//echo "<pre>";print_r($sections);
-		
 		$classSectionArr = [];
 		foreach ($classes as $key => $classArr) {
 			$classSectionArr[$key] = $classArr + ($sections[$key] ?? []);
 		}
-		//echo "<pre>";
-		//print_r($classSectionArr);
+		//echo "<pre>";print_r($classSectionArr);
 		
 		$result = [];
-
 		foreach ($classSectionArr as $val) {
 
-			$classIds   = array_slice($val, 0, 1, true);
-			$sessionIds = array_slice($val, 1, 1, true);
+			$classKey   = null;
+			$classValue = null;
+			$sectionKey = null;
+			$sectionValue = null;
+
+			foreach ($val as $key => $value) {
+				
+				if ($key > 1) {
+					$classKey   = $key;
+					$classValue = $value;
+				} 
+				
+				else {
+					$sectionKey   = $key;
+					$sectionValue = $value;
+				}
+			}
 
 			$result[] = [
-				'current_class_id'   => key($classIds),
-				'next_class_id'      => current($classIds),
-				'current_section_id' => key($sessionIds),
-				'next_section_id'    => current($sessionIds),
+				'current_class_id'   => $classKey,
+				'next_class_id'      => $classValue,
+				'current_section_id' => $sectionKey,
+				'next_section_id'    => $sectionValue,
 			];
 		}
+
+		//echo "<pre>";print_r($result);
 		
 		$new_subject_arr = [];
 		
 		foreach($result as $val)
 		{
-			//echo $val['current_class_id'].' # '.$val['current_section_id'];
 			$this->db->where('class_id', $val['current_class_id']);
 			$this->db->where('section_id', $val['current_section_id']);
 			$qr = $this->db->get('class_sections')->row_array();
 			$class_section_id = $qr['id'];
 			$chk = $this->db->where('class_section_id', $class_section_id)->get('subject_group_class_sections');
+			
 			if($chk->num_rows() > 0)
 			{
 				$this->db->where('class_id', $val['next_class_id']);
@@ -551,9 +569,12 @@ class Cron extends CI_Controller
 					$qrSub = $this->db->get();
 					if($qrSub->num_rows() > 0)
 					{
+						//echo "<pre>";print_r($qrSub->result_array());
+						
 						foreach($qrSub->result_array() as $subjects)
 						{
 							$subject_id = $subjects['subject_id'];
+							
 							// get subject name in currect session
 							$this->db->from('subjects');
 							$this->db->where('id', $subject_id);
@@ -563,8 +584,8 @@ class Cron extends CI_Controller
 							$subject_name = $subject_data['name']; 
 							$subject_code = $subject_data['code']; 
 							$subject_type = $subject_data['type']; 
-							$subject_type_one = $subject_data['type_one']; 
-							
+							$subject_type_one = $subject_data['type_one'];
+														
 							// check subject name in next session
 							$this->db->from('subjects');
 							$this->db->where('name', $subject_name);
@@ -584,6 +605,10 @@ class Cron extends CI_Controller
 								
 								$new_subject_id = $this->subject_model->add($data);
 								$new_subject_arr[] = $new_subject_id;
+							}
+							else{
+								$s_id = $qr_subject->row_array();
+								$new_subject_arr[] = $s_id['id'];
 							}
 							
 						}
@@ -608,7 +633,7 @@ class Cron extends CI_Controller
 					{
 						$next_class_section_ids[] = $ids['id'];
 					}
-					//echo "<pre>";print_r($next_class_section_ids);
+					
 					//insert into tables subject_groups ,subject_group_subjects, subject_group_class_sections
 					
 					$class_array = array(
@@ -618,9 +643,7 @@ class Cron extends CI_Controller
 					);
 					$subject_group = $new_subject_arr;
 					$section_group = $next_class_section_ids;
-					//echo "<pre>";print_r($class_array);
-					//echo "<pre>";print_r($subject_group);
-					//echo "<pre>";print_r($section_group);
+					
 					
 					$this->db->insert('subject_groups', $class_array);
 					$subject_group_id = $this->db->insert_id();
@@ -657,14 +680,132 @@ class Cron extends CI_Controller
 			} // if end
 		}
 		
-		//echo "<pre>";
-		//print_r($result);
+	}
+	public function create_department()
+	{
+		$query = $this->db->from('department')->get();
+		foreach($query->result_array() as $val)
+		{
+			$this->db->from('department');
+			$this->db->where('session_id', $this->current_session);
+			$this->db->where('department_name', $val['department_name']);
+			$qr = $this->db->get();
+			if($qr->num_rows() == 0)
+			{
+				$data = array('department_name' => $val['department_name'], 'is_active' => 'yes', 'session_id'=> $this->current_session);
+				$insert_id = $this->department_model->addDepartmentType($data);
+			}
+		}
+	}
+	public function create_designation()
+	{
+		$query = $this->db->from('staff_designation')->get();
+		foreach($query->result_array() as $val)
+		{
+			$this->db->from('staff_designation');
+			$this->db->where('session_id', $this->current_session);
+			$this->db->where('designation', $val['designation']);
+			$qr = $this->db->get();
+			if($qr->num_rows() == 0)
+			{
+				$data = array('designation' => $val['designation'], 'is_active' => 'yes', 'session_id'=> $this->current_session);
+				$insert_id = $this->designation_model->addDesignation($data);
+			}
+		}
+	}
+	public function create_staff()
+	{
+		$this->db->select('staff.*, staff_roles.role_id');
+		$this->db->from('staff');
+		$this->db->join(
+			'staff_roles',
+			'staff_roles.staff_id = staff.id',
+			'left'
+		);
+		$this->db->where('staff.id !=', 1);
 
-		//echo $current_session."</br>";
-		//echo $next_session."</br>";die;
+		$query = $this->db->get();
+
 		
-		//-- for subject group
-		
+		//echo "<pre>";print_r($query->result_array());die;
+		foreach($query->result_array() as $staff)
+		{
+			$this->db->from('staff');
+			$this->db->where('session_id', $this->current_session);
+			$this->db->where('employee_id', $staff['employee_id']);
+			$this->db->where('name', $staff['name']);
+			$this->db->where('surname', $staff['surname']);
+			$qr = $this->db->get();
+			if($qr->num_rows() == 0)
+			{
+				$data_insert['employee_id'] = $staff['employee_id'];
+				$data_insert['lang_id'] = $staff['lang_id'];
+				$data_insert['department'] = $staff['department'];
+				$data_insert['designation'] = $staff['designation'];
+				$data_insert['qualification'] = $staff['qualification'];
+				$data_insert['work_exp'] = $staff['work_exp'];
+				$data_insert['name'] = $staff['name'];
+				$data_insert['surname'] = $staff['surname'];
+				$data_insert['father_name'] = $staff['father_name'];
+				$data_insert['mother_name'] = $staff['mother_name'];
+				$data_insert['contact_no'] = $staff['contact_no'];
+				$data_insert['emergency_contact_no'] = $staff['emergency_contact_no'];
+				$data_insert['email'] = $staff['email'];
+				$data_insert['dob'] = $staff['dob'];
+				$data_insert['marital_status'] = $staff['marital_status'];
+				$data_insert['date_of_joining'] = $staff['date_of_joining'];
+				$data_insert['date_of_leaving'] = $staff['date_of_leaving'];
+				$data_insert['local_address'] = $staff['local_address'];
+				$data_insert['permanent_address'] = $staff['permanent_address'];
+				$data_insert['note'] = $staff['note'];
+				$data_insert['image'] = $staff['image'];
+				$data_insert['password'] = $staff['password'];
+				$data_insert['gender'] = $staff['gender'];
+				$data_insert['account_title'] = $staff['account_title'];
+				$data_insert['bank_account_no'] = $staff['bank_account_no'];
+				$data_insert['bank_name'] = $staff['bank_name'];
+				$data_insert['ifsc_code'] = $staff['ifsc_code'];
+				$data_insert['bank_branch'] = $staff['bank_branch'];
+				$data_insert['payscale'] = $staff['payscale'];
+				$data_insert['basic_salary'] = $staff['basic_salary'];
+				$data_insert['epf_no'] = $staff['epf_no'];
+				$data_insert['contract_type'] = $staff['contract_type'];
+				$data_insert['shift'] = $staff['shift'];
+				$data_insert['location'] = $staff['location'];
+				$data_insert['facebook'] = $staff['facebook'];
+				$data_insert['twitter'] = $staff['twitter'];
+				$data_insert['linkedin'] = $staff['linkedin'];
+				$data_insert['instagram'] = $staff['instagram'];
+				$data_insert['resume'] = $staff['resume'];
+				$data_insert['joining_letter'] = $staff['joining_letter'];
+				$data_insert['resignation_letter'] = $staff['resignation_letter'];
+				$data_insert['other_document_name'] = $staff['other_document_name'];
+				$data_insert['other_document_file'] = $staff['other_document_file'];
+				$data_insert['user_id'] = $staff['user_id'];
+				$data_insert['is_active'] = $staff['is_active'];
+				$data_insert['verification_code'] = $staff['verification_code'];
+				$data_insert['disable_at'] = $staff['disable_at'];
+				
+				// check department for next session
+				$qr_dept_chk = $this->db->from('department')->where('id', $data_insert['department'])->get();
+				if($qr_dept_chk->num_rows() > 0)
+				{
+					$department_data = $qr_dept_chk->row_array();
+					$department_name = $department_data['department_name'];
+					$this->db->where('session_id', $this->current_session);
+					$this->db->where('department_name', $department_name);
+					$qr_dept = $this->db->get('department');
+					if($qr_dept->num_rows() == 0)
+					{
+						//echo 'has department' ."</br>";
+						// add new department
+					}
+				}
+				
+			}
+		}
+		//echo $data_insert['department'];
+		//echo "<pre>";print_r($data_insert);die;
 	}
 	
 	public function fee_category_create_bkp($current_class_id, $current_session_id, $next_session_id)
