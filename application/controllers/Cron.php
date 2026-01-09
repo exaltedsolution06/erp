@@ -25,6 +25,8 @@ class Cron extends CI_Controller
         $this->load->model('feegroup_model');
         $this->load->model('subject_model');
         $this->load->model('subjectgroup_model');
+        $this->load->model('department_model');
+        $this->load->model('designation_model');
 		$this->current_session = $this->setting_model->getCurrentSession();
     }
 	
@@ -301,6 +303,10 @@ class Cron extends CI_Controller
 			
 		}
 		//$this->subject_create($new_class_array, $new_section_array, $classes['current_session_id'], $classes['next_session_id']);
+		
+		$this->create_department();
+		$this->create_designation();
+		$this->create_staff();
 	}
 	
 	public function house_create($current_class_id, $current_session_id, $next_session_id)
@@ -583,6 +589,132 @@ class Cron extends CI_Controller
 			} // if end
 		}
 		
+	}
+	public function create_department()
+	{
+		$query = $this->db->from('department')->get();
+		foreach($query->result_array() as $val)
+		{
+			$this->db->from('department');
+			$this->db->where('session_id', $this->current_session);
+			$this->db->where('department_name', $val['department_name']);
+			$qr = $this->db->get();
+			if($qr->num_rows() == 0)
+			{
+				$data = array('department_name' => $val['department_name'], 'is_active' => 'yes', 'session_id'=> $this->current_session);
+				$insert_id = $this->department_model->addDepartmentType($data);
+			}
+		}
+	}
+	public function create_designation()
+	{
+		$query = $this->db->from('staff_designation')->get();
+		foreach($query->result_array() as $val)
+		{
+			$this->db->from('staff_designation');
+			$this->db->where('session_id', $this->current_session);
+			$this->db->where('designation', $val['designation']);
+			$qr = $this->db->get();
+			if($qr->num_rows() == 0)
+			{
+				$data = array('designation' => $val['designation'], 'is_active' => 'yes', 'session_id'=> $this->current_session);
+				$insert_id = $this->designation_model->addDesignation($data);
+			}
+		}
+	}
+	public function create_staff()
+	{
+		$this->db->select('staff.*, staff_roles.role_id');
+		$this->db->from('staff');
+		$this->db->join(
+			'staff_roles',
+			'staff_roles.staff_id = staff.id',
+			'left'
+		);
+		$this->db->where('staff.id !=', 1);
+
+		$query = $this->db->get();
+
+		
+		//echo "<pre>";print_r($query->result_array());die;
+		foreach($query->result_array() as $staff)
+		{
+			$this->db->from('staff');
+			$this->db->where('session_id', $this->current_session);
+			$this->db->where('employee_id', $staff['employee_id']);
+			$this->db->where('name', $staff['name']);
+			$this->db->where('surname', $staff['surname']);
+			$qr = $this->db->get();
+			if($qr->num_rows() == 0)
+			{
+				$data_insert['employee_id'] = $staff['employee_id'];
+				$data_insert['lang_id'] = $staff['lang_id'];
+				$data_insert['department'] = $staff['department'];
+				$data_insert['designation'] = $staff['designation'];
+				$data_insert['qualification'] = $staff['qualification'];
+				$data_insert['work_exp'] = $staff['work_exp'];
+				$data_insert['name'] = $staff['name'];
+				$data_insert['surname'] = $staff['surname'];
+				$data_insert['father_name'] = $staff['father_name'];
+				$data_insert['mother_name'] = $staff['mother_name'];
+				$data_insert['contact_no'] = $staff['contact_no'];
+				$data_insert['emergency_contact_no'] = $staff['emergency_contact_no'];
+				$data_insert['email'] = $staff['email'];
+				$data_insert['dob'] = $staff['dob'];
+				$data_insert['marital_status'] = $staff['marital_status'];
+				$data_insert['date_of_joining'] = $staff['date_of_joining'];
+				$data_insert['date_of_leaving'] = $staff['date_of_leaving'];
+				$data_insert['local_address'] = $staff['local_address'];
+				$data_insert['permanent_address'] = $staff['permanent_address'];
+				$data_insert['note'] = $staff['note'];
+				$data_insert['image'] = $staff['image'];
+				$data_insert['password'] = $staff['password'];
+				$data_insert['gender'] = $staff['gender'];
+				$data_insert['account_title'] = $staff['account_title'];
+				$data_insert['bank_account_no'] = $staff['bank_account_no'];
+				$data_insert['bank_name'] = $staff['bank_name'];
+				$data_insert['ifsc_code'] = $staff['ifsc_code'];
+				$data_insert['bank_branch'] = $staff['bank_branch'];
+				$data_insert['payscale'] = $staff['payscale'];
+				$data_insert['basic_salary'] = $staff['basic_salary'];
+				$data_insert['epf_no'] = $staff['epf_no'];
+				$data_insert['contract_type'] = $staff['contract_type'];
+				$data_insert['shift'] = $staff['shift'];
+				$data_insert['location'] = $staff['location'];
+				$data_insert['facebook'] = $staff['facebook'];
+				$data_insert['twitter'] = $staff['twitter'];
+				$data_insert['linkedin'] = $staff['linkedin'];
+				$data_insert['instagram'] = $staff['instagram'];
+				$data_insert['resume'] = $staff['resume'];
+				$data_insert['joining_letter'] = $staff['joining_letter'];
+				$data_insert['resignation_letter'] = $staff['resignation_letter'];
+				$data_insert['other_document_name'] = $staff['other_document_name'];
+				$data_insert['other_document_file'] = $staff['other_document_file'];
+				$data_insert['user_id'] = $staff['user_id'];
+				$data_insert['is_active'] = $staff['is_active'];
+				$data_insert['verification_code'] = $staff['verification_code'];
+				$data_insert['disable_at'] = $staff['disable_at'];
+				
+				// check department for next session
+				$qr_dept_chk = $this->db->from('department')->where('id', $data_insert['department'])->get();
+				if($qr_dept_chk->num_rows() > 0)
+				{
+					$department_data = $qr_dept_chk->row_array();
+					$department_name = $department_data['department_name'];
+					$this->db->where('session_id', $this->current_session);
+					$this->db->where('department_name', $department_name);
+					$qr_dept = $this->db->get('department');
+					if($qr_dept->num_rows() == 0)
+					{
+						//echo 'has department' ."</br>";
+						// add new department
+					}
+				}
+				
+			}
+		}
+		//echo $data_insert['department'];
+		//echo "<pre>";print_r($data_insert);die;
 	}
 	
 	public function fee_category_create_bkp($current_class_id, $current_session_id, $next_session_id)
