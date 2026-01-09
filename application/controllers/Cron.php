@@ -23,6 +23,8 @@ class Cron extends CI_Controller
         $this->load->model('section_model');
         $this->load->model('schoolhouse_model');
         $this->load->model('feegroup_model');
+        $this->load->model('subject_model');
+        $this->load->model('subjectgroup_model');
 		$this->current_session = $this->setting_model->getCurrentSession();
     }
 	
@@ -284,17 +286,21 @@ class Cron extends CI_Controller
 				
 				// create fee category start
 					$new_fee_category_array = $this->fee_category_create($classes['current_class_id'], $classes['current_session_id'], $classes['next_session_id'], $result['batch_id']);
-					echo "<pre>";print_r($new_fee_category_array);die;
+					//echo "<pre>";print_r($new_fee_category_array);die;
 				// create fee category end
 				
 				// create 'fee_plan' start
 					// echo "<pre>";print_r($classes);die;
-					$new_fee_plan_array = $this->fee_plan_create($classes['current_class_id'], $classes['current_session_id'], $classes['next_session_id']);
-					echo "<pre>";print_r($new_fee_category_array);die;
+					
+					//$new_fee_plan_array = $this->fee_plan_create($classes['current_class_id'], $classes['current_session_id'], $classes['next_session_id']);
+					
+					//echo "<pre>";print_r($new_fee_category_array);die;
 				// create 'fee_plan' end
-				
+				$this->subject_create($new_class_array, $new_section_array, $classes['current_session_id'], $classes['next_session_id']);
 			}
+			
 		}
+		//$this->subject_create($new_class_array, $new_section_array, $classes['current_session_id'], $classes['next_session_id']);
 	}
 	
 	public function house_create($current_class_id, $current_session_id, $next_session_id)
@@ -397,6 +403,177 @@ class Cron extends CI_Controller
 			$new_fee_category_array[] = array($qrArrayDataVal['id'] => $value_id);
 		}
 		return $new_fee_category_array;
+	}
+	
+	public function subject_create($classes, $sections, $current_session, $next_session)
+	{
+		//echo "<pre>";print_r($classes);
+		//echo "<pre>";print_r($sections);
+		
+		$classSectionArr = [];
+		foreach ($classes as $key => $classArr) {
+			$classSectionArr[$key] = $classArr + ($sections[$key] ?? []);
+		}
+		//echo "<pre>";
+		//print_r($classSectionArr);
+		
+		$result = [];
+
+		foreach ($classSectionArr as $val) {
+
+			$classIds   = array_slice($val, 0, 1, true);
+			$sessionIds = array_slice($val, 1, 1, true);
+
+			$result[] = [
+				'current_class_id'   => key($classIds),
+				'next_class_id'      => current($classIds),
+				'current_section_id' => key($sessionIds),
+				'next_section_id'    => current($sessionIds),
+			];
+		}
+		
+		$new_subject_arr = [];
+		
+		foreach($result as $val)
+		{
+			//echo $val['current_class_id'].' # '.$val['current_section_id'];
+			$this->db->where('class_id', $val['current_class_id']);
+			$this->db->where('section_id', $val['current_section_id']);
+			$qr = $this->db->get('class_sections')->row_array();
+			$class_section_id = $qr['id'];
+			$chk = $this->db->where('class_section_id', $class_section_id)->get('subject_group_class_sections');
+			if($chk->num_rows() > 0)
+			{
+				$this->db->where('class_id', $val['next_class_id']);
+				$this->db->where('section_id', $val['next_section_id']);
+				$next_id = $this->db->get('class_sections')->row_array();
+				$next_class_section_id = $next_id['id'];
+			 
+				$hasRec = $this->db->where('class_section_id', $next_class_section_id)->get('subject_group_class_sections');
+				if($hasRec->num_rows() == 0)
+				{
+					$data = $chk->row_array();
+					$subject_group_id = $data['subject_group_id'];
+					
+					$this->db->from('subject_group_subjects');
+					$this->db->where('subject_group_id', $subject_group_id);
+					$qrSub = $this->db->get();
+					if($qrSub->num_rows() > 0)
+					{
+						foreach($qrSub->result_array() as $subjects)
+						{
+							$subject_id = $subjects['subject_id'];
+							// get subject name in currect session
+							$this->db->from('subjects');
+							$this->db->where('id', $subject_id);
+							$this->db->where('session_id' , $current_session);
+							$subject_data = $this->db->get()->row_array();
+							
+							$subject_name = $subject_data['name']; 
+							$subject_code = $subject_data['code']; 
+							$subject_type = $subject_data['type']; 
+							$subject_type_one = $subject_data['type_one']; 
+							
+							// check subject name in next session
+							$this->db->from('subjects');
+							$this->db->where('name', $subject_name);
+							$this->db->where('code', $subject_code);
+							$this->db->where('session_id' , $next_session);
+							$qr_subject = $this->db->get();
+							if($qr_subject->num_rows() == 0)
+							{
+								// add subject in next session
+								$data = array(
+									'name' => $subject_name,
+									'code' => $subject_code,
+									'type' => $subject_type,
+									'type_one' => $subject_type,
+									'session_id' => $next_session
+								);
+								
+								$new_subject_id = $this->subject_model->add($data);
+								$new_subject_arr[] = $new_subject_id;
+							}
+							
+						}
+						
+					}
+				}
+				
+				
+				// add subjects in subject group
+				// get next class and section names
+				if(!empty($new_subject_arr))
+				{
+					$classData = $this->db->where('id', $val['next_class_id'])->get('classes')->row_array();
+					$next_class_name = $classData['class'];
+					
+					$sectionData = $this->db->where('id', $val['next_section_id'])->get('sections')->row_array();
+					$next_section_name = $sectionData['section'];
+					
+					$next_class_section_ids = [];
+					$classSectionData = $this->db->where('class_id', $val['next_class_id'])->get('class_sections')->result_array();
+					foreach($classSectionData as $ids)
+					{
+						$next_class_section_ids[] = $ids['id'];
+					}
+					//echo "<pre>";print_r($next_class_section_ids);
+					//insert into tables subject_groups ,subject_group_subjects, subject_group_class_sections
+					
+					$class_array = array(
+						'name' => $next_class_name.' '.$next_section_name,
+						'session_id' => $next_session,
+						'description' => '',
+					);
+					$subject_group = $new_subject_arr;
+					$section_group = $next_class_section_ids;
+					//echo "<pre>";print_r($class_array);
+					//echo "<pre>";print_r($subject_group);
+					//echo "<pre>";print_r($section_group);
+					
+					$this->db->insert('subject_groups', $class_array);
+					$subject_group_id = $this->db->insert_id();
+					
+					$subject_group_subject_Array = array();
+					foreach ($subject_group as $sub_group_key => $sub_group_value) {
+
+						$vehicle_array = array(
+							'subject_group_id' => $subject_group_id,
+							'subject_id' => $sub_group_value,
+							'session_id' => $next_session,
+						);
+
+						$subject_group_subject_Array[] = $vehicle_array;
+					}
+					$this->db->insert_batch('subject_group_subjects', $subject_group_subject_Array);
+					
+					$section_group_array = array();
+					foreach ($section_group as $section_group_key => $section_group_value) {
+
+						$sections_array = array(
+							'subject_group_id' => $subject_group_id,
+							'class_section_id' => $section_group_value,
+							'session_id' => $next_session,
+						);
+
+						$section_group_array[] = $sections_array;
+					}
+					$this->db->insert_batch('subject_group_class_sections', $section_group_array);
+					
+					//$this->subjectgroup_model->add($class_array, $subject_group, $section_group);
+				}
+				
+			} // if end
+		}
+		
+		//echo "<pre>";
+		//print_r($result);
+
+		//echo $current_session."</br>";
+		//echo $next_session."</br>";die;
+		
+		//-- for subject group
+		
 	}
 	
 	public function fee_category_create_bkp($current_class_id, $current_session_id, $next_session_id)
