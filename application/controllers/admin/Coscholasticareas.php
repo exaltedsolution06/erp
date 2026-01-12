@@ -58,7 +58,8 @@ class Coscholasticareas extends Admin_Controller {
                                     array(
                                         'adm_no' => $column['0'],
                                         'attendence' => $column['1'],
-                                        'marks' => number_format($column['2'], 2, '.', ''),
+                                        // 'marks' => number_format($column['2'], 2, '.', ''),
+										'marks'     => is_numeric($column[2]) ? number_format((float)$column[2], 2, '.', '') : (string)$column[2],
                                         'note' => $this->encoding_lib->toUTF8($column['3']),
                                     )
                             );
