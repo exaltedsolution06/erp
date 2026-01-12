@@ -7,6 +7,7 @@ class disable_reason_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     /**
@@ -19,7 +20,7 @@ class disable_reason_model extends MY_Model {
 
         $this->db->select();
         $this->db->from('disable_reason');
-
+		$this->db->where('session_id', $this->current_session);
 
 
         if ($id != null) {

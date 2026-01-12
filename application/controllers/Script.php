@@ -820,6 +820,16 @@ class Script extends Public_Controller
 			$this->db->query($update_sql, [$session_id]);
         }
 		
+		//For 'disable_reason.
+		/*$session_exists = "SHOW COLUMNS FROM `disable_reason` LIKE 'session_id'";
+		$session_exists_sql = $this->db->query($session_exists);		
+		if ($session_exists_sql->num_rows() == 0) {
+			$add_sql = "ALTER TABLE `disable_reason` ADD `session_id` INT(11) NULL DEFAULT NULL AFTER `id`";
+			$this->db->query($add_sql);
+			$update_sql = "UPDATE `disable_reason` SET `session_id` = ?";
+			$this->db->query($update_sql, [$session_id]);
+        }*/
+		
 		echo 'Success';
 		}else{
 			echo 'You have no active session';
