@@ -31,6 +31,8 @@ class Cron extends CI_Controller
 		$this->current_session = $this->setting_model->getCurrentSession();
 		$this->current_active_session = $this->setting_model->getCurrentActiveSession();
 		$this->sch_setting_detail = $this->setting_model->getSetting();
+		
+		$this->balance_group   = $this->config->item('ci_balance_group');
     }
 	
 	
@@ -205,14 +207,8 @@ class Cron extends CI_Controller
 				$new_class_array = [];
 				$new_house_array = [];
 				$new_fee_category_array = [];
-				/*
-				$this->db->from('move_students');
-				$this->db->join('classes', 'classes.id = move_students.next_class_id');
-				$this->db->where('classes.id', $val['next_class_id']);
-				$this->db->where('move_students.status', 1);
-				$qr = $this->db->where('move_students.current_session_id', $this->current_session)->get();
-				$classes = $qr->row_array();
-				*/
+				$new_route_array = [];
+				
 				// echo "<pre>";print_r($val);die;
 				$classes = $val;
 				
@@ -242,9 +238,6 @@ class Cron extends CI_Controller
 						}
 					}
 					// echo '<pre>'; print_r($new_section_array); exit;
-					//echo "<pre>";print_r($sectionData);die;
-					//echo $classData['class'].'->'.$sectionData['section']."</br>";
-					// echo "<pre>";print_r($sectionArr);die;
 				// Create section end
 				
 				// Create class start
@@ -281,8 +274,6 @@ class Cron extends CI_Controller
 					}
 					$new_class_array[] = array($classes['current_class_id'] => $class_id);
 					// echo '<pre>'; print_r($new_class_array); exit;
-					// echo "<pre>";print_r($class_id);die;				
-					// echo "<pre>";print_r($classes);die;
 				// Create class end	
 				
 				// create student house start
@@ -301,23 +292,29 @@ class Cron extends CI_Controller
 				// create fee category end
 				
 				// create 'fee_plan' start
-					// echo "<pre>";print_r($classes);die;
 					$new_fee_plan_array = $this->fee_plan_create($classes['next_session_id'], $classes['next_class_id'], $fee_category_by_move_category, $new_fee_category_array, $new_class_array);
-					echo "<pre>";print_r($new_fee_plan_array);die;
 				// create 'fee_plan' end
 				
+				// create 'route_head' start
+					$new_route_array = $this->route_create($classes['next_session_id'], $classes['current_session_id']);
+					// echo "<pre>";print_r($new_route_array);die;
+				// create 'route_head' end
+				
 				// create 'route_plan' start
-					// echo "<pre>";print_r($classes);die;
-					$new_route_plan_array = $this->route_plan_create($classes['next_session_id'], $classes['next_class_id'], $fee_category_by_move_category, $new_fee_category_array, $new_class_array);
-					// echo "<pre>";print_r($new_route_plan_array);die;
+					$new_route_plan_array = $this->route_plan_create($classes['next_session_id'], $classes['next_class_id'], $fee_category_by_move_category, $new_fee_category_array, $new_class_array, $new_route_array);
 				// create 'route_plan' end
 				
 				$this->subject_create($new_class_array, $new_section_array, $classes['current_session_id'], $classes['next_session_id']);
 				
-				$move = $this->student_move($classes['current_session_id'], $classes['current_class_id'], $classes['next_session_id'], $new_class_array, $new_section_array, $new_house_array, $new_fee_category_array, $fee_category_by_move_category);
-				echo "<pre>";print_r($move);die;
+				$move = $this->student_move($classes, $new_class_array, $new_section_array, $new_house_array, $new_fee_category_array, $new_route_array);
+				// echo "<pre>";print_r($move);die;
 			}
 			
+			$this->db->where('batch_id', $result['batch_id']);
+            $this->db->update('move_students', ['status' => 2]);
+			
+			$this->db->where('batch_id', $result['batch_id']);
+            $this->db->update('move_students_category', ['status' => 2]);
 		}
 		//$this->subject_create($new_class_array, $new_section_array, $classes['current_session_id'], $classes['next_session_id']);
 		
@@ -359,7 +356,7 @@ class Cron extends CI_Controller
 		return $new_house_array;
 	}
 	
-	public function fee_category_by_move_category($current_session_id, $batch_id)
+	/*public function fee_category_by_move_category($current_session_id, $batch_id)
 	{
 		$this->db->from('move_students_category');
 		$this->db->join('fee_groups', 'fee_groups.id = move_students_category.next_category_id');
@@ -367,13 +364,82 @@ class Cron extends CI_Controller
 		$this->db->where('move_students_category.batch_id', $batch_id);
 		$this->db->where('move_students_category.status', 1);
 		$qr = $this->db->get();
-		$qrArrayData = $qr->result_array();
-		return $qrArrayData;
+		$moveData = $qr->result_array();
+		return $moveData;
+	}*/
+	public function fee_category_by_move_category($current_session_id, $batch_id)
+	{
+		/**
+		 * Step 1: Get existing move mappings
+		 */
+		$this->db->from('move_students_category');
+		$this->db->join(
+			'fee_groups',
+			'fee_groups.id = move_students_category.next_category_id',
+			'inner'
+		);
+		$this->db->where('fee_groups.session_id', $current_session_id);
+		$this->db->where('move_students_category.batch_id', $batch_id);
+		$this->db->where('move_students_category.status', 1);
+
+		$moveData = $this->db->get()->result_array();
+
+		/**
+		 * Step 2: Get all categories of session
+		 */
+		$this->db->from('fee_groups');
+		$this->db->where('session_id', $current_session_id);
+		$this->db->where('is_system', 0);
+		$allCategories = $this->db->get()->result_array();
+
+		if (empty($allCategories)) {
+			return $moveData;
+		}
+
+		/**
+		 * Step 3: Find categories already acting as CURRENT
+		 */
+		$existingCurrentIds = array_column($moveData, 'current_category_id');
+
+		/**
+		 * Step 4: Add missing self-mappings
+		 */
+		foreach ($allCategories as $cat) {
+
+			if (in_array($cat['id'], $existingCurrentIds)) {
+				continue; // already mapped
+			}
+
+			$moveData[] = [
+				'id' => $cat['id'],
+				'batch_id' => $batch_id,
+				'current_session_id' => $current_session_id,
+				'current_category_id' => $cat['id'],
+				'next_category_id' => $cat['id'],
+				'status' => 1,
+
+				'session_id' => $cat['session_id'],
+				'name' => $cat['name'],
+				'is_system' => $cat['is_system'],
+				'description' => $cat['description'],
+				'is_active' => $cat['is_active'],
+				'created_at' => $cat['created_at'],
+			];
+		}
+
+		/**
+		 * Optional: sort by category id (clean output)
+		 */
+		usort($moveData, function ($a, $b) {
+			return $a['current_category_id'] <=> $b['current_category_id'];
+		});
+
+		return $moveData;
 	}
-	
+
 	public function fee_category_create($next_session_id, $current_session_id)
     {
-		$new_house_array = [];
+		$new_fee_category_array = [];
 		$this->db->from('fee_groups');
 		$this->db->where('session_id', $current_session_id);
 		$this->db->where('is_system', 0);
@@ -400,10 +466,9 @@ class Cron extends CI_Controller
 		}
 		return $new_fee_category_array;
 	}
-	
 	public function fee_plan_create($next_session_id, $next_class_id, $qrArrayData, $new_fee_category_array, $new_class_array)
     {
-		return $next_class_id;
+		// return $qrArrayData;
 		foreach($qrArrayData as $qrArrayDataVal){
 			$this->db->from('fees_plan');
 			$this->db->where("JSON_CONTAINS(class_ids, '\"$next_class_id\"')", NULL, FALSE);
@@ -488,82 +553,72 @@ class Cron extends CI_Controller
 			// return $feePlanData;
 		}
 	}
-	public function route_plan_create($next_session_id, $next_class_id, $qrArrayData, $new_fee_category_array, $new_class_array)
+	
+	public function route_create($next_session_id, $current_session_id)
     {
-		// return $new_fee_category_array;
+		$new_route_array = [];
+		$this->db->from('route_head');
+		$this->db->where('session_id', $current_session_id);
+		$qr = $this->db->get();
+		$qrArrayData = $qr->result_array();
+		
 		foreach($qrArrayData as $qrArrayDataVal){
-			$this->db->from('route_plan');
-			$this->db->where("JSON_CONTAINS(class_ids, '\"$next_class_id\"')", NULL, FALSE);
-			$this->db->where("JSON_CONTAINS(category_ids, '\"" . $qrArrayDataVal['next_category_id'] . "\"')", NULL, FALSE);
-			$qr = $this->db->get();
-			$routePlanData = $qr->result_array();
-			// return $routePlanData;
+			$this->db->where('fees_heading', $qrArrayDataVal['fees_heading']);
+			$value_exists_query = $this->db->where('session_id', $next_session_id)->get('route_head');
+			if($value_exists_query->num_rows() > 0){
+				$value_query = $value_exists_query->row_array();
+				$new_route_head_id = $value_query['id'];
+			}else{
+				$data = [
+					'fees_heading' => $qrArrayDataVal['fees_heading'],
+					'frequency'    => $qrArrayDataVal['frequency'],
+					'account_name' => $qrArrayDataVal['account_name'],
+					'months'       => $qrArrayDataVal['months'],
+					'session_id' => $next_session_id,
+				];
+				$this->db->insert('route_head', $data);
+				$new_route_head_id = $this->db->insert_id(); // Get inserted ID
+			}
+			$new_route_array[] = array($qrArrayDataVal['id'] => $new_route_head_id);
 			
-			foreach($routePlanData as $routePlanDataVal){
-				$this->db->from('route_head');
-				$this->db->where('id', $routePlanDataVal['fee_group_id']);
-				$qr = $this->db->get();
-				$qrrouteHeadData = $qr->row_array();
-				// return $qrrouteHeadData;
+			// 'account' table add/update start
+			$this->db->from('account');
+			$this->db->where('session_id', $next_session_id);
+			$this->db->where('account', $qrArrayDataVal['account_name']);
+			$qr = $this->db->get();
+			if($qr->num_rows() > 0){
+				$account_query = $qr->row_array();
+				$new_account_id = $account_query['id'];
+			}else{
+				$data = [
+					'account' => $qrArrayDataVal['account_name'],
+					'session_id' => $next_session_id,
+				];
+				$this->db->insert('account', $data);
+				$new_account_id = $this->db->insert_id(); // Get inserted ID
+			}
+			// 'account' table add/update start
+			
+			// 'vehicle_routes' table add/update start
+			$this->db->from('vehicle_routes');
+			$this->db->where('route_id', $qrArrayDataVal['id']);
+			$qr = $this->db->get();
+			foreach($qr->result_array() as $vhRoutesDataVal){
+				$this->db->from('vehicles');
+				$this->db->where('id', $vhRoutesDataVal['vehicle_id']);
+				$vh = $this->db->get();
+				$get_vh = $vh->row_array();
 				
-				// 'route_head' table add/update start
-				$this->db->from('route_head');
+				$this->db->from('vehicles');
 				$this->db->where('session_id', $next_session_id);
-				$this->db->where('fees_heading', $qrrouteHeadData['fees_heading']);
-				$qr = $this->db->get();
-				if($qr->num_rows() > 0){
-					$route_head_query = $qr->row_array();
-					$new_route_head_id = $route_head_query['id'];
+				$this->db->where('vehicle_no', $get_vh['vehicle_no']);
+				$new_vh = $this->db->get();
+				$new_vh_id = '';
+				if($new_vh->num_rows() > 0){
+					$new_vh_query = $new_vh->row_array();
+					$new_vh_id = $new_vh_query['id'];
 				}else{
-					$data = [
-						'fees_heading' => $qrrouteHeadData['fees_heading'],
-						'frequency' => $qrrouteHeadData['frequency'],
-						'account_name' => $qrrouteHeadData['account_name'],
-						'months' => $qrrouteHeadData['months'],
-						'session_id' => $next_session_id,
-					];
-					$this->db->insert('route_head', $data);					
-					$new_route_head_id = $this->db->insert_id(); // Get inserted ID
-				}
-				// 'route_head' table add/update start
-				
-				// 'account' table add/update start
-				$this->db->from('account');
-				$this->db->where('session_id', $next_session_id);
-				$this->db->where('account', $qrrouteHeadData['account_name']);
-				$qr = $this->db->get();
-				if($qr->num_rows() > 0){
-					$account_query = $qr->row_array();
-					$new_account_id = $account_query['id'];
-				}else{
-					$data = [
-						'account' => $qrrouteHeadData['account_name'],
-						'session_id' => $next_session_id,
-					];
-					$this->db->insert('account', $data);
-					$new_account_id = $this->db->insert_id(); // Get inserted ID
-				}
-				// 'account' table add/update start
-				
-				// 'vehicle_routes' table add/update start
-				$this->db->from('vehicle_routes');
-				$this->db->where('route_id', $qrrouteHeadData['id']);
-				$qr = $this->db->get();
-				foreach($qr->result_array() as $vhRoutesDataVal){
-					$this->db->from('vehicles');
-					$this->db->where('id', $vhRoutesDataVal['vehicle_id']);
-					$vh = $this->db->get();
-					$get_vh = $vh->row_array();
-					// return $new_route_head_id;
-					
-					$this->db->from('vehicles');
-					$this->db->where('session_id', $next_session_id);
-					$this->db->where('vehicle_no', $get_vh['vehicle_no']);
-					$new_vh = $this->db->get();
-					if($new_vh->num_rows() > 0){
-						$new_vh_query = $new_vh->row_array();
-						$new_vh_id = $new_vh_query['id'];
-					}else{
+					if(!empty($get_vh)){
 						$data = array(
 							'session_id' => $next_session_id,
 							'vehicle_no' => $get_vh['vehicle_no'],
@@ -575,14 +630,16 @@ class Cron extends CI_Controller
 						);
 						$new_vh_id = $this->vehicle_model->add($data);
 					}
-					
-					// new_route_head_id
+				}
+				
+				// new_route_head_id
+				if($new_vh_id != ''){
 					$this->db->from('vehicle_routes');
 					$this->db->where('session_id', $next_session_id);
 					$this->db->where('route_id', $new_route_head_id);
 					$this->db->where('vehicle_id', $new_vh_id);
-					$qr = $this->db->get();
-					if($new_vh->num_rows() == 0){
+					$qr1 = $this->db->get();
+					if($qr1->num_rows() == 0){
 						$data = array(
 							'session_id' => $next_session_id,
 							'route_id' => $new_route_head_id,
@@ -591,9 +648,24 @@ class Cron extends CI_Controller
 						$this->db->insert('vehicle_routes', $data);
 					}
 				}
-				// 'vehicle_routes' table add/update start
-				
+			}
+			// 'vehicle_routes' table add/update start
+		}
+		return $new_route_array;
+	}
+	public function route_plan_create($next_session_id, $next_class_id, $qrArrayData, $new_fee_category_array, $new_class_array, $new_route_array)
+    {
+		foreach($qrArrayData as $qrArrayDataVal){
+			$this->db->from('route_plan');
+			$this->db->where("JSON_CONTAINS(class_ids, '\"$next_class_id\"')", NULL, FALSE);
+			$this->db->where("JSON_CONTAINS(category_ids, '\"" . $qrArrayDataVal['next_category_id'] . "\"')", NULL, FALSE);
+			$qr = $this->db->get();
+			$routePlanData = $qr->result_array();
+			
+			foreach($routePlanData as $routePlanDataVal){
 				// 'route_plan' table add/update start
+				$new_route_head_id = current(array_filter($new_route_array, fn($a) => isset($a[$routePlanDataVal['fee_group_id']])))[$routePlanDataVal['fee_group_id']] ?? null;
+				
 				$new_route_category_array_val = current(array_filter($new_fee_category_array, fn($a) => isset($a[$qrArrayDataVal['next_category_id']])))[$qrArrayDataVal['next_category_id']] ?? null;
 				$this->db->from('route_plan');
 				$this->db->where("fee_group_id", $new_route_head_id); // 23
@@ -619,37 +691,86 @@ class Cron extends CI_Controller
 					];
 					$this->db->insert('route_plan', $data_insert);
 				}
-				// 'route_plan' table add/update end
-				
+				// 'route_plan' table add/update end				
 			}
-			// return $routePlanData;
 		}
 	}
-	function student_move($current_session_id, $current_class_id, $next_session_id, $new_class_array, $new_section_array, $new_house_array, $new_fee_category_array, $fee_category_by_move_category){
-		return $fee_category_by_move_category;
-		$this->db->from('student_session');
-		$this->db->where('session_id', $current_session_id);
-		$this->db->where('class_id', $current_class_id);
+	
+	function student_move($classes, $new_class_array, $new_section_array, $new_house_array, $new_fee_category_array, $new_route_array){
+		$this->db->select('student_session.*')->from('students');
+		$this->db->join('student_session', 'student_session.student_id = students.id');
+		$this->db->where('student_session.session_id', $classes['current_session_id']);
+		$this->db->where('student_session.class_id', $classes['current_class_id']);
+		if($classes['discontinue_next_session'] == 0){
+			$this->db->where('students.is_active', 'yes');
+		}
 		$qr = $this->db->get();
+		
 		foreach($qr->result_array() as $val){
-			return $val;
 			$student_id = $val['student_id'];
-			
+			// return $val;
+			if($classes['carry_zero_balance'] == 1){
+				$fees_discount = 0;
+			}else{
+				$fees_discount = $val['fees_discount'];
+			}
 			$data_new = array(
-				'session_id' => $next_session_id,
+				'session_id' => $classes['next_session_id'],
 				'student_id' => $student_id,
 				'class_id' => current($new_class_array[0]),
-				'section_id' => current(array_filter($new_section_array, fn($a) => isset($a[$val['section_id']])))[$val['section_id']] ?? null,
-				'route_id' => $val['route_id'], // need to update
-				'school_house_id' => $val['school_house_id'] != 0 ? current(array_filter($new_house_array, fn($a) => isset($a[$val['school_house_id']])))[$val['school_house_id']] ?? null : 0,
-				'fee_category_id' => $val['school_house_id'] != 0 ? current(array_filter($new_house_array, fn($a) => isset($a[$val['school_house_id']])))[$val['school_house_id']] ?? null : 0,
-				'transport_fees' => 0,
-				'fees_discount' => 0
+				'section_id' => $val['section_id'] != 0 ? current(array_filter($new_section_array, fn($a) => isset($a[$val['section_id']])))[$val['section_id']] ?? 0 : 0,
+				'route_id' => $val['route_id'] != 0 ? current(array_filter($new_route_array, fn($a) => isset($a[$val['route_id']])))[$val['route_id']] ?? 0 : 0,
+				'school_house_id' => $val['school_house_id'] != 0 ? current(array_filter($new_house_array, fn($a) => isset($a[$val['school_house_id']])))[$val['school_house_id']] ?? 0 : 0,
+				'fee_category_id' => $val['fee_category_id'] != 0 ? current(array_filter($new_fee_category_array, fn($a) => isset($a[$val['fee_category_id']])))[$val['fee_category_id']] ?? 0 : 0,
+				'transport_fees' => $val['transport_fees'],
+				'fees_discount' => $fees_discount,
 			);
-			return $data_new;
+			
+			$this->student_model->add_student_session($data_new);
+			
+			$this->db->where('name', $this->balance_group);
+			$this->db->where('session_id', $classes['current_session_id']);
+			$query = $this->db->get('fee_groups');
+			if ($query->num_rows() > 0) {
+				$fee_group_id = $query->row()->id;
+			} else {
+				$this->db->insert('fee_groups', array('session_id' => $classes['current_session_id'], 'name' => $this->balance_group, 'is_system' => 1));
+				$fee_group_id = $this->db->insert_id();
+			}
+			
+			$this->db->where('fee_groups_id', $fee_group_id);
+			$this->db->where('session_id', $classes['current_session_id']);
+			$query = $this->db->get('fee_session_groups');
+			if ($query->num_rows() > 0) {
+				$fee_session_groups_id = $query->row()->id;
+			} else {
+				$data = array('fee_groups_id' => $fee_group_id, 'session_id' => $classes['current_session_id']);
+				$this->db->insert('fee_session_groups', $data);
+				$fee_session_groups_id = $this->db->insert_id();
+			}
+			
+			$this->db->where('student_session_id', $val['id']);
+			$this->db->where('fee_session_group_id', $fee_session_groups_id);
+			$query = $this->db->get('student_fees_master');
+			if ($query->num_rows() > 0) {
+				$to_be_update = array(
+					'is_system'           	 => 1,
+					'amount' 				 => $fees_discount,
+				);
+				$this->db->where('id', $query->row()->id);
+				$this->db->update('student_fees_master', $to_be_update);
+			}else{
+				$to_be_insert = array(
+					'is_system'           	 => 1,
+					'student_session_id' 	 => $val['id'],
+					'fee_session_group_id'   => $fee_session_groups_id,
+					'amount' 				 => $fees_discount,
+				);
+				$this->db->insert('student_fees_master', $to_be_insert);
+			}
 		}
-		// $student_list = 
 	}
+	
 	function add_unique_json_value($json, $newValue)
 	{
 		// Decode JSON to PHP array

@@ -62,7 +62,8 @@ class Feesforward extends Admin_Controller {
                     $data['student_due_fee'] = array();
                     if (!empty($pre_session)) {
                         $student_Array = json_decode($this->findPreviousBalanceFees($pre_session->id, $class_id, $section_id, $current_session));
-
+						// echo '<pre>'; print_r($this->findPreviousBalanceFees($pre_session->id, $class_id, $section_id, $current_session)); echo '</pre>';exit;
+						
                         $data['student_due_fee'] = $student_Array->student_Array;
                         $data['is_update'] = $student_Array->is_update;
                     }
@@ -104,7 +105,7 @@ class Feesforward extends Admin_Controller {
     public function findPreviousBalanceFees($session_id, $class_id, $section_id, $current_session) {
 
         $studentlist = $this->student_model->getPreviousSessionStudent($session_id, $class_id, $section_id);
-
+// return $studentlist;
         $is_update = false;
         $student_Array = array();
         if (!empty($studentlist)) {

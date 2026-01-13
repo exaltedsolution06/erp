@@ -68,7 +68,7 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 										<?php
 											}
 										?>
-										<option value="0">Passout</option>
+										<!--<option value="0">Passout</option>-->
 									</select>
 									<span class="text-danger" id="next_class_id_error"></span>
 								</div>
