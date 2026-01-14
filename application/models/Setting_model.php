@@ -676,6 +676,26 @@ class Setting_model extends MY_Model {
 				return false;
 			}
 		}
+		if($checkData['menu'] == 'createroute')
+		{
+			$this->db->where($checkData['field'], $checkData['id']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get($checkData['table']);
+			if($query->num_rows() > 0)
+			{
+				return true;
+			}
+			else{
+				$this->db->where('fee_group_id', $checkData['id']);
+				$this->db->where('session_id', $checkData['session_id']);
+				$query = $this->db->get('route_plan');
+				if($query->num_rows() > 0){
+					return true;
+				}else{
+					return false;
+				}
+			}
+		}
 		if($checkData['menu'] == 'account')
 		{
 			//echo "<pre>";print_r($checkData);die;

@@ -223,11 +223,12 @@ class Feesroutes extends Admin_Controller
 		$checkData['table'] = 'student_session';
 		$checkData['id'] = $id;
 		$checkData['field'] = 'route_id';
+		$checkData['session_id'] = $this->current_session;
 		$ifsection = $this->Setting_model->checkDeleteList($checkData);
 		
 		if($ifsection > 0)
 		{
-			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Route already used in student</div>');
+			$this->session->set_flashdata('editmsg', '<div class="alert alert-danger text-left">Route already used in student OR Route plan</div>');
 		}
 		else{
 			$this->db->where('id',$id);
