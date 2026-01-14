@@ -33,6 +33,7 @@ class Cron extends CI_Controller
 		$this->sch_setting_detail = $this->setting_model->getSetting();
 		
 		$this->balance_group   = $this->config->item('ci_balance_group');
+        $this->balance_type    = $this->config->item('ci_balance_type');
     }
 	
 	
@@ -175,18 +176,11 @@ class Cron extends CI_Controller
 
         if ($key !== $this->cron_key) {
             exit('Invalid Key or Direct access is not allowe');
-        }
-		
+        }		
 		
 		$this->db->select('move_students.batch_id');
 		$this->db->from('move_students');
-		/*$this->db->join(
-			'move_students_category',
-			'move_students.batch_id = move_students_category.batch_id'
-		);*/
 		$this->db->where('move_students.status', 1);
-		// $this->db->where('move_students_category.status', 1);
-		// $this->db->where('move_students.current_session_id', $this->current_session);
 		$this->db->group_by('batch_id');
 		$query = $this->db->get();
 		// echo '<pre>'; print_r($query->result_array()); exit;
@@ -356,17 +350,6 @@ class Cron extends CI_Controller
 		return $new_house_array;
 	}
 	
-	/*public function fee_category_by_move_category($current_session_id, $batch_id)
-	{
-		$this->db->from('move_students_category');
-		$this->db->join('fee_groups', 'fee_groups.id = move_students_category.next_category_id');
-		$this->db->where('fee_groups.session_id', $current_session_id);
-		$this->db->where('move_students_category.batch_id', $batch_id);
-		$this->db->where('move_students_category.status', 1);
-		$qr = $this->db->get();
-		$moveData = $qr->result_array();
-		return $moveData;
-	}*/
 	public function fee_category_by_move_category($current_session_id, $batch_id)
 	{
 		/**
@@ -706,6 +689,62 @@ class Cron extends CI_Controller
 		}
 		$qr = $this->db->get();
 		
+		//fee group related table start
+		$fee_group_id     = 0;
+		$fee_type_id      = 0;
+	
+		$this->db->where('name', $this->balance_group);
+		$this->db->where('session_id', $classes['current_session_id']);
+		$query = $this->db->get('fee_groups');
+		if ($query->num_rows() > 0) {
+			$fee_group_id = $query->row()->id;
+		} else {
+			$this->db->insert('fee_groups', array('session_id' => $classes['current_session_id'], 'name' => $this->balance_group, 'is_system' => 1));
+			$fee_group_id = $this->db->insert_id();
+		}
+		
+		$this->db->where('type', $this->balance_type);
+		$query = $this->db->get('feetype');
+		if ($query->num_rows() > 0) {
+			$fee_type_id = $query->row()->id;
+		} else {
+			$this->db->insert('feetype', array('type' => $this->balance_type, 'code' => $this->balance_type, 'is_system' => 1));
+			$fee_type_id = $this->db->insert_id();
+		}
+		
+		$setting_result = $this->setting_model->get();
+		$fees_due_days = $setting_result[0]['fee_due_days'];
+		$due_date = date('Y-m-d', strtotime('+' . $fees_due_days . ' day'));
+		$to_be_insert = array(
+			'session_id'           => $classes['current_session_id'],
+			'fee_groups_id'        => $fee_group_id,
+			'feetype_id'           => $fee_type_id,
+			'fee_session_group_id' => 0,
+			'due_date'             => $due_date,
+		);	
+		$this->db->where('fee_groups_id', $fee_group_id);
+		$this->db->where('session_id', $classes['current_session_id']);
+		$query = $this->db->get('fee_session_groups');
+		if ($query->num_rows() > 0) {
+			$fee_session_groups_id = $query->row()->id;
+		} else {
+			$data = array('fee_groups_id' => $fee_group_id, 'session_id' => $classes['current_session_id']);
+			$this->db->insert('fee_session_groups', $data);
+			$fee_session_groups_id = $this->db->insert_id();
+		}
+		
+		$parentid = $fee_session_groups_id;
+		$to_be_insert['fee_session_group_id'] = $parentid;
+		
+		$session_group_exists = $this->feesessiongroup_model->checkExists($to_be_insert);
+		if (!$session_group_exists) {
+			$this->db->insert('fee_groups_feetype', $to_be_insert);
+		} else {
+			$this->db->where('id', $session_group_exists);
+			$this->db->update('fee_groups_feetype', $to_be_insert);
+		}
+		//fee group related table end
+		
 		foreach($qr->result_array() as $val){
 			$student_id = $val['student_id'];
 			// return $val;
@@ -727,27 +766,6 @@ class Cron extends CI_Controller
 			);
 			
 			$this->student_model->add_student_session($data_new);
-			
-			$this->db->where('name', $this->balance_group);
-			$this->db->where('session_id', $classes['current_session_id']);
-			$query = $this->db->get('fee_groups');
-			if ($query->num_rows() > 0) {
-				$fee_group_id = $query->row()->id;
-			} else {
-				$this->db->insert('fee_groups', array('session_id' => $classes['current_session_id'], 'name' => $this->balance_group, 'is_system' => 1));
-				$fee_group_id = $this->db->insert_id();
-			}
-			
-			$this->db->where('fee_groups_id', $fee_group_id);
-			$this->db->where('session_id', $classes['current_session_id']);
-			$query = $this->db->get('fee_session_groups');
-			if ($query->num_rows() > 0) {
-				$fee_session_groups_id = $query->row()->id;
-			} else {
-				$data = array('fee_groups_id' => $fee_group_id, 'session_id' => $classes['current_session_id']);
-				$this->db->insert('fee_session_groups', $data);
-				$fee_session_groups_id = $this->db->insert_id();
-			}
 			
 			$this->db->where('student_session_id', $val['id']);
 			$this->db->where('fee_session_group_id', $fee_session_groups_id);

@@ -107,7 +107,7 @@ class Feesessiongroup_model extends MY_Model {
         $this->db->where('fee_session_group_id', $data['fee_session_group_id']);
         $this->db->where('fee_groups_id', $data['fee_groups_id']);
         $this->db->where('feetype_id', $data['feetype_id']);
-        $this->db->where('session_id', $this->current_session);
+        $this->db->where('session_id', $data['session_id']);
         $q = $this->db->get('fee_groups_feetype');
 
         if ($q->num_rows() > 0) {
