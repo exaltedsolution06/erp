@@ -177,7 +177,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <select class="form-control" name="cast_category" id="" autocomplete="off">
                                                 <option value="">Select - </option>
                                                 <?php
-                                                $categories = ['OBC', 'SC/ST', 'GENERAL', 'MINORITY', 'OTHER']; // your category list
+                                                $categories = ['GENERAL', 'OBC', 'SC/ST', 'MINORITY', 'OTHER']; // your category list
                                                 foreach($categories as $value) {
                                                 ?>
                                                     <option value="<?=$value?>" <?= ($value == $student['cast_category']) ? 'selected' : '' ?>>

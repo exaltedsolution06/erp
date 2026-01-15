@@ -132,6 +132,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 </div>
 								
                                 <div class="form-group switch-inline">
+                                    <label><?php echo $this->lang->line('admission') . " " . $this->lang->line('no'); ?></label>
+                                    <div class="material-switch switchcheck">
+                                        <input id="is_admission_no" name="is_admission_no" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_admission_no', '1', (set_value('is_admission_no', $reportcard->is_admission_no) == 1) ? TRUE : FALSE); ?>>
+                                        <label for="is_admission_no" class="label-success"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group switch-inline">
                                     <label><?php echo $this->lang->line('name'); ?></label>
                                     <div class="material-switch switchcheck">
                                         <input id="is_name" name="is_name" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_name', '1', (set_value('is_name', $reportcard->is_name) == 1) ? TRUE : FALSE); ?>>
@@ -150,20 +157,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <div class="material-switch switchcheck">
                                         <input id="is_mother_name" name="is_mother_name" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_mother_name', '1', (set_value('is_mother_name', $reportcard->is_mother_name) == 1) ? TRUE : FALSE); ?>>
                                         <label for="is_mother_name" class="label-success"></label>
-                                    </div>
-                                </div>
-                                <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('date_of_birth'); ?></label>
-                                    <div class="material-switch switchcheck">
-                                        <input id="is_dob" name="is_dob" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_dob', '1', (set_value('is_dob', $reportcard->is_dob) == 1) ? TRUE : FALSE); ?>>
-                                        <label for="is_dob" class="label-success"></label>
-                                    </div>
-                                </div>
-                                <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('admission') . " " . $this->lang->line('no'); ?></label>
-                                    <div class="material-switch switchcheck">
-                                        <input id="is_admission_no" name="is_admission_no" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_admission_no', '1', (set_value('is_admission_no', $reportcard->is_admission_no) == 1) ? TRUE : FALSE); ?>>
-                                        <label for="is_admission_no" class="label-success"></label>
                                     </div>
                                 </div>
                                 <div class="form-group switch-inline">
@@ -188,12 +181,30 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </div>
                                 </div>
                                 <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('photo'); ?></label>
+                                    <label><?php echo $this->lang->line('date_of_birth'); ?></label>
                                     <div class="material-switch switchcheck">
-                                        <input id="is_photo" name="is_photo" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_photo', '1', (set_value('is_photo', $reportcard->is_photo) == 1) ? TRUE : FALSE); ?>>
-                                        <label for="is_photo" class="label-success"></label>
+                                        <input id="is_dob" name="is_dob" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_dob', '1', (set_value('is_dob', $reportcard->is_dob) == 1) ? TRUE : FALSE); ?>>
+                                        <label for="is_dob" class="label-success"></label>
                                     </div>
                                 </div>
+								<div class="clearfix"></div>
+                                <div class="row">
+									<div class="col-md-6 col-sm-6 img_div_modal minh45">
+										<div class="form-group switch-inline">
+											<label><?php echo $this->lang->line('photo'); ?></label>
+											<div class="material-switch switchcheck">
+												<input id="is_photo" name="is_photo" type="checkbox" class="chk" value="1" onclick="valueChanged()" <?php echo set_checkbox('is_photo', '1', (set_value('is_photo', $reportcard->is_photo) == 1) ? TRUE : FALSE); ?>>
+												<label for="is_photo" class="label-success"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-6 img_div_modal">
+										<div class="form-group" id="enableImageDiv" hidden>
+											<input id="photo_image_height" name="photo_image_height" placeholder="<?php echo $this->lang->line('photo'); ?> <?php echo $this->lang->line('height'); ?>" type="text" value="<?php echo set_value('photo_image_height', $reportcard->photo_image_height); ?>" class="form-control" min="0" />
+										</div>
+									</div>
+								</div>
+								
                                 <div class="form-group switch-inline">
                                     <label><?php echo $this->lang->line('contactno'); ?></label>
                                     <div class="material-switch switchcheck">
@@ -208,17 +219,17 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									$saved_marks_obtained_json = json_decode($reportcard->exam_group_marks_obtained, true);					
 								?>
 									<div class="form-group switch-inline">
-										<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('grade'); ?> <?= $exam_groups_val->name; ?></label>
+										<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('max'); ?> <?php echo $this->lang->line('marks'); ?> <?= $exam_groups_val->name; ?></label>
 
 										<div class="material-switch switchcheck">
-											<input id="exam_group_<?= $exam_groups_val->id ?>"
-												   name="exam_group[<?= $exam_groups_val->id ?>]"
+											<input id="max_marks_<?= $exam_groups_val->id ?>"
+												   name="max_marks[<?= $exam_groups_val->id ?>]"
 												   type="checkbox"
 												   class="chk"
 												   value="1"
-												   <?= isset($saved_json[$exam_groups_val->id]) && $saved_json[$exam_groups_val->id] == 1 ? 'checked' : '' ?>
+												   <?= isset($saved_max_marks_json[$exam_groups_val->id]) && $saved_max_marks_json[$exam_groups_val->id] == 1 ? 'checked' : '' ?>
 											>
-											<label for="exam_group_<?= $exam_groups_val->id ?>" class="label-success"></label>
+											<label for="max_marks_<?= $exam_groups_val->id ?>" class="label-success"></label>
 										</div>
 									</div>
 									<div class="form-group switch-inline">
@@ -236,32 +247,32 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										</div>
 									</div>
 									<div class="form-group switch-inline">
-										<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('max'); ?> <?php echo $this->lang->line('marks'); ?> <?= $exam_groups_val->name; ?></label>
+										<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('grade'); ?> <?= $exam_groups_val->name; ?></label>
 
 										<div class="material-switch switchcheck">
-											<input id="max_marks_<?= $exam_groups_val->id ?>"
-												   name="max_marks[<?= $exam_groups_val->id ?>]"
+											<input id="exam_group_<?= $exam_groups_val->id ?>"
+												   name="exam_group[<?= $exam_groups_val->id ?>]"
 												   type="checkbox"
 												   class="chk"
 												   value="1"
-												   <?= isset($saved_max_marks_json[$exam_groups_val->id]) && $saved_max_marks_json[$exam_groups_val->id] == 1 ? 'checked' : '' ?>
+												   <?= isset($saved_json[$exam_groups_val->id]) && $saved_json[$exam_groups_val->id] == 1 ? 'checked' : '' ?>
 											>
-											<label for="max_marks_<?= $exam_groups_val->id ?>" class="label-success"></label>
+											<label for="exam_group_<?= $exam_groups_val->id ?>" class="label-success"></label>
 										</div>
 									</div>
 								<?php } ?>
 								<div class="form-group switch-inline">
-									<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('grade'); ?></label>
+									<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('max'); ?> <?php echo $this->lang->line('marks'); ?></label>
 
 									<div class="material-switch switchcheck">
-										<input id="exam_group_overall"
-											   name="exam_group[overall]"
+										<input id="max_marks_overall"
+											   name="max_marks[overall]"
 											   type="checkbox"
 											   class="chk"
 											   value="1"
-											   <?= isset($saved_json['overall']) && $saved_json['overall'] == 1 ? 'checked' : '' ?>
+											   <?= isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1 ? 'checked' : '' ?>
 										>
-										<label for="exam_group_overall" class="label-success"></label>
+										<label for="max_marks_overall" class="label-success"></label>
 									</div>
 								</div>
 								<div class="form-group switch-inline">
@@ -279,17 +290,17 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									</div>
 								</div>
 								<div class="form-group switch-inline">
-									<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('max'); ?> <?php echo $this->lang->line('marks'); ?></label>
+									<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('grade'); ?></label>
 
 									<div class="material-switch switchcheck">
-										<input id="max_marks_overall"
-											   name="max_marks[overall]"
+										<input id="exam_group_overall"
+											   name="exam_group[overall]"
 											   type="checkbox"
 											   class="chk"
 											   value="1"
-											   <?= isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1 ? 'checked' : '' ?>
+											   <?= isset($saved_json['overall']) && $saved_json['overall'] == 1 ? 'checked' : '' ?>
 										>
-										<label for="max_marks_overall" class="label-success"></label>
+										<label for="exam_group_overall" class="label-success"></label>
 									</div>
 								</div>
 								
@@ -427,6 +438,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         });
 		
 		$("#subject_color, #scholastic_area_color, #main_subject_color").colorpicker();
+		
+		if ($('#is_photo').is(":checked")) {
+            $("#enableImageDiv").show();
+        } else {
+            $("#enableImageDiv").hide();
+
+        }
     });
 </script>
 <script type="text/javascript">
@@ -509,7 +527,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 <script type="text/javascript">
     function valueChanged()
     {
-        if ($('#enable_student_img').is(":checked"))
+        if ($('#is_photo').is(":checked"))
             $("#enableImageDiv").show();
         else
             $("#enableImageDiv").hide();

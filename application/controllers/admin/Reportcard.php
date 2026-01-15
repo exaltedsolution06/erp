@@ -76,8 +76,10 @@ class Reportcard extends Admin_Controller {
             }
             if (isset($_POST['is_photo'])) {
                 $is_photo = 1;
+                $photo_image_height = $_POST['photo_image_height'];
             } else {
                 $is_photo = 0;
+                $photo_image_height = 0;
             }
             if (isset($_POST['is_contactno'])) {
                 $is_contactno = 1;
@@ -134,6 +136,7 @@ class Reportcard extends Admin_Controller {
                 'is_class' => $is_class,
                 'is_section' => $is_section,
                 'is_photo' => $is_photo,
+                'photo_image_height' => $photo_image_height,
                 'is_contactno' => $is_contactno,
                 'exam_group_grade'=>json_encode($this->input->post('exam_group')),
                 'exam_group_marks_obtained'=>json_encode($this->input->post('marks_obtained')),
@@ -312,8 +315,10 @@ class Reportcard extends Admin_Controller {
             }
             if (isset($_POST['is_photo'])) {
                 $is_photo = 1;
+                $photo_image_height = $_POST['photo_image_height'];
             } else {
                 $is_photo = 0;
+                $photo_image_height = 0;
             }
             if (isset($_POST['is_contactno'])) {
                 $is_contactno = 1;
@@ -371,6 +376,7 @@ class Reportcard extends Admin_Controller {
                 'is_class' => $is_class,
                 'is_section' => $is_section,
                 'is_photo' => $is_photo,
+                'photo_image_height' => $photo_image_height,
                 'is_contactno' => $is_contactno,
                 'exam_group_grade'=>json_encode($this->input->post('exam_group')),
                 'exam_group_marks_obtained'=>json_encode($this->input->post('marks_obtained')),

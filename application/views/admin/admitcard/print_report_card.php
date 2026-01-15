@@ -183,40 +183,31 @@
 					<div class="col-<?php echo $is_photo_exists ? 5 : 6; ?>" >
 						<table class="table table-borderless">
 						<tbody>
-							<?php if($desc->is_name==1){ ?>
+							<?php if($desc->is_admission_no==1){ ?>
+							<tr>
+							  <th  class="th" scope="row"><?php echo $this->lang->line('admission_no'); ?></th>
+							  <td>:</td>
+							  <td><?=$stddata->admission_no?></td>
+							</tr>
+							<?php } if($desc->is_name==1){ ?>
 							<tr>
 							  <th class="th" scope="row"><?php echo $this->lang->line('student_name'); ?></th>
 							  <td>:  &nbsp;</td>
 							  <td><?=$stddata->firstname.' '.$stddata->middlename.' '.$stddata->lastname ?></td>
 							</tr>
-						<?php } ?> 
-						
-						
-						<?php if($desc->is_father_name==1){ ?>
+							<?php } if($desc->is_father_name==1){ ?>
 							<tr>
 							  <th scope="row"  class="th"><?php echo $this->lang->line('father_name'); ?></th>
 							  <td>:</td>
 							  <td><?=$stddata->father_name?></td>
 							</tr>
-							<?php } ?>
-						
-						
-						<?php if($desc->is_mother_name==1){ ?>
+							<?php } if($desc->is_mother_name==1){ ?>
 							<tr>
 							  <th scope="row"  class="th"><?php echo $this->lang->line('mother_name'); ?></th>
 							  <td>:</td>
 							  <td><?=$stddata->mother_name?></td>
 							</tr>
 							<?php }  ?>
-							
-						<?php if($desc->is_dob==1){ ?>
-							
-							<tr>
-							  <th scope="row"  class="th"><?php echo $this->lang->line('d_o_b'); ?></th>
-							  <td>:</td>
-							  <td><?=date('d-M-Y',strtotime($stddata->dob))?></td>
-							</tr>
-							<?php } ?>
 						  </tbody>
 						</table>
 					</div>
@@ -224,23 +215,23 @@
 					
 						<table class="table table-borderless">
 						  <tbody>
-						  	<?php  if($desc->is_class==1 or $desc->is_section==1){ ?>
-							<tr>
-							  <th scope="row"  class="th"><?php echo $this->lang->line('class_and_section'); ?></th>
-							  <td>:</td>
-							  <td><?=$stddata->class?>  <?=$stddata->section?>  </td>
-							</tr>
-							<?php } if($desc->is_roll_no==1){ ?>
+						  	<?php if($desc->is_roll_no==1){ ?>
 							<tr>
 							  <th  class="th"><?php echo $this->lang->line('roll_no'); ?></th>
 							  <td>:  &nbsp;</td>
 							  <td><?=$stddata->roll_no?></td>
 							</tr>
-							<?php } if($desc->is_admission_no==1){ ?>
+							<?php } if($desc->is_class==1 or $desc->is_section==1){ ?>
 							<tr>
-							  <th  class="th" scope="row"><?php echo $this->lang->line('admission_no'); ?></th>
+							  <th scope="row"  class="th"><?php echo $this->lang->line('class_and_section'); ?></th>
 							  <td>:</td>
-							  <td><?=$stddata->admission_no?></td>
+							  <td><?=$stddata->class?>  <?=$stddata->section?>  </td>
+							</tr>
+							<?php } if($desc->is_dob==1){ ?>							
+							<tr>
+							  <th scope="row"  class="th"><?php echo $this->lang->line('d_o_b'); ?></th>
+							  <td>:</td>
+							  <td><?=date('d-M-Y',strtotime($stddata->dob))?></td>
 							</tr>
 							<?php } if($desc->is_contactno==1){ ?>
 							<tr>
@@ -261,7 +252,7 @@
 							<tbody>
 								<tr>
 									<td valign="top" width="25%" align="right">
-										<img src="<?php echo base_url() . $stddata->image; ?>" width="100" height="130" style="border: 2px solid #fff;outline: 1px solid #000000;">
+										<img src="<?php echo base_url() . $stddata->image; ?>" width="100" height="<?php echo $desc->photo_image_height ?>" style="border: 2px solid #fff;outline: 1px solid #000000;">
 									</td>
 								</tr>
 							</tbody>

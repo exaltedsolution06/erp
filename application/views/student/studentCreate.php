@@ -179,9 +179,9 @@
                                             <label for="exampleInputEmail1">Cast Category</label>
                                             <select class="form-control" name="cast_category" id="" autocomplete="off">
                                                 <option value="">Select - </option>
+                                                <option value="GENERAL" <?= (set_value('cast_category') == 'GENERAL') ? 'selected' : '' ?>>GENERAL</option>
                                                 <option value="OBC" <?= (set_value('cast_category') == 'OBC') ? 'selected' : '' ?>>OBC</option>
                                                 <option value="SC/ST" <?= (set_value('cast_category') == 'SC/ST') ? 'selected' : '' ?>>SC/ST</option>
-                                                <option value="GENERAL" <?= (set_value('cast_category') == 'GENERAL') ? 'selected' : '' ?>>GENERAL</option>
                                                 <option value="MINORITY" <?= (set_value('cast_category') == 'MINORITY') ? 'selected' : '' ?>>MINORITY</option>
                                                 <option value="OTHER" <?= (set_value('cast_category') == 'OTHER') ? 'selected' : '' ?>>Other</option>
                                             </select>

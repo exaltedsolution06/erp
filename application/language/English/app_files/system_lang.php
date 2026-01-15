@@ -1686,3 +1686,4 @@ $lang['scholastic_has_class'] = "Classes inserted with respect to the assessment
 $lang['yearly_expenses'] = 'Yearly Expenses';
 $lang['weekly_expenses'] = 'Weekly Expenses';
 $lang['total_expenses'] = 'Total Expenses';
+$lang['sl_no'] = 'S.No';
