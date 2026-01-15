@@ -64,7 +64,7 @@
                                 </div><!--./form-group-->
 
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('description'); ?></label>
+                                    <label><?php echo $this->lang->line('remarks'); ?></label>
                                     <textarea class="form-control" id="description" name="description" placeholder="" rows="3" placeholder=""><?php echo set_value('description'); ?></textarea>
                                     <span class="text-danger"><?php echo form_error('description'); ?></span>
                                 </div><!--./form-group-->

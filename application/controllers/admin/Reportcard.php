@@ -95,6 +95,11 @@ class Reportcard extends Admin_Controller {
             } else {
                 $marks_grade_table = 0;
             }
+            if (isset($_POST['max_marks_shift_left'])) {
+                $max_marks_shift_left = 1;
+            } else {
+                $max_marks_shift_left = 0;
+            }
             if (isset($_POST['is_class_teacher'])) {
                 $is_class_teacher = 1;
             } else {
@@ -116,6 +121,10 @@ class Reportcard extends Admin_Controller {
             $insert_data = array(
                 'template' => $this->input->post('template'),
                 'title' => $this->input->post('title'),
+                'overall_marks_title' => $this->input->post('overall_marks_title'),
+                'subject_color' => $this->input->post('subject_color'),
+                'scholastic_area_color' => $this->input->post('scholastic_area_color'),
+                'main_subject_color' => $this->input->post('main_subject_color'),
                 'is_name' => $is_name,
                 'is_father_name' => $is_father_name,
                 'is_mother_name' => $is_mother_name,
@@ -131,6 +140,7 @@ class Reportcard extends Admin_Controller {
                 'exam_group_max_marks'=>json_encode($this->input->post('max_marks')),
                 'is_header'=>$is_header,
                 'marks_grade_table'=>$marks_grade_table,
+                'max_marks_shift_left'=>$max_marks_shift_left,
                 'is_class_teacher'=>$is_class_teacher,
                 'is_examination_ic'=>$is_examination_ic,
                 'is_principal'=>$is_principal,
@@ -319,6 +329,11 @@ class Reportcard extends Admin_Controller {
             } else {
                 $marks_grade_table = 0;
             }
+            if (isset($_POST['max_marks_shift_left'])) {
+                $max_marks_shift_left = 1;
+            } else {
+                $max_marks_shift_left = 0;
+            }
             if (isset($_POST['is_class_teacher'])) {
                 $is_class_teacher = 1;
             } else {
@@ -340,6 +355,10 @@ class Reportcard extends Admin_Controller {
                 'id' => $this->input->post('id'),
                 'template' => $this->input->post('template'),
                 'title' => $this->input->post('title'),
+                'overall_marks_title' => $this->input->post('overall_marks_title'),
+                'subject_color' => $this->input->post('subject_color'),
+                'scholastic_area_color' => $this->input->post('scholastic_area_color'),
+                'main_subject_color' => $this->input->post('main_subject_color'),
                 'is_name' => $is_name,
                 'is_father_name' => $is_father_name,
                 'is_mother_name' => $is_mother_name,
@@ -355,6 +374,7 @@ class Reportcard extends Admin_Controller {
                 'exam_group_max_marks'=>json_encode($this->input->post('max_marks')),
                 'is_header'=>$is_header,
                 'marks_grade_table'=>$marks_grade_table,
+                'max_marks_shift_left'=>$max_marks_shift_left,
                 'is_class_teacher'=>$is_class_teacher,
                 'is_examination_ic'=>$is_examination_ic,
                 'is_principal'=>$is_principal,

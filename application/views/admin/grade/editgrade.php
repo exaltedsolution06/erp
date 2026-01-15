@@ -78,7 +78,7 @@
                                     <span class="text-danger"><?php echo form_error('grade_point'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('description'); ?></label>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('remarks'); ?></label>
                                     <textarea class="form-control" id="description" name="description" rows="3" ><?php echo set_value('description', $editgrade['description']); ?></textarea>
                                     <span class="text-danger"><?php echo form_error('description'); ?></span>
                                 </div>

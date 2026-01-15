@@ -44,6 +44,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <input autofocus="" id="title" value="<?php echo set_value('title'); ?>" name="title" placeholder="" type="text" class="form-control" />
                                     <span class="text-danger"><?php echo form_error('title'); ?></span>
                                 </div>
+                                <div class="form-group">
+                                    <label><?php echo $this->lang->line('overall_marks_title'); ?></label>
+                                    <input autofocus="" id="overall_marks_title" value="<?php echo set_value('overall_marks_title'); ?>" name="overall_marks_title" placeholder="" type="text" class="form-control" />
+                                    <span class="text-danger"><?php echo form_error('overall_marks_title'); ?></span>
+                                </div>
 								
                                 <div class="form-group switch-inline width-100">
                                     <label><?php echo $this->lang->line('header').' '.$this->lang->line('image'); ?></label>
@@ -84,6 +89,21 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <label><?php echo $this->lang->line('background_image'); ?></label>
                                     <input id="documents" name="background_image" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="background_image">
                                     <span class="text-danger"><?php echo form_error('background_image'); ?></span>
+                                </div>
+								
+								<div class="form-group">
+                                    <label><?php echo $this->lang->line('scholastic_area'); ?> <?php echo $this->lang->line('color'); ?></label>
+                                    <input id="scholastic_area_color" name="scholastic_area_color" placeholder="" type="text" class="form-control my-colorpicker1" />
+                                </div>
+								
+								<div class="form-group">
+                                    <label><?php echo $this->lang->line('main'); ?> <?php echo $this->lang->line('subject'); ?> <?php echo $this->lang->line('color'); ?></label>
+                                    <input id="main_subject_color" name="main_subject_color" placeholder="" type="text" class="form-control my-colorpicker1" />
+                                </div>
+								
+								<div class="form-group">
+                                    <label><?php echo $this->lang->line('subject'); ?> <?php echo $this->lang->line('color'); ?></label>
+                                    <input id="subject_color" name="subject_color" placeholder="" type="text" class="form-control my-colorpicker1" />
                                 </div>
 								
                                 <div class="form-group switch-inline">
@@ -251,6 +271,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <label for="marks_grade_table" class="label-success"></label>
                                     </div>
                                 </div>
+								<div class="form-group switch-inline">
+                                    <label><?php echo $this->lang->line('max_marks_shift_left'); ?></label>
+                                    <div class="material-switch switchcheck">
+                                        <input id="max_marks_shift_left" name="max_marks_shift_left" type="checkbox" class="chk" value="1">
+                                        <label for="max_marks_shift_left" class="label-success"></label>
+                                    </div>
+                                </div>
                             </div><!-- /.box-body -->
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
@@ -365,6 +392,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         $("#btnreset").click(function () {
             $("#form1")[0].reset();
         });
+		
+		$("#subject_color, #scholastic_area_color, #main_subject_color").colorpicker();
     });
 </script>
 <script type="text/javascript">

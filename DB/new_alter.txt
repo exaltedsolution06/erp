@@ -34,6 +34,15 @@ UPDATE `staff` SET `session_id` = '30' WHERE `staff`.`id` = 1;
 
 --- 02-01-2026 ---
 DROP TABLE `u121972512_erp`.`sch_settings_session`;
+
+--- 14-01-2026 ---
+ALTER TABLE `template_reportcard` ADD `max_marks_shift_left` INT(11) NOT NULL DEFAULT '0' AFTER `marks_grade_table`;
+ALTER TABLE `template_reportcard` ADD `overall_marks_title` VARCHAR(255) NULL DEFAULT NULL AFTER `max_marks_shift_left`;
+ALTER TABLE `template_reportcard` ADD `subject_color` CHAR(36) NULL DEFAULT NULL AFTER `overall_marks_title`;
+
+--- 15-01-2026 ---
+ALTER TABLE `template_reportcard` ADD `scholastic_area_color` CHAR(36) NULL DEFAULT NULL AFTER `subject_color`;
+ALTER TABLE `template_reportcard` ADD `main_subject_color` CHAR(36) NULL DEFAULT NULL AFTER `scholastic_area_color`;
 ===============================
 File change outside of application folder
 --------
