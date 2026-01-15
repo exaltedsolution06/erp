@@ -147,6 +147,9 @@ class Reportcard extends Admin_Controller {
                 'left_sign' => "",
                 'right_sign' => "",
                 'middle_sign' => "",
+                'left_sign_title' => $this->input->post('left_sign_title'),
+                'middle_sign_title' => $this->input->post('middle_sign_title'),
+                'right_sign_title' => $this->input->post('right_sign_title'),
                 'background_image' => "",
                 'header_img'=>"",
 				'session_id' => $this->current_session
@@ -378,6 +381,9 @@ class Reportcard extends Admin_Controller {
                 'is_class_teacher'=>$is_class_teacher,
                 'is_examination_ic'=>$is_examination_ic,
                 'is_principal'=>$is_principal,
+                'left_sign_title' => $this->input->post('left_sign_title'),
+                'middle_sign_title' => $this->input->post('middle_sign_title'),
+                'right_sign_title' => $this->input->post('right_sign_title'),
             );
             
             

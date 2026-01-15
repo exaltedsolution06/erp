@@ -134,12 +134,14 @@
 
 
 
-	foreach($marksheet as $stddata){
+	foreach($marksheet as $i=>$stddata){
 	// echo '<pre>';print_r($stddata);
 			if(in_array($stddata->student_id, $exam_group_class_batch_exam_student_id)){
 			$student_id=$stddata->student_id;
 ?>
-
+<?php if ($index > 0): ?>
+	<div class="pagebreak"></div>
+<?php endif; ?>
 	<div class="mark-container mb-5">
 	<?php
 		if ($desc->background_image != "") {
@@ -874,11 +876,13 @@
 			
 			
 			
-			
-			<div class="col-6" style="padding: 0;" >
+			<div class="col-8" style="padding: 0;">
 				Note : 'AB' Indicates <strong>ABSENT</strong> in the Subject Exam.
-			</div>
-			<div class="col-6 text-end" style="padding: 0;"><strong>
+			</div>	
+			<!--<div class="col-8" style="padding: 0;">
+				Note : <strong>'AB'</strong> Indicates <strong>ABSENT</strong> & <strong>'ML'</strong> Indicates <strong>Medical Leave</strong> in the Subject Exam.
+			</div>-->
+			<div class="col-4 text-end" style="padding: 0;"><strong>
 				<?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('percentage'); ?>(%) : <?php 
 											$totalMaxMarks = array_sum($maxMark);
 
@@ -890,15 +894,15 @@
 											?>%</strong>
 			</div>
 			<div class="col-12 text-end" style="padding: 0;">
-			<?php 
-				$exam_pass_status = 1;
-				if ($finalTotal < array_sum($minMark)) {
-					$exam_pass_status = 0;
-				}
-			?>
-			<strong>
-			<?php echo $this->lang->line('result') ?> : <?php echo $exam_pass_status ? $this->lang->line('pass') : $this->lang->line('fail'); ?> <?php echo $exam_pass_status ? '('.get_division_by_percentage($totalNumber).' '.$this->lang->line('division').')' : ''; ?>
-			</strong>
+				<?php 
+					$exam_pass_status = 1;
+					if ($finalTotal < array_sum($minMark)) {
+						$exam_pass_status = 0;
+					}
+				?>
+				<strong>
+				<?php echo $this->lang->line('result') ?> : <?php echo $exam_pass_status ? $this->lang->line('pass') : $this->lang->line('fail'); ?> <?php echo $exam_pass_status ? '('.get_division_by_percentage($totalNumber).' '.$this->lang->line('division').')' : ''; ?>
+				</strong>
 			</div>
 			
 			<?php 
@@ -973,8 +977,13 @@
 							<span>___________________________________________________________________</span>
 						<?php } ?>
 					</div>
-					<div class="col-5 mt-3 mb-3 text-end">
+					<div class="col-5 mt-3 mb-3 text-end">						
+						<?php if($exam_pass_status){
+							echo '<strong>'.$this->lang->line('promoted_to_next_class').'</strong>';
+						}else{
+						?>
 						<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <span>___________________________________</span>
+						<?php } ?>
 					</div>
 					<div class="col-6">
 						<strong><?php echo $this->lang->line('date'); ?> :</strong> <span>________________________________</span>
@@ -1008,7 +1017,7 @@
 							echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
 						}
 						?>
-						<h6 class="mt-1"><?php echo $this->lang->line('class_teacher'); ?> <?php echo $this->lang->line('sign'); ?> </h6>
+						<h6 class="mt-1"><?php echo $desc->left_sign_title; ?></h6>
 					</div>                   
 					<?php } if($desc->is_examination_ic==1){ ?>
 					<div class="col-<?php echo 12/$sign_count; ?>">
@@ -1026,7 +1035,7 @@
 							echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
 						}
 						?>
-						<h6 class="mt-1"><?php echo $this->lang->line('examination_ic'); ?> <?php echo $this->lang->line('sign'); ?> </h6>
+						<h6 class="mt-1"><?php echo $desc->middle_sign_title; ?></h6>
 					</div>
 					<?php } if($desc->is_principal==1){ ?>
 					<div class="col-<?php echo 12/$sign_count; ?>">
@@ -1044,7 +1053,7 @@
 							echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
 						}
 						?>
-						<h6 class="mt-1"><?php echo $this->lang->line('principal'); ?> <?php echo $this->lang->line('sign'); ?></h6>
+						<h6 class="mt-1"><?php echo $desc->right_sign_title; ?></h6>
 					</div>
 					<?php } ?>
 				</div>
@@ -1060,7 +1069,7 @@
 	</div>
 
 
-<div class="pagebreak"></div>
+
 
 
 			<?php }

@@ -59,16 +59,22 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <input id="documents" name="header_img" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="header_img">
                                 </div>
                                 <div class="form-group switch-inline width-100">
-                                    <label><?php echo $this->lang->line('class_teacher') . " " . $this->lang->line('sign'); ?></label>
+                                    <label><?php echo $this->lang->line('left') . " " . $this->lang->line('sign'); ?></label>
                                     <div class="material-switch switchcheck float-right">
                                         <input id="is_class_teacher" name="is_class_teacher" type="checkbox" class="chk" value="1">
                                         <label for="is_class_teacher" class="label-success"></label>
                                     </div>
                                     <input id="documents" name="left_sign" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="left_sign">
                                     <span class="text-danger"><?php echo form_error('left_sign'); ?></span>
+								</div>
+								<div class="form-group">	
+									<label><?php echo $this->lang->line('left'); ?> <?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?></label>								
+									<input autofocus="" id="left_sign_title" value="<?php echo set_value('left_sign_title'); ?>" name="left_sign_title" placeholder="" type="text" class="form-control" />
+									<span class="text-danger"><?php echo form_error('left_sign_title'); ?></span>
                                 </div>
+								
                                 <div class="form-group switch-inline width-100">
-                                    <label><?php echo $this->lang->line('examination_ic') . " " . $this->lang->line('sign') ?></label>
+                                    <label><?php echo $this->lang->line('middle') . " " . $this->lang->line('sign') ?></label>
                                     <div class="material-switch switchcheck float-right">
                                         <input id="is_examination_ic" name="is_examination_ic" type="checkbox" class="chk" value="1">
                                         <label for="is_examination_ic" class="label-success"></label>
@@ -76,8 +82,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <input id="documents" name="middle_sign" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="middle_sign">
                                     <span class="text-danger"><?php echo form_error('middle_sign'); ?></span>
                                 </div>
+								<div class="form-group">	
+									<label><?php echo $this->lang->line('middle'); ?> <?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?></label>								
+									<input autofocus="" id="middle_sign_title" value="<?php echo set_value('middle_sign_title'); ?>" name="middle_sign_title" placeholder="" type="text" class="form-control" />
+									<span class="text-danger"><?php echo form_error('middle_sign_title'); ?></span>
+                                </div>
+								
                                 <div class="form-group switch-inline width-100">
-                                    <label><?php echo $this->lang->line('principal') . " " . $this->lang->line('sign'); ?></label>
+                                    <label><?php echo $this->lang->line('right') . " " . $this->lang->line('sign'); ?></label>
                                     <div class="material-switch switchcheck float-right">
                                         <input id="is_principal" name="is_principal" type="checkbox" class="chk" value="1">
                                         <label for="is_principal" class="label-success"></label>
@@ -85,6 +97,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <input id="documents" name="right_sign" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="right_sign">
                                     <span class="text-danger"><?php echo form_error('right_sign'); ?></span>
                                 </div>
+								<div class="form-group">	
+									<label><?php echo $this->lang->line('right'); ?> <?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?></label>								
+									<input autofocus="" id="right_sign_title" value="<?php echo set_value('right_sign_title'); ?>" name="right_sign_title" placeholder="" type="text" class="form-control" />
+									<span class="text-danger"><?php echo form_error('right_sign_title'); ?></span>
+                                </div>
+								
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('background_image'); ?></label>
                                     <input id="documents" name="background_image" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="background_image">
