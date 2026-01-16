@@ -102,6 +102,11 @@ class Reportcard extends Admin_Controller {
             } else {
                 $max_marks_shift_left = 0;
             }
+            if (isset($_POST['school_reopen'])) {
+                $school_reopen = 1;
+            } else {
+                $school_reopen = 0;
+            }
             if (isset($_POST['is_class_teacher'])) {
                 $is_class_teacher = 1;
             } else {
@@ -144,6 +149,9 @@ class Reportcard extends Admin_Controller {
                 'is_header'=>$is_header,
                 'marks_grade_table'=>$marks_grade_table,
                 'max_marks_shift_left'=>$max_marks_shift_left,
+                'school_reopen'=>$school_reopen,
+				'header_height' => $this->input->post('header_height'),
+                'footer_height' => $this->input->post('footer_height'),
                 'is_class_teacher'=>$is_class_teacher,
                 'is_examination_ic'=>$is_examination_ic,
                 'is_principal'=>$is_principal,
@@ -342,6 +350,11 @@ class Reportcard extends Admin_Controller {
             } else {
                 $max_marks_shift_left = 0;
             }
+            if (isset($_POST['school_reopen'])) {
+                $school_reopen = 1;
+            } else {
+                $school_reopen = 0;
+            }
             if (isset($_POST['is_class_teacher'])) {
                 $is_class_teacher = 1;
             } else {
@@ -384,6 +397,9 @@ class Reportcard extends Admin_Controller {
                 'is_header'=>$is_header,
                 'marks_grade_table'=>$marks_grade_table,
                 'max_marks_shift_left'=>$max_marks_shift_left,
+                'school_reopen'=>$school_reopen,
+				'header_height' => $this->input->post('header_height'),
+                'footer_height' => $this->input->post('footer_height'),
                 'is_class_teacher'=>$is_class_teacher,
                 'is_examination_ic'=>$is_examination_ic,
                 'is_principal'=>$is_principal,

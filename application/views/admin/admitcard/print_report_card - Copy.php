@@ -142,7 +142,6 @@
 <?php if ($index > 0): ?>
 	<div class="pagebreak"></div>
 <?php endif; ?>
-	<div class="" style="height:<?php echo $desc->header_height; ?>px;"></div>
 	<div class="mark-container mb-5">
 	<?php
 		if ($desc->background_image != "") {
@@ -152,6 +151,7 @@
 		}
 	?>
 		<div class="row maincontent">
+			<div class="col-12" style="height:0px"></div>
 			<?php 
 			if($desc->is_header==1){
 			if($desc->header_img!='' || $desc->header_img!=null){
@@ -1065,7 +1065,7 @@
 
 
 
-	<div class="" style="height:<?php echo $desc->footer_height; ?>px;"></div>
+
 			<?php }
 			} ?>
 

@@ -307,6 +307,27 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <label for="max_marks_shift_left" class="label-success"></label>
                                     </div>
                                 </div>
+								<div class="form-group switch-inline">
+                                    <label><?php echo $this->lang->line('school_reopen'); ?></label>
+                                    <div class="material-switch switchcheck">
+                                        <input id="school_reopen" name="school_reopen" type="checkbox" class="chk" value="1">
+                                        <label for="school_reopen" class="label-success"></label>
+                                    </div>
+                                </div>
+								<div class="clearfix"></div>
+								<div class="row">
+									<div class="img_div_modal"><label><?php echo $this->lang->line('report_card'); ?> <?php echo $this->lang->line('design'); ?></label></div>
+									<div class="col-md-6 col-sm-6 img_div_modal">
+										<div class="form-group">
+											<input id="header_height" name="header_height" placeholder="<?php echo $this->lang->line('header'); ?> <?php echo $this->lang->line('height'); ?>" type="number" class="form-control" min="0" />
+										</div>
+									</div><!--./col-md-6-->
+									<div class="col-md-6 col-sm-6 img_div_modal">
+										<div class="form-group">
+											<input id="footer_height" name="footer_height" placeholder="<?php echo $this->lang->line('footer'); ?> <?php echo $this->lang->line('height'); ?>" type="number" class="form-control" min="0" />
+										</div>
+									</div>
+								</div>
                             </div><!-- /.box-body -->
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>

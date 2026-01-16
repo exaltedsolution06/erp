@@ -45,6 +45,9 @@ ALTER TABLE `template_reportcard` ADD `scholastic_area_color` CHAR(36) NULL DEFA
 ALTER TABLE `template_reportcard` ADD `main_subject_color` CHAR(36) NULL DEFAULT NULL AFTER `scholastic_area_color`;
 ALTER TABLE `template_reportcard` ADD `left_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `right_sign`, ADD `middle_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `left_sign_title`, ADD `right_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `middle_sign_title`;
 ALTER TABLE `template_reportcard` ADD `photo_image_height` INT(11) NOT NULL AFTER `is_photo`;
+ALTER TABLE `template_reportcard` ADD `school_reopen` INT(11) NOT NULL DEFAULT '0' AFTER `main_subject_color`;
+ALTER TABLE `template_reportcard` ADD `header_height` INT(11) NULL DEFAULT NULL AFTER `school_reopen`, ADD `footer_height` INT(11) NULL DEFAULT NULL AFTER `header_height`;
+
 ===============================
 File change outside of application folder
 --------

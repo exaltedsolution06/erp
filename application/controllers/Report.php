@@ -1753,7 +1753,7 @@ class Report extends Admin_Controller
 
         $from_date = date('Y-m-d', strtotime($between_date['from_date']));
         $to_date   = date('Y-m-d', strtotime($between_date['to_date']));
-        $condition .= " date_format(admission_date,'%Y-%m-%d') between  '" . $from_date . "' and '" . $to_date . "'";
+        // $condition .= " date_format(admission_date,'%Y-%m-%d') between  '" . $from_date . "' and '" . $to_date . "'";
         $data['filter_label'] = date($this->customlib->getSchoolDateFormat(), strtotime($from_date)) . " To " . date($this->customlib->getSchoolDateFormat(), strtotime($to_date));
 
         $data['sch_setting']     = $this->sch_setting_detail;
@@ -1764,7 +1764,7 @@ class Report extends Admin_Controller
         if ($this->form_validation->run() == false) {
             $data['resultlist'] = array();
         } else {
-            $condition .= " and classes.id='" . $this->input->post('class_id') . "' and sections.id='" . $this->input->post('section_id') . "'";
+            $condition .= " classes.id='" . $this->input->post('class_id') . "' and sections.id='" . $this->input->post('section_id') . "'";
 
             $data['resultlist'] = $this->student_model->student_profile($condition);
         }
