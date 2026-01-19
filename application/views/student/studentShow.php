@@ -530,7 +530,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <?php
                             if ($this->module_lib->hasActive('transport')) {
 
-                                if ($student['vehroute_id'] != 0) {
+                                if ($student['route_id'] != 0) {
                                     ?>
                                     <div class="tshadow mb25  bozero">    
                                         <h3 class="pagetitleh2"><?php echo $this->lang->line('route') . " " . $this->lang->line('details') ?></h3>

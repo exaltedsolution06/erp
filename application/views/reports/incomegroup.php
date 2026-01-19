@@ -451,7 +451,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                 $fee_group_id = $list['fees_heading'];
 
                                                                 
-                                                                $route = $this->db->get_where('route_head', ['id' => $record['vehroute_id']])->row();
+                                                                $route = $this->db->get_where('route_head', ['id' => $record['route_id']])->row();
 
                                                                 $db_months = [];
                                                                 if ($route && !empty($route->months)) {
@@ -462,7 +462,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                 // var_dump($db_months);
 
                                                                 $this->db->from('route_plan');
-                                                                $this->db->where('fee_group_id', $record['vehroute_id']);
+                                                                $this->db->where('fee_group_id', $record['route_id']);
                                                                 $this->db->where("JSON_CONTAINS(route_plan.class_ids, '\"$class_id\"')", null, false);
                                                                 $this->db->where("JSON_CONTAINS(route_plan.category_ids, '\"$category_id\"')", null, false);
                                                                
@@ -536,7 +536,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <td><?= $record["section"] ?></td>
                                                     <td ><?=  ($this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()) ? $this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()->name : 'N.A'; ?>  </td>
                                                 
-                                                    <td ><?=  ($this->db->get_where('route_head', ['id' => $record['vehroute_id']])->row()) ? $this->db->get_where('route_head', ['id' => $record['vehroute_id']])->row()->fees_heading : 'N.A'; ?>  </td>
+                                                    <td ><?=  ($this->db->get_where('route_head', ['id' => $record['route_id']])->row()) ? $this->db->get_where('route_head', ['id' => $record['route_id']])->row()->fees_heading : 'N.A'; ?>  </td>
                                                     
                                                     <?php
                                                         if(in_array('Consider Old Bal', $filters)){

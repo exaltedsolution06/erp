@@ -76,10 +76,8 @@ class Reportcard extends Admin_Controller {
             }
             if (isset($_POST['is_photo'])) {
                 $is_photo = 1;
-                $photo_image_height = $_POST['photo_image_height'];
             } else {
                 $is_photo = 0;
-                $photo_image_height = 0;
             }
             if (isset($_POST['is_contactno'])) {
                 $is_contactno = 1;
@@ -89,8 +87,12 @@ class Reportcard extends Admin_Controller {
 
             if (isset($_POST['is_header'])) {
                 $is_header = 1;
+				$header_height = 0;
+				$footer_height = 0;
             } else {
                 $is_header = 0;
+				$header_height = $this->input->post('header_height');
+				$footer_height = $this->input->post('footer_height');
             }
             if (isset($_POST['marks_grade_table'])) {
                 $marks_grade_table = 1;
@@ -104,8 +106,12 @@ class Reportcard extends Admin_Controller {
             }
             if (isset($_POST['school_reopen'])) {
                 $school_reopen = 1;
+                $school_reopen_date = $this->input->post('school_reopen_date');
+                $school_reopen_time = $this->input->post('school_reopen_time');
             } else {
                 $school_reopen = 0;
+                $school_reopen_date = "";
+                $school_reopen_time = "";
             }
             if (isset($_POST['is_class_teacher'])) {
                 $is_class_teacher = 1;
@@ -121,6 +127,11 @@ class Reportcard extends Admin_Controller {
                 $is_principal = 1;
             } else {
                 $is_principal = 0;
+            }
+            if (isset($_POST['is_show_date'])) {
+                $is_show_date = 1;
+            } else {
+                $is_show_date = 0;
             }
 
 
@@ -141,7 +152,6 @@ class Reportcard extends Admin_Controller {
                 'is_class' => $is_class,
                 'is_section' => $is_section,
                 'is_photo' => $is_photo,
-                'photo_image_height' => $photo_image_height,
                 'is_contactno' => $is_contactno,
                 'exam_group_grade'=>json_encode($this->input->post('exam_group')),
                 'exam_group_marks_obtained'=>json_encode($this->input->post('marks_obtained')),
@@ -150,19 +160,22 @@ class Reportcard extends Admin_Controller {
                 'marks_grade_table'=>$marks_grade_table,
                 'max_marks_shift_left'=>$max_marks_shift_left,
                 'school_reopen'=>$school_reopen,
-				'header_height' => $this->input->post('header_height'),
-                'footer_height' => $this->input->post('footer_height'),
+                'school_reopen_date'=>$school_reopen_date,
+                'school_reopen_time'=>$school_reopen_time,
                 'is_class_teacher'=>$is_class_teacher,
                 'is_examination_ic'=>$is_examination_ic,
                 'is_principal'=>$is_principal,
+                'is_show_date'=>$is_show_date,
                 'left_sign' => "",
                 'right_sign' => "",
                 'middle_sign' => "",
-                'left_sign_title' => $this->input->post('left_sign_title'),
-                'middle_sign_title' => $this->input->post('middle_sign_title'),
-                'right_sign_title' => $this->input->post('right_sign_title'),
+                'left_sign_title' => "",
+                'middle_sign_title' => "",
+                'right_sign_title' => "",
                 'background_image' => "",
                 'header_img'=>"",
+				'header_height' => $header_height,
+                'footer_height' => $footer_height,
 				'session_id' => $this->current_session
             );
 
@@ -180,18 +193,21 @@ class Reportcard extends Admin_Controller {
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["left_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['left_sign'] = $img_name;
+                $insert_data['left_sign_title'] = $this->input->post('left_sign_title');
             }if (isset($_FILES["middle_sign"]) && !empty($_FILES["middle_sign"]['name'])) {
                 $time = md5($_FILES["middle_sign"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["middle_sign"]["name"]);
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["middle_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['middle_sign'] = $img_name;
+                $insert_data['middle_sign_title'] = $this->input->post('middle_sign_title');
             }if (isset($_FILES["right_sign"]) && !empty($_FILES["right_sign"]['name'])) {
                 $time = md5($_FILES["right_sign"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["right_sign"]["name"]);
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["right_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['right_sign'] = $img_name;
+                $insert_data['right_sign_title'] = $this->input->post('right_sign_title');
             }if (isset($_FILES["background_image"]) && !empty($_FILES["background_image"]['name'])) {
                 $time = md5($_FILES["background_image"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["background_image"]["name"]);
@@ -323,10 +339,8 @@ class Reportcard extends Admin_Controller {
             }
             if (isset($_POST['is_photo'])) {
                 $is_photo = 1;
-                $photo_image_height = $_POST['photo_image_height'];
             } else {
                 $is_photo = 0;
-                $photo_image_height = 0;
             }
             if (isset($_POST['is_contactno'])) {
                 $is_contactno = 1;
@@ -336,8 +350,12 @@ class Reportcard extends Admin_Controller {
 
             if (isset($_POST['is_header'])) {
                 $is_header = 1;
+				$header_height = 0;
+				$footer_height = 0;
             } else {
                 $is_header = 0;
+				$header_height = $this->input->post('header_height');
+				$footer_height = $this->input->post('footer_height');
             }
 
             if (isset($_POST['marks_grade_table'])) {
@@ -352,8 +370,12 @@ class Reportcard extends Admin_Controller {
             }
             if (isset($_POST['school_reopen'])) {
                 $school_reopen = 1;
+                $school_reopen_date = $this->input->post('school_reopen_date');
+                $school_reopen_time = $this->input->post('school_reopen_time');
             } else {
                 $school_reopen = 0;
+				$school_reopen_date = "";
+                $school_reopen_time = "";
             }
             if (isset($_POST['is_class_teacher'])) {
                 $is_class_teacher = 1;
@@ -369,6 +391,11 @@ class Reportcard extends Admin_Controller {
                 $is_principal = 1;
             } else {
                 $is_principal = 0;
+            }
+            if (isset($_POST['is_show_date'])) {
+                $is_show_date = 1;
+            } else {
+                $is_show_date = 0;
             }
 
 
@@ -389,7 +416,6 @@ class Reportcard extends Admin_Controller {
                 'is_class' => $is_class,
                 'is_section' => $is_section,
                 'is_photo' => $is_photo,
-                'photo_image_height' => $photo_image_height,
                 'is_contactno' => $is_contactno,
                 'exam_group_grade'=>json_encode($this->input->post('exam_group')),
                 'exam_group_marks_obtained'=>json_encode($this->input->post('marks_obtained')),
@@ -398,14 +424,14 @@ class Reportcard extends Admin_Controller {
                 'marks_grade_table'=>$marks_grade_table,
                 'max_marks_shift_left'=>$max_marks_shift_left,
                 'school_reopen'=>$school_reopen,
-				'header_height' => $this->input->post('header_height'),
-                'footer_height' => $this->input->post('footer_height'),
+                'school_reopen_date'=>$school_reopen_date,
+                'school_reopen_time'=>$school_reopen_time,
+				'header_height' => $header_height,
+                'footer_height' => $footer_height,
                 'is_class_teacher'=>$is_class_teacher,
                 'is_examination_ic'=>$is_examination_ic,
                 'is_principal'=>$is_principal,
-                'left_sign_title' => $this->input->post('left_sign_title'),
-                'middle_sign_title' => $this->input->post('middle_sign_title'),
-                'right_sign_title' => $this->input->post('right_sign_title'),
+                'is_show_date'=>$is_show_date,
             );
             
             
@@ -422,18 +448,21 @@ class Reportcard extends Admin_Controller {
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["left_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['left_sign'] = $img_name;
+				$insert_data['left_sign_title'] = $this->input->post('left_sign_title');
             }if (isset($_FILES["middle_sign"]) && !empty($_FILES["middle_sign"]['name'])) {
                 $time = md5($_FILES["middle_sign"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["middle_sign"]["name"]);
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["middle_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['middle_sign'] = $img_name;
+				$insert_data['middle_sign_title'] = $this->input->post('middle_sign_title');
             }if (isset($_FILES["right_sign"]) && !empty($_FILES["right_sign"]['name'])) {
                 $time = md5($_FILES["right_sign"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["right_sign"]["name"]);
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["right_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['right_sign'] = $img_name;
+				$insert_data['right_sign_title'] = $this->input->post('right_sign_title');
             }if (isset($_FILES["background_image"]) && !empty($_FILES["background_image"]['name'])) {
                 $time = md5($_FILES["background_image"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["background_image"]["name"]);

@@ -474,7 +474,7 @@ class Student extends Admin_Controller
         $hostelList                 = $this->hostel_model->get();
         $data['hostelList']         = $hostelList;
         //$vehroute_result            = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
-        $vehroute_result            = $this->vehroute_model->get();
+        $vehroute_result            = $this->route_model->get();
         $data['vehroutelist']       = $vehroute_result;
 		
 		
@@ -1559,7 +1559,7 @@ class Student extends Admin_Controller
         $data['adm_auto_insert'] = $this->sch_setting_detail->adm_auto_insert;
         $data['genderList']      = $genderList;
         $session                 = $this->setting_model->getCurrentSession();
-        $vehroute_result         = $this->vehroute_model->get();
+        $vehroute_result         = $this->route_model->get();
 		//echo "<pre>";print_r($vehroute_result);sie;
         $data['vehroutelist']    = $vehroute_result;
         $class                   = $this->class_model->get();

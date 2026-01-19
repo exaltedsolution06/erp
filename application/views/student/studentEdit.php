@@ -392,13 +392,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         }*/
 														foreach ($vehroutelist as $vehroute) { ?>
 
-														<?php if ($studentDetails['route_id'] == $vehroute->route_id) { ?>
-															<option selected value="<?= $vehroute->route_id ?>">
-																<?= $vehroute->route_title ?>
+														<?php if ($studentDetails['route_id'] == $vehroute['id']) { ?>
+															<option selected value="<?= $vehroute['id'] ?>">
+																<?= $vehroute['route_title'] ?>
 															</option>
 														<?php } else { ?>
-															<option value="<?= $vehroute->route_id ?>">
-																<?= $vehroute->route_title ?>
+															<option value="<?= $vehroute['id'] ?>">
+																<?= $vehroute['route_title'] ?>
 															</option>
 														<?php } ?>
 

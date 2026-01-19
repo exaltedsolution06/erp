@@ -37,7 +37,7 @@ class Fee_discount extends Admin_Controller {
 
 		$monthsPost = $months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
 		$class_id=$student_data['class_id'];
-		$route_id=$student_data['vehroute_id'];
+		$route_id=$student_data['route_id'];
 		$category_id=$student_data['category_id'];
 		$student_session_id=$student_data['student_session_id'];
 		// die;
@@ -163,7 +163,7 @@ class Fee_discount extends Admin_Controller {
 
 		$monthsPost = $months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
 		$class_id=$student_data['class_id'];
-		$route_id=$student_data['vehroute_id'];
+		$route_id=$student_data['route_id'];
 		$category_id=$student_data['category_id'];
 		// die;
 		$this->db->from('fee_head');
@@ -372,7 +372,7 @@ class Fee_discount extends Admin_Controller {
 
 		$monthsPost = $months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
 		$class_id=$student_data['class_id'];
-		$route_id=$student_data['vehroute_id'];
+		$route_id=$student_data['route_id'];
 		$category_id=$student_data['category_id'];
 		// die;
 		$this->db->from('fee_head');

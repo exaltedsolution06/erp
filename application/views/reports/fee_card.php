@@ -79,7 +79,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                  <tr>
                                                      <td><strong>Ledger Amt </strong> <br> Rs. <?=$student_data['fees_discount']?></td>
                                                      <td><strong>Route</strong> - <?php
-                                                                        $this->db->where('id', $student_data['vehroute_id']);
+                                                                        $this->db->where('id', $student_data['route_id']);
                                                                         $query = $this->db->get('route_head')->row_array();
                                                                         echo (($query['fees_heading']));
                                                                     ?></td>

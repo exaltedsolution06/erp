@@ -48,6 +48,11 @@ ALTER TABLE `template_reportcard` ADD `photo_image_height` INT(11) NOT NULL AFTE
 ALTER TABLE `template_reportcard` ADD `school_reopen` INT(11) NOT NULL DEFAULT '0' AFTER `main_subject_color`;
 ALTER TABLE `template_reportcard` ADD `header_height` INT(11) NULL DEFAULT NULL AFTER `school_reopen`, ADD `footer_height` INT(11) NULL DEFAULT NULL AFTER `header_height`;
 
+--- 19-01-2026 ---
+ALTER TABLE `template_reportcard` DROP `photo_image_height`;
+ALTER TABLE `template_reportcard` ADD `school_reopen_date` CHAR(36) NULL DEFAULT NULL AFTER `footer_height`, ADD `school_reopen_time` CHAR(36) NULL DEFAULT NULL AFTER `school_reopen_date`;
+ALTER TABLE `template_reportcard` ADD `is_show_date` INT(11) NOT NULL DEFAULT '0' AFTER `footer_height`;
+
 ===============================
 File change outside of application folder
 --------

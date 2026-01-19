@@ -74,6 +74,18 @@
    .main-subject-color {
 	   color: var(--main-subject-color);
    }
+	.remarks-line {
+		width: 100%;
+		border-bottom: 1px solid #000;
+		margin-left: 5px;
+	}
+	.text-underline {
+		border-bottom: 1px solid #000;
+		margin-left: 5px;
+	}
+	.ml-5px {
+		margin-left: 5px;
+	}
   
 </style>
 
@@ -142,7 +154,13 @@
 <?php if ($index > 0): ?>
 	<div class="pagebreak"></div>
 <?php endif; ?>
+<?php 
+	if($desc->is_header==0){
+?>
 	<div class="" style="height:<?php echo $desc->header_height; ?>px;"></div>
+<?php
+	}
+?>	
 	<div class="mark-container mb-5">
 	<?php
 		if ($desc->background_image != "") {
@@ -252,7 +270,7 @@
 							<tbody>
 								<tr>
 									<td valign="top" width="25%" align="right">
-										<img src="<?php echo base_url() . $stddata->image; ?>" height="<?php echo $desc->photo_image_height ?>" style="border: 2px solid #fff;outline: 1px solid #000000; width: auto;">
+										<img src="<?php echo base_url() . $stddata->image; ?>" height="85" style="border: 2px solid #fff;outline: 1px solid #000000; width: auto;">
 									</td>
 								</tr>
 							</tbody>
@@ -506,6 +524,7 @@
 											<td style="width:100px">
 											<?php
 												$t_grade = ($max_marks1 > 0) ? ($total * 100 / $max_marks1) : 0;
+												$t_grade = round($t_grade);
 												$gd=$this->db->query("SELECT * FROM `grades` WHERE mark_from>='$t_grade' and 	mark_upto<='$t_grade' order by mark_upto asc")->result();
 												echo ($gd[0]->name);
 											?>
@@ -556,8 +575,8 @@
 											
 											
 											
+											$grade = round($grade);
 											$gd=$this->db->query("SELECT * FROM `grades` WHERE mark_from>='$grade' and 	mark_upto<='$grade' order by mark_upto asc")->result(); 
-											
 											//echo ($gd[0]->name);
 												echo ($gd[0]->name);
 											
@@ -646,6 +665,7 @@
 											<td style="width:100px">
 											<?php
 												$t_grade_op = ($max_marks1_op > 0) ? ($total_op * 100 / $max_marks1_op) : 0;
+												$t_grade_op = round($t_grade_op);
 												$gd_op=$this->db->query("SELECT * FROM `grades` WHERE mark_from>='$t_grade_op' and 	mark_upto<='$t_grade_op' order by mark_upto asc")->result();
 												echo ($gd_op[0]->name);
 											?>
@@ -685,7 +705,7 @@
 										 
 											
 											
-											
+											$grade_op = round($grade_op);
 											$gd_op=$this->db->query("SELECT * FROM `grades` WHERE mark_from>='$grade_op' and 	mark_upto<='$grade_op' order by mark_upto asc")->result(); 
 											
 											//echo ($gd[0]->name);
@@ -757,6 +777,7 @@
 											: 0;
 
 										// DB grade fetch
+										$percentage = round($percentage);
 										$gd = $this->db->query("
 											SELECT name FROM grades
 											WHERE mark_from <= '$percentage'
@@ -824,7 +845,7 @@
 									
 									
 									
-									
+									$grade = round($grade);
 									$gd=$this->db->query("SELECT * FROM `grades` WHERE mark_from>='$grade' and 	mark_upto<='$grade' order by mark_upto asc")->result(); 
 									echo ($gd[0]->name);
 									
@@ -894,6 +915,14 @@
 				<strong>
 				<?php echo $this->lang->line('result') ?> : <?php echo $exam_pass_status ? $this->lang->line('pass') : $this->lang->line('fail'); ?> <?php echo $exam_pass_status ? '('.get_division_by_percentage($totalNumber).' '.$this->lang->line('division').')' : ''; ?>
 				</strong>
+			</div>			
+			<div class="col-12 text-end" style="padding: 0;">						
+				<?php if($exam_pass_status){
+					echo '<strong>'.$this->lang->line('promoted_to_next_class').'</strong>';
+				}else{
+				?>
+				<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <span>___________________________________</span>
+				<?php } ?>
 			</div>
 			
 			<?php 
@@ -959,29 +988,38 @@
 			</div>-->
 			<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px;">
 				<div class="row">
-					<div class="col-7 mt-3 mb-3">
-						<strong><?php echo $this->lang->line('remarks'); ?> :</strong> 
-						<?php if($gd[0]->description != ''){ 
-							echo ($gd[0]->description);
-						}else{
-						?>
-							<span>___________________________________________________________________</span>
-						<?php } ?>
+					<div class="col-12 mt-3 mb-3 d-flex">
+						<strong><?php echo $this->lang->line('remarks'); ?></strong>
+						<strong class="ml-5px">:</strong> 
+						<span class="remarks-line">
+							<?php echo !empty($gd[0]->description) ? $gd[0]->description : '&nbsp;'; ?>
+						</span>
 					</div>
-					<div class="col-5 mt-3 mb-3 text-end">						
-						<?php if($exam_pass_status){
-							echo '<strong>'.$this->lang->line('promoted_to_next_class').'</strong>';
-						}else{
-						?>
-						<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <span>___________________________________</span>
-						<?php } ?>
+					<?php
+					if($desc->school_reopen==1){
+					?>
+					<div class="col-12 mb-3 d-flex">
+						<strong><?php echo $this->lang->line('school_will_reopen_on'); ?></strong>
+						<strong class="ml-5px">:</strong>
+						<span class="text-underline" style="width:150px; text-align:center;">
+							<?php echo $desc->school_reopen_date != '' ? $desc->school_reopen_date : '&nbsp;'; ?>
+						</span>
+						<span class="ml-5px"><?php echo $this->lang->line('at'); ?></span>
+						<span class="text-underline" style="width:90px; text-align:center;">
+							<?php echo $desc->school_reopen_time != '' ? $desc->school_reopen_time : '&nbsp;'; ?>
+						</span>
 					</div>
-					<div class="col-12 mb-3">
-						<strong><?php echo $this->lang->line('school_will_reopen_on'); ?> :</strong> <span>_________________________ <?php echo $this->lang->line('at'); ?> _________________________</span>
+					<?php
+					}
+					
+					if($desc->is_show_date==1){
+					?>
+					<div class="col-12 d-flex">
+						<strong><?php echo $this->lang->line('date'); ?> :</strong> <span class="text-underline" style="width:300px; text-align:center;">&nbsp</span>
 					</div>
-					<div class="col-12">
-						<strong><?php echo $this->lang->line('date'); ?> :</strong> <span>________________________________</span>
-					</div>
+					<?php
+					}
+					?>
 				</div>
 			</div>
 			<?php
@@ -994,62 +1032,64 @@
 			<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px;">
 				<div class="row text-center">
 					<?php
-					if($desc->is_class_teacher==1){
 					?>
-					<div class="col-<?php echo 12/$sign_count; ?>">
+					<div class="col-4">
 						<?php
-						if($desc->left_sign!='' || $desc->left_sign!=null){
-						$is_left_sign_file_path = FCPATH . 'uploads/reportcard/' . $desc->left_sign;
-							if (file_exists($is_left_sign_file_path)) {						
-						?>
-						<img src="<?php echo base_url('uploads/reportcard/'.$desc->left_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
-						<?php
+						if($desc->is_class_teacher==1){
+							if($desc->left_sign!='' || $desc->left_sign!=null){
+							$is_left_sign_file_path = FCPATH . 'uploads/reportcard/' . $desc->left_sign;
+								if (file_exists($is_left_sign_file_path)) {						
+							?>
+							<img src="<?php echo base_url('uploads/reportcard/'.$desc->left_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
+							<?php
+								}else{
+									echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+								}
 							}else{
 								echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
 							}
-						}else{
-							echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
-						}
-						?>
-						<h6 class="mt-1"><?php echo $desc->left_sign_title; ?></h6>
-					</div>                   
-					<?php } if($desc->is_examination_ic==1){ ?>
-					<div class="col-<?php echo 12/$sign_count; ?>">
-						<?php
-						if($desc->middle_sign!='' || $desc->middle_sign!=null){
-						$is_middle_sign_file_path = FCPATH . 'uploads/reportcard/' . $desc->middle_sign;
-							if (file_exists($is_middle_sign_file_path)) {						
-						?>
-						<img src="<?php echo base_url('uploads/reportcard/'.$desc->middle_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
-						<?php
-							}else{
-								echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
-							}
-						}else{
-							echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
-						}
-						?>
-						<h6 class="mt-1"><?php echo $desc->middle_sign_title; ?></h6>
+							echo '<h6 class="mt-1">'.$desc->left_sign_title.'</h6>';
+						} 
+						?>						
 					</div>
-					<?php } if($desc->is_principal==1){ ?>
-					<div class="col-<?php echo 12/$sign_count; ?>">
+					<div class="col-4">
 						<?php
-						if($desc->right_sign!='' || $desc->right_sign!=null){
-						$is_right_sign_file_path = FCPATH . 'uploads/reportcard/' . $desc->right_sign;
-							if (file_exists($is_right_sign_file_path)) {						
-						?>
-						<img src="<?php echo base_url('uploads/reportcard/'.$desc->right_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
-						<?php
+						if($desc->is_examination_ic==1){
+							if($desc->middle_sign!='' || $desc->middle_sign!=null){
+							$is_middle_sign_file_path = FCPATH . 'uploads/reportcard/' . $desc->middle_sign;
+								if (file_exists($is_middle_sign_file_path)) {						
+							?>
+							<img src="<?php echo base_url('uploads/reportcard/'.$desc->middle_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
+							<?php
+								}else{
+									echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+								}
 							}else{
 								echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
 							}
-						}else{
-							echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+							echo '<h6 class="mt-1">'.$desc->middle_sign_title.'</h6>';
 						}
 						?>
-						<h6 class="mt-1"><?php echo $desc->right_sign_title; ?></h6>
 					</div>
-					<?php } ?>
+					<div class="col-4">
+						<?php
+						if($desc->is_principal==1){
+							if($desc->right_sign!='' || $desc->right_sign!=null){
+							$is_right_sign_file_path = FCPATH . 'uploads/reportcard/' . $desc->right_sign;
+								if (file_exists($is_right_sign_file_path)) {						
+							?>
+							<img src="<?php echo base_url('uploads/reportcard/'.$desc->right_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
+							<?php
+								}else{
+									echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+								}
+							}else{
+								echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+							}
+							echo '<h6 class="mt-1">'.$desc->right_sign_title.'</h6>';
+						}
+						?>						
+					</div>
 				</div>
 				
 			</div>
@@ -1064,8 +1104,13 @@
 
 
 
-
-	<div class="" style="height:<?php echo $desc->footer_height; ?>px;"></div>
+	<?php 
+	if($desc->is_header==0){
+	?>
+		<div class="" style="height:<?php echo $desc->footer_height; ?>px;"></div>
+	<?php
+		}
+	?>	
 			<?php }
 			} ?>
 

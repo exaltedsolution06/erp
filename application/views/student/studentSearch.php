@@ -141,20 +141,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                ?>
                                             <th><?php echo $this->lang->line('mobile_no'); ?></th>
                                             <?php 
-                                        } if ($sch_setting->category) {
-                                              ?>
-                                              <?php if ($sch_setting->category) {  ?>
+                                        } if ($sch_setting->category) {  ?>
                                             <th><?php echo $this->lang->line('fee_category'); ?></th>
 											<?php }
-                                             }
-                                            if (!empty($fields)) {
-
-                                                foreach ($fields as $fields_key => $fields_value) {
-                                                    ?>
-                                                    <th><?php echo $fields_value->name; ?></th>
-                                                    <?php
-                                                } 
-                                            }
                                             ?>
 
                                             <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
@@ -198,27 +187,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <?php } if ($sch_setting->category) {  ?>
                                                     <td><?php echo $student['category']; ?></td>
 													<?php }
-                                                    if (!empty($fields)) {
-
-                                                        foreach ($fields as $fields_key => $fields_value) {
-                                                              $display_field=$student[$fields_value->name];
-                                                        if($fields_value->type == "link"){
-                                                            $display_field= "<a href=".$student[$fields_value->name]." target='_blank'>".$student[$fields_value->name]."</a>";
-
-                                                            }
-                                                            ?>
-                                                            
-                                                            <?php
-                                                        }
-                                                    }
-
                                                     // echo json_encode($student);
                                                     ?>
-                                                    <td>
-                                                                <?php echo $student['cast_category']; ?>
-                                                                    
-                                                                </td>
-
                                                     <td class="pull-right">
 														
 														<a target="_blank" href="<?php echo base_url(); ?>student/admission/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Admission" >
@@ -239,7 +209,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 														
 														
 													
-                                                        <a target="_blank" href="<?php echo base_url(); ?>student/view/<?php echo $student['id']; ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('show'); ?>" >
+                                                        <a href="<?php echo base_url(); ?>student/view/<?php echo $student['id']; ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('show'); ?>" >
                                                             <i class="fa fa-reorder"></i>
                                                         </a>
                                                         <?php

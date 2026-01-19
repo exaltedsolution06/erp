@@ -500,7 +500,7 @@ class Report extends Admin_Controller
             $data['fees_card']=$_POST['feesCard'];
             $monthsPost = $months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
             $class_id=$student_data['class_id'];
-            $route_id=$student_data['vehroute_id'];
+            $route_id=$student_data['route_id'];
             $category_id=$student_data['category_id'];
             // die;
             $this->db->from('fee_head');
@@ -621,7 +621,7 @@ class Report extends Admin_Controller
             $monthsPost = $months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
 
             $class_id=$student_data['class_id'];
-            $route_id=$student_data['vehroute_id'];
+            $route_id=$student_data['route_id'];
             $category_id=$student_data['category_id'];
            
             // die;
