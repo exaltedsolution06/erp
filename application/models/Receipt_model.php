@@ -1323,6 +1323,7 @@ class Receipt_model extends CI_Model {
             students.parent_id,
             students.permanent_address,
             student_session.fee_category_id,
+            student_session.fee_category_id as category_id,
             students.adhar_no,
             students.samagra_id,
             students.bank_account_no,
