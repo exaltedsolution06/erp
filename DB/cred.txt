@@ -3,3 +3,16 @@ http://localhost/erp/site/login
 demo@easyskool.in
 
 demo@989798
+
+--------------------------------------------------------------------
+Cpanel login
+
+https://hpanel.hostinger.com/
+user : exaltedsol02@gmail.com
+PW : Wits@#12$&%
+
+--------------------------------------------------------------------
+https://demo.easyskool.in/site/login
+Login id : login@easyskool.in
+Password: 12345678
+

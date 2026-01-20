@@ -172,7 +172,10 @@ class Cron extends CI_Controller
 	
 	public function changeSessions($key = "")
 	{
-		$key = $this->input->get('key');
+		// If called from browser
+		if (!is_cli()) {
+			$key = $this->input->get('key');
+		}
 
         if ($key !== $this->cron_key) {
             exit('Invalid Key or Direct access is not allowe');
@@ -1250,7 +1253,7 @@ class Cron extends CI_Controller
 			$qr = $this->db->where('move_students.current_session_id', $this->current_session)->get();
 			$classData = $qr->row_array();
 			
-			echo "<pre>";print_r($classData);
+			// echo "<pre>";print_r($classData);
 			echo $classData['next_class_id'].'->';
 			
 			// check class exists in current session

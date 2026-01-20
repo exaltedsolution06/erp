@@ -229,6 +229,74 @@ class Session_model extends MY_Model {
         $query = $this->db->get('move_students_category');
 		return $query->result_array();
     }
+	public function readyForCronData() {
+		$this->db->select("
+			ms.batch_id,
+
+			GROUP_CONCAT(
+				DISTINCT CONCAT(c1.class,' → ',c2.class)
+				ORDER BY ms.current_class_id SEPARATOR ', '
+			) AS class_moves,
+
+			GROUP_CONCAT(
+				DISTINCT CONCAT(fg1.name,' → ',fg2.name)
+				ORDER BY msc.current_category_id SEPARATOR ', '
+			) AS category_moves
+		", false);
+
+		$this->db->from('move_students ms');
+
+		$this->db->join('classes c1', 'c1.id = ms.current_class_id', 'left');
+		$this->db->join('classes c2', 'c2.id = ms.next_class_id', 'left');
+
+		$this->db->join('move_students_category msc', 'msc.batch_id = ms.batch_id', 'left');
+
+		$this->db->join('fee_groups fg1', 'fg1.id = msc.current_category_id', 'left');
+		$this->db->join('fee_groups fg2', 'fg2.id = msc.next_category_id', 'left');
+		
+        $this->db->where('ms.current_session_id', $this->current_session);
+        $this->db->where('ms.status', 1);
+        $this->db->where('msc.status', 1);
+		
+		$this->db->group_by('ms.batch_id');
+
+		$result = $this->db->get()->result();
+		return $result;
+    }
+	public function moveCompletedData() {
+		$this->db->select("
+			ms.batch_id,
+
+			GROUP_CONCAT(
+				DISTINCT CONCAT(c1.class,' → ',c2.class)
+				ORDER BY ms.current_class_id SEPARATOR ', '
+			) AS class_moves,
+
+			GROUP_CONCAT(
+				DISTINCT CONCAT(fg1.name,' → ',fg2.name)
+				ORDER BY msc.current_category_id SEPARATOR ', '
+			) AS category_moves
+		", false);
+
+		$this->db->from('move_students ms');
+
+		$this->db->join('classes c1', 'c1.id = ms.current_class_id', 'left');
+		$this->db->join('classes c2', 'c2.id = ms.next_class_id', 'left');
+
+		$this->db->join('move_students_category msc', 'msc.batch_id = ms.batch_id', 'left');
+
+		$this->db->join('fee_groups fg1', 'fg1.id = msc.current_category_id', 'left');
+		$this->db->join('fee_groups fg2', 'fg2.id = msc.next_category_id', 'left');
+		
+        $this->db->where('ms.current_session_id', $this->current_session);
+        $this->db->where('ms.status', 2);
+        $this->db->where('msc.status', 2);
+		
+		$this->db->group_by('ms.batch_id');
+
+		$result = $this->db->get()->result();
+		return $result;
+    }
 	public function getTransferStudentExists() {
         $this->db->where('current_session_id', $this->current_session);
         $this->db->where('status', 0);

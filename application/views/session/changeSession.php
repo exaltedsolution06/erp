@@ -242,6 +242,80 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 			<div class="col-md-12">
 				<button type="button" class="btn btn-success pull-right transfer_batch">Ok, Transfer these students to next session</button> 
 			</div> 
+        </div>
+		<div class="row mt10">
+			<div class="col-md-12">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">Ready For Cron</h3>
+					</div>
+					<div class="box-body">
+						<div class="table-responsive">
+							<table class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th>Batch Id</th>
+										<th>Current Class</th>
+										<th>Next Class</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+									if (!empty($readyForCronData)) {
+										foreach ($readyForCronData as $list_val) {
+											?>
+											<tr>
+												<td><?php echo $list_val->batch_id; ?></td>
+												<td><?php echo $list_val->class_moves; ?></td>
+												<td><?php echo $list_val->category_moves; ?></td>
+											</tr>
+									<?php
+										}
+									}
+									?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div> 
+			</div>
+        </div>
+		<div class="row mt10">
+			<div class="col-md-12">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">Completed move students</h3>
+					</div>
+					<div class="box-body">
+						<div class="table-responsive">
+							<table class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th>Batch Id</th>
+										<th>Current Class</th>
+										<th>Next Class</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+									if (!empty($moveCompletedData)) {
+										foreach ($moveCompletedData as $list_val) {
+											?>
+											<tr>
+												<td><?php echo $list_val->batch_id; ?></td>
+												<td><?php echo $list_val->class_moves; ?></td>
+												<td><?php echo $list_val->category_moves; ?></td>
+											</tr>
+									<?php
+										}
+									}
+									?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div> 
+			</div>
         </div> 
     </section>
 </div>

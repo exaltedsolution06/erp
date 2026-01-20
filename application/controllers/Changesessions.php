@@ -37,6 +37,8 @@ class Changesessions extends Admin_Controller
 		$data['feegroupList'] = $this->feegroup_model->get();
         $data['addedListData'] = $this->session_model->addedListData();
         $data['addedListCatData'] = $this->session_model->addedListCatData();
+        $data['readyForCronData'] = $this->session_model->readyForCronData();
+        $data['moveCompletedData'] = $this->session_model->moveCompletedData();
         $this->load->view('layout/header', $data);
         $this->load->view('session/changeSession', $data);
         $this->load->view('layout/footer', $data);
