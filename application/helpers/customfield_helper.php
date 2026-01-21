@@ -485,5 +485,148 @@ if (!function_exists('display_custom_fields')) {
         );
         return $fields;
     }
+	
+	function display_student_custom_fields($belongs_to, $session_id, $rel_id = false, $where = array())
+    {
+        $CI = &get_instance();
+        $CI->db->from('custom_fields');
+        $CI->db->where('belong_to', $belongs_to);
+        $CI->db->where('session_id', $session_id);
+        $CI->db->order_by('custom_fields.belong_to', 'asc');
+        $CI->db->order_by('custom_fields.weight', 'asc');
+        $query       = $CI->db->get();
+        $result      = $query->result_array();
+        $fields_html = '';
+
+        foreach ($result as $result_key => $field) {
+
+            $type = $field['type'];
+
+            $label      = ucfirst($field['name']);
+            $field_name = 'custom_fields[' . $field['belong_to'] . '][' . $field['id'] . ']';
+            if ($field['bs_column'] == '' || $field['bs_column'] == 0) {
+                $field['bs_column'] = 12;
+            }
+            $input_class = "";
+            $value       = "";
+            if ($rel_id !== false) {
+
+                $return_value = get_custom_field_value($rel_id, $field['id'], $belongs_to);
+                if (!empty($return_value)) {
+                    $value = $return_value->field_value;
+                }
+            }
+
+            $fields_html .= '<div class="col-md-' . $field['bs_column'] . '">';
+            if ($field['type'] == 'input' || $field['type'] == 'number') {
+                $type = $field['type'] == 'input' ? 'text' : 'number';
+                $fields_html .= render_input_field($field_name, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'textarea') {
+                $fields_html .= render_textarea_field($field_name, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'select') {
+
+                $options = optionSplit($field['field_values']);
+
+                $fields_html .= render_select_field($field_name, $options, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'multiselect') {
+                $options = optionSplit($field['field_values']);
+                $fields_html .= render_multiselect_field($field_name, $options, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'checkbox') {
+
+                $options = optionSplit($field['field_values']);
+                $fields_html .= render_checkbox_field($field_name, $options, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'date_picker') {
+
+                $type = $field['type'];
+                $fields_html .= render_date_picker_field($field_name, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'date_picker_time') {
+
+                $type = $field['type'];
+                $fields_html .= render_date_picker_time_field($field_name, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'colorpicker') {
+
+                $type = $field['type'];
+                $fields_html .= render_colorpicker_field($field_name, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'link') {
+
+                $type = $field['type'];
+                $fields_html .= render_link_field($field_name, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            }
+            $fields_html .= '</div>';
+        }
+
+        return $fields_html;
+    }
+	function display_staff_custom_fields($belongs_to, $session_id, $rel_id = false, $where = array())
+    {
+        $CI = &get_instance();
+        $CI->db->from('custom_fields');
+        $CI->db->where('belong_to', $belongs_to);
+        $CI->db->where('session_id', $session_id);
+        $CI->db->order_by('custom_fields.belong_to', 'asc');
+        $CI->db->order_by('custom_fields.weight', 'asc');
+        $query       = $CI->db->get();
+        $result      = $query->result_array();
+        $fields_html = '';
+
+        foreach ($result as $result_key => $field) {
+
+            $type = $field['type'];
+
+            $label      = ucfirst($field['name']);
+            $field_name = 'custom_fields[' . $field['belong_to'] . '][' . $field['id'] . ']';
+            if ($field['bs_column'] == '' || $field['bs_column'] == 0) {
+                $field['bs_column'] = 12;
+            }
+            $input_class = "";
+            $value       = "";
+            if ($rel_id !== false) {
+
+                $return_value = get_custom_field_value($rel_id, $field['id'], $belongs_to);
+                if (!empty($return_value)) {
+                    $value = $return_value->field_value;
+                }
+            }
+
+            $fields_html .= '<div class="col-md-' . $field['bs_column'] . '">';
+            if ($field['type'] == 'input' || $field['type'] == 'number') {
+                $type = $field['type'] == 'input' ? 'text' : 'number';
+                $fields_html .= render_input_field($field_name, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'textarea') {
+                $fields_html .= render_textarea_field($field_name, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'select') {
+
+                $options = optionSplit($field['field_values']);
+
+                $fields_html .= render_select_field($field_name, $options, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'multiselect') {
+                $options = optionSplit($field['field_values']);
+                $fields_html .= render_multiselect_field($field_name, $options, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'checkbox') {
+
+                $options = optionSplit($field['field_values']);
+                $fields_html .= render_checkbox_field($field_name, $options, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'date_picker') {
+
+                $type = $field['type'];
+                $fields_html .= render_date_picker_field($field_name, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'date_picker_time') {
+
+                $type = $field['type'];
+                $fields_html .= render_date_picker_time_field($field_name, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'colorpicker') {
+
+                $type = $field['type'];
+                $fields_html .= render_colorpicker_field($field_name, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            } elseif ($field['type'] == 'link') {
+
+                $type = $field['type'];
+                $fields_html .= render_link_field($field_name, $label, $value, $type, $input_class, $field['belong_to'], $field['id'], $field['validation']);
+            }
+            $fields_html .= '</div>';
+        }
+
+        return $fields_html;
+    }
 
 }

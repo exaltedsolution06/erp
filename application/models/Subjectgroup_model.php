@@ -228,12 +228,14 @@ class Subjectgroup_model extends MY_Model {
 
         $query = $this->db->get();
         $subject_groups = $query->result();
+		
         if (!empty($subject_groups)) {
             foreach ($subject_groups as $subject_group_key => $subject_group_value) {
                 $subject_groups[$subject_group_key]->group_subject = $this->getGroupsubjects($subject_group_value->id);
                 $subject_groups[$subject_group_key]->sections = $this->getClassSectionByGroup($subject_group_value->id);
             }
         }
+		
         return $subject_groups;
     }
 
@@ -278,7 +280,7 @@ class Subjectgroup_model extends MY_Model {
         $sql = "SELECT subject_group_subjects.*,subjects.name,subjects.code,subjects.type FROM `subject_group_subjects` INNER JOIN subjects on subjects.id=subject_group_subjects.subject_id WHERE subject_group_id =" . $this->db->escape($subject_group_id) . " and subject_group_subjects.session_id =" . $this->db->escape($this->current_session) . "" . $subject_groupid_condition;
 	
         $query = $this->db->query($sql);
-
+		//echo "<pre>";print_r($query);die;
         return $query->result();
     }
 

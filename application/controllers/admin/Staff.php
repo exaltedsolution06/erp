@@ -408,6 +408,7 @@ class Staff extends Admin_Controller
         $data['sch_setting']         = $this->sch_setting_detail;
         $data['staffid_auto_insert'] = $this->sch_setting_detail->staffid_auto_insert;
         $custom_fields               = $this->customfield_model->getByBelong('staff');
+		$data['session_id'] = $this->current_session;
         foreach ($custom_fields as $custom_fields_key => $custom_fields_value) {
             if ($custom_fields_value['validation']) {
                 $custom_fields_id   = $custom_fields_value['id'];
@@ -658,7 +659,7 @@ class Staff extends Admin_Controller
 //==========================
             $insert                                = true;
             $data_setting                          = array();
-            $data_setting['id']                    = $this->sch_setting_detail->id;
+            $data_setting['id']                    = $this->sch_setting_detail->setting_session_id;
             $data_setting['staffid_auto_insert']   = $this->sch_setting_detail->staffid_auto_insert;
             $data_setting['staffid_update_status'] = $this->sch_setting_detail->staffid_update_status;
             $employee_id                           = 0;

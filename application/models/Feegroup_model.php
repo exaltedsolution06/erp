@@ -136,4 +136,17 @@ class Feegroup_model extends MY_Model {
         }
     }
 
+	public function getgroupNameById($id)
+	{
+		$this->db->where('id', $id);
+        $this->db->where('is_system', 0);
+		$query = $this->db->get('fee_groups');
+		$result = $query->row_array();
+		if($result['name'] != ''){
+			return $result['name'];
+		}
+		else{
+			return $id;
+		}
+	}
 }

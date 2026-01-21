@@ -179,9 +179,9 @@
                                             <label for="exampleInputEmail1">Cast Category</label>
                                             <select class="form-control" name="cast_category" id="" autocomplete="off">
                                                 <option value="">Select - </option>
+                                                <option value="GENERAL" <?= (set_value('cast_category') == 'GENERAL') ? 'selected' : '' ?>>GENERAL</option>
                                                 <option value="OBC" <?= (set_value('cast_category') == 'OBC') ? 'selected' : '' ?>>OBC</option>
                                                 <option value="SC/ST" <?= (set_value('cast_category') == 'SC/ST') ? 'selected' : '' ?>>SC/ST</option>
-                                                <option value="GENERAL" <?= (set_value('cast_category') == 'GENERAL') ? 'selected' : '' ?>>GENERAL</option>
                                                 <option value="MINORITY" <?= (set_value('cast_category') == 'MINORITY') ? 'selected' : '' ?>>MINORITY</option>
                                                 <option value="OTHER" <?= (set_value('cast_category') == 'OTHER') ? 'selected' : '' ?>>Other</option>
                                             </select>
@@ -363,13 +363,13 @@
 														<?php
                                                         foreach ($vehroutelist as $vehroute) { ?>
 
-														<?php if ($student['route_id'] == $vehroute->route_id) { ?>
-															<option selected value="<?= $vehroute->route_id ?>">
-																<?= $vehroute->route_title ?>
+														<?php if ($student['route_id'] == $vehroute['id']) { ?>
+															<option selected value="<?= $vehroute['id'] ?>">
+																<?= $vehroute['route_title'] ?>
 															</option>
 														<?php } else { ?>
-															<option value="<?= $vehroute->route_id ?>">
-																<?= $vehroute->route_title ?>
+															<option value="<?= $vehroute['id'] ?>">
+																<?= $vehroute['route_title'] ?>
 															</option>
 														<?php } ?>
 
@@ -837,11 +837,14 @@
 
                                             </div>
 											
-											
+											<?php
+											//$CI =& get_instance();
+											//$CI->load->helper('studentcustomfield');
+											?>
 											<div class="row around10">
 												<div class="col-md-12">
 													<div class="form-group">
-														<?php echo display_custom_fields('students'); ?>
+														<?php echo display_student_custom_fields('students', $session_id); ?>
 													</div>
 												</div>
 											</div>

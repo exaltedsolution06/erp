@@ -4,14 +4,23 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class Leaverequest_model extends MY_model {
-
+	
+	public function __construct()
+    {
+        parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
+    }
+	
     public function staff_leave_request($id = null) {
 
         if ($id != null) {
             $this->db->where("staff_leave_request.staff_id", $id);
         }
 
-        $query = $this->db->select('staff.name,staff.surname,staff.employee_id,staff_leave_request.*,leave_types.type')->join("staff", "staff.id = staff_leave_request.staff_id")->join("leave_types", "leave_types.id = staff_leave_request.leave_type_id")->where("staff.is_active", "1")->order_by("staff_leave_request.id", "desc")->get("staff_leave_request");
+        $query = $this->db->select('staff.name,staff.surname,staff.employee_id,staff_leave_request.*,leave_types.type')->join("staff", "staff.id = staff_leave_request.staff_id")->join("leave_types", "leave_types.id = staff_leave_request.leave_type_id")->where("staff.is_active", "1")->order_by("staff_leave_request.id", "desc")->group_start()
+				->where('staff.session_id', $this->current_session)
+				->or_where('staff.session_id IS NULL', null, false)
+			->group_end()->get("staff_leave_request");
 
         return $query->result_array();
     }
@@ -19,7 +28,10 @@ class Leaverequest_model extends MY_model {
     public function user_leave_request($id = null) {
 
 
-        $query = $this->db->select('staff.name,staff.surname,staff.employee_id,staff_leave_request.*,leave_types.type')->join("staff", "staff.id = staff_leave_request.staff_id")->join("leave_types", "leave_types.id = staff_leave_request.leave_type_id")->where("staff.is_active", "1")->where("staff.id", $id)->order_by("staff_leave_request.id", "desc")->get("staff_leave_request");
+        $query = $this->db->select('staff.name,staff.surname,staff.employee_id,staff_leave_request.*,leave_types.type')->join("staff", "staff.id = staff_leave_request.staff_id")->join("leave_types", "leave_types.id = staff_leave_request.leave_type_id")->where("staff.is_active", "1")->where("staff.id", $id)->order_by("staff_leave_request.id", "desc")->group_start()
+				->where('staff.session_id', $this->current_session)
+				->or_where('staff.session_id IS NULL', null, false)
+			->group_end()->get("staff_leave_request");
 
         return $query->result_array();
     }

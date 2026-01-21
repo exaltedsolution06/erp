@@ -45,7 +45,7 @@
                     }
                     if ($this->rbac->hasPrivilege('student_profile', 'can_view')) {
                         ?>
-                        <li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/student_information/student_profile'); ?>"><a href="<?php echo base_url(); ?>report/student_profile"><i class="fa fa-file-text-o"></i> <?php echo $this->lang->line('student') . " " . $this->lang->line('profile'); ?></a></li><?php }if ($this->rbac->hasPrivilege('homehork_evaluation_report', 'can_view')) {
+                        <li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/student_information/student_profile'); ?>"><a href="<?php echo base_url(); ?>report/student_profile"><i class="fa fa-file-text-o"></i> <?php echo $this->lang->line('student') . " " . $this->lang->line('full_data'); ?></a></li><?php }if ($this->rbac->hasPrivilege('homehork_evaluation_report', 'can_view')) {
                     ?>
                         <li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/student_information/evaluation_report'); ?>"><a href="<?php echo base_url(); ?>homework/evaluation_report"><i class="fa fa-file-text-o"></i> <?php echo $this->lang->line('homework') . " " . $this->lang->line('evaluation_report'); ?></a></li>
 

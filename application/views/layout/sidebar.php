@@ -98,6 +98,7 @@
                     || set_Submenu('admin/feediscount')
                     || set_Submenu('student/disable_reason')
                     || set_Submenu('feesforward/index')
+                    || set_Submenu('move_students')
                     
                 ){
                     $active="active";
@@ -146,7 +147,7 @@
 					<?php } if ($this->rbac->hasPrivilege('previous_session_balance', 'can_view')) { ?>
                         <li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="<?php echo base_url(); ?>admin/feesforward"><i class="fa fa-angle-double-right"></i> Previous Session Balance</a></li>
 					<?php } if ($this->rbac->hasPrivilege('change_session', 'can_view')) { ?>
-                        <li class="<?php //echo set_Submenu('admin/feesforward'); ?>"><a href="#<?php //echo base_url(); ?>"><i class="fa fa-angle-double-right"></i> Change Session</a></li>
+                        <li class="<?php echo set_Submenu('move_students'); ?>"><a href="<?php echo base_url(); ?>changesessions"><i class="fa fa-angle-double-right"></i> Change Session</a></li>
                     <?php } ?>
                 </ul>
             </li>
@@ -1142,7 +1143,7 @@
                             <?php }  if ($this->rbac->hasPrivilege('set_captcha', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('System Settings/captcha'); ?>"><a href="<?php echo site_url('admin/captcha'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('set_captcha'); ?></a></li>
                             <?php } if ($this->rbac->hasPrivilege('change_session', 'can_view')) { ?>
-                                <li class="<?php echo set_Submenu('System/change_session'); ?>"><a href="#<?php //echo base_url(); ?>system/change_session"><i class="fa fa-angle-double-right"></i> Change Session</a></li>
+								<li class="<?php echo set_Submenu('move_students'); ?>"><a href="<?php echo base_url(); ?>changesessions"><i class="fa fa-angle-double-right"></i> Change Session</a></li>
                             <?php } if ($this->rbac->hasPrivilege('change_session', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('admin/backup'); ?>"><a href="<?php echo base_url(); ?>admin/admin/backup"><i class="fa fa-angle-double-right"></i> Data Backup</a></li>
                             <?php } ?>

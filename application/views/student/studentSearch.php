@@ -124,33 +124,26 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <thead>
                                         <tr>
 								
+                                            <th><?php echo $this->lang->line('sl_no'); ?></th>
                                             <th><?php echo $this->lang->line('admission_no'); ?></th>
 									
-                                            <th><?php echo $this->lang->line('student_name'); ?></th>
                                             <th><?php echo $this->lang->line('class'); ?></th>
+                                            <th><?php echo $this->lang->line('student_name'); ?></th>
 											 <?php if ($sch_setting->father_name) {  ?>
                                             <th><?php echo $this->lang->line('father_name'); ?></th>
                                             <?php } ?>
+											 <?php if ($sch_setting->mother_name) {  ?>
+                                            <th><?php echo $this->lang->line('mother_name'); ?></th>
+                                            <?php } ?>
                                             <th><?php echo $this->lang->line('date_of_birth'); ?></th>
                                             <th><?php echo $this->lang->line('gender'); ?></th>
-											<?php if ($sch_setting->category) {
-                                              ?>
-                                              <?php if ($sch_setting->category) {  ?>
-                                            <th><?php echo $this->lang->line('fee_category'); ?></th>
-											<?php }
-                                             } if ($sch_setting->mobile_no) {
+											<?php if ($sch_setting->mobile_no) {
                                                ?>
                                             <th><?php echo $this->lang->line('mobile_no'); ?></th>
                                             <?php 
-                                        }
-                                            if (!empty($fields)) {
-
-                                                foreach ($fields as $fields_key => $fields_value) {
-                                                    ?>
-                                                    <th><?php echo $fields_value->name; ?></th>
-                                                    <?php
-                                                } 
-                                            }
+                                        } if ($sch_setting->category) {  ?>
+                                            <th><?php echo $this->lang->line('fee_category'); ?></th>
+											<?php }
                                             ?>
 
                                             <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
@@ -168,16 +161,20 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 ?>
                                                 <tr>
 												
+                                                    <td><?php echo $count; ?></td>
                                                     <td><?php echo $student['admission_no']; ?></td>
 											
+                                                    <td><?php echo $student['class'] . "(" . $student['section'] . ")" ?></td>
                                                     <td> 
                                                         
                                                         <a href="<?php echo base_url(); ?>student/view/<?php echo $student['id']; ?>"><?php echo $this->customlib->getFullName($student['firstname'],$student['middlename'],$student['lastname'],$sch_setting->middlename,$sch_setting->lastname); ?>
                                                         </a>
                                                     </td>
-                                                    <td><?php echo $student['class'] . "(" . $student['section'] . ")" ?></td>
                                                     <?php if ($sch_setting->father_name) {  ?>
 													<td><?php echo $student['father_name']; ?></td>
+													<?php }?>
+                                                    <?php if ($sch_setting->mother_name) {  ?>
+													<td><?php echo $student['mother_name']; ?></td>
 													<?php }?>
                                                     <td><?php
                                                         if ($student["dob"] != null && $student["dob"]!='0000-00-00') {
@@ -185,32 +182,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         }
                                                         ?></td>
                                                     <td><?php echo $student['gender']; ?></td>
-													<?php if ($sch_setting->category) {  ?>
-                                                    <td><?php echo $student['category']; ?></td>
-													<?php } if ($sch_setting->mobile_no) {  ?>
+													<?php if ($sch_setting->mobile_no) {  ?>
                                                     <td><?php echo $student['mobileno']; ?></td>
-                                                    <?php }
-                                                    if (!empty($fields)) {
-
-                                                        foreach ($fields as $fields_key => $fields_value) {
-                                                              $display_field=$student[$fields_value->name];
-                                                        if($fields_value->type == "link"){
-                                                            $display_field= "<a href=".$student[$fields_value->name]." target='_blank'>".$student[$fields_value->name]."</a>";
-
-                                                            }
-                                                            ?>
-                                                            
-                                                            <?php
-                                                        }
-                                                    }
-
+                                                    <?php } if ($sch_setting->category) {  ?>
+                                                    <td><?php echo $student['category']; ?></td>
+													<?php }
                                                     // echo json_encode($student);
                                                     ?>
-                                                    <td>
-                                                                <?php echo $student['cast_category']; ?>
-                                                                    
-                                                                </td>
-
                                                     <td class="pull-right">
 														
 														<a target="_blank" href="<?php echo base_url(); ?>student/admission/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Admission" >
@@ -231,7 +209,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 														
 														
 													
-                                                        <a target="_blank" href="<?php echo base_url(); ?>student/certificate/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('show'); ?>" >
+                                                        <a href="<?php echo base_url(); ?>student/view/<?php echo $student['id']; ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('show'); ?>" >
                                                             <i class="fa fa-reorder"></i>
                                                         </a>
                                                         <?php

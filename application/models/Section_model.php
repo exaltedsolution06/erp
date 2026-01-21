@@ -167,6 +167,7 @@ class Section_model extends MY_Model {
                 return false;
             } else {
                 //return $return_value;
+                return $record_id;
             }
         }
     }

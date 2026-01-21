@@ -10,6 +10,7 @@ class Disable_reason extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function index()
@@ -37,6 +38,7 @@ class Disable_reason extends Admin_Controller
 
             $data = array(
                 'reason' => $this->input->post('name'),
+                'session_id' => $this->current_session,
             );
 
             if ($id == '') {
@@ -61,6 +63,10 @@ class Disable_reason extends Admin_Controller
         $this->session->set_userdata('top_menu', 'Student Information');
         $this->session->set_userdata('sub_menu', 'student/disable_reason');
         $data['data']    = $this->disable_reason_model->get($id);
+		if(!$data['data'])
+		{
+			redirect('admin/disable_reason');
+		}
         $data['results'] = $this->disable_reason_model->get();
         $data['name']    = $data['data']['reason'];
         //$this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');

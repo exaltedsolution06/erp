@@ -309,7 +309,7 @@ if (!empty($student["guardian_pic"])) {
                      </div>
                      <?php } if ($sch_setting->route_list) {
     ?>
-                     <?php if ($student['vehroute_id'] != 0) {?>
+                     <?php if ($student['route_id'] != 0) {?>
                      <div class="tshadow mb25  bozero">
                         <h3 class="pagetitleh2"><?php echo $this->lang->line('transport') . " " . $this->lang->line('details'); ?></h3>
                         <div class="table-responsive around10 pt0">

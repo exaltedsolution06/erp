@@ -398,7 +398,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <?php 
                                                     // foreach($routes as $list){ 
 
-                                                        $route = $this->db->get_where('route_head', ['id' => $record['vehroute_id']])->row();
+                                                        $route = $this->db->get_where('route_head', ['id' => $record['route_id']])->row();
                                                         $class_id = $record['class_id'];
                                                         $category_id = $record['category_id'];
                                                         $fee_group_id = $route->fees_heading;
@@ -569,7 +569,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <td><?= $record["section"] ?></td>
                                             <td ><?=  ($this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()) ? $this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()->name : 'N.A'; ?>  </td>
                                         
-                                            <td ><?=  ($this->db->get_where('route_head', ['id' => $record['vehroute_id']])->row()) ? $this->db->get_where('route_head', ['id' => $record['vehroute_id']])->row()->fees_heading : 'N.A'; ?>  </td>
+                                            <td ><?=  ($this->db->get_where('route_head', ['id' => $record['route_id']])->row()) ? $this->db->get_where('route_head', ['id' => $record['route_id']])->row()->fees_heading : 'N.A'; ?>  </td>
                                             
                                             <?php
 

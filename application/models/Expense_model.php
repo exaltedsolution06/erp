@@ -185,8 +185,7 @@ class Expense_model extends MY_Model
 
     public function getTotalExpenseBwdate($date_from, $date_to)
     {
-        $query = 'SELECT sum(amount) as `amount` FROM `expenses` where date between ' . $this->db->escape($date_from) . ' and ' . $this->db->escape($date_to);
-
+        $query = 'SELECT sum(amount) as `amount` FROM `expenses` where session_id='.$this->current_session.' and date between ' . $this->db->escape($date_from) . ' and ' . $this->db->escape($date_to);
         $query = $this->db->query($query);
         return $query->row();
     }
@@ -200,6 +199,19 @@ class Expense_model extends MY_Model
         $this->db->where($condition)->group_by('expense_head.id');
         $r = $this->db->get()->result_array();
         return $r;
+    }
+	public function getTotalExpenseBwdateYearly($date_from, $date_to)
+    {
+		//echo $date_from.'///'.$date_to; die;
+        $query = 'SELECT sum(amount) as `amount` FROM `expenses` where session_id='.$this->current_session.' and date between ' . $this->db->escape($date_from) . ' and ' . $this->db->escape($date_to);
+        $query = $this->db->query($query);
+        return $query->row();
+    }
+	public function getTotalExpenseBwdateWeekly($date_from, $date_to)
+    {
+        $query = 'SELECT sum(amount) as `amount` FROM `expenses` where session_id='.$this->current_session.' and date between ' . $this->db->escape($date_from) . ' and ' . $this->db->escape($date_to);
+        $query = $this->db->query($query);
+        return $query->row();
     }
 
 }

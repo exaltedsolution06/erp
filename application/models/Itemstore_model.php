@@ -68,6 +68,7 @@ class Itemstore_model extends MY_Model {
 					$this->db->trans_rollback();
 					return false;
 				} else {
+					return true;
 					//return $return_value;
 				}
 			} else {
@@ -87,6 +88,7 @@ class Itemstore_model extends MY_Model {
 					$this->db->trans_rollback();
 					return false;
 				} else {
+					return true;
 					//return $return_value;
 				}
 			}

@@ -1158,7 +1158,7 @@ class Studentfee extends Admin_Controller
             
             $monthsPost =$_POST['months'];
             $class_id=$student['class_id'];
-            $route_id=$student['vehroute_id'];
+            $route_id=$student['route_id'];
             
             $category_id=$student['category_id'];
             
@@ -1333,7 +1333,7 @@ class Studentfee extends Admin_Controller
 			}
 			
             $class_id=$student['class_id'];
-            $route_id=$student['vehroute_id'];            
+            $route_id=$student['route_id'];            
             $category_id=$student['category_id'];
             $this->db->from('fee_head');
             $this->db->join('fees_plan', 'fee_head.id = fees_plan.fee_group_id');
@@ -1545,7 +1545,7 @@ class Studentfee extends Admin_Controller
 				$monthsPost =$_POST['months'];
 			}
             $class_id=$student['class_id'];
-            $route_id=$student['vehroute_id'];            
+            $route_id=$student['route_id'];            
             $category_id=$student['category_id'];
             $this->db->from('fee_head');
             $this->db->join('fees_plan', 'fee_head.id = fees_plan.fee_group_id');

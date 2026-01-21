@@ -21,3 +21,5 @@ $route['page/(:any)'] = 'welcome/page/$1';
 $route['read/(:any)'] = 'welcome/read/$1';
 $route['online_admission'] = 'welcome/admission';
 $route['frontend'] = 'welcome';
+
+$route['cron/(:any)'] = 'cron/changeSessions/$1';

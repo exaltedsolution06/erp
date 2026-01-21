@@ -91,7 +91,7 @@ class Studentfeemaster_model extends MY_Model
         $fee_group_id     = 0;
         $fee_type_id      = 0;
         if (!$fee_group_exists) {
-            $this->db->insert('fee_groups', array('name' => $this->balance_group, 'is_system' => 1));
+            $this->db->insert('fee_groups', array('session_id' => $this->current_session, 'name' => $this->balance_group, 'is_system' => 1));
             $fee_group_id = $this->db->insert_id();
         } else {
             $fee_group_id = $fee_group_exists->id;
@@ -206,7 +206,7 @@ class Studentfeemaster_model extends MY_Model
 
     public function getBalanceMasterRecord($group_name, $student_session_array)
     {
-        $sql = "select * from student_fees_master where student_session_id in $student_session_array and fee_session_group_id=(SELECT id FROM `fee_session_groups` where fee_groups_id=(SELECT id FROM `fee_groups` WHERE name=" . "'" . $group_name . "'" . ") and session_id=$this->current_session)";
+        $sql = "select * from student_fees_master where student_session_id in $student_session_array and fee_session_group_id=(SELECT id FROM `fee_session_groups` where fee_groups_id=(SELECT id FROM `fee_groups` WHERE name=" . "'" . $group_name . "'" . " and session_id=$this->current_session) and session_id=$this->current_session)";
 
         $query  = $this->db->query($sql);
         $result = $query->result();

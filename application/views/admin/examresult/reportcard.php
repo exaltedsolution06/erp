@@ -177,9 +177,10 @@
                                                 <th><?php echo $this->lang->line('admission_no'); ?></th>
                                                 <th><?php echo $this->lang->line('student_name'); ?></th>
                                                 <th><?php echo $this->lang->line('father_name'); ?></th>
+                                                <th><?php echo $this->lang->line('mother_name'); ?></th>
                                                 <th><?php echo $this->lang->line('date_of_birth'); ?></th>
                                                 <th><?php echo $this->lang->line('gender'); ?></th>
-                                                <th><?php echo $this->lang->line('category'); ?></th>
+                                                <!--<th><?php echo $this->lang->line('category'); ?></th>-->
                                                 <th class=""><?php echo $this->lang->line('mobile_no'); ?></th>
                                             </tr>
                                         </thead>
@@ -212,12 +213,11 @@
                                                             </a>
                                                         </td>
 
-                                                        <td><?php echo $student_value->father_name;
-                                        ;
-                                                    ?></td>
+                                                        <td><?php echo $student_value->father_name; ?></td>
+                                                        <td><?php echo $student_value->mother_name; ?></td>
                                                         <td><?php echo $student_value->dob ? date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($student_value->dob)) : ''; ?></td>
                                                         <td><?php echo $student_value->gender; ?></td>
-                                                        <td><?php echo $student_value->category; ?></td>
+                                                        <!--<td><?php echo $student_value->category; ?></td>-->
                                                         <td><?php echo $student_value->mobileno; ?></td>
                                                     </tr>
                                                     <?php

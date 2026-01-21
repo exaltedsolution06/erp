@@ -72,9 +72,9 @@ class Vehroute extends Admin_Controller {
 		
 		// by ES 
 		$checkData['menu'] = 'assignvehicle';
-		$checkData['table'] = 'students';
+		$checkData['table'] = 'student_session';
 		$checkData['id'] = $id;
-		$checkData['field'] = 'vehroute_id';
+		$checkData['field'] = 'route_id';
 		$ifsection = $this->Setting_model->checkDeleteList($checkData);
 		
 		if($ifsection > 0)

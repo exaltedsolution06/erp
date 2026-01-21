@@ -66,8 +66,8 @@
                             <a href="<?php echo site_url('admin/expense') ?>">
                                 <span class="info-box-icon bg-red"><i class="fa fa-credit-card"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text"><?php echo $this->lang->line('monthly_expenses'); ?></span>
-                                    <span class="info-box-number"><?php echo $currency_symbol . $month_expense; ?></span>
+                                    <span class="info-box-text"><?php echo $this->lang->line('yearly_expenses'); ?></span>
+                                    <span class="info-box-number"><?php echo $currency_symbol . $yearly_expenses; ?></span>
                                 </div>
                             </a>
                         </div>
@@ -138,8 +138,8 @@
                             <a href="<?php echo site_url('admin/expense') ?>">
                                 <span class="info-box-icon bg-red"><i class="fa fa-credit-card"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text"><?php echo $this->lang->line('monthly_expenses'); ?></span>
-                                    <span class="info-box-number"><?php echo $currency_symbol . $month_expense; ?></span>
+                                    <span class="info-box-text"><?php echo $this->lang->line('weekly_expenses'); ?></span>
+                                    <span class="info-box-number"><?php echo $currency_symbol . $weekly_expense; ?></span>
                                 </div>
                             </a>
                         </div>
@@ -174,8 +174,8 @@
                             <a href="<?php echo site_url('admin/expense') ?>">
                                 <span class="info-box-icon bg-red"><i class="fa fa-credit-card"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text"><?php echo $this->lang->line('monthly_expenses'); ?></span>
-                                    <span class="info-box-number"><?php echo $currency_symbol . $month_expense; ?></span>
+                                    <span class="info-box-text"><?php echo $this->lang->line('total_expenses'); ?></span>
+                                    <span class="info-box-number"><?php echo $currency_symbol . $total_expenses; ?></span>
                                 </div>
                             </a>
                         </div>

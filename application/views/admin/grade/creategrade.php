@@ -64,7 +64,7 @@
                                 </div><!--./form-group-->
 
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('description'); ?></label>
+                                    <label><?php echo $this->lang->line('remarks'); ?></label>
                                     <textarea class="form-control" id="description" name="description" placeholder="" rows="3" placeholder=""><?php echo set_value('description'); ?></textarea>
                                     <span class="text-danger"><?php echo form_error('description'); ?></span>
                                 </div><!--./form-group-->
@@ -106,13 +106,14 @@
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th><?php  echo $this->lang->line('exam')." ".$this->lang->line('type');?></th>
+                                        <!--<th><?php  echo $this->lang->line('exam')." ".$this->lang->line('type');?></th>-->
                                         <th> 
                                             <table width="100%">
                                                 <tr>
                                                     <th width="24%"><?php echo $this->lang->line('grade_name'); ?></th>
                                                     <th width="40%"><?php echo $this->lang->line('percent_from')." / ".$this->lang->line('upto');?></th>
-                                                    <th width="20%"><?php echo $this->lang->line('grade')." ".$this->lang->line('point');?></th>
+                                                    <!--<th width="20%"><?php echo $this->lang->line('grade')." ".$this->lang->line('point');?></th>-->
+                                                    <th width="20%"><?php echo $this->lang->line('remarks');?></th>
                                                     <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
                                                 </tr>
                                             </table>
@@ -127,10 +128,10 @@
                                         foreach ($listgrade as $grade) {
                                             ?>
                                           <tr>
-                                                <td class="mailbox-name">
+                                                <!--<td class="mailbox-name">
 
-                                                    <a href="#" data-toggle="popover" class="detail_popover" ><?php echo $grade['exm_type_value']; ?></a>
-                                                </td>
+                                                    <a href="#" data-toggle="popover" class="detail_popover" ><?php //echo $grade['exm_type_value']; ?></a>
+                                                </td>-->
                                                 <td class="mailbox-name">
                                                      <table width="100%">
 
@@ -144,7 +145,8 @@
                                                                 <tr>                
                                                                     <td width="24%" class="text-left"><?php echo $grade_value->name ?></td>
                                                                     <td width="40%"><?php echo rtrim(rtrim($grade_value->mark_upto, '0'), '.') . " " . $this->lang->line('to') . " " . rtrim(rtrim($grade_value->mark_from, '0'), '.'); ?> </td>
-                                                                    <td width="20%"><?php echo rtrim(rtrim($grade_value->point, '0'), '.') ?> </td>
+                                                                    <!--<td width="20%"><?php echo rtrim(rtrim($grade_value->point, '0'), '.') ?> </td>-->
+                                                                    <td width="20%"><?php echo $grade_value->description ?> </td>
                                                                     <td class="text-right">
 
                                                                         <?php

@@ -41,7 +41,7 @@ class Itemstock extends Admin_Controller
                 'store_id'       => $store_id,
                 'quantity'       => $this->input->post('symbol') . $this->input->post('quantity'),
                 'purchase_price' => $this->input->post('purchase_price'),
-                'date'           => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('date'))),
+                'date'           => $this->input->post('date') != '' ? date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('date'))) : '',
                 'description'    => $this->input->post('description'),
                 'session_id'    => $this->current_session,
             );

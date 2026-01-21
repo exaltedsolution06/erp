@@ -1281,7 +1281,6 @@ class Receipt_model extends CI_Model {
         $this->db->select('
             student_session.transport_fees,
             student_session.route_id,
-            vehicle_routes.route_id,
             vehicle_routes.vehicle_id,
             transport_route.route_title,
             vehicles.vehicle_no,
@@ -1324,6 +1323,7 @@ class Receipt_model extends CI_Model {
             students.parent_id,
             students.permanent_address,
             student_session.fee_category_id,
+            student_session.fee_category_id as category_id,
             students.adhar_no,
             students.samagra_id,
             students.bank_account_no,

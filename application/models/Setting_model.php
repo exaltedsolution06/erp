@@ -89,12 +89,19 @@ class Setting_model extends MY_Model {
     public function getSetting() {
 
         $this->db->select('sch_settings.id,sch_settings.attendence_type,sch_settings.lang_id,sch_settings.is_rtl,sch_settings.fee_due_days,sch_settings.class_teacher,sch_settings.cron_secret_key,sch_settings.timezone,
-          sch_settings.name,sch_settings.email,sch_settings.biometric,sch_settings.biometric_device,sch_settings.phone,sch_settings.adm_prefix,sch_settings.adm_start_from,languages.language,sch_settings.adm_no_digit,sch_settings.adm_update_status,sch_settings.adm_auto_insert,sch_settings.staffid_prefix,sch_settings.staffid_start_from,sch_settings.staffid_auto_insert,sch_settings.staffid_no_digit,sch_settings.staffid_update_status,
+          sch_settings.name,sch_settings.email,sch_settings.biometric,sch_settings.biometric_device,sch_settings.phone,languages.language,
+		  sch_settings_session.id as setting_session_id,sch_settings_session.receipt_sr_no,sch_settings_session.staffid_auto_insert,sch_settings_session.staffid_prefix,sch_settings_session.staffid_start_from,sch_settings_session.staffid_no_digit,sch_settings_session.staffid_update_status,
+		  sch_settings_session.adm_auto_insert,sch_settings_session.adm_prefix,sch_settings_session.adm_start_from,sch_settings_session.adm_no_digit,sch_settings_session.adm_update_status,
           sch_settings.address,sch_settings.dise_code,sch_settings.date_format,sch_settings.currency,sch_settings.currency_place,sch_settings.currency_symbol,sch_settings.start_month,sch_settings.start_week,sch_settings.session_id,sch_settings.image,sch_settings.theme,sessions.session,online_admission,sch_settings.is_duplicate_fees_invoice,sch_settings.is_student_house,sch_settings.is_blood_group,sch_settings.roll_no,sch_settings.lastname,sch_settings.middlename,sch_settings.category,sch_settings.cast,sch_settings.religion,sch_settings.mobile_no,sch_settings.student_email,sch_settings.admission_date,sch_settings.student_photo,sch_settings.student_height,sch_settings.student_weight,sch_settings.measurement_date,sch_settings.father_name,sch_settings.father_phone,sch_settings.father_occupation,sch_settings.father_pic,sch_settings.mother_name,sch_settings.mother_phone,sch_settings.mother_occupation,sch_settings.mother_pic,sch_settings.guardian_phone,sch_settings.guardian_name,sch_settings.guardian_relation,sch_settings.guardian_email,sch_settings.guardian_pic,sch_settings.guardian_occupation,sch_settings.guardian_address,sch_settings.current_address,sch_settings.permanent_address,sch_settings.route_list,sch_settings.hostel_id,sch_settings.bank_account_no,sch_settings.bank_name,sch_settings.ifsc_code,sch_settings.national_identification_no,sch_settings.local_identification_no,sch_settings.rte,sch_settings.previous_school_details,sch_settings.student_note,sch_settings.upload_documents,sch_settings.staff_designation,sch_settings.staff_department,sch_settings.staff_last_name,sch_settings.staff_father_name,sch_settings.staff_mother_name,sch_settings.staff_date_of_joining,sch_settings.staff_phone,sch_settings.staff_emergency_contact,sch_settings.staff_marital_status,sch_settings.staff_photo,sch_settings.staff_current_address,sch_settings.staff_permanent_address,sch_settings.staff_qualification,sch_settings.staff_work_experience,sch_settings.staff_note,sch_settings.staff_epf_no,sch_settings.staff_basic_salary,sch_settings.staff_contract_type,sch_settings.staff_work_shift,sch_settings.staff_work_location,sch_settings.staff_leaves,sch_settings.staff_account_details,sch_settings.staff_social_media,sch_settings.staff_upload_documents,sch_settings.admin_logo,sch_settings.admin_small_logo,sch_settings.mobile_api_url,sch_settings.main_domain_url,sch_settings.app_primary_color_code,sch_settings.app_secondary_color_code,sch_settings.app_logo,languages.short_code as `language_code`,sch_settings.student_profile_edit,sch_settings.my_question');
 		//,sch_settings.receipt_sr_no
         $this->db->from('sch_settings');
         $this->db->join('sessions', 'sessions.id = sch_settings.session_id');
         $this->db->join('languages', 'languages.id = sch_settings.lang_id');
+		$this->db->join(
+			'sch_settings_session',
+			'sch_settings_session.session_id = ' . (int)$this->current_session,
+			'left'
+		);
         $this->db->order_by('sch_settings.id');
         $query = $this->db->get();
         return $query->row();
@@ -367,6 +374,26 @@ class Setting_model extends MY_Model {
 			$query = $this->db->where('session_id', $current_session_id)->get('receipt_sr_no');
 			$num_rows = $query->num_rows();
 		}
+        if ($num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+	}
+	public function check_staff_session()
+	{
+		$query = $this->db->where('session_id', $this->current_session)->get('staff');
+		$num_rows = $query->num_rows();
+        if ($num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+	}
+	public function check_adm_session()
+	{
+		$query = $this->db->where('session_id', $this->current_session)->get('student_session');
+		$num_rows = $query->num_rows();
         if ($num_rows > 0) {
             return true;
         } else {
@@ -649,6 +676,50 @@ class Setting_model extends MY_Model {
 				return false;
 			}
 		}
+		if($checkData['menu'] == 'createroute')
+		{
+			$this->db->where($checkData['field'], $checkData['id']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get($checkData['table']);
+			if($query->num_rows() > 0)
+			{
+				return true;
+			}
+			else{
+				$this->db->where('fee_group_id', $checkData['id']);
+				$this->db->where('session_id', $checkData['session_id']);
+				$query = $this->db->get('route_plan');
+				if($query->num_rows() > 0){
+					return true;
+				}else{
+					return false;
+				}
+			}
+		}
+		if($checkData['menu'] == 'account')
+		{
+			//echo "<pre>";print_r($checkData);die;
+			$count = 0;
+			// check account present in fee_head
+			$this->db->where('account_name', $checkData['account_name']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get('fee_head');
+			if($query->num_rows() > 0)
+			{
+				$count++;
+			}
+			
+			// check account present in create route
+			$this->db->where('account_name', $checkData['account_name']);
+			$this->db->where('session_id', $checkData['session_id']);
+			$query = $this->db->get('route_head');
+			if($query->num_rows() > 0)
+			{
+				$count++;
+			}
+			
+			return $count;
+		}
 		else{
 			//echo "<pre>";print_r($checkData);die;
 			$this->db->where($checkData['field'], $checkData['id']);
@@ -694,13 +765,13 @@ class Setting_model extends MY_Model {
 		$query = $this->db->where('session_id', $current_session_id)->get('sch_settings_session');
 		if($query->num_rows()== 0)
 		{
-			if($data['receipt_sr_no'] != '')
-			{
+			// if($data['receipt_sr_no'] != '')
+			// {
 				$this->db->trans_start(); # Starting Transaction
 				$this->db->trans_strict(false); # See Note 01. If you wish can remove as well
 				$this->db->insert('sch_settings_session', $data);
 				$this->db->trans_complete();
-			}
+			// }
 			return true;
 		}else{
 			$this->db->where('session_id', $data['session_id']);
@@ -711,13 +782,13 @@ class Setting_model extends MY_Model {
 
         $this->db->trans_complete(); # Completing transaction
 	}
-	public function getReceiptNo()
+	public function get_session_setting()
 	{
 		$session_result = $this->get();
 		// $current_session_id = $session_result[0]['current_session']['session_id'];
 		$current_session_id = $this->current_session;
 		
-		$qr = $this->db->select('receipt_sr_no')->where('session_id', $current_session_id)->get('sch_settings_session');
+		$qr = $this->db->select('*')->where('session_id', $current_session_id)->get('sch_settings_session');
 		if($qr->num_rows() > 0)
 		{
 			return $qr->row_array();

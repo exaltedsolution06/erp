@@ -448,6 +448,8 @@ class Student extends Admin_Controller
         if (!$this->rbac->hasPrivilege('student', 'can_add')) {
             access_denied();
         }
+		
+		$data['session_id'] = $this->current_session;
 		//houses
         $this->session->set_userdata('top_menu', 'Student Information');
         $this->session->set_userdata('sub_menu', 'student/create');
@@ -472,7 +474,7 @@ class Student extends Admin_Controller
         $hostelList                 = $this->hostel_model->get();
         $data['hostelList']         = $hostelList;
         //$vehroute_result            = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
-        $vehroute_result            = $this->vehroute_model->get();
+        $vehroute_result            = $this->route_model->get();
         $data['vehroutelist']       = $vehroute_result;
 		
 		
@@ -494,11 +496,24 @@ class Student extends Admin_Controller
          //var_dump($custom_fields); die;
         
         
-        $this->db->order_by('id', 'DESC');
+        /*$this->db->order_by('id', 'DESC');
         $this->db->limit(1);
         $query = $this->db->get('students');
-        $last_row = $query->row();
-        $data['admission_no']=$last_row->admission_no;
+        $last_row = $query->row();*/
+		$this->db->select('students.admission_no');
+		$this->db->from('students');
+		$this->db->join(
+			'student_session',
+			'student_session.student_id = students.id',
+			'inner'
+		);
+		$this->db->where('student_session.session_id', $this->current_session);
+		$this->db->order_by('students.id', 'DESC');
+		$this->db->limit(1);
+
+		$query = $this->db->get();
+		$last_row = $query->row();
+        $data['admission_no'] = $last_row ? $last_row->admission_no : null;
 
        // $this->form_validation->set_rules('cast_category', $this->lang->line('cast_category'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('category_id', $this->lang->line('category_id'), 'trim|required|xss_clean');
@@ -527,7 +542,8 @@ class Student extends Admin_Controller
 
         if (!$this->sch_setting_detail->adm_auto_insert) {
 
-            $this->form_validation->set_rules('admission_no', $this->lang->line('admission_no'), 'trim|required|xss_clean|is_unique[students.admission_no]');
+            // $this->form_validation->set_rules('admission_no', $this->lang->line('admission_no'), 'trim|required|xss_clean|is_unique[students.admission_no]');
+            $this->form_validation->set_rules('admission_no', $this->lang->line('admission_no'), 'trim|required|xss_clean|callback_unique_admission_no_session');
         }
         $this->form_validation->set_rules('file', $this->lang->line('image'), 'callback_handle_upload');
         
@@ -737,7 +753,7 @@ class Student extends Admin_Controller
 
             $insert                            = true;
             $data_setting                      = array();
-            $data_setting['id']                = $this->sch_setting_detail->id;
+            $data_setting['id']                = $this->sch_setting_detail->setting_session_id;
             $data_setting['adm_auto_insert']   = $this->sch_setting_detail->adm_auto_insert;
             $data_setting['adm_update_status'] = $this->sch_setting_detail->adm_update_status;
             $admission_no                      = 0;
@@ -940,6 +956,35 @@ class Student extends Admin_Controller
             }
         }
     }
+	public function unique_admission_no_session($admission_no)
+	{
+		$this->db->select('students.id');
+		$this->db->from('students');
+		$this->db->join(
+			'student_session',
+			'student_session.student_id = students.id',
+			'inner'
+		);
+		$this->db->where('students.admission_no', $admission_no);
+		$this->db->where('student_session.session_id', $this->current_session);
+
+		// Optional (for edit case)
+		if ($this->input->post('student_id')) {
+			$this->db->where('students.id !=', $this->input->post('student_id'));
+		}
+
+		$query = $this->db->get();
+
+		if ($query->num_rows() > 0) {
+			$this->form_validation->set_message(
+				'unique_admission_no_session',
+				$this->lang->line('admission_no') . ' already exists for this session'
+			);
+			return FALSE;
+		}
+
+		return TRUE;
+	}
 
     public function create_doc()
     {
@@ -1357,10 +1402,20 @@ class Student extends Admin_Controller
                             $guardian_email                    = $insert_student_data[$i]["guardian_email"];
 							
                             $data_setting                      = array();
-                            $data_setting['id']                = $this->sch_setting_detail->id;
+                            $data_setting['id']                = $this->sch_setting_detail->setting_session_id;
                             $data_setting['adm_auto_insert']   = $this->sch_setting_detail->adm_auto_insert;
                             $data_setting['adm_update_status'] = $this->sch_setting_detail->adm_update_status;
-                            if ($this->form_validation->is_unique($adm_no, 'students.admission_no')) {
+							
+							$_POST = []; // reset
+							$_POST['admission_no'] = $adm_no;
+							$this->form_validation->reset_validation();
+							$this->form_validation->set_rules(
+								'admission_no',
+								$this->lang->line('admission_no'),
+								'trim|required|xss_clean|callback_unique_admission_no_session'
+							);
+							
+                            if ($this->form_validation->run() === TRUE) {
                            $insert_id = $this->student_model->add($insert_student_data[$i], $data_setting);
                             } else {
 
@@ -1504,7 +1559,7 @@ class Student extends Admin_Controller
         $data['adm_auto_insert'] = $this->sch_setting_detail->adm_auto_insert;
         $data['genderList']      = $genderList;
         $session                 = $this->setting_model->getCurrentSession();
-        $vehroute_result         = $this->vehroute_model->get();
+        $vehroute_result         = $this->route_model->get();
 		//echo "<pre>";print_r($vehroute_result);sie;
         $data['vehroutelist']    = $vehroute_result;
         $class                   = $this->class_model->get();

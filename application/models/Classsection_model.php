@@ -97,6 +97,7 @@ class Classsection_model extends MY_Model {
             $this->db->trans_rollback();
         } else {
             $this->db->trans_commit();
+			return $record_id;
         }
     }
 

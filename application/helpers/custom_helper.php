@@ -232,3 +232,35 @@ if (!function_exists('sort_by_custom_month_order')) {
     }
 }
 
+if (!function_exists('get_division_by_percentage')) {
+    function get_division_by_percentage($percentage)
+    {
+        $CI =& get_instance(); // Access CI instance for language lines
+        // Centralized grade rules
+        $divisions = [
+            [
+                'min'   => 60,
+                'max'   => 100,
+                'label' => $CI->lang->line('first'),
+            ],
+            [
+                'min'   => 50,
+                'max'   => 59.99,
+                'label' => $CI->lang->line('second'),
+            ],
+            [
+                'min'   => 0,
+                'max'   => 49.99,
+                'label' => $CI->lang->line('third'),
+            ],
+        ];
+
+        foreach ($divisions as $division) {
+            if ($percentage >= $division['min'] && $percentage <= $division['max']) {
+                return $division['label'];
+            }
+        }
+        return '';
+    }
+}
+

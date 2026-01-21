@@ -45,7 +45,7 @@
                                 <th><?php echo $this->lang->line('admission_no'); ?></th>
                                 <th><?php echo $this->lang->line('roll_no'); ?></th>
                                 <th><?php echo $this->lang->line('student_name'); ?></th> <th><?php echo $this->lang->line('father_name'); ?></th>
-                                <th><?php echo $this->lang->line('fee_category'); ?></th>
+                                <!--<th><?php echo $this->lang->line('fee_category'); ?></th>-->
                                 <th><?php echo $this->lang->line('gender'); ?></th>
                                 <th><?php echo $this->lang->line('attendence'); ?></th>
                                 <th><?php echo $this->lang->line('marks') ?></th>
@@ -72,7 +72,7 @@
                                 <td><?php echo ($student['exam_roll_no'] != 0) ? $student['exam_roll_no'] : '-'; ?></td>
                                 <td><?php echo $this->customlib->getFullName($student['firstname'],$student['middlename'],$student['lastname'],$sch_setting->middlename,$sch_setting->lastname);?></td>
                                 <td><?php echo $student['father_name']; ?></td>
-                                <td><?php echo $student['category']; ?></td>
+                                <!--<td><?php echo $student['category']; ?></td>-->
                                 <td><?php echo $student['gender']; ?></td>
                                 <td>
                                     <div>

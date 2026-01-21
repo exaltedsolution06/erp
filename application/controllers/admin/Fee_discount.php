@@ -37,7 +37,7 @@ class Fee_discount extends Admin_Controller {
 
 		$monthsPost = $months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
 		$class_id=$student_data['class_id'];
-		$route_id=$student_data['vehroute_id'];
+		$route_id=$student_data['route_id'];
 		$category_id=$student_data['category_id'];
 		$student_session_id=$student_data['student_session_id'];
 		// die;
@@ -92,6 +92,7 @@ class Fee_discount extends Admin_Controller {
     {
         // Get submitted values
         $fees = $this->input->post('fee');  // fee array
+		//echo "<pre>";print_r($fees);die;
         $routes = $this->input->post('route');  // route array
 		$remarks = $this->input->post('remarks');
 		$student_session_id = $this->input->post('student_session_id');
@@ -162,7 +163,7 @@ class Fee_discount extends Admin_Controller {
 
 		$monthsPost = $months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
 		$class_id=$student_data['class_id'];
-		$route_id=$student_data['vehroute_id'];
+		$route_id=$student_data['route_id'];
 		$category_id=$student_data['category_id'];
 		// die;
 		$this->db->from('fee_head');
@@ -171,7 +172,7 @@ class Fee_discount extends Admin_Controller {
 		$this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
 		$query = $this->db->get();
 		$data['data_list'] = $query->result();
-			//echo '<pre>'; print_r($data['data_list']); echo '</pre>';die;
+		//echo '<pre>'; print_r($data['data_list']); echo '</pre>';die;
 		$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr, []);
 		
 		//echo '<pre>'; print_r($data['data_list']); echo '</pre>';die;
@@ -371,7 +372,7 @@ class Fee_discount extends Admin_Controller {
 
 		$monthsPost = $months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
 		$class_id=$student_data['class_id'];
-		$route_id=$student_data['vehroute_id'];
+		$route_id=$student_data['route_id'];
 		$category_id=$student_data['category_id'];
 		// die;
 		$this->db->from('fee_head');

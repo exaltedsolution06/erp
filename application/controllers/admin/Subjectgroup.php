@@ -58,6 +58,7 @@ class Subjectgroup extends Admin_Controller {
             );
             $subject = $this->input->post('subject');
             $sections = $this->input->post('sections');
+			//echo "<pre>";print_r($sections);die;
 
             $this->subjectgroup_model->add($class_array, $subject, $sections);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
@@ -144,6 +145,7 @@ class Subjectgroup extends Admin_Controller {
         $data['class_id'] = 0;
         $data['subjectgroupList'] = $subjectgroupList;
         $subjectgroup = $this->subjectgroup_model->getByID($id);
+		//echo "<pre>";print_r($subjectgroup);die;
 		
 		if(empty($subjectgroup))
 		{
@@ -167,6 +169,8 @@ class Subjectgroup extends Admin_Controller {
                 $old_subjects[] = $value->subject_id;
             }
         }
+		
+		//echo "<pre>";print_r($old_subjects);die;
 
         $data['section_array'] = $json_array;
 

@@ -105,7 +105,7 @@ class Schoolhouse extends Admin_Controller {
 			
 			// by ES
 			$checkData['menu'] = 'studenthouse';		
-			$checkData['table'] = 'students';
+			$checkData['table'] = 'student_session';
 			$checkData['id'] = $id;
 			$checkData['field'] = 'school_house_id';
 			$ifsection = $this->Setting_model->checkDeleteList($checkData);

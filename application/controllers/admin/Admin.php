@@ -63,15 +63,40 @@ class Admin extends Admin_Controller
         $getDepositeAmount  = $this->studentfeemaster_model->getDepositAmountBetweenDate($year_str_month, $year_end_month);
         //======================Current Month Collection ==============================
         $first_day_this_month     = date('Y-m-01');
+		//------------------------------
+		$first_day_this_year = date('Y-01-01');
+		$last_day_this_year  = date('Y-12-31');
+		$first_day_this_week = date('Y-m-d', strtotime('monday this week'));
+		$last_day_this_week  = date('Y-m-d', strtotime('sunday this week'));
+		//===============================================
         $current_month_collection = $this->studentfeemaster_model->getDepositAmountBetweenDate($first_day_this_month, $current_date);
         $month_collection         = $this->whatever($current_month_collection, $first_day_this_month, $current_date);
         $expense                  = $this->expense_model->getTotalExpenseBwdate($first_day_this_month, $current_date);
         if (!empty($expense)) {
             $month_expense = $month_expense + $expense->amount;
         }
-
+		
+		// yearly expences
+		$yearly_expenses = 0;
+		$expenseYearly                  = $this->expense_model->getTotalExpenseBwdateYearly($first_day_this_year, $last_day_this_year);
+        if (!empty($expenseYearly)) {
+            $yearly_expenses = $yearly_expenses + $expenseYearly->amount;
+        }
+		//echo $yearly_expenses; die;
+		$data['yearly_expenses']    = $yearly_expenses;
+		
+		// weekly expences
+		$weekly_expense = 0;
+		$expenseWeekly                  = $this->expense_model->getTotalExpenseBwdateWeekly($first_day_this_week, $last_day_this_week);
+        if (!empty($expenseWeekly)) {
+            $weekly_expense = $weekly_expense + $expenseWeekly->amount;
+        }
+		$data['weekly_expense']    = $weekly_expense;
+        //----
         $data['month_collection'] = $month_collection;
         $data['month_expense']    = $month_expense;
+		
+        $data['total_expenses']    = $yearly_expenses+$month_expense+$weekly_expense;
 
         $tot_students = $this->studentsession_model->getTotalStudentBySession();
         if (!empty($tot_students)) {
@@ -313,7 +338,7 @@ class Admin extends Admin_Controller
             'dueforreturn'      => $dueforreturn,
             'forreturn'         => $forreturn,
         );
-
+		
         $Attendence                   = $this->stuattendence_model->getTodayDayAttendance($total_students);
         $data['attendence_data']      = $Attendence;
         $Staffattendence              = $this->Staff_model->getTodayDayAttendance();
@@ -690,6 +715,7 @@ class Admin extends Admin_Controller
         $return_amount = 0;
         $st_date       = strtotime($start_month_date);
         $ed_date       = strtotime($end_month_date);
+		
         if (!empty($feecollection_array)) {
             while ($st_date <= $ed_date) {
                 $date = date('Y-m-d', $st_date);
