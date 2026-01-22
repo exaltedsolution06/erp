@@ -303,7 +303,7 @@ class Cron extends CI_Controller
 				
 				$this->subject_create($new_class_array, $new_section_array, $classes['current_session_id'], $classes['next_session_id']);
 				
-				$move = $this->student_move($classes, $new_class_array, $new_section_array, $new_house_array, $new_fee_category_array, $new_route_array);
+				$move = $this->student_move($classes, $new_class_array, $new_section_array, $new_house_array, $new_fee_category_array, $new_route_array, $fee_category_by_move_category);
 				// echo "<pre>";print_r($move);die;
 			}
 			
@@ -682,7 +682,7 @@ class Cron extends CI_Controller
 		}
 	}
 	
-	function student_move($classes, $new_class_array, $new_section_array, $new_house_array, $new_fee_category_array, $new_route_array){
+	function student_move($classes, $new_class_array, $new_section_array, $new_house_array, $new_fee_category_array, $new_route_array, $fee_category_by_move_category){
 		$this->db->select('student_session.*')->from('students');
 		$this->db->join('student_session', 'student_session.student_id = students.id');
 		$this->db->where('student_session.session_id', $classes['current_session_id']);
@@ -756,6 +756,14 @@ class Cron extends CI_Controller
 			}else{
 				$fees_discount = $val['fees_discount'];
 			}
+			
+			if($val['fee_category_id'] != 0){
+				$next_cat_id = array_column($fee_category_by_move_category, 'next_category_id', 'current_category_id')[$val['fee_category_id']] ?? null;
+				$student_new_cat_id  = current(array_filter($new_fee_category_array, fn($a) => isset($a[$next_cat_id])))[$next_cat_id] ?? 0;
+			}else{
+				$student_new_cat_id = 0;
+			}
+			
 			$data_new = array(
 				'session_id' => $classes['next_session_id'],
 				'student_id' => $student_id,
@@ -763,7 +771,7 @@ class Cron extends CI_Controller
 				'section_id' => $val['section_id'] != 0 ? current(array_filter($new_section_array, fn($a) => isset($a[$val['section_id']])))[$val['section_id']] ?? 0 : 0,
 				'route_id' => $val['route_id'] != 0 ? current(array_filter($new_route_array, fn($a) => isset($a[$val['route_id']])))[$val['route_id']] ?? 0 : 0,
 				'school_house_id' => $val['school_house_id'] != 0 ? current(array_filter($new_house_array, fn($a) => isset($a[$val['school_house_id']])))[$val['school_house_id']] ?? 0 : 0,
-				'fee_category_id' => $val['fee_category_id'] != 0 ? current(array_filter($new_fee_category_array, fn($a) => isset($a[$val['fee_category_id']])))[$val['fee_category_id']] ?? 0 : 0,
+				'fee_category_id' => $student_new_cat_id,
 				'transport_fees' => $val['transport_fees'],
 				'fees_discount' => $fees_discount,
 			);
