@@ -1375,7 +1375,7 @@ class Cron extends CI_Controller
             $query = $this->db->get();
             $data['route_data_list'] = $query->result();
 			
-			$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
+			$route_data_list = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
 			//echo "<pre>";print_r($data['route_data_list']);die;
 			
 			foreach($route_data_list as $row)
@@ -1383,7 +1383,7 @@ class Cron extends CI_Controller
 				$db_months = json_decode($row->months);
                 $total = 0; 
 				
-				foreach($months_data as $key => $value):
+				foreach($monthsPost as $key => $value):
 					if(in_array($value, $db_months))
 					{
 						if(is_array($row->amount)) 
