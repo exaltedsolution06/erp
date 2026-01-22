@@ -34,6 +34,8 @@ class Cron extends CI_Controller
 		
 		$this->balance_group   = $this->config->item('ci_balance_group');
         $this->balance_type    = $this->config->item('ci_balance_type');
+		$this->load->model('fee_discount_model');
+		$this->load->model('Receipt_model');
     }
 	
 	
@@ -1303,6 +1305,149 @@ class Cron extends CI_Controller
         echo "<pre>";print_r($sectionArr);die;
         
     }
+	function student_fees_balance($id='')
+	{
+		$student = $this->student_model->getByStudentSession($id);
+		$monthsPost = [ "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec","Jan", "Feb", "Mar"];
+		$existing_entry = $this->Receipt_model->get_pay_mounth($student['id']);
+        $monthsPost = array_values(array_diff($monthsPost, $existing_entry));
+		//echo "<pre>";print_r($monthsPost);die;
+		$class_id=$student['class_id'];
+		$route_id=$student['route_id'];
+		$category_id=$student['category_id'];
+		
+		
+		$this->db->from('fee_head');
+            $this->db->join('fees_plan', 'fee_head.id = fees_plan.fee_group_id');
+            $this->db->where("JSON_CONTAINS(fees_plan.class_ids, '\"$class_id\"')", null, false);
+            $this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
+            if (!empty($monthsPost)) {
+                $this->db->group_start(); // Start OR group
+                foreach ($monthsPost as $m) {
+                    $m_escaped = $this->db->escape_str($m); // Prevent injection or breaking SQL
+                    $this->db->or_where("JSON_CONTAINS(fee_head.months, '\"$m_escaped\"')", null, false);
+                }
+                $this->db->group_end(); // End OR group
+            }
+            $query = $this->db->get();
+            $data['data_list'] = $query->result();
+              
+			
+			//---- 20-11-2025---ES--
+			$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($id);
+			$routeDiscountsArr    = $this->fee_discount_model->get_all_routes($id);
+			
+			$data_list = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr);
+			//echo "<pre>";print_r($data_list);die;
+			$final_total = 0;
+			foreach($data_list as $row)
+			{
+				$total = 0;
+				$db_months = json_decode($row->months);
+				
+				foreach($monthsPost as $key => $value):
+				
+					if(in_array($value, $db_months)){
+						
+						if(is_array($row->amount)) 
+						{
+							$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
+							$total += $amount;
+						}
+						else{
+							$total += $row->amount;
+						}
+					}
+				endforeach;
+				
+				$final_total += $total;
+			}
+			//------
+			
+			 // route
+
+            $this->db->from('route_head');
+            $this->db->join('route_plan', 'route_head.id = route_plan.fee_group_id');
+            $this->db->where("JSON_CONTAINS(route_plan.class_ids, '\"$class_id\"')", null, false);
+            $this->db->where("JSON_CONTAINS(route_plan.category_ids, '\"$category_id\"')", null, false);
+            $this->db->where('route_head.id', $route_id);
+            
+            $query = $this->db->get();
+            $data['route_data_list'] = $query->result();
+			
+			$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
+			//echo "<pre>";print_r($data['route_data_list']);die;
+			
+			foreach($route_data_list as $row)
+			{
+				$db_months = json_decode($row->months);
+                $total = 0; 
+				
+				foreach($months_data as $key => $value):
+					if(in_array($value, $db_months))
+					{
+						if(is_array($row->amount)) 
+						{
+							$total += $row->amount[$value];
+						}
+						else{
+							$total += $row->amount;
+						}
+					}
+				endforeach;
+				
+				$final_total += $total;
+			}
+			
+		$student_fee = $student['fees_discount']+$final_total;
+		return $student_fee;
+	}
+	function updateMonthlyFeeAmounts($defaultArray, $paidArray)
+	{
+		$monthMap = [
+			"Apr" => "month_apr",
+			"May" => "month_may",
+			"Jun" => "month_jun",
+			"Jul" => "month_jul",
+			"Aug" => "month_aug",
+			"Sep" => "month_sep",
+			"Oct" => "month_oct",
+			"Nov" => "month_nov",
+			"Dec" => "month_dec",
+			"Jan" => "month_jan",
+			"Feb" => "month_feb",
+			"Mar" => "month_mar"
+		];
+
+		foreach ($defaultArray as &$feeHead) {
+
+			foreach ($paidArray as $paid) {
+
+				if ($paid['fee_type_id'] == $feeHead->id) {
+
+					$months = json_decode($feeHead->months, true);
+
+					if (!is_array($months)) continue;
+
+					$amounts = [];
+
+					foreach ($months as $month) {
+
+						$column = $monthMap[$month];
+
+						$amounts[$month] = isset($paid[$column])
+							? floatval($paid[$column])
+							: floatval($feeHead->amount); // fallback
+					}
+
+					// Replace amount with month-wise array
+					$feeHead->amount = $amounts;
+				}
+			}
+		}
+
+		return $defaultArray;
+	}
 	
 
 }

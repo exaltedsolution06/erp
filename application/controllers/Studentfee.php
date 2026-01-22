@@ -1159,7 +1159,7 @@ class Studentfee extends Admin_Controller
             $monthsPost =$_POST['months'];
             $class_id=$student['class_id'];
             $route_id=$student['route_id'];
-            
+            //echo "<pre>";print_r($monthsPost);die;
             $category_id=$student['category_id'];
             
             
@@ -1202,7 +1202,6 @@ class Studentfee extends Admin_Controller
 			//---- 20-11-2025---ES--
 			$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
 			//-----
-        
             
             $data['months_data'] = $monthsPost;
                
@@ -1211,10 +1210,11 @@ class Studentfee extends Admin_Controller
                
             // die;
         }
-
-
-
-
+	    
+		/*if(!empty($data['route_data_list']))
+		{
+			echo "<pre>";print_r($data['route_data_list']);die;pay_mounth
+		}*/
 
 
 
