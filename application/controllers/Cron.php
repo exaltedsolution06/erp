@@ -756,7 +756,7 @@ class Cron extends CI_Controller
 			if($classes['carry_zero_balance'] == 1){
 				$fees_discount = 0;
 			}else{
-				$fees_discount = $val['fees_discount'];
+				$fees_discount = $this->student_fees_balance($val['id'], $classes['current_session_id']);
 			}
 			
 			if($val['fee_category_id'] != 0){
@@ -1305,9 +1305,9 @@ class Cron extends CI_Controller
         echo "<pre>";print_r($sectionArr);die;
         
     }
-	function student_fees_balance($id='')
+	function student_fees_balance($id='', $current_session_id='')
 	{
-		$student = $this->student_model->getByStudentSession($id);
+		$student = $this->student_model->getByStudentSessionFees($id, $current_session_id);
 		$monthsPost = [ "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec","Jan", "Feb", "Mar"];
 		$existing_entry = $this->Receipt_model->get_pay_mounth($student['id']);
         $monthsPost = array_values(array_diff($monthsPost, $existing_entry));
