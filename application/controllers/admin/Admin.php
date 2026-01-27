@@ -108,9 +108,11 @@ class Admin extends Admin_Controller
         $tot_roles = $this->role_model->get();
 
         foreach ($tot_roles as $key => $value) {
-
-            $count_roles[$value["name"]] = $this->role_model->count_roles($value["id"]);
-
+			if($value["is_superadmin"] != 1){
+				$count_roles[$value["name"]] = $this->role_model->count_roles($value["id"]);
+			}else{
+				$count_roles[$value["name"]] = $this->role_model->count_superadmin($value["id"]);
+			}
         }
         $data["roles"] = $count_roles;
 

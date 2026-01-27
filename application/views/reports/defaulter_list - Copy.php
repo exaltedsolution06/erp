@@ -388,15 +388,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                 $fee_group_id = $list['fees_heading'];
 
                                                                 // Fetch the matching fee plan
-                                                                /*$this->db->from('fees_plan');
+                                                                $this->db->from('fees_plan');
                                                                 $this->db->where('fee_group_id', $list['id']);
                                                                 $this->db->where("JSON_CONTAINS(fees_plan.class_ids, '\"$class_id\"')", null, false);
-                                                                $this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);*/
-																$this->db->from('fee_head');
-																$this->db->join('fees_plan', 'fee_head.id = fees_plan.fee_group_id');
-																$this->db->where('fees_plan.fee_group_id', $list['id']);
-																$this->db->where("JSON_CONTAINS(fees_plan.class_ids, '\"$class_id\"')", null, false);
-																$this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
+                                                                $this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
                                                                 $query = $this->db->get();
                                                                 $amt_fee_heads = $query->row();
 
@@ -408,47 +403,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                 }
                                                                 
                                                                 $pay=0;
-																
-																$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($record['student_session_id']);
-																$monthMap = [
-																	"Apr" => "month_apr",
-																	"May" => "month_may",
-																	"Jun" => "month_jun",
-																	"Jul" => "month_jul",
-																	"Aug" => "month_aug",
-																	"Sep" => "month_sep",
-																	"Oct" => "month_oct",
-																	"Nov" => "month_nov",
-																	"Dec" => "month_dec",
-																	"Jan" => "month_jan",
-																	"Feb" => "month_feb",
-																	"Mar" => "month_mar"
-																];
-
-																foreach ($feeDiscountsArr as $paid) {
-
-																	if ($paid['fee_type_id'] == $amt_fee_heads->id) {
-
-																		$months = json_decode($amt_fee_heads->months, true);
-
-																		if (!is_array($months)) continue;
-
-																		$amounts = [];
-
-																		foreach ($months as $month) {
-
-																			$column = $monthMap[$month];
-
-																			$amounts[$month] = isset($paid[$column])
-																				? floatval($paid[$column])
-																				: floatval($amt_fee_heads->amount); // fallback
-																		}
-
-																		// Replace amount with month-wise array
-																		$amt_fee_heads->amount = $amounts;
-																	}
-																}
-																
+                                                            
                                                                 foreach ($selected_months as $month) {
                                                                     // Check if this month is part of the allowed months in the fee plan
                                                                     if (!in_array($month, $db_months)) {
@@ -467,15 +422,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                     // echo $amt_fee_heads->amount;
                                                                     
                                                                     if (empty($receipt)) {
-                                                                        // $pay+= $amt_fee_heads->amount??0;
-																		
-																		$pay+= isset($amt_fee_heads->amount[$month]) ? (float)$amt_fee_heads->amount[$month] : 0;
+                                                                        $pay+= $amt_fee_heads->amount??0;
                                                                     } else {
                                                                         // $pay+=$receipt->fees_received;
                                                                         $pay+=0;
                                                                     }
                                                                 }
-																
+
+                                                                // echo $pay;
                                                                 array_push($cat_list_amount,$pay);
                                                                 $final += $pay;
                                                             
@@ -511,16 +465,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                                 // var_dump($db_months);
 
-                                                                /*$this->db->from('route_plan');
+                                                                $this->db->from('route_plan');
                                                                 $this->db->where('fee_group_id', $record['route_id']);
                                                                 $this->db->where("JSON_CONTAINS(route_plan.class_ids, '\"$class_id\"')", null, false);
-                                                                $this->db->where("JSON_CONTAINS(route_plan.category_ids, '\"$category_id\"')", null, false);*/
-																$this->db->from('route_head');
-																$this->db->join('route_plan', 'route_head.id = route_plan.fee_group_id');
-																$this->db->where("JSON_CONTAINS(route_plan.class_ids, '\"$class_id\"')", null, false);
-																$this->db->where("JSON_CONTAINS(route_plan.category_ids, '\"$category_id\"')", null, false);
-																$this->db->where('route_head.id', $record['route_id']);
-																// echo "<pre>";print_r($record['route_id']);die;
+                                                                $this->db->where("JSON_CONTAINS(route_plan.category_ids, '\"$category_id\"')", null, false);
+                                                               
 
                                                                 $query = $this->db->get();
                                                                 $amt_fee_heads = $query->row();
@@ -533,47 +482,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                 }
                                                                 
                                                                 $pay=0;
-																
-																$routeDiscountsArr    = $this->fee_discount_model->get_all_routes($record['student_session_id']);
-																$monthMap = [
-																	"Apr" => "month_apr",
-																	"May" => "month_may",
-																	"Jun" => "month_jun",
-																	"Jul" => "month_jul",
-																	"Aug" => "month_aug",
-																	"Sep" => "month_sep",
-																	"Oct" => "month_oct",
-																	"Nov" => "month_nov",
-																	"Dec" => "month_dec",
-																	"Jan" => "month_jan",
-																	"Feb" => "month_feb",
-																	"Mar" => "month_mar"
-																];
-
-																foreach ($routeDiscountsArr as $paid) {
-
-																	if ($paid['fee_type_id'] == $amt_fee_heads->id) {
-
-																		$months = json_decode($amt_fee_heads->months, true);
-
-																		if (!is_array($months)) continue;
-
-																		$amounts = [];
-
-																		foreach ($months as $month) {
-
-																			$column = $monthMap[$month];
-
-																			$amounts[$month] = isset($paid[$column])
-																				? floatval($paid[$column])
-																				: floatval($amt_fee_heads->amount); // fallback
-																		}
-
-																		// Replace amount with month-wise array
-																		$amt_fee_heads->amount = $amounts;
-																	}
-																}
-																
+                                                            
                                                                 foreach ($selected_months as $month) {
                                                                     // Check if this month is part of the allowed months in the fee plan
                                                                     if (!in_array($month, $db_months)) {
@@ -592,9 +501,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                     // echo $amt_fee_heads->amount;
                                                                     
                                                                     if (empty($receipt)) {
-                                                                        // $pay+= $amt_fee_heads->amount??0;
-																		
-																		$pay+= isset($amt_fee_heads->amount[$month]) ? (float)$amt_fee_heads->amount[$month] : 0;
+                                                                        $pay+= $amt_fee_heads->amount??0;
                                                                     } else {
                                                                         // $pay+=$receipt->fees_received;
                                                                         $pay+=0;

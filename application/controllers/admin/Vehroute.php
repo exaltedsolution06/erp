@@ -110,7 +110,7 @@ class Vehroute extends Admin_Controller {
             array('route_exists', array($this->vehroute_model, 'route_exists'))
                 )
         );
-        //$this->form_validation->set_rules('vehicle[]', $this->lang->line('vehicle'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('vehicle[]', $this->lang->line('vehicle'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $vehicle_result = $this->vehicle_model->get();
             $data['vehiclelist'] = $vehicle_result;
