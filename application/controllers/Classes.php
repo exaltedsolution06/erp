@@ -15,7 +15,7 @@ class Classes extends Admin_Controller
 
     public function index()
     {
-        if (!$this->rbac->hasPrivilege('class', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('add_class', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Academics');
@@ -55,7 +55,7 @@ class Classes extends Admin_Controller
 
     public function delete($id)
     {
-        if (!$this->rbac->hasPrivilege('class', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('add_class', 'can_delete')) {
             access_denied();
         }
         $data['title'] = 'Fees Master List';
@@ -82,7 +82,7 @@ class Classes extends Admin_Controller
 
     public function edit($id)
     {
-        if (!$this->rbac->hasPrivilege('class', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('add_class', 'can_edit')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Academics');

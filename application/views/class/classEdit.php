@@ -11,7 +11,7 @@
     <section class="content">
         <div class="row">
             <?php
-            if ($this->rbac->hasPrivilege('class', 'can_add') || $this->rbac->hasPrivilege('class', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('add_class', 'can_add') || $this->rbac->hasPrivilege('add_class', 'can_edit')) {
                 ?>  
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
@@ -80,7 +80,7 @@
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('class', 'can_add') || $this->rbac->hasPrivilege('class', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('add_class', 'can_add') || $this->rbac->hasPrivilege('add_class', 'can_edit')) {
                 echo "8";
             } else {
                 echo "12";
@@ -136,14 +136,14 @@
                                             </td>
                                             <td class="mailbox-date pull-right">
                                                 <?php
-                                                if ($this->rbac->hasPrivilege('class', 'can_edit')) {
+                                                if ($this->rbac->hasPrivilege('add_class', 'can_edit')) {
                                                     ?>  
                                                     <a data-placement="left" href="<?php echo base_url(); ?>classes/edit/<?php echo $vehroute->id; ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
                                                     <?php
                                                 }
-                                                if ($this->rbac->hasPrivilege('class', 'can_delete')) {
+                                                if ($this->rbac->hasPrivilege('add_class', 'can_delete')) {
                                                     ?>  
                                                     <a data-placement="left" href="<?php echo base_url(); ?>classes/delete/<?php echo $vehroute->id; ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                         <i class="fa fa-remove"></i>

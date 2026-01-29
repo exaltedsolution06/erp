@@ -21,7 +21,8 @@
 
         <?php  if($type=='edit'){
         ?>
-
+		<?php if ($this->rbac->hasPrivilege('route_plan', 'can_edit')) {
+                ?>
             <div class="row">
                 <div class="col-sm-12">
                     <div class="box box-primary">
@@ -134,13 +135,13 @@
             </div>
 
         <?php
-
+		}
         }else{
 
          ?>
 
         <div class="row">
-            <?php if ($this->rbac->hasPrivilege('fees_master', 'can_add')) {
+            <?php if ($this->rbac->hasPrivilege('route_plan', 'can_add')) {
                 ?>
                 <div class="col-md-12">
                     <!-- Horizontal Form -->
@@ -237,13 +238,7 @@
                 </div><!--/.col (right) -->
                 <!-- left column -->
             <?php } ?>
-            <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('fees_master', 'can_add')) {
-                echo "12";
-            } else {
-                echo "12";
-            }
-            ?>">
+            <div class="col-md-12">
                 <!-- Horizontal Form -->
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
@@ -375,12 +370,15 @@
                                                     </td>
 
                                                     <td>
+													<?php if ($this->rbac->hasPrivilege('route_plan', 'can_edit')) { ?>
                                                         <a data-placement="left" href="<?php echo site_url('admin/feesroutes/edit1/' . $plan['id']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
+														<?php } if ($this->rbac->hasPrivilege('route_plan', 'can_delete')) { ?>
                                                         <a data-placement="left" href="<?php echo site_url('admin/feesroutes/delete1/' . $plan['id']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>
                                                         </a>
+														<?php } ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>

@@ -58,8 +58,25 @@ class Notification_model extends MY_Model {
     public function getUnreadStudentNotification() {
 
 
-        $sql = "select send_notification.* from send_notification  left JOIN read_notification on  read_notification.student_id=".$this->customlib->getStudentSessionUserID()." and read_notification.notification_id = send_notification.id WHERE  send_notification.visible_student='yes' and read_notification.id IS NULL and send_notification.session_id=" . $this->current_session . " group by send_notification.id order by send_notification.id desc";
-        $query = $this->db->query($sql);
+        /*$sql = "select send_notification.* from send_notification  left JOIN read_notification on  read_notification.student_id=".$this->customlib->getStudentSessionUserID()." and read_notification.notification_id = send_notification.id WHERE  send_notification.visible_student='yes' and read_notification.id IS NULL and send_notification.session_id=" . $this->current_session . " group by send_notification.id order by send_notification.id desc";
+        $query = $this->db->query($sql);*/
+		$sql = "
+			SELECT send_notification.*
+			FROM send_notification
+			LEFT JOIN read_notification 
+			  ON read_notification.student_id = ?
+			 AND read_notification.notification_id = send_notification.id
+			WHERE send_notification.visible_student = 'yes'
+			  AND read_notification.id IS NULL
+			  AND send_notification.session_id = ?
+			ORDER BY send_notification.id DESC
+			";
+
+			$query = $this->db->query($sql, [
+				(int) $this->customlib->getStudentSessionUserID(),
+				(int) $this->current_session
+			]);
+
         return $query->result();
     }
 

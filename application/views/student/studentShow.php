@@ -236,7 +236,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     $this->rbac->hasPrivilege('balance_fees_report', 'can_view') ||
                                     $this->rbac->hasPrivilege('fees_carry_forward', 'can_view') ||
                                     $this->rbac->hasPrivilege('fees_master', 'can_view') ||
-                                    $this->rbac->hasPrivilege('fees_group', 'can_view') ||
+                                    $this->rbac->hasPrivilege('fee_category', 'can_view') ||
                                     $this->rbac->hasPrivilege('fees_type', 'can_view') ||
                                     $this->rbac->hasPrivilege('fees_discount', 'can_view') ||
                                     $this->rbac->hasPrivilege('accountants', 'can_view'))) {

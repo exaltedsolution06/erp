@@ -16,9 +16,9 @@ class Feesroutes extends Admin_Controller
     function index()
     {
         // $this->session->set_flashdata('msg', '');
-        // if (!$this->rbac->hasPrivilege('fees_type', 'can_view')) {
-        //     access_denied();
-        // }
+        if (!$this->rbac->hasPrivilege('create_route', 'can_view')) {
+            access_denied();
+        }
 
         $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'feetype/setroute');
@@ -217,6 +217,9 @@ class Feesroutes extends Admin_Controller
 
     
     function delete($id) {
+		if (!$this->rbac->hasPrivilege('create_route', 'can_delete')) {
+            access_denied();
+        }
         $data['title'] = 'Fees Master List';
 		// by ES 
 		$checkData['menu'] = 'createroute';
@@ -245,7 +248,9 @@ class Feesroutes extends Admin_Controller
 
 
     function edit($id) {
-        
+        if (!$this->rbac->hasPrivilege('create_route', 'can_edit')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'feetype/setroute');
         $data['id'] = $id;
@@ -291,6 +296,9 @@ class Feesroutes extends Admin_Controller
 
     public function plan()
     {
+		if (!$this->rbac->hasPrivilege('route_plan', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'admin/setplan');
         $data['title'] = 'Route Plan';
@@ -455,6 +463,9 @@ class Feesroutes extends Admin_Controller
 
     
     function delete1($id) {
+		if (!$this->rbac->hasPrivilege('route_plan', 'can_delete')) {
+            access_denied();
+        }
         $data['title'] = 'Fees Master List';
         //$this->db->where('id',$id);
         //$this->db->delete('route_plan');
@@ -494,7 +505,10 @@ class Feesroutes extends Admin_Controller
 
 
     function edit1($id) {
-        
+        if (!$this->rbac->hasPrivilege('route_plan', 'can_edit')) {
+            access_denied();
+        }
+		
         $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'feetype/setroute');
         $data['id'] = $id;

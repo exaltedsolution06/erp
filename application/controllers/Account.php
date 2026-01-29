@@ -16,6 +16,9 @@ class Account extends Admin_Controller
 
     public function index()
     {
+		if (!$this->rbac->hasPrivilege('create_account', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'account/index');
         $data['title'] = 'Account List';
@@ -46,7 +49,7 @@ class Account extends Admin_Controller
 
     public function view($id)
     {
-        if (!$this->rbac->hasPrivilege('section', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('create_account', 'can_view')) {
             access_denied();
         }
         $data['title']   = 'Section List';
@@ -62,7 +65,10 @@ class Account extends Admin_Controller
 
     public function delete($id)
     {
-        $data['title'] = 'Section List';
+		if (!$this->rbac->hasPrivilege('create_account', 'can_delete')) {
+            access_denied();
+        }
+        $data['title'] = 'Account List';
 		
 		// by ES 
 		$getNameById = $this->Setting_model->getNameById('account', 'id', $id);
@@ -119,7 +125,9 @@ class Account extends Admin_Controller
 
     public function edit($id)
     {
-     
+		if (!$this->rbac->hasPrivilege('create_account', 'can_edit')) {
+            access_denied();
+        }
         $data['title']       = 'Section List';
         $section_result      = $this->account_model->get();
         $data['sectionlist'] = $section_result;

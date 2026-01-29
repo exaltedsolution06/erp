@@ -74,7 +74,18 @@
 		<?php
 				//$CI = get_instance();
 				//$session_sub_menu = $CI->session->userdata('sub_menu');
-				//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
+				// echo '<pre>'; print_r($this->rbac->hasPrivilege('add_section', 'can_view'));echo '</pre>';die;
+				if ($this->module_lib->hasActive('set_master')) {
+					if (
+                        $this->rbac->hasPrivilege('add_section', 'can_view') ||
+                        $this->rbac->hasPrivilege('add_class', 'can_view') ||
+                        $this->rbac->hasPrivilege('fee_category', 'can_view') ||
+                        $this->rbac->hasPrivilege('create_account', 'can_view') ||
+                        $this->rbac->hasPrivilege('fee_head', 'can_view') ||
+                        $this->rbac->hasPrivilege('fee_plan', 'can_view') ||
+                        $this->rbac->hasPrivilege('create_route', 'can_view') ||
+                        $this->rbac->hasPrivilege('route_plan', 'can_view')
+                    ) {
                 $active="";
                 if(set_Submenu('sections/index') 
 					|| set_Submenu('classes/index') 
@@ -110,15 +121,19 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                   
+                   <?php if ($this->rbac->hasPrivilege('add_section', 'can_view')) { ?>
                     <li class="<?php echo set_Submenu('sections/index'); ?>"><a href="<?php echo base_url(); ?>sections"><i class="fa fa-angle-double-right"></i> Add Section</a></li>
+				   <?php } if ($this->rbac->hasPrivilege('add_class', 'can_view')) { ?>
                     <li class="<?php echo set_Submenu('classes/index'); ?>"><a href="<?php echo base_url(); ?>classes/index"><i class="fa fa-angle-double-right"></i> Add Class</a></li>
+				   <?php } if ($this->rbac->hasPrivilege('fee_category', 'can_view')) { ?>
                     <li class="<?php echo set_Submenu('admin/feegroup'); ?>"><a href="<?php echo base_url(); ?>admin/feegroup"><i class="fa fa-angle-double-right"></i> Fees Category</a></li>
+				   <?php } if ($this->rbac->hasPrivilege('create_account', 'can_view')) { ?>
                     <li class="<?php echo set_Submenu('account/index'); ?>"><a href="<?php echo base_url(); ?>account"><i class="fa fa-angle-double-right"></i> Create Account</a></li>
+				   <?php } if ($this->rbac->hasPrivilege('fee_head', 'can_view')) { ?>
                     <li class="<?php echo set_Submenu('feetype/index'); ?>"><a href="<?php echo base_url(); ?>admin/feetype"><i class="fa fa-angle-double-right"></i> Fee Head</a></li>
-					
+				   <?php } if ($this->rbac->hasPrivilege('fee_plan', 'can_view')) { ?>					
                     <li class="<?php echo set_Submenu('admin/feemaster'); ?>"><a href="<?php echo base_url(); ?>admin/feemaster"><i class="fa fa-angle-double-right"></i> Fee Plan</a></li>
-					<?php if ($this->rbac->hasPrivilege('route', 'can_view')) { ?>
+					<?php } if ($this->rbac->hasPrivilege('create_route', 'can_view')) { ?>
                         <li class="<?php echo set_Submenu('feetype/setroute'); ?>"><a href="<?php echo base_url(); ?>admin/feesroutes/index"><i class="fa fa-angle-double-right"></i> Create Route</a></li>
 					<?php } if ($this->rbac->hasPrivilege('route_plan', 'can_view')) { ?>
 						<li class="<?php echo set_Submenu('admin/setplan'); ?>"><a href="<?php echo base_url(); ?>admin/feesroutes/plan"><i class="fa fa-angle-double-right"></i> Route Plan</a></li>
@@ -151,6 +166,10 @@
                     <?php } ?>
                 </ul>
             </li>
+			<?php
+					}
+				}
+			?>
 			<!-- 2nd Menu end -->
 			<!-- 3rd Menu start -->
             <?php

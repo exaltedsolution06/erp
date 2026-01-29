@@ -307,6 +307,11 @@ class Cron extends CI_Controller
 				
 				$move = $this->student_move($classes, $new_class_array, $new_section_array, $new_house_array, $new_fee_category_array, $new_route_array, $fee_category_by_move_category);
 				// echo "<pre>";print_r($move);die;
+				
+				$this->create_department($classes);
+				$this->create_designation($classes);
+				$this->create_disable_reason($classes);
+				$this->create_staff($classes);
 			}
 			
 			$this->db->where('batch_id', $result['batch_id']);
@@ -317,10 +322,7 @@ class Cron extends CI_Controller
 		}
 		//$this->subject_create($new_class_array, $new_section_array, $classes['current_session_id'], $classes['next_session_id']);
 		
-		$this->create_department();
-		$this->create_designation();
-		$this->create_staff();
-		$this->create_disable_reason();
+			
 	}
 	
 	public function house_create($current_class_id, $current_session_id, $next_session_id)
@@ -1005,58 +1007,58 @@ class Cron extends CI_Controller
 		}
 		
 	}
-	public function create_disable_reason()
+	public function create_disable_reason($classes)
 	{
-		$query = $this->db->from('disable_reason')->get();
+		$query = $this->db->from('disable_reason')->where('session_id', $classes['current_session_id'])->get();
 		foreach($query->result_array() as $val)
 		{
 			$this->db->from('disable_reason');
-			$this->db->where('session_id', $this->current_active_session);
+			$this->db->where('session_id', $classes['next_session_id']);
 			$this->db->where('reason', $val['reason']);
 			$qr = $this->db->get();
 			if($qr->num_rows() == 0)
 			{
 				$data = array(
 					'reason' => $val['reason'],
-					'session_id' => $this->current_active_session,
+					'session_id' => $classes['next_session_id'],
 				);
 				$this->disable_reason_model->add($data);
 			}
 		}
 	}
-	public function create_department()
+	public function create_department($classes)
 	{
-		$query = $this->db->from('department')->get();
+		$query = $this->db->from('department')->where('session_id', $classes['current_session_id'])->get();
 		foreach($query->result_array() as $val)
 		{
 			$this->db->from('department');
-			$this->db->where('session_id', $this->current_active_session);
+			$this->db->where('session_id', $classes['next_session_id']);
 			$this->db->where('department_name', $val['department_name']);
 			$qr = $this->db->get();
 			if($qr->num_rows() == 0)
 			{
-				$data = array('department_name' => $val['department_name'], 'is_active' => 'yes', 'session_id'=> $this->current_active_session);
+				$data = array('department_name' => $val['department_name'], 'is_active' => 'yes', 'session_id'=> $classes['next_session_id']);
 				$insert_id = $this->department_model->addDepartmentType($data);
 			}
 		}
 	}
-	public function create_designation()
+	public function create_designation($classes)
 	{
-		$query = $this->db->from('staff_designation')->get();
+		$query = $this->db->from('staff_designation')->where('session_id', $classes['current_session_id'])->get();
 		foreach($query->result_array() as $val)
 		{
 			$this->db->from('staff_designation');
-			$this->db->where('session_id', $this->current_active_session);
+			$this->db->where('session_id', $classes['next_session_id']);
 			$this->db->where('designation', $val['designation']);
 			$qr = $this->db->get();
 			if($qr->num_rows() == 0)
 			{
-				$data = array('designation' => $val['designation'], 'is_active' => 'yes', 'session_id'=> $this->current_active_session);
+				$data = array('designation' => $val['designation'], 'is_active' => 'yes', 'session_id'=> $classes['next_session_id']);
 				$insert_id = $this->designation_model->addDesignation($data);
 			}
 		}
 	}
-	public function create_staff()
+	public function create_staff($classes)
 	{
 		$this->db->select('staff.*, staff_roles.role_id');
 		$this->db->from('staff');
@@ -1066,15 +1068,13 @@ class Cron extends CI_Controller
 			'left'
 		);
 		$this->db->where('staff.id !=', 1);
-
+		$this->db->where('staff.session_id', $classes['current_session_id']);
 		$query = $this->db->get();
 
-		
-		//echo "<pre>";print_r($query->result_array());die;
 		foreach($query->result_array() as $key=>$staff)
 		{
 			$this->db->from('staff');
-			$this->db->where('session_id', $this->current_active_session);
+			$this->db->where('session_id', $classes['next_session_id']);
 			$this->db->where('employee_id', $staff['employee_id']);
 			$this->db->where('name', $staff['name']);
 			$this->db->where('surname', $staff['surname']);
@@ -1128,7 +1128,7 @@ class Cron extends CI_Controller
 				$data_insert['is_active'] = $staff['is_active'];
 				$data_insert['verification_code'] = $staff['verification_code'];
 				$data_insert['disable_at'] = $staff['disable_at'];
-				$data_insert['session_id'] = $this->current_active_session;
+				$data_insert['session_id'] = $classes['next_session_id'];
 				
 				// check department for next session
 				//echo $staff['department']; die; 
@@ -1137,7 +1137,7 @@ class Cron extends CI_Controller
 				{
 					$department_data = $qr_dept_chk->row_array();
 					$department_name = $department_data['department_name'];
-					$this->db->where('session_id', $this->current_active_session);
+					$this->db->where('session_id', $classes['next_session_id']);
 					$this->db->where('department_name', $department_name);
 					$qr_dept = $this->db->get('department');
 					if($qr_dept->num_rows() > 0)
@@ -1158,7 +1158,7 @@ class Cron extends CI_Controller
 				{
 					$designation_data = $qr_desig_chk->row_array();
 					$designation_name = $designation_data['designation'];
-					$this->db->where('session_id', $this->current_active_session);
+					$this->db->where('session_id', $classes['next_session_id']);
 					$this->db->where('designation', $designation_name);
 					$qr_dept = $this->db->get('staff_designation');
 					if($qr_dept->num_rows() > 0)

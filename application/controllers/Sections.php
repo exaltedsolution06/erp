@@ -15,7 +15,7 @@ class Sections extends Admin_Controller
 
     public function index()
     {
-        if (!$this->rbac->hasPrivilege('section', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('add_section', 'can_view')) {
             access_denied();
         }
 		
@@ -53,7 +53,7 @@ class Sections extends Admin_Controller
 
     public function view($id)
     {
-        if (!$this->rbac->hasPrivilege('section', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('add_section', 'can_view')) {
             access_denied();
         }
         $data['title']   = 'Section List';
@@ -66,7 +66,7 @@ class Sections extends Admin_Controller
 
     public function delete($id)
     {
-        if (!$this->rbac->hasPrivilege('section', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('add_section', 'can_delete')) {
             access_denied();
         }
         $data['title'] = 'Section List';
@@ -124,7 +124,7 @@ class Sections extends Admin_Controller
 
     public function edit($id)
     {
-        if (!$this->rbac->hasPrivilege('section', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('add_section', 'can_edit')) {
             access_denied();
         }
         $data['title']       = 'Section List';

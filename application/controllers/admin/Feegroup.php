@@ -11,7 +11,7 @@ class FeeGroup extends Admin_Controller {
     }
 
     function index() {
-        if (!$this->rbac->hasPrivilege('fees_group', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('fee_category', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Academics');
@@ -46,7 +46,7 @@ class FeeGroup extends Admin_Controller {
     }
 
     function delete($id) {
-        if (!$this->rbac->hasPrivilege('fees_group', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('fee_category', 'can_delete')) {
             access_denied();
         }
         $data['title'] = 'Fees Master List';
@@ -73,7 +73,7 @@ class FeeGroup extends Admin_Controller {
     }
 
     function edit($id) {
-        if (!$this->rbac->hasPrivilege('fees_group', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('fee_category', 'can_edit')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Fees Collection');
