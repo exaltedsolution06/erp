@@ -84,7 +84,9 @@
                         $this->rbac->hasPrivilege('fee_head', 'can_view') ||
                         $this->rbac->hasPrivilege('fee_plan', 'can_view') ||
                         $this->rbac->hasPrivilege('create_route', 'can_view') ||
-                        $this->rbac->hasPrivilege('route_plan', 'can_view')
+                        $this->rbac->hasPrivilege('route_plan', 'can_view') ||
+                        $this->rbac->hasPrivilege('fee_discount', 'can_view') ||
+                        $this->rbac->hasPrivilege('student_house', 'can_view')
                     ) {
                 $active="";
                 if(set_Submenu('sections/index') 

@@ -9,7 +9,7 @@ class Schoolhouse extends Admin_Controller {
     }
 
     public function index() {
-        if (!$this->rbac->hasPrivilege('student_houses', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('student_house', 'can_view')) {
             access_denied();
         }
 		//$this->session->unset_flashdata('msg');
@@ -26,7 +26,7 @@ class Schoolhouse extends Admin_Controller {
     }
 
     function create() {
-        if (!$this->rbac->hasPrivilege('student_houses', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('student_house', 'can_add')) {
             access_denied();
         }
         $data['title'] = 'Add School House';
@@ -59,7 +59,7 @@ class Schoolhouse extends Admin_Controller {
     }
 
     function edit($id) {
-        if (!$this->rbac->hasPrivilege('student_houses', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('student_house', 'can_edit')) {
             access_denied();
         }
         $data['title'] = 'Edit School House';
@@ -98,7 +98,7 @@ class Schoolhouse extends Admin_Controller {
     }
 
     function delete($id) {
-        if (!$this->rbac->hasPrivilege('student_houses', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('student_house', 'can_delete')) {
             access_denied();
         }
         if (!empty($id)) {

@@ -8,7 +8,7 @@
     <section class="content">
         <div class="row">
             <?php
-            if (($this->rbac->hasPrivilege('student_houses', 'can_add')) || ($this->rbac->hasPrivilege('student_houses', 'can_edit'))) {
+            if (($this->rbac->hasPrivilege('student_house', 'can_add')) || ($this->rbac->hasPrivilege('student_house', 'can_edit'))) {
                 ?>
                 <div class="col-md-4">
                     <div class="box box-primary">
@@ -49,7 +49,7 @@
                 </div> 
             <?php } ?>
             <div class="col-md-<?php
-            if (($this->rbac->hasPrivilege('student_houses', 'can_add') ) || ($this->rbac->hasPrivilege('student_houses', 'can_edit'))) {
+            if (($this->rbac->hasPrivilege('student_house', 'can_add') ) || ($this->rbac->hasPrivilege('student_house', 'can_edit'))) {
                 echo "8";
             } else {
                 echo "12";
@@ -89,12 +89,12 @@
                                             <td class="mailbox-name"><?php echo $house['description'] ?></td>
                                             <!--<td class="mailbox-name"><?php echo $house['id'] ?></td>-->
                                             <td  class="mailbox-date pull-right">
-                                                <?php if ($this->rbac->hasPrivilege('student_houses', 'can_edit')) { ?>
+                                                <?php if ($this->rbac->hasPrivilege('student_house', 'can_edit')) { ?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/schoolhouse/edit/<?php echo $house['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
                                                 <?php } ?>
-                                                <?php if ($this->rbac->hasPrivilege('student_houses', 'can_delete')) { ?>
+                                                <?php if ($this->rbac->hasPrivilege('student_house', 'can_delete')) { ?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/schoolhouse/delete/<?php echo $house['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                         <i class="fa fa-remove"></i>
                                                     </a>
