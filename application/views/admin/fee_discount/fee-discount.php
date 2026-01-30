@@ -215,12 +215,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 								<div class="col-md-8 col-sm-8 col-xs-12" style="margin-top: 5px;">
 									<textarea style="min-height:45px" name="remarks" class="form-control" placeholder="Remarks"><?php echo $remarks; ?></textarea>
 								</div>
-								<?php if ($this->rbac->hasPrivilege('fee_discount', 'can_delete')) { ?>
+								<?php if ($this->rbac->hasPrivilege('set_discount', 'can_delete')) { ?>
 								<div class="col-md-2 col-sm-4 col-xs-12 text-right" style="margin-top: 5px;">
 									<button type="button" class="btn btn-lg btn-warning fees-reset">Reset Fees</button>
 								</div>
 								<?php } ?>
-								<?php if ($this->rbac->hasPrivilege('fee_discount', 'can_edit')) { ?>
+								<?php if ($this->rbac->hasPrivilege('set_discount', 'can_edit')) { ?>
 								<div class="col-md-2 col-sm-4 col-xs-12 text-right" style="margin-top: 5px;">
 									<button type="submit" class="btn btn-lg btn-primary">Update Fees</button>
 								</div>

@@ -81,6 +81,7 @@ class Schoolhouse extends Admin_Controller {
 			'trim|required|xss_clean|callback_check_data_unique[' . $id . ']'
 		);
         if ($this->form_validation->run() == FALSE) {
+			$data['type']='edit';
             $this->load->view('layout/header', $data);
             $this->load->view('admin/schoolhouse/houselist', $data);
             $this->load->view('layout/footer', $data);

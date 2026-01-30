@@ -12,7 +12,7 @@ class Stdtransfer extends Admin_Controller {
     }
 
     function index() {
-        if (!$this->rbac->hasPrivilege('promote_student', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('promote_students', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Academics');
@@ -46,6 +46,9 @@ class Stdtransfer extends Admin_Controller {
     }
 
     public function promote() {
+		if (!$this->rbac->hasPrivilege('promote_students', 'can_add')) {
+            access_denied();
+        }
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules('session_id', $this->lang->line('session'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('class_promote_id', $this->lang->line('class'), 'required|trim|xss_clean');

@@ -14,7 +14,7 @@ class Fee_discount extends Admin_Controller {
     }
 	public function index()
     {
-        if (!$this->rbac->hasPrivilege('fee_discount', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('set_discount', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Fees Collection');
@@ -90,7 +90,7 @@ class Fee_discount extends Admin_Controller {
 	
 	public function submit()
     {
-		if (!$this->rbac->hasPrivilege('fee_discount', 'can_edit')) {
+		if (!$this->rbac->hasPrivilege('set_discount', 'can_edit')) {
             access_denied();
         }
         // Get submitted values
@@ -348,7 +348,7 @@ class Fee_discount extends Admin_Controller {
 	
 	public function fees_reset($id='')
 	{
-		if (!$this->rbac->hasPrivilege('fee_discount', 'can_delete')) {
+		if (!$this->rbac->hasPrivilege('set_discount', 'can_delete')) {
             access_denied();
         }
 		$student_session_id = $_GET['id'] ?? 0;

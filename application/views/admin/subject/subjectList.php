@@ -16,7 +16,7 @@
     <section class="content">
         <div class="row">
             <?php
-            if ($this->rbac->hasPrivilege('subject', 'can_add')) {
+            if ($this->rbac->hasPrivilege('add_subjects', 'can_add')) {
                 ?>        
                 <div class="col-md-4">          
                     <div class="box box-primary">
@@ -76,7 +76,7 @@
                 </div>
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('subject', 'can_add')) {
+            if ($this->rbac->hasPrivilege('add_subjects', 'can_add')) {
                 echo "8";
             } else {
                 echo "12";
@@ -118,14 +118,14 @@
                                             <td class="mailbox-name"><?php echo ucfirst($subject['type']) ?></td>
                                             <td class="mailbox-date pull-right no-print">
                                                 <?php
-                                                if ($this->rbac->hasPrivilege('subject', 'can_edit')) {
+                                                if ($this->rbac->hasPrivilege('add_subjects', 'can_edit')) {
                                                     ?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/subject/edit/<?php echo $subject['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
                                                     <?php
                                                 }
-                                                if ($this->rbac->hasPrivilege('subject', 'can_delete')) {
+                                                if ($this->rbac->hasPrivilege('add_subjects', 'can_delete')) {
                                                     ?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/subject/delete/<?php echo $subject['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                         <i class="fa fa-remove"></i>

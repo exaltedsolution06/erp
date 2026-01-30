@@ -68,7 +68,9 @@ class Vehroute extends Admin_Controller {
     }
 
     function delete($id) {
-		
+		if (!$this->rbac->hasPrivilege('assign_vehicle', 'can_delete')) {
+            access_denied();
+        }
 		
 		// by ES 
 		$checkData['menu'] = 'assignvehicle';
@@ -91,7 +93,9 @@ class Vehroute extends Admin_Controller {
     }
 
     function edit($id) {
-
+		if (!$this->rbac->hasPrivilege('assign_vehicle', 'can_edit')) {
+            access_denied();
+        }
 
         $data['title'] = 'Edit Fees Master';
         $data['id'] = $id;

@@ -43,7 +43,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Fee Plan', 					'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Create Route',				'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Route Plan', 				'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Fee Discount', 				'add' => false, 'view' => true, 'edit' => true, 'delete' => true],
+					['name' => 'Set Discount', 				'add' => false, 'view' => true, 'edit' => true, 'delete' => true],
 					// ['name' => 'Fee Discount Assign', 		'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Caste Category', 			'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Payment Mode', 				'add' => true, 'view' => true, 'edit' => true, 'delete' => true],

@@ -17,7 +17,7 @@ class Timetable extends Admin_Controller
     public function index()
     {
      
-        if (!$this->rbac->hasPrivilege('class_time_table', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('class_timetable', 'can_view')) {
             access_denied();
         }
 
@@ -90,7 +90,7 @@ class Timetable extends Admin_Controller
     public function mytimetable()
     {
 
-        if (!$this->rbac->hasPrivilege('teachers_time_table', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('teachers_timetable', 'can_view')) {
             access_denied();
         }
 
@@ -146,7 +146,7 @@ class Timetable extends Admin_Controller
 
     public function create()
     {
-        if (!$this->rbac->hasPrivilege('class_timetable', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('class_timetable', 'can_add')) {
             access_denied();
         }
 

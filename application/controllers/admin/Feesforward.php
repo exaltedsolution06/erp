@@ -19,7 +19,7 @@ class Feesforward extends Admin_Controller {
     }
 
     function index() {
-        if (!$this->rbac->hasPrivilege('fees_carry_forward', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('previous_session_balance', 'can_view')) {
             access_denied();
         }
 
@@ -69,6 +69,9 @@ class Feesforward extends Admin_Controller {
                     }
                 }
             } else if ($action == 'fee_submit') {
+				if (!$this->rbac->hasPrivilege('previous_session_balance', 'can_edit')) {
+					access_denied();
+				}
                 $student_Array = json_decode($this->findPreviousBalanceFees($pre_session->id, $class_id, $section_id, $current_session));
 
                 $data['student_due_fee'] = $student_Array->student_Array;

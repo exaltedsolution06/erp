@@ -7,7 +7,7 @@
     <section class="content">
         <div class="row">
             <?php
-            if ($this->rbac->hasPrivilege('subject_group', 'can_add')) {
+            if ($this->rbac->hasPrivilege('subject_group', 'can_edit')) {
                 ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
@@ -105,7 +105,7 @@
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('subject_group', 'can_add')) {
+            if ($this->rbac->hasPrivilege('subject_group', 'can_edit')) {
                 echo "8";
             } else {
                 echo "12";
@@ -119,9 +119,9 @@
                         </div><!-- /.box-tools -->
                     </div><!-- /.box-header -->
                     <div class="box-body">
+                        <div class="table-responsive mailbox-messages" id="subject_list">
                         <div class="download_label"><?php echo $this->lang->line('fees_group_list'); ?></div>
                         <a class="btn btn-default btn-xs pull-right" id="print" onclick="printDiv()" ><i class="fa fa-print"></i></a> <a class="btn btn-default btn-xs pull-right" id="btnExport" onclick="fnExcelReport();"> <i class="fa fa-file-excel-o"></i> </a>
-                        <div class="table-responsive mailbox-messages" id="subject_list">
                             <table class="table table-striped  table-hover " id="headerTable">
                                 <thead>
                                     <tr>
@@ -174,14 +174,14 @@
                                                 <?php
                                                 if ($this->rbac->hasPrivilege('subject_group', 'can_edit')) {
                                                     ?>
-                                                    <a href="<?php echo base_url(); ?>admin/subjectgroup/edit/<?php echo $subjectgroup->id; ?>" class="btn btn-default btn-xs no_print"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
+                                                    <a href="<?php echo base_url(); ?>admin/subjectgroup/edit/<?php echo $subjectgroup->id; ?>" class="btn btn-default btn-xs no_print displayinline"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
                                                 <?php } ?>
                                                 <?php
                                                 if ($this->rbac->hasPrivilege('subject_group', 'can_delete')) {
                                                     ?>
-                                                    <a href="<?php echo base_url(); ?>admin/subjectgroup/delete/<?php echo $subjectgroup->id; ?>"class="btn btn-default btn-xs no_print"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+                                                    <a href="<?php echo base_url(); ?>admin/subjectgroup/delete/<?php echo $subjectgroup->id; ?>"class="btn btn-default btn-xs no_print displayinline"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                         <i class="fa fa-remove"></i>
                                                     </a>
                                                 <?php } ?>

@@ -15,7 +15,7 @@ class Disable_reason extends Admin_Controller
 
     public function index()
     {
-        if (!$this->rbac->hasPrivilege('disable_reason', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('set_disable_reason', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Student Information');
@@ -55,7 +55,7 @@ class Disable_reason extends Admin_Controller
 
     public function edit($id)
     {
-        if (!$this->rbac->hasPrivilege('disable_reason', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('set_disable_reason', 'can_edit')) {
             access_denied();
         }
         $data['id'] = $id;
@@ -103,7 +103,7 @@ class Disable_reason extends Admin_Controller
 
     public function delete($id)
     {
-        if (!$this->rbac->hasPrivilege('disable_reason', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('set_disable_reason', 'can_delete')) {
             access_denied();
         }
         $this->disable_reason_model->remove($id);

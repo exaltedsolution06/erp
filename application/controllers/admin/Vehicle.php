@@ -12,7 +12,7 @@ class Vehicle extends Admin_Controller {
 
     public function index() {
 
-        if (!$this->rbac->hasPrivilege('vehicle', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('add_vehicles', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Transport');
@@ -54,7 +54,7 @@ class Vehicle extends Admin_Controller {
 
     function edit($id) {
 
-        if (!$this->rbac->hasPrivilege('vehicle', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('add_vehicles', 'can_edit')) {
             access_denied();
         }
         $data['title'] = 'Add Vehicle';
@@ -102,7 +102,7 @@ class Vehicle extends Admin_Controller {
 
     function delete($id) {
 
-        if (!$this->rbac->hasPrivilege('vehicle', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('add_vehicles', 'can_delete')) {
             access_denied();
         }
         $data['title'] = 'Fees Master List';
