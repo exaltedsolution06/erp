@@ -126,7 +126,7 @@ class Enquiry extends Admin_Controller {
 
     public function follow_up($enquiry_id, $status) {
 
-        if (!$this->rbac->hasPrivilege('follow_up_admission_enquiry', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('follow_up_admission_enq', 'can_view')) {
             access_denied();
         }
         $data['id'] = $enquiry_id;
@@ -138,7 +138,7 @@ class Enquiry extends Admin_Controller {
     }
 
     function follow_up_insert() {
-        if (!$this->rbac->hasPrivilege('follow_up_admission_enquiry', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('follow_up_admission_enq', 'can_add')) {
             access_denied();
         }
 
@@ -240,7 +240,7 @@ class Enquiry extends Admin_Controller {
     }
 
     public function follow_up_delete($follow_up_id, $enquiry_id) {
-        if (!$this->rbac->hasPrivilege('follow_up_admission_enquiry', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('follow_up_admission_enq', 'can_delete')) {
             access_denied();
         }
         $this->enquiry_model->delete_follow_up($follow_up_id);

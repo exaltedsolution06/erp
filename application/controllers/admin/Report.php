@@ -16,6 +16,9 @@ class Report extends Admin_Controller
     }
 
     public function front_desk_reports() {
+		if (!$this->rbac->hasPrivilege('front_desk_all_reports', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'report/front-desk');
         $data['title'] = 'Upcoming';

@@ -16,7 +16,7 @@
                     </ul>
                 </div>
             </div><!--./col-md-3--> 
-            <?php if ($this->rbac->hasPrivilege('setup_font_office', 'can_add')) { ?>
+            <?php if ($this->rbac->hasPrivilege('setup_front_office', 'can_add')) { ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
@@ -47,7 +47,7 @@
             <?php } ?>
             <!-- left column -->
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('setup_font_office', 'can_add')) {
+            if ($this->rbac->hasPrivilege('setup_front_office', 'can_add')) {
                 echo "6";
             } else {
                 echo "10";
@@ -102,11 +102,11 @@
 
 
                                                 <td class="mailbox-date pull-right">
-                                                    <?php if ($this->rbac->hasPrivilege('setup_font_office', 'can_edit')) { ?>
+                                                    <?php if ($this->rbac->hasPrivilege('setup_front_office', 'can_edit')) { ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/source/edit/<?php echo $value['id']; ?>"  class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('edit') ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
-                                                    <?php } if ($this->rbac->hasPrivilege('setup_font_office', 'can_delete')) { ?>
+                                                    <?php } if ($this->rbac->hasPrivilege('setup_front_office', 'can_delete')) { ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/source/delete/<?php echo $value['id']; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="<?php echo $this->lang->line('delete') ?>">
                                                             <i class="fa fa-remove"></i>
                                                         </a>

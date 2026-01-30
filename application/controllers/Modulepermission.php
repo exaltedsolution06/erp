@@ -72,7 +72,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Postal Dispatch', 			'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Postal Receive', 			'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Complain', 					'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'All Reports', 				'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'Front Desk All Reports', 				'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -85,7 +85,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Discountinue Students', 'add' => true, 'view' => true, 'edit' => true, 'delete' => false],
 					['name' => 'Bulk Delete', 			'add' => false, 'view' => true, 'edit' => false, 'delete' => true],
 					['name' => 'Student Timeline', 		'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'All Reports', 			'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'Admission All Reports', 			'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -93,6 +93,7 @@ class Modulepermission extends Public_Controller
 				'links' => [
 					['name' => 'Collect Fee',        'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Collect Fee List',   'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
+					['name' => 'Assign Discount', 	 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Receipt Book',       'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Fee Register',       'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Fee Card',           'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
@@ -101,7 +102,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Delete Fee List',    'add' => false, 'view' => true,  'edit' => false, 'delete' => true],
 					['name' => 'Search Fee Slip',    'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Student Ledger',     'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'All Reports',        'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Fee All Reports',        'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -118,7 +119,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Teachers Rateing',         'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Staff Timeline',           'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Disabled Staff',           'add' => false, 'view' => true,  'edit' => true,  'delete' => false],
-					['name' => 'All Report',               'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Staff All Report',               'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -128,7 +129,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Attendance By Date',   'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Approve Leave',         'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Add Leave',             'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'All Reports',           'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Attendance All Reports',           'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -138,7 +139,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Question Paper',     'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Assign / View Students', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Import Questions',       'add' => true,  'view' => true,  'edit' => false, 'delete' => false],
-					['name' => 'All Reports',             'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Online Exam All Reports',             'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -168,7 +169,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Design Report Card',       'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Print Report Card',        'add' => true, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Marks Grade',               'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'All Reports',               'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Exam All Reports',               'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -178,7 +179,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Manage Syllabus Status','add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Lesson',                'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Topic',                 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'All Report',             'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Lesson All Report',             'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -186,7 +187,7 @@ class Modulepermission extends Public_Controller
 				'links' => [
 					['name' => 'Add Homework',          'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Homework Evaluation',  'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'All Report',            'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Homework All Report',            'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -197,7 +198,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Study Material',  'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Syllabus',        'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Other Download',  'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'All Report',      'add' => true, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Download All Report',      'add' => true, 'view' => false, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -221,7 +222,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Generate ID Card',            'add' => true, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Staff ID Card',               'add' => true, 'view' => true, 'edit' => true,  'delete' => true],
 					['name' => 'Generate Staff ID Card',      'add' => true, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'All Reports',                 'add' => true, 'view' => false,'edit' => false, 'delete' => false],
+					['name' => 'Certificate All Reports',                 'add' => true, 'view' => false,'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -232,7 +233,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Student',        'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Add Staff Member',   'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Import Book',        'add' => true, 'view' => true, 'edit' => true, 'delete' => false],
-					['name' => 'All Report',          'add' => true, 'view' => false,'edit' => false,'delete' => false],
+					['name' => 'Library All Report',          'add' => true, 'view' => false,'edit' => false,'delete' => false],
 				]
 			],
 			[
@@ -241,7 +242,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Income Heads',   'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Add Income',     'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Search Income',  'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'All Report',     'add' => true, 'view' => false,'edit' => false,'delete' => false],
+					['name' => 'Income All Report',     'add' => true, 'view' => false,'edit' => false,'delete' => false],
 				]
 			],
 			[
@@ -250,7 +251,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Expense',     'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Search Expense',  'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Expense Head',    'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'All Report',      'add' => true, 'view' => false,'edit' => false,'delete' => false],
+					['name' => 'Expense All Report',      'add' => true, 'view' => false,'edit' => false,'delete' => false],
 				]
 			],
 			[
@@ -261,7 +262,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Item Stock','add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Issue Item',    'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Item Store',    'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'All Report',    'add' => true, 'view' => false,'edit' => false,'delete' => false],
+					['name' => 'Stock All Report',    'add' => true, 'view' => false,'edit' => false,'delete' => false],
 				]
 			],
 			[
@@ -281,7 +282,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Create Ticket', 'add' => true, 'view' => true, 'edit' => true,  'delete' => false],
 					['name' => 'Track Ticket',  'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Closed Ticket', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'All Report',    'add' => true,  'view' => false,'edit' => false, 'delete' => false],
+					['name' => 'Ticket All Report',    'add' => true,  'view' => false,'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -310,7 +311,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Branch',   'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Overview',     'add' => true, 'view' => true,  'edit' => true, 'delete' => true],
 					['name' => 'Switch Branch','add' => false, 'view' => true,  'edit' => false, 'delete' => false],
-					['name' => 'All Report',   'add' => true,  'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Multi Branch All Report',   'add' => true,  'view' => false, 'edit' => false, 'delete' => false],
 				]
 			],
 			[

@@ -4,7 +4,7 @@
             <i class="fa fa-ioxhost"></i> <?php echo $this->lang->line('front_office'); ?> </section>
     <section class="content">       
         <div class="row">
-            <?php if ($this->rbac->hasPrivilege('visitor_book', 'can_add') || $this->rbac->hasPrivilege('visitor_book', 'can_edit')) { ?>
+            <?php if ($this->rbac->hasPrivilege('visitor_book', 'can_edit')) { ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
@@ -103,7 +103,7 @@
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('visitor_book', 'can_add') || $this->rbac->hasPrivilege('visitor_book', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('visitor_book', 'can_edit')) {
                 echo "8";
             } else {
                 echo "12";
@@ -159,9 +159,12 @@
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/visitors/download/<?php echo $value['image']; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('download'); ?>">
                                                             <i class="fa fa-download"></i>
                                                         </a>  <?php } ?> 
+														<?php if ($this->rbac->hasPrivilege('visitor_book', 'can_edit')) {?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/visitors/edit/<?php echo $value['id']; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('edit'); ?>">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
+													<?php } ?>
+													<?php if ($this->rbac->hasPrivilege('visitor_book', 'can_delete')) { ?>
                                                     <?php if ($value['image'] !== "") { ?><a data-placement="left" href="<?php echo base_url(); ?>admin/visitors/imagedelete/<?php echo $value['id']; ?>/<?php echo $value['image']; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="<?php echo $this->lang->line('delete'); ?>">
                                                             <i class="fa fa-remove"></i>
                                                         </a>
@@ -169,6 +172,7 @@
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/visitors/delete/<?php echo $value['id']; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="<?php echo $this->lang->line('delete'); ?>">
                                                             <i class="fa fa-remove"></i>
                                                         </a>
+                                                    <?php } ?>
                                                     <?php } ?>
                                                 </td>
 

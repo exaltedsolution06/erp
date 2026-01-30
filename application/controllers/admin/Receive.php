@@ -51,7 +51,7 @@ class Receive extends Admin_Controller {
     }
 
     function editreceive($id) {
-        if (!$this->rbac->hasPrivilege('postal_receive', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('postal_receive', 'can_edit')) {
             access_denied();
         }
 

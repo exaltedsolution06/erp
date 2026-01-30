@@ -13,7 +13,7 @@ class Reference extends Admin_Controller {
     }
 
     function index() {
-        if (!$this->rbac->hasPrivilege('setup_font_office', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('setup_front_office', 'can_view')) {
             access_denied();
         }
         $this->form_validation->set_rules('reference', $this->lang->line('reference'), 'required');
@@ -37,7 +37,7 @@ class Reference extends Admin_Controller {
     }
 
     function edit($reference_id) {
-        if (!$this->rbac->hasPrivilege('setup_font_office', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('setup_front_office', 'can_edit')) {
             access_denied();
         }
         $this->form_validation->set_rules('reference', $this->lang->line('reference'), 'required');
@@ -61,7 +61,7 @@ class Reference extends Admin_Controller {
     }
 
     function delete($id) {
-        if (!$this->rbac->hasPrivilege('setup_font_office', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('setup_front_office', 'can_delete')) {
             access_denied();
         }
         $this->reference_model->delete($id);

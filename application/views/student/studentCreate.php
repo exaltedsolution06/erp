@@ -11,7 +11,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="pull-right box-tools impbtntitle">
-                        <?php if ($this->rbac->hasPrivilege('import_student', 'can_view')) { ?>
+                        <?php if ($this->rbac->hasPrivilege('import_admission', 'can_add')) { ?>
                             <a href="<?php echo site_url('student/import') ?>">
                                 <button class="btn btn-primary btn-sm"><i class="fa fa-upload"></i> <?php echo $this->lang->line('import_student'); ?></button>
                             </a>

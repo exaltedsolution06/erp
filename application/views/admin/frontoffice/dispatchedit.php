@@ -7,7 +7,7 @@
     <section class="content">
         <div class="row">
 
-            <?php if ($this->rbac->hasPrivilege('postal_dispatch', 'can_add') || $this->rbac->hasPrivilege('postal_dispatch', 'can_edit')) { ?>
+            <?php if ($this->rbac->hasPrivilege('postal_dispatch', 'can_edit')) { ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
@@ -73,7 +73,7 @@
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('postal_dispatch', 'can_add') || $this->rbac->hasPrivilege('postal_dispatch', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('postal_dispatch', 'can_edit')) {
                 echo "8";
             } else {
                 echo "12";
@@ -129,10 +129,14 @@
                                                         </a> 
 
                                                     <?php } ?>
-
+													<?php if ($this->rbac->hasPrivilege('postal_dispatch', 'can_edit')) { ?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/dispatch/editdispatch/<?php echo $value->id; ?>"  class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('edit'); ?>">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
+													<?php
+                                                    }
+                                                    if ($this->rbac->hasPrivilege('postal_dispatch', 'can_delete')) {
+                                                        ?>
                                                     <?php if ($value->image !== "") { ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/dispatch/imagedelete/<?php echo $value->id; ?>/<?php echo $value->image; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="<?php echo $this->lang->line('delete'); ?>">
                                                             <i class="fa fa-remove"></i>
@@ -142,6 +146,7 @@
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/dispatch/delete/<?php echo $value->id; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="<?php echo $this->lang->line('delete'); ?>">
                                                             <i class="fa fa-remove"></i>
                                                         </a>
+                                                    <?php } ?>
                                                     <?php } ?>
                                                 </td>
 

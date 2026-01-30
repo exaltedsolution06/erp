@@ -13,7 +13,7 @@ class Visitorspurpose extends Admin_Controller {
     }
 
     function index() {
-        if (!$this->rbac->hasPrivilege('setup_font_office', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('setup_front_office', 'can_view')) {
             access_denied();
         }
 
@@ -40,7 +40,7 @@ class Visitorspurpose extends Admin_Controller {
     }
 
     function edit($visitors_purpose_id) {
-        if (!$this->rbac->hasPrivilege('setup_font_office', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('setup_front_office', 'can_edit')) {
             access_denied();
         }
         $this->form_validation->set_rules('visitors_purpose', $this->lang->line('visitors_purpose'), 'required');
@@ -64,7 +64,7 @@ class Visitorspurpose extends Admin_Controller {
     }
 
     function delete($id) {
-        if (!$this->rbac->hasPrivilege('setup_font_office', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('setup_front_office', 'can_delete')) {
             access_denied();
         }
         $this->visitors_purpose_model->delete($id);

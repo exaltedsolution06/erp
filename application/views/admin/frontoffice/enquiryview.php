@@ -171,7 +171,7 @@
 
                                                             <td> <?php echo $enquiry_status[$value["status"]] ?></td>              
                                                             <td class="mailbox-date text-right">
-                                                                <?php if ($this->rbac->hasPrivilege('follow_up_admission_enquiry', 'can_view')) { ?>
+                                                                <?php if ($this->rbac->hasPrivilege('follow_up_admission_enq', 'can_view')) { ?>
                                                                     <a class="btn btn-default btn-xs" onclick="follow_up('<?php echo $value['id']; ?>', '<?php echo $value['status']; ?>');"  data-target="#follow_up" data-toggle="modal"  title="<?php echo $this->lang->line('follow_up_admission_enquiry'); ?>">
                                                                         <i class="fa fa-phone"></i>
                                                                     </a>

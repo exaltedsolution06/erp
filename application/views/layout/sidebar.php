@@ -86,6 +86,8 @@
                         $this->rbac->hasPrivilege('create_route', 'can_view') ||
                         $this->rbac->hasPrivilege('route_plan', 'can_view') ||
                         $this->rbac->hasPrivilege('set_discount', 'can_view') ||
+                        $this->rbac->hasPrivilege('caste_category', 'can_view') ||
+                        $this->rbac->hasPrivilege('payment_mode', 'can_view') ||
                         $this->rbac->hasPrivilege('student_house', 'can_view') ||
                         $this->rbac->hasPrivilege('add_vehicles', 'can_view') ||
                         $this->rbac->hasPrivilege('assign_vehicle', 'can_view') ||
@@ -120,6 +122,8 @@
                     || set_Submenu('admin/teacher/assign_class_teacher')
                     || set_Submenu('stdtransfer/index')
                     || set_Submenu('admin/feediscount')
+                    || set_Submenu('admin/castecategory')
+                    || set_Submenu('admin/paymentmode')
                     || set_Submenu('student/disable_reason')
                     || set_Submenu('feesforward/index')
                     || set_Submenu('move_students')
@@ -135,23 +139,27 @@
                 </a>
                 <ul class="treeview-menu">
                    <?php if ($this->rbac->hasPrivilege('add_section', 'can_view')) { ?>
-                    <li class="<?php echo set_Submenu('sections/index'); ?>"><a href="<?php echo base_url(); ?>sections"><i class="fa fa-angle-double-right"></i> Add Section</a></li>
+						<li class="<?php echo set_Submenu('sections/index'); ?>"><a href="<?php echo base_url(); ?>sections"><i class="fa fa-angle-double-right"></i> Add Section</a></li>
 				   <?php } if ($this->rbac->hasPrivilege('add_class', 'can_view')) { ?>
-                    <li class="<?php echo set_Submenu('classes/index'); ?>"><a href="<?php echo base_url(); ?>classes/index"><i class="fa fa-angle-double-right"></i> Add Class</a></li>
+						<li class="<?php echo set_Submenu('classes/index'); ?>"><a href="<?php echo base_url(); ?>classes/index"><i class="fa fa-angle-double-right"></i> Add Class</a></li>
 				   <?php } if ($this->rbac->hasPrivilege('fee_category', 'can_view')) { ?>
-                    <li class="<?php echo set_Submenu('admin/feegroup'); ?>"><a href="<?php echo base_url(); ?>admin/feegroup"><i class="fa fa-angle-double-right"></i> Fees Category</a></li>
+						<li class="<?php echo set_Submenu('admin/feegroup'); ?>"><a href="<?php echo base_url(); ?>admin/feegroup"><i class="fa fa-angle-double-right"></i> Fees Category</a></li>
 				   <?php } if ($this->rbac->hasPrivilege('create_account', 'can_view')) { ?>
-                    <li class="<?php echo set_Submenu('account/index'); ?>"><a href="<?php echo base_url(); ?>account"><i class="fa fa-angle-double-right"></i> Create Account</a></li>
+						<li class="<?php echo set_Submenu('account/index'); ?>"><a href="<?php echo base_url(); ?>account"><i class="fa fa-angle-double-right"></i> Create Account</a></li>
 				   <?php } if ($this->rbac->hasPrivilege('fee_head', 'can_view')) { ?>
-                    <li class="<?php echo set_Submenu('feetype/index'); ?>"><a href="<?php echo base_url(); ?>admin/feetype"><i class="fa fa-angle-double-right"></i> Fee Head</a></li>
+						<li class="<?php echo set_Submenu('feetype/index'); ?>"><a href="<?php echo base_url(); ?>admin/feetype"><i class="fa fa-angle-double-right"></i> Fee Head</a></li>
 				   <?php } if ($this->rbac->hasPrivilege('fee_plan', 'can_view')) { ?>					
-                    <li class="<?php echo set_Submenu('admin/feemaster'); ?>"><a href="<?php echo base_url(); ?>admin/feemaster"><i class="fa fa-angle-double-right"></i> Fee Plan</a></li>
+						<li class="<?php echo set_Submenu('admin/feemaster'); ?>"><a href="<?php echo base_url(); ?>admin/feemaster"><i class="fa fa-angle-double-right"></i> Fee Plan</a></li>
 					<?php } if ($this->rbac->hasPrivilege('create_route', 'can_view')) { ?>
                         <li class="<?php echo set_Submenu('feetype/setroute'); ?>"><a href="<?php echo base_url(); ?>admin/feesroutes/index"><i class="fa fa-angle-double-right"></i> Create Route</a></li>
 					<?php } if ($this->rbac->hasPrivilege('route_plan', 'can_view')) { ?>
 						<li class="<?php echo set_Submenu('admin/setplan'); ?>"><a href="<?php echo base_url(); ?>admin/feesroutes/plan"><i class="fa fa-angle-double-right"></i> Route Plan</a></li>
 					<?php } if ($this->rbac->hasPrivilege('set_discount', 'can_view')) { ?>
 						<li class="<?php echo set_Submenu('admin/feediscount'); ?>"><a href="<?php echo base_url(); ?>admin/fee-discount"><i class="fa fa-angle-double-right"></i> Set Discount</a></li>
+					<?php } if ($this->rbac->hasPrivilege('caste_category', 'can_view')) { ?>
+						<li class="<?php echo set_Submenu('admin/castecategory'); ?>"><a href="<?php echo base_url(); ?>admin/caste_category"><i class="fa fa-angle-double-right"></i> Caste Category</a></li>
+					<?php } if ($this->rbac->hasPrivilege('payment_mode', 'can_view')) { ?>
+						<li class="<?php echo set_Submenu('admin/paymentmode'); ?>"><a href="<?php echo base_url(); ?>admin/payment_mode"><i class="fa fa-angle-double-right"></i> Payment Mode</a></li>
 					<?php } if ($this->rbac->hasPrivilege('student_house', 'can_view')) { ?>
 						<li class="<?php echo set_Submenu('admin/schoolhouse'); ?>"><a href="<?php echo base_url(); ?>admin/schoolhouse"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('house'); ?></a></li>
 					<?php } if ($this->rbac->hasPrivilege('add_vehicles', 'can_view')) { ?>
@@ -186,16 +194,16 @@
 			<!-- 2nd Menu end -->
 			<!-- 3rd Menu start -->
             <?php
-                if ($this->module_lib->hasActive('front_office') or 1==1) { // Agar front office module active hai
+                if ($this->module_lib->hasActive('front_desk')) { // Agar front office module active hai
                     if (
+                        $this->rbac->hasPrivilege('setup_front_office', 'can_view') ||
                         $this->rbac->hasPrivilege('admission_enquiry', 'can_view') ||
                         $this->rbac->hasPrivilege('visitor_book', 'can_view') ||
                         $this->rbac->hasPrivilege('phone_call_log', 'can_view') ||
                         $this->rbac->hasPrivilege('postal_dispatch', 'can_view') ||
                         $this->rbac->hasPrivilege('postal_receive', 'can_view') ||
                         $this->rbac->hasPrivilege('complain', 'can_view') ||
-                        $this->rbac->hasPrivilege('setup_front_office', 'can_view') ||
-                        $this->rbac->hasPrivilege('front_desk_reports', 'can_view')
+                        $this->rbac->hasPrivilege('front_desk_all_reports', 'can_view')
                     ) {
 					//$CI = get_instance();
 					//$session_sub_menu = $CI->session->userdata('sub_menu');
@@ -233,7 +241,7 @@
 							<li class="<?php echo set_Submenu('admin/receive'); ?>"><a href="<?php echo base_url(); ?>admin/receive"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('postal_receive'); ?></a></li>
 						<?php } if ($this->rbac->hasPrivilege('complain', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('admin/complaint'); ?>"><a href="<?php echo base_url(); ?>admin/complaint"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('complain'); ?></a></li>
-						<?php } if ($this->rbac->hasPrivilege('front_desk_reports', 'can_view')) { ?>
+						<?php } if ($this->rbac->hasPrivilege('front_desk_all_reports', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('report/front-desk'); ?>"><a href="<?php echo base_url(); ?>admin/report/front_desk_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 						<?php } ?>
 					</ul>
@@ -273,7 +281,7 @@
 						<i class="fa fa-angle-left pull-right"></i>
 					</a>
 					<ul class="treeview-menu">
-						<?php if ($this->rbac->hasPrivilege('student', 'can_view')) { ?>
+						<?php if ($this->rbac->hasPrivilege('new_admission', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('student/create'); ?>"><a href="<?php echo base_url(); ?>student/create"><i class="fa fa-angle-double-right"></i> New Admission</a></li>
 						<?php } if ($this->rbac->hasPrivilege('onlinestudent', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('onlinestudent'); ?>"><a href="<?php echo base_url(); ?>admin/onlinestudent"><i class="fa fa-angle-double-right"></i> Online Admission</a></li>
