@@ -16,7 +16,7 @@
         </a>
 
         <ul class="dropdown-menu verticalmenu" style="min-width:194px;font-size:10pt;left:3px;">
-            <?php if ($this->rbac->hasPrivilege('student', 'can_view')) { ?>
+            <?php if ($this->rbac->hasPrivilege('student_full_details', 'can_view')) { ?>
 
                 <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="<?php echo base_url(); ?>student/search"><i class="fa fa-user-plus"></i><?php echo $this->lang->line('student_details'); ?></a></li>
 

@@ -1,5 +1,5 @@
 <aside class="main-sidebar" id="alert2">
-    <?php if ($this->rbac->hasPrivilege('student', 'can_view')) { ?>
+    <?php if ($this->rbac->hasPrivilege('student_full_details', 'can_view')) { ?>
         <form class="navbar-form navbar-left search-form2" role="search"  action="<?php echo site_url('admin/admin/search'); ?>" method="POST">
             <?php echo $this->customlib->getCSRF(); ?>
             <div class="input-group ">
@@ -253,13 +253,14 @@
 		<!-- 3rd Menu end -->
 		<!-- 4th Menu start -->
         <?php
-            if ($this->module_lib->hasActive('student_section') or 1==1) { // Agar student section module active hai
+            if ($this->module_lib->hasActive('admission_section')) { // Agar student section module active hai
 				if (
 					$this->rbac->hasPrivilege('new_admission', 'can_view') ||
+					$this->rbac->hasPrivilege('online_admission', 'can_view') ||
 					$this->rbac->hasPrivilege('student_full_details', 'can_view') ||
 					$this->rbac->hasPrivilege('discontinue_students', 'can_view') ||
 					$this->rbac->hasPrivilege('bulk_delete', 'can_view') ||
-					$this->rbac->hasPrivilege('student_section_reports', 'can_view')
+					$this->rbac->hasPrivilege('admission_all_reports', 'can_view')
 				) {
 					//$CI = get_instance();
 					//$session_sub_menu = $CI->session->userdata('sub_menu');
@@ -283,16 +284,16 @@
 					<ul class="treeview-menu">
 						<?php if ($this->rbac->hasPrivilege('new_admission', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('student/create'); ?>"><a href="<?php echo base_url(); ?>student/create"><i class="fa fa-angle-double-right"></i> New Admission</a></li>
-						<?php } if ($this->rbac->hasPrivilege('onlinestudent', 'can_view')) { ?>
+						<?php } if ($this->rbac->hasPrivilege('online_admission', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('onlinestudent'); ?>"><a href="<?php echo base_url(); ?>admin/onlinestudent"><i class="fa fa-angle-double-right"></i> Online Admission</a></li>
-						<?php } if ($this->rbac->hasPrivilege('student', 'can_view')) { ?>
+						<?php } if ($this->rbac->hasPrivilege('student_full_details', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('student/search'); ?>"><a href="<?php echo base_url(); ?>student/search"><i class="fa fa-angle-double-right"></i> Student Full Details</a></li>
-						<?php } if ($this->rbac->hasPrivilege('disable_student', 'can_view')) { ?>
+						<?php } if ($this->rbac->hasPrivilege('discountinue_students', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('student/disablestudentslist'); ?>"><a href="<?php echo base_url(); ?>student/disablestudentslist"><i class="fa fa-angle-double-right"></i> Discontinue Students</a></li>
-						<?php } if ($this->rbac->hasPrivilege('student', 'can_delete')) { ?>
+						<?php } if ($this->rbac->hasPrivilege('bulk_delete', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('bulkdelete'); ?>"><a href="<?php echo site_url('student/bulkdelete'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('bulk') . " " . $this->lang->line('delete'); ?></a>
 									</li>
-						<?php } if ($this->rbac->hasPrivilege('student_section_reports', 'can_view')) { ?>
+						<?php } if ($this->rbac->hasPrivilege('admission_all_reports', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('Reports/student_information'); ?>"><a href="<?php echo base_url(); ?>report/studentinformation"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 						<?php } ?>
 					</ul>

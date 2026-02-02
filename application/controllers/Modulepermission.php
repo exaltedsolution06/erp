@@ -361,6 +361,7 @@ class Modulepermission extends Public_Controller
 			$permission_group_data = [
 				'name' => $module_val['module'],
 				'short_code' => $this->slugify($module_val['module']),
+				'is_active' => 1,
 				'system' => 0,
 			];
 			$this->db->insert('permission_group', $permission_group_data);

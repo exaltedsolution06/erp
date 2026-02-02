@@ -126,7 +126,7 @@ if ($this->config->item('SSLK') == "") {
                     </div>
                     <div class="col-lg-7 col-md-9 col-sm-10 col-xs-7">
                         <div class="pull-right">
-                            <?php if ($this->rbac->hasPrivilege('student', 'can_view')) {?>
+                            <?php if ($this->rbac->hasPrivilege('student_full_details', 'can_view')) {?>
                               
                                 <form class="navbar-form navbar-left search-form" role="search"  action="<?php echo site_url('admin/admin/search'); ?>" method="POST">
                                     <?php echo $this->customlib->getCSRF(); ?>

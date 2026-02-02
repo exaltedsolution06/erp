@@ -213,7 +213,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             <i class="fa fa-reorder"></i>
                                                         </a>
                                                         <?php
-                                                        if ($this->rbac->hasPrivilege('student', 'can_edit')) {
+                                                        if ($this->rbac->hasPrivilege('student_full_details', 'can_edit')) {
                                                             ?>
                                                             <a href="<?php echo base_url(); ?>student/edit/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                                 <i class="fa fa-pencil"></i>
@@ -293,7 +293,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                                 <i class="fa fa-reorder"></i>
                                                                             </a>
                                                                             <?php
-                                                                            if ($this->rbac->hasPrivilege('student', 'can_edit')) {
+                                                                            if ($this->rbac->hasPrivilege('student_full_details', 'can_edit')) {
                                                                                 ?>
                                                                                 <a href="<?php echo base_url(); ?>student/edit/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                                                     <i class="fa fa-pencil"></i>

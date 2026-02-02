@@ -835,6 +835,9 @@ class Report extends Admin_Controller
 
     public function studentinformation()
     {
+		if (!$this->rbac->hasPrivilege('admission_all_reports', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/student_information');
         $this->session->set_userdata('subsub_menu', '');
