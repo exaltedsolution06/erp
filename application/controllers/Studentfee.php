@@ -406,7 +406,7 @@ class Studentfee extends Admin_Controller
 
     public function index()
     {
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_view')) {
             access_denied();
         }
 
@@ -421,7 +421,7 @@ class Studentfee extends Admin_Controller
     }
 	public function receipt_book()
     {
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_view')) {
             access_denied();
         }
 		$this->session->set_userdata('top_menu', 'Reports');
@@ -481,7 +481,7 @@ class Studentfee extends Admin_Controller
     public function collection_report()
     {
 
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_view')) {
             access_denied();
         }
 
@@ -642,7 +642,7 @@ class Studentfee extends Admin_Controller
 
     public function search()
     {
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_view')) {
             access_denied();
         }
         $data['title']           = 'Student Search';
@@ -1014,7 +1014,7 @@ class Studentfee extends Admin_Controller
 
     public function view($id)
     {
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_view')) {
             access_denied();
         }
         $data['title']      = 'studentfee List';
@@ -1028,7 +1028,7 @@ class Studentfee extends Admin_Controller
     public function deleteFee()
     {
 
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_delete')) {
             access_denied();
         }
         $invoice_id  = $this->input->post('main_invoice');
@@ -1078,7 +1078,7 @@ class Studentfee extends Admin_Controller
 
     public function addfee($id) 
     {
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_add')) {
             access_denied();
         }
 		
@@ -1241,7 +1241,7 @@ class Studentfee extends Admin_Controller
    
     public function create()
     {
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_view')) {
             access_denied();
         }
         $data['title'] = 'Add studentfee';
@@ -1262,7 +1262,7 @@ class Studentfee extends Admin_Controller
 
     public function edit($receipt_no)
     {
-		if (!$this->rbac->hasPrivilege('collect_fees', 'can_add')) {
+		if (!$this->rbac->hasPrivilege('collect_fee', 'can_add')) {
             access_denied();
         }
 		$receipt_no = base64_decode($receipt_no);
@@ -1474,7 +1474,7 @@ class Studentfee extends Admin_Controller
 		$this->load->view('studentfee/studentfeeEdit', $data);
 		$this->load->view('layout/footer', $data);
 		
-        /*if (!$this->rbac->hasPrivilege('collect_fees', 'can_edit')) {
+        /*if (!$this->rbac->hasPrivilege('collect_fee', 'can_edit')) {
             access_denied();
         }
         $data['title']      = 'Edit studentfees';
@@ -1498,7 +1498,7 @@ class Studentfee extends Admin_Controller
     }
 	public function feeview($receipt_no)
     {
-		if (!$this->rbac->hasPrivilege('collect_fees', 'can_add')) {
+		if (!$this->rbac->hasPrivilege('collect_fee', 'can_add')) {
             access_denied();
         }
 		$receipt_no = base64_decode($receipt_no);		
@@ -1602,7 +1602,7 @@ class Studentfee extends Admin_Controller
 		$this->load->view('studentfee/studentfeeView', $data);
 		$this->load->view('layout/footer', $data);
 		
-        /*if (!$this->rbac->hasPrivilege('collect_fees', 'can_edit')) {
+        /*if (!$this->rbac->hasPrivilege('collect_fee', 'can_edit')) {
             access_denied();
         }
         $data['title']      = 'Edit studentfees';

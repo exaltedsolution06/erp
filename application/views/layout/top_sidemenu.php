@@ -20,7 +20,7 @@
 
                 <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="<?php echo base_url(); ?>student/search"><i class="fa fa-user-plus"></i><?php echo $this->lang->line('student_details'); ?></a></li>
 
-            <?php } if ($this->rbac->hasPrivilege('collect_fees', 'can_view')) { ?>
+            <?php } if ($this->rbac->hasPrivilege('collect_fee', 'can_view')) { ?>
 
                 <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="<?php echo base_url(); ?>studentfee"><i class="fa fa-money"></i><?php echo $this->lang->line('collect_fees'); ?></a></li>
 

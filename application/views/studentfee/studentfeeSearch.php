@@ -152,7 +152,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td><?php echo $student['guardian_phone']; ?></td>
                                                 <td class="pull-right">
 												<a href="<?php echo base_url(); ?>admin/fee-discount?id=<?php echo $student['student_session_id'] ?>" class="btn btn-warning btn-xs" data-toggle="tooltip" title="Fees Discount" data-original-title="Fees Discount"><i class="fa fa-credit-card" aria-hidden="true"></i></a>&nbsp;
-                                                    <?php if ($this->rbac->hasPrivilege('collect_fees', 'can_add')) { ?>
+                                                    <?php if ($this->rbac->hasPrivilege('collect_fee', 'can_add')) { ?>
 
                                                         <a  href="<?php echo base_url(); ?>studentfee/addfee/<?php echo $student['student_session_id'] ?>" class="btn btn-info btn-xs" data-toggle="tooltip" title="" data-original-title="">
                                                             <?php echo $currency_symbol; ?> <?php echo $this->lang->line('collect_fees'); ?>

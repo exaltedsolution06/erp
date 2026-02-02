@@ -85,13 +85,13 @@ class Modulepermission extends Public_Controller
 					['name' => 'Discountinue Students', 'add' => true, 'view' => true, 'edit' => true, 'delete' => false],
 					['name' => 'Bulk Delete', 			'add' => false, 'view' => true, 'edit' => false, 'delete' => true],
 					['name' => 'Student Timeline', 		'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Admission All Reports', 			'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'Admission All Reports', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
 				'module' => 'Fee Collection',
 				'links' => [
-					['name' => 'Collect Fee',        'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
+					['name' => 'Collect Fee',       'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Collect Fee List',   'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Assign Discount', 	 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Receipt Book',       'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
@@ -102,7 +102,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Delete Fee List',    'add' => false, 'view' => true,  'edit' => false, 'delete' => true],
 					['name' => 'Search Fee Slip',    'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Student Ledger',     'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Fee All Reports',        'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Fee All Reports',    'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[

@@ -229,7 +229,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         <?php
 						
                         if ($this->module_lib->hasActive('fees_collection')) {
-                            if (($this->rbac->hasPrivilege('collect_fees', 'can_view') ||
+                            if (($this->rbac->hasPrivilege('collect_fee', 'can_view') ||
                                     $this->rbac->hasPrivilege('search_fees_payment', 'can_view') ||
                                     $this->rbac->hasPrivilege('search_due_fees', 'can_view') ||
                                     $this->rbac->hasPrivilege('fees_statement', 'can_view') ||

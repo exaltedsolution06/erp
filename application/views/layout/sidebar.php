@@ -305,7 +305,7 @@
 		<!-- 4th Menu end -->
 		<!-- 5th Menu start -->
 		<?php
-			if ($this->module_lib->hasActive('fee_collection') or 1==1) { // Agar Fee Collection module active hai
+			if ($this->module_lib->hasActive('fee_collection')) { // Agar Fee Collection module active hai
 				if (
 					$this->rbac->hasPrivilege('collect_fee', 'can_view') ||
 					$this->rbac->hasPrivilege('collect_fee_list', 'can_view') ||
@@ -346,7 +346,7 @@
 						<i class="fa fa-angle-left pull-right"></i>
 					</a>
 					<ul class="treeview-menu">
-						<?php if ($this->rbac->hasPrivilege('collect_fees', 'can_view')) { ?>
+						<?php if ($this->rbac->hasPrivilege('collect_fee', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('studentfee/index'); ?>"><a href="<?php echo base_url(); ?>studentfee"><i class="fa fa-angle-double-right"></i> Collect Fee</a></li>
 						<?php } if ($this->rbac->hasPrivilege('collect_fee_list', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('studentfee/studentfeelist'); ?>"><a href="<?php echo base_url(); ?>studentfee/studentfeelist"><i class="fa fa-angle-double-right"></i> Collect Fee List </a></li>

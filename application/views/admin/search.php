@@ -184,7 +184,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             <?php
                                                         }
                                                         ?>
-                                                        <?php if ($this->rbac->hasPrivilege('collect_fees', 'can_add')) {
+                                                        <?php if ($this->rbac->hasPrivilege('collect_fee', 'can_add')) {
                                                             ?>
                                                             <a href="<?php echo base_url(); ?>studentfee/addfee/<?php echo $student['student_session_id'] ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('add_fees'); ?>">
                                                                 <?php echo $currency_symbol; ?>
@@ -262,7 +262,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             <a href="<?php echo base_url(); ?>student/edit/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                                 <i class="fa fa-pencil"></i>
                                                             </a>
-                                                        <?php }if ($this->rbac->hasPrivilege('collect_fees', 'can_add')) {
+                                                        <?php }if ($this->rbac->hasPrivilege('collect_fee', 'can_add')) {
                                                             ?>
                                                             <a href="<?php echo base_url(); ?>studentfee/addfee/<?php echo $student['id'] ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('add_fees'); ?>">
                                                                 <?php echo $currency_symbol; ?>

@@ -347,7 +347,7 @@
 
 
 if ($this->module_lib->hasActive('fees_collection')) {
-                if (($this->rbac->hasPrivilege('collect_fees', 'can_view') ||
+                if (($this->rbac->hasPrivilege('collect_fee', 'can_view') ||
                         $this->rbac->hasPrivilege('search_fees_payment', 'can_view') ||
                         $this->rbac->hasPrivilege('search_due_fees', 'can_view') ||
                         $this->rbac->hasPrivilege('fees_statement', 'can_view') ||
@@ -360,17 +360,17 @@ if ($this->module_lib->hasActive('fees_collection')) {
                             <i class="fa fa-money ftlayer"></i> <span> <?php echo $this->lang->line('fees_collection'); ?></span> <i class="fa fa-angle-left pull-right"></i>
                         </a>
                         <ul class="treeview-menu">
-                            <?php if ($this->rbac->hasPrivilege('collect_fees', 'can_view')) { ?>
+                            <?php if ($this->rbac->hasPrivilege('collect_fee', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('studentfee/index'); ?>"><a href="<?php echo base_url(); ?>studentfee"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('collect_fees'); ?></a></li>
                                 <?php
                             }
 
-                             if ($this->rbac->hasPrivilege('collect_fees', 'can_view')) { ?>
+                             if ($this->rbac->hasPrivilege('collect_fee', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('studentfee/studentfeelist'); ?>"><a href="<?php echo base_url(); ?>studentfee/studentfeelist"><i class="fa fa-angle-double-right"></i> Collect Fees List </a></li>
                                 <?php
                             }
 
-                              if ($this->rbac->hasPrivilege('collect_fees', 'can_view')) { ?>
+                              if ($this->rbac->hasPrivilege('collect_fee', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('studentfee/studentfee_deletedlist'); ?>"><a href="<?php echo base_url(); ?>studentfee/studentfee_deletedlist"><i class="fa fa-angle-double-right"></i> Deleted Fees List </a></li>
                                 <?php
                             }

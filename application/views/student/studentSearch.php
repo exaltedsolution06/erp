@@ -220,7 +220,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             </a>
                                                             <?php
                                                         }
-                                                        if ($this->rbac->hasPrivilege('collect_fees', 'can_add')) {
+                                                        if ($this->rbac->hasPrivilege('collect_fee', 'can_add')) {
                                                             ?>
                                                             <a href="<?php echo base_url(); ?>studentfee/addfee/<?php echo $student['student_session_id'] ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('add_fees'); ?>">
                                                             <span ><?php echo $currency_symbol; ?></span>
@@ -300,7 +300,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                                 </a>
                                                                                 <?php
                                                                             }
-                                                                            if ($this->rbac->hasPrivilege('collect_fees', 'can_add')) {
+                                                                            if ($this->rbac->hasPrivilege('collect_fee', 'can_add')) {
                                                                                 ?>
                                                                                 <a href="<?php echo base_url(); ?>studentfee/addfee/<?php echo $student['id'] ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('add_fees'); ?>">    
                                                                                 <?php echo $currency_symbol; ?>
