@@ -552,7 +552,7 @@
 		<!-- 8th Menu end -->
 		<!-- 9th Menu start -->
 		<?php
-			if ($this->module_lib->hasActive('examination')) { // Agar Examination module active hai
+			if ($this->module_lib->hasActive('exam_section')) { // Agar Examination module active hai
 				if (
 					$this->rbac->hasPrivilege('create_terms', 'can_view') ||
 					$this->rbac->hasPrivilege('co_scholastic_areas', 'can_view') ||

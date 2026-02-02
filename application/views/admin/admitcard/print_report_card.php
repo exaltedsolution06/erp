@@ -98,8 +98,8 @@
 	$grade_html = '';
 	if($desc->marks_grade_table==1){
 ?>
-	<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px">
-		<div class="text-center"><h4><?php echo $this->lang->line('grade_system'); ?></h4></div>
+	<div class="col-12 mt-5" style="padding-left:0px;padding-right:0px;padding-bottom:0px; border-top: 2px solid #000;">
+		<div class="text-center mt-2"><h4 style="font-size: 18px;"><?php echo $desc->grade_table_title; ?></h4></div>
 		<?php
 			$grades = $this->db->order_by('mark_from', 'DESC')->where('session_id', $current_session['id'])->get('grades')->result();
 			$half = ceil(count($grades) / 2);
@@ -181,7 +181,7 @@
 			</div>
 			<?php } } } ?>
 			<?php if(!empty($desc->title)){ ?>
-			<div class="col-12 text-center">
+			<div class="col-12 text-center mt-3">
 				<p class="h3"><?php echo $desc->title; ?> (<?php echo $this->lang->line('session'); ?> : <?php echo $current_session['session']; ?>)</p>
 			</div>
 			<?php } ?>
@@ -282,7 +282,7 @@
 			
 			
 			
-			<div class="col-12 mt-1" style="border:0px solid">
+			<div class="col-12 mt-3" style="border:0px solid">
 				<div class="row">
 					<div class="col-12" style="padding-left:0px;padding-right:0px;padding-bottom:0px">
 						<table class="w-100 table-bordered border-dark text-center" style="padding-bottom:0px">
@@ -438,6 +438,7 @@
 								}
 								
 								$max_marks = $max_marks_op = 0;
+								$is_fail = 0;
 								$total_subject = $total_subject_op=0;
 								for($i=0;$i<count($subject_id_data);$i++){
 								
@@ -455,6 +456,7 @@
 											
 											<?php
 
+											$min_marks = 0;
 											foreach($post_exam_group_id as $post_exam_group){
 													
 													
@@ -478,6 +480,7 @@
 								
 		$resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_batch_exam_subjects.max_marks FROM exam_group_exam_results left JOIN exam_group_class_batch_exam_subjects ON exam_group_class_batch_exam_subjects.id=exam_group_exam_results.exam_group_class_batch_exam_subject_id left JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.id=exam_group_exam_results.`exam_group_class_batch_exam_student_id` WHERE exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id='".$type->id."' and exam_group_class_batch_exam_students.exam_group_class_batch_exam_id='".$type->id."' and exam_group_class_batch_exam_subjects.subject_id='".$rowdata->id."' and exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result()[0];
 
+													$min_marks+=round($maxMarks->min_marks);
 													$max_marks+=round($maxMarks->max_marks);
 													$max_marks1+=round($maxMarks->max_marks);
 												
@@ -581,7 +584,11 @@
 												echo ($gd[0]->name);
 											
 											?></td>
-											<?php } ?>	
+											<?php } 
+											if($min_marks > $total1){
+												$is_fail = 1;
+											}
+											?>	
 										</tr>
 									
 									<?php
@@ -889,12 +896,12 @@
 			
 			
 			<div class="col-8" style="padding: 0;">
-				Note : 'AB' Indicates <strong>ABSENT</strong> in the Subject Exam.
+				<strong>Note :</strong> 'AB' Indicates <strong>ABSENT</strong> in the Subject Exam.
 			</div>	
 			<!--<div class="col-8" style="padding: 0;">
 				Note : <strong>'AB'</strong> Indicates <strong>ABSENT</strong> & <strong>'ML'</strong> Indicates <strong>Medical Leave</strong> in the Subject Exam.
 			</div>-->
-			<div class="col-4 text-end" style="padding: 0;"><strong>
+			<div class="col-4 text-end" style="padding: 0;"><strong style="font-size: 18px;">
 				<?php echo $this->lang->line('overall'); ?> <?php echo $this->lang->line('percentage'); ?>(%) : <?php 
 											$totalMaxMarks = array_sum($maxMark);
 
@@ -904,25 +911,6 @@
 
 											echo $totalNumber;
 											?>%</strong>
-			</div>
-			<div class="col-12 text-end" style="padding: 0;">
-				<?php 
-					$exam_pass_status = 1;
-					if ($finalTotal < array_sum($minMark)) {
-						$exam_pass_status = 0;
-					}
-				?>
-				<strong>
-				<?php echo $this->lang->line('result') ?> : <?php echo $exam_pass_status ? $this->lang->line('pass') : $this->lang->line('fail'); ?> <?php echo $exam_pass_status ? '('.get_division_by_percentage($totalNumber).' '.$this->lang->line('division').')' : ''; ?>
-				</strong>
-			</div>			
-			<div class="col-12 text-end" style="padding: 0;">						
-				<?php if($exam_pass_status){
-					echo '<strong>'.$this->lang->line('promoted_to_next_class').'</strong>';
-				}else{
-				?>
-				<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <span>___________________________________</span>
-				<?php } ?>
 			</div>
 			
 			<?php 
@@ -934,15 +922,15 @@
 			<div class="col-6 mt-3" style="padding:0px">
 				<table class="w-100 border-dark text-center table-bordered">
 					<tr class="text-start">
-						<th colspan="2" style="padding-left:8px;"><h5 class=""><?=$value->name ?>: <span style="color:#000;font-size: 14px;"><?=$value->description ?></span></h5>
+						<th colspan="2" style="padding-left:8px; padding-top:7px;padding-bottom:7px;"><span class="" style="color:#000;"><?=$value->name ?>: <span style="color:#000;"><?=$value->description ?></span></span>
 						</th>
 					</tr>
 					<tr>	
-						<th style="text-align: left !important;padding-left: 15px !important;"><em style="">Activities</em></th>
+						<th style="text-align: left !important;padding-left: 15px !important; padding-top:7px;padding-bottom:7px;"><em style="">Activities</em></th>
 						<?php /*$z=1; for ($i=0; $i < count($tearm_count); $i++) { 
 							echo '<th>G'.$z++.'</th>';
 						}*/ ?>
-						<th><?php echo $this->lang->line('grade'); ?></th>
+						<th style="padding-top:7px;padding-bottom:7px;"><?php echo $this->lang->line('grade'); ?></th>
 						
 						
 					</tr>
@@ -952,10 +940,10 @@
 					foreach($list as $res){ 
 					?>
 					<tr>
-						<th class="" style="text-align: left !important;padding-left: 15px !important;">
+						<th class="" style="text-align: left !important;padding-left: 15px !important; padding-top:7px;padding-bottom:7px;">
 							<?=$res->exam; ?>
 						</th>
-						<td><?=$res->get_marks; ?></td>
+						<td style="padding-top:7px;padding-bottom:7px;"><?=$res->get_marks; ?></td>
 						<?php 
 						/*$z=1; for ($i=0; $i < count($tearm_count); $i++) {
 							$term_id=$tearm_count[$i];
@@ -988,10 +976,52 @@
 			</div>-->
 			<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px;">
 				<div class="row">
-					<div class="col-12 mt-3 mb-3 d-flex">
+					<div class="col-12 mb-3 d-flex">
+						<?php 
+							$exam_pass_status = 1;
+							if ($finalTotal < array_sum($minMark)) {
+								$exam_pass_status = 0;
+							}
+						?>
+						<strong>
+						<?php echo $this->lang->line('result') ?> : 	
+						</strong>			
+						<?php 
+						if($is_fail){
+						?>
+						<span class="text-underline" style="width:420px; text-align:center;">&nbsp</span>
+						<?php
+						}else{
+						?>
+						<span class="text-underline" style="width:420px;">
+						<?php
+							echo $exam_pass_status ? $this->lang->line('pass') : $this->lang->line('fail'); ?> <?php echo $this->lang->line('with'); ?> <?php echo $exam_pass_status ? '('.get_division_by_percentage($totalNumber).' '.$this->lang->line('division').')' : ''; 
+						?>
+						</span>
+						<?php
+						}
+						?>
+					</div>			
+					<div class="col-12 mb-3 d-flex">				
+						<?php if($exam_pass_status){
+							if($is_fail){
+						?>		
+								<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <span class="text-underline" style="width:330px; text-align:center;">&nbsp</span>
+						<?php		
+							}else{
+						?>		
+								<strong><?php echo $this->lang->line('promoted_to'); ?> :</strong> <span class="text-underline" style="width:370px;"><?php echo $this->lang->line('next_class'); ?></span>
+						<?php		
+							}
+						}else{
+						?>
+						<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <span class="text-underline" style="width:330px; text-align:center;">&nbsp</span>
+						<?php } ?>
+					</div>
+					<div class="col-12 mb-3 d-flex">
 						<strong><?php echo $this->lang->line('remarks'); ?></strong>
 						<strong class="ml-5px">:</strong> 
-						<span class="remarks-line">
+						<span class="text-underline" style="width:400px;">
 							<?php echo !empty($gd[0]->description) ? $gd[0]->description : '&nbsp;'; ?>
 						</span>
 					</div>
@@ -1005,13 +1035,19 @@
 							<?php echo $desc->school_reopen_date != '' ? $desc->school_reopen_date : '&nbsp;'; ?>
 						</span>
 						<span class="ml-5px"><?php echo $this->lang->line('at'); ?></span>
-						<span class="text-underline" style="width:90px; text-align:center;">
+						<span class="text-underline" style="width:124px; text-align:center;">
 							<?php echo $desc->school_reopen_time != '' ? $desc->school_reopen_time : '&nbsp;'; ?>
 						</span>
 					</div>
 					<?php
+					}					
+					if($desc->place==1){
+					?>
+					<div class="col-12 mb-3 d-flex">
+						<strong><?php echo $this->lang->line('place'); ?> :</strong> <span class="text-underline" style="width:300px; text-align:center;">&nbsp</span>
+					</div>
+					<?php
 					}
-					
 					if($desc->is_show_date==1){
 					?>
 					<div class="col-12 d-flex">
