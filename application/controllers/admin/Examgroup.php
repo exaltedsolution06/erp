@@ -111,7 +111,7 @@ class Examgroup extends Admin_Controller {
     }
 
     public function index() {
-        if (!$this->rbac->hasPrivilege('exam_group', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('create_terms', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Examinations');
@@ -296,7 +296,7 @@ class Examgroup extends Admin_Controller {
     }
 
     public function edit($id) {
-        if (!$this->rbac->hasPrivilege('exam', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('create_terms', 'can_edit')) {
             access_denied();
         }
 
@@ -340,7 +340,7 @@ class Examgroup extends Admin_Controller {
     }
 
     public function addexam($id) {
-        if (!$this->rbac->hasPrivilege('exam', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('add_exam', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Examinations');

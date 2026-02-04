@@ -289,10 +289,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                     </div>
                                                                     <div class="slide-footer">
                                                                         <span class="pull-right buttons">
+																		<?php
+                                                                            if ($this->rbac->hasPrivilege('student_full_details', 'can_view')) {
+                                                                                ?>
                                                                             <a href="<?php echo base_url(); ?>student/view/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('show'); ?>" >
                                                                                 <i class="fa fa-reorder"></i>
                                                                             </a>
                                                                             <?php
+																			}
                                                                             if ($this->rbac->hasPrivilege('student_full_details', 'can_edit')) {
                                                                                 ?>
                                                                                 <a href="<?php echo base_url(); ?>student/edit/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">

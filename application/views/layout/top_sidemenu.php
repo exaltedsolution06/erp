@@ -49,7 +49,7 @@
 
                 <?php
             }
-            if ($this->rbac->hasPrivilege('exam', 'can_view')) {
+            if ($this->rbac->hasPrivilege('add_exam', 'can_view')) {
                 ?>
 
                 <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="<?php echo base_url(); ?>admin/examgroup"><i class="fa fa-map-o"></i><?php echo $this->lang->line('exam') . " " . $this->lang->line('group'); ?></a></li>

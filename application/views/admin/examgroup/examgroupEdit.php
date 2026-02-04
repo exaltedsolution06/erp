@@ -8,7 +8,7 @@
     <section class="content">
         <div class="row">
             <?php
-            if ($this->rbac->hasPrivilege('exam_group', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('create_terms', 'can_edit')) {
                 ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
@@ -69,7 +69,7 @@
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('exam_group', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('create_terms', 'can_edit')) {
                 echo "8";
             } else {
                 echo "12";
@@ -131,7 +131,7 @@
 
 
                                                 <td class="mailbox-date pull-right">
-                                                    <?php if ($this->rbac->hasPrivilege('exam', 'can_view')) { ?>
+                                                    <?php if ($this->rbac->hasPrivilege('add_exam', 'can_view')) { ?>
                                                         <a href="<?php echo base_url(); ?>admin/examgroup/addexam/<?php echo $examgroup->id ?>"
                                                            class="btn btn-default btn-xs" data-toggle="tooltip" title="<?php echo $this->lang->line('add') . " " . $this->lang->line('exam') ?>">
                                                             <i class="fa fa-plus"></i>
@@ -140,14 +140,14 @@
                                                     }
 
 
-                                                    if ($this->rbac->hasPrivilege('exam_group', 'can_edit')) {
+                                                    if ($this->rbac->hasPrivilege('create_terms', 'can_edit')) {
                                                         ?>
                                                         <a data-placement="left" href="<?php echo site_url('admin/examgroup/edit/' . $examgroup->id); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
                                                         <?php
                                                     }
-                                                    if ($this->rbac->hasPrivilege('exam_group', 'can_delete')) {
+                                                    if ($this->rbac->hasPrivilege('create_terms', 'can_delete')) {
                                                         ?>
                                                         <a data-placement="left" href="<?php echo site_url('admin/examgroup/delete/' . $examgroup->id); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>

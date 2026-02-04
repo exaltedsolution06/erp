@@ -482,6 +482,9 @@ class Marksheet extends Admin_Controller {
     }
 
     public function view() {
+		if (!$this->rbac->hasPrivilege('design_marksheet', 'can_view')) {
+            access_denied();
+        }
         $id = $this->input->post('certificateid');
         $output = '';
         $data = array();

@@ -309,13 +309,15 @@
 				if (
 					$this->rbac->hasPrivilege('collect_fee', 'can_view') ||
 					$this->rbac->hasPrivilege('collect_fee_list', 'can_view') ||
-					$this->rbac->hasPrivilege('delete_fee_list', 'can_view') ||
+					$this->rbac->hasPrivilege('receipt_book', 'can_view') ||
 					$this->rbac->hasPrivilege('fee_register', 'can_view') ||
-					$this->rbac->hasPrivilege('defaulter_list', 'can_view') ||
 					$this->rbac->hasPrivilege('fee_card', 'can_view') ||
-					$this->rbac->hasPrivilege('fee_reminder', 'can_view') ||
+					$this->rbac->hasPrivilege('defaulter_list', 'can_view') ||
+					$this->rbac->hasPrivilege('delete_fee_list', 'can_view') ||
+					$this->rbac->hasPrivilege('search_fee_slip', 'can_view') ||
 					$this->rbac->hasPrivilege('student_ledger', 'can_view') ||
-					$this->rbac->hasPrivilege('fee_collection_reports', 'can_view')
+					$this->rbac->hasPrivilege('fee_all_reports', 'can_view') ||
+					$this->rbac->hasPrivilege('fee_reminder', 'can_view')
 				) {
 					$CI = get_instance();
 					$session_sub_menu = $CI->session->userdata('sub_menu');
@@ -350,7 +352,7 @@
 							<li class="<?php echo set_Submenu('studentfee/index'); ?>"><a href="<?php echo base_url(); ?>studentfee"><i class="fa fa-angle-double-right"></i> Collect Fee</a></li>
 						<?php } if ($this->rbac->hasPrivilege('collect_fee_list', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('studentfee/studentfeelist'); ?>"><a href="<?php echo base_url(); ?>studentfee/studentfeelist"><i class="fa fa-angle-double-right"></i> Collect Fee List </a></li>
-						<?php } if ($this->rbac->hasPrivilege('collect_fee_list', 'can_view')) { ?>
+						<?php } if ($this->rbac->hasPrivilege('receipt_book', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('Reports/receipt-book'); ?>"><a href="<?php echo base_url(); ?>studentfee/receipt_book"><i class="fa fa-angle-double-right"></i> Receipt Book</a></li>
 						<?php } if ($this->rbac->hasPrivilege('fee_register', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('Reports/fee_register'); ?>"><a href="<?php echo base_url(); ?>studentfee/fee_register"><i class="fa fa-angle-double-right"></i> Fee Register</a></li>
@@ -360,7 +362,7 @@
 							<li class="<?php echo set_Submenu('Reports/defaulter_list'); ?>"><a href="<?php echo base_url(); ?>report/defaulter_list"><i class="fa fa-angle-double-right"></i> Defaulter List</a></li>
 						<?php } if ($this->rbac->hasPrivilege('delete_fee_list', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('studentfee/studentfee_deletedlist'); ?>"><a href="<?php echo base_url(); ?>studentfee/studentfee_deletedlist"><i class="fa fa-angle-double-right"></i> Delete Fee List </a></li>
-						<?php } if ($this->rbac->hasPrivilege('defaulter_list', 'can_view')) { ?>
+						<?php } if ($this->rbac->hasPrivilege('search_fee_slip', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('studentfee/search_fee_slip'); ?>"><a href="<?php echo base_url(); ?>studentfee/search_fee_slip"><i class="fa fa-angle-double-right"></i> Search Fee Slip</a></li>
 						<?php } if ($this->rbac->hasPrivilege('student_ledger', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="#<?php //echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Student Ledger</a></li>
@@ -370,7 +372,7 @@
 							<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="#<?php //echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Quick Payment</a></li>
 						<?php //} if ($this->rbac->hasPrivilege('fee_reminder', 'can_view')) { ?>
 							<!--<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="<?php echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Fee Reminder</a></li>-->
-						<?php } if ($this->rbac->hasPrivilege('fee_collection_reports', 'can_view')) { ?>
+						<?php } if ($this->rbac->hasPrivilege('fee_all_reports', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('Reports/finance') || set_Submenu('reports/studenttransportdetails') ? 'active' : ''; ?>"><a href="<?php echo base_url(); ?>report/finance"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 						<?php } ?>
 					</ul>
@@ -564,7 +566,7 @@
 					$this->rbac->hasPrivilege('design_marksheet', 'can_view') ||
 					$this->rbac->hasPrivilege('print_marksheet', 'can_view') ||
 					$this->rbac->hasPrivilege('design_report_card', 'can_view') ||
-					$this->rbac->hasPrivilege('report_card', 'can_view') ||
+					$this->rbac->hasPrivilege('print_report_card', 'can_view') ||
 					$this->rbac->hasPrivilege('marks_grade', 'can_view') ||
 					$this->rbac->hasPrivilege('terms_grade', 'can_view') ||
 					$this->rbac->hasPrivilege('exam_section_reports', 'can_view')
@@ -614,7 +616,7 @@
 							<li class="<?php if($this->uri->segment(3)=='marksheet'){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>admin/examresult/marksheet"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('print') . " " . $this->lang->line('marksheet'); ?></a></li>
 						<?php } if ($this->rbac->hasPrivilege('design_report_card', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('Examinations/reportcard'); ?>"><a href="<?php echo site_url('admin/reportcard'); ?>"><i class="fa fa-angle-double-right"></i>  <?php echo $this->lang->line('design') . " " . $this->lang->line('report_card') ?></a></li>
-						<?php } if ($this->rbac->hasPrivilege('report_card', 'can_view')) { ?>
+						<?php } if ($this->rbac->hasPrivilege('print_report_card', 'can_view')) { ?>
 							<li class="<?php if($this->uri->segment(3)=='reportcard'){ echo 'active'; } ?>"><a href="<?php echo base_url(); ?>admin/examresult/reportcard"><i class="fa fa-angle-double-right"></i>  <?php echo $this->lang->line('print') . " " . $this->lang->line('report_card'); ?></a></li>
 						<?php } if ($this->rbac->hasPrivilege('marks_grade', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('Examinations/grade'); ?>"><a href="<?php echo base_url(); ?>admin/grade"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('marks_grade'); ?></a></li>

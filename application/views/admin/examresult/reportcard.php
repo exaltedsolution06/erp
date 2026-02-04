@@ -107,7 +107,9 @@
 
 									</div>
 
-
+								<?php
+								if ($this->rbac->hasPrivilege('print_report_card', 'can_add')) {
+									?>
 									<div class="col-sm-3">
 										
 										 <label>Terms</label><small class="req"> *</small>
@@ -151,6 +153,7 @@
 										<label></label> <br>  
 										<button  class="btn btn-info btn-sm printSelected pull-right" type="submit" name="generate" title="generate multiple certificate"><?php echo $this->lang->line('generate'); ?></button>
 									</div>
+									<?php } ?>
                                 </div>
 
 
@@ -173,7 +176,11 @@
                                     <table class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
+											<?php
+											if ($this->rbac->hasPrivilege('print_report_card', 'can_add')) {
+												?>
                                                 <th><input type="checkbox" id="select_all" /></th>
+												<?php } ?>
                                                 <th><?php echo $this->lang->line('admission_no'); ?></th>
                                                 <th><?php echo $this->lang->line('student_name'); ?></th>
                                                 <th><?php echo $this->lang->line('father_name'); ?></th>
@@ -202,10 +209,13 @@
 														<input type="hidden"   name="exam_group_class_batch_exam_student_id[]" id="std<?php echo $student_value->student_id; ?>">
 
                                                         </td>-->
+														<?php
+													if ($this->rbac->hasPrivilege('print_report_card', 'can_add')) {
+														?>
 														<td class="text-center"><input type="checkbox" class="checkbox center-block"  name="exam_group_class_batch_exam_student_id[]" data-student_id="<?php echo $student_value->student_id; ?>" value="<?php echo $student_value->student_id; ?>">
 
                                                             </td>
-														  
+														<?php } ?>  
 														
                                                         <td><?php echo $student_value->admission_no; ?></td>
                                                         <td>

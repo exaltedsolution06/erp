@@ -452,7 +452,7 @@ class Examresult extends Admin_Controller {
     }
 
     public function rankreport() {
-        if (!$this->rbac->hasPrivilege('rank_report', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('exam_section_reports', 'can_view')) {
             access_denied();
         }
 

@@ -180,9 +180,11 @@ $language_name = $language["short_code"];
                                         <form action="" method="post">
                                             <div class="col-md-12 p-5" style="padding:1rem !important">
                                                 <div class="row ">
+												<?php if ($this->rbac->hasPrivilege('student_full_details', 'can_view')) { ?>
                                                     <div class="col-sm-12" style="text-align: -webkit-right;;">
                                                         <a href="<?=base_url('student/view/'.$student['id'])?>">Edit</a>
                                                     </div>
+												<?php } ?>
                                                     <div class="col-sm-12">
                                                         <input class="form-check-input month-check" type="checkbox" id="select_all">
                                                         <label for="select_all">Select All</label>
@@ -282,7 +284,9 @@ $language_name = $language["short_code"];
                                             } 
                                             ?>
                                             <th>Total</th>
+											<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_edit')) { ?>
                                             <th>Discount</th>
+											<?php } ?>
                                             <th>Received</th>
                                             <th>Balance</th>
                                         </tr>
@@ -335,7 +339,9 @@ $language_name = $language["short_code"];
                                                 <?php endforeach; ?>
 
                                                 <th><?= $total ?> <input type="hidden" name="total[]" value="<?=$total?>"> </th>
+												<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_edit')) { ?>
                                                 <th><input type="text" style="width: 100px;" class="rec_discount" name="rec_discount[]" id="total_get_discount_<?=$aa?>" oninput="calculateDisData(this,<?=$aa?>)" value="<?=$rec_discount[$row->id];?>"></th>
+												<?php } ?>
                                                 <th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id]);?>"></th>
 												
 												<th><?= $total-$rec_discount[$row->id]-($received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id])) ?></th>

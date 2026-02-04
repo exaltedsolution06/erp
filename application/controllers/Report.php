@@ -447,6 +447,9 @@ class Report extends Admin_Controller
 	
 	public function fee_card()
     {
+		if (!$this->rbac->hasPrivilege('fee_card', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/fee_card');
         //$this->session->set_userdata('subsub_menu', 'Reports/finance/onlinefees_report');
@@ -546,7 +549,9 @@ class Report extends Admin_Controller
 	
     public function onlinefees_report()
     {
-
+		if (!$this->rbac->hasPrivilege('fee_card', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/finance');
         $this->session->set_userdata('subsub_menu', 'Reports/finance/onlinefees_report');
@@ -858,7 +863,7 @@ class Report extends Admin_Controller
 
     public function examinations()
     {
-        if (!$this->rbac->hasPrivilege('rank_report', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('exam_section_reports', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Reports');
@@ -1197,6 +1202,9 @@ class Report extends Admin_Controller
 
     public function finance()
     {
+		if (!$this->rbac->hasPrivilege('fee_all_reports', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/finance');
         $this->session->set_userdata('subsub_menu', '');
@@ -1478,6 +1486,9 @@ class Report extends Admin_Controller
     }
 	public function defaulter_list()
     {
+		if (!$this->rbac->hasPrivilege('defaulter_list', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/defaulter_list');
         //$this->session->set_userdata('subsub_menu', 'Reports/finance/defaulter_list');

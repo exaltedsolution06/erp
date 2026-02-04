@@ -510,6 +510,9 @@ class Reportcard extends Admin_Controller {
     }
 
     public function view() {
+		if (!$this->rbac->hasPrivilege('design_report_card', 'can_view')) {
+            access_denied();
+        }
         $id = $this->input->post('certificateid');
         $output = '';
         $data = array();

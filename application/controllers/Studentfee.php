@@ -421,7 +421,7 @@ class Studentfee extends Admin_Controller
     }
 	public function receipt_book()
     {
-        if (!$this->rbac->hasPrivilege('collect_fee', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('receipt_book', 'can_view')) {
             access_denied();
         }
 		$this->session->set_userdata('top_menu', 'Reports');
@@ -761,7 +761,7 @@ class Studentfee extends Admin_Controller
 	public function fee_register()
     {
         // receipts		
-        if (!$this->rbac->hasPrivilege('fees_statement', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('fee_register', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Reports');
@@ -866,7 +866,7 @@ class Studentfee extends Admin_Controller
         // receipts
      
 				
-        if (!$this->rbac->hasPrivilege('fees_statement', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee_list', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Reports');
@@ -1262,7 +1262,7 @@ class Studentfee extends Admin_Controller
 
     public function edit($receipt_no)
     {
-		if (!$this->rbac->hasPrivilege('collect_fee', 'can_add')) {
+		if (!$this->rbac->hasPrivilege('collect_fee_list', 'can_edit')) {
             access_denied();
         }
 		$receipt_no = base64_decode($receipt_no);
@@ -1823,7 +1823,7 @@ class Studentfee extends Admin_Controller
             
         }
 		//$this->session->unset_flashdata('msgdelete');
-        if (!$this->rbac->hasPrivilege('search_fees_payment', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('search_fee_slip', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Fees Collection');
@@ -2146,7 +2146,7 @@ class Studentfee extends Admin_Controller
 
 
 
-        if (!$this->rbac->hasPrivilege('fees_statement', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee_list', 'can_view')) {
             access_denied();
         }
         // $this->session->set_userdata('top_menu', 'Reports');
@@ -2283,7 +2283,7 @@ class Studentfee extends Admin_Controller
 
 
 
-        if (!$this->rbac->hasPrivilege('fees_statement', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('delete_fee_list', 'can_view')) {
             access_denied();
         }
         // $this->session->set_userdata('top_menu', 'Reports');

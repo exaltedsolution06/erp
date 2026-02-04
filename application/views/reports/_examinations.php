@@ -11,7 +11,7 @@
 
 
                     <?php
-                    if ($this->rbac->hasPrivilege('rank_report', 'can_view')) {
+                    if ($this->rbac->hasPrivilege('exam_section_reports', 'can_view')) {
                         ?> 
                         <li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/examinations/rankreport'); ?>"><a href="<?php echo base_url(); ?>admin/examresult/rankreport"><i class="fa fa-file-text-o"></i> <?php echo $this->lang->line('rank') . " " . $this->lang->line('report'); ?></a></li>
                             <?php

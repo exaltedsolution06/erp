@@ -209,7 +209,7 @@ class Admitcard extends Admin_Controller
     public function edit($id)
     {
 
-        if (!$this->rbac->hasPrivilege('design_admit_card', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
             access_denied();
         }
         $data['title'] = 'Add Library';
@@ -376,6 +376,9 @@ class Admitcard extends Admin_Controller
 
     public function view()
     {
+		if (!$this->rbac->hasPrivilege('design_admit_card', 'can_view')) {
+            access_denied();
+        }
         $id                = $this->input->post('certificateid');
         $output            = '';
         $data              = array();
