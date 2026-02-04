@@ -15,7 +15,9 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">   
-            <?php if (($this->rbac->hasPrivilege('designation', 'can_add')) || ($this->rbac->hasPrivilege('designation', 'can_edit'))) { ?>
+            <?php 
+			$permission = ($type === 'edit') ? 'can_edit' : 'can_add';
+			if ($this->rbac->hasPrivilege('designation', $permission)){ ?>
                 <div class="col-md-4">     
                     <div class="box box-primary">
                         <div class="box-header with-border">
@@ -70,7 +72,7 @@
                 </div> 
             <?php } ?> 
             <div class="col-md-<?php
-            if (($this->rbac->hasPrivilege('designation', 'can_add')) || ($this->rbac->hasPrivilege('designation', 'can_edit'))) {
+			if ($this->rbac->hasPrivilege('designation', $permission)){
                 echo "8";
             } else {
                 echo "12";

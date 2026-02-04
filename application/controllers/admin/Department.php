@@ -14,7 +14,9 @@ class Department extends Admin_Controller {
     }
 
     function department() {
-
+		if (!$this->rbac->hasPrivilege('department', 'can_view')) {
+			access_denied();
+		}
         $this->session->set_userdata('top_menu', 'HR');
         $this->session->set_userdata('sub_menu', 'admin/department/department');
 
@@ -43,6 +45,7 @@ class Department extends Admin_Controller {
                 if (!$this->rbac->hasPrivilege('department', 'can_edit')) {
                     access_denied();
                 }
+				$data["type"] = 'edit';
             }
             if (!empty($departmenttypeid)) {
                 $data = array('department_name' => $type, 'is_active' => 'yes', 'id' => $departmenttypeid, 'session_id'=> $this->current_session);
@@ -61,7 +64,9 @@ class Department extends Admin_Controller {
     }
 
     function departmentedit($id) {
-
+		if (!$this->rbac->hasPrivilege('department', 'can_edit')) {
+			access_denied();
+		}
         $result = $this->department_model->getDepartmentType($id);
 		if(!$result)
 		{
@@ -78,7 +83,9 @@ class Department extends Admin_Controller {
     }
 
     function departmentdelete($id) {
-		
+		if (!$this->rbac->hasPrivilege('department', 'can_delete')) {
+			access_denied();
+		}
 		// by ES
 		$checkData['menu'] = 'staff';		
 		$checkData['table'] = 'staff';

@@ -110,9 +110,9 @@ class Modulepermission extends Public_Controller
 				'links' => [
 					['name' => 'Department',             'short_code' => 'department', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Designation',            'short_code' => 'designation', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Add Staff',               'short_code' => 'add_staff', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
+					['name' => 'Add Staff',               'short_code' => 'staff', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Staff Attendance',        'short_code' => 'staff_attendance', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Payroll',                 'short_code' => 'payroll', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
+					['name' => 'Payroll',                 'short_code' => 'staff_payroll', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Approve Leave Request',   'short_code' => 'approve_leave_request', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Apply Leave',              'short_code' => 'apply_leave', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Leave Type',               'short_code' => 'leave_type', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],

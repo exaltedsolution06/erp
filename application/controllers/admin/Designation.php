@@ -18,7 +18,9 @@ class Designation extends Admin_Controller {
     }
 
     function designation() {
-
+		if (!$this->rbac->hasPrivilege('designation', 'can_view')) {
+			access_denied();
+		}
         $this->session->set_userdata('top_menu', 'HR');
         $this->session->set_userdata('sub_menu', 'admin/designation/designation');
         $designation = $this->designation_model->get();
@@ -44,6 +46,7 @@ class Designation extends Admin_Controller {
                 if (!$this->rbac->hasPrivilege('designation', 'can_edit')) {
                     access_denied();
                 }
+				$data["type"] = 'edit';
             }
 
             if (!empty($designationid)) {
@@ -64,7 +67,9 @@ class Designation extends Admin_Controller {
     }
 
     function designationedit($id) {
-
+		if (!$this->rbac->hasPrivilege('designation', 'can_edit')) {
+			access_denied();
+		}
         $result = $this->designation_model->get($id);
 		if(!$result)
 		{
@@ -81,6 +86,9 @@ class Designation extends Admin_Controller {
     }
 
     function designationdelete($id) {
+		if (!$this->rbac->hasPrivilege('designation', 'can_delete')) {
+			access_denied();
+		}
 		// by ES
 		$checkData['menu'] = 'staff';		
 		$checkData['table'] = 'staff';

@@ -384,13 +384,13 @@
 		<!-- 5th Menu end -->
 		<!-- 6th Menu start -->
 		<?php
-			if ($this->module_lib->hasActive('human_resource') or 1==1) { // Human Resource module active check
+			if ($this->module_lib->hasActive('staff_management')) { // Human Resource module active check
 				if (
 					$this->rbac->hasPrivilege('department', 'can_view') ||
 					$this->rbac->hasPrivilege('designation', 'can_view') ||
-					$this->rbac->hasPrivilege('add_staff', 'can_view') ||
+					$this->rbac->hasPrivilege('staff', 'can_view') ||
 					$this->rbac->hasPrivilege('staff_attendance', 'can_view') ||
-					$this->rbac->hasPrivilege('payroll', 'can_view') ||
+					$this->rbac->hasPrivilege('staff_payroll', 'can_view') ||
 					$this->rbac->hasPrivilege('approve_leave_request', 'can_view') ||
 					$this->rbac->hasPrivilege('apply_leave', 'can_view') ||
 					$this->rbac->hasPrivilege('leave_type', 'can_view') ||
@@ -428,11 +428,11 @@
 								<li class="<?php echo set_Submenu('admin/department/department'); ?>"><a href="<?php echo base_url(); ?>admin/department/department"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('department'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('designation', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('admin/designation/designation'); ?>"><a href="<?php echo base_url(); ?>admin/designation/designation"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('designation'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('add_staff', 'can_view')) { ?>
+							<?php } if ($this->rbac->hasPrivilege('staff', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('HR/staff') || set_Submenu('admin/staff') ? 'active' : ''; ?>"><a href="<?php echo base_url(); ?>admin/staff"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('staff_directory'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('staff_attendance', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('admin/staffattendance'); ?>"><a href="<?php echo base_url(); ?>admin/staffattendance"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('staff_attendance'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('payroll', 'can_view')) { ?>
+							<?php } if ($this->rbac->hasPrivilege('staff_payroll', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('admin/payroll'); ?>"><a href="<?php echo base_url(); ?>admin/payroll"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('payroll'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('approve_leave_request', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('admin/leaverequest/leaverequest'); ?>"><a href="<?php echo base_url(); ?>admin/leaverequest/leaverequest"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('approve_leave_request'); ?></a></li>
