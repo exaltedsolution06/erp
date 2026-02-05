@@ -362,7 +362,7 @@ class Payroll extends Admin_Controller
 
     public function payrollreport()
     {
-        if (!$this->rbac->hasPrivilege('payroll_report', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('staff_management_report', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Reports');

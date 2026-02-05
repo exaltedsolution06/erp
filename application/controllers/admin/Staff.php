@@ -80,7 +80,7 @@ class Staff extends Admin_Controller
     public function disablestafflist()
     {
 
-        if (!$this->rbac->hasPrivilege('disable_staff', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('disabled_staff', 'can_view')) {
             access_denied();
         }
 
@@ -1333,7 +1333,7 @@ class Staff extends Admin_Controller
 
     public function disablestaff($id)
     {
-        if (!$this->rbac->hasPrivilege('disable_staff', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('disabled_staff', 'can_view')) {
 
             access_denied();
         }
@@ -1699,7 +1699,9 @@ class Staff extends Admin_Controller
 
     public function rating()
     {
-
+		if (!$this->rbac->hasPrivilege('teachers_rating', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'HR');
         $this->session->set_userdata('sub_menu', 'HR/rating');
         $this->load->view('layout/header');

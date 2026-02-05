@@ -115,11 +115,11 @@ class Modulepermission extends Public_Controller
 					['name' => 'Payroll',                 'short_code' => 'staff_payroll', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Approve Leave Request',   'short_code' => 'approve_leave_request', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Apply Leave',              'short_code' => 'apply_leave', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Leave Type',               'short_code' => 'leave_type', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Teachers Rateing',         'short_code' => 'teachers_rateing', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
+					['name' => 'Leave Type',               'short_code' => 'leave_types', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
+					['name' => 'Teachers Rateing',         'short_code' => 'teachers_rating', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Staff Timeline',           'short_code' => 'staff_timeline', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Disabled Staff',           'short_code' => 'disabled_staff', 'add' => false, 'view' => true,  'edit' => true,  'delete' => false],
-					['name' => 'Staff All Report',               'short_code' => 'staff_all_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Staff All Report',               'short_code' => 'staff_management_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[

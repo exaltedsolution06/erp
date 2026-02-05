@@ -1789,7 +1789,9 @@ class Report extends Admin_Controller
 
     public function staff_report()
     {
-
+		if (!$this->rbac->hasPrivilege('staff_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/human_resource');
         $this->session->set_userdata('subsub_menu', 'Reports/human_resource/staff_report');

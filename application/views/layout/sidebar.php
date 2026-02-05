@@ -438,7 +438,7 @@
 								<li class="<?php echo set_Submenu('admin/leaverequest/leaverequest'); ?>"><a href="<?php echo base_url(); ?>admin/leaverequest/leaverequest"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('approve_leave_request'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('apply_leave', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('admin/staff/leaverequest'); ?>"><a href="<?php echo base_url(); ?>admin/staff/leaverequest"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('apply_leave'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('leave_type', 'can_view')) { ?>
+							<?php } if ($this->rbac->hasPrivilege('leave_types', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('admin/leavetypes'); ?>"><a href="<?php echo base_url(); ?>admin/leavetypes"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('leave_type'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('teachers_rating', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('HR/rating'); ?>"><a href="<?php echo base_url(); ?>admin/staff/rating"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('teachers') . " " . $this->lang->line('rating'); ?></a></li>
