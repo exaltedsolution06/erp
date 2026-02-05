@@ -129,17 +129,17 @@ class Modulepermission extends Public_Controller
 					['name' => 'Attendance By Date',   'short_code' => 'attendance_by_date', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Approve Leave',         'short_code' => 'approve_leave', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Add Leave',             'short_code' => 'add_leave', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Attendance All Reports',           'short_code' => 'attendance_all_reports', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Attendance All Reports',           'short_code' => 'attendance_section_reports', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
 				'module' => 'Online Exam Section',
 				'links' => [
 					['name' => 'Online Exam',            'short_code' => 'online_exam', 'add' => true, 'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Add Question Paper',     'short_code' => 'add_question_paper', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Assign / View Students', 'short_code' => 'online_assign_view_students', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Import Questions',       'short_code' => 'import_questions', 'add' => true,  'view' => true,  'edit' => false, 'delete' => false],
-					['name' => 'Online Exam All Reports',             'short_code' => 'online_exam_all_reports', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Add Question Paper',     'short_code' => 'question_paper', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
+					['name' => 'Assign / View Students', 'short_code' => 'online_assign_view_student', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
+					['name' => 'Import Questions',       'short_code' => 'import_question', 'add' => true,  'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Online Exam All Reports',             'short_code' => 'online_exam_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[

@@ -216,7 +216,7 @@ class Stuattendence extends Admin_Controller {
 
     function classattendencereport() {
 
-        if (!$this->rbac->hasPrivilege('attendance_report', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('attendance_section_reports', 'can_view')) {
             access_denied();
         }
 

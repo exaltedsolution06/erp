@@ -456,7 +456,7 @@
 		<!-- 6th Menu end -->
 		<!-- 7th Menu start -->
 		<?php
-			if ($this->module_lib->hasActive('attendance') or 1==1) { // Agar Attendance module active hai
+			if ($this->module_lib->hasActive('attendance_section')) { // Agar Attendance module active hai
 				if (
 					$this->rbac->hasPrivilege('student_attendance', 'can_view') ||
 					$this->rbac->hasPrivilege('attendance_by_date', 'can_view') ||
@@ -516,7 +516,7 @@
 		<!-- 7th Menu end -->
 		<!-- 8th Menu start -->
 		<?php
-			if ($this->module_lib->hasActive('online_examination') or 1==1) { // Online Examination module active check
+			if ($this->module_lib->hasActive('online_exam_section')) { // Online Examination module active check
 				if (
 					$this->rbac->hasPrivilege('online_exam', 'can_view') ||
 					$this->rbac->hasPrivilege('question_paper', 'can_view') ||

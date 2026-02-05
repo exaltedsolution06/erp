@@ -9,7 +9,7 @@ $language_name = $language["short_code"];
                 <div class="box box-primary" id="route">
                     <div class="box-header ptbnull">
                         <h3 class="box-title titlefix pt5">  <?php echo $this->lang->line('online') . " " . $this->lang->line('exam') . " " . $this->lang->line('list'); ?></h3>
-                        <?php if ($this->rbac->hasPrivilege('online_examination', 'can_add')) {
+                        <?php if ($this->rbac->hasPrivilege('online_exam', 'can_add')) {
                             ?>                        
                         <button class="btn btn-primary btn-sm pull-right question-btn" data-recordid="0"><i class="fa fa-plus"></i> <?php echo $this->lang->line('add') . " " . $this->lang->line('exam') ?></button>
                     <?php
@@ -117,12 +117,12 @@ if($subject_value->is_quiz){
 
     }
 
-    if ($this->rbac->hasPrivilege('add_questions_in_exam', 'can_view')) {
+    if ($this->rbac->hasPrivilege('question_paper', 'can_view')) {
         ?>
                                                 <button type="button" class="btn btn-default btn-xs" data-recordid="<?php echo $subject_value->id; ?>" data-is_quiz="<?php echo $subject_value->is_quiz; ?>" data-toggle="modal" data-target="#myQuestionModal" title="<?php echo $this->lang->line('add') . " " . $this->lang->line('question') ?>"><i class="fa fa-question-circle"></i></button>
                                                 <?php
 }
-    if ($this->rbac->hasPrivilege('online_examination', 'can_edit')) {
+    if ($this->rbac->hasPrivilege('online_exam', 'can_edit')) {
         ?>
                                                  <button type="button" class="btn btn-default btn-xs question-btn-edit" data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>" id="load" data-recordid="<?php echo $subject_value->id; ?>" data-loading-text="<i class='fa fa-spinner fa-spin '></i>" ><i class="fa fa-pencil"></i></button>
                                                 <?php
@@ -132,7 +132,7 @@ if($subject_value->is_quiz){
     <?php
 
 
-    if ($this->rbac->hasPrivilege('add_questions_in_exam', 'can_view')) {
+    if ($this->rbac->hasPrivilege('question_paper', 'can_view')) {
         ?>
  <button class="btn btn-default btn-xs exam_ques_list " data-recordid="<?php echo $subject_value->id; ?>" data-toggle="tooltip" title="<?php echo $this->lang->line('exam_questions_list'); ?>" data-loading-text="<i class='fa fa-spinner fa-spin '></i>"><i class="fa fa-file-text-o"></i></button>
 
@@ -155,7 +155,7 @@ if($subject_value->publish_result || ($subject_value->auto_publish_date != "0000
     ?>
 
 <?php
-if ($this->rbac->hasPrivilege('online_examination', 'can_delete')) {
+if ($this->rbac->hasPrivilege('online_exam', 'can_delete')) {
         ?>
                                                 <a data-placement="left" href="<?php echo base_url(); ?>admin/onlineexam/delete/<?php echo $subject_value->id; ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                     <i class="fa fa-remove"></i>

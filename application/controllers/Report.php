@@ -853,6 +853,9 @@ class Report extends Admin_Controller
 
     public function attendance()
     {
+		if (!$this->rbac->hasPrivilege('attendance_section_reports', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/attendance');
         $this->session->set_userdata('subsub_menu', '');
@@ -899,6 +902,9 @@ class Report extends Admin_Controller
 
     public function onlineexams()
     {
+		if (!$this->rbac->hasPrivilege('online_exam_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/online_examinations');
         $this->session->set_userdata('subsub_menu', 'Reports/online_examinations/onlineexams');
@@ -1000,7 +1006,9 @@ class Report extends Admin_Controller
 
     public function onlineexamattend()
     {
-
+		if (!$this->rbac->hasPrivilege('online_exam_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/online_examinations');
         $this->session->set_userdata('subsub_menu', 'Reports/online_examinations/onlineexamattend');
@@ -1056,7 +1064,9 @@ class Report extends Admin_Controller
 
     public function onlineexamrank()
     {
-
+		if (!$this->rbac->hasPrivilege('online_exam_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/online_examinations');
         $this->session->set_userdata('subsub_menu', 'Reports/online_examinations/onlineexamrank');
@@ -1871,7 +1881,9 @@ class Report extends Admin_Controller
 
     public function attendancereport()
     {
-
+		if (!$this->rbac->hasPrivilege('attendance_section_reports', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/attendance');
         $this->session->set_userdata('subsub_menu', 'Reports/attendence/attendancereport');
@@ -2418,6 +2430,9 @@ class Report extends Admin_Controller
 
     public function daily_attendance_report()
     {
+		if (!$this->rbac->hasPrivilege('attendance_section_reports', 'can_view')) {
+            access_denied();
+        }
         $data = array();
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/attendance');
