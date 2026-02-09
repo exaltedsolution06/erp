@@ -259,11 +259,12 @@ class Modulepermission extends Public_Controller
 				'module' => 'Stock Management',
 				'links' => [
 					['name' => 'Item Category', 'short_code' => 'item_category', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Add Item',      'short_code' => 'add_item', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Add Item Stock','short_code' => 'add_item_stock', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
+					['name' => 'Add Item',      'short_code' => 'item', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
+					['name' => 'Add Item Stock','short_code' => 'item_stock', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Issue Item',    'short_code' => 'issue_item', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Item Store',    'short_code' => 'item_store', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Stock All Report',    'short_code' => 'stock_all_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
+					['name' => 'Item Store',    'short_code' => 'store', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
+					['name' => 'Item Supplier', 'short_code' => 'supplier', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
+					['name' => 'Stock All Report',    'short_code' => 'stock_management_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
 				]
 			],
 			[
@@ -283,7 +284,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Create Ticket', 'short_code' => 'create_ticket', 'add' => true, 'view' => true, 'edit' => true,  'delete' => false],
 					['name' => 'Track Ticket',  'short_code' => 'track_ticket', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Closed Ticket', 'short_code' => 'closed_ticket', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Ticket All Report',    'short_code' => 'ticket_all_report', 'add' => false,  'view' => true,'edit' => false, 'delete' => false],
+					['name' => 'Ticket All Report',    'short_code' => 'ticket_section_report', 'add' => false,  'view' => true,'edit' => false, 'delete' => false],
 				]
 			],
 			[

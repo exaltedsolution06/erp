@@ -10,7 +10,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
-            <?php if ($this->rbac->hasPrivilege('item_stock', 'can_add') || $this->rbac->hasPrivilege('item_stock', 'can_edit')) { ?> 
+            <?php if ($this->rbac->hasPrivilege('item_stock', 'can_edit')) { ?> 
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
@@ -149,7 +149,7 @@
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('item_stock', 'can_add') || $this->rbac->hasPrivilege('item_stock', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('item_stock', 'can_edit')) {
                 echo "8";
             } else {
                 echo "12";
@@ -243,13 +243,15 @@
                                                         </a>
                                                     <?php }
                                                     ?>
-
+													<?php if ($this->rbac->hasPrivilege('item_stock', 'can_edit')) { ?> 
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/itemstock/edit/<?php echo $items['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
+													<?php } if ($this->rbac->hasPrivilege('item_stock', 'can_delete')) { ?> 
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/itemstock/delete/<?php echo $items['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                         <i class="fa fa-remove"></i>
                                                     </a>
+													<?php } ?> 
                                                 </td>
                                             </tr>
                                             <?php

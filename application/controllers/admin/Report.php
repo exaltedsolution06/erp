@@ -166,6 +166,9 @@ class Report extends Admin_Controller
 		$this->load->view('layout/footer', $data);
     }
 	public function ticket_section_reports() {
+		if (!$this->rbac->hasPrivilege('ticket_section_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'report/ticket-section');
         $data['title'] = 'Upcoming';

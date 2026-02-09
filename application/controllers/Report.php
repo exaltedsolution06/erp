@@ -899,7 +899,9 @@ class Report extends Admin_Controller
 
     public function inventory()
     {
-
+		if (!$this->rbac->hasPrivilege('stock_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/inventory');
         $this->session->set_userdata('subsub_menu', '');
@@ -1128,6 +1130,9 @@ class Report extends Admin_Controller
 
     public function inventorystock()
     {
+		if (!$this->rbac->hasPrivilege('stock_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/inventory');
         $this->session->set_userdata('subsub_menu', 'Reports/inventory/inventorystock');
@@ -1155,7 +1160,9 @@ class Report extends Admin_Controller
 
     public function additem()
     {
-
+		if (!$this->rbac->hasPrivilege('stock_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/inventory');
         $this->session->set_userdata('subsub_menu', 'Reports/inventory/additem');
@@ -1188,7 +1195,9 @@ class Report extends Admin_Controller
 
     public function issueinventory()
     {
-
+		if (!$this->rbac->hasPrivilege('stock_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/inventory');
         $this->session->set_userdata('subsub_menu', 'Reports/inventory/issueinventory');

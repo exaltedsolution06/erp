@@ -8,7 +8,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
-            <?php if ($this->rbac->hasPrivilege('supplier', 'can_add') || $this->rbac->hasPrivilege('supplier', 'can_edit')) { ?>
+            <?php if ($this->rbac->hasPrivilege('supplier', 'can_edit')) { ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
@@ -71,7 +71,7 @@
                 </div><!--/.col (right) -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('supplier', 'can_add') || $this->rbac->hasPrivilege('supplier', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('supplier', 'can_edit')) {
                 echo "8";
             } else {
                 echo "12";

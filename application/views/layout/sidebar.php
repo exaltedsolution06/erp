@@ -1014,14 +1014,14 @@
 		<!-- 17th Menu end -->
 		<!-- 18th Menu start --> 
 		<?php
-			if ($this->module_lib->hasActive('stock') or 1==1) {
+			if ($this->module_lib->hasActive('stock_management')) {
 				if (
-					$this->rbac->hasPrivilege('issue_item', 'can_view') ||
-					$this->rbac->hasPrivilege('add_item_stock', 'can_view') ||
-					$this->rbac->hasPrivilege('add_item', 'can_view') ||
 					$this->rbac->hasPrivilege('item_category', 'can_view') ||
-					$this->rbac->hasPrivilege('item_store', 'can_view') ||
-					$this->rbac->hasPrivilege('item_supplier', 'can_view') ||
+					$this->rbac->hasPrivilege('item', 'can_view') ||
+					$this->rbac->hasPrivilege('item_stock', 'can_view') ||
+					$this->rbac->hasPrivilege('issue_item', 'can_view') ||
+					$this->rbac->hasPrivilege('store', 'can_view') ||
+					$this->rbac->hasPrivilege('supplier', 'can_view') ||
 					$this->rbac->hasPrivilege('stock_management_report', 'can_view')
 				) {
 					//$CI = get_instance();
@@ -1047,13 +1047,13 @@
 						<ul class="treeview-menu">
 							<?php if ($this->rbac->hasPrivilege('item_category', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('itemcategory/index'); ?>"><a href="<?php echo base_url(); ?>admin/itemcategory"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('item_category'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('add_item', 'can_view')) { ?>
+							<?php } if ($this->rbac->hasPrivilege('item', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('Item/index'); ?>"><a href="<?php echo base_url(); ?>admin/item"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('add_item'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('add_item_stock', 'can_view')) { ?>
+							<?php } if ($this->rbac->hasPrivilege('item_stock', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('Itemstock/index'); ?>"><a href="<?php echo base_url(); ?>admin/itemstock"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('add_item_stock'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('issue_item', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('issueitem/index'); ?>"><a href="<?php echo base_url(); ?>admin/issueitem"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('issue_item'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('item_store', 'can_view')) { ?>
+							<?php } if ($this->rbac->hasPrivilege('store', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('itemstore/index'); ?>"><a href="<?php echo base_url(); ?>admin/itemstore"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('item_store'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('item_supplier', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('itemsupplier/index'); ?>"><a href="<?php echo base_url(); ?>admin/itemsupplier"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('item_supplier'); ?></a></li>
@@ -1067,9 +1067,58 @@
 			}
 		?>
 		<!-- 18th Menu end -->
+		
 		<!-- 19th Menu start --> 
 		<?php
-			if ($this->module_lib->hasActive('ticket') or 1==1) {
+			if ($this->module_lib->hasActive('front_web')) {
+				if (
+					$this->rbac->hasPrivilege('add_webs_links', 'can_view') ||
+					$this->rbac->hasPrivilege('add_sub_links', 'can_view') ||
+					$this->rbac->hasPrivilege('banner_image', 'can_view') ||
+					$this->rbac->hasPrivilege('gallery_image', 'can_view') ||
+					$this->rbac->hasPrivilege('events', 'can_view') ||
+					$this->rbac->hasPrivilege('new_updates', 'can_view')
+				) {
+					$activeFwMenu="";
+					if(set_Submenu('frontweb/web-link')
+						|| set_Submenu('frontweb/sub-link')
+						|| set_Submenu('frontweb/banner-image')
+						|| set_Submenu('frontweb/gallery-image')
+						|| set_Submenu('frontweb/events')
+						|| set_Submenu('frontweb/new-updates')
+					){
+						$activeFwMenu="active";
+					}
+		?>
+					<li class="treeview <?php echo $activeFwMenu; ?>">
+						<a href="#">
+							<i class="fa fa-ticket ftlayer"></i> <span>Front Web</span>
+							<i class="fa fa-angle-left pull-right"></i>
+						</a>
+						<ul class="treeview-menu">
+							<?php if ($this->rbac->hasPrivilege('add_webs_links', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('frontweb/web-link'); ?>"><a href="<?php echo base_url(); ?>frontweb/web_link"><i class="fa fa-angle-double-right"></i> Add Webs Links</a></li>
+							<?php } if ($this->rbac->hasPrivilege('add_sub_links', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('frontweb/sub-link'); ?>"><a href="<?php echo base_url(); ?>frontweb/sub_link"><i class="fa fa-angle-double-right"></i> Add Sub-Links</a></li>
+							<?php } if ($this->rbac->hasPrivilege('banner_image', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('frontweb/banner-image'); ?>"><a href="<?php echo base_url(); ?>frontweb/banner_image"><i class="fa fa-angle-double-right"></i> Banner Image</a></li>
+							<?php } if ($this->rbac->hasPrivilege('gallery_image', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('frontweb/gallery-image'); ?>"><a href="<?php echo base_url(); ?>frontweb/gallery_image"><i class="fa fa-angle-double-right"></i> Gallery Image</a></li>
+							<?php } if ($this->rbac->hasPrivilege('events', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('frontweb/events'); ?>"><a href="<?php echo base_url(); ?>frontweb/events"><i class="fa fa-angle-double-right"></i> Events</a></li>
+							<?php } if ($this->rbac->hasPrivilege('new_updates', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('frontweb/new-updates'); ?>"><a href="<?php echo base_url(); ?>frontweb/new_updates"><i class="fa fa-angle-double-right"></i> New Updates</a></li>
+							<?php } ?>
+						</ul>
+					</li>
+					<?php
+				}
+			}
+		?>
+		<!-- 19th Menu end -->
+		<!-- 19th Menu start --> 
+		<?php
+			if ($this->module_lib->hasActive('ticket_section')) {
 				if (
 					$this->rbac->hasPrivilege('create_ticket', 'can_view') ||
 					$this->rbac->hasPrivilege('track_ticket', 'can_view') ||
@@ -1080,10 +1129,7 @@
 					//$session_sub_menu = $CI->session->userdata('sub_menu');
 					//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
 					$activeTsMenu="";
-					if(set_Submenu('issueitem/index')
-						|| set_Submenu('Itemstock/index')
-						|| set_Submenu('Item/index')
-						|| set_Submenu('report/ticket-section')
+					if(set_Submenu('report/ticket-section')
 					){
 						$activeTsMenu="active";
 					}
@@ -1112,7 +1158,7 @@
 		<!-- 19th Menu end -->
 		<!-- 20th Menu start --> 
         <?php
-            if ($this->module_lib->hasActive('system_settings') or 1==1) {
+            if ($this->module_lib->hasActive('system_setting')) {
                 if (
                     $this->rbac->hasPrivilege('general_setting', 'can_edit') ||
                     $this->rbac->hasPrivilege('session_setting', 'can_view') ||
