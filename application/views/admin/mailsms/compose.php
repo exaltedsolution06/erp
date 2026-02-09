@@ -112,8 +112,11 @@
                                 <!-- /.box-body -->
                                 <div class="box-footer">
                                     <div class="pull-right">
+									<?php
+									if ($this->rbac->hasPrivilege('send_email', 'can_add')) {
+									?>
                                         <button type="submit" class="btn btn-primary submit_group" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Sending" ><i class="fa fa-envelope-o"></i> <?php echo $this->lang->line('send'); ?></button>
-
+									<?php } ?>
                                     </div>
 
                                 </div>
@@ -212,7 +215,11 @@
                                 <!-- /.box-body -->
                                 <div class="box-footer">
                                     <div class="pull-right">
+									<?php
+									if ($this->rbac->hasPrivilege('send_email', 'can_add')) {
+									?>
                                         <button type="submit" class="btn btn-primary submit_individual" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Sending" ><i class="fa fa-envelope-o"></i> <?php echo $this->lang->line('send'); ?></button>
+									<?php } ?>
                                     </div>
 
                                 </div>
@@ -281,8 +288,12 @@
                                 <!-- /.box-body -->
                                 <div class="box-footer">
                                     <div class="pull-right">
+									<?php
+									if ($this->rbac->hasPrivilege('send_email', 'can_add')) {
+									?>
                                         <button type="submit" class="btn btn-primary submit_class" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Sending" ><i class="fa fa-envelope-o"></i> <?php echo $this->lang->line('send'); ?></button>
                                     </div>
+									<?php } ?>
                                 </div>
                             </form>
                         </div>
@@ -377,8 +388,11 @@
                                 <!-- /.box-body -->
                                 <div class="box-footer">
                                     <div class="pull-right">
+									<?php
+									if ($this->rbac->hasPrivilege('send_email', 'can_add')) {
+									?>
                                         <button type="submit" class="btn btn-primary submit_birthday" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Sending" ><i class="fa fa-envelope-o"></i> <?php echo $this->lang->line('send'); ?></button>
-
+									<?php } ?>
                                     </div>
 
                                 </div>

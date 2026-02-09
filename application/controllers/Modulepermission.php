@@ -179,7 +179,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Manage Syllabus Status','short_code' => 'manage_syllabus_status', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Lesson',                'short_code' => 'lesson', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Topic',                 'short_code' => 'topic', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Lesson All Report',             'short_code' => 'lesson_all_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Lesson All Report',             'short_code' => 'lesson_plan_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -187,7 +187,7 @@ class Modulepermission extends Public_Controller
 				'links' => [
 					['name' => 'Add Homework',          'short_code' => 'add_homework', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Homework Evaluation',  'short_code' => 'homework_evaluation', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Homework All Report',            'short_code' => 'homework_all_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Homework All Report',            'short_code' => 'homework_section_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -198,7 +198,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Study Material',  'short_code' => 'study_material', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Syllabus',        'short_code' => 'syllabus', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Other Download',  'short_code' => 'other_download', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Download All Report',      'short_code' => 'download_all_report', 'add' => true, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Download All Report',      'short_code' => 'download_section_report', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -211,6 +211,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Send SMS',        'short_code' => 'send_sms', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Send Whatsapp',   'short_code' => 'send_whatsapp', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Email / SMS Log', 'short_code' => 'email_sms_log', 'add' => true, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'All Report',      'short_code' => 'message_section_report', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -222,7 +223,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Generate ID Card',            'short_code' => 'generate_id_card', 'add' => true, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Staff ID Card',               'short_code' => 'staff_id_card', 'add' => true, 'view' => true, 'edit' => true,  'delete' => true],
 					['name' => 'Generate Staff ID Card',      'short_code' => 'generate_staff_id_card', 'add' => true, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Certificate All Reports',                 'short_code' => 'certificate_all_reports', 'add' => true, 'view' => false,'edit' => false, 'delete' => false],
+					['name' => 'Certificate All Reports',                 'short_code' => 'certificate_section_report', 'add' => false, 'view' => true,'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -233,7 +234,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Student',        'short_code' => 'add_student', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Add Staff Member',   'short_code' => 'add_staff_member', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Import Book',        'short_code' => 'import_book', 'add' => true, 'view' => true, 'edit' => true, 'delete' => false],
-					['name' => 'Library All Report',          'short_code' => 'library_all_report', 'add' => true, 'view' => false,'edit' => false,'delete' => false],
+					['name' => 'Library All Report',          'short_code' => 'library_management_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
 				]
 			],
 			[
@@ -242,7 +243,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Income Heads',   'short_code' => 'income_heads', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Add Income',     'short_code' => 'add_income', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Search Income',  'short_code' => 'search_income', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Income All Report',     'short_code' => 'income_all_report', 'add' => true, 'view' => false,'edit' => false,'delete' => false],
+					['name' => 'Income All Report',     'short_code' => 'income_section_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
 				]
 			],
 			[
@@ -251,7 +252,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Expense',     'short_code' => 'add_expense', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Search Expense',  'short_code' => 'search_expense', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Expense Head',    'short_code' => 'expense_head', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Expense All Report',      'short_code' => 'expense_all_report', 'add' => true, 'view' => false,'edit' => false,'delete' => false],
+					['name' => 'Expense All Report',      'short_code' => 'expense_section_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
 				]
 			],
 			[
@@ -262,7 +263,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Item Stock','short_code' => 'add_item_stock', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Issue Item',    'short_code' => 'issue_item', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Item Store',    'short_code' => 'item_store', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Stock All Report',    'short_code' => 'stock_all_report', 'add' => true, 'view' => false,'edit' => false,'delete' => false],
+					['name' => 'Stock All Report',    'short_code' => 'stock_all_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
 				]
 			],
 			[
@@ -282,7 +283,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Create Ticket', 'short_code' => 'create_ticket', 'add' => true, 'view' => true, 'edit' => true,  'delete' => false],
 					['name' => 'Track Ticket',  'short_code' => 'track_ticket', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Closed Ticket', 'short_code' => 'closed_ticket', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Ticket All Report',    'short_code' => 'ticket_all_report', 'add' => true,  'view' => false,'edit' => false, 'delete' => false],
+					['name' => 'Ticket All Report',    'short_code' => 'ticket_all_report', 'add' => false,  'view' => true,'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -311,7 +312,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Branch',   'short_code' => 'add_branch', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Overview',     'short_code' => 'overview', 'add' => true, 'view' => true,  'edit' => true, 'delete' => true],
 					['name' => 'Switch Branch','short_code' => 'switch_branch', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
-					['name' => 'Multi Branch All Report',   'short_code' => 'multi_branch_all_report', 'add' => true,  'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Multi Branch All Report',   'short_code' => 'multi_branch_all_report', 'add' => false,  'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
 			[

@@ -20,7 +20,7 @@
                     <div class="box-header ptbnull">
                         <h3 class="box-title titlefix"><?php echo $this->lang->line('event_list'); ?></h3>
                         <?php
-                        if ($this->rbac->hasPrivilege('event', 'can_add')) {
+                        if ($this->rbac->hasPrivilege('update_events', 'can_add')) {
                             ?> <div class="box-tools pull-right">
                                 <a href="<?php echo site_url('admin/front/events/create'); ?>" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> <?php echo $this->lang->line('add'); ?></a>
 
@@ -98,7 +98,7 @@
 
                                                     <td class="mailbox-date pull-right no-print">
                                                         <?php
-                                                        if ($this->rbac->hasPrivilege('event', 'can_edit')) {
+                                                        if ($this->rbac->hasPrivilege('update_events', 'can_edit')) {
                                                             ?>
                                                             <a data-placement="left" href="<?php echo site_url('admin/front/events/edit/' . $event['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                                 <i class="fa fa-pencil"></i>
@@ -106,7 +106,7 @@
 
                                                             <?php
                                                         }
-                                                        if ($this->rbac->hasPrivilege('event', 'can_delete')) {
+                                                        if ($this->rbac->hasPrivilege('update_events', 'can_delete')) {
                                                             ?>
                                                             <a data-placement="left" href="<?php echo site_url('admin/front/events/delete/' . $event['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                                 <i class="fa fa-remove"></i>

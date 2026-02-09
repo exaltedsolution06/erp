@@ -22,7 +22,7 @@ class Homework extends Admin_Controller
 
     public function index()
     {
-        if (!$this->rbac->hasPrivilege('homework', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('add_homework', 'can_view')) {
             access_denied();
         }
 
@@ -116,7 +116,7 @@ class Homework extends Admin_Controller
 
     public function create()
     {
-        if (!$this->rbac->hasPrivilege('homework', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('add_homework', 'can_add')) {
             access_denied();
         }
 
@@ -257,7 +257,7 @@ class Homework extends Admin_Controller
 
     public function getRecord()
     {
-        if (!$this->rbac->hasPrivilege('homework', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('add_homework', 'can_edit')) {
             access_denied();
         }
         $id             = $this->input->post('id');
@@ -270,7 +270,7 @@ class Homework extends Admin_Controller
     public function edit()
     {
 
-        if (!$this->rbac->hasPrivilege('homework', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('add_homework', 'can_edit')) {
             access_denied();
         }
         $id            = $this->input->post("homeworkid");
@@ -340,7 +340,7 @@ class Homework extends Admin_Controller
 
     public function delete($id)
     {
-        if (!$this->rbac->hasPrivilege('homework', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('add_homework', 'can_delete')) {
             access_denied();
         }
         if (!empty($id)) {
@@ -429,7 +429,7 @@ class Homework extends Admin_Controller
 
     public function evaluation_report()
     {
-        if (!$this->rbac->hasPrivilege('homehork_evaluation_report', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('homework_evaluation', 'can_view')) {
             access_denied();
         }
 

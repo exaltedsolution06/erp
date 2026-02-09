@@ -13,7 +13,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     <section class="content">
         <div class="row">
             <?php
-            if ($this->rbac->hasPrivilege('expense', 'can_add') || $this->rbac->hasPrivilege('expense', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('add_expense', 'can_edit')) {
                 ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
@@ -96,7 +96,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('expense', 'can_add') || $this->rbac->hasPrivilege('expense', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('add_expense', 'can_edit')) {
                 echo "8";
             } else {
                 echo "12";
@@ -173,14 +173,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <?php }
                                                     ?>
                                                     <?php
-                                                    if ($this->rbac->hasPrivilege('expense', 'can_edit')) {
+                                                    if ($this->rbac->hasPrivilege('add_expense', 'can_edit')) {
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/expense/edit/<?php echo $expense['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
                                                         <?php
                                                     }
-                                                    if ($this->rbac->hasPrivilege('expense', 'can_delete')) {
+                                                    if ($this->rbac->hasPrivilege('add_expense', 'can_delete')) {
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/expense/delete/<?php echo $expense['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>

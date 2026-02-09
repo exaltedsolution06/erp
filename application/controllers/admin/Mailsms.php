@@ -61,7 +61,7 @@ class Mailsms extends Admin_Controller {
     }
 
     public function compose() {
-        if (!$this->rbac->hasPrivilege('email', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('send_email', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Communicate');
@@ -109,7 +109,7 @@ class Mailsms extends Admin_Controller {
     }
 
     public function compose_sms() {
-        if (!$this->rbac->hasPrivilege('sms', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('send_sms', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Communicate');
@@ -197,7 +197,9 @@ class Mailsms extends Admin_Controller {
     }
 
     public function send_individual() {
-
+		if (!$this->rbac->hasPrivilege('send_email', 'can_add')) {
+            access_denied();
+        }
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('individual_title', $this->lang->line('title'), 'required');
         $this->form_validation->set_rules('individual_message', $this->lang->line('message'), 'required');
@@ -275,7 +277,9 @@ class Mailsms extends Admin_Controller {
     }
 
     public function send_birthday() {
-        
+        if (!$this->rbac->hasPrivilege('send_email', 'can_add')) {
+            access_denied();
+        }
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('user[]', $this->lang->line('recipient'), 'required');
         $this->form_validation->set_rules('birthday_title', $this->lang->line('title'), 'required');
@@ -348,6 +352,9 @@ class Mailsms extends Admin_Controller {
     }
 
     public function send_group() {
+		if (!$this->rbac->hasPrivilege('send_email', 'can_add')) {
+            access_denied();
+        }
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('group_title', $this->lang->line('title'), 'required');
         $this->form_validation->set_rules('group_message', $this->lang->line('message'), 'required');
@@ -454,7 +461,9 @@ class Mailsms extends Admin_Controller {
     }
 
     public function send_group_sms() {
-
+		if (!$this->rbac->hasPrivilege('send_sms', 'can_add')) {
+            access_denied();
+        }
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('group_title', $this->lang->line('title'), 'required');
         $this->form_validation->set_rules('group_message', $this->lang->line('message'), 'required');
@@ -559,6 +568,9 @@ class Mailsms extends Admin_Controller {
     }
 
     public function send_birthday_sms() {
+		if (!$this->rbac->hasPrivilege('send_sms', 'can_add')) {
+            access_denied();
+        }
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('user[]', $this->lang->line('recipient'), 'required');
         $this->form_validation->set_rules('birthday_title', $this->lang->line('title'), 'required');
@@ -640,7 +652,9 @@ class Mailsms extends Admin_Controller {
     }
 
     public function send_individual_sms() {
-
+		if (!$this->rbac->hasPrivilege('send_sms', 'can_add')) {
+            access_denied();
+        }
         $this->form_validation->set_error_delimiters('<li>', '</li>');
         $this->form_validation->set_rules('individual_title', $this->lang->line('title'), 'required');
         $this->form_validation->set_rules('individual_message', $this->lang->line('message'), 'required');
@@ -713,7 +727,9 @@ class Mailsms extends Admin_Controller {
     }
 
     public function send_class_sms() {
-
+		if (!$this->rbac->hasPrivilege('send_sms', 'can_add')) {
+            access_denied();
+        }
         $this->form_validation->set_error_delimiters('<li>', '</li>');
 
         $this->form_validation->set_rules('class_title', $this->lang->line('title'), 'required');
@@ -793,7 +809,9 @@ class Mailsms extends Admin_Controller {
     }
 
     public function send_class() {
-
+		if (!$this->rbac->hasPrivilege('send_email', 'can_add')) {
+            access_denied();
+        }
         $this->form_validation->set_error_delimiters('<li>', '</li>');
 
         $this->form_validation->set_rules('class_title', $this->lang->line('title'), 'required');

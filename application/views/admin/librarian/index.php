@@ -81,10 +81,11 @@
                                                     <?php echo $phone; ?>
                                                 </td>
                                                 <td class="mailbox-date pull-right">
+												<?php if ($this->rbac->hasPrivilege('issue_return', 'can_edit')) { ?> 
                                                     <a href="<?php echo base_url(); ?>admin/member/issue/<?php echo $member['lib_member_id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('issue_return'); ?>">
                                                         <i class="fa fa-sign-out"></i>
                                                     </a>
-
+												<?php } ?> 
 
                                                 </td>
 

@@ -11,7 +11,7 @@
     <section class="content">
         <div class="row">
             <?php
-            if ($this->rbac->hasPrivilege('upload_content', 'can_add')) {
+            if ($this->rbac->hasPrivilege('upload_section', 'can_add')) {
                 ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
@@ -143,7 +143,7 @@
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('upload_content', 'can_add')) {
+            if ($this->rbac->hasPrivilege('upload_section', 'can_add')) {
                 echo "8";
             } else {
                 echo "12";
@@ -236,7 +236,7 @@
                                                     <i class="fa fa-download"></i>
                                                 </a>
                                                 <?php
-                                                if ($this->rbac->hasPrivilege('upload_content', 'can_delete')) {
+                                                if ($this->rbac->hasPrivilege('upload_section', 'can_delete')) {
                                                     ?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/content/delete/<?php echo $data['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                         <i class="fa fa-remove"></i>

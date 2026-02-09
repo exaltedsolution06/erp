@@ -25,7 +25,7 @@ $language_name = $language["short_code"];
     <section class="content">
         <div class="row">
             <?php
-            if ($this->rbac->hasPrivilege('income', 'can_add')) {
+            if ($this->rbac->hasPrivilege('add_income', 'can_add')) {
                 ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
@@ -110,7 +110,7 @@ $language_name = $language["short_code"];
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('income', 'can_add')) {
+            if ($this->rbac->hasPrivilege('add_income', 'can_add')) {
                 echo "8";
             } else {
                 echo "12";
@@ -200,14 +200,14 @@ $language_name = $language["short_code"];
                                                     ?>
 
                                                     <?php
-                                                    if ($this->rbac->hasPrivilege('income', 'can_edit')) {
+                                                    if ($this->rbac->hasPrivilege('add_income', 'can_edit')) {
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/income/edit/<?php echo $income['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
                                                     <?php } ?>
                                                     <?php
-                                                    if ($this->rbac->hasPrivilege('income', 'can_delete')) {
+                                                    if ($this->rbac->hasPrivilege('add_income', 'can_delete')) {
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/income/delete/<?php echo $income['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>

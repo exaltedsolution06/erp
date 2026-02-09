@@ -15,7 +15,7 @@ class Income extends Admin_Controller {
 
     public function index() {
 
-        if (!$this->rbac->hasPrivilege('income', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('add_income', 'can_view')) {
             access_denied();
         }
 
@@ -79,7 +79,7 @@ class Income extends Admin_Controller {
     }
 
     public function view($id) {
-        if (!$this->rbac->hasPrivilege('income', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('add_income', 'can_view')) {
             access_denied();
         }
         $data['title'] = 'Fees Master List';
@@ -110,7 +110,7 @@ class Income extends Admin_Controller {
     }
 
     public function delete($id) {
-        if (!$this->rbac->hasPrivilege('income', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('add_income', 'can_delete')) {
             access_denied();
         }
         $data['title'] = 'Fees Master List';
@@ -176,7 +176,7 @@ class Income extends Admin_Controller {
     }
 
     public function edit($id) {
-        if (!$this->rbac->hasPrivilege('income', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('add_income', 'can_edit')) {
             access_denied();
         }
         $data['title'] = 'Edit Fees Master';
@@ -226,7 +226,7 @@ class Income extends Admin_Controller {
     }
 
     public function incomeSearch() {
-        if (!$this->rbac->hasPrivilege('search_due_fees', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('search_income', 'can_view')) {
             access_denied();
         }
         $data['searchlist'] = $this->customlib->get_searchtype();

@@ -634,7 +634,7 @@
 		<!-- 9th Menu end -->
 		<!-- 10th Menu start -->
         <?php
-            if ($this->module_lib->hasActive('lesson_plan') or 1==1) { // Lesson Plan module active check
+            if ($this->module_lib->hasActive('lesson_plan')) { // Lesson Plan module active check
 				if (
 					$this->rbac->hasPrivilege('manage_lesson_plan', 'can_view') ||
 					$this->rbac->hasPrivilege('manage_syllabus_status', 'can_view') ||
@@ -681,7 +681,7 @@
 		<!-- 10th Menu end -->
 		<!-- 11th Menu start --> 
 		<?php
-			if ($this->module_lib->hasActive('homework') or 1==1) { // Homework module active check
+			if ($this->module_lib->hasActive('homework_section')) { // Homework module active check
 				if (
 					$this->rbac->hasPrivilege('add_homework', 'can_view') ||
 					$this->rbac->hasPrivilege('homework_section_report', 'can_view')
@@ -716,7 +716,7 @@
 		<!-- 11th Menu end -->
 		<!-- 12th Menu start --> 
 		<?php
-			if ($this->module_lib->hasActive('download') or 1==1) {
+			if ($this->module_lib->hasActive('download_section')) {
 				if (
 					$this->rbac->hasPrivilege('upload_section', 'can_view') ||
 					$this->rbac->hasPrivilege('assignment', 'can_view') ||
@@ -767,9 +767,11 @@
 		<!-- 12th Menu end -->
 		<!-- 13th Menu start -->
 		<?php
-			if ($this->module_lib->hasActive('communication') or 1==1) { // Communication module active check
+			if ($this->module_lib->hasActive('message_section')) { // Communication module active check
 				if (
 					$this->rbac->hasPrivilege('notice_board', 'can_view') ||
+					$this->rbac->hasPrivilege('update_events', 'can_view') ||
+					$this->rbac->hasPrivilege('update_news', 'can_view') ||
 					$this->rbac->hasPrivilege('send_email', 'can_view') ||
 					$this->rbac->hasPrivilege('send_sms', 'can_view') ||
 					$this->rbac->hasPrivilege('send_whatsapp', 'can_view') ||
@@ -800,9 +802,9 @@
 						<ul class="treeview-menu">
 							<?php if ($this->rbac->hasPrivilege('notice_board', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('notification/index'); ?>"><a href="<?php echo base_url(); ?>admin/notification"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('notice_board'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('send_email', 'can_view')) { ?>
+							<?php } if ($this->rbac->hasPrivilege('update_events', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('admin/front/events'); ?>"><a href="<?php echo base_url(); ?>admin/front/events"><i class="fa fa-angle-double-right"></i> Update Events</a></li>
-							<?php } if ($this->rbac->hasPrivilege('send_email', 'can_view')) { ?>
+							<?php } if ($this->rbac->hasPrivilege('update_news', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('admin/front/notice'); ?>"><a href="<?php echo base_url(); ?>admin/front/notice"><i class="fa fa-angle-double-right"></i> Update News</a></li>
 							<?php } if ($this->rbac->hasPrivilege('send_email', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('Communicate/mailsms/compose'); ?>"><a href="<?php echo base_url(); ?>admin/mailsms/compose"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('send') . " " . $this->lang->line('email') ?></a></li>
@@ -824,12 +826,12 @@
 		<!-- 13th Menu end -->
 		<!-- 14th Menu start -->
 		<?php
-			if ($this->module_lib->hasActive('certificate') or 1==1) { // Certificate module active check
+			if ($this->module_lib->hasActive('certificate_section')) { // Certificate module active check
 				if (
 					$this->rbac->hasPrivilege('student_certificate', 'can_view') ||
 					$this->rbac->hasPrivilege('generate_certificate', 'can_view') ||
 					$this->rbac->hasPrivilege('student_id_card', 'can_view') ||
-					$this->rbac->hasPrivilege('generate_student_id_card', 'can_view') ||
+					$this->rbac->hasPrivilege('generate_id_card', 'can_view') ||
 					$this->rbac->hasPrivilege('staff_id_card', 'can_view') ||
 					$this->rbac->hasPrivilege('generate_staff_id_card', 'can_view') ||
 					$this->rbac->hasPrivilege('certificate_section_report', 'can_view')
@@ -861,7 +863,7 @@
 								<li class="<?php echo set_Submenu('admin/generatecertificate'); ?>"><a href="<?php echo base_url(); ?>admin/generatecertificate/"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('generate'); ?> <?php echo $this->lang->line('certificate'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('student_id_card', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('admin/studentidcard'); ?>"><a href="<?php echo base_url('admin/studentidcard/'); ?>"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('icard'); ?></a></li>
-							<?php } if ($this->rbac->hasPrivilege('generate_student_id_card', 'can_view')) { ?>
+							<?php } if ($this->rbac->hasPrivilege('generate_id_card', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('admin/generateidcard'); ?>"><a href="<?php echo base_url('admin/generateidcard/'); ?>"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('generate'); ?> <?php echo $this->lang->line('icard'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('staff_id_card', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('admin/staffidcard'); ?>"><a href="<?php echo base_url('admin/staffidcard/'); ?>"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('staff'); ?> <?php echo $this->lang->line('icard'); ?></a></li>
@@ -879,7 +881,7 @@
 		<!-- 14th Menu end -->
 		<!-- 15th Menu start -->            
 		<?php
-			if ($this->module_lib->hasActive('library') or 1==1) { // Library module active check
+			if ($this->module_lib->hasActive('library_management')) { // Library module active check
 				if (
 					$this->rbac->hasPrivilege('book_list', 'can_view') ||
 					$this->rbac->hasPrivilege('issue_return', 'can_view') ||
@@ -926,11 +928,11 @@
 		<!-- 15th Menu end -->
 		<!-- 16th Menu start --> 
 		<?php
-			if ($this->module_lib->hasActive('income') or 1==1) {
+			if ($this->module_lib->hasActive('income_section')) {
 				if (
+					$this->rbac->hasPrivilege('income_heads', 'can_view') ||
 					$this->rbac->hasPrivilege('add_income', 'can_view') ||
 					$this->rbac->hasPrivilege('search_income', 'can_view') ||
-					$this->rbac->hasPrivilege('income_heads', 'can_view') ||
 					$this->rbac->hasPrivilege('income_section_report', 'can_view')
 				) {
 					//$CI = get_instance();
@@ -969,7 +971,7 @@
 		<!-- 16th Menu end -->
 		<!-- 17th Menu start --> 
 		<?php
-			if ($this->module_lib->hasActive('expense') or 1==1) {
+			if ($this->module_lib->hasActive('expense_section')) {
 				if (
 					$this->rbac->hasPrivilege('add_expense', 'can_view') ||
 					$this->rbac->hasPrivilege('search_expense', 'can_view') ||

@@ -688,7 +688,9 @@ class Report extends Admin_Controller
 
     public function studentbookissuereport()
     {
-
+		if (!$this->rbac->hasPrivilege('library_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/library');
         $this->session->set_userdata('subsub_menu', 'Reports/library/book_issue_report');
@@ -729,7 +731,9 @@ class Report extends Admin_Controller
 
     public function bookduereport()
     {
-
+		if (!$this->rbac->hasPrivilege('library_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/library');
         $this->session->set_userdata('subsub_menu', 'Reports/library/bookduereport');
@@ -771,7 +775,9 @@ class Report extends Admin_Controller
 
     public function bookinventory()
     {
-
+		if (!$this->rbac->hasPrivilege('library_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/library');
         $this->session->set_userdata('subsub_menu', 'Reports/library/bookinventory');
@@ -879,6 +885,9 @@ class Report extends Admin_Controller
 
     public function library()
     {
+		if (!$this->rbac->hasPrivilege('library_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/library');
         $this->session->set_userdata('subsub_menu', '');
@@ -2049,6 +2058,9 @@ class Report extends Admin_Controller
 
     public function lesson_plan()
     {
+		if (!$this->rbac->hasPrivilege('lesson_plan_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/lesson_plan');
         $this->session->set_userdata('subsub_menu', 'Reports/lesson_plan/lesson_plan');
@@ -2155,6 +2167,9 @@ class Report extends Admin_Controller
 
     public function teachersyllabusstatus()
     {
+		if (!$this->rbac->hasPrivilege('lesson_plan_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/lesson_plan');
         $this->session->set_userdata('subsub_menu', 'Reports/lesson_plan/teachersyllabusstatus');

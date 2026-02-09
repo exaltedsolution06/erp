@@ -71,17 +71,21 @@
                                                 <td class="text text-right">
                                                     <?php
                                                     if ($teacher['libarary_member_id'] == 0) {
+														if ($this->rbac->hasPrivilege('add_staff_member', 'can_add')) {
                                                         ?>
 
                                                         <button  data-stdid="<?php echo $teacher['id'] ?>" class="btn btn-default btn-xs add-teacher" data-placement="left"  data-toggle="tooltip" title="<?php echo $this->lang->line('add'); ?>" >
                                                             <i class="fa fa-plus"></i>
                                                         </button>
                                                         <?php
+														}
                                                     } else {
+														if ($this->rbac->hasPrivilege('add_staff_member', 'can_delete')) {
                                                         ?>
                                                         <button type="button" class="btn btn-default btn-xs surrender-teacher" data-placement="left" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please Wait.." data-toggle="tooltip" data-memberid="<?php echo $member_id; ?>" title="<?php echo $this->lang->line('surrender_membership'); ?>"><i class="fa fa-mail-reply"></i></button>
 
                                                         <?php
+														}
                                                     }
                                                     ?>
                                                 </td>

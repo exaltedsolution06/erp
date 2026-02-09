@@ -13,7 +13,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     <section class="content">
         <div class="row">
             <?php
-            if ($this->rbac->hasPrivilege('income', 'can_add') || $this->rbac->hasPrivilege('income', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('add_income', 'can_edit')) {
                 ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
@@ -96,7 +96,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('income', 'can_add') || $this->rbac->hasPrivilege('income', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('add_income', 'can_edit')) {
                 echo "8";
             } else {
                 echo "12";
@@ -186,14 +186,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     ?>
 
                                                     <?php
-                                                    if ($this->rbac->hasPrivilege('income', 'can_edit')) {
+                                                    if ($this->rbac->hasPrivilege('add_income', 'can_edit')) {
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/income/edit/<?php echo $income['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
                                                     <?php } ?>
                                                     <?php
-                                                    if ($this->rbac->hasPrivilege('income', 'can_delete')) {
+                                                    if ($this->rbac->hasPrivilege('add_income', 'can_delete')) {
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/income/delete/<?php echo $income['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>
