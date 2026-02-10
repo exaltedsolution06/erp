@@ -24,12 +24,14 @@
 		   <!-- 1st Menu start -->
 
 		<?php
-			if ($this->module_lib->hasActive('software_subscription') or 1==1) {
+			if ($this->module_lib->hasActive('software_subscription')) {
 				if (
 					$this->rbac->hasPrivilege('create_package', 'can_view') ||
-					$this->rbac->hasPrivilege('track_ticket', 'can_view') ||
-					$this->rbac->hasPrivilege('closed_ticket', 'can_view') ||
-					$this->rbac->hasPrivilege('ticket_section_report', 'can_view')
+					$this->rbac->hasPrivilege('package_list', 'can_view') ||
+					$this->rbac->hasPrivilege('school_registration', 'can_view') ||
+					$this->rbac->hasPrivilege('subscription_details', 'can_view') ||
+					$this->rbac->hasPrivilege('invoice_details', 'can_view') ||
+					$this->rbac->hasPrivilege('software_subscription_report', 'can_view')
 				) {
 					//$CI = get_instance();
 					//$session_sub_menu = $CI->session->userdata('sub_menu');
@@ -49,17 +51,17 @@
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
-							<?php if ($this->rbac->hasPrivilege('package_create', 'can_view')) { ?>
+							<?php if ($this->rbac->hasPrivilege('create_package', 'can_view')) { ?>
 								<li class="<?php //echo set_Submenu('Package/create'); ?>"><a href="#<?php //echo base_url(); ?>package/create"><i class="fa fa-angle-double-right"></i> Create Package</a></li>
 							<?php } if ($this->rbac->hasPrivilege('package_list', 'can_view')) { ?>
 								<li class="<?php //echo set_Submenu('Package/index'); ?>"><a href="#<?php //echo base_url(); ?>package"><i class="fa fa-angle-double-right"></i> Package List</a></li>
-							<?php } if ($this->rbac->hasPrivilege('package_school_registration', 'can_view')) { ?>
+							<?php } if ($this->rbac->hasPrivilege('school_registration', 'can_view')) { ?>
 								<li class="<?php //echo set_Submenu('Package/school-registration'); ?>"><a href="#<?php //echo base_url(); ?>package/school_registration"><i class="fa fa-angle-double-right"></i> School Registration</a></li>
-							<?php } if ($this->rbac->hasPrivilege('package_subscription_details', 'can_view')) { ?>
+							<?php } if ($this->rbac->hasPrivilege('subscription_details', 'can_view')) { ?>
 								<li class="<?php //echo set_Submenu('Package/subscription-details'); ?>"><a href="#<?php //echo base_url(); ?>package/subscription_details"><i class="fa fa-angle-double-right"></i> Subscription Details</a></li>
-							<?php } if ($this->rbac->hasPrivilege('package_subscription_details', 'can_view')) { ?>
+							<?php } if ($this->rbac->hasPrivilege('invoice_details', 'can_view')) { ?>
 								<li class="<?php //echo set_Submenu('Package/invoice-details'); ?>"><a href="#<?php //echo base_url(); ?>package/invoice_details"><i class="fa fa-angle-double-right"></i> Invoice Details</a></li>
-							<?php } if ($this->rbac->hasPrivilege('package_invoice_details', 'can_view')) { ?>
+							<?php } if ($this->rbac->hasPrivilege('software_subscription_report', 'can_view')) { ?>
 								<li class="<?php //echo set_Submenu('Package/all-reports'); ?>"><a href="#<?php //echo base_url(); ?>package/all_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 							<?php } ?>
 						</ul>
@@ -1160,20 +1162,21 @@
         <?php
             if ($this->module_lib->hasActive('system_setting')) {
                 if (
-                    $this->rbac->hasPrivilege('general_setting', 'can_edit') ||
+                    $this->rbac->hasPrivilege('general_setting', 'can_view') ||
                     $this->rbac->hasPrivilege('session_setting', 'can_view') ||
-                    $this->rbac->hasPrivilege('notification_setting', 'can_edit') ||
-                    $this->rbac->hasPrivilege('sms_setting', 'can_edit') ||
-                    $this->rbac->hasPrivilege('email_setting', 'can_edit') ||
-                    $this->rbac->hasPrivilege('payment_methods', 'can_edit') ||
-                    $this->rbac->hasPrivilege('print_header_footer', 'can_edit') ||
+                    $this->rbac->hasPrivilege('notification_setting', 'can_view') ||
+                    $this->rbac->hasPrivilege('sms_setting', 'can_view') ||
+                    $this->rbac->hasPrivilege('email_setting', 'can_view') ||
+                    $this->rbac->hasPrivilege('payment_methods', 'can_view') ||
+                    $this->rbac->hasPrivilege('print_header_footer', 'can_view') ||
                     $this->rbac->hasPrivilege('roles_permissions', 'can_view') ||
                     $this->rbac->hasPrivilege('user_status', 'can_view') ||
                     $this->rbac->hasPrivilege('modules', 'can_view') ||
                     $this->rbac->hasPrivilege('custom_fields', 'can_view') ||
                     $this->rbac->hasPrivilege('system_fields', 'can_view') ||
                     $this->rbac->hasPrivilege('file_types', 'can_view') ||
-					$this->rbac->hasPrivilege('set_captcha', 'can_view')
+					$this->rbac->hasPrivilege('set_captcha', 'can_view') ||
+					$this->rbac->hasPrivilege('data_backup', 'can_view')
                 ) {
 					//$CI = get_instance();
 					//$session_sub_menu = $CI->session->userdata('sub_menu');
@@ -1246,7 +1249,7 @@
         <?php
 			$mainUrl = $this->setting_model->get_main_domain_url();
 			if($mainUrl.'/' == base_url()){
-            if ($this->module_lib->hasActive('multi_branch') or 1==1) {
+            if ($this->module_lib->hasActive('multi_branch')) {
                 if (
                     $this->rbac->hasPrivilege('add_branch', 'can_view') ||
                     $this->rbac->hasPrivilege('overview', 'can_view') ||

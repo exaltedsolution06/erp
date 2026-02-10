@@ -16,7 +16,7 @@ class Users extends Admin_Controller
 
     public function index()
     {
-        if (!$this->rbac->hasPrivilege('superadmin', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('user_status', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'System Settings');
@@ -36,29 +36,31 @@ class Users extends Admin_Controller
 
     public function changeStatus()
     {
-        if (!$this->rbac->hasPrivilege('superadmin', 'can_view')) {
-            access_denied();
-        }
-        $id     = $this->input->post('id');
-        $status = $this->input->post('status');
-        $role   = $this->input->post('role');
-        $data   = array('id' => $id, 'is_active' => $status);
-        if ($role != "staff") {
-            $result = $this->user_model->changeStatus($data);
-        } else {
-            if ($status == "yes") {
-                $data['is_active'] = 1;
-            } else {
-                $data['is_active'] = 0;
-            }
-
-            $result = $this->staff_model->update($data);
-        }
-
-        if ($result) {
-            $response = array('status' => 1, 'msg' => $this->lang->line('status_change_successfully'));
+        if (!$this->rbac->hasPrivilege('user_status', 'can_edit')) {
+			$response = array('status' => 2, 'msg' => 'Permission denied');
             echo json_encode($response);
-        }
+        }else{
+			$id     = $this->input->post('id');
+			$status = $this->input->post('status');
+			$role   = $this->input->post('role');
+			$data   = array('id' => $id, 'is_active' => $status);
+			if ($role != "staff") {
+				$result = $this->user_model->changeStatus($data);
+			} else {
+				if ($status == "yes") {
+					$data['is_active'] = 1;
+				} else {
+					$data['is_active'] = 0;
+				}
+
+				$result = $this->staff_model->update($data);
+			}
+
+			if ($result) {
+				$response = array('status' => 1, 'msg' => $this->lang->line('status_change_successfully'));
+				echo json_encode($response);
+			}
+		}
     }
 
     public function admissionreport()

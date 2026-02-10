@@ -698,7 +698,12 @@
             data: {'id': rowid, 'status': status, 'role': role},
             dataType: "json",
             success: function (data) {
-                successMsg(data.msg);
+                if(data.status == 1){
+					successMsg(data.msg);				
+				}else{
+					errorMsg(data.msg);
+				}
+				window.location.reload();
             }
         });
     }

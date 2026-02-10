@@ -54,7 +54,7 @@ class Branch extends Admin_Controller
 	
     public function delete($id)
     {
-        if (!$this->rbac->hasPrivilege('branch', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('add_branch', 'can_delete')) {
             access_denied();
         }
         $data['title'] = 'branch List';
@@ -66,7 +66,7 @@ class Branch extends Admin_Controller
 	
     public function edit($id)
     {
-        if (!$this->rbac->hasPrivilege('branch', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('add_branch', 'can_edit')) {
             access_denied();
         }
         $this->session->set_userdata('sub_menu', 'admin/branch/index');
@@ -122,6 +122,9 @@ class Branch extends Admin_Controller
 
 	public function switch_branch()
 	{
+		if (!$this->rbac->hasPrivilege('switch_branch', 'can_view')) {
+            access_denied();
+        }
 		$this->session->set_userdata('branch_switch', true);
 		$url = $this->input->post('branch');
 		redirect($url.'/site/login');

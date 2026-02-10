@@ -423,7 +423,7 @@ class Admin extends Admin_Controller
 
     public function backup()
     {
-        if (!$this->rbac->hasPrivilege('backup', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('data_backup', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'System Settings');
@@ -641,7 +641,7 @@ class Admin extends Admin_Controller
 
     public function dropbackup($file)
     {
-        if (!$this->rbac->hasPrivilege('backup', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('data_backup', 'can_delete')) {
             access_denied();
         }
         unlink('./backup/database_backup/' . $file);
@@ -823,7 +823,9 @@ class Admin extends Admin_Controller
 
     public function filetype()
     {
-    
+		if (!$this->rbac->hasPrivilege('file_types', 'can_view')) {
+            access_denied();
+        }
         $data          = array();
         $data['title'] = 'File Type List';
         $this->session->set_userdata('top_menu', 'System Settings');

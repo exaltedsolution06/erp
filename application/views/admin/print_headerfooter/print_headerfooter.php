@@ -59,14 +59,15 @@
                                     </div>
 
 
-
+									<?php if ($this->rbac->hasPrivilege('print_header_footer', 'can_edit')) { ?>
                                     <div class="col-lg-12">         
                                         <div class="pull-right">
 
                                             <button type="submit" class="btn btn-primary " data-loading-text="<i class='fa fa-spinner fa-spin '></i> <?php echo $this->lang->line('save'); ?>"><?php echo $this->lang->line('save'); ?></button>
 
                                         </div>
-                                    </div>  
+                                    </div> 
+									<?php } ?>
                                 </div>
                             </form>
                         </div>
@@ -93,7 +94,7 @@
                                     </div>
 
 
-
+									<?php if ($this->rbac->hasPrivilege('print_header_footer', 'can_edit')) { ?>
                                     <div class="col-lg-12">         
                                         <div class="pull-right">
 
@@ -101,6 +102,7 @@
 
                                         </div>
                                     </div>  
+									<?php } ?>
                                 </div>
                             </form>
                         </div>
@@ -125,11 +127,13 @@
                                         </div>
 
                                     </div>
+									<?php if ($this->rbac->hasPrivilege('print_header_footer', 'can_edit')) { ?>
                                     <div class="col-lg-12">
                                         <div class="pull-right">
                                             <button type="submit" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> <?php echo $this->lang->line('save'); ?>"><?php echo $this->lang->line('save'); ?></button>
                                         </div>
-                                    </div>   
+                                    </div>  
+									<?php } ?>
                                 </div>  
                             </form>
                         </div>

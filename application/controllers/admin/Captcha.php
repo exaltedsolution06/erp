@@ -16,6 +16,9 @@ class Captcha extends Admin_Controller
 
     public function index()
     {
+		if (!$this->rbac->hasPrivilege('set_captcha', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'System Settings');
         $this->session->set_userdata('sub_menu', 'System Settings/captcha');
         $data['inserted_fields'] = $this->captcha_model->getSetting();
@@ -26,11 +29,19 @@ class Captcha extends Admin_Controller
     }
 
     public function changeStatus(){
-        $data = array(
-                'name'   => $this->input->post('name'),
-                'status' => $this->input->post('status'),
-            );
-        $this->captcha_model->update_status($data);
+		if (!$this->rbac->hasPrivilege('set_captcha', 'can_edit')) {
+			$response = array('status' => 2, 'msg' => 'Permission denied');
+            echo json_encode($response);
+        }else
+		{
+			$data = array(
+					'name'   => $this->input->post('name'),
+					'status' => $this->input->post('status'),
+				);
+			$this->captcha_model->update_status($data);
+			$response = array('status' => 1, 'msg' => 'Status change successfully');
+			echo json_encode($response);
+		}
         
     }
 

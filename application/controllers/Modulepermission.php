@@ -295,16 +295,16 @@ class Modulepermission extends Public_Controller
 					['name' => 'Notification Setting',  'short_code' => 'notification_setting', 'add' => false, 'view' => true,  'edit' => true,  'delete' => false],
 					['name' => 'SMS Setting',           'short_code' => 'sms_setting', 'add' => false, 'view' => true,  'edit' => true,  'delete' => false],
 					['name' => 'Email Setting',         'short_code' => 'email_setting', 'add' => false, 'view' => true,  'edit' => true,  'delete' => false],
-					['name' => 'Payment Method',        'short_code' => 'payment_method', 'add' => true,  'view' => true,  'edit' => true,  'delete' => false],
-					['name' => 'Print Header Setting',  'short_code' => 'print_header_setting', 'add' => true,  'view' => true,  'edit' => true,  'delete' => false],
-					['name' => 'Roles Permission',      'short_code' => 'roles_permission', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'User',                  'short_code' => 'user', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
+					['name' => 'Payment Method',        'short_code' => 'payment_methods', 'add' => true,  'view' => true,  'edit' => true,  'delete' => false],
+					['name' => 'Print Header Footer',  'short_code' => 'print_header_footer', 'add' => true,  'view' => true,  'edit' => true,  'delete' => false],
+					['name' => 'Roles Permission',      'short_code' => 'roles_permissions', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
+					['name' => 'User',                  'short_code' => 'user_status', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Modules',               'short_code' => 'modules', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Custom Fields',          'short_code' => 'custom_fields', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'System Fields',          'short_code' => 'system_fields', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'File Types',             'short_code' => 'file_types', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Set Captcha',            'short_code' => 'set_captcha', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Date Backup',            'short_code' => 'date_backup', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
+					['name' => 'Data Backup',            'short_code' => 'data_backup', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 				]
 			],
 			[
@@ -313,7 +313,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Branch',   'short_code' => 'add_branch', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Overview',     'short_code' => 'overview', 'add' => true, 'view' => true,  'edit' => true, 'delete' => true],
 					['name' => 'Switch Branch','short_code' => 'switch_branch', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
-					['name' => 'Multi Branch All Report',   'short_code' => 'multi_branch_all_report', 'add' => false,  'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'Multi Branch All Report',   'short_code' => 'multi_branch_report', 'add' => false,  'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -367,11 +367,15 @@ class Modulepermission extends Public_Controller
 		unset($module, $link);
 		echo '<pre>'; print_r($modules); echo '</pre>';exit;*/
 		foreach($modules as $module_val){
+			$system = 0;
+			if($module_val['module'] == 'Dashboard Management' || $module_val['module'] == 'Chat'){
+				$system = 1;
+			}
 			$permission_group_data = [
 				'name' => $module_val['module'],
 				'short_code' => $this->slugify($module_val['module']),
 				'is_active' => 1,
-				'system' => 0,
+				'system' => $system,
 			];
 			$this->db->insert('permission_group', $permission_group_data);
 			$perm_group_id = $this->db->insert_id(); // Get inserted ID

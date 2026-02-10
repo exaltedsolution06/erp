@@ -155,12 +155,14 @@ if ($this->config->item('SSLK') == "") {
 									<?php
 										$mainUrl = $this->setting_model->get_main_domain_url();
 										if($this->session->userdata('branch_switch') || $mainUrl.'/' == base_url()){
+											if ($this->rbac->hasPrivilege('switch_branch', 'can_view')) {
 									?>
 									<li class="cal15" data-placement="bottom" data-toggle="tooltip" data-original-title="<?php echo $this->lang->line('switch_branch') ?>" title="<?php echo $this->lang->line('switch_branch') ?>">
 									<a href="#" data-toggle="modal" data-target="#switchBranchModal"><i class="fa fa-exchange" aria-hidden="true"></i></a>
                                     </li>
 									<?php
-									}
+											}
+										}
 									?>
  <?php
 if ($this->module_lib->hasActive('calendar_to_do_list')) {

@@ -48,7 +48,7 @@
         
             <div class="col-lg-9 col-md-9 col-sm-12 col80">
                 <div class="row">
-        
+					<?php if ($this->rbac->hasPrivilege('monthly_fees_collection_widget', 'can_view')) { ?>
                     <div class="col-md-4 col-sm-6">
                         <div class="info-box">
                             <a href="<?php echo site_url('studentfee') ?>">
@@ -60,7 +60,7 @@
                             </a>
                         </div>
                     </div>
-        
+					<?php } if ($this->rbac->hasPrivilege('monthly_expense_widget', 'can_view')) { ?>
                     <div class="col-md-4 col-sm-6">
                         <div class="info-box">
                             <a href="<?php echo site_url('admin/expense') ?>">
@@ -72,7 +72,7 @@
                             </a>
                         </div>
                     </div>
-        
+					<?php } if ($this->rbac->hasPrivilege('student_count_widget', 'can_view')) { ?>
                     <div class="col-md-4 col-sm-6">
                         <div class="info-box">
                             <a href="<?php echo site_url('student/search') ?>">
@@ -84,7 +84,7 @@
                             </a>
                         </div>
                     </div>
-                    
+                    <?php } if ($this->rbac->hasPrivilege('monthly_fees_collection_widget', 'can_view')) { ?>
                     <div class="col-md-4 col-sm-6">
                         <div class="info-box">
                             <a href="<?php echo site_url('studentfee') ?>">
@@ -96,7 +96,7 @@
                             </a>
                         </div>
                     </div>
-        
+					<?php } if ($this->rbac->hasPrivilege('monthly_expense_widget', 'can_view')) { ?>
                     <div class="col-md-4 col-sm-6">
                         <div class="info-box">
                             <a href="<?php echo site_url('admin/expense') ?>">
@@ -108,7 +108,7 @@
                             </a>
                         </div>
                     </div>
-        
+					<?php } if ($this->rbac->hasPrivilege('student_count_widget', 'can_view')) { ?>
                     <div class="col-md-4 col-sm-6">
                         <div class="info-box">
                             <a href="<?php echo site_url('student/search') ?>">
@@ -120,7 +120,7 @@
                             </a>
                         </div>
                     </div>
-                    
+                    <?php } if ($this->rbac->hasPrivilege('monthly_fees_collection_widget', 'can_view')) { ?>
                     <div class="col-md-4 col-sm-6">
                         <div class="info-box">
                             <a href="<?php echo site_url('studentfee') ?>">
@@ -132,7 +132,7 @@
                             </a>
                         </div>
                     </div>
-        
+					<?php } if ($this->rbac->hasPrivilege('monthly_expense_widget', 'can_view')) { ?>
                     <div class="col-md-4 col-sm-6">
                         <div class="info-box">
                             <a href="<?php echo site_url('admin/expense') ?>">
@@ -144,7 +144,7 @@
                             </a>
                         </div>
                     </div>
-        
+					<?php } if ($this->rbac->hasPrivilege('student_count_widget', 'can_view')) { ?>
                     <div class="col-md-4 col-sm-6">
                         <div class="info-box">
                             <a href="<?php echo site_url('student/search') ?>">
@@ -156,7 +156,7 @@
                             </a>
                         </div>
                     </div>
-                    
+                    <?php } if ($this->rbac->hasPrivilege('monthly_fees_collection_widget', 'can_view')) { ?>
                     <div class="col-md-4 col-sm-6">
                         <div class="info-box">
                             <a href="<?php echo site_url('studentfee') ?>">
@@ -168,7 +168,7 @@
                             </a>
                         </div>
                     </div>
-        
+					<?php } if ($this->rbac->hasPrivilege('monthly_expense_widget', 'can_view')) { ?>
                     <div class="col-md-4 col-sm-6">
                         <div class="info-box">
                             <a href="<?php echo site_url('admin/expense') ?>">
@@ -180,7 +180,7 @@
                             </a>
                         </div>
                     </div>
-        
+					<?php } if ($this->rbac->hasPrivilege('student_count_widget', 'can_view')) { ?>
                     <div class="col-md-4 col-sm-6">
                         <div class="info-box">
                             <a href="<?php echo site_url('student/search') ?>">
@@ -192,7 +192,7 @@
                             </a>
                         </div>
                     </div>
-        
+					<?php } ?>
                 </div>   
         
                 <div class="box box-primary borderwhite">

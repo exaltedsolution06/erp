@@ -44,7 +44,7 @@
     <section class="content">
         <div class="row">
             <?php
-            if ($this->rbac->hasPrivilege('expense', 'can_add')) {
+            if ($this->rbac->hasPrivilege('custom_fields', 'can_edit')) {
                 ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
@@ -157,7 +157,7 @@
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('expense', 'can_add')) {
+            if ($this->rbac->hasPrivilege('custom_fields', 'can_edit')) {
                 echo "8";
             } else {
                 echo "12";
@@ -206,12 +206,18 @@
                                                                 <span class="sort-action">
 
 
-
+																	<?php
+																	if ($this->rbac->hasPrivilege('custom_fields', 'can_edit')) {
+																		?>
                                                                     <a href="<?php echo site_url('admin/customfield/edit/' . $records_fields_value['id']); ?>" class="btn btn-xs" data-toggle="tooltip"
                                                                        data-original-title="<?php echo $this->lang->line('edit'); ?>"><i class="fa fa-pencil"></i></a>
+																	<?php
+																	}
+																	if ($this->rbac->hasPrivilege('custom_fields', 'can_delete')) {
+																		?>
                                                                     <a href="<?php echo site_url('admin/customfield/delete/' . $records_fields_value['id']); ?>" class="btn btn-xs" data-toggle="tooltip"
                                                                        data-original-title="<?php echo $this->lang->line('delete'); ?>" data-id="1" id="deleteItem"  data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-remove"></i></a>
-
+																	<?php } ?>
 
                                                                 </span> <i class="fa fa-arrows"></i> <?php
                                                                 echo ($records_fields_value['name']);

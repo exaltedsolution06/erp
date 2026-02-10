@@ -7,7 +7,7 @@
     <section class="content">
         <div class="row">
             <?php
-            if ($this->rbac->hasPrivilege('add_branch', 'can_add') || $this->rbac->hasPrivilege('add_branch', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('add_branch', 'can_edit')) {
                 ?>
                 <div class="col-md-4">
                     <div class="box box-primary">
@@ -59,7 +59,7 @@
                 </div>
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('add_branch', 'can_add') || $this->rbac->hasPrivilege('add_branch', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('add_branch', 'can_edit')) {
                 echo "8";
             } else {
                 echo "12";
@@ -90,14 +90,14 @@
                                             <td class="mailbox-name"> <?php echo $section['branch_name'] ?></td>
                                             <td class="mailbox-date pull-right">
                                                 <?php
-                                                if ($this->rbac->hasPrivilege('branch', 'can_edit')) {
+                                                if ($this->rbac->hasPrivilege('add_branch', 'can_edit')) {
                                                     ?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/branch/edit/<?php echo $section['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
                                                     <?php
                                                 }
-                                                if ($this->rbac->hasPrivilege('branch', 'can_delete')) {
+                                                if ($this->rbac->hasPrivilege('add_branch', 'can_delete')) {
                                                     ?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/branch/delete/<?php echo $section['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                         <i class="fa fa-remove"></i>

@@ -14,7 +14,7 @@ class Roles extends Admin_Controller {
     }
 
     function index() {
-        if (!$this->rbac->hasPrivilege('superadmin', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('roles_permissions', 'can_view')) {
             access_denied();
         }
 
@@ -31,6 +31,7 @@ class Roles extends Admin_Controller {
         if ($this->form_validation->run() == FALSE) {
             $listroute = $this->role_model->get();
             $data['listroute'] = $listroute;
+			// echo '<pre>'; print_r($data['listroute']);exit;
             $this->load->view('layout/header');
             $this->load->view('admin/roles/create', $data);
             $this->load->view('layout/footer');
@@ -45,7 +46,7 @@ class Roles extends Admin_Controller {
     }
 
     function permission($id) {
-           if (!$this->rbac->hasPrivilege('superadmin', 'can_view')) {
+           if (!$this->rbac->hasPrivilege('roles_permissions', 'can_view')) {
             access_denied();
         }
         $data['title'] = 'Add Role';
@@ -104,7 +105,7 @@ class Roles extends Admin_Controller {
     }
 
     function edit($id) {
-           if (!$this->rbac->hasPrivilege('superadmin', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('roles_permissions', 'can_edit')) {
             access_denied();
         }
         $data['title'] = 'Edit Role';
@@ -137,6 +138,9 @@ class Roles extends Admin_Controller {
     }
 
     function delete($id) {
+		if (!$this->rbac->hasPrivilege('roles_permissions', 'can_delete')) {
+            access_denied();
+        }
         $data['title'] = 'Fees Master List';
         $this->role_model->remove($id);
         redirect('admin/roles/index');
