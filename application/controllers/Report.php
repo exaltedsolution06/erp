@@ -1578,7 +1578,18 @@ class Report extends Admin_Controller
         $this->load->view('reports/defaulter_list', $data);
         $this->load->view('layout/footer', $data);
     }
-	
+	public function reminderletter()
+    {
+        if (!$this->rbac->hasPrivilege('reminder_letter', 'can_view')) {
+            access_denied();
+        }
+        $this->session->set_userdata('top_menu', 'Reports');
+        $this->session->set_userdata('sub_menu', 'Reports/reminder_letter');
+        $data['title']        = 'Reminder Letter';
+        $this->load->view('layout/header', $data);
+        $this->load->view('reports/reminder_letter', $data);
+        $this->load->view('layout/footer', $data);
+    }
     public function incomegroup()
     {
 

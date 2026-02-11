@@ -1,7 +1,7 @@
 <div class="content-wrapper" style="min-height: 946px;">
     <section class="content-header">
         <h1>
-            <i class="fa fa-mortar-board"></i> Front Web <small>Web Links</small>        
+            <i class="fa fa-mortar-board"></i> Front Web <small>Sub Links</small>        
 		</h1>
     </section>
     <!-- Main content -->

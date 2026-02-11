@@ -315,6 +315,7 @@
 					$this->rbac->hasPrivilege('fee_register', 'can_view') ||
 					$this->rbac->hasPrivilege('fee_card', 'can_view') ||
 					$this->rbac->hasPrivilege('defaulter_list', 'can_view') ||
+					$this->rbac->hasPrivilege('reminder_letter', 'can_view') ||
 					$this->rbac->hasPrivilege('delete_fee_list', 'can_view') ||
 					$this->rbac->hasPrivilege('search_fee_slip', 'can_view') ||
 					$this->rbac->hasPrivilege('student_ledger', 'can_view') ||
@@ -330,13 +331,14 @@
 					|| set_Submenu('Reports/receipt-book')
 					|| set_Submenu('studentfee/studentfee_deletedlist')
 					|| set_Submenu('studentfee/search_fee_slip')
-					//|| set_Submenu('studentfee/searchpayment')
+					|| set_Submenu('studentfee/student_ledger')
 					//|| set_Submenu('studentfee/feesearch')
 					//|| set_Submenu('admin/feediscount')
 					//|| set_Submenu('feesforward/index')
 					|| set_Submenu('Reports/finance')
 					|| set_Submenu('Reports/fee_card')
 					|| set_Submenu('Reports/defaulter_list')
+					|| set_Submenu('Reports/reminder_letter')
 					|| set_Submenu('Reports/fee_register')
 					|| set_Submenu('reports/studenttransportdetails')
 					
@@ -362,12 +364,14 @@
 							<li class="<?php echo set_Submenu('Reports/fee_card'); ?>"><a href="<?php echo base_url(); ?>report/fee_card"><i class="fa fa-angle-double-right"></i> Fee Card</a></li>
 						<?php } if ($this->rbac->hasPrivilege('defaulter_list', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('Reports/defaulter_list'); ?>"><a href="<?php echo base_url(); ?>report/defaulter_list"><i class="fa fa-angle-double-right"></i> Defaulter List</a></li>
+						<?php } if ($this->rbac->hasPrivilege('reminder_letter', 'can_view')) { ?>
+							<li class="<?php echo set_Submenu('Reports/reminder_letter'); ?>"><a href="<?php echo base_url(); ?>report/reminderletter"><i class="fa fa-angle-double-right"></i> Reminder Letter</a></li>
 						<?php } if ($this->rbac->hasPrivilege('delete_fee_list', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('studentfee/studentfee_deletedlist'); ?>"><a href="<?php echo base_url(); ?>studentfee/studentfee_deletedlist"><i class="fa fa-angle-double-right"></i> Delete Fee List </a></li>
 						<?php } if ($this->rbac->hasPrivilege('search_fee_slip', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('studentfee/search_fee_slip'); ?>"><a href="<?php echo base_url(); ?>studentfee/search_fee_slip"><i class="fa fa-angle-double-right"></i> Search Fee Slip</a></li>
 						<?php } if ($this->rbac->hasPrivilege('student_ledger', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="#<?php //echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Student Ledger</a></li>
+							<li class="<?php echo set_Submenu('studentfee/student_ledger'); ?>"><a href="<?php echo base_url(); ?>studentfee/student_ledger"><i class="fa fa-angle-double-right"></i> Student Ledger</a></li>
 						<?php } if ($this->rbac->hasPrivilege('quick_receipt', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="#<?php //echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Quick Receipt</a></li>
 						<?php } if ($this->rbac->hasPrivilege('quick_payment', 'can_view')) { ?>
@@ -1288,7 +1292,7 @@
 		
 		<!-- 22th Menu start --> 
         <?php
-            if ($this->module_lib->hasActive('overall_reports') or 1==1) {
+            if ($this->module_lib->hasActive('overall_reports')) {
                 if (
                     $this->rbac->hasPrivilege('students_section', 'can_view') ||
                     $this->rbac->hasPrivilege('finance', 'can_view') ||

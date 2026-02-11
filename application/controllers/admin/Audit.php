@@ -18,6 +18,9 @@ class Audit extends Admin_Controller {
     }
 
     public function index($offset = 0) {
+		if (!$this->rbac->hasPrivilege('audit_trail_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'audit/index');
         $data['title'] = 'Audit Trail Report';

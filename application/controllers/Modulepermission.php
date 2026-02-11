@@ -53,11 +53,11 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Subjects', 				'short_code' => 'add_subjects', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Subject Group', 			'short_code' => 'subject_group', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Class Timetable', 			'short_code' => 'class_timetable', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Teachers Timetable', 		'short_code' => 'teachers_timetable', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
+					['name' => 'Teachers Timetable', 		'short_code' => 'teachers_timetable', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Assign Class Teacher', 		'short_code' => 'assign_class_teacher', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Promote Students', 			'short_code' => 'promote_students', 'add' => true, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Set Disable Reason', 		'short_code' => 'set_disable_reason', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Previous Session Balance', 	'short_code' => 'previous_session_balance', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
+					['name' => 'Previous Session Balance', 	'short_code' => 'previous_session_balance', 'add' => false, 'view' => true, 'edit' => true, 'delete' => false],
 					['name' => 'Change Session', 			'short_code' => 'change_session', 'add' => true, 'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
@@ -72,7 +72,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Postal Dispatch', 			'short_code' => 'postal_dispatch', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Postal Receive', 			'short_code' => 'postal_receive', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Complain', 					'short_code' => 'complain', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Front Desk All Reports', 				'short_code' => 'front_desk_all_reports', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'All Reports', 				'short_code' => 'front_desk_all_reports', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -85,7 +85,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Discountinue Students', 'short_code' => 'discountinue_students', 'add' => true, 'view' => true, 'edit' => true, 'delete' => false],
 					['name' => 'Bulk Delete', 			'short_code' => 'bulk_delete', 'add' => false, 'view' => true, 'edit' => false, 'delete' => true],
 					['name' => 'Student Timeline', 		'short_code' => 'student_timeline', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Admission All Reports', 'short_code' => 'admission_all_reports', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'All Reports', 'short_code' => 'admission_all_reports', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -101,8 +101,8 @@ class Modulepermission extends Public_Controller
 					['name' => 'Reminder Letter',    'short_code' => 'reminder_letter', 'add' => true,  'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Delete Fee List',    'short_code' => 'delete_fee_list', 'add' => false, 'view' => true,  'edit' => false, 'delete' => true],
 					['name' => 'Search Fee Slip',    'short_code' => 'search_fee_slip', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
-					['name' => 'Student Ledger',     'short_code' => 'student_ledger', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Fee All Reports',    'short_code' => 'fee_all_reports', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Student Ledger',     'short_code' => 'student_ledger', 'add' => false,  'view' => true,  'edit' => false,  'delete' => false],
+					['name' => 'All Reports',    'short_code' => 'fee_all_reports', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -119,7 +119,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Teachers Rateing',         'short_code' => 'teachers_rating', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Staff Timeline',           'short_code' => 'staff_timeline', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Disabled Staff',           'short_code' => 'disabled_staff', 'add' => false, 'view' => true,  'edit' => true,  'delete' => false],
-					['name' => 'Staff All Report',               'short_code' => 'staff_management_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'All Report',               'short_code' => 'staff_management_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -129,7 +129,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Attendance By Date',   'short_code' => 'attendance_by_date', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Approve Leave',         'short_code' => 'approve_leave', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Add Leave',             'short_code' => 'add_leave', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Attendance All Reports',           'short_code' => 'attendance_section_reports', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'All Reports',           'short_code' => 'attendance_section_reports', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -139,7 +139,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Question Paper',     'short_code' => 'question_paper', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Assign / View Students', 'short_code' => 'online_assign_view_student', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Import Questions',       'short_code' => 'import_question', 'add' => true,  'view' => true,  'edit' => false, 'delete' => false],
-					['name' => 'Online Exam All Reports',             'short_code' => 'online_exam_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'All Reports',             'short_code' => 'online_exam_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -169,7 +169,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Design Report Card',       'short_code' => 'design_report_card', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Print Report Card',        'short_code' => 'print_report_card', 'add' => true, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Marks Grade',               'short_code' => 'marks_grade', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Exam All Reports',               'short_code' => 'exam_section_reports', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'All Reports',               'short_code' => 'exam_section_reports', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -179,7 +179,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Manage Syllabus Status','short_code' => 'manage_syllabus_status', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Lesson',                'short_code' => 'lesson', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Topic',                 'short_code' => 'topic', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Lesson All Report',             'short_code' => 'lesson_plan_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'All Report',             'short_code' => 'lesson_plan_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -187,7 +187,7 @@ class Modulepermission extends Public_Controller
 				'links' => [
 					['name' => 'Add Homework',          'short_code' => 'add_homework', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Homework Evaluation',  'short_code' => 'homework_evaluation', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Homework All Report',            'short_code' => 'homework_section_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'All Report',            'short_code' => 'homework_section_report', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -198,7 +198,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Study Material',  'short_code' => 'study_material', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Syllabus',        'short_code' => 'syllabus', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Other Download',  'short_code' => 'other_download', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Download All Report',      'short_code' => 'download_section_report', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'All Report',      'short_code' => 'download_section_report', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -223,7 +223,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Generate ID Card',            'short_code' => 'generate_id_card', 'add' => true, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Staff ID Card',               'short_code' => 'staff_id_card', 'add' => true, 'view' => true, 'edit' => true,  'delete' => true],
 					['name' => 'Generate Staff ID Card',      'short_code' => 'generate_staff_id_card', 'add' => true, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Certificate All Reports',                 'short_code' => 'certificate_section_report', 'add' => false, 'view' => true,'edit' => false, 'delete' => false],
+					['name' => 'All Reports',                 'short_code' => 'certificate_section_report', 'add' => false, 'view' => true,'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -234,7 +234,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Student',        'short_code' => 'add_student', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Add Staff Member',   'short_code' => 'add_staff_member', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Import Book',        'short_code' => 'import_book', 'add' => true, 'view' => true, 'edit' => true, 'delete' => false],
-					['name' => 'Library All Report',          'short_code' => 'library_management_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
+					['name' => 'All Report',          'short_code' => 'library_management_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
 				]
 			],
 			[
@@ -243,7 +243,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Income Heads',   'short_code' => 'income_heads', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Add Income',     'short_code' => 'add_income', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Search Income',  'short_code' => 'search_income', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Income All Report',     'short_code' => 'income_section_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
+					['name' => 'All Report',     'short_code' => 'income_section_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
 				]
 			],
 			[
@@ -252,7 +252,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Expense',     'short_code' => 'add_expense', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Search Expense',  'short_code' => 'search_expense', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Expense Head',    'short_code' => 'expense_head', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Expense All Report',      'short_code' => 'expense_section_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
+					['name' => 'All Report',      'short_code' => 'expense_section_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
 				]
 			],
 			[
@@ -264,27 +264,27 @@ class Modulepermission extends Public_Controller
 					['name' => 'Issue Item',    'short_code' => 'issue_item', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Item Store',    'short_code' => 'store', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Item Supplier', 'short_code' => 'supplier', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Stock All Report',    'short_code' => 'stock_management_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
+					['name' => 'All Report',    'short_code' => 'stock_management_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
 				]
 			],
 			[
 				'module' => 'Front Web',
 				'links' => [
-					['name' => 'Add Webs Links',  'short_code' => 'add_webs_links', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Add Sub-Links',   'short_code' => 'add_sub_links', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Banner Image',    'short_code' => 'banner_image', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Gallery Image',   'short_code' => 'gallery_image', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Events',          'short_code' => 'events', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'New Updates',     'short_code' => 'new_updates', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
+					['name' => 'Add Webs Links',  'short_code' => 'add_webs_links', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'Add Sub-Links',   'short_code' => 'add_sub_links', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'Banner Image',    'short_code' => 'banner_image', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'Gallery Image',   'short_code' => 'gallery_image', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'Events',          'short_code' => 'events', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'New Updates',     'short_code' => 'new_updates', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
 				'module' => 'Ticket Section',
 				'links' => [
-					['name' => 'Create Ticket', 'short_code' => 'create_ticket', 'add' => true, 'view' => true, 'edit' => true,  'delete' => false],
+					['name' => 'Create Ticket', 'short_code' => 'create_ticket', 'add' => false, 'view' => true, 'edit' => false,  'delete' => false],
 					['name' => 'Track Ticket',  'short_code' => 'track_ticket', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Closed Ticket', 'short_code' => 'closed_ticket', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Ticket All Report',    'short_code' => 'ticket_section_report', 'add' => false,  'view' => true,'edit' => false, 'delete' => false],
+					['name' => 'All Report',    'short_code' => 'ticket_section_report', 'add' => false,  'view' => true,'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -304,7 +304,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'System Fields',          'short_code' => 'system_fields', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'File Types',             'short_code' => 'file_types', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Set Captcha',            'short_code' => 'set_captcha', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
-					['name' => 'Data Backup',            'short_code' => 'data_backup', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
+					['name' => 'Data Backup',            'short_code' => 'data_backup', 'add' => true,  'view' => true,  'edit' => false,  'delete' => true],
 				]
 			],
 			[
@@ -313,13 +313,13 @@ class Modulepermission extends Public_Controller
 					['name' => 'Add Branch',   'short_code' => 'add_branch', 'add' => true,  'view' => true,  'edit' => true,  'delete' => true],
 					['name' => 'Overview',     'short_code' => 'overview', 'add' => true, 'view' => true,  'edit' => true, 'delete' => true],
 					['name' => 'Switch Branch','short_code' => 'switch_branch', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
-					['name' => 'Multi Branch All Report',   'short_code' => 'multi_branch_report', 'add' => false,  'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'All Report',   'short_code' => 'multi_branch_report', 'add' => false,  'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
 				'module' => 'Overall Reports',
 				'links' => [
-					['name' => 'Students Section',     'short_code' => 'students_section', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					/*['name' => 'Students Section',     'short_code' => 'students_section', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Finance',              'short_code' => 'finance', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Attendance Section',   'short_code' => 'attendance_section', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Exam Section',          'short_code' => 'exam_section', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
@@ -328,7 +328,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Staff Management',      'short_code' => 'staff_management', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Library Management',    'short_code' => 'library_management', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Stock Management',      'short_code' => 'stock_management', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Transport Section',     'short_code' => 'transport_section', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'Transport Section',     'short_code' => 'transport_section', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],*/
 					['name' => 'User Log',               'short_code' => 'user_log', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Audit Trail Report',    'short_code' => 'audit_trail_report', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 				]
@@ -336,26 +336,26 @@ class Modulepermission extends Public_Controller
 			[
 				'module' => 'Dashboard Management',
 				'links' => [
-					['name' => 'Monthly Fees Collection Widget',   'short_code' => 'monthly_fees_collection_widget', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Monthly Expense Widget',           'short_code' => 'monthly_expense_widget', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Student Count Widget',              'short_code' => 'student_count_widget', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Staff Role Count Widget',           'short_code' => 'staff_role_count_widget', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Fees Awaiting Payment Widgets',     'short_code' => 'fees_awaiting_payment_widgets', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Converted Leads Widgets',           'short_code' => 'converted_leads_widgets', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Fees Overview Widgets',              'short_code' => 'fees_overview_widgets', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Enquiry Overview Widgets',           'short_code' => 'enquiry_overview_widgets', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Library Overview Widgets',           'short_code' => 'library_overview_widgets', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Student Today Attendance Widgets',  'short_code' => 'student_today_attendance_widgets', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Income Donut Graph',                 'short_code' => 'income_donut_graph', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Expense Donut Graph',                'short_code' => 'expense_donut_graph', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Staff Present Today Widgets',        'short_code' => 'staff_present_today_widgets', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Student Present Today Widgets',      'short_code' => 'student_present_today_widgets', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
+					['name' => 'Monthly Fees Collection Widget',   'short_code' => 'monthly_fees_collection_widget', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Monthly Expense Widget',           'short_code' => 'monthly_expense_widget', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Student Count Widget',              'short_code' => 'student_count_widget', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Staff Role Count Widget',           'short_code' => 'staff_role_count_widget', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Fees Awaiting Payment Widgets',     'short_code' => 'fees_awaiting_payment_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Converted Leads Widgets',           'short_code' => 'converted_leads_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Fees Overview Widgets',              'short_code' => 'fees_overview_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Enquiry Overview Widgets',           'short_code' => 'enquiry_overview_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Library Overview Widgets',           'short_code' => 'library_overview_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Student Today Attendance Widgets',  'short_code' => 'student_today_attendance_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Income Donut Graph',                 'short_code' => 'income_donut_graph', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Expense Donut Graph',                'short_code' => 'expense_donut_graph', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Staff Present Today Widgets',        'short_code' => 'staff_present_today_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Student Present Today Widgets',      'short_code' => 'student_present_today_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
 				'module' => 'Chat',
 				'links' => [
-					['name' => '',   'short_code' => '', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
+					['name' => '',   'short_code' => '', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
 				]
 			],
 		];

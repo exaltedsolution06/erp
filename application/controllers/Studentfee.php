@@ -2508,7 +2508,18 @@ class Studentfee extends Admin_Controller
 
 		return $defaultArray;
 	}
-
+	public function student_ledger()
+    {
+        if (!$this->rbac->hasPrivilege('student_ledger', 'can_view')) {
+            access_denied();
+        }
+		$this->session->set_userdata('top_menu', 'Fee Collection');
+        $this->session->set_userdata('sub_menu', 'studentfee/student_ledger');
+        $data['title']     = 'Student Ledger';
+        $this->load->view('layout/header', $data);
+        $this->load->view('studentfee/student_ledger', $data);
+        $this->load->view('layout/footer', $data);
+    }
 
 
 
