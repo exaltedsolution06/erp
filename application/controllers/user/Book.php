@@ -10,6 +10,9 @@ class Book extends Student_Controller {
     }
 
     public function index() {
+		if (!$this->studentmodule_lib->hasActive('library')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'Library');
         $this->session->set_userdata('sub_menu', 'book/index');
         $data['title'] = 'Add Book';
@@ -95,6 +98,9 @@ class Book extends Student_Controller {
     }
 
     public function issue() {
+		if (!$this->studentmodule_lib->hasActive('library')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'Library');
         $this->session->set_userdata('sub_menu', 'book/issue');
         $data['title'] = 'Add Book';

@@ -142,6 +142,9 @@ class Exam extends Student_Controller {
     }
 
     public function examresult() {
+		if (!$this->studentmodule_lib->hasActive('examinations')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'Examinations');
         $this->session->set_userdata('sub_menu', 'examresult/index');
         $student_current_class = $this->customlib->getStudentCurrentClsSection();

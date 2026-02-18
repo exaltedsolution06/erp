@@ -44,6 +44,14 @@ function access_denied() {
     redirect('admin/unauthorized');
 }
 
+function student_access_denied() {
+    redirect('student/unauthorized');
+}
+
+function parent_access_denied() {
+    redirect('parent/unauthorized');
+}
+
 function update_config_installed() {
     $CI = & get_instance();
     $config_path = APPPATH . 'config/config.php';

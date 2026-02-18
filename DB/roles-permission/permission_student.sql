@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 28, 2026 at 10:12 AM
+-- Generation Time: Feb 18, 2026 at 08:42 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -43,7 +43,7 @@ CREATE TABLE `permission_student` (
 --
 
 INSERT INTO `permission_student` (`id`, `name`, `short_code`, `system`, `student`, `parent`, `group_id`, `created_at`) VALUES
-(1, 'Fees', 'fees', 0, 1, 1, 2, '2026-01-28 08:23:07'),
+(1, 'Fees', 'fees', 0, 1, 1, 2, '2026-01-30 11:23:52'),
 (2, 'Class Timetable', 'class_timetable', 1, 1, 1, 7, '2020-05-30 19:57:50'),
 (3, 'Homework', 'homework', 0, 1, 1, 19, '2025-11-16 06:28:36'),
 (4, 'Download Center', 'download_center', 0, 1, 1, 8, '2025-11-16 06:28:19'),
@@ -51,16 +51,16 @@ INSERT INTO `permission_student` (`id`, `name`, `short_code`, `system`, `student
 (7, 'Examinations', 'examinations', 0, 1, 1, 6, '2025-11-16 06:28:17'),
 (8, 'Notice Board', 'notice_board', 0, 1, 1, 13, '2025-11-16 06:28:31'),
 (11, 'Library', 'library', 0, 1, 1, 9, '2025-11-16 06:28:24'),
-(12, 'Transport Routes', 'transport_routes', 0, 1, 1, 11, '2025-11-16 06:28:28'),
-(13, 'Hostel Rooms', 'hostel_rooms', 0, 1, 1, 12, '2025-11-16 06:28:30'),
+(12, 'Transport Routes', 'transport_routes', 0, 1, 1, 11, '2026-02-06 06:02:29'),
+(13, 'Hostel Rooms', 'hostel_rooms', 0, 1, 0, 12, '2026-02-18 05:34:41'),
 (14, 'Calendar To Do List', 'calendar_to_do_list', 0, 1, 1, 21, '2025-11-16 06:28:39'),
 (15, 'Online Examination', 'online_examination', 0, 1, 1, 23, '2025-11-16 06:28:41'),
-(16, 'Teachers Rating', 'teachers_rating', 0, 0, 1, 0, '2025-11-09 10:14:51'),
+(16, 'Teachers Rating', 'teachers_rating', 0, 1, 1, 0, '2026-02-18 05:34:49'),
 (17, 'Chat', 'chat', 0, 1, 1, 25, '2025-11-16 06:28:42'),
 (18, 'Multi Class', 'multi_class', 1, 1, 1, 26, '2025-11-16 06:28:46'),
 (19, 'Lesson Plan', 'lesson_plan', 0, 1, 1, 29, '2025-11-16 06:28:52'),
 (20, 'Syllabus Status', 'syllabus_status', 0, 1, 1, 29, '2025-11-16 06:28:52'),
-(23, 'Apply Leave', 'apply_leave', 0, 0, 1, 0, '2025-11-09 10:14:57');
+(23, 'Apply Leave', 'apply_leave', 0, 1, 1, 0, '2026-02-18 05:34:06');
 
 --
 -- Indexes for dumped tables

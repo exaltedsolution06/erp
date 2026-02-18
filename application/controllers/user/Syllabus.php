@@ -91,6 +91,9 @@ class Syllabus extends Student_Controller {
     }
 
     public function status() {
+		if (!$this->studentmodule_lib->hasActive('syllabus_status')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'syllabus/status');
         $student_current_class = $this->customlib->getStudentCurrentClsSection();
         $student_id = $this->customlib->getStudentSessionUserID();

@@ -254,9 +254,17 @@ if($this->studentmodule_lib->hasActive('multi_class')){
                         </li>   
                     </ul>                
                     <ul class="sidebar-menu verttop38" id="sibe-box">
-
-                        <li class="<?php echo set_Topmenu('Dashboard'); ?>"><a href="<?php echo base_url(); ?>user/user/dashboard"><i class="fa fa-user-plus ftlayer"></i> <span><?php echo $this->lang->line('my_profile'); ?></span></a></li>
+						<?php
+                        if ($this->studentmodule_lib->hasActive('dashboard')) {
+                            ?> 
+                        <li class="<?php echo set_Topmenu('Dashboard'); ?>"><a href="<?php echo base_url(); ?>user/user/dashboard"><i class="fa fa-user-plus ftlayer"></i> <span><?php echo $this->lang->line('dashboard'); ?></span></a></li>
                         <?php
+						}
+                        if ($this->studentmodule_lib->hasActive('my_profile')) {
+                            ?> 
+                        <li class="<?php echo set_Topmenu('My_profile'); ?>"><a href="<?php echo base_url(); ?>user/user/my_profile"><i class="fa fa-user-plus ftlayer"></i> <span><?php echo $this->lang->line('my_profile'); ?></span></a></li>
+                        <?php
+						}
                         if ($this->studentmodule_lib->hasActive('fees')) {
                             ?> 
                             <li class="<?php echo set_Topmenu('fees'); ?>"><a href="<?php echo base_url(); ?>user/user/getfees"><i class="fa fa-money ftlayer"></i> <span><?php echo $this->lang->line('fees'); ?></span></a></li>

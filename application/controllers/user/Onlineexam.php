@@ -15,6 +15,9 @@ class Onlineexam extends Student_Controller
 
     public function index()
     {
+		if (!$this->studentmodule_lib->hasActive('online_examination')) {
+			student_access_denied();
+		}
         $data = array();
         $this->session->set_userdata('top_menu', 'Onlineexam');
 

@@ -32,7 +32,9 @@ class Attendence extends Student_Controller {
     }
 
     public function index() {
-
+		if (!$this->studentmodule_lib->hasActive('attendance')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'Attendence');
         $this->session->set_userdata('sub_menu', 'book/index');
         $data['title'] = 'Attendence List';

@@ -11,6 +11,9 @@ class Timetable extends Student_Controller {
     }
 
     public function index() {
+		if (!$this->studentmodule_lib->hasActive('class_timetable')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'Time_table');
         $student_current_class = $this->customlib->getStudentCurrentClsSection();
 

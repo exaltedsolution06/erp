@@ -12,7 +12,9 @@ class Teacher extends Student_Controller {
     }
 
     public function index() {
-
+		if (!$this->studentmodule_lib->hasActive('teachers_rating')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'Teachers');
         $this->session->set_userdata('sub_menu', 'teacher/index');
         $data['title'] = 'Add Teacher';

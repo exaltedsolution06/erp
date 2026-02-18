@@ -1695,3 +1695,4 @@ $lang['school_reopen'] = 'School Reopen';
 $lang['school_will_reopen_on'] = 'School will Reopen on';
 $lang['at'] = 'at';
 $lang['with'] = 'with';
+$lang['dashboard'] = 'Dashboard';

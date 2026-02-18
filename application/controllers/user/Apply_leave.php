@@ -13,6 +13,9 @@ class Apply_leave extends Student_Controller {
     }
 	
     public function index() {
+		if (!$this->studentmodule_lib->hasActive('apply_leave')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'apply_leave');
         $student_session_id = $this->session->userdata['current_class']['student_session_id'];
         $student_id = $this->customlib->getStudentSessionUserID();
