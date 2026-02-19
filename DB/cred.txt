@@ -16,3 +16,9 @@ https://demo.easyskool.in/site/login
 Login id : login@easyskool.in
 Password: 12345678
 
+--------------------------------------------------------------------
+Script url for new server
+http://localhost/erp/script
+http://localhost/erp/modulepermission
+http://localhost/erp/usermodulepermission
+
