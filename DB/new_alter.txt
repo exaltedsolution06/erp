@@ -70,7 +70,7 @@ New folder -
 1) uploads/reportcard
 2) uploads/print_headerfooter/admission_form
 
-
+3) backend\themes\green
 
 ===================================No required column table (optimize)===================================
 
