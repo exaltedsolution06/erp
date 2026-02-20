@@ -14,10 +14,9 @@ class Media extends Admin_Controller {
         if (!$this->rbac->hasPrivilege('media_manager', 'can_view')) {
             access_denied();
         }
-        $data['title'] = 'Add Book';
-        $data['title_list'] = 'Book Details';
-        $this->session->set_userdata('top_menu', 'Front CMS');
-        $this->session->set_userdata('sub_menu', 'admin/front/media');
+        $data['title'] = 'Media Manager';
+        $this->session->set_userdata('top_menu', 'Front Web');
+        $this->session->set_userdata('sub_menu', 'frontweb/media-manager');
         $data['mediaTypes'] = $this->customlib->mediaType();
         $this->load->view('layout/header');
         $this->load->view('admin/front/media/index', $data);

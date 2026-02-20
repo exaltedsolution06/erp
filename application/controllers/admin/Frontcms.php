@@ -25,7 +25,7 @@ class Frontcms extends Admin_Controller {
         $data['title'] = 'Add Front CMS Setting';
         $data['title_list'] = 'Front CMS Settings';
         $this->session->set_userdata('top_menu', 'System Settings');
-        $this->session->set_userdata('sub_menu', 'admin/frontcms/index');
+        $this->session->set_userdata('sub_menu', 'frontweb/settings');
         $data['front_themes'] = $this->front_themes;
         $this->form_validation->set_rules('logo', 'Image', 'callback_handle_upload');
         if ($this->form_validation->run() == TRUE) {
@@ -71,7 +71,7 @@ class Frontcms extends Admin_Controller {
                     unlink($frontcmslist->logo);
                 }
             }
-            if (isset($_FILES["logo"]) && !empty($_FILES["fav_icon"]['name'])) {
+            if (isset($_FILES["fav_icon"]) && !empty($_FILES["fav_icon"]['name'])) {
                 $newFavName = uniqid('front_fav_icon-', true) . '.' . strtolower(pathinfo($_FILES["fav_icon"]['name'], PATHINFO_EXTENSION));
                 $fav_dir = "./uploads/school_content/logo/" . $newFavName;
                 if (move_uploaded_file($_FILES["fav_icon"]["tmp_name"], $fav_dir)) {
@@ -133,10 +133,10 @@ class Frontcms extends Admin_Controller {
                 $this->form_validation->set_message('handle_upload', $this->lang->line('extension_not_allowed'));
                 return false;
             }
-            if ($_FILES["logo"]["size"] > 204800) {
+            /*if ($_FILES["logo"]["size"] > 204800) {
                 $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than'));
                 return false;
-            }
+            }*/
             return true;
         } else {
             return true;

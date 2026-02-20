@@ -170,7 +170,8 @@ class Front_Controller extends CI_Controller {
             }
         }
 
-        $this->theme_path = $this->front_setting->theme;
+        // $this->theme_path = $this->front_setting->theme;
+        $this->theme_path = 'green';
 //================
         $language = ($this->school_details->language);
         $this->load->helper('directory');

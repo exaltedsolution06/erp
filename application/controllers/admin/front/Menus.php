@@ -64,10 +64,11 @@ class Menus extends Admin_Controller {
 
     function additem($slug) {
 
-        $data['title'] = 'Add Book';
-        $data['title_list'] = 'Book Details';
-        $this->session->set_userdata('top_menu', 'Front CMS');
-        $this->session->set_userdata('sub_menu', 'admin/front/menus');
+        if (!$this->rbac->hasPrivilege('add_webs_links', 'can_view')) {
+            access_denied();
+        }
+        $this->session->set_userdata('top_menu', 'Front Web');
+        $this->session->set_userdata('sub_menu', 'frontweb/web-link');
         $result = $this->cms_menu_model->getBySlug(urldecode($slug));
         $data['result'] = $result;
         $data['top_menu'] = urldecode($slug);
@@ -77,6 +78,12 @@ class Menus extends Admin_Controller {
         $this->form_validation->set_rules('ext_url_link', $this->lang->line('external_url'), 'trim|xss_clean|callback_check_exists');
         $listPages = $this->cms_page_model->get();
         $data['listPages'] = $listPages;
+		
+		/*$result = $this->cms_program_model->getByCategoryWithoutSession('menu_image');
+        if (!empty($result)) {
+            $data['banner_images'] = $this->cms_program_model->front_cms_program_photos($result[0]['id']);
+        }*/
+		
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('layout/header');
             $this->load->view('admin/front/menus/additem', $data);

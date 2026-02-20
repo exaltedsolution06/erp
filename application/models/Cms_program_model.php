@@ -53,6 +53,24 @@ class Cms_program_model extends MY_Model
 
         return ($query->num_rows() > 0) ? $query->result_array() : false;
     }
+	
+    public function getByCategoryWithoutSession($category = null, $params = array())
+    {
+        $this->db->select('*');
+        $this->db->from('front_cms_programs');
+        $this->db->order_by('created_at', 'desc');
+		// $this->db->where('session_id', $this->current_session);
+        $this->db->where('type', $category);
+        if (array_key_exists("start", $params) && array_key_exists("limit", $params)) {
+            $this->db->limit($params['limit'], $params['start']);
+        } elseif (!array_key_exists("start", $params) && array_key_exists("limit", $params)) {
+            $this->db->limit($params['limit']);
+        }
+
+        $query = $this->db->get();
+
+        return ($query->num_rows() > 0) ? $query->result_array() : false;
+    }
 
     public function updateFeaturedImage($id, $record_id)
     {
@@ -336,6 +354,33 @@ class Cms_program_model extends MY_Model
 
         //===============
         $banner_content_record = $this->getByCategory($banner_content);
+        if ($banner_content_record) {
+            $data['program_id'] = $banner_content_record[0]['id'];
+            $this->db->insert('front_cms_program_photos', $data);
+        } else {
+            $insert_program     = array('type' => $banner_content, 'title' => 'Banner Images');
+            $insert_program_id  = $this->add($insert_program);
+            $data['program_id'] = $insert_program_id;
+            $this->db->insert('front_cms_program_photos', $data);
+        }
+
+        //=======================
+
+        $this->db->trans_complete(); # Completing transaction
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            $this->db->trans_commit();
+            return true;
+        }
+    }
+    public function bannerWithoutSession($banner_content, $data)
+    {
+        $this->db->trans_begin();
+
+        //===============
+        $banner_content_record = $this->getByCategoryWithoutSession($banner_content);
         if ($banner_content_record) {
             $data['program_id'] = $banner_content_record[0]['id'];
             $this->db->insert('front_cms_program_photos', $data);

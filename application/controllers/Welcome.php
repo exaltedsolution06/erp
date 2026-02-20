@@ -34,12 +34,12 @@ class Welcome extends Front_Controller
         $this->data['active_menu']   = 'home';
         $this->data['page_side_bar'] = $setting->is_active_sidebar;
         $home_page                   = $this->config->item('ci_front_home_page_slug');
-        $result                      = $this->cms_program_model->getByCategory($this->banner_content);
+        $result                      = $this->cms_program_model->getByCategoryWithoutSession($this->banner_content);
         $this->data['page']          = $this->cms_page_model->getBySlug($home_page);
         if (!empty($result)) {
             $this->data['banner_images'] = $this->cms_program_model->front_cms_program_photos($result[0]['id']);
         }
-
+		// print_r($result);exit;
         $this->load_theme('home');
     }
 

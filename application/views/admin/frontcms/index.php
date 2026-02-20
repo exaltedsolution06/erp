@@ -67,7 +67,7 @@
                 <!-- general form elements -->
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
-                        <h3 class="box-title titlefix"><?php echo $this->lang->line('front_cms_setting'); ?></h3>
+                        <h3 class="box-title titlefix">Front Web Setting</h3>
                         <div class="box-tools pull-right">
                         </div><!-- /.box-tools -->
                     </div><!-- /.box-header -->
@@ -88,7 +88,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
+                                            <!--<div class="form-group">
                                                 <label class="col-sm-5 control-label"><?php echo $this->lang->line('sidebar'); ?></label>
                                                 <div class="col-sm-7">
                                                     <div class="material-switch">
@@ -135,11 +135,11 @@
                                                     <span class="text text-danger"></span>
                                                 </div>
 
-                                            </div>
+                                            </div>-->
 
 
                                             <div class="form-group">
-                                                <label class="col-sm-5 control-label"><?php echo $this->lang->line('logo'); ?> (369px X 76px)</label>
+                                                <label class="col-sm-5 control-label">Header Image</label>
                                                 <div class="col-sm-7">
                                                     <input type="file" class="filestyle form-control-file" name="logo" id="exampleInputFile" data-height="100" data-default-file="<?php echo base_url($frontcmslist->logo); ?>">
                                                     <span class="text-danger"><?php echo form_error('logo'); ?></span>
@@ -161,7 +161,7 @@
 
                                             </div>
 
-                                            <div class="form-group">
+                                            <!--<div class="form-group">
                                                 <label class="col-sm-5 control-label"><?php echo $this->lang->line('google_analytics'); ?> </label>
                                                 <div class="col-sm-7">
                                                     <textarea class="form-control" name="google_analytics" rows="5"><?php echo set_value('google_analytics', $frontcmslist->google_analytics) ?></textarea>
@@ -169,7 +169,7 @@
                                                     <span class="text text-danger"></span>
                                                 </div>
 
-                                            </div>
+                                            </div>-->
 
 
                                         </div><!--./col-md-7-->
@@ -244,7 +244,7 @@
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
-                                <hr/>
+                                <!--<hr/>
                                 <div class="">
                                     <div class="">
                                         <label for="input-type"><?php echo $this->lang->line('current_theme'); ?></label>
@@ -268,7 +268,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                             </div><!-- /.box-body -->
 
                             <div class="box-footer">

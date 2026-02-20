@@ -270,8 +270,10 @@ class Modulepermission extends Public_Controller
 			[
 				'module' => 'Front Web',
 				'links' => [
+					['name' => 'Front Web Settings',  'short_code' => 'front_cms_setting', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Add Webs Links',  'short_code' => 'add_webs_links', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Add Sub-Links',   'short_code' => 'add_sub_links', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'Media Manager',   'short_code' => 'media_manager', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Banner Image',    'short_code' => 'banner_image', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Gallery Image',   'short_code' => 'gallery_image', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Events',          'short_code' => 'events', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],

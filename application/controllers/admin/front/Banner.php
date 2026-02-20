@@ -12,16 +12,16 @@ class Banner extends Admin_Controller {
     }
 
     function index() {
-        if (!$this->rbac->hasPrivilege('banner_images', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('banner_image', 'can_view')) {
             access_denied();
         }
-        $data = array();
-        $this->session->set_userdata('top_menu', 'Front CMS');
-        $this->session->set_userdata('sub_menu', 'admin/front/banner');
-        $result = $this->cms_program_model->getByCategory($this->banner_content);
+        $this->session->set_userdata('top_menu', 'Front Web');
+        $this->session->set_userdata('sub_menu', 'frontweb/banner-image');
+        $result = $this->cms_program_model->getByCategoryWithoutSession($this->banner_content);
         if (!empty($result)) {
             $data['banner_images'] = $this->cms_program_model->front_cms_program_photos($result[0]['id']);
         }
+		// echo'<pre>'; print_r($result);exit;
         $this->load->view('layout/header');
         $this->load->view('admin/front/banner/index', $data);
         $this->load->view('layout/footer');
@@ -48,7 +48,7 @@ class Banner extends Admin_Controller {
                 'media_gallery_id' => $this->input->post('content_id'),
             );
 
-            $response = $this->cms_program_model->banner($banner_content, $data);
+            $response = $this->cms_program_model->bannerWithoutSession($banner_content, $data);
             if ($response) {
                 $array = array('status' => '1', 'error' => '', 'msg' => $this->lang->line('success_message'));
             } else {
