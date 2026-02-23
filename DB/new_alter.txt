@@ -57,6 +57,13 @@ ALTER TABLE `template_reportcard` ADD `is_show_date` INT(11) NOT NULL DEFAULT '0
 ALTER TABLE `template_reportcard` ADD `place` INT(11) NOT NULL DEFAULT '0' AFTER `school_reopen_time`;
 ALTER TABLE `template_reportcard` ADD `grade_table_title` VARCHAR(255) NULL DEFAULT NULL AFTER `place`;
 
+--- 23-02-2026 ---
+ALTER TABLE `front_cms_menu_items` ADD `content_heading` VARCHAR(255) NULL DEFAULT NULL AFTER `is_active`, ADD `menu_description` LONGTEXT NOT NULL AFTER `content_heading`, ADD `image_position` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0=Left, 1=Right' AFTER `menu_description`;
+ALTER TABLE `front_cms_menu_items` ADD `media_gallery_id` INT(11) NULL DEFAULT NULL AFTER `image_position`;
+ALTER TABLE `front_cms_settings` ADD `header_phone` VARCHAR(50) NULL DEFAULT NULL AFTER `fav_icon`, ADD `header_email` VARCHAR(100) NULL DEFAULT NULL AFTER `header_phone`, ADD `header_address` TEXT NULL DEFAULT NULL AFTER `header_email`;
+ALTER TABLE `front_cms_settings` ADD `header_button_enable` INT(1) NOT NULL DEFAULT '0' COMMENT '0=Not active, 1= Active' AFTER `header_address`, ADD `header_button_text` VARCHAR(255) NULL DEFAULT NULL AFTER `header_button_enable`, ADD `header_button_url` VARCHAR(255) NULL DEFAULT NULL AFTER `header_button_text`;
+
+
 ===============================
 File change outside of application folder
 --------

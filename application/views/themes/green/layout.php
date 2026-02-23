@@ -34,14 +34,27 @@
         <div class="toparea">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-6">
-                        <ul class="social">
-                            <?php $this->view('/themes/darkgray/social_media'); ?>
-
-                        </ul>
+					<div class="col-lg-9 col-md-8 col-sm-6">
+                        <!--<ul class="social">
+                            <?php //$this->view('/themes/darkgray/social_media'); ?>
+                        </ul>-->
+						<div class="d-flex">
+							<div class="contact-item-top">
+								<i class="fas fa-phone" style="margin:4px"></i>
+								<span>+91 99910 10777</span>
+							</div>
+							<div class="contact-item-top">
+								<i class="fas fa-envelope" style="margin:4px"></i>
+								<span>info@bbcschoolbhiwani.com</span>
+							</div>
+							<div class="contact-item-top">
+								<i class="fas fa-map-marker-alt" style="margin:4px"></i>
+								<span>Railway Over Bridge, Near Halwas Gate, Bhiwani</span>
+							</div>
+						</div>
                     </div><!--./col-md-3-->
 
-                    <div class="col-lg-9 col-md-8 col-sm-6">
+                    <div class="col-lg-3 col-md-4 col-sm-6">
                         <ul class="top-right">
                             <li><a href="<?php echo site_url('site/userlogin') ?>"><i class="fa fa-user"></i>Login</a></li>
 

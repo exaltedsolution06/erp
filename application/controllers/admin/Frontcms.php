@@ -60,6 +60,13 @@ class Frontcms extends Admin_Controller {
                 'instagram_url' => $this->input->post('instagram_url'),
                 'pinterest_url' => $this->input->post('pinterest_url'),
                 'linkedin_url' => $this->input->post('linkedin_url'),
+				
+                'header_phone' => $this->input->post('header_phone'),
+                'header_email' => $this->input->post('header_email'),
+                'header_address' => $this->input->post('header_address'),
+                'header_button_enable' => $this->input->post('header_button_enable'),
+                'header_button_text' => $this->input->post('header_button_text'),
+                'header_button_url' => $this->input->post('header_button_url'),
             );
 
 
@@ -108,6 +115,13 @@ class Frontcms extends Admin_Controller {
             $frontcmslist->instagram_url = '';
             $frontcmslist->pinterest_url = '';
             $frontcmslist->linkedin_url = '';
+			
+            $frontcmslist->header_phone = '';
+            $frontcmslist->header_email = '';
+            $frontcmslist->header_address = '';
+            $frontcmslist->header_button_enable = '';
+            $frontcmslist->header_button_text = '';
+            $frontcmslist->header_button_url = '';
         }
         $data['frontcmslist'] = $frontcmslist;
         $this->load->view('layout/header', $data);

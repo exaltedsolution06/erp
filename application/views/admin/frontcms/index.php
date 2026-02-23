@@ -160,6 +160,51 @@
                                                 </div>
 
                                             </div>
+											
+                                            <div class="form-group">
+                                                <label class="col-sm-5 control-label">Header Phone</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" name="header_phone" value="<?php echo set_value('header_phone', $frontcmslist->header_phone) ?>">
+                                                    <span class="text text-danger"></span>
+                                                </div>
+
+                                            </div>
+											
+                                            <div class="form-group">
+                                                <label class="col-sm-5 control-label">Header Email</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" name="header_email" value="<?php echo set_value('header_email', $frontcmslist->header_email) ?>">
+                                                    <span class="text text-danger"></span>
+                                                </div>
+
+                                            </div>
+											
+                                            <div class="form-group">
+                                                <label class="col-sm-5 control-label">Header Address</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" name="header_address" value="<?php echo set_value('header_address', $frontcmslist->header_address) ?>">
+                                                    <span class="text text-danger"></span>
+                                                </div>
+
+                                            </div>
+											
+											<div class="form-group">
+                                                <label class="col-sm-5 control-label">Header Button</label>
+                                                <div class="col-sm-7">
+													<div class="pt5">
+														<div class="material-switch">
+															<input id="header_button_enable" name="header_button_enable" type="checkbox" class="chk" value="1" <?php echo set_checkbox('header_button_enable', '1', (set_value('header_button_enable', $frontcmslist->header_button_enable) == 1) ? TRUE : FALSE); ?> onclick="valueHeaderButtonChanged()">
+															<label for="header_button_enable" class="label-success"></label>
+														</div>
+                                                    </div>
+													<div class="pt5 enableHeaderButtonDiv" hidden>
+														<input id="header_button_text" name="header_button_text" placeholder="Button Text" type="text" class="form-control" value="<?php echo set_value('header_button_text', $frontcmslist->header_button_text) ?>" />
+													</div>
+													<div class="pt5 enableHeaderButtonDiv" hidden>
+														<input id="header_button_url" name="header_button_url" placeholder="Button URL" type="text" class="form-control" value="<?php echo set_value('header_button_url', $frontcmslist->header_button_url) ?>" />
+													</div>
+                                                </div>
+                                            </div>
 
                                             <!--<div class="form-group">
                                                 <label class="col-sm-5 control-label"><?php echo $this->lang->line('google_analytics'); ?> </label>
@@ -289,3 +334,19 @@
 
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
+<script>
+	$(document).ready(function () {
+		if ($('#header_button_enable').is(":checked")){
+			$(".enableHeaderButtonDiv").show();
+		}else{
+			$(".enableHeaderButtonDiv").hide();
+		}
+	});
+    function valueHeaderButtonChanged()
+    {
+        if ($('#header_button_enable').is(":checked"))
+            $(".enableHeaderButtonDiv").show();
+        else
+            $(".enableHeaderButtonDiv").hide();
+    }
+</script>	

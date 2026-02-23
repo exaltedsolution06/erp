@@ -75,7 +75,7 @@ class Menus extends Admin_Controller {
         $listMenus = $this->cms_menuitems_model->getMenus($result['id']);
         $data['listdropdown_Menus'] = $listMenus;
         $this->form_validation->set_rules('menu', $this->lang->line('menu'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('ext_url_link', $this->lang->line('external_url'), 'trim|xss_clean|callback_check_exists');
+        // $this->form_validation->set_rules('ext_url_link', $this->lang->line('external_url'), 'trim|xss_clean|callback_check_exists');
         $listPages = $this->cms_page_model->get();
         $data['listPages'] = $listPages;
 		
@@ -100,10 +100,15 @@ class Menus extends Admin_Controller {
             $this->load->library('slug', $config);
             $data = array(
                 'menu_id' => $this->input->post('menu_id'),
-                'page_id' => $this->input->post('page_id'),
+                'page_id' => $this->input->post('page_id') ?? 0,
                 'menu' => $this->input->post('menu'),
                 'ext_url' => $this->input->post('ext_url'),
                 'open_new_tab' => $this->input->post('open_new_tab'),
+				
+                'content_heading' => $this->input->post('content_heading'),
+                'menu_description' => $this->input->post('menu_description'),
+                'image_position' => $this->input->post('image_position'),
+                'media_gallery_id' => $this->input->post('gallery_images'),
             );
             if ($this->input->post('ext_url')) {
 
@@ -140,11 +145,14 @@ class Menus extends Admin_Controller {
 
         $data['result'] = $menu;
         $data['top_menu'] = $top_menu;
+		
+		$data['gallery_images'] = $this->cms_media_model->get($menu['media_gallery_id']);
+		// echo'<pre>';print_r($data['result']);exit;
 
         $listMenus = $this->cms_menuitems_model->getMenus($menu['menu_id']);
         $data['listdropdown_Menus'] = $listMenus;
         $this->form_validation->set_rules('menu', $this->lang->line('menu'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('ext_url_link', $this->lang->line('external_url'), 'trim|xss_clean|callback_check_exists');
+        // $this->form_validation->set_rules('ext_url_link', $this->lang->line('external_url'), 'trim|xss_clean|callback_check_exists');
         $listPages = $this->cms_page_model->get();
         $data['listPages'] = $listPages;
         if ($this->form_validation->run() == FALSE) {
@@ -164,10 +172,15 @@ class Menus extends Admin_Controller {
             $top_menu = $this->input->post('top_menu');
             $data = array(
                 'id' => $this->input->post('id'),
-                'page_id' => $this->input->post('page_id'),
+                'page_id' => $this->input->post('page_id') ?? 0,
                 'menu' => $this->input->post('menu'),
                 'ext_url' => $this->input->post('ext_url'),
                 'open_new_tab' => $this->input->post('open_new_tab'),
+				
+                'content_heading' => $this->input->post('content_heading'),
+                'menu_description' => $this->input->post('menu_description'),
+                'image_position' => $this->input->post('image_position'),
+                'media_gallery_id' => $this->input->post('gallery_images'),
             );
             if ($this->input->post('ext_url')) {
 

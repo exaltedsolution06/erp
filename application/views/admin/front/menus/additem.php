@@ -1,4 +1,4 @@
-
+<script src="<?php echo base_url(); ?>backend/plugins/ckeditor/ckeditor.js"></script>
 <script src="https://ilikenwf.github.io/jquery.mjs.nestedSortable.js"></script>
 <style type="text/css">
     ol {
@@ -102,14 +102,6 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title"><?php echo $this->lang->line('add_menu_item'); ?></h3>
-						<?php
-                        if ($this->rbac->hasPrivilege('add_webs_links', 'can_add')) {
-                            ?>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-primary btn-sm gallery_image" id="gallery_images"><i class="fa fa-plus"></i>  <?php echo $this->lang->line('add_images'); ?>
-                                </button>
-                            </div>
-                        <?php } ?>
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     <form id="form1" action="<?php echo site_url('admin/front/menus/additem/' . urlencode($result['slug'])); ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8">
@@ -164,22 +156,32 @@
                             </div>-->
 							<div class="form-group">
                                 <label for="exampleInputEmail1">Content Heading</label>
-                                <input id="content_heading" name="content_heading"  type="text" class="form-control"  value="<?php echo set_value('content_heading'); ?>" <?php echo (!set_value('content_heading')) ? 'disabled' : ''; ?>/>
+                                <input id="content_heading" name="content_heading"  type="text" class="form-control"  value="<?php echo set_value('content_heading'); ?>" />
                                 <span class="text-danger"><?php echo form_error('content_heading'); ?></span>
                             </div>
 							<div class="form-group">
                                 <label for="exampleInputEmail1">Description</label>
-                                <input id="menu_description" name="menu_description"  type="text" class="form-control"  value="<?php echo set_value('menu_description'); ?>" <?php echo (!set_value('menu_description')) ? 'disabled' : ''; ?>/>
+                                <input id="editor1" name="menu_description"  type="text" class="form-control"  value="<?php echo set_value('menu_description'); ?>" />
                                 <span class="text-danger"><?php echo form_error('menu_description'); ?></span>
                             </div>
 							<div class="form-group">
-                                <label for="exampleInputEmail1">Image Position</label>
+                                <label for="exampleInputEmail1">Image Position(Right)</label>
                                 <div class="material-switch">
                                     <input id="image_position" name="image_position" type="checkbox"  value="1" <?php echo set_checkbox('image_position', '1', (set_value('image_position')) ? TRUE : FALSE); ?> />
                                     <label for="image_position" class="label-success"></label>
                                 </div>
                             </div>
+							<div class="dividerhr"></div>
 
+                            <div class="formgroup10">
+                                <label><?php echo $this->lang->line('gallery_image'); ?></label>
+                                <button type="button" class="btn btn-primary btn-sm gallery_image pull-right" id="gallery_images"><i class="fa fa-plus"></i>  <?php echo $this->lang->line('add_image'); ?></button>
+                                <div class="mediarow">
+                                    <div class="row">
+                                        <div class="gallery_content"></div> 
+                                    </div>
+                                </div>   
+                            </div>
                         </div><!-- /.box-body -->
                         <div class="box-footer">
                             <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
@@ -275,17 +277,20 @@
         </div>   <!-- /.row -->
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
-
 <script>
     $(document).ready(function () {
         var popup_target = 'gallery_image';
-      
+     
+           CKEDITOR.replace('editor1',
+                {
+                    allowedContent: true
+                });
+
         $('#mediaModal').modal({
             backdrop: 'static',
             keyboard: false,
             show: false
         });
-
         $(document).on('click', '.gallery_image', function (event) {
             $("#mediaModal").modal('toggle', $(this));
         });
@@ -294,7 +299,7 @@
             var a = $(event.relatedTarget) // Button that triggered the modal
             popup_target = a[0].id;
             var button = $(event.relatedTarget) // Button that triggered the modal
-
+            console.log(popup_target);
             var $modalDiv = $(event.delegateTarget);
             $('.modal-media-body').html("");
             $.ajax({
@@ -318,8 +323,6 @@
             });
         });
 
-
-
         $(document).on('click', '.img_div_modal', function (event) {
             $('.img_div_modal div.fadeoverlay').removeClass('active');
             $(this).closest('.img_div_modal').find('.fadeoverlay').addClass('active');
@@ -332,52 +335,30 @@
             var is_image = $('div#media_div').find('.fadeoverlay.active').find('img').data('is_image');
             var content_type = $('div#media_div').find('.fadeoverlay.active').find('img').data('content_type');
             var content_name = $('div#media_div').find('.fadeoverlay.active').find('img').data('content_name');
+
+            var vid_url = $('div#media_div').find('.fadeoverlay.active').find('img').data('vid_url');
             var content = "";
-            if (popup_target === "gallery_images") {
-                if (content_type === "image/gif" || content_type === "image/jpeg" || content_type === "image/png") {
-                    $.ajax({
-                        type: "POST",
-                        url: baseurl + "admin/front/banner/add",
-                        dataType: 'json',
-                        data: {'content_id': content_id},
-                        beforeSend: function () {
+			if (popup_target === "gallery_images") {
+                if (content_type === "image/gif" || content_type === "image/jpeg" || content_type === "image/png" || content_type === "video") {
 
-
-                        },
-                        success: function (data) {
-
-                            if (data.status == 1) {
-                                insert_gallery(content_html, content_id, content_name, is_image);
-                                successMsg(data.msg);
-                            }
-                        },
-                        error: function (xhr) { // if error occured
-
-                        },
-                        complete: function () {
-                            $('#mediaModal').modal('hide');
-
-                        },
-                    });
-
-
+                    insert_gallery(content_html, content_id, content_name, is_image);
+                } else {
+                    //error show  
                 }
 
 
+                $('#mediaModal').modal('hide');
             }
 
         });
-
     });
-
-
 
     function insert_gallery(content_image, content_id, content_name, is_image) {
         var output = '';
-        output += "<div class='col-sm-2 col-md-2 col-xs-2 gallery_img div_record_" + content_id + "'>";
+        output += "<div class='col-sm-4 col-md-3 col-xs-6 img_div_modal gallery_img div_record_" + content_id + "'>";
         output += "<div class='fadeoverlay'>";
         output += "<img class='img-responsive' data-fid='" + content_id + "' data-content_name='" + content_name + "' data-is_image='" + is_image + "' data-img='" + content_image + "' src='" + content_image + "'>";
-        output += "<input type='hidden' value='" + content_id + "' name='gallery_images[]'>";
+        output += "<input type='hidden' value='" + content_id + "' name='gallery_images'>";
         if (is_image == 1) {
             output += "<i class='fa fa-picture-o videoicon'></i>";
         } else {
@@ -390,41 +371,12 @@
         output += "<p class=''>" + content_name + "</p>";
         output += "</div>";
         output += "</div>";
-        $(output).appendTo(".gallery_content");
+        // $(output).appendTo(".gallery_content");
+        $('.gallery_content').html(output);
     }
 
-    $(document).on('click', '.delete_gallery_img', function (e) {
-        var content_id = $(this).data('record_id');
-        var result = confirm("<?php echo $this->lang->line('delete_confirm'); ?>");
-
-        if (result == true) {
-            $.ajax({
-                type: "POST",
-                url: baseurl + "admin/front/banner/remove",
-                dataType: 'json',
-                data: {'content_id': content_id},
-                beforeSend: function () {
-                },
-                success: function (data) {
-
-                    if (data.status == 1) {
-                        $(e.target).closest('.gallery_img').remove();
-                        successMsg(data.msg);
-                    } else {
-                        errorMsg(data.msg);
-                    }
-                },
-                error: function (xhr) { // if error occured
-
-                },
-                complete: function () {
-
-                },
-            });
-        }
-
-
-
+    $(document).on('click', '.delete_gallery_img', function () {
+        $(this).closest('.gallery_img').remove();
 
     });
 
