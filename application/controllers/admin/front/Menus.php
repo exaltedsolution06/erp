@@ -146,7 +146,9 @@ class Menus extends Admin_Controller {
         $data['result'] = $menu;
         $data['top_menu'] = $top_menu;
 		
+		if($menu['media_gallery_id'] != null){
 		$data['gallery_images'] = $this->cms_media_model->get($menu['media_gallery_id']);
+		}
 		// echo'<pre>';print_r($data['result']);exit;
 
         $listMenus = $this->cms_menuitems_model->getMenus($menu['menu_id']);

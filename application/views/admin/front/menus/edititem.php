@@ -178,7 +178,7 @@
 														<div class='col-sm-4 col-md-3 col-xs-6 img_div_modal gallery_img div_record_<?php echo $page_content_value['id']; ?>'>
 															<div class='fadeoverlay'>
 																<img class='img-responsive' data-fid='<?php echo $page_content_value['id']; ?>' data-content_name='<?php echo $page_content_value['img_name']; ?>' data-is_image='' data-img='<?php echo $page_content_value['dir_path'] . $page_content_value['img_name']; ?>' src='<?php echo base_url($page_content_value['thumb_path'] . $page_content_value['img_name']); ?>'>
-																<input type='hidden' value='<?php echo $page_content_value['id']; ?>' name='gallery_images[]'>
+																<input type='hidden' value='<?php echo $page_content_value['id']; ?>' name='gallery_images'>
 																<?php
 																if ($page_content_value['file_type'] == 'video') {
 																	?>
@@ -431,7 +431,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    $(document).ready(function () {
+    /*$(document).ready(function () {
         $('.delmodal').modal({
             backdrop: 'static',
             keyboard: false,
@@ -478,7 +478,7 @@
         });
 
 
-    });
+    });*/
 
 
 </script>
@@ -528,7 +528,7 @@
         });
     });
 </script>
-<div class="delmodal modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--<div class="delmodal modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -552,7 +552,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 
 

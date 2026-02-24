@@ -33,28 +33,34 @@
     <body>
         <div class="toparea">
             <div class="container">
-				<div class="row">
-					<nav class="navbar">
-						<ul class="nav navbar-nav">
-							<li class="contact-item-top">
-								<i class="fa fa-phone"></i>
-								<span><?php echo $front_setting->header_phone; ?></span>
-							</li>
-							<li class="contact-item-top">
-								<i class="fa fa-envelope"></i>
-								<span><?php echo $front_setting->header_email; ?></span>
-							</li>
-							<li class="contact-item-top">
-								<i class="fa fa-map-marker"></i>
-								<span><?php echo $front_setting->header_address; ?></span>
-							</li>
-						</ul>
-						<ul class="top-right">
-							<li><a href="<?php echo site_url('site/login') ?>"><i class="fa fa-user"></i>Admin Login</a></li>
-							<li><a href="<?php echo site_url('site/userlogin') ?>"><i class="fa fa-user"></i>User Login</a></li>
+                <div class="row">
+					<div class="col-lg-9 col-md-8 col-sm-6">
+                        <!--<ul class="social">
+                            <?php //$this->view('/themes/darkgray/social_media'); ?>
+                        </ul>-->
+						<div class="d-flex">
+							<div class="contact-item-top">
+								<i class="fas fa-phone" style="margin:4px"></i>
+								<span>+91 99910 10777</span>
+							</div>
+							<div class="contact-item-top">
+								<i class="fas fa-envelope" style="margin:4px"></i>
+								<span>info@bbcschoolbhiwani.com</span>
+							</div>
+							<div class="contact-item-top">
+								<i class="fas fa-map-marker-alt" style="margin:4px"></i>
+								<span>Railway Over Bridge, Near Halwas Gate, Bhiwani</span>
+							</div>
+						</div>
+                    </div><!--./col-md-3-->
+
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <ul class="top-right">
+                            <li><a href="<?php echo site_url('site/userlogin') ?>"><i class="fa fa-user"></i>Login</a></li>
+
                         </ul>
-					</nav>
-				</div>
+                    </div><!--./col-md-5-->
+                </div>
             </div>
         </div><!--./toparea--> 
 
@@ -67,86 +73,65 @@
             <?php
         }
         ?> 
-		<section class="newsarea">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12 col-sm-12">
-						<div class="marqueecontent">
-							<div class="newstab">Latest News</div>
-							<div class="marqueecontent">
-								<marquee class="" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
-									<ul id="" class="">
-										<?php
-											foreach ($banner_notices as $banner_notice_key => $banner_notice_value) {
-										?>
-										<li>
-											<a href="<?php echo site_url('read/' . $banner_notice_value['slug']) ?>">
-											<div class="datenews">
-												<?php
-													echo date('d', strtotime($banner_notice_value['date'])) . " " . $this->lang->line(strtolower(date('F', strtotime($banner_notice_value['date'])))) . " " . date('Y', strtotime($banner_notice_value['date']));
-												?>
-												<span> </span>
-											</div><?php echo $banner_notice_value['title']; ?>
-											</a>
-										</li>
-										<?php
-											}
-										?>
-									</ul>
-								</marquee>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-        <!--<div class="container spacet50">
+
+        <div class="container spacet50">
             <div class="row"> 
-				
-            </div>
-        </div>--> 
-		<div class="container">
-            <div class="row">
-				<?php
-				foreach ($main_menus as $menu_key => $menu_value) {
-				?>
-				<div class="col-md-12">
-					<section class="bg-gray fullwidth spaceb40 spacet40">
-						<div class="container" id="<?php echo $menu_value['slug']; ?>">
-							<div class="row">    
-								<div class="col-md-8 col-sm-12 col-md-offset-2 text-center">
-									<h2 class="head-title"><?php echo $menu_value['content_heading']; ?></h2>
-								</div>
+                <?php
+                $page_colomn = "col-md-12";
 
-								<?php 
-									$image = '
-									<div class="col-md-6 col-sm-6">
-										<div class="about_img">
-											<img class="img-responsive img-rounded" src="'.$menu_value['media_gallery_url'].'">
-										</div>
-									</div>';
-									
-									$content = '
-									<div class="col-md-6 col-sm-6">
-										<div class="about-right">
-											'.$menu_value['menu_description'].'
-										</div>
-									</div>';
-									
-									if ($menu_value['image_position'] == 0) {
-										echo $image . $content;
-									} else {
-										echo $content . $image;
-									}
-								?>
+                if ($page_side_bar) {
 
-							</div>
-						</div>
-					</section>
-				</div>
-				<?php } ?>
-			</div>
-		</div>
+                    $page_colomn = "col-md-9 col-sm-9";
+                }
+                ?>
+                <div class="<?php echo $page_colomn; ?>">
+                    <?php echo $content; ?> 
+                </div>  
+                <?php
+                if ($page_side_bar) {
+                    ?>
+
+                    <div class="col-md-3 col-sm-3">
+                        <div class="sidebar">
+                            <?php
+                            if (in_array('news', json_decode($front_setting->sidebar_options))) {
+                                ?>
+                                <div class="catetab"><?php echo $this->lang->line('latest_news'); ?></div>
+                                <div class="newscontent">
+                                    <div class="tickercontainer"><div class="mask"><ul id="ticker01" class="newsticker" style="height: 666px; top: 124.54px;">
+                                                <?php
+                                                if (!empty($banner_notices)) {
+
+                                                    foreach ($banner_notices as $banner_notice_key => $banner_notice_value) {
+                                                        ?>
+                                                        <li><a href="<?php echo site_url('read/' . $banner_notice_value['slug']) ?>"><div class="date"><?php echo date('d', strtotime($banner_notice_value['date'])); ?><span><?php $this->lang->line(strtolower(date('F', strtotime($banner_notice_value['date'])))); ?></span></div><?php echo $banner_notice_value['title']; ?>
+                                                            </a></li>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div><!--./newscontent-->
+
+                                <?php
+                            }
+                            ?>
+
+
+
+
+
+                        </div><!--./sidebar-->  
+                    </div>
+                    <?php
+                }
+                ?>
+
+
+            </div><!--./row-->
+        </div><!--./container-->  
 
         <?php echo $footer; ?>
 

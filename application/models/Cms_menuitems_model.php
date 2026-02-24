@@ -143,7 +143,8 @@ class Cms_menuitems_model extends MY_Model {
 
         foreach ($result as $r_key => $obj) {
 
-
+			$media_gallery_url_val = $this->cms_media_model->get($obj->media_gallery_id);
+			
             if ($obj->parent_id == 0) {
                 $parent_menu[$obj->id]['id'] = $obj->id;
                 $parent_menu[$obj->id]['parent'] = $obj->parent_id;
@@ -156,6 +157,11 @@ class Cms_menuitems_model extends MY_Model {
                 $parent_menu[$obj->id]['link'] = $obj->slug;
                 $parent_menu[$obj->id]['page_slug'] = $obj->page_slug;
                 $parent_menu[$obj->id]['page_url'] = $obj->page_url;
+                $parent_menu[$obj->id]['content_heading'] = $obj->content_heading;
+                $parent_menu[$obj->id]['menu_description'] = $obj->menu_description;
+                $parent_menu[$obj->id]['image_position'] = $obj->image_position;
+                $parent_menu[$obj->id]['media_gallery_id'] = $obj->media_gallery_id;
+                $parent_menu[$obj->id]['media_gallery_url'] = base_url($media_gallery_url_val['dir_path'] . $media_gallery_url_val['img_name']);
                 $parent_menu[$obj->id]['is_homepage'] = $obj->is_homepage;
             } else {
                 $sub_menu[$obj->id]['id'] = $obj->id;
@@ -169,6 +175,11 @@ class Cms_menuitems_model extends MY_Model {
                 $sub_menu[$obj->id]['link'] = $obj->slug;
                 $sub_menu[$obj->id]['page_slug'] = $obj->page_slug;
                 $sub_menu[$obj->id]['page_url'] = $obj->page_url;
+                $sub_menu[$obj->id]['content_heading'] = $obj->content_heading;
+                $sub_menu[$obj->id]['menu_description'] = $obj->menu_description;
+                $sub_menu[$obj->id]['image_position'] = $obj->image_position;
+                $sub_menu[$obj->id]['media_gallery_id'] = $obj->media_gallery_id;
+                $sub_menu[$obj->id]['media_gallery_url'] = base_url($media_gallery_url_val['dir_path'] . $media_gallery_url_val['img_name']);
                 $sub_menu[$obj->id]['is_homepage'] = $obj->is_homepage;
             }
         }
@@ -196,6 +207,11 @@ class Cms_menuitems_model extends MY_Model {
                 'publish' => $pval['publish'],
                 'page_slug' => $pval['page_slug'],
                 'page_url' => $pval['page_url'],
+                'content_heading' => $pval['content_heading'],
+                'menu_description' => $pval['menu_description'],
+                'image_position' => $pval['image_position'],
+                'media_gallery_id' => $pval['media_gallery_id'],
+                'media_gallery_url' => $pval['media_gallery_url'],
                 'submenus' => array()
             );
 
@@ -215,6 +231,11 @@ class Cms_menuitems_model extends MY_Model {
                         'publish' => $sval['publish'],
                         'page_slug' => $sval['page_slug'],
                         'page_url' => $sval['page_url'],
+                        'content_heading' => $sval['content_heading'],
+                        'menu_description' => $sval['menu_description'],
+                        'image_position' => $sval['image_position'],
+                        'media_gallery_id' => $sval['media_gallery_id'],
+                        'media_gallery_url' => $sval['media_gallery_url'],
                     );
                 }
             }

@@ -1,5 +1,5 @@
 <footer>
-    <div class="container">
+    <!--<div class="container">
         <div class="row">
             <div class="col-md-4 col-sm-6">
                 <h3 class="fo-title"><?php echo $this->lang->line('links'); ?></h3>
@@ -38,14 +38,14 @@
                     }
                     ?>
                 </ul>
-            </div><!--./col-md-3-->
+            </div>
 
             <div class="col-md-4 col-sm-6">
                 <h3 class="fo-title"><?php echo $this->lang->line('follow_us'); ?></h3>
                 <ul class="social">
                     <?php $this->view('/themes/default/social_media'); ?>        
                 </ul>
-            </div><!--./col-md-3-->
+            </div>
             <div class="col-md-4 col-sm-6">
                 <h3 class="fo-title"><?php echo $this->lang->line('contact'); ?></h3>
                 <ul class="co-list">
@@ -54,18 +54,23 @@
                     <li><i class="fa fa-phone"></i><?php echo $school_setting->phone; ?></li>
                     <li><i class="fa fa-map-marker"></i><?php echo $school_setting->address; ?></li>
                 </ul>
-            </div><!--./col-md-3-->
+            </div>
             <div class="col-md-3 col-sm-6">
                 <a class="twitter-timeline" data-tweet-limit="1" href="#"></a>
-            </div><!--./col-md-3-->   
-        </div><!--./row-->
-    </div><!--./container-->
+            </div>   
+        </div>
+    </div>-->
 
     <div class="copy-right">
         <div class="container">
             <div class="row">
-                <div class="col-md-12 col-sm-12 text-center">
+                <div class="col-md-7 col-sm-8 text-center">
                     <p><?php echo $front_setting->footer_text; ?></p>
+                </div>
+                <div class="col-md-5 col-sm-4 text-center">
+                    <ul class="social">
+						<?php $this->view('/themes/default/social_media'); ?>        
+					</ul>
                 </div>
             </div><!--./row-->
         </div><!--./container-->

@@ -404,7 +404,7 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    /*$(document).ready(function () {
         $('.delmodal').modal({
             backdrop: 'static',
             keyboard: false,
@@ -424,7 +424,7 @@
 
             $.ajax({
                 type: "post",
-                url: '<?php echo site_url("admin/front/menus/deleteMenuItem") ?>',
+                url: '<?php //echo site_url("admin/front/menus/deleteMenuItem") ?>',
                 dataType: 'JSON',
                 data: {'id': id},
                 beforeSend: function () {
@@ -450,7 +450,7 @@
         });
 
 
-    });
+    });*/
 
 
 </script>
@@ -501,7 +501,7 @@
     });
 
 </script>
-<div class="delmodal modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--<div class="delmodal modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -525,7 +525,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 
 

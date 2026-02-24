@@ -1,10 +1,10 @@
 <header>
     <div class="container">
         <div class="row">
-            <div class="col-md-3 col-sm-3">
-                <a class="logo" href="<?php echo base_url(); ?>"><img src="<?php echo base_url($front_setting->logo); ?>" alt=""></a>
+            <div class="col-md-12 col-sm-12">
+                <a class="logo" href="<?php echo base_url(); ?>"><img src="<?php echo base_url($front_setting->logo); ?>" alt="" width="100%"></a>
             </div><!--./col-md-4-->
-            <div class="col-md-9 col-sm-12">
+            <!--<div class="col-md-9 col-sm-12">
                 <ul class="header-extras">
                     <li><i class="fa fa-envelope-o i-plain"></i><div class="he-text"><?php echo $this->lang->line('email_us'); ?><span><a href="mailto:<?php echo $school_setting->email; ?>"><?php echo $school_setting->email; ?></a></span></div></li>
                     <li><i class="fa fa-phone i-plain"></i><div class="he-text"><?php echo $this->lang->line('call_us'); ?><span><?php echo $school_setting->phone; ?></span></div></li>
@@ -13,7 +13,7 @@
                         </div>
                     </li>
                 </ul>
-            </div><!--./col-md-8-->
+            </div>-->
         </div><!--./row-->
     </div><!--./container-->
 </header>
@@ -33,6 +33,7 @@
                 <div class="collapse navbar-collapse" id="navbar-collapse-3">
                     <ul class="nav navbar-nav">
                         <?php
+						// echo '<pre>';print_r($main_menus);exit;
                         foreach ($main_menus as $menu_key => $menu_value) {
                             $submenus = false;
                             $cls_menu_dropdown = "";
@@ -61,7 +62,8 @@
                                     }
                                     ?>
 
-                                    <a href="<?php echo $url; ?>" <?php echo $top_new_tab; ?>><?php echo $menu_value['menu']; ?></a>
+                                    <!--<a href="<?php echo $url; ?>" <?php echo $top_new_tab; ?>><?php echo $menu_value['menu']; ?></a>-->
+                                    <a href="#<?php echo $menu_value['slug']; ?>" <?php echo $top_new_tab; ?>><?php echo $menu_value['menu']; ?></a>
 
                                     <?php
                                 } else {
@@ -100,6 +102,16 @@
 
 
                     </ul>
+					<ul class="top-right">
+						<?php
+						if($front_setting->header_button_enable == 1){
+						?>
+						<li><a href="<?php echo $front_setting->header_button_url ?>"><?php echo $front_setting->header_button_text ?></a></li>
+						<?php } ?>
+						<li class="hidden-lg hidden-md hidden-sm"><a href="<?php echo site_url('site/login') ?>"><i class="fa fa-user"></i>Admin Login</a></li>
+						<li class="hidden-lg hidden-md hidden-sm"><a href="<?php echo site_url('site/userlogin') ?>"><i class="fa fa-user"></i>User Login</a></li>
+
+					</ul>
                 </div><!-- /.navbar-collapse -->
             </nav><!-- /.navbar -->
         </div>

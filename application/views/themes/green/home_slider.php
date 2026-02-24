@@ -2,8 +2,8 @@
 if (isset($banner_images) && !empty($banner_images)) {
     ?>
     <div class="container1">
-        <div class="row">
-            <div class="col-md-12 col-sm-12">
+        <div class="row1">
+            <div class="col-md-121 col-sm-121">
                 <div id="bootstrap-touch-slider" class="carousel bs-slider slide  control-round" data-ride="carousel" data-interval="5000">
                     <div class="carousel-inner">
                         <?php

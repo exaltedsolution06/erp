@@ -408,7 +408,7 @@ class Cms_program_model extends MY_Model
         $this->db->trans_begin();
 
         //===============
-        $banner_content_record = $this->getByCategory($banner_content);
+        $banner_content_record = $this->getByCategoryWithoutSession($banner_content);
         if ($banner_content_record) {
             $data = array('program_id' => $banner_content_record[0]['id'], 'media_gallery_id' => $media_gallery_id);
             $this->db->where($data);

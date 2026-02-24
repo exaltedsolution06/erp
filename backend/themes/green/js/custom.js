@@ -166,6 +166,15 @@ $('#alert').affix({
       jQuery('html, body').animate({scrollTop : 0},800);
       return false;
     });  
+	
+	
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener("click", function(e) {
+    e.preventDefault();
+    document.querySelector(this.getAttribute("href"))
+            .scrollIntoView({ behavior: "smooth" });
+  });
+});
 //end Click event to scroll to top
 
 
