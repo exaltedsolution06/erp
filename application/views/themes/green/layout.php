@@ -67,6 +67,7 @@
             <?php
         }
         ?> 
+		<?php if (!empty($banner_notices)) { ?>
 		<section class="newsarea">
 			<div class="container">
 				<div class="row">
@@ -100,53 +101,14 @@
 				</div>
 			</div>
 		</section>
-        <!--<div class="container spacet50">
+		<?php } ?>
+        <div class="container">
             <div class="row"> 
-				
-            </div>
-        </div>--> 
-		<div class="container">
-            <div class="row">
-				<?php
-				foreach ($main_menus as $menu_key => $menu_value) {
-				?>
-				<div class="col-md-12">
-					<section class="bg-gray fullwidth spaceb40 spacet40">
-						<div class="container" id="<?php echo $menu_value['slug']; ?>">
-							<div class="row">    
-								<div class="col-md-8 col-sm-12 col-md-offset-2 text-center">
-									<h2 class="head-title"><?php echo $menu_value['content_heading']; ?></h2>
-								</div>
-
-								<?php 
-									$image = '
-									<div class="col-md-6 col-sm-6">
-										<div class="about_img">
-											<img class="img-responsive img-rounded" src="'.$menu_value['media_gallery_url'].'">
-										</div>
-									</div>';
-									
-									$content = '
-									<div class="col-md-6 col-sm-6">
-										<div class="about-right">
-											'.$menu_value['menu_description'].'
-										</div>
-									</div>';
-									
-									if ($menu_value['image_position'] == 0) {
-										echo $image . $content;
-									} else {
-										echo $content . $image;
-									}
-								?>
-
-							</div>
-						</div>
-					</section>
-				</div>
-				<?php } ?>
-			</div>
-		</div>
+                <div class="col-md-12">
+                    <?php echo $content; ?> 
+                </div>
+            </div><!--./row-->
+        </div><!--./container-->
 
         <?php echo $footer; ?>
 

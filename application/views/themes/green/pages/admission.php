@@ -21,7 +21,7 @@ if ($this->session->flashdata('msg')) {
     }
 </style>
 
-<form id="form1" class="spaceb60 spacet60 onlineform" action="<?php echo current_url() ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+<form id="form1" class="onlineform" action="<?php echo current_url() ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8" enctype="multipart/form-data">
     <h2><?php echo $this->lang->line('online') . " " . $this->lang->line('admission'); ?></h2>
     <?php
     if (isset($error_message)) {

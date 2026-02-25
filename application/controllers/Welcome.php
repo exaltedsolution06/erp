@@ -18,9 +18,7 @@ class Welcome extends Front_Controller
         $this->load->library('captchalib');
         $this->banner_content         = $this->config->item('ci_front_banner_content');
         $this->perPage                = 12;
-        $ban_notice_type              = $this->config->item('ci_front_notice_content');
         $this->sch_setting_detail     = $this->setting_model->getSetting();
-        $this->data['banner_notices'] = $this->cms_program_model->getByCategory($ban_notice_type, array('start' => 0, 'limit' => 5));
     }
 
     public function show_404()
@@ -40,6 +38,10 @@ class Welcome extends Front_Controller
             $this->data['banner_images'] = $this->cms_program_model->front_cms_program_photos($result[0]['id']);
         }
 		// print_r($result);exit;
+		
+        $ban_notice_type              = $this->config->item('ci_front_notice_content');
+        $this->data['banner_notices'] = $this->cms_program_model->getByCategory($ban_notice_type, array('start' => 0, 'limit' => 5));
+		
         $this->load_theme('home');
     }
 
@@ -208,7 +210,7 @@ class Welcome extends Front_Controller
     public function admission()
     {
 
-        if ($this->module_lib->hasActive('online_admission')) {
+        //if ($this->module_lib->hasActive('online_admission')) {
             $this->data['active_menu'] = 'online-admission';
             $page                      = array('title' => 'Online Admission Form', 'meta_title' => 'online admission form', 'meta_keyword' => 'online admission form', 'meta_description' => 'online admission form');
 
@@ -238,11 +240,11 @@ class Welcome extends Front_Controller
                 $this->form_validation->set_rules('captcha', 'Captcha', 'trim|required|callback_check_captcha');
             }
             $this->form_validation->set_rules(
-            'email', $this->lang->line('email'), array(
-                'valid_email','required',
-                array('check_student_email_exists', array($this->student_model, 'check_student_email_exists')),
-            )
-        ); 
+				'email', $this->lang->line('email'), array(
+					'valid_email','required',
+					array('check_student_email_exists', array($this->student_model, 'check_student_email_exists')),
+				)
+			); 
             $this->form_validation->set_rules('firstname', $this->lang->line('first_name'), 'trim|required|xss_clean');
             $this->form_validation->set_rules('guardian_is', $this->lang->line('guardian'), 'trim|required|xss_clean');
             $this->form_validation->set_rules('gender', $this->lang->line('gender'), 'trim|required|xss_clean');
@@ -339,7 +341,7 @@ class Welcome extends Front_Controller
 
                 $this->load_theme('pages/admission');
             }
-        }
+        //}
     }
 
     public function check_captcha($captcha)

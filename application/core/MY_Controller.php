@@ -192,13 +192,13 @@ class Front_Controller extends CI_Controller {
         $this->data['main_menus'] = '';
         $this->data['school_setting'] = $this->school_details;
         $this->data['front_setting'] = $this->front_setting;
-        $menu_list = $this->cms_menu_model->getBySlug('main-menu');
 
-        $footer_menu_list = $this->cms_menu_model->getBySlug('bottom-menu');
+        $menu_list = $this->cms_menu_model->getBySlug('main-menu');
         if (count($menu_list) > 0) {
             $this->data['main_menus'] = $this->cms_menuitems_model->getMenus($menu_list['id']);
         }
 
+        $footer_menu_list = $this->cms_menu_model->getBySlug('bottom-menu');
         if (count($footer_menu_list) > 0) {
             $this->data['footer_menus'] = $this->cms_menuitems_model->getMenus($footer_menu_list['id']);
         }

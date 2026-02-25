@@ -32,6 +32,9 @@
 
                 <div class="collapse navbar-collapse" id="navbar-collapse-3">
                     <ul class="nav navbar-nav">
+						<li class="" >
+							<a href="<?php echo base_url(); ?>">Home</a>
+						</li>
                         <?php
 						// echo '<pre>';print_r($main_menus);exit;
                         foreach ($main_menus as $menu_key => $menu_value) {
@@ -63,7 +66,7 @@
                                     ?>
 
                                     <!--<a href="<?php echo $url; ?>" <?php echo $top_new_tab; ?>><?php echo $menu_value['menu']; ?></a>-->
-                                    <a href="#<?php echo $menu_value['slug']; ?>" <?php echo $top_new_tab; ?>><?php echo $menu_value['menu']; ?></a>
+                                    <a href="<?php echo base_url(); ?>#<?php echo $menu_value['slug']; ?>" <?php echo $top_new_tab; ?>><?php echo $menu_value['menu']; ?></a>
 
                                     <?php
                                 } else {
@@ -99,6 +102,9 @@
                             <?php
                         }
                         ?>
+						<hr>
+						<li class="hidden-lg hidden-md hidden-sm"><a href="<?php echo site_url('site/login') ?>">Admin Login</a></li>
+						<li class="hidden-lg hidden-md hidden-sm"><a href="<?php echo site_url('site/userlogin') ?>">User Login</a></li>
 
 
                     </ul>
@@ -108,8 +114,6 @@
 						?>
 						<li><a href="<?php echo $front_setting->header_button_url ?>"><?php echo $front_setting->header_button_text ?></a></li>
 						<?php } ?>
-						<li class="hidden-lg hidden-md hidden-sm"><a href="<?php echo site_url('site/login') ?>"><i class="fa fa-user"></i>Admin Login</a></li>
-						<li class="hidden-lg hidden-md hidden-sm"><a href="<?php echo site_url('site/userlogin') ?>"><i class="fa fa-user"></i>User Login</a></li>
 
 					</ul>
                 </div><!-- /.navbar-collapse -->
