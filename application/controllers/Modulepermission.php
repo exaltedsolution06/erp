@@ -13,14 +13,14 @@ class Modulepermission extends Public_Controller
 
     public function index()
     {
-		$truncate_permission_group = "TRUNCATE TABLE `permission_group`";
+		/*$truncate_permission_group = "TRUNCATE TABLE `permission_group`";
 		$truncate_permission_group_sql = $this->db->query($truncate_permission_group);
 		
 		$truncate_permission_category = "TRUNCATE TABLE `permission_category`";
 		$truncate_permission_category_sql = $this->db->query($truncate_permission_category);
 		
 		$truncate_roles_permissions = "TRUNCATE TABLE `roles_permissions`";
-		$truncate_roles_permissions_sql = $this->db->query($truncate_roles_permissions);
+		$truncate_roles_permissions_sql = $this->db->query($truncate_roles_permissions);*/
 		
 		$modules = [
 			[
@@ -368,7 +368,64 @@ class Modulepermission extends Public_Controller
 		}
 		unset($module, $link);
 		echo '<pre>'; print_r($modules); echo '</pre>';exit;*/
-		foreach($modules as $module_val){
+		foreach ($modules as $module_val) {
+			$system = 0;
+			if ($module_val['module'] == 'Dashboard Management' || $module_val['module'] == 'Chat') {
+				$system = 1;
+			}
+
+			$short_code = $this->slugify($module_val['module']);
+
+			// CHECK / INSERT / UPDATE GROUP
+			$existing_group = $this->db
+				->where('short_code', $short_code)
+				->get('permission_group')
+				->row();
+
+			$permission_group_data = [
+				'name'       => $module_val['module'],
+				'short_code' => $short_code,
+				'is_active'  => 1,
+				'system'     => $system,
+			];
+
+			if ($existing_group) { // UPDATE
+				$this->db->where('id', $existing_group->id)
+						 ->update('permission_group', $permission_group_data);
+
+				$perm_group_id = $existing_group->id;
+			} else { // INSERT
+				$this->db->insert('permission_group', $permission_group_data);
+				$perm_group_id = $this->db->insert_id();
+			}
+
+			// LOOP PERMISSION CATEGORY (LINKS)
+			foreach ($module_val['links'] as $link_val) {
+
+				$existing_category = $this->db
+					->where('short_code', $link_val['short_code'])
+					->get('permission_category')
+					->row();
+
+				$permission_category_data = [
+					'perm_group_id' => $perm_group_id,
+					'name'          => $link_val['name'],
+					'short_code'    => $link_val['short_code'],
+					'enable_view'   => $link_val['view'],
+					'enable_add'    => $link_val['add'],
+					'enable_edit'   => $link_val['edit'],
+					'enable_delete' => $link_val['delete'],
+				];
+
+				if ($existing_category) { // UPDATE
+					$this->db->where('id', $existing_category->id)
+							 ->update('permission_category', $permission_category_data);
+				} else { // INSERT
+					$this->db->insert('permission_category', $permission_category_data);
+				}
+			}
+		}
+		/*foreach($modules as $module_val){
 			$system = 0;
 			if($module_val['module'] == 'Dashboard Management' || $module_val['module'] == 'Chat'){
 				$system = 1;
@@ -394,7 +451,7 @@ class Modulepermission extends Public_Controller
 				];
 				$this->db->insert('permission_category', $permission_category_data);
 			}
-		}
+		}*/
 
 		echo 'Success';
     }
