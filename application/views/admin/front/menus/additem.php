@@ -164,7 +164,9 @@
                             </div>
 							<div class="form-group">
                                 <label for="exampleInputEmail1">Description</label>
-                                <input id="editor1" name="menu_description"  type="text" class="form-control"  value="<?php echo set_value('menu_description'); ?>" />
+								<textarea id="editor1" name="menu_description" placeholder="" type="text" class="form-control ss" >
+                                    <?php echo set_value('menu_description'); ?>
+                                </textarea>
                                 <span class="text-danger"><?php echo form_error('menu_description'); ?></span>
                             </div>
 							<div class="form-group">
