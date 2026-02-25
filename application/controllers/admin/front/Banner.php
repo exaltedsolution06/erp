@@ -28,7 +28,7 @@ class Banner extends Admin_Controller {
     }
 
     function add() {
-        if (!$this->rbac->hasPrivilege('banner_images', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('banner_image', 'can_add')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Front CMS');
@@ -59,7 +59,7 @@ class Banner extends Admin_Controller {
     }
 
     function remove() {
-        if (!$this->rbac->hasPrivilege('banner_images', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('banner_image', 'can_delete')) {
             access_denied();
         }
         $banner_content = $this->config->item('ci_front_banner_content');

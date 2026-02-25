@@ -211,8 +211,12 @@ class Media extends Admin_Controller {
         }
         if (!$is_gallery) {
             $output .= "<div class='overlay3'>";
+			if ($this->rbac->hasPrivilege('media_manager', 'can_view')) {
             $output .= "<a href='#' class='uploadcheckbtn' data-record_id='" . $result->id . "' data-toggle='modal' data-target='#detail' data-image='" . $file . "' data-source='" . $file_src . "' data-media_name='" . $result->img_name . "' data-media_size='" . $result->file_size . "' data-media_type='" . $result->file_type . "'><i class='fa fa-navicon'></i></a>";
+			}
+			if ($this->rbac->hasPrivilege('media_manager', 'can_delete')) {
             $output .= "<a href='#' class='uploadclosebtn' data-record_id='" . $result->id . "' data-toggle='modal' data-target='#confirm-delete'><i class=' fa fa-trash-o'></i></a>";
+			}
             $output .= "<p class='processing'>Processing...</p>";
             $output .= "</div>";
         }

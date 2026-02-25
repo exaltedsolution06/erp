@@ -97,6 +97,9 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
+			<?php
+            if ($this->rbac->hasPrivilege('add_webs_links', 'can_add')) {
+                ?>
             <div class="col-md-8">
                 <!-- Horizontal Form -->
                 <div class="box box-primary">
@@ -190,8 +193,15 @@
                 </div>
 
             </div><!--/.col (right) -->
+			<?php } ?>
             <!-- left column -->
-            <div class="col-md-4">
+            <div class="col-md-<?php
+            if ($this->rbac->hasPrivilege('add_webs_links', 'can_add')) {
+                echo "4";
+            } else {
+                echo "12";
+            }
+            ?>">
                 <!-- general form elements -->
                 <div class="box box-primary" id="holist">
                     <div class="box-header ptbnull">
@@ -225,8 +235,16 @@
 
 
                                                         <span class="pull-right">
-                                                            <a href="<?php echo site_url('admin/front/menus/edititem/' . $menu['slug'] . "/" . $top_menu) ?>" class="btn btn-xs" title="<?php echo $this->lang->line('edit'); ?>"><i class="fa fa-pencil"></i></a>    
+															<?php
+															if ($this->rbac->hasPrivilege('add_webs_links', 'can_edit')) {
+																?>
+                                                            <a href="<?php echo site_url('admin/front/menus/edititem/' . $menu['slug'] . "/" . $top_menu) ?>" class="btn btn-xs" title="<?php echo $this->lang->line('edit'); ?>"><i class="fa fa-pencil"></i></a>
+															<?php } ?>
+															<?php
+															if ($this->rbac->hasPrivilege('add_webs_links', 'can_delete')) {
+																?>
                                                             <a href="#" class="btn btn-xs" title="<?php echo $this->lang->line('delete'); ?>" data-id="<?php echo $menu['id']; ?>" id="deleteItem" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-remove"></i></a>
+															<?php } ?>
                                                         </span>
 
                                                     </div>
@@ -244,8 +262,16 @@
                                                                         <?php echo $submenu_value['menu']; ?>
 
                                                                         <span class="pull-right">
-                                                                            <a href="<?php echo site_url('admin/front/menus/edititem/' . $submenu_value['slug'] . "/" . $top_menu) ?>" class="btn btn-xs" title="Edit Item"><i class="fa fa-pencil"></i></a>  
+																			<?php
+																			if ($this->rbac->hasPrivilege('add_webs_links', 'can_edit')) {
+																				?>
+                                                                            <a href="<?php echo site_url('admin/front/menus/edititem/' . $submenu_value['slug'] . "/" . $top_menu) ?>" class="btn btn-xs" title="Edit Item"><i class="fa fa-pencil"></i></a> 
+																			<?php } ?>
+																			<?php
+																			if ($this->rbac->hasPrivilege('add_webs_links', 'can_delete')) {
+																				?>
                                                                             <a href="#" class="btn btn-xs" title="Delete Item" data-id="<?php echo $submenu_value['id']; ?>" id="deleteItem" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-remove"></i></a>
+																			<?php } ?>
                                                                         </span>
 
                                                                     </div></li>
@@ -404,7 +430,7 @@
 </div>
 
 <script type="text/javascript">
-    /*$(document).ready(function () {
+    $(document).ready(function () {
         $('.delmodal').modal({
             backdrop: 'static',
             keyboard: false,
@@ -424,7 +450,7 @@
 
             $.ajax({
                 type: "post",
-                url: '<?php //echo site_url("admin/front/menus/deleteMenuItem") ?>',
+                url: '<?php echo site_url("admin/front/menus/deleteMenuItem") ?>',
                 dataType: 'JSON',
                 data: {'id': id},
                 beforeSend: function () {
@@ -450,7 +476,7 @@
         });
 
 
-    });*/
+    });
 
 
 </script>
@@ -501,7 +527,7 @@
     });
 
 </script>
-<!--<div class="delmodal modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="delmodal modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -525,7 +551,7 @@
             </div>
         </div>
     </div>
-</div>-->
+</div>
 
 
 

@@ -96,8 +96,7 @@
                                         </form>
                                     </div>
                                 </div><!--./col-md-6-->
-                                <div class="col-md-6 col-sm-6">    
-                                    <!-- <h4>Upload Youtube Video --r</h4> -->
+                                <!--<div class="col-md-6 col-sm-6">    
                                     <form action="<?php echo site_url('admin/front/media/addVideo'); ?>" id="video_form" method="POST" >
                                         <div class="form-group">
                                             <label for="video_url"><?php echo $this->lang->line('upload_youtube_video'); ?></label><small class="req"> *</small>
@@ -106,7 +105,7 @@
                                         </div>
                                         <button type="submit" class="btn btn-info pull-right video_submit" data-loading-text="<i class='fa fa-spinner fa-spin '></i> <?php echo $this->lang->line('loading');?>"><?php echo $this->lang->line('submit'); ?></button>
                                     </form>
-                                </div>  
+                                </div>-->
                             </div>    
                         </div><!--./box-body-->
                     </div>

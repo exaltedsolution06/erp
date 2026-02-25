@@ -136,7 +136,7 @@ class Menus extends Admin_Controller {
     function edititem($slug, $top_menu) {
 
 
-        if (!$this->rbac->hasPrivilege('menus', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('add_webs_links', 'can_edit')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Front CMS');
@@ -197,7 +197,7 @@ class Menus extends Admin_Controller {
     }
 
     function updateMenu() {
-        if (!$this->rbac->hasPrivilege('menus', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('add_webs_links', 'can_view')) {
             access_denied();
         }
         $order = ($this->input->post('order'));
@@ -232,13 +232,15 @@ class Menus extends Admin_Controller {
     }
 
     function deleteMenuItem() {
-
+		if (!$this->rbac->hasPrivilege('add_webs_links', 'can_delete')) {
+            access_denied();
+        }
         $data['title'] = 'Fees Master List';
         $id = $this->input->post('id');
         if (!$this->cms_menuitems_model->remove($id)) {
             echo json_encode(array('status' => 0, 'message' => $this->lang->line('something_wrong')));
         } else {
-            echo json_encode(array('status' => 1, 'message' => $this->lang->line('session_changed_successfully')));
+            echo json_encode(array('status' => 1, 'message' => 'Menu deleted successfully'));
         }
     }
 
