@@ -17,9 +17,11 @@
 						<?php 
 							$image = '
 							<div class="col-md-6 col-sm-6">
-								<div class="about_img">
-									<img class="img-responsive img-rounded" src="'.$menu_value['media_gallery_url'].'">
-								</div>
+								<div class="about_img">';
+								if($menu_value['media_gallery_id'] != null){
+									$image .= '<img class="img-responsive img-rounded" src="'.$menu_value['media_gallery_url'].'">';
+								}
+								$image .= '</div>
 							</div>';
 							
 							$content = '

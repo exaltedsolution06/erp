@@ -197,7 +197,7 @@
 																?>
 
 																<div class='overlay3'>
-																	<a href='#' class='uploadclosebtn delete_gallery_img' data-record_id='<?php echo $page_content_value['id']; ?>' data-toggle='modal' data-target='#confirm-delete'><i class=' fa fa-trash-o'></i></a>
+																	<a href='#' class='uploadclosebtn delete_gallery_img' data-record_id='<?php echo $page_content_value['id']; ?>' data-toggle='modal' data-target='#confirm-delete1'><i class=' fa fa-trash-o'></i></a>
 																	<p class='processing'>Processing...</p>
 																</div>
 																<p class=''><?php echo $page_content_value['img_name']; ?></p>
@@ -419,7 +419,7 @@
             output += "<i class='fa fa-youtube-play videoicon'></i>";
         }
         output += "<div class='overlay3'>";
-        output += "<a href='#' class='uploadclosebtn delete_gallery_img' data-record_id='" + content_id + "' data-toggle='modal' data-target='#confirm-delete'><i class=' fa fa-trash-o'></i></a>";
+        output += "<a href='#' class='uploadclosebtn delete_gallery_img' data-record_id='" + content_id + "' data-toggle='modal' data-target='#confirm-delete1'><i class=' fa fa-trash-o'></i></a>";
         output += "<p class='processing'>Processing...</p>";
         output += "</div>";
         output += "<p class=''>" + content_name + "</p>";

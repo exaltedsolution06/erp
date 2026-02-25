@@ -139,8 +139,8 @@ class Menus extends Admin_Controller {
         if (!$this->rbac->hasPrivilege('add_webs_links', 'can_edit')) {
             access_denied();
         }
-        $this->session->set_userdata('top_menu', 'Front CMS');
-        $this->session->set_userdata('sub_menu', 'admin/front/menus');
+        $this->session->set_userdata('top_menu', 'Front Web');
+        $this->session->set_userdata('sub_menu', 'frontweb/web-link');
         $menu = $this->cms_menuitems_model->getBySlug(urldecode($slug));
 
         $data['result'] = $menu;
