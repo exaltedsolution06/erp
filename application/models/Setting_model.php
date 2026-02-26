@@ -432,11 +432,32 @@ class Setting_model extends MY_Model {
             return 1; // Or 0, depending on your logic
         }
 	}
+	public function get_deleted_receipt_no()
+	{
+		$query = $this->db->where('session_id', $this->current_session)->where('deleted_status', 1)->get('receipt_sr_no');
+		return $query->result_array();
+	}
 	public function insert_receipt_sr_no($recpt = '', $session_id='')
 	{
-		$data['sr_no'] = $recpt;
+		$check = $this->db->where('sr_no', $recpt)
+                  ->where('session_id', $session_id)
+                  ->get('receipt_sr_no')
+                  ->row();
+		
+		$data = [
+			'sr_no'          => $recpt,
+			'session_id'     => $session_id,
+			'deleted_status' => 0
+		];
+		if ($check){ 
+			$this->db->where('id', $check->id)->update('receipt_sr_no', $data);
+		} else {
+			$this->db->insert('receipt_sr_no', $data);
+		}
+				  
+		/*$data['sr_no'] = $recpt;
 		$data['session_id'] = $session_id;
-		$this->db->insert('receipt_sr_no', $data);
+		$this->db->insert('receipt_sr_no', $data);*/
 		
 		
 			$this->db->select_max('id'); 

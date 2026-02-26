@@ -1144,11 +1144,19 @@ class Studentfee extends Admin_Controller
         $data['data_list']=0;
         $data['addfee']=$id;
 
+		// Get existing deleted receipt number
+		$existing_deleted_receipts = $this->Setting_model->get_deleted_receipt_no();
+        
+		if(!empty($existing_deleted_receipts)){
+			foreach($existing_deleted_receipts as $existing_deleted_receipt_val){
+				$data['existing_deleted_receipt'][] = $this->session_model->get($existing_deleted_receipt_val['session_id'])['session']."/".$existing_deleted_receipt_val['sr_no'];
+			}
+		}
 
         // $data['last_receipt_id']=;
         // // Check if the combination of student_id, month, and fee_head_type already exists
         $existing_entry = $this->Receipt_model->get_pay_mounth($student['id']);
-        $data['pay_mounth']=$existing_entry;
+        $data ['pay_mounth']=$existing_entry;
 
         
         
@@ -1156,6 +1164,8 @@ class Studentfee extends Admin_Controller
         
         if(!empty($_POST['months'])){
             
+            $page_receipt_no =$_POST['page_receipt_no'];
+			$data['receipt_no']=$page_receipt_no;
             $monthsPost =$_POST['months'];
             $class_id=$student['class_id'];
             $route_id=$student['route_id'];
@@ -2364,6 +2374,25 @@ class Studentfee extends Admin_Controller
 			
 			
 			$this->session->set_flashdata('success', '<div class="alert alert-success text-center">Receipts with Receipt No: ' . $receipt_no . ' retrived successfully.</div>');
+			
+            redirect('studentfee/studentfee_deletedlist');
+		}
+		if ($_GET['type'] == 'permanent_delete' && !empty($_GET['receipt_no'])) {
+            $receipt_no = $_GET['receipt_no'];
+						
+			// Step 1: Get all receipts with the same receipt_no
+            $receiptList = $this->Receipt_model->get_deleted_receipts_by_receipt_no($receipt_no);
+			
+			// Step 2: Delete from original receipts table
+            $this->Receipt_model->receipt_no_delete_from_delete_receipts($receipt_no);
+			
+			// Step 3: Update 'receipt_sr_no' for deleted_status - Permanent Delete
+			$explode_receipt = explode('/', $receipt_no);
+			$receipt_sr_no = end($explode_receipt);
+			$this->Receipt_model->receipt_no_permanent_delete_status($receipt_sr_no);
+			
+			
+			$this->session->set_flashdata('success', '<div class="alert alert-success text-center">Receipts with Receipt No: ' . $receipt_no . ' deleted successfully.</div>');
 			
             redirect('studentfee/studentfee_deletedlist');
 		}

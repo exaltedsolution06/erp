@@ -99,7 +99,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Fee Card',           'short_code' => 'fee_card', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Defaulter List',     'short_code' => 'defaulter_list', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Reminder Letter',    'short_code' => 'reminder_letter', 'add' => true,  'view' => true,  'edit' => false, 'delete' => false],
-					['name' => 'Delete Fee List',    'short_code' => 'delete_fee_list', 'add' => false, 'view' => true,  'edit' => false, 'delete' => true],
+					['name' => 'Delete Fee List',    'short_code' => 'delete_fee_list', 'add' => false, 'view' => true,  'edit' => true, 'delete' => true],
 					['name' => 'Search Fee Slip',    'short_code' => 'search_fee_slip', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Student Ledger',     'short_code' => 'student_ledger', 'add' => false,  'view' => true,  'edit' => false,  'delete' => false],
 					['name' => 'All Reports',    'short_code' => 'fee_all_reports', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],

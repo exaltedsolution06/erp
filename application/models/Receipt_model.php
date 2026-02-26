@@ -110,6 +110,7 @@ class Receipt_model extends CI_Model {
         $this->db->select('DISTINCT(months)');
         $this->db->from('receipts');
         $this->db->where('student_id', $id);
+		$this->db->where('session_id', $this->current_session);
         $query = $this->db->get();
         $result = $query->result();
 
@@ -502,6 +503,7 @@ class Receipt_model extends CI_Model {
 		{
 			$this->db->where('mode', $mode);
 		}
+		$this->db->where('deleted_receipts.session_id', $this->current_session);
 
         $this->db->group_by('deleted_receipts.receipt_no');
         //$this->db->order_by('deleted_receipts.id', 'DESC');
@@ -860,7 +862,7 @@ class Receipt_model extends CI_Model {
         //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
         $this->db->where('receipts.student_id', $id);
-		$this->db->where('student_session.session_id', $this->current_session);
+		$this->db->where('receipts.session_id', $this->current_session);
         $this->db->group_by('receipts.receipt_no');
         $this->db->order_by('receipts.id', 'DESC');
         $this->db->limit($limit, $offset);
@@ -1645,5 +1647,15 @@ class Receipt_model extends CI_Model {
     }
 	public function receipt_no_delete_from_delete_receipts($receipt_no) {
         return $this->db->delete('deleted_receipts', ['receipt_no' => $receipt_no]);
+    }
+	public function receipt_no_permanent_delete_status($sr_no) {
+        // Prepare the data to update
+        $data = array(
+            'deleted_status' => 1
+        );
+
+        // Perform the update
+        $this->db->where('sr_no', $sr_no)->where('session_id', $this->current_session); // Condition to match the sr_no
+        $this->db->update('receipt_sr_no', $data); // Update the `receipt_sr_no` table
     }
 }

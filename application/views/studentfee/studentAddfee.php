@@ -118,7 +118,12 @@ $language_name = $language["short_code"];
 
                                                         <tr>
                                                             <td onclick="changeDate(this)"> <b>Date : </b> <input type="date" id="dateInput"></td>
-                                                            <td>Receipt No. <b><?=$receipt_no?></b> </td>
+                                                            <td>
+															<?php if(!empty($existing_deleted_receipt)) { ?>
+															<a href="#existingReceiptModal" class="btn btn-default btn-xs"  data-toggle="modal" title="Existing Receipt" data-placement="left"><i class="fa fa-th-list" aria-hidden="true"></i></a>
+															<?php } ?>
+															Receipt No. <b id="show_receipt"><?=$receipt_no?></b> 
+															</td>
                                                             <td>Admission No.  <b><?=$student['admission_no']?></b> </td>
                                                         </tr>
                                                         <tr>
@@ -185,6 +190,7 @@ $language_name = $language["short_code"];
                                                         <label for="select_all">Select All</label>
                                                     </div>
                                                     <hr>
+													<input type="hidden"  value="<?=$receipt_no?>" name="page_receipt_no" class="receipt_no">
                                                     <?php
                                                     // var_dump($pay_mounth);
 
@@ -258,7 +264,7 @@ $language_name = $language["short_code"];
                             
                             <input type="hidden"  value="<?=$back_id?>" name="back_id">
                             <input type="hidden"  value="<?=$addfee?>" name="addfee">
-                            <input type="hidden"  value="<?=$receipt_no?>" name="receipt_no">
+                            <input type="hidden"  value="<?=$receipt_no?>" name="receipt_no" class="receipt_no">
                             <input type="hidden"  value="<?=$student['id']?>" name="student_id">
                             <div class="table-responsive">
                                 <div class="download_label "><?php echo $this->lang->line('student_fees') . ": " . $student['firstname'] . " " . $student['lastname'] ?> </div>
@@ -570,7 +576,38 @@ $language_name = $language["short_code"];
 
 </div>
 
-
+<div id="existingReceiptModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Existing Receipt</h4>
+            </div>
+            <div class="modal-body">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label for="exampleInputEmail1">Receipt</label><small class="req"> *</small>
+							<select id="existing_receipt_no" class="form-control">
+								<option value="">Select</option>
+								<?php 
+								foreach($existing_deleted_receipt as $existing_deleted_receipt_val){ 
+								?>
+								<option value="<?php echo $existing_deleted_receipt_val; ?>"><?php echo $existing_deleted_receipt_val; ?></option>
+								<?php } ?>
+							</select>
+							<span class="text-danger" id="err_existing_receipt_no"></span>
+						</div>
+					</div>
+				</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('cancel'); ?></button>
+				<button type="button" class="btn cfees apply_existing_reseipt" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"> <?php echo $this->lang->line('apply'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="myFeesModal" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -1283,6 +1320,21 @@ function formatToDisplayDate(inputDateStr) {
 
 
 
+    $(document).on('click', '.apply_existing_reseipt', function (e) {
+        var $this = $(this);
+        $this.button('loading');
+		
+		var existing_receipt_no = $('#existing_receipt_no').val();
+		if(existing_receipt_no == ''){
+			$('#err_existing_receipt_no').text('Please select a receipt');
+		}else{
+			$('#err_existing_receipt_no').text('');
+			$('#show_receipt').text(existing_receipt_no);
+			$('.receipt_no').val(existing_receipt_no);
+			$('#existingReceiptModal').modal('hide');
+		}
+		$this.button('reset');
+	});
     $(document).on('click', '.dis_apply_button', function (e) {
         var $this = $(this);
         $this.button('loading');

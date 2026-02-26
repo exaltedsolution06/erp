@@ -239,9 +239,14 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                                 <td ><?= $record["mode"] ?></td>
                                                 <td ><?= $record["create_by"] ?></td>
 												<td>
-												<?php if ($this->rbac->hasPrivilege('delete_fee_list', 'can_delete')) { ?>
+												<?php if ($this->rbac->hasPrivilege('delete_fee_list', 'can_edit')) { ?>
 												<a href="<?php echo base_url(); ?>studentfee/studentfee_deletedlist?receipt_no=<?=$record["receipt_no"]?>&type=delete" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Retrive">
                                                         <i class="fa fa-rotate-right"></i>
+                                                    </a>
+												<?php } ?>
+												<?php if ($this->rbac->hasPrivilege('delete_fee_list', 'can_delete')) { ?>
+												<a href="<?php echo base_url(); ?>studentfee/studentfee_deletedlist?receipt_no=<?=$record["receipt_no"]?>&type=permanent_delete" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Permanent Delete">
+                                                        <i class="fa fa-trash"></i>
                                                     </a>
 												<?php } ?>
 													</td>

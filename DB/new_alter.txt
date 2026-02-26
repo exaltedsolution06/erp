@@ -63,6 +63,9 @@ ALTER TABLE `front_cms_menu_items` ADD `media_gallery_id` INT(11) NULL DEFAULT N
 ALTER TABLE `front_cms_settings` ADD `header_phone` VARCHAR(50) NULL DEFAULT NULL AFTER `fav_icon`, ADD `header_email` VARCHAR(100) NULL DEFAULT NULL AFTER `header_phone`, ADD `header_address` TEXT NULL DEFAULT NULL AFTER `header_email`;
 ALTER TABLE `front_cms_settings` ADD `header_button_enable` INT(1) NOT NULL DEFAULT '0' COMMENT '0=Not active, 1= Active' AFTER `header_address`, ADD `header_button_text` VARCHAR(255) NULL DEFAULT NULL AFTER `header_button_enable`, ADD `header_button_url` VARCHAR(255) NULL DEFAULT NULL AFTER `header_button_text`;
 
+--- 26-02-2026 ---
+ALTER TABLE `receipt_sr_no` ADD `deleted_status` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0=Active(Not delete), 1=Permanent Delete' AFTER `sr_no`;
+
 
 ===============================
 File change outside of application folder
