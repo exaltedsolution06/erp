@@ -259,8 +259,8 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 								<thead>
 									<tr>
 										<th>Batch Id</th>
-										<th>Current Class</th>
-										<th>Next Class</th>
+										<th>Class</th>
+										<th>Category</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -296,8 +296,8 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 								<thead>
 									<tr>
 										<th>Batch Id</th>
-										<th>Current Class</th>
-										<th>Next Class</th>
+										<th>Class</th>
+										<th>Category</th>
 									</tr>
 								</thead>
 								<tbody>

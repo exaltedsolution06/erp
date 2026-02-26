@@ -249,14 +249,14 @@ class Session_model extends MY_Model {
 		$this->db->join('classes c1', 'c1.id = ms.current_class_id', 'left');
 		$this->db->join('classes c2', 'c2.id = ms.next_class_id', 'left');
 
-		$this->db->join('move_students_category msc', 'msc.batch_id = ms.batch_id', 'left');
+		$this->db->join('move_students_category msc', 'msc.batch_id = ms.batch_id AND msc.status = 2', 'left');
 
 		$this->db->join('fee_groups fg1', 'fg1.id = msc.current_category_id', 'left');
 		$this->db->join('fee_groups fg2', 'fg2.id = msc.next_category_id', 'left');
 		
         $this->db->where('ms.current_session_id', $this->current_session);
         $this->db->where('ms.status', 1);
-        $this->db->where('msc.status', 1);
+        // $this->db->where('msc.status', 1);
 		
 		$this->db->group_by('ms.batch_id');
 
@@ -283,14 +283,14 @@ class Session_model extends MY_Model {
 		$this->db->join('classes c1', 'c1.id = ms.current_class_id', 'left');
 		$this->db->join('classes c2', 'c2.id = ms.next_class_id', 'left');
 
-		$this->db->join('move_students_category msc', 'msc.batch_id = ms.batch_id', 'left');
+		$this->db->join('move_students_category msc', 'msc.batch_id = ms.batch_id AND msc.status = 2', 'left');
 
 		$this->db->join('fee_groups fg1', 'fg1.id = msc.current_category_id', 'left');
 		$this->db->join('fee_groups fg2', 'fg2.id = msc.next_category_id', 'left');
 		
         $this->db->where('ms.current_session_id', $this->current_session);
         $this->db->where('ms.status', 2);
-        $this->db->where('msc.status', 2);
+        // $this->db->where('msc.status', 2);
 		
 		$this->db->group_by('ms.batch_id');
 
