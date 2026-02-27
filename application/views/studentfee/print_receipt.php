@@ -215,13 +215,19 @@ th, td {
 
 <div class="d-flex justify-content-between mt-1">
   <div class="p-3 pt-0 pb-0">
+	<?php if ($result->rcpt_admission_no) { ?>
       <span><strong style="width:90px; display:inline-block;">Adm. No.</strong> <?=$student['admission_no']?></span> <br>
+	<?php } if ($result->rcpt_student_name) { ?>
       <span><strong style="width:90px; display:inline-block;">Student</strong> <?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></span> <br>
+	<?php } if ($result->rcpt_father) { ?>
       <span><strong style="width:90px; display:inline-block;">Father</strong> <?=$student['father_name']?></span> <br>
+	<?php } if ($result->rcpt_class_section) { ?>
       <span><strong style="width:90px; display:inline-block;">Class & Sec</strong> <?=$student['class']?> (<?=$student['section']?>)</span> <br>
+	<?php } if ($result->rcpt_fee_months) { ?>
        <?php if($fees[0]->fee_head_name != 'Ledger Amount'){ ?>
       <span><strong style="width:90px; display:inline-block;">Fee Months</strong> <?=sort_by_custom_month_order($month_names)?></span> <br>
       <?php } ?>
+    <?php } ?>
       <!-- <span><strong style="width:90px; display:inline-block;">Note</strong> This is a System Generated Slip Not Required Stamp.</span>  -->
   </div>
 </div>
@@ -415,13 +421,19 @@ th, td {
 
 <div class="d-flex justify-content-between mt-1">
   <div class="p-3 pt-0 pb-0">
+	<?php if ($result->rcpt_admission_no) { ?>
       <span><strong style="width:90px; display:inline-block;">Adm. No.</strong> <?=$student['admission_no']?></span> <br>
+	<?php } if ($result->rcpt_student_name) { ?>
       <span><strong style="width:90px; display:inline-block;">Student</strong> <?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></span> <br>
+	<?php } if ($result->rcpt_father) { ?>
       <span><strong style="width:90px; display:inline-block;">Father</strong> <?=$student['father_name']?></span> <br>
+	<?php } if ($result->rcpt_class_section) { ?>
       <span><strong style="width:90px; display:inline-block;">Class & Sec</strong> <?=$student['class']?> (<?=$student['section']?>)</span> <br>
+	<?php } if ($result->rcpt_fee_months) { ?>
        <?php if($fees[0]->fee_head_name != 'Ledger Amount'){ ?>
       <span><strong style="width:90px; display:inline-block;">Fee Months</strong> <?=$month_names?></span> <br>
       <?php } ?>
+	<?php } ?>
       <!-- <span><strong style="width:90px; display:inline-block;">Note</strong> This is a System Generated Slip Not Required Stamp.</span>  -->
   </div>
 </div>
@@ -849,13 +861,19 @@ th, td {
 
                     <div class="d-flex justify-content-between mt-1">
                       <div class="p-3 pt-0 pb-0">
+						<?php if ($result->rcpt_admission_no) { ?>
                           <span><strong style="width:90px; display:inline-block;">Adm. No.</strong> <?=$student['admission_no']?></span> <br>
+						<?php } if ($result->rcpt_student_name) { ?>
                           <span><strong style="width:90px; display:inline-block;">Student</strong> <?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></span> <br>
+						<?php } if ($result->rcpt_father) { ?>
                           <span><strong style="width:90px; display:inline-block;">Father</strong> <?=$student['father_name']?></span> <br>
+						<?php } if ($result->rcpt_class_section) { ?>
                           <span><strong style="width:90px; display:inline-block;">Class & Sec</strong> <?=$student['class']?> (<?=$student['section']?>)</span> <br>
+						<?php } if ($result->rcpt_fee_months) { ?>
                            <?php if($fees[0]->fee_head_name != 'Ledger Amount'){ ?>
                           <span><strong style="width:90px; display:inline-block;">Fee Months</strong> <?=sort_by_custom_month_order($month_names)?></span> <br>
                           <?php } ?>
+                        <?php } ?>
                           <!-- <span><strong style="width:90px; display:inline-block;">Note</strong> This is a System Generated Slip Not Required Stamp.</span>  -->
                       </div>
                     </div>

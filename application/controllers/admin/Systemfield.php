@@ -527,6 +527,36 @@ class Systemfield extends Admin_Controller {
 				} else {
 					$data['staff_upload_documents'] = 0;
 				}
+			} else if ($role == 'rcpt_admission_no') {
+				if ($status == "yes") {
+					$data['rcpt_admission_no'] = 1;
+				} else {
+					$data['rcpt_admission_no'] = 0;
+				}
+			} else if ($role == 'rcpt_student_name') {
+				if ($status == "yes") {
+					$data['rcpt_student_name'] = 1;
+				} else {
+					$data['rcpt_student_name'] = 0;
+				}
+			} else if ($role == 'rcpt_father') {
+				if ($status == "yes") {
+					$data['rcpt_father'] = 1;
+				} else {
+					$data['rcpt_father'] = 0;
+				}
+			} else if ($role == 'rcpt_class_section') {
+				if ($status == "yes") {
+					$data['rcpt_class_section'] = 1;
+				} else {
+					$data['rcpt_class_section'] = 0;
+				}
+			} else if ($role == 'rcpt_fee_months') {
+				if ($status == "yes") {
+					$data['rcpt_fee_months'] = 1;
+				} else {
+					$data['rcpt_fee_months'] = 0;
+				}
 			}
 
 			if($this->findSelected($this->student_edit_field_model->get(),$role)){

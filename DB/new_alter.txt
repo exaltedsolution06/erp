@@ -74,6 +74,7 @@ ALTER TABLE `sch_settings` ADD `other_no` INT(11) NOT NULL DEFAULT '1' AFTER `aa
 ALTER TABLE `sch_settings` ADD `legder_amount` INT(11) NOT NULL DEFAULT '1' AFTER `route_list`;
 ALTER TABLE `sch_settings` ADD `father_pan` INT(11) NOT NULL DEFAULT '1' AFTER `father_pic`, ADD `father_aadhar_no` INT(11) NOT NULL DEFAULT '1' AFTER `father_pan`, ADD `father_other_no` INT(11) NOT NULL DEFAULT '1' AFTER `father_aadhar_no`, ADD `father_id_no` INT(11) NOT NULL DEFAULT '1' AFTER `father_other_no`;
 ALTER TABLE `sch_settings` ADD `mother_pan` INT(11) NOT NULL DEFAULT '1' AFTER `mother_pic`, ADD `mother_aadhar_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_pan`, ADD `mother_other_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_aadhar_no`, ADD `mother_id_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_other_no`;
+ALTER TABLE `sch_settings` ADD `rcpt_admission_no` INT(11) NOT NULL DEFAULT '1' AFTER `my_question`, ADD `rcpt_student_name` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_admission_no`, ADD `rcpt_father` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_student_name`, ADD `rcpt_class_section` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_father`, ADD `rcpt_fee_months` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_class_section`;
 
 
 
