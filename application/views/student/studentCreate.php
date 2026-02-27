@@ -112,6 +112,7 @@
                                                 </div>
                                             </div>
                                         <?php } ?>
+                                        <?php if ($sch_setting->gender) { ?>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputFile"> <?php echo $this->lang->line('gender'); ?></label>
@@ -132,7 +133,8 @@
                                                 <span class="text-danger"><?php echo form_error('gender'); ?></span>
                                             </div>
                                         </div>
-
+                                        <?php } ?>
+										<?php if ($sch_setting->dob) { ?>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('date_of_birth'); ?></label>
@@ -140,11 +142,8 @@
                                                 <span class="text-danger"><?php echo form_error('dob'); ?></span>
                                             </div>
                                         </div>
-
-
-
-
-                                        
+                                        <?php } ?>
+										<?php if ($sch_setting->pen_no) { ?>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Pen No</label>
@@ -152,20 +151,23 @@
                                                 <span class="text-danger"><?php echo form_error('pen_no'); ?></span>
                                             </div>
                                         </div>
-
+                                        <?php } ?>
+										<?php if ($sch_setting->aadhar_no) { ?>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Aadhar No.</label>
                                                 <input id="aadhar_no" name="aadhar_no" placeholder="" type="text" class="form-control "  value="<?php echo set_value('aadhar_no'); ?>" />
                                             </div>
                                         </div>
-
+                                        <?php } ?>
+										<?php if ($sch_setting->other_no) { ?>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Other No.</label>
                                                 <input id="other_no" name="other_no" placeholder="" type="text" class="form-control "  value="<?php echo set_value('other_no'); ?>" />
                                             </div>
                                         </div>
+                                        <?php } ?>
 
 
 
@@ -174,7 +176,7 @@
 
                                     </div>
                                     <div class="row">
-
+										<?php if ($sch_setting->category) { ?>
                                         <div class="col-md-2">
                                             <label for="exampleInputEmail1">Cast Category</label>
                                             <select class="form-control" name="cast_category" id="" autocomplete="off">
@@ -186,6 +188,7 @@
                                                 <option value="OTHER" <?= (set_value('cast_category') == 'OTHER') ? 'selected' : '' ?>>Other</option>
                                             </select>
                                         </div>
+                                        <?php } ?>
 
 
 <?php  if ($sch_setting->religion) { ?>
@@ -355,6 +358,7 @@
                                                 </div>
                                             </div>
 
+											<?php if ($sch_setting->route_list) { ?>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('route_list'); ?></label>
@@ -378,8 +382,9 @@
                                                     <span class="text-danger"><?php echo form_error('vehroute_id'); ?></span>
                                                 </div>
                                             </div>
+											<?php } ?>
 
-
+											<?php if ($sch_setting->legder_amount) { ?>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Legder Amount</label>
@@ -387,6 +392,7 @@
                                                     <span class="text-danger"><?php echo form_error('fees_discount'); ?></span>
                                                 </div>
                                             </div>
+											<?php } ?>
 
 
                                         <!-- end -->
@@ -431,12 +437,7 @@
                                                     </div>
                                                     <span class="text-danger"><?php echo form_error('file'); ?></span></div>
                                             </div>
-<?php } ?>
-
-
-
-
-
+<?php } if ($sch_setting->father_pan) { ?>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Father Pen No</label>
@@ -444,43 +445,28 @@
                                                 <span class="text-danger"><?php echo form_error('pen_no'); ?></span>
                                             </div>
                                         </div>
-
+<?php } if ($sch_setting->father_aadhar_no) { ?>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Father Aadhar No.</label>
                                                 <input id="aadhar_no" name="father_aadhar_no" placeholder="" type="text" class="form-control "  value="<?php echo set_value('father_aadhar_no'); ?>" />
                                             </div>
                                         </div>
-
-                                        
+<?php } if ($sch_setting->father_other_no) { ?>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Father Other No.</label>
                                                 <input id="other_no" name="father_other_no" placeholder="" type="text" class="form-control "  value="<?php echo set_value('father_other_no'); ?>" />
                                             </div>
                                         </div>
+<?php } if ($sch_setting->father_id_no) { ?>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Father ID No.</label>
                                                 <input id="other_no" name="father_id_no" placeholder="" type="text" class="form-control "  value="<?php echo set_value('father_id_no'); ?>" />
                                             </div>
                                         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<?php } ?>
                                     </div>
                                     <div class="row">
 <?php if ($sch_setting->mother_name) { ?>
@@ -515,9 +501,7 @@
                                                     </div>
                                                     <span class="text-danger"><?php echo form_error('file'); ?></span></div>
                                             </div>
-<?php } ?>
-
-
+<?php } if ($sch_setting->mother_pan) { ?>
                                     <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Mother Pen No</label>
@@ -525,26 +509,28 @@
                                                 <span class="text-danger"><?php echo form_error('pen_no'); ?></span>
                                             </div>
                                         </div>
-
+<?php } if ($sch_setting->mother_aadhar_no) { ?>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Mother Aadhar No.</label>
                                                 <input id="aadhar_no" name="mother_aadhar_no" placeholder="" type="text" class="form-control "  value="<?php echo set_value('mother_aadhar_no'); ?>" />
                                             </div>
                                         </div>
-
+<?php } if ($sch_setting->mother_other_no) { ?>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Mother Other No.</label>
                                                 <input id="other_no" name="mother_other_no" placeholder="" type="text" class="form-control "  value="<?php echo set_value('mother_other_no'); ?>" />
                                             </div>
                                         </div>
+<?php } if ($sch_setting->mother_id_no) { ?>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Mother ID No.</label>
                                                 <input id="mother_id_no" name="mother_id_no" placeholder="" type="text" class="form-control "  value="<?php echo set_value('mother_id_no'); ?>" />
                                             </div>
                                         </div>
+<?php } ?>
 
 
 
@@ -699,14 +685,13 @@
                                             </div>
 
                                         </div>
-                                        <?php if ($sch_setting->route_list) { ?>
                                             <?php
                                             if ($this->module_lib->hasActive('transport')) {
                                                 ?>
                                                 
                                             <?php } ?>
                                             <?php
-                                            if ($this->module_lib->hasActive('hostel')) {
+                                            //if ($this->module_lib->hasActive('hostel')) {
                                                 ?>
         <?php if ($sch_setting->hostel_id) { ?>
                                                     <div class="tshadow mb25 bozero">
@@ -749,8 +734,7 @@
 
                                                         </div>
                                                     </div>
-                                                <?php } ?> <?php }
-                                }
+                                                <?php } ?> <?php //}
                                         ?>
                                         <div class="tshadow mb25 bozero">
                                             <h4 class="pagetitleh2"><?php echo $this->lang->line('miscellaneous_details'); ?>

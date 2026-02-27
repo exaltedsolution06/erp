@@ -65,6 +65,36 @@ class Systemfield extends Admin_Controller {
 				} else {
 					$data['middlename'] = 0;
 				}
+			}else if ($role == 'gender') {
+				if ($status == "yes") {
+					$data['gender'] = 1;
+				} else {
+					$data['gender'] = 0;
+				}
+			}else if ($role == 'dob') {
+				if ($status == "yes") {
+					$data['dob'] = 1;
+				} else {
+					$data['dob'] = 0;
+				}
+			}else if ($role == 'pen_no') {
+				if ($status == "yes") {
+					$data['pen_no'] = 1;
+				} else {
+					$data['pen_no'] = 0;
+				}
+			}else if ($role == 'aadhar_no') {
+				if ($status == "yes") {
+					$data['aadhar_no'] = 1;
+				} else {
+					$data['aadhar_no'] = 0;
+				}
+			}else if ($role == 'other_no') {
+				if ($status == "yes") {
+					$data['other_no'] = 1;
+				} else {
+					$data['other_no'] = 0;
+				}
 			} else if ($role == 'category') {
 				if ($status == "yes") {
 					$data['category'] = 1;
@@ -155,6 +185,30 @@ class Systemfield extends Admin_Controller {
 				} else {
 					$data['father_pic'] = 0;
 				}
+			} else if ($role == 'father_pan') {
+				if ($status == "yes") {
+					$data['father_pan'] = 1;
+				} else {
+					$data['father_pan'] = 0;
+				}
+			} else if ($role == 'father_aadhar_no') {
+				if ($status == "yes") {
+					$data['father_aadhar_no'] = 1;
+				} else {
+					$data['father_aadhar_no'] = 0;
+				}
+			} else if ($role == 'father_other_no') {
+				if ($status == "yes") {
+					$data['father_other_no'] = 1;
+				} else {
+					$data['father_other_no'] = 0;
+				}
+			} else if ($role == 'father_id_no') {
+				if ($status == "yes") {
+					$data['father_id_no'] = 1;
+				} else {
+					$data['father_id_no'] = 0;
+				}
 			} else if ($role == 'mother_name') {
 				if ($status == "yes") {
 					$data['mother_name'] = 1;
@@ -178,6 +232,30 @@ class Systemfield extends Admin_Controller {
 					$data['mother_pic'] = 1;
 				} else {
 					$data['mother_pic'] = 0;
+				}
+			} else if ($role == 'mother_pan') {
+				if ($status == "yes") {
+					$data['mother_pan'] = 1;
+				} else {
+					$data['mother_pan'] = 0;
+				}
+			} else if ($role == 'mother_aadhar_no') {
+				if ($status == "yes") {
+					$data['mother_aadhar_no'] = 1;
+				} else {
+					$data['mother_aadhar_no'] = 0;
+				}
+			} else if ($role == 'mother_other_no') {
+				if ($status == "yes") {
+					$data['mother_other_no'] = 1;
+				} else {
+					$data['mother_other_no'] = 0;
+				}
+			} else if ($role == 'mother_id_no') {
+				if ($status == "yes") {
+					$data['mother_id_no'] = 1;
+				} else {
+					$data['mother_id_no'] = 0;
 				}
 			} else if ($role == 'guardian_name') {
 				if ($status == "yes") {
@@ -238,6 +316,12 @@ class Systemfield extends Admin_Controller {
 					$data['route_list'] = 1;
 				} else {
 					$data['route_list'] = 0;
+				}
+			} else if ($role == 'legder_amount') {
+				if ($status == "yes") {
+					$data['legder_amount'] = 1;
+				} else {
+					$data['legder_amount'] = 0;
 				}
 			} else if ($role == 'hostel_id') {
 				if ($status == "yes") {

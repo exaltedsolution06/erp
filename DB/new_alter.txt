@@ -66,6 +66,16 @@ ALTER TABLE `front_cms_settings` ADD `header_button_enable` INT(1) NOT NULL DEFA
 --- 26-02-2026 ---
 ALTER TABLE `receipt_sr_no` ADD `deleted_status` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0=Active(Not delete), 1=Permanent Delete' AFTER `sr_no`;
 
+--- 27-02-2026 ---
+ALTER TABLE `sch_settings` ADD `gender` INT(11) NOT NULL DEFAULT '1' AFTER `middlename`;
+ALTER TABLE `sch_settings` ADD `dob` INT(11) NOT NULL DEFAULT '1' AFTER `gender`;
+ALTER TABLE `sch_settings` ADD `pen_no` INT(11) NOT NULL DEFAULT '1' AFTER `dob`, ADD `aadhar_no` INT(11) NOT NULL DEFAULT '1' AFTER `pen_no`;
+ALTER TABLE `sch_settings` ADD `other_no` INT(11) NOT NULL DEFAULT '1' AFTER `aadhar_no`;
+ALTER TABLE `sch_settings` ADD `legder_amount` INT(11) NOT NULL DEFAULT '1' AFTER `route_list`;
+ALTER TABLE `sch_settings` ADD `father_pan` INT(11) NOT NULL DEFAULT '1' AFTER `father_pic`, ADD `father_aadhar_no` INT(11) NOT NULL DEFAULT '1' AFTER `father_pan`, ADD `father_other_no` INT(11) NOT NULL DEFAULT '1' AFTER `father_aadhar_no`, ADD `father_id_no` INT(11) NOT NULL DEFAULT '1' AFTER `father_other_no`;
+ALTER TABLE `sch_settings` ADD `mother_pan` INT(11) NOT NULL DEFAULT '1' AFTER `mother_pic`, ADD `mother_aadhar_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_pan`, ADD `mother_other_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_aadhar_no`, ADD `mother_id_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_other_no`;
+
+
 
 ===============================
 File change outside of application folder
