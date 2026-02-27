@@ -65,6 +65,10 @@ ALTER TABLE `front_cms_settings` ADD `header_button_enable` INT(1) NOT NULL DEFA
 
 --- 26-02-2026 ---
 ALTER TABLE `receipt_sr_no` ADD `deleted_status` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0=Active(Not delete), 1=Permanent Delete' AFTER `sr_no`;
+TRUNCATE TABLE  front_cms_menus;
+INSERT INTO front_cms_menus (id, menu, slug, description, open_new_tab, ext_url, ext_url_link, publish, content_type, is_active, created_at) VALUES
+(1, 'Main Menu', 'main-menu', 'Main menu', 0, '', '', 0, 'default', 'no', '2018-04-20 14:54:49'),
+(2, 'Bottom Menu', 'bottom-menu', 'Bottom Menu', 0, '', '', 0, 'default', 'no', '2018-04-20 14:54:55');
 
 --- 27-02-2026 ---
 ALTER TABLE `sch_settings` ADD `gender` INT(11) NOT NULL DEFAULT '1' AFTER `middlename`;

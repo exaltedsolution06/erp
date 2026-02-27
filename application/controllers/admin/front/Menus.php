@@ -105,10 +105,10 @@ class Menus extends Admin_Controller {
                 'ext_url' => $this->input->post('ext_url'),
                 'open_new_tab' => $this->input->post('open_new_tab'),
 				
-                'content_heading' => $this->input->post('content_heading'),
-                'menu_description' => $this->input->post('menu_description'),
-                'image_position' => $this->input->post('image_position'),
-                'media_gallery_id' => $this->input->post('gallery_images'),
+                'content_heading' => $this->input->post('content_heading') ?? '',
+                'menu_description' => $this->input->post('menu_description') ?? '',
+                'image_position' => $this->input->post('image_position') ?? 0,
+                'media_gallery_id' => $this->input->post('gallery_images') ?? null,
             );
             if ($this->input->post('ext_url')) {
 
@@ -179,10 +179,10 @@ class Menus extends Admin_Controller {
                 'ext_url' => $this->input->post('ext_url'),
                 'open_new_tab' => $this->input->post('open_new_tab'),
 				
-                'content_heading' => $this->input->post('content_heading'),
-                'menu_description' => $this->input->post('menu_description'),
-                'image_position' => $this->input->post('image_position'),
-                'media_gallery_id' => $this->input->post('gallery_images'),
+                'content_heading' => $this->input->post('content_heading') ?? '',
+                'menu_description' => $this->input->post('menu_description') ?? '',
+                'image_position' => $this->input->post('image_position') ?? 0,
+                'media_gallery_id' => $this->input->post('gallery_images') ?? null,
             );
             if ($this->input->post('ext_url')) {
 
