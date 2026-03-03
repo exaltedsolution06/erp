@@ -15,7 +15,7 @@
 
                             <?php echo $this->customlib->getCSRF(); ?>  
                             <input type="hidden" name="role_id" value="<?php echo $role['id'] ?>"/>
-                            <div class="table-responsive">  
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">  
                                 <table class="table table-stripped">
                                     <thead>
                                         <tr>
@@ -182,3 +182,9 @@
 
     </section>
 </div>
+<style>
+table thead th {
+    position: sticky;
+    top: 0;
+}
+</style>

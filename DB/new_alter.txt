@@ -101,3 +101,8 @@ New folder -
 
 'exam_group_d' column not required in 'exam_group_class_batch_exams' table.
 
+=========03/03/2026==================
+ALTER TABLE `sch_settings` ADD `rcpt_mother` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_fee_months`, ADD `rcpt_dob` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mother`, ADD `rcpt_mobile_no` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_dob`, ADD `rcpt_total_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mobile_no`, ADD `rcpt_late_fee` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_total_amt`, ADD `rcpt_discount_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_late_fee`, ADD `rcpt_net_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_discount_amt`, ADD `rcpt_received_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_net_amt`, ADD `rcpt_balance_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_received_amt`, ADD `rcpt_amt_in_words` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_balance_amt`, ADD `rcpt_pay_mode` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_amt_in_words`, ADD `rcpt_remark` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_pay_mode`, ADD `rcpt_created_by` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_remark`, ADD `rcpt_note` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_created_by`;
+
+ALTER TABLE `sch_settings` ADD `rcpt_address` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mobile_no`;
+

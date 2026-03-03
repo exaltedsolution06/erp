@@ -139,7 +139,7 @@
 
 
                                             <div class="form-group">
-                                                <label class="col-sm-5 control-label">Header Image</label>
+                                                <label class="col-sm-5 control-label">Header Image (height 180px)</label>
                                                 <div class="col-sm-7">
                                                     <input type="file" class="filestyle form-control-file" name="logo" id="exampleInputFile" data-height="100" data-default-file="<?php echo base_url($frontcmslist->logo); ?>">
                                                     <span class="text-danger"><?php echo form_error('logo'); ?></span>
@@ -200,9 +200,9 @@
 													<div class="pt5 enableHeaderButtonDiv" hidden>
 														<input id="header_button_text" name="header_button_text" placeholder="Button Text" type="text" class="form-control" value="<?php echo set_value('header_button_text', $frontcmslist->header_button_text) ?>" />
 													</div>
-													<div class="pt5 enableHeaderButtonDiv" hidden>
+													<!--<div class="pt5 enableHeaderButtonDiv" hidden>
 														<input id="header_button_url" name="header_button_url" placeholder="Button URL" type="text" class="form-control" value="<?php echo set_value('header_button_url', $frontcmslist->header_button_url) ?>" />
-													</div>
+													</div>-->
                                                 </div>
                                             </div>
 

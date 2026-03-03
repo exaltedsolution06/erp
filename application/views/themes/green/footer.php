@@ -64,7 +64,7 @@
     <div class="copy-right">
         <div class="container">
             <div class="row">
-                <div class="col-md-7 col-sm-8 text-center">
+                <div class="col-md-7 col-sm-8 text-left">
                     <p><?php echo $front_setting->footer_text; ?></p>
                 </div>
                 <div class="col-md-5 col-sm-4 text-center">

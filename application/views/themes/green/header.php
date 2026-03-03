@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-sm-12">
-                <a class="logo" href="<?php echo base_url(); ?>"><img src="<?php echo base_url($front_setting->logo); ?>" alt="" width="100%"></a>
+                <a class="logo" href="<?php echo base_url(); ?>"><img src="<?php echo base_url($front_setting->logo); ?>" alt="" width="100%" height="180"></a>
             </div><!--./col-md-4-->
             <!--<div class="col-md-9 col-sm-12">
                 <ul class="header-extras">
@@ -103,8 +103,8 @@
                         }
                         ?>
 						<hr>
-						<li class="hidden-lg hidden-md hidden-sm"><a href="<?php echo site_url('site/login') ?>">Admin Login</a></li>
-						<li class="hidden-lg hidden-md hidden-sm"><a href="<?php echo site_url('site/userlogin') ?>">User Login</a></li>
+						<li class="hidden-lg hidden-md hidden-sm" target="_blank"><a href="<?php echo site_url('site/login') ?>">Admin Login</a></li>
+						<li class="hidden-lg hidden-md hidden-sm" target="_blank"><a href="<?php echo site_url('site/userlogin') ?>">User Login</a></li>
 
 
                     </ul>
@@ -112,7 +112,8 @@
 						<?php
 						if($front_setting->header_button_enable == 1){
 						?>
-						<li><a href="<?php echo $front_setting->header_button_url ?>"><?php echo $front_setting->header_button_text ?></a></li>
+						<!--<li><a href="<?php echo $front_setting->header_button_url ?>"><?php echo $front_setting->header_button_text ?></a></li>-->
+						<li><a href="<?php echo site_url('online_admission') ?>"><?php echo $front_setting->header_button_text ?></a></li>
 						<?php } ?>
 
 					</ul>

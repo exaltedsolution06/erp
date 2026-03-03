@@ -50,8 +50,8 @@
 							</li>
 						</ul>
 						<ul class="top-right">
-							<li><a href="<?php echo site_url('site/login') ?>"><i class="fa fa-user"></i>Admin Login</a></li>
-							<li><a href="<?php echo site_url('site/userlogin') ?>"><i class="fa fa-user"></i>User Login</a></li>
+							<li><a href="<?php echo site_url('site/login') ?>" target="_blank"><i class="fa fa-user"></i>Admin Login</a></li>
+							<li><a href="<?php echo site_url('site/userlogin') ?>" target="_blank"><i class="fa fa-user"></i>User Login</a></li>
                         </ul>
 					</nav>
 				</div>

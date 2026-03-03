@@ -545,17 +545,107 @@ class Systemfield extends Admin_Controller {
 				} else {
 					$data['rcpt_father'] = 0;
 				}
+			} else if ($role == 'rcpt_mother') {
+				if ($status == "yes") {
+					$data['rcpt_mother'] = 1;
+				} else {
+					$data['rcpt_mother'] = 0;
+				}
 			} else if ($role == 'rcpt_class_section') {
 				if ($status == "yes") {
 					$data['rcpt_class_section'] = 1;
 				} else {
 					$data['rcpt_class_section'] = 0;
 				}
+			} else if ($role == 'rcpt_dob') {
+				if ($status == "yes") {
+					$data['rcpt_dob'] = 1;
+				} else {
+					$data['rcpt_dob'] = 0;
+				}
+			} else if ($role == 'rcpt_mobile_no') {
+				if ($status == "yes") {
+					$data['rcpt_mobile_no'] = 1;
+				} else {
+					$data['rcpt_mobile_no'] = 0;
+				}
+			} else if ($role == 'rcpt_address') {
+				if ($status == "yes") {
+					$data['rcpt_address'] = 1;
+				} else {
+					$data['rcpt_address'] = 0;
+				}
 			} else if ($role == 'rcpt_fee_months') {
 				if ($status == "yes") {
 					$data['rcpt_fee_months'] = 1;
 				} else {
 					$data['rcpt_fee_months'] = 0;
+				}
+			} else if ($role == 'rcpt_total_amt') {
+				if ($status == "yes") {
+					$data['rcpt_total_amt'] = 1;
+				} else {
+					$data['rcpt_total_amt'] = 0;
+				}
+			} else if ($role == 'rcpt_late_fee') {
+				if ($status == "yes") {
+					$data['rcpt_late_fee'] = 1;
+				} else {
+					$data['rcpt_late_fee'] = 0;
+				}
+			} else if ($role == 'rcpt_discount_amt') {
+				if ($status == "yes") {
+					$data['rcpt_discount_amt'] = 1;
+				} else {
+					$data['rcpt_discount_amt'] = 0;
+				}
+			} else if ($role == 'rcpt_net_amt') {
+				if ($status == "yes") {
+					$data['rcpt_net_amt'] = 1;
+				} else {
+					$data['rcpt_net_amt'] = 0;
+				}
+			} else if ($role == 'rcpt_received_amt') {
+				if ($status == "yes") {
+					$data['rcpt_received_amt'] = 1;
+				} else {
+					$data['rcpt_received_amt'] = 0;
+				}
+			} else if ($role == 'rcpt_balance_amt') {
+				if ($status == "yes") {
+					$data['rcpt_balance_amt'] = 1;
+				} else {
+					$data['rcpt_balance_amt'] = 0;
+				}
+			} else if ($role == 'rcpt_amt_in_words') {
+				if ($status == "yes") {
+					$data['rcpt_amt_in_words'] = 1;
+				} else {
+					$data['rcpt_amt_in_words'] = 0;
+				}
+			} else if ($role == 'rcpt_pay_mode') {
+				if ($status == "yes") {
+					$data['rcpt_pay_mode'] = 1;
+				} else {
+					$data['rcpt_pay_mode'] = 0;
+				}
+			} else if ($role == 'rcpt_remark') {
+				if ($status == "yes") {
+					$data['rcpt_remark'] = 1;
+				} else {
+					$data['rcpt_remark'] = 0;
+				}
+			} else if ($role == 'rcpt_created_by') {
+				if ($status == "yes") {
+					$data['rcpt_created_by'] = 1;
+				} else {
+					$data['rcpt_created_by'] = 0;
+				}
+			} else if ($role == 'rcpt_note') {
+				if ($status == "yes") {
+					$data['rcpt_note'] = 1;
+				} else {
+					$data['rcpt_note'] = 0;
 				}
 			}
 
