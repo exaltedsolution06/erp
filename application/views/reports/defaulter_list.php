@@ -765,6 +765,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         </div>   
 </div>  
 </section>
+<div class="abc"></div>
 </div>
 
 <script>
