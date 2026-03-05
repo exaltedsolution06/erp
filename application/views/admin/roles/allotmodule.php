@@ -12,7 +12,9 @@
                     </div>
                     <form id="form1" action="<?php echo site_url('admin/roles/permission/' . $role['id']) ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8">
                         <div class="box-body">
-
+							<?php if ($this->session->flashdata('msg')) { ?>
+								<?php echo $this->session->flashdata('msg') ?>
+							<?php } ?>
                             <?php echo $this->customlib->getCSRF(); ?>  
                             <input type="hidden" name="role_id" value="<?php echo $role['id'] ?>"/>
                             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">  

@@ -74,7 +74,9 @@
                     <div class="">
                         <form role="form" id="custom" action="<?php echo site_url('admin/frontcms') ?>" class="form-horizontal form-horizontal2" method="post" enctype="multipart/form-data">
                             <div class="box-body">
-
+								<?php if ($this->session->flashdata('msg')) { ?>
+                                    <?php echo $this->session->flashdata('msg') ?>
+                                <?php } ?>
                                 <div class="row">
                                     <div class="box-body">
                                         <div class="col-md-6 col-sm-12">

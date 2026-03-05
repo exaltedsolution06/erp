@@ -96,6 +96,7 @@ class Roles extends Admin_Controller {
             }
 
             $this->role_model->getInsertBatch($role_id, $to_be_insert, $to_be_update, $to_be_delete);
+			$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
             redirect('admin/roles/permission/' . $id);
         }
 
