@@ -1590,6 +1590,12 @@ class Report extends Admin_Controller
         $this->load->view('reports/reminder_letter', $data);
         $this->load->view('layout/footer', $data);
     }
+	public function printreminderletter() {
+		$data = array();
+        $reminder_letter_cards = $this->load->view('print_reminder_letter', $data, true);
+		$array = array('status' => '1', 'error' => '', 'page' => $reminder_letter_cards);
+		echo json_encode($array);
+    }
     public function incomegroup()
     {
 

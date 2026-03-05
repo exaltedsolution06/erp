@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="UTF-8">
+	<title>Balance Due</title>
+	<!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<style>
+
+	/*body{
+		font-family: Arial, Helvetica, sans-serif;
+		font-size:14px;
+	}*/
+
+	.container{
+		margin:auto;
+		border:1px solid #000;
+	}
+
+	.header img{
+		width:100%;
+		display:block;
+	}
+
+	.content{
+		padding:15px;
+	}
+
+	.title-row{
+		width:100%;
+		margin-bottom:10px;
+	}
+
+	.title-row td{
+		font-weight:bold;
+	}
+
+	.info-table{
+		width:100%;
+		margin-top:10px;
+	}
+
+	.info-table td{
+		padding:4px;
+	}
+
+	.message{
+		margin-top:15px;
+		line-height:1.6;
+	}
+
+	.footer{
+		margin-top:40px;
+		width:100%;
+	}
+
+	.footer td{
+		vertical-align:bottom;
+	}
+
+	.signature{
+		text-align:right;
+	}
+
+	.signature img{
+		height:40px;
+	}
+
+	</style>
+
+	</head>
+
+	<body>
+		<div class="container">
+			<!-- HEADER IMAGE -->
+			<div class="header">
+				<img src="<?php echo base_url('uploads/reportcard/4e8d82361c0bd589e9a4d3915965c058.png') ?>" style="height:150px;width:100%">
+			</div>
+			<div class="content">
+				<table class="title-row">
+					<tr>
+						<td style="text-align:center;">BALANCE DUES</td>
+						<td style="text-align:right;">DATED: <strong>27-Feb-26</strong></td>
+					</tr>
+				</table>
+				
+				<table class="info-table">
+					<tr>
+						<td width="120">UID . No.</td>
+						<td width="200"><strong>896</strong></td>
+					</tr>
+					<tr>
+						<td>Student's Name</td>
+						<td><strong>YUVAN</strong></td>
+					</tr>
+					<tr>
+						<td>Father's Name</td>
+						<td><strong>SAHIL</strong></td>
+					</tr>
+					<tr>
+						<td>Class:</td>
+						<td><strong>1st - A</strong></td>
+					</tr>
+				</table>
+
+				<div class="message">
+					<p>
+					Dear Parents / Guardians,
+					<span style="float:right;">Ph. No: <strong>9253303795</strong></span>
+					</p>
+
+					<p>
+					This is to remind you that your ward fees due for the month(s) of 
+					<strong><u>Old Bal..</u></strong>
+					amounts to Rs.
+					<strong><u>1600.00</u></strong>.
+					Kindly Co - Operate and Pay immediately
+					</p>
+				</div>
+
+				<table class="footer">
+					<tr>
+						<td>Thank You,</td>
+
+						<td class="signature">
+						<img src="principal_sign.png"><br>
+						Principal
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</body>
+</html>
