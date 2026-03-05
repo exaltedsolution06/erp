@@ -1598,10 +1598,13 @@ class Report extends Admin_Controller
 	
 	public function printreminderletter() {
 		$data = array();
-		echo "<pre>";print_r($this->input->post());die;
+		//echo "<pre>";print_r($this->input->post());die;
 		$template_id = $this->input->post('template_name');
 		$template_derails = $this->Reminder_model->get($template_id);
-		
+		//echo "<pre>";print_r($template_derails); die;
+		$header_image = $template_derails[0]->header_image;
+		$description = $template_derails[0]->description;
+		//echo $header_image.' '.$description; die;
 		$result = [];
 		foreach($this->input->post('default_data') as $val)
 		{
@@ -1622,12 +1625,22 @@ class Report extends Admin_Controller
 						'phone' => $student_details['mobileno'],
 						'date' => $student_details['admission_date'],
 						'old_balc' => $old_balc,
-						'amount' => $amount
+						'amount' => $amount,
+						'header_image' => $header_image,
+						'description' => $description,
+						'isuid' => $template_derails[0]->uid_no,
+						'isstudent' => $template_derails[0]->student_name,
+						'isfather' => $template_derails[0]->father_name,
+						'isclass' => $template_derails[0]->class_section,
+						'isuphone' => $template_derails[0]->phone,
+						'isdate' => $template_derails[0]->date
+						
 				];
 			}
 		}
 		
-		echo "<pre>";print_r($result);die;
+		//echo "<pre>";print_r($result);die;
+		$data['result'] = $result;
 		
         $reminder_letter_cards = $this->load->view('print_reminder_letter', $data, true);
 		$array = array('status' => '1', 'error' => '', 'page' => $reminder_letter_cards);

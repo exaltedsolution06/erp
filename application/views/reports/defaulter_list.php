@@ -833,7 +833,7 @@ $(document).on('submit', 'form#printreminderletter', function (e) {
 	var formdata = form.serializeArray();
 
 	var list_selected =  $('form#printreminderletter input[name="exam_group_class_batch_exam_student_id[]"]:checked').length;
-  // if(list_selected > 0){
+  if(list_selected > 0){
 	$.ajax({
 		type: "POST",
 		url: form.attr('action'),
@@ -856,9 +856,10 @@ $(document).on('submit', 'form#printreminderletter', function (e) {
 			subsubmit_button.button('reset');
 		}
 	});
-  /*}else{
+  }
+  else{
 	 confirm("<?php echo $this->lang->line('please_select_student'); ?>");
-  }*/
+  }
 });
 function Popup(data)
 {
