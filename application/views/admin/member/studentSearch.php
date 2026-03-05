@@ -120,7 +120,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         </td>
                                                         <td><?php echo $student['class'] . "(" . $student['section'] . ")" ?></td>
                                                         <td><?php echo $student['father_name']; ?></td>
-                                                        <td><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($student['dob'])); ?></td>
+                                                        <td><?php if($student['dob']!='' && $student['dob']!='0000-00-00'){ echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($student['dob'])); } ?></td>
                                                         <td><?php echo $student['gender']; ?></td>
 
                                                         <td><?php echo $student['mobileno']; ?></td>
@@ -128,6 +128,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         <td class="text text-right">
                                                             <?php
                                                             if ($student['libarary_member_id'] == 0) {
+																if ($this->rbac->hasPrivilege('add_student', 'can_add')) {
                                                                 ?>
 
                                                                 <button data-placement="left"  data-stdid="<?php echo $student['id'] ?>" class="btn btn-default btn-xs add-student"  data-toggle="tooltip" title="<?php echo $this->lang->line('add'); ?>" >
@@ -135,11 +136,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                 </button>
 
                                                                 <?php
+																}
                                                             } else {
+																if ($this->rbac->hasPrivilege('add_student', 'can_delete')) {
                                                                 ?>
                                                                 <button data-placement="left" type="button" class="btn btn-default btn-xs surrender-student" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please Wait.." data-toggle="tooltip" data-memberid="<?php echo $member_id; ?>" title="<?php echo $this->lang->line('surrender_membership'); ?>"><i class="fa fa-mail-reply"></i></button>
 
                                                                 <?php
+																}
                                                             }
                                                             ?>
 

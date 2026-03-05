@@ -153,7 +153,7 @@ class Studentsession_model extends CI_Model
     {
         $this->db->select('student_session.*,classes.class,sections.section,student_session.id as `student_session_id`')->from('student_session');
         $this->db->where('student_id', $student_id);
-        $this->db->where('session_id', $this->current_session);
+        $this->db->where('student_session.session_id', $this->current_session);
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
         $this->db->order_by('id');
@@ -167,9 +167,9 @@ class Studentsession_model extends CI_Model
         $this->db->select('student_session.*,classes.class,sections.section')->from('student_session');
         $this->db->where('student_id', $student_id);
         if ($enable_session == null) {
-            $this->db->where('session_id', $this->current_session);
+            $this->db->where('student_sessionsession_id', $this->current_session);
         } else {
-            $this->db->where('session_id', $enable_session);
+            $this->db->where('student_sessionsession_id', $enable_session);
         }
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');

@@ -12,7 +12,7 @@ class Subject extends Admin_Controller {
     }
 
     function index() {
-        if (!$this->rbac->hasPrivilege('subject', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('add_subjects', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Academics');
@@ -48,7 +48,7 @@ class Subject extends Admin_Controller {
     }
 
     function view($id) {
-        if (!$this->rbac->hasPrivilege('subject', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('add_subjects', 'can_view')) {
             access_denied();
         }
         $data['title'] = 'Subject List';
@@ -60,7 +60,7 @@ class Subject extends Admin_Controller {
     }
 
     function delete($id) {
-        if (!$this->rbac->hasPrivilege('subject', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('add_subjects', 'can_delete')) {
             access_denied();
         }
         $data['title'] = 'Subject List';
@@ -135,7 +135,7 @@ class Subject extends Admin_Controller {
 
 
     function edit($id) {
-        if (!$this->rbac->hasPrivilege('subject', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('add_subjects', 'can_edit')) {
             access_denied();
         }
         $subject_result = $this->subject_model->get();

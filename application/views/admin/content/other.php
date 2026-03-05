@@ -103,7 +103,7 @@
                                                     <i class="fa fa-download"></i>
                                                 </a>
                                                 <?php
-                                                if ($this->rbac->hasPrivilege('upload_content', 'can_delete')) {
+                                                if ($this->rbac->hasPrivilege('other_download', 'can_delete')) {
                                                     ?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/content/deleteassignment/<?php echo $data['id'] ?>/other" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                         <i class="fa fa-remove"></i>

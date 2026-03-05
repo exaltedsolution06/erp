@@ -17,7 +17,9 @@ class LeaveTypes extends Admin_Controller {
     }
 
     function index() {
-
+		if (!$this->rbac->hasPrivilege('leave_types', 'can_view')) {
+			access_denied();
+		}
         $this->session->set_userdata('top_menu', 'HR');
         $this->session->set_userdata('sub_menu', 'admin/leavetypes');
         $data["title"] = $this->lang->line('add') . " " . $this->lang->line('leave') . " " . $this->lang->line('type');
@@ -54,6 +56,7 @@ class LeaveTypes extends Admin_Controller {
                 if (!$this->rbac->hasPrivilege('leave_types', 'can_edit')) {
                     access_denied();
                 }
+				$data["type"] = 'edit';
             }
 
             if (!empty($leavetypeid)) {
@@ -77,7 +80,9 @@ class LeaveTypes extends Admin_Controller {
     }
 
     function leaveedit($id) {
-
+		if (!$this->rbac->hasPrivilege('leave_types', 'can_edit')) {
+			access_denied();
+		}
         $result = $this->staff_model->getLeaveType($id);
 		if(!$result){
 			redirect("admin/leavetypes");
@@ -93,6 +98,9 @@ class LeaveTypes extends Admin_Controller {
     }
 
     function leavedelete($id) {
+		if (!$this->rbac->hasPrivilege('leave_types', 'can_delete')) {
+			access_denied();
+		}
 		// by ES
 		$checkData['menu'] = 'leave_type';		
 		$checkData['table'] = 'staff_leave_request';

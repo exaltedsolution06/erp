@@ -16,7 +16,7 @@
                         <h3 class="box-title titlefix"> <?php echo $this->lang->line('exam') . " " . $this->lang->line('list'); ?></h3>
                         <div class="impbtntitle">
                             <?php 
-                            if($this->rbac->hasPrivilege('exam','can_add')){
+                            if($this->rbac->hasPrivilege('add_exam','can_add')){
                                 ?>
                                 <a tabindex="-1" class="btn btn-primary btn-sm" href="#" id="examModalButton"> <?php echo $this->lang->line('new') . " " . $this->lang->line('exam') ?></a>
                                 <?php
@@ -109,7 +109,10 @@ foreach ($sessionlist as $session) {
 							<input type="hidden" id="session_id" name="session_id" value="<?php echo $current_session; ?>">
                             <span class="text text-danger" id="session_id_error"></span>
                         </div>
-                        <div class="clearfix"></div>                   
+                        <div class="clearfix"></div>  
+							<?php 
+                            if($this->rbac->hasPrivilege('publish','can_add')){
+                                ?>						
                         <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                             <div class="checkbox">
                                 <label>
@@ -117,6 +120,9 @@ foreach ($sessionlist as $session) {
                                 </label>
                             </div>
                         </div>
+						<?php 
+                            } if($this->rbac->hasPrivilege('publish_result','can_add')){
+                                ?>
                              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                             <div class="checkbox">
                                 <label>
@@ -124,6 +130,9 @@ foreach ($sessionlist as $session) {
                                 </label>
                             </div>
                         </div>
+						<?php 
+                            }
+                                ?>
                         <div class="clearfix"></div>
                         <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <label for="description"><?php echo $this->lang->line('description') ?></label>

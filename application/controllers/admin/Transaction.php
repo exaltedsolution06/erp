@@ -66,7 +66,7 @@ class Transaction extends Admin_Controller {
 
     function studentacademicreport() {
 
-        if (!$this->rbac->hasPrivilege('balance_fees_report', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('receipt_book', 'can_view')) {
             access_denied();
         }
 

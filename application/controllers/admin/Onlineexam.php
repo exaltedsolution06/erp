@@ -18,7 +18,7 @@ class Onlineexam extends Admin_Controller
 
     public function index()
     {
-        if (!$this->rbac->hasPrivilege('online_examination', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('online_exam', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Online_Examinations');
@@ -838,7 +838,9 @@ class Onlineexam extends Admin_Controller
 
     public function report()
     {
-
+		if (!$this->rbac->hasPrivilege('online_exam_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/online_examinations');
         $this->session->set_userdata('subsub_menu', 'Reports/online_examinations/online_exam_report');

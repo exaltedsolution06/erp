@@ -195,9 +195,14 @@ th, td {
 	?>
 	<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">
 	<?php } else { ?>
+	<?php if ($result->rcpt_student_name) { ?>
 	<h5><b><?=$result->name?></b></h5>
+	<?php } if ($result->rcpt_address) { ?>
     <span><?=$result->address?></span> <br>
-    <span><b>Phone No.</b>: <?=$result->phone?></span>, <span><b>Email Id.</b>: <?=$result->email?></span> <br>
+	<?php } if ($result->rcpt_mobile_no) { ?>
+    <span><b>Phone No.</b>: <?=$result->phone?></span>,
+	<?php } ?>	
+	<span><b>Email Id.</b>: <?=$result->email?></span> <br>
 	<span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br>
 	<?php } ?>
 </div>
@@ -215,13 +220,21 @@ th, td {
 
 <div class="d-flex justify-content-between mt-1">
   <div class="p-3 pt-0 pb-0">
+	<?php if ($result->rcpt_admission_no) { ?>
       <span><strong style="width:90px; display:inline-block;">Adm. No.</strong> <?=$student['admission_no']?></span> <br>
+	<?php } if ($result->rcpt_student_name) { ?>
       <span><strong style="width:90px; display:inline-block;">Student</strong> <?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></span> <br>
+	<?php } if ($result->rcpt_father && $student['father_name']) { ?>
       <span><strong style="width:90px; display:inline-block;">Father</strong> <?=$student['father_name']?></span> <br>
+	<?php } if ($result->rcpt_mother && $student['mother_name']) { ?>
+      <span><strong style="width:90px; display:inline-block;">Mother</strong> <?=$student['mother_name']?></span> <br>
+	<?php } if ($result->rcpt_class_section) { ?>
       <span><strong style="width:90px; display:inline-block;">Class & Sec</strong> <?=$student['class']?> (<?=$student['section']?>)</span> <br>
+	<?php } if ($result->rcpt_fee_months) { ?>
        <?php if($fees[0]->fee_head_name != 'Ledger Amount'){ ?>
       <span><strong style="width:90px; display:inline-block;">Fee Months</strong> <?=sort_by_custom_month_order($month_names)?></span> <br>
       <?php } ?>
+    <?php } ?>
       <!-- <span><strong style="width:90px; display:inline-block;">Note</strong> This is a System Generated Slip Not Required Stamp.</span>  -->
   </div>
 </div>
@@ -288,6 +301,7 @@ th, td {
                             <td class="text-end"><?=$fees[0]->ledger_amt?></td>
                         </tr>
                         <?php } ?>
+	<?php if ($result->rcpt_total_amt) { ?>
     <tr style="border-top:2px solid">
         <td colspan="2" class="text-end"><strong>Total Amount</strong></td>
         <?php if($fees[0]->fee_head_name!='Ledger Amount'){ ?>
@@ -296,16 +310,17 @@ th, td {
         <td class="text-end"><h6><b><?=$pay?></b></h6></td>
         <?php } ?>
     </tr>
-
+	<?php } if ($result->rcpt_late_fee) { ?>
     <tr>
         <td colspan="2" class="text-end">+ Late/Other Fee (If Any)</td>
         <td class="text-end"><?=$fees[0]->late_fees??0?></td>
     </tr>
-
+	<?php } if ($result->rcpt_discount_amt) { ?>
     <tr>
         <td colspan="2" class="text-end">- Discount Amount (If Any)</td>
         <td class="text-end"><?=$fees[0]->discount_amt?></td>
     </tr>
+	<?php } if ($result->rcpt_net_amt) { ?>
     <tr style="border-top:2px solid">
         <td colspan="2" class="text-end"><strong>Net Fees</strong></td>
         <td class="text-end"><strong><h6><b>
@@ -322,14 +337,17 @@ th, td {
         ?>
         </b></h6></strong></td>
     </tr>
+	<?php } if ($result->rcpt_received_amt) { ?>
     <tr>
         <td colspan="2" class="text-end">Received Amount</td>
         <td class="text-end"><?=$fees[0]->receipt_amt?></td>
     </tr>
+	<?php } if ($result->rcpt_balance_amt) { ?>
     <tr>
         <td colspan="2" class="text-end">Balance Amount</td>
         <td class="text-end"><?=$fees[0]->balance_amt?></td>
     </tr>
+	<?php } ?>
     </tbody>
 </table>
 
@@ -341,16 +359,19 @@ th, td {
   <div class="col-8">
     <div class="abd">
 
-     
+    <?php if ($result->rcpt_amt_in_words) { ?> 
       <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
+	<?php } if ($result->rcpt_pay_mode) { ?>
       <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
+	<?php } if ($result->rcpt_remark) { ?>
       <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
-      
+    <?php } if ($result->rcpt_created_by) { ?>  
 	   <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important">
 							<?= implode(' ', array_filter([
 								$create_by->name ?? '',
 								$create_by->surname ?? ''
 							])); ?> (<?=$create_by->employee_id?>)</span></label>
+	<?php } ?>
       </div>
   </div>
 
@@ -362,7 +383,7 @@ th, td {
 	</div>
 
 </div>
-
+<?php if ($result->rcpt_note) { ?>
 <div class="row">
 	<div class="col-12">
 	<div class="footer-content">
@@ -378,7 +399,7 @@ th, td {
 	</div>
 	</div>
 </div>
-
+<?php } ?>
 </div>
 
 
@@ -395,9 +416,14 @@ th, td {
 	?>
 	<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">
 	<?php } else { ?>
+	<?php if ($result->rcpt_student_name) { ?>
     <h5><b><?=$result->name?></b></h5>
+	<?php } if ($result->rcpt_address) { ?>
     <span><?=$result->address?></span> <br>
-    <span><b>Phone No.</b>: <?=$result->phone?></span>, <span><b>Email Id.</b>: <?=$result->email?></span> <br>
+	<?php } if ($result->rcpt_mobile_no) { ?>
+    <span><b>Phone No.</b>: <?=$result->phone?></span>, 
+	<?php } ?>
+	<span><b>Email Id.</b>: <?=$result->email?></span> <br>
     <span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br>
 	<?php } ?>
 </div>
@@ -415,13 +441,21 @@ th, td {
 
 <div class="d-flex justify-content-between mt-1">
   <div class="p-3 pt-0 pb-0">
+	<?php if ($result->rcpt_admission_no) { ?>
       <span><strong style="width:90px; display:inline-block;">Adm. No.</strong> <?=$student['admission_no']?></span> <br>
+	<?php } if ($result->rcpt_student_name) { ?>
       <span><strong style="width:90px; display:inline-block;">Student</strong> <?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></span> <br>
+	<?php } if ($result->rcpt_father && $student['father_name']) { ?>
       <span><strong style="width:90px; display:inline-block;">Father</strong> <?=$student['father_name']?></span> <br>
+	<?php } if ($result->rcpt_mother && $student['mother_name']) { ?>
+       <span><strong style="width:90px; display:inline-block;">Mother</strong> <?=$student['mother_name']?></span> <br>
+	<?php } if ($result->rcpt_class_section) { ?>
       <span><strong style="width:90px; display:inline-block;">Class & Sec</strong> <?=$student['class']?> (<?=$student['section']?>)</span> <br>
+	<?php } if ($result->rcpt_fee_months) { ?>
        <?php if($fees[0]->fee_head_name != 'Ledger Amount'){ ?>
       <span><strong style="width:90px; display:inline-block;">Fee Months</strong> <?=$month_names?></span> <br>
       <?php } ?>
+	<?php } ?>
       <!-- <span><strong style="width:90px; display:inline-block;">Note</strong> This is a System Generated Slip Not Required Stamp.</span>  -->
   </div>
 </div>
@@ -486,7 +520,7 @@ th, td {
                             <td class="text-end"><?=$fees[0]->ledger_amt?></td>
                         </tr>
                         <?php } ?>
-
+<?php if ($result->rcpt_total_amt) { ?>
   <tr style="border-top:2px solid">
       <td colspan="2" class="text-end"><strong>Total Amount</strong></td>
       <?php if($fees[0]->fee_head_name!='Ledger Amount'){ ?>
@@ -495,16 +529,17 @@ th, td {
       <td class="text-end"><h6><b><?=$pay?></b></h6></td>
       <?php } ?>
   </tr>
-
+<?php } if ($result->rcpt_late_fee) { ?>
   <tr>
       <td colspan="2" class="text-end">+ Late/Other Fee (If Any)</td>
       <td class="text-end"><?=$fees[0]->late_fees??0?></td>
   </tr>
-
+<?php } if ($result->rcpt_discount_amt) { ?>
   <tr>
       <td colspan="2" class="text-end">- Discount Amount (If Any)</td>
       <td class="text-end"><?=$fees[0]->discount_amt?></td>
   </tr>
+<?php } if ($result->rcpt_net_amt) { ?>
   <tr style="border-top:2px solid">
       <td colspan="2" class="text-end"><strong>Net Fees</strong></td>
       <td class="text-end"><strong><h6><b>
@@ -521,14 +556,17 @@ th, td {
       ?>
       </b></h6></strong></td>
   </tr>
+  <?php } if ($result->rcpt_received_amt) { ?>
   <tr>
       <td colspan="2" class="text-end">Received Amount</td>
       <td class="text-end"><?=$fees[0]->receipt_amt?></td>
   </tr>
+  <?php } if ($result->rcpt_balance_amt) { ?>
   <tr>
       <td colspan="2" class="text-end">Balance Amount</td>
       <td class="text-end"><?=$fees[0]->balance_amt?></td>
   </tr>
+  <?php } ?>
   </tbody>
 </table>
 
@@ -540,15 +578,19 @@ th, td {
   <div class="col-8">
     <div class="abd">
 
-     
+    <?php if ($result->rcpt_amt_in_words) { ?>
       <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
+	<?php } if ($result->rcpt_pay_mode) { ?>
       <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
+	<?php } if ($result->rcpt_remark) { ?>
       <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
+	<?php } if ($result->rcpt_created_by) { ?>
 	    <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important">
 							<?= implode(' ', array_filter([
 								$create_by->name ?? '',
 								$create_by->surname ?? ''
 							])); ?> (<?=$create_by->employee_id?>)</span></label>
+	<?php } ?>
       </div>
   </div>
 
@@ -560,7 +602,7 @@ th, td {
 	</div>
 
 </div>
-
+<?php if ($result->rcpt_note) { ?>
 <div class="row">
 	<div class="col-12">
 	<div class="footer-content">
@@ -576,7 +618,7 @@ th, td {
 	</div>
 	</div>
 </div>
-
+<?php } ?>
 </div>
 
 
@@ -830,9 +872,14 @@ th, td {
 						?>
 						<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">
 						<?php } else { ?>
+						<?php if ($result->rcpt_student_name) { ?>
 						<h5><b><?=$result->name?></b></h5>
+						<?php } if ($result->rcpt_address) { ?>
                         <span><?=$result->address?></span> <br>
-                        <span><b>Phone No.</b>: <?=$result->phone?></span>, <span><b>Email Id.</b>: <?=$result->email?></span> <br>
+						<?php } if ($result->rcpt_mobile_no) { ?>
+                        <span><b>Phone No.</b>: <?=$result->phone?></span>, 
+						<?php } ?>
+						<span><b>Email Id.</b>: <?=$result->email?></span> <br>
                         <span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br><?php } ?>
                     </div>
 
@@ -849,13 +896,21 @@ th, td {
 
                     <div class="d-flex justify-content-between mt-1">
                       <div class="p-3 pt-0 pb-0">
+						<?php if ($result->rcpt_admission_no) { ?>
                           <span><strong style="width:90px; display:inline-block;">Adm. No.</strong> <?=$student['admission_no']?></span> <br>
+						<?php } if ($result->rcpt_student_name) { ?>
                           <span><strong style="width:90px; display:inline-block;">Student</strong> <?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></span> <br>
+						<?php } if ($result->rcpt_father && $student['father_name']) { ?>
                           <span><strong style="width:90px; display:inline-block;">Father</strong> <?=$student['father_name']?></span> <br>
+						<?php } if ($result->rcpt_mother && $student['mother_name']) { ?>
+                          <span><strong style="width:90px; display:inline-block;">Mother</strong> <?=$student['mother_name']?></span> <br>
+						<?php } if ($result->rcpt_class_section) { ?>
                           <span><strong style="width:90px; display:inline-block;">Class & Sec</strong> <?=$student['class']?> (<?=$student['section']?>)</span> <br>
+						<?php } if ($result->rcpt_fee_months) { ?>
                            <?php if($fees[0]->fee_head_name != 'Ledger Amount'){ ?>
                           <span><strong style="width:90px; display:inline-block;">Fee Months</strong> <?=sort_by_custom_month_order($month_names)?></span> <br>
                           <?php } ?>
+                        <?php } ?>
                           <!-- <span><strong style="width:90px; display:inline-block;">Note</strong> This is a System Generated Slip Not Required Stamp.</span>  -->
                       </div>
                     </div>
@@ -916,7 +971,7 @@ th, td {
                             <td class="text-end"><?=$fees[0]->ledger_amt?></td>
                         </tr>
                         <?php } ?>
-
+						<?php if ($result->rcpt_total_amt) { ?>
                         <tr style="border-top:2px solid">
                             <td colspan="2" class="text-end"><strong>Total Amount</strong></td>
                             <?php if($fees[0]->fee_head_name!='Ledger Amount'){ ?>
@@ -925,16 +980,17 @@ th, td {
                             <td class="text-end"><h6><b><?=$pay?></b></h6></td>
                             <?php } ?>
                         </tr>
-
+						<?php } if ($result->rcpt_late_fee) { ?>
                         <tr>
                             <td colspan="2" class="text-end">+ Late/Other Fee (If Any)</td>
                             <td class="text-end"><?=$fees[0]->late_fees??0?></td>
                         </tr>
-
+						<?php } if ($result->rcpt_discount_amt) { ?>
                         <tr>
                             <td colspan="2" class="text-end">- Discount Amount (If Any)</td>
                             <td class="text-end"><?=$fees[0]->discount_amt?></td>
                         </tr>
+						<?php } if ($result->rcpt_net_amt) { ?>
                         <tr style="border-top:2px solid">
                             <td colspan="2" class="text-end"><strong>Net Fees</strong></td>
                             <td class="text-end"><strong><h6><b>
@@ -951,14 +1007,17 @@ th, td {
                             ?>
                             </b></h6></strong></td>
                         </tr>
+						<?php } if ($result->rcpt_received_amt) { ?>
                         <tr>
                             <td colspan="2" class="text-end">Received Amount</td>
                             <td class="text-end"><?=$fees[0]->receipt_amt?></td>
                         </tr>
+						<?php } if ($result->rcpt_balance_amt) { ?>
                         <tr>
                             <td colspan="2" class="text-end">Balance Amount</td>
                             <td class="text-end"><?=$fees[0]->balance_amt?></td>
                         </tr>
+						<?php } ?>
                         </tbody>
                     </table>
 
@@ -970,16 +1029,19 @@ th, td {
                       <div class="col-8">
                         <div class="abd">
 
-                         
+                         <?php if ($result->rcpt_amt_in_words) { ?>
                           <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
+						  <?php } if ($result->rcpt_pay_mode) { ?>
                           <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
+						  <?php } if ($result->rcpt_remark) { ?>
                           <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
-                          
+                          <?php } if ($result->rcpt_created_by) { ?>
 						    <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important">
 							<?= implode(' ', array_filter([
 								$create_by->name ?? '',
 								$create_by->surname ?? ''
 							])); ?> (<?=$create_by->employee_id?>)</span></label>
+							<?php } ?>
                           </div>
                       </div>
 
@@ -991,7 +1053,7 @@ th, td {
 						</div>
 
                     </div>
-					
+					<?php if ($result->rcpt_note) { ?>
 					<div class="row">
 						<div class="col-12">
 						<div class="footer-content">
@@ -1007,7 +1069,7 @@ th, td {
 						</div>
 						</div>
 					</div>
-
+					<?php } ?>
                 
         </div>
 

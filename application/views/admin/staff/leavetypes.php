@@ -16,7 +16,8 @@
     <section class="content">
         <div class="row">   
 
-            <?php if (($this->rbac->hasPrivilege('leave_types', 'can_add'))) { ?>
+            <?php $permission = ($type === 'edit') ? 'can_edit' : 'can_add';
+			if ($this->rbac->hasPrivilege('leave_types', $permission)){ ?>
                 <div class="col-md-4">    
                     <div class="box box-primary">
                         <div class="box-header with-border">
@@ -71,7 +72,7 @@
                 </div>  
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('leave_types', 'can_add')) {
+            if ($this->rbac->hasPrivilege('leave_types', $permission)){
                 echo "8";
             } else {
                 echo "12";

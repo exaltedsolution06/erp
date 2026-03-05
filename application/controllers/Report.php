@@ -447,6 +447,9 @@ class Report extends Admin_Controller
 	
 	public function fee_card()
     {
+		if (!$this->rbac->hasPrivilege('fee_card', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/fee_card');
         //$this->session->set_userdata('subsub_menu', 'Reports/finance/onlinefees_report');
@@ -546,7 +549,9 @@ class Report extends Admin_Controller
 	
     public function onlinefees_report()
     {
-
+		if (!$this->rbac->hasPrivilege('fee_card', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/finance');
         $this->session->set_userdata('subsub_menu', 'Reports/finance/onlinefees_report');
@@ -683,7 +688,9 @@ class Report extends Admin_Controller
 
     public function studentbookissuereport()
     {
-
+		if (!$this->rbac->hasPrivilege('library_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/library');
         $this->session->set_userdata('subsub_menu', 'Reports/library/book_issue_report');
@@ -724,7 +731,9 @@ class Report extends Admin_Controller
 
     public function bookduereport()
     {
-
+		if (!$this->rbac->hasPrivilege('library_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/library');
         $this->session->set_userdata('subsub_menu', 'Reports/library/bookduereport');
@@ -766,7 +775,9 @@ class Report extends Admin_Controller
 
     public function bookinventory()
     {
-
+		if (!$this->rbac->hasPrivilege('library_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/library');
         $this->session->set_userdata('subsub_menu', 'Reports/library/bookinventory');
@@ -835,6 +846,9 @@ class Report extends Admin_Controller
 
     public function studentinformation()
     {
+		if (!$this->rbac->hasPrivilege('admission_all_reports', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/student_information');
         $this->session->set_userdata('subsub_menu', '');
@@ -845,6 +859,9 @@ class Report extends Admin_Controller
 
     public function attendance()
     {
+		if (!$this->rbac->hasPrivilege('attendance_section_reports', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/attendance');
         $this->session->set_userdata('subsub_menu', '');
@@ -855,7 +872,7 @@ class Report extends Admin_Controller
 
     public function examinations()
     {
-        if (!$this->rbac->hasPrivilege('rank_report', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('exam_section_reports', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Reports');
@@ -868,6 +885,9 @@ class Report extends Admin_Controller
 
     public function library()
     {
+		if (!$this->rbac->hasPrivilege('library_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/library');
         $this->session->set_userdata('subsub_menu', '');
@@ -879,7 +899,9 @@ class Report extends Admin_Controller
 
     public function inventory()
     {
-
+		if (!$this->rbac->hasPrivilege('stock_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/inventory');
         $this->session->set_userdata('subsub_menu', '');
@@ -891,6 +913,9 @@ class Report extends Admin_Controller
 
     public function onlineexams()
     {
+		if (!$this->rbac->hasPrivilege('online_exam_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/online_examinations');
         $this->session->set_userdata('subsub_menu', 'Reports/online_examinations/onlineexams');
@@ -992,7 +1017,9 @@ class Report extends Admin_Controller
 
     public function onlineexamattend()
     {
-
+		if (!$this->rbac->hasPrivilege('online_exam_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/online_examinations');
         $this->session->set_userdata('subsub_menu', 'Reports/online_examinations/onlineexamattend');
@@ -1048,7 +1075,9 @@ class Report extends Admin_Controller
 
     public function onlineexamrank()
     {
-
+		if (!$this->rbac->hasPrivilege('online_exam_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/online_examinations');
         $this->session->set_userdata('subsub_menu', 'Reports/online_examinations/onlineexamrank');
@@ -1101,6 +1130,9 @@ class Report extends Admin_Controller
 
     public function inventorystock()
     {
+		if (!$this->rbac->hasPrivilege('stock_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/inventory');
         $this->session->set_userdata('subsub_menu', 'Reports/inventory/inventorystock');
@@ -1128,7 +1160,9 @@ class Report extends Admin_Controller
 
     public function additem()
     {
-
+		if (!$this->rbac->hasPrivilege('stock_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/inventory');
         $this->session->set_userdata('subsub_menu', 'Reports/inventory/additem');
@@ -1161,7 +1195,9 @@ class Report extends Admin_Controller
 
     public function issueinventory()
     {
-
+		if (!$this->rbac->hasPrivilege('stock_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/inventory');
         $this->session->set_userdata('subsub_menu', 'Reports/inventory/issueinventory');
@@ -1194,6 +1230,9 @@ class Report extends Admin_Controller
 
     public function finance()
     {
+		if (!$this->rbac->hasPrivilege('fee_all_reports', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/finance');
         $this->session->set_userdata('subsub_menu', '');
@@ -1475,6 +1514,9 @@ class Report extends Admin_Controller
     }
 	public function defaulter_list()
     {
+		if (!$this->rbac->hasPrivilege('defaulter_list', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/defaulter_list');
         //$this->session->set_userdata('subsub_menu', 'Reports/finance/defaulter_list');
@@ -1489,7 +1531,7 @@ class Report extends Admin_Controller
         $data['category'] = $feegroup_result;
 
         $data['routes'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
-        $data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('fee_head')->result_array();
+        $data['fee_heads'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('fee_head')->result_array();
 
         $selectedFeeCat = $_POST['fee_cat'] ?? [];
         $selectedMonths = $_POST['months'] ?? [];
@@ -1536,7 +1578,18 @@ class Report extends Admin_Controller
         $this->load->view('reports/defaulter_list', $data);
         $this->load->view('layout/footer', $data);
     }
-	
+	public function reminderletter()
+    {
+        if (!$this->rbac->hasPrivilege('reminder_letter', 'can_view')) {
+            access_denied();
+        }
+        $this->session->set_userdata('top_menu', 'Reports');
+        $this->session->set_userdata('sub_menu', 'Reports/reminder_letter');
+        $data['title']        = 'Reminder Letter';
+        $this->load->view('layout/header', $data);
+        $this->load->view('reports/reminder_letter', $data);
+        $this->load->view('layout/footer', $data);
+    }
     public function incomegroup()
     {
 
@@ -1775,7 +1828,9 @@ class Report extends Admin_Controller
 
     public function staff_report()
     {
-
+		if (!$this->rbac->hasPrivilege('staff_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/human_resource');
         $this->session->set_userdata('subsub_menu', 'Reports/human_resource/staff_report');
@@ -1855,7 +1910,9 @@ class Report extends Admin_Controller
 
     public function attendancereport()
     {
-
+		if (!$this->rbac->hasPrivilege('attendance_section_reports', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/attendance');
         $this->session->set_userdata('subsub_menu', 'Reports/attendence/attendancereport');
@@ -2021,6 +2078,9 @@ class Report extends Admin_Controller
 
     public function lesson_plan()
     {
+		if (!$this->rbac->hasPrivilege('lesson_plan_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/lesson_plan');
         $this->session->set_userdata('subsub_menu', 'Reports/lesson_plan/lesson_plan');
@@ -2127,6 +2187,9 @@ class Report extends Admin_Controller
 
     public function teachersyllabusstatus()
     {
+		if (!$this->rbac->hasPrivilege('lesson_plan_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/lesson_plan');
         $this->session->set_userdata('subsub_menu', 'Reports/lesson_plan/teachersyllabusstatus');
@@ -2402,6 +2465,9 @@ class Report extends Admin_Controller
 
     public function daily_attendance_report()
     {
+		if (!$this->rbac->hasPrivilege('attendance_section_reports', 'can_view')) {
+            access_denied();
+        }
         $data = array();
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/attendance');

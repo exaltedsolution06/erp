@@ -1,4 +1,4 @@
-
+<script src="<?php echo base_url(); ?>backend/plugins/ckeditor/ckeditor.js"></script>
 <script src="https://ilikenwf.github.io/jquery.mjs.nestedSortable.js"></script>
 <style type="text/css">
     ol {
@@ -85,6 +85,9 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
+			<?php
+            if ($this->rbac->hasPrivilege('add_webs_links', 'can_edit')) {
+                ?>
             <div class="col-md-8">
                 <!-- Horizontal Form -->
                 <div class="box box-primary">
@@ -110,7 +113,7 @@
                                 <input autofocus="" id="menu" name="menu" placeholder="" type="text" class="form-control"  value="<?php echo set_value('menu', $result['menu']); ?>" />
                                 <span class="text-danger"><?php echo form_error('menu'); ?></span>
                             </div>
-                            <div class="form-group">
+                            <!--<div class="form-group">
                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('external_url'); ?></label>
                                 <div class="material-switch">
                                     <input id="ext_url" name="ext_url" type="checkbox" class="ext_url_chk"  value="1" <?php echo set_checkbox('ext_url', '1', (set_value('ext_url', $result['ext_url'])) ? TRUE : FALSE); ?> />
@@ -142,8 +145,72 @@
                                     ?>
                                 </select>
                                 <span class="text-danger"><?php echo form_error('class_id'); ?></span>
+                            </div>-->
+							<div class="form-group">
+                                <label for="exampleInputEmail1">Content Heading</label>
+                                <input id="content_heading" name="content_heading"  type="text" class="form-control"  value="<?php echo set_value('content_heading', $result['content_heading']); ?>" />
+                                <span class="text-danger"><?php echo form_error('content_heading'); ?></span>
                             </div>
+							<div class="form-group">
+                                <label for="exampleInputEmail1">Description</label>
+								<textarea id="editor1" name="menu_description" placeholder="" type="text" class="form-control ss" >
+                                    <?php echo set_value('menu_description', $result['menu_description']); ?>
+                                </textarea> 
+                                <span class="text-danger"><?php echo form_error('menu_description'); ?></span>
+                            </div>
+							<div class="form-group">
+                                <label for="exampleInputEmail1">Image Position(Right)</label>
+                                <div class="material-switch">
+                                    <input id="image_position" name="image_position" type="checkbox"  value="1" <?php echo set_checkbox('image_position', '1', (set_value('image_position', $result['image_position'])) ? TRUE : FALSE); ?> />
+                                    <label for="image_position" class="label-success"></label>
+                                </div>
+                            </div>
+							<div class="dividerhr"></div>
 
+                            <div class="formgroup10">
+                                <label><?php echo $this->lang->line('gallery_image'); ?></label>
+                                <button type="button" class="btn btn-primary btn-sm gallery_image pull-right" id="gallery_images"><i class="fa fa-plus"></i>  <?php echo $this->lang->line('add_image'); ?></button>
+                                <div class="mediarow">
+                                    <div class="row">
+                                        <div class="gallery_content">
+											<?php
+												if (!empty($gallery_images)) {
+													$page_content_value = $gallery_images;
+													// echo'<pre>';print_r($page_content_value);exit;
+														?>
+														<div class='col-sm-4 col-md-3 col-xs-6 img_div_modal gallery_img div_record_<?php echo $page_content_value['id']; ?>'>
+															<div class='fadeoverlay'>
+																<img class='img-responsive' data-fid='<?php echo $page_content_value['id']; ?>' data-content_name='<?php echo $page_content_value['img_name']; ?>' data-is_image='' data-img='<?php echo $page_content_value['dir_path'] . $page_content_value['img_name']; ?>' src='<?php echo base_url($page_content_value['thumb_path'] . $page_content_value['img_name']); ?>'>
+																<input type='hidden' value='<?php echo $page_content_value['id']; ?>' name='gallery_images'>
+																<?php
+																if ($page_content_value['file_type'] == 'video') {
+																	?>
+
+																	<i class='fa fa-youtube-play videoicon'></i>
+																	<?php
+																} else {
+																	?>
+																	<i class='fa fa-picture-o videoicon'></i>
+
+																	<?php
+																}
+																?>
+
+																<div class='overlay3'>
+																	<a href='#' class='uploadclosebtn delete_gallery_img' data-record_id='<?php echo $page_content_value['id']; ?>' data-toggle='modal' data-target='#confirm-delete1'><i class=' fa fa-trash-o'></i></a>
+																	<p class='processing'>Processing...</p>
+																</div>
+																<p class=''><?php echo $page_content_value['img_name']; ?></p>
+															</div>
+														</div>
+
+												<?php
+												}
+												?>
+										</div> 
+                                    </div>
+                                </div>   
+                            </div>
                         </div><!-- /.box-body -->
                         <div class="box-footer">
                             <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
@@ -152,8 +219,15 @@
                 </div>
 
             </div><!--/.col (right) -->
+			<?php } ?>
             <!-- left column -->
-            <div class="col-md-4">
+            <div class="col-md-<?php
+            if ($this->rbac->hasPrivilege('add_webs_links', 'can_edit')) {
+                echo "4";
+            } else {
+                echo "12";
+            }
+            ?>">
                 <!-- general form elements -->
                 <div class="box box-primary" id="holist">
                     <div class="box-header ptbnull">
@@ -187,8 +261,16 @@
 
 
                                                         <span class="pull-right">
-                                                            <a href="<?php echo site_url('admin/front/menus/edititem/' . $menu['slug'] . "/" . $top_menu) ?>" class="btn btn-xs" title="<?php echo $this->lang->line('edit'); ?>" ><i class="fa fa-pencil"></i></a>    
+															<?php
+																if ($this->rbac->hasPrivilege('add_webs_links', 'can_edit')) {
+																?>
+                                                            <a href="<?php echo site_url('admin/front/menus/edititem/' . $menu['slug'] . "/" . $top_menu) ?>" class="btn btn-xs" title="<?php echo $this->lang->line('edit'); ?>" ><i class="fa fa-pencil"></i></a>
+															<?php } ?>
+															<?php
+															if ($this->rbac->hasPrivilege('add_webs_links', 'can_delete')) {
+																?>
                                                             <a href="#" class="btn btn-xs" title="<?php echo $this->lang->line('delete'); ?>" data-id="<?php echo $menu['id']; ?>" id="deleteItem" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-remove"></i></a>
+															<?php } ?>
                                                         </span>
 
                                                     </div>
@@ -206,8 +288,16 @@
                                                                         <?php echo $submenu_value['menu']; ?>
 
                                                                         <span class="pull-right">
-                                                                            <a href="<?php echo site_url('admin/front/menus/edititem/' . $submenu_value['slug'] . "/" . $top_menu) ?>" class="btn btn-xs" title="<?php echo $this->lang->line('edit'); ?>"><i class="fa fa-pencil"></i></a>  
+																			<?php
+																			if ($this->rbac->hasPrivilege('add_webs_links', 'can_edit')) {
+																				?>
+                                                                            <a href="<?php echo site_url('admin/front/menus/edititem/' . $submenu_value['slug'] . "/" . $top_menu) ?>" class="btn btn-xs" title="<?php echo $this->lang->line('edit'); ?>"><i class="fa fa-pencil"></i></a> 
+																			<?php } ?>
+																			<?php
+																			if ($this->rbac->hasPrivilege('add_webs_links', 'can_delete')) {
+																				?>
                                                                             <a href="#" class="btn btn-xs" title="<?php echo $this->lang->line('delete'); ?>" data-id="<?php echo $submenu_value['id']; ?>" id="deleteItem" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-remove"></i></a>
+																			<?php } ?>
                                                                         </span>
 
 
@@ -241,6 +331,131 @@
         </div>   <!-- /.row -->
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
+<script>
+    $(document).ready(function () {
+        var popup_target = 'gallery_image';
+     
+           CKEDITOR.replace('editor1',
+                {
+                    allowedContent: true
+                });
+
+        $('#mediaModal').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: false
+        });
+        $(document).on('click', '.gallery_image', function (event) {
+            $("#mediaModal").modal('toggle', $(this));
+        });
+
+        $('#mediaModal').on('show.bs.modal', function (event) {
+            var a = $(event.relatedTarget) // Button that triggered the modal
+            popup_target = a[0].id;
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            console.log(popup_target);
+            var $modalDiv = $(event.delegateTarget);
+            $('.modal-media-body').html("");
+            $.ajax({
+                type: "POST",
+                url: baseurl + "admin/front/media/getMedia",
+                dataType: 'text',
+                data: {},
+                beforeSend: function () {
+
+                    $modalDiv.addClass('modal_loading');
+                },
+                success: function (data) {
+                    $('.modal-media-body').html(data);
+                },
+                error: function (xhr) { // if error occured
+                    $modalDiv.removeClass('modal_loading');
+                },
+                complete: function () {
+                    $modalDiv.removeClass('modal_loading');
+                },
+            });
+        });
+
+        $(document).on('click', '.img_div_modal', function (event) {
+            $('.img_div_modal div.fadeoverlay').removeClass('active');
+            $(this).closest('.img_div_modal').find('.fadeoverlay').addClass('active');
+
+        });
+
+        $(document).on('click', '.add_media', function (event) {
+            var content_html = $('div#media_div').find('.fadeoverlay.active').find('img').data('img');
+            var content_id = $('div#media_div').find('.fadeoverlay.active').find('img').data('fid');
+            var is_image = $('div#media_div').find('.fadeoverlay.active').find('img').data('is_image');
+            var content_type = $('div#media_div').find('.fadeoverlay.active').find('img').data('content_type');
+            var content_name = $('div#media_div').find('.fadeoverlay.active').find('img').data('content_name');
+
+            var vid_url = $('div#media_div').find('.fadeoverlay.active').find('img').data('vid_url');
+            var content = "";
+			if (popup_target === "gallery_images") {
+                if (content_type === "image/gif" || content_type === "image/jpeg" || content_type === "image/png" || content_type === "video") {
+
+                    insert_gallery(content_html, content_id, content_name, is_image);
+                } else {
+                    //error show  
+                }
+
+
+                $('#mediaModal').modal('hide');
+            }
+
+        });
+    });
+
+    function insert_gallery(content_image, content_id, content_name, is_image) {
+        var output = '';
+        output += "<div class='col-sm-4 col-md-3 col-xs-6 img_div_modal gallery_img div_record_" + content_id + "'>";
+        output += "<div class='fadeoverlay'>";
+        output += "<img class='img-responsive' data-fid='" + content_id + "' data-content_name='" + content_name + "' data-is_image='" + is_image + "' data-img='" + content_image + "' src='" + content_image + "'>";
+        output += "<input type='hidden' value='" + content_id + "' name='gallery_images'>";
+        if (is_image == 1) {
+            output += "<i class='fa fa-picture-o videoicon'></i>";
+        } else {
+            output += "<i class='fa fa-youtube-play videoicon'></i>";
+        }
+        output += "<div class='overlay3'>";
+        output += "<a href='#' class='uploadclosebtn delete_gallery_img' data-record_id='" + content_id + "' data-toggle='modal' data-target='#confirm-delete1'><i class=' fa fa-trash-o'></i></a>";
+        output += "<p class='processing'>Processing...</p>";
+        output += "</div>";
+        output += "<p class=''>" + content_name + "</p>";
+        output += "</div>";
+        output += "</div>";
+        // $(output).appendTo(".gallery_content");
+        $('.gallery_content').html(output);
+    }
+
+    $(document).on('click', '.delete_gallery_img', function () {
+        $(this).closest('.gallery_img').remove();
+
+    });
+
+</script>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog pup100" role="document">
+        <div class="modal-content modal-media-content">
+            <div class="modal-header modal-media-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title modal-media-title" id="myModalLabel"><?php echo $this->lang->line('media_manager'); ?></h4>
+            </div>
+            <div class="modal-body modal-media-body pupscroll">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('cancel'); ?></button>
+                <button type="button" class="btn btn-primary add_media"><?php echo $this->lang->line('add'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     $(document).ready(function () {
         $('.delmodal').modal({

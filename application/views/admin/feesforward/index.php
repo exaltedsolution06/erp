@@ -152,13 +152,16 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                             </div>
                                         </div>
+										<?php
+											if (($this->rbac->hasPrivilege('previous_session_balance', 'can_edit'))) {
+										?>
                                         <div class="row">
                                             <div class="box-footer">
                                                 <button type="submit" name="action" value="fee_submit" class="btn btn-primary pull-right"><?php echo $this->lang->line('save'); ?></button>
                                             </div>
                                         </div>
-
                                         <?php
+											}
                                     } else {
                                         ?>
                                         <div class="alert alert-info"><?php echo $this->lang->line('no_record_found'); ?>

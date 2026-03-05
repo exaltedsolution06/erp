@@ -438,7 +438,9 @@ class Teacher extends Admin_Controller {
     }
 
     public function update_class_teacher($class_id, $section_id) {
-
+		if (!$this->rbac->hasPrivilege('assign_class_teacher', 'can_edit')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'classes/index');
         $data['title'] = 'Add Class Teacher';
@@ -549,6 +551,9 @@ class Teacher extends Admin_Controller {
     }
 
     public function classteacherdelete($class_id, $section_id) {
+		if (!$this->rbac->hasPrivilege('assign_class_teacher', 'can_delete')) {
+            access_denied();
+        }
 
         if ((!empty($class_id)) && (!empty($section_id))) {
 

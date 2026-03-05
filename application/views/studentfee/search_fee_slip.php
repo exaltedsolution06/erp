@@ -148,15 +148,19 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td ><?= $record["mode"] ?></td>
                                                 <td ><?= $record["create_by"] ?></td>
                                                 <td>
+												<?php if ($this->rbac->hasPrivilege('collect_fee_list', 'can_view')) { ?>
 													<a href="<?php echo base_url(); ?>studentfee/feeview/<?= base64_encode($record["receipt_no"]); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="View">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
+												<?php } if ($this->rbac->hasPrivilege('collect_fee_list', 'can_edit')) { ?>
                                                     <a href="<?php echo base_url(); ?>studentfee/edit/<?= base64_encode($record["receipt_no"]); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Edit">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
+												<?php } if ($this->rbac->hasPrivilege('collect_fee_list', 'can_delete')) { ?>	
                                                     <a href="<?php echo base_url(); ?>studentfee/search_fee_slip?receipt_no=<?=$record["receipt_no"]?>&type=delete" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Delete">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
+												<?php } ?>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

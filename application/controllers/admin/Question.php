@@ -16,7 +16,7 @@ class Question extends Admin_Controller
     public function read($id)
     {
 
-        if (!$this->rbac->hasPrivilege('question_bank', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('question_paper', 'can_view')) {
             access_denied();
         }
 
@@ -38,7 +38,7 @@ class Question extends Admin_Controller
 
         
    
-        if (!$this->rbac->hasPrivilege('question_bank', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('online_exam', 'can_view')) {
             access_denied();
         } 
          $listaudit = $this->question_model->getall();
@@ -210,7 +210,7 @@ class Question extends Admin_Controller
     public function add()
     {
 
-        if (!$this->rbac->hasPrivilege('question_bank', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('question_paper', 'can_add')) {
             access_denied();
         }
         $this->form_validation->set_rules('subject_id', $this->lang->line('subject'), 'trim|required|xss_clean');
@@ -361,7 +361,7 @@ class Question extends Admin_Controller
 
     public function delete($id)
     {
-        if (!$this->rbac->hasPrivilege('question_bank', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('question_paper', 'can_delete')) {
             access_denied();
         }
 		// by ES
@@ -526,7 +526,7 @@ class Question extends Admin_Controller
                 $row[] = ($value->question_type != "") ?$question_type[$value->question_type]:"";
                 $row[] = ($value->level !="" )? $question_level[$value->level]:"";
                 $row[] = readmorelink($value->question,site_url('admin/question/read/'.$value->id));
-                if ($this->rbac->hasPrivilege('question_bank', 'can_edit')) {
+                if ($this->rbac->hasPrivilege('question_paper', 'can_edit')) {
                 $row[] ='<button type="button" data-placement="left" class="btn btn-default btn-xs question-btn-edit" data-toggle="tooltip" id="load" data-recordid="'.$value->id.'" title="'.$this->lang->line("edit").'" ><i class="fa fa-pencil"></i></button><a data-placement="left" href="'.base_url().'admin/question/delete/'.$value->id.'" class="btn btn-default btn-xs"  data-toggle="tooltip" title='.$delete_title.' onclick="return confirm('.$delete.')">
                                                     <i class="fa fa-remove"></i>
                                                 </a>';

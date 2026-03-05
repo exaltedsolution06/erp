@@ -18,7 +18,7 @@ class Expense extends Admin_Controller
     public function index()
     {
 
-        if (!$this->rbac->hasPrivilege('expense', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('add_expense', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Expenses');
@@ -122,7 +122,7 @@ class Expense extends Admin_Controller
 
     public function view($id)
     {
-        if (!$this->rbac->hasPrivilege('expense', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('add_expense', 'can_view')) {
             access_denied();
         }
         $data['title']   = 'Fees Master List';
@@ -156,7 +156,7 @@ class Expense extends Admin_Controller
 
     public function delete($id)
     {
-        if (!$this->rbac->hasPrivilege('expense', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('add_expense', 'can_delete')) {
             access_denied();
         }
         $data['title'] = 'Fees Master List';
@@ -166,7 +166,7 @@ class Expense extends Admin_Controller
 
     public function create()
     {
-        if (!$this->rbac->hasPrivilege('expense', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('add_expense', 'can_add')) {
             access_denied();
         }
         $data['title'] = 'Add Fees Master';
@@ -187,7 +187,7 @@ class Expense extends Admin_Controller
 
     public function edit($id)
     {
-        if (!$this->rbac->hasPrivilege('expense', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('add_expense', 'can_edit')) {
             access_denied();
         }
         $data['title']       = 'Edit Fees Master';

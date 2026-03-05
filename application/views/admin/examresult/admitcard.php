@@ -138,7 +138,11 @@
                                 <div class="box-header ptbnull"></div> 
                                 <div class="box-header ptbnull">
                                     <h3 class="box-title titlefix"><i class="fa fa-users"></i> <?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('list'); ?></h3>
+									<?php
+								if ($this->rbac->hasPrivilege('print_admit_card', 'can_add')) {
+									?>
                                     <button  class="btn btn-info btn-sm printSelected pull-right" type="submit" name="generate" title="generate multiple certificate"><?php echo $this->lang->line('generate'); ?></button>
+									<?php } ?>
                                 </div>
                                 <div class="box-body">
                                     <input type="hidden" name="post_exam_id" value="<?php echo $exam_id; ?>">
@@ -148,7 +152,11 @@
                                         <table class="table table-striped table-bordered table-hover table-student" cellspacing="0" width="100%">
                                             <thead>
                                                 <tr>
+												<?php
+														if ($this->rbac->hasPrivilege('print_admit_card', 'can_add')) {
+															?>
                                                     <th><input type="checkbox" id="select_all" /></th>
+													<?php } ?>
                                                     <th><?php echo $this->lang->line('admission_no'); ?></th>
                                                     <th><?php echo $this->lang->line('student_name'); ?></th>
                                                     <th><?php echo $this->lang->line('father_name'); ?></th>
@@ -166,8 +174,11 @@
                                                     foreach ($studentList as $student_key => $student_value) {
                                                         ?>
                                                         <tr>
+														<?php
+														if ($this->rbac->hasPrivilege('print_admit_card', 'can_add')) {
+															?>
                                                             <td class="text-center"><input type="checkbox" class="checkbox center-block"  name="exam_group_class_batch_exam_student_id[]" data-student_id="<?php echo $student_value->student_id; ?>" value="<?php echo $student_value->student_id; ?>">
-
+														<?php } ?>
                                                             </td>
                                                             <td><?php echo $student_value->admission_no; ?></td>
                                                             <td>

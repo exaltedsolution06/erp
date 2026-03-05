@@ -25,7 +25,7 @@ class Frontcms extends Admin_Controller {
         $data['title'] = 'Add Front CMS Setting';
         $data['title_list'] = 'Front CMS Settings';
         $this->session->set_userdata('top_menu', 'System Settings');
-        $this->session->set_userdata('sub_menu', 'admin/frontcms/index');
+        $this->session->set_userdata('sub_menu', 'frontweb/settings');
         $data['front_themes'] = $this->front_themes;
         $this->form_validation->set_rules('logo', 'Image', 'callback_handle_upload');
         if ($this->form_validation->run() == TRUE) {
@@ -60,6 +60,13 @@ class Frontcms extends Admin_Controller {
                 'instagram_url' => $this->input->post('instagram_url'),
                 'pinterest_url' => $this->input->post('pinterest_url'),
                 'linkedin_url' => $this->input->post('linkedin_url'),
+				
+                'header_phone' => $this->input->post('header_phone'),
+                'header_email' => $this->input->post('header_email'),
+                'header_address' => $this->input->post('header_address'),
+                'header_button_enable' => $this->input->post('header_button_enable'),
+                'header_button_text' => $this->input->post('header_button_text'),
+                //'header_button_url' => $this->input->post('header_button_url'),
             );
 
 
@@ -71,7 +78,7 @@ class Frontcms extends Admin_Controller {
                     unlink($frontcmslist->logo);
                 }
             }
-            if (isset($_FILES["logo"]) && !empty($_FILES["fav_icon"]['name'])) {
+            if (isset($_FILES["fav_icon"]) && !empty($_FILES["fav_icon"]['name'])) {
                 $newFavName = uniqid('front_fav_icon-', true) . '.' . strtolower(pathinfo($_FILES["fav_icon"]['name'], PATHINFO_EXTENSION));
                 $fav_dir = "./uploads/school_content/logo/" . $newFavName;
                 if (move_uploaded_file($_FILES["fav_icon"]["tmp_name"], $fav_dir)) {
@@ -108,6 +115,13 @@ class Frontcms extends Admin_Controller {
             $frontcmslist->instagram_url = '';
             $frontcmslist->pinterest_url = '';
             $frontcmslist->linkedin_url = '';
+			
+            $frontcmslist->header_phone = '';
+            $frontcmslist->header_email = '';
+            $frontcmslist->header_address = '';
+            $frontcmslist->header_button_enable = '';
+            $frontcmslist->header_button_text = '';
+            //$frontcmslist->header_button_url = '';
         }
         $data['frontcmslist'] = $frontcmslist;
         $this->load->view('layout/header', $data);
@@ -133,10 +147,10 @@ class Frontcms extends Admin_Controller {
                 $this->form_validation->set_message('handle_upload', $this->lang->line('extension_not_allowed'));
                 return false;
             }
-            if ($_FILES["logo"]["size"] > 204800) {
+            /*if ($_FILES["logo"]["size"] > 204800) {
                 $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than'));
                 return false;
-            }
+            }*/
             return true;
         } else {
             return true;

@@ -8,7 +8,7 @@
     <section class="content">
         <div class="row">
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('restore', 'can_view')) {
+            if ($this->rbac->hasPrivilege('data_backup', 'can_add')) {
                 echo "8";
             } else {
                 echo "12";
@@ -20,7 +20,7 @@
                         <div class="box-tools pull-right">
                             <form id="form1" action="<?php echo site_url('admin/admin/backup') ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8" role="form">
                                 <?php echo $this->customlib->getCSRF(); ?>
-                                <?php if ($this->rbac->hasPrivilege('backup', 'can_add')) { ?>
+                                <?php if ($this->rbac->hasPrivilege('data_backup', 'can_add')) { ?>
                                     <button class="btn btn-primary btn-sm btn-info" type="submit" name="backup" value="backup"><i class="fa fa-plus-square-o"></i>   <?php echo $this->lang->line('create_backup'); ?></button>
 <?php } ?>
                             </form>
@@ -54,7 +54,7 @@
                                                     <td class="mailbox-name">
                                                         <a href="<?php echo site_url('admin/admin/downloadbackup/' . $data) ?>" class="btn btn-success btn-xs" ><i class="fa fa-download"></i> <?php echo $this->lang->line('download'); ?></a>
                                                     </td>
-    <?php if ($this->rbac->hasPrivilege('restore', 'can_view')) { ?>
+    <?php if ($this->rbac->hasPrivilege('data_backup', 'can_view')) { ?>
                                                         <td class="mailbox-name">
 
                                                             <form class="formrestore" action="<?php echo site_url('admin/admin/backup') ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8" role="form">
@@ -67,7 +67,7 @@
                                                     <td class="mailbox-name">
                                                         <form class="formdelete" method="post" role="form" name="employeeform" id="employeeform" accept-charset="utf-8"  action="<?php echo site_url('admin/admin/dropbackup/' . $data); ?>" >
                                                             <?php echo $this->customlib->getCSRF(); ?>
-                                                            <?php if ($this->rbac->hasPrivilege('backup', 'can_delete')) { ?>
+                                                            <?php if ($this->rbac->hasPrivilege('data_backup', 'can_delete')) { ?>
                                                                 <button class="btn btn-primary btn-xs btn-danger" type="submit" name="backup" value="restore"><i class="fa fa-trash"></i>  <?php echo $this->lang->line('delete'); ?></button>
     <?php } ?>
                                                         </form></td>
@@ -83,7 +83,7 @@
                             </div>                           
                         </div>
                     </div></div></div>
-<?php if ($this->rbac->hasPrivilege('restore', 'can_view')) { ?>
+<?php if ($this->rbac->hasPrivilege('data_backup', 'can_add')) { ?>
                 <div class="col-md-4 col-sm-4">
                     <div class="box box-primary">
                         <div class="box-header with-border">

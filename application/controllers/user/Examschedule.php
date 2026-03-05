@@ -11,6 +11,9 @@ class ExamSchedule extends Student_Controller {
     }
 
     public function index() {
+		if (!$this->studentmodule_lib->hasActive('examinations')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'Examinations');
         $this->session->set_userdata('sub_menu', 'examSchedule/index');
         $data['title'] = 'Exam Schedule';

@@ -16,11 +16,11 @@
         </a>
 
         <ul class="dropdown-menu verticalmenu" style="min-width:194px;font-size:10pt;left:3px;">
-            <?php if ($this->rbac->hasPrivilege('student', 'can_view')) { ?>
+            <?php if ($this->rbac->hasPrivilege('student_full_details', 'can_view')) { ?>
 
                 <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="<?php echo base_url(); ?>student/search"><i class="fa fa-user-plus"></i><?php echo $this->lang->line('student_details'); ?></a></li>
 
-            <?php } if ($this->rbac->hasPrivilege('collect_fees', 'can_view')) { ?>
+            <?php } if ($this->rbac->hasPrivilege('collect_fee', 'can_view')) { ?>
 
                 <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="<?php echo base_url(); ?>studentfee"><i class="fa fa-money"></i><?php echo $this->lang->line('collect_fees'); ?></a></li>
 
@@ -49,7 +49,7 @@
 
                 <?php
             }
-            if ($this->rbac->hasPrivilege('exam', 'can_view')) {
+            if ($this->rbac->hasPrivilege('add_exam', 'can_view')) {
                 ?>
 
                 <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="<?php echo base_url(); ?>admin/examgroup"><i class="fa fa-map-o"></i><?php echo $this->lang->line('exam') . " " . $this->lang->line('group'); ?></a></li>
@@ -77,7 +77,7 @@
 
                 <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="<?php echo base_url(); ?>admin/complaint"><i class="fa fa-calendar-check-o"></i><?php echo $this->lang->line('complain'); ?></a></li>
 
-            <?php } if ($this->rbac->hasPrivilege('upload_content', 'can_view')) { ?>
+            <?php } if ($this->rbac->hasPrivilege('upload_section', 'can_view')) { ?>
                 <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="<?php echo base_url(); ?>admin/content"><i class="fa fa-download"></i><?php echo $this->lang->line('upload_content'); ?></a></li>
 
                 <?php

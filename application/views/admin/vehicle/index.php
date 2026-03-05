@@ -17,7 +17,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     </section>
     <section class="content">
         <div class="row">
-            <?php if ($this->rbac->hasPrivilege('vehicle', 'can_add')) { ?>
+            <?php if ($this->rbac->hasPrivilege('add_vehicles', 'can_add')) { ?>
                 <div class="col-md-4">
                     <div class="box box-primary" >
                         <div class="box-header with-border">
@@ -80,7 +80,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 </div>     
             <?php } ?>    
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('vehicle', 'can_add')) {
+            if ($this->rbac->hasPrivilege('add_vehicles', 'can_add')) {
                 echo "8";
             } else {
                 echo "12";
@@ -149,11 +149,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td class="mailbox-name"> <?php echo $data['driver_contact'] ?></td>
 
                                                 <td class="mailbox-date pull-right no-print">
-                                                    <?php if ($this->rbac->hasPrivilege('vehicle', 'can_edit')) { ?>
+                                                    <?php if ($this->rbac->hasPrivilege('add_vehicles', 'can_edit')) { ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/vehicle/edit/<?php echo $data['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
-                                                    <?php }if ($this->rbac->hasPrivilege('vehicle', 'can_delete')) { ?>
+                                                    <?php }if ($this->rbac->hasPrivilege('add_vehicles', 'can_delete')) { ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/vehicle/delete/<?php echo $data['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>
                                                         </a>

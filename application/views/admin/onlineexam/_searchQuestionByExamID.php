@@ -15,7 +15,7 @@ if (!empty($questionList)) {
                  <div class="">
                  <div class="row">
                     <div class="col-xs-12 col-md-12 section-box">
-                        <?php if ($this->rbac->hasPrivilege('add_questions_in_exam', 'can_edit')) {?>
+                        <?php if ($this->rbac->hasPrivilege('question_paper', 'can_edit')) {?>
                          <div class="checkbox" style="margin-left: 20px"><input type="checkbox" class="question_chk" value="<?php echo $question_value->id; ?>" <?php echo $checkbox_status; ?>></div>
                      <?php }?>
                        <div class="rltpaddleft">

@@ -24,7 +24,7 @@ class Notice extends Admin_Controller
 
     public function index()
     {
-        if (!$this->rbac->hasPrivilege('notice', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('update_news', 'can_view')) {
             access_denied();
         }
         $data = array();
@@ -41,7 +41,7 @@ class Notice extends Admin_Controller
 
     public function create()
     {
-        if (!$this->rbac->hasPrivilege('notice', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('update_news', 'can_add')) {
             access_denied();
         }
         $data['title']      = 'Add Book';
@@ -87,7 +87,7 @@ class Notice extends Admin_Controller
 
     public function edit($slug)
     {
-        if (!$this->rbac->hasPrivilege('notice', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('update_news', 'can_edit')) {
             access_denied();
         }
         $data['title']      = 'Edit Book';
@@ -134,7 +134,7 @@ class Notice extends Admin_Controller
     public function delete($id)
     {
 
-        if (!$this->rbac->hasPrivilege('notice', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('update_news', 'can_delete')) {
             access_denied();
         }
         $data['title'] = 'Fees Master List';

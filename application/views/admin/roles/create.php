@@ -8,6 +8,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     </section>
     <section class="content">
         <div class="row">
+		<?php
+            if ($this->rbac->hasPrivilege('roles_permissions', 'can_add')) {
+                ?>
             <div class="col-md-4">
                 <div class="box box-primary" >
                     <div class="box-header with-border">
@@ -38,7 +41,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                     </form>
                 </div>
             </div>         
-            <div class="col-md-8">
+			<?php } ?>
+            <div class="col-md-<?php
+            if ($this->rbac->hasPrivilege('roles_permissions', 'can_add')) {
+                echo "8";
+            } else {
+                echo "12";
+            }
+            ?>">
                 <div class="box box-primary" id="route">
                     <div class="box-header ptbnull">
                         <h3 class="box-title titlefix"><?php echo $this->lang->line('role'); ?> <?php echo $this->lang->line('list'); ?></h3>
@@ -87,13 +97,16 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td class="mailbox-date pull-right no-print">
                                                     <?php
                                                     if (!$data['is_superadmin']) {
+														if ($this->rbac->hasPrivilege('roles_permissions', 'can_view')) {
                                                         ?>
                                                         <a data-placement="left" href="<?php echo site_url('admin/roles/permission/' . $data['id']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('assign_permission'); ?>">
                                                             <i class="fa fa-tag"></i>
                                                         </a>
+														<?php } if ($this->rbac->hasPrivilege('roles_permissions', 'can_edit')) { ?>
                                                         <a data-placement="left" href="<?php echo site_url('admin/roles/edit/' . $data['id']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
+														<?php } if ($this->rbac->hasPrivilege('roles_permissions', 'can_delete')) { ?>
                                                         <?php
                                                         if (!$data['is_system']) {
                                                             ?>
@@ -105,6 +118,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         }
                                                         ?>
                                                         <?php
+														}
                                                     }
                                                     ?>
 

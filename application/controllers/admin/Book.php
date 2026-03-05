@@ -12,7 +12,7 @@ class Book extends Admin_Controller {
     }
 
     public function index() {
-        if (!$this->rbac->hasPrivilege('books', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('book_list', 'can_view')) {
             access_denied();
         }
 
@@ -31,7 +31,7 @@ class Book extends Admin_Controller {
     public function getall() {
 
 
-        if (!$this->rbac->hasPrivilege('books', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('book_list', 'can_view')) {
             access_denied();
         }
 
@@ -48,7 +48,7 @@ class Book extends Admin_Controller {
     }
 
     function create() {
-        if (!$this->rbac->hasPrivilege('books', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('book_list', 'can_add')) {
             access_denied();
         }
         $data['title'] = 'Add Book';
@@ -88,7 +88,7 @@ class Book extends Admin_Controller {
     }
 
     function edit($id) {
-        if (!$this->rbac->hasPrivilege('books', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('book_list', 'can_edit')) {
             access_denied();
         }
 
@@ -132,7 +132,7 @@ class Book extends Admin_Controller {
     }
 
     function delete($id) {
-        if (!$this->rbac->hasPrivilege('books', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('book_list', 'can_delete')) {
             access_denied();
         }
         $data['title'] = 'Fees Master List';
@@ -309,6 +309,9 @@ class Book extends Admin_Controller {
     }
 
     public function issue_returnreport() {
+		if (!$this->rbac->hasPrivilege('library_management_report', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/library');
         $this->session->set_userdata('subsub_menu', 'Reports/library/issue_returnreport');

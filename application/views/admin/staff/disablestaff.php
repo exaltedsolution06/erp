@@ -123,9 +123,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <td><?php echo $staff['contact_no']; ?></td>
 
                                                     <td class="pull-right">
+													<?php if ($this->rbac->hasPrivilege('staff', 'can_view')) { ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/staff/profile/<?php echo $staff['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('show'); ?>" >
                                                             <i class="fa fa-reorder"></i>
                                                         </a>
+													<?php } ?>
                                                         <!-- <a href="<?php echo base_url(); ?>admin/staff/edit/<?php echo $staff['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a> -->

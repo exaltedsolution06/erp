@@ -85,7 +85,7 @@ $language_name = $language["short_code"];
                         <div class="box-header ptbnull"></div>
                         <div class="box-header with-border">
                             <h3 class="box-title"><i class="fa fa-users"></i> <?php echo $this->lang->line('homework_list'); ?></h3>
-                            <?php if ($this->rbac->hasPrivilege('homework', 'can_add')) { ?>
+                            <?php if ($this->rbac->hasPrivilege('add_homework', 'can_add')) { ?>
                                 <div class="box-tools pull-right">
                                     <button type="button"class="btn btn-sm btn-primary modal_form" data-method_call="add"><i class="fa fa-plus"></i> <?php echo $this->lang->line('add'); ?></button>
                                 </div>
@@ -145,14 +145,14 @@ $language_name = $language["short_code"];
 
                                                     <?php
                                                     }
-                                                    if ($this->rbac->hasPrivilege('homework', 'can_edit')) {
+                                                    if ($this->rbac->hasPrivilege('add_homework', 'can_edit')) {
                                                         ?>
 
                                                         <a data-placement="left" class="btn btn-default btn-xs modal_form" data-toggle="tooltip"  data-original-title="<?php echo $this->lang->line('edit'); ?>" data-method_call="edit" data-record_id="<?php echo $homework['id']; ?>"><i class="fa fa-pencil"></i></a>
 
                                                     <?php
                                                     }
-                                                    if ($this->rbac->hasPrivilege('homework', 'can_delete')) {
+                                                    if ($this->rbac->hasPrivilege('add_homework', 'can_delete')) {
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>homework/delete/<?php echo $homework['id']; ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');" data-original-title="<?php echo $this->lang->line('delete'); ?>">
                                                             <i class="fa fa-remove"></i>

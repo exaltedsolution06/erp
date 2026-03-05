@@ -24,7 +24,7 @@ class Events extends Admin_Controller
 
     public function index()
     {
-        if (!$this->rbac->hasPrivilege('event', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('update_events', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Front CMS');
@@ -41,7 +41,7 @@ class Events extends Admin_Controller
 
     public function create()
     {
-        if (!$this->rbac->hasPrivilege('event', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('update_events', 'can_add')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Front CMS');
@@ -155,7 +155,7 @@ class Events extends Admin_Controller
     public function edit($slug)
     {
 
-        if (!$this->rbac->hasPrivilege('event', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('update_events', 'can_edit')) {
             access_denied();
         }
 
@@ -206,7 +206,7 @@ class Events extends Admin_Controller
     public function delete($id)
     {
 
-        if (!$this->rbac->hasPrivilege('event', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('update_events', 'can_delete')) {
             access_denied();
         }
 

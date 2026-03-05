@@ -17,7 +17,9 @@ class Customfield extends Admin_Controller {
     }
 
     public function index() {
-
+		if (!$this->rbac->hasPrivilege('custom_fields', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'System Settings');
         $this->session->set_userdata('sub_menu', 'System Settings/customfield');
         $customfields = $this->customfield_model->get();
@@ -64,6 +66,9 @@ class Customfield extends Admin_Controller {
     }
 
     public function edit($id) {
+		if (!$this->rbac->hasPrivilege('custom_fields', 'can_edit')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'System Settings');
         $this->session->set_userdata('sub_menu', 'System Settings/customfield');
         $cus_field = $this->customfield_model->get($id);
@@ -105,11 +110,17 @@ class Customfield extends Admin_Controller {
     }
 
     public function delete($id) {
+		if (!$this->rbac->hasPrivilege('custom_fields', 'can_delete')) {
+            access_denied();
+        }
         $this->customfield_model->remove($id);
         redirect('admin/customfield/index');
     }
 
     public function updateorder() {
+		if (!$this->rbac->hasPrivilege('custom_fields', 'can_edit')) {
+            access_denied();
+        }
         $belong_to = $this->input->post('belong_to');
         $items = $this->input->post('items');
 

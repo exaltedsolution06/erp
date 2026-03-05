@@ -178,7 +178,13 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                                 <td style="width:50px !important"><?= $sno++ ?></td>
                                                 <td style="width:100px !imortant"><?= date('d-m-Y',strtotime($record["date_time"])) ?></td>
                                                 <td style="width:100px !imortant"><?= $record["receipt_no"] ?></td>
-                                                <td ><a href="<?=base_url('studentfee/addfee/'.$result->id)?>?receipt_no=<?= $record["receipt_no"] ?>"><?= $record["admission_no"] ?></a></td>
+                                                <td >
+												<?php if ($this->rbac->hasPrivilege('collect_fee', 'can_add')) { ?>
+												<a href="<?=base_url('studentfee/addfee/'.$result->id)?>?receipt_no=<?= $record["receipt_no"] ?>"><?= $record["admission_no"] ?></a>
+												<?php }else { ?>
+												<?= $record["admission_no"] ?>
+												<?php } ?>
+												</td>
                                                 <td ><?= $record["firstname"].' '.$record["middlename"].' '.$record["lastname"] ?></td>
                                                 <td ><?= $record["father_name"] ?></td>
                                                 <td ><?= $record["class"] ?></td>
@@ -232,9 +238,18 @@ $payment_mode_type = $this->customlib->payment_mode_type();
 
                                                 <td ><?= $record["mode"] ?></td>
                                                 <td ><?= $record["create_by"] ?></td>
-												<td><a href="<?php echo base_url(); ?>studentfee/studentfee_deletedlist?receipt_no=<?=$record["receipt_no"]?>&type=delete" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Retrive">
+												<td>
+												<?php if ($this->rbac->hasPrivilege('delete_fee_list', 'can_edit')) { ?>
+												<a href="<?php echo base_url(); ?>studentfee/studentfee_deletedlist?receipt_no=<?=$record["receipt_no"]?>&type=delete" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Retrive">
                                                         <i class="fa fa-rotate-right"></i>
-                                                    </a></td>
+                                                    </a>
+												<?php } ?>
+												<?php if ($this->rbac->hasPrivilege('delete_fee_list', 'can_delete')) { ?>
+												<a href="<?php echo base_url(); ?>studentfee/studentfee_deletedlist?receipt_no=<?=$record["receipt_no"]?>&type=permanent_delete" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Permanent Delete">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+												<?php } ?>
+													</td>
                                                 
                                             </tr>
                                         <?php endforeach; ?>

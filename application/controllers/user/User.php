@@ -17,8 +17,10 @@ class User extends Student_Controller
         parent::__construct();
         $this->payment_method     = $this->paymentsetting_model->getActiveMethod();
         $this->sch_setting_detail = $this->setting_model->getSetting();
+        $this->load->model('Receipt_model');
         $this->load->model("student_edit_field_model");
         $this->config->load('mailsms');
+		$this->load->model('fee_discount_model');
     }
 
     public function unauthorized()
@@ -70,8 +72,64 @@ class User extends Student_Controller
 
     public function dashboard()
     {
-
+		if (!$this->studentmodule_lib->hasActive('dashboard')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'Dashboard');
+        $student_id            = $this->customlib->getStudentSessionUserID();
+        $student_current_class = $this->customlib->getStudentCurrentClsSection();
+
+        $student = $this->student_model->getStudentByClassSectionID($student_current_class->class_id, $student_current_class->section_id, $student_id);
+
+        $data = array();
+        if (!empty($student)) {
+
+            $student_session_id           = $student_current_class->student_session_id;
+            $gradeList                    = $this->grade_model->get();
+            $student_due_fee              = $this->studentfeemaster_model->getStudentFees($student_session_id);
+            $student_discount_fee         = $this->feediscount_model->getStudentFeesDiscount($student_session_id);
+            $data['student_discount_fee'] = $student_discount_fee;
+            $data['student_due_fee']      = $student_due_fee;
+            $timeline                     = $this->timeline_model->getStudentTimeline($student["id"], $status = 'yes');
+            $data["timeline_list"]        = $timeline;
+            $data['sch_setting']          = $this->sch_setting_detail;
+            $data['adm_auto_insert']      = $this->sch_setting_detail->adm_auto_insert;
+            $data['examSchedule']         = array();
+            $data['exam_result']          = $this->examgroupstudent_model->searchStudentExams($student['student_session_id'], true, true);
+            $ss                           = $this->grade_model->getGradeDetails();
+            $data['exam_grade']           = $this->grade_model->getGradeDetails();
+            $student_doc                  = $this->student_model->getstudentdoc($student_id);
+            $data['student_doc']          = $student_doc;
+            $data['student_doc_id']       = $student_id;
+            $category_list                = $this->category_model->get();
+            $data['category_list']        = $category_list;
+            $data['gradeList']            = $gradeList;
+            $data['student']              = $student;
+
+        } 
+ 
+        $unread_notifications = $this->notification_model->getUnreadStudentNotification();
+
+        $notification_bydate  = array();
+
+        foreach ($unread_notifications as $unread_notifications_key => $unread_notifications_value) {
+            if (date($this->customlib->getSchoolDateFormat()) >= date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($unread_notifications_value->publish_date))) {
+                $notification_bydate[] = $unread_notifications_value;
+            }
+        }
+
+        $data['unread_notifications'] = $notification_bydate;
+
+        $this->load->view('layout/student/header', $data);
+        $this->load->view('user/dashboard', $data);
+        $this->load->view('layout/student/footer', $data);
+    }
+    public function my_profile()
+    {
+		if (!$this->studentmodule_lib->hasActive('my_profile')) {
+			student_access_denied();
+		}
+        $this->session->set_userdata('top_menu', 'My_profile');
         $student_id            = $this->customlib->getStudentSessionUserID();
         $student_current_class = $this->customlib->getStudentCurrentClsSection();
 
@@ -287,7 +345,9 @@ class User extends Student_Controller
 
     public function getfees()
     {
-
+		if (!$this->studentmodule_lib->hasActive('fees')) {
+			student_access_denied();
+		}
         $id                    = $this->customlib->getStudentSessionUserID();
         $student_current_class = $this->customlib->getStudentCurrentClsSection();
 
@@ -313,6 +373,45 @@ class User extends Student_Controller
         $data['student_discount_fee'] = $student_discount_fee;
         $data['student_due_fee']      = $student_due_fee;
         $data['student']              = $student;
+		
+		$data['receipt_data'] = $this->Receipt_model->get_students_receipt($student_id);
+		
+		$data['student_data'] = $student_data = $this->student_model->getByStudentSession($student_current_class->student_session_id);
+		// $data['fees_card']='received';
+		$monthsPost = $months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
+		$class_id=$student_data['class_id'];
+		$route_id=$student_data['route_id'];
+		$category_id=$student_data['category_id'];
+		// die;
+		$this->db->from('fee_head');
+		$this->db->join('fees_plan', 'fee_head.id = fees_plan.fee_group_id');
+		$this->db->where("JSON_CONTAINS(fees_plan.class_ids, '\"$class_id\"')", null, false);
+		$this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
+		$query = $this->db->get();
+		$data['data_list'] = $query->result();
+		$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($student_current_class->student_session_id);
+		//echo "<pre>";print_r($feeDiscountsArr);die;
+		$routeDiscountsArr    = $this->fee_discount_model->get_all_routes($student_current_class->student_session_id);
+		
+		$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr);
+		
+		// route
+		$this->db->from('route_head');
+		$this->db->join('route_plan', 'route_head.id = route_plan.fee_group_id');
+		$this->db->where("JSON_CONTAINS(route_plan.class_ids, '\"$class_id\"')", null, false);
+		$this->db->where("JSON_CONTAINS(route_plan.category_ids, '\"$category_id\"')", null, false);
+		$this->db->where('route_head.id', $route_id);
+		$query = $this->db->get();
+		$data['route_data_list'] = $query->result();
+		$data['months_data']=$monthsPost;
+		
+		$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
+		
+		// echo '<pre>'; print_r($data['months_data']);exit;
+		
+		$existing_entry = $this->Receipt_model->get_pay_mounth($student_id);
+        $data['pay_mounth']=$existing_entry;
+		// echo '<pre>'; print_r($existing_entry);exit;
 		
         $this->load->view('layout/student/header', $data);
         $this->load->view('student/getfees', $data);
@@ -731,5 +830,50 @@ class User extends Student_Controller
         }
         return true;
     }
+	function updateMonthlyFeeAmounts($defaultArray, $paidArray)
+	{
+		$monthMap = [
+			"Apr" => "month_apr",
+			"May" => "month_may",
+			"Jun" => "month_jun",
+			"Jul" => "month_jul",
+			"Aug" => "month_aug",
+			"Sep" => "month_sep",
+			"Oct" => "month_oct",
+			"Nov" => "month_nov",
+			"Dec" => "month_dec",
+			"Jan" => "month_jan",
+			"Feb" => "month_feb",
+			"Mar" => "month_mar"
+		];
 
+		foreach ($defaultArray as &$feeHead) {
+
+			foreach ($paidArray as $paid) {
+
+				if ($paid['fee_type_id'] == $feeHead->id) {
+
+					$months = json_decode($feeHead->months, true);
+
+					if (!is_array($months)) continue;
+
+					$amounts = [];
+
+					foreach ($months as $month) {
+
+						$column = $monthMap[$month];
+
+						$amounts[$month] = isset($paid[$column])
+							? floatval($paid[$column])
+							: floatval($feeHead->amount); // fallback
+					}
+
+					// Replace amount with month-wise array
+					$feeHead->amount = $amounts;
+				}
+			}
+		}
+
+		return $defaultArray;
+	}
 }

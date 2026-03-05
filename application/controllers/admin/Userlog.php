@@ -11,6 +11,9 @@ class Userlog extends Admin_Controller {
     }
 
     public function index() {
+		if (!$this->rbac->hasPrivilege('user_log', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'Reports/userlog');
         $userlogList = $this->userlog_model->get();

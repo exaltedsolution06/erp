@@ -13,9 +13,9 @@ class Feetype extends Admin_Controller {
 
     function index() {
         // $this->session->set_flashdata('msg', '');
-        // if (!$this->rbac->hasPrivilege('fees_type', 'can_view')) {
-        //     access_denied();
-        // }
+        if (!$this->rbac->hasPrivilege('fee_head', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'feetype/index');
         $data['title'] = 'Add Feetype';
@@ -232,9 +232,9 @@ class Feetype extends Admin_Controller {
 
 
     function delete($id) {
-        // if (!$this->rbac->hasPrivilege('fees_type', 'can_delete')) {
-        //     access_denied();
-        // }
+        if (!$this->rbac->hasPrivilege('fee_head', 'can_delete')) {
+            access_denied();
+        }
         $data['title'] = 'Fees Master List';
 		
 		// by ES 
@@ -258,9 +258,9 @@ class Feetype extends Admin_Controller {
     }
 
     function edit($id) {
-        // if (!$this->rbac->hasPrivilege('fees_type', 'can_edit')) {
-        //     access_denied();
-        // }
+        if (!$this->rbac->hasPrivilege('fee_head', 'can_edit')) {
+            access_denied();
+        }
        $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'feetype/index');
         $data['id'] = $id;

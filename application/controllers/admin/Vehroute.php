@@ -68,7 +68,9 @@ class Vehroute extends Admin_Controller {
     }
 
     function delete($id) {
-		
+		if (!$this->rbac->hasPrivilege('assign_vehicle', 'can_delete')) {
+            access_denied();
+        }
 		
 		// by ES 
 		$checkData['menu'] = 'assignvehicle';
@@ -91,7 +93,9 @@ class Vehroute extends Admin_Controller {
     }
 
     function edit($id) {
-
+		if (!$this->rbac->hasPrivilege('assign_vehicle', 'can_edit')) {
+            access_denied();
+        }
 
         $data['title'] = 'Edit Fees Master';
         $data['id'] = $id;
@@ -110,7 +114,7 @@ class Vehroute extends Admin_Controller {
             array('route_exists', array($this->vehroute_model, 'route_exists'))
                 )
         );
-        //$this->form_validation->set_rules('vehicle[]', $this->lang->line('vehicle'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('vehicle[]', $this->lang->line('vehicle'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $vehicle_result = $this->vehicle_model->get();
             $data['vehiclelist'] = $vehicle_result;

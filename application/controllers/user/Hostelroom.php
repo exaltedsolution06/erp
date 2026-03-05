@@ -10,6 +10,9 @@ class Hostelroom extends Student_Controller {
     }
 
     public function index() {
+		if (!$this->studentmodule_lib->hasActive('hostel_rooms')) {
+			student_access_denied();
+		}
         $roomtypelist = $this->roomtype_model->get();
         $data['roomtypelist'] = $roomtypelist;
         $hostellist = $this->hostel_model->get();

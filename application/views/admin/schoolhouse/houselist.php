@@ -8,8 +8,9 @@
     <section class="content">
         <div class="row">
             <?php
-            if (($this->rbac->hasPrivilege('student_houses', 'can_add')) || ($this->rbac->hasPrivilege('student_houses', 'can_edit'))) {
-                ?>
+			if($type=='edit'){
+				if (($this->rbac->hasPrivilege('student_house', 'can_edit'))) {
+            ?>
                 <div class="col-md-4">
                     <div class="box box-primary">
                         <div class="box-header with-border">
@@ -47,12 +48,62 @@
                         </form>
                     </div>  
                 </div> 
-            <?php } ?>
+            <?php }
+			}else{
+				if(($this->rbac->hasPrivilege('student_house', 'can_add'))){
+				?>
+				<div class="col-md-4">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><?php echo $this->lang->line('add') . " " . $this->lang->line('school') . " " . $this->lang->line('house') ?></h3>
+                        </div> 
+                        <?php
+                        $url = "";
+                        if (!empty($house_name)) {
+                            $url = base_url() . "admin/schoolhouse/edit/" . $id;
+                        } else {
+                            $url = base_url() . "admin/schoolhouse/create";
+                        }
+                        ?>
+                        <form id="form1" action="<?php echo $url ?>"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8">
+                            <div class="box-body">
+							<?php if ($this->session->flashdata('msg')) { ?>
+                                    <?php echo $this->session->flashdata('msg') ?>
+                                <?php } ?>
+								  
+                                <?php echo $this->customlib->getCSRF(); ?>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('name'); ?></label> <small class="req"> *</small>
+                                    <input autofocus="" id="house_name" name="house_name" placeholder="" type="text" class="form-control"  value="<?php echo $house_name; ?>" />
+                                    <span class="text-danger"><?php echo form_error('house_name'); ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('description'); ?></label>
+                                    <input autofocus="" id="description" name="description" placeholder="" type="text" class="form-control"  value="<?php echo $description; ?>" />
+                                    <span class="text-danger"><?php echo form_error('description'); ?></span>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
+                            </div>
+                        </form>
+                    </div>  
+                </div>
+            <?php }
+			} ?>
             <div class="col-md-<?php
-            if (($this->rbac->hasPrivilege('student_houses', 'can_add') ) || ($this->rbac->hasPrivilege('student_houses', 'can_edit'))) {
-                echo "8";
-            } else {
-                echo "12";
+			if($type=='edit'){
+				if (($this->rbac->hasPrivilege('student_house', 'can_edit'))) {
+					echo "8";
+				}else{
+					echo "12";
+				}
+            }else{
+				if(($this->rbac->hasPrivilege('student_house', 'can_add'))){
+					echo "8";
+				}else{
+					echo "12";
+				}
             }
             ?>">             
                 <div class="box box-primary">
@@ -89,12 +140,12 @@
                                             <td class="mailbox-name"><?php echo $house['description'] ?></td>
                                             <!--<td class="mailbox-name"><?php echo $house['id'] ?></td>-->
                                             <td  class="mailbox-date pull-right">
-                                                <?php if ($this->rbac->hasPrivilege('student_houses', 'can_edit')) { ?>
+                                                <?php if ($this->rbac->hasPrivilege('student_house', 'can_edit')) { ?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/schoolhouse/edit/<?php echo $house['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
                                                 <?php } ?>
-                                                <?php if ($this->rbac->hasPrivilege('student_houses', 'can_delete')) { ?>
+                                                <?php if ($this->rbac->hasPrivilege('student_house', 'can_delete')) { ?>
                                                     <a data-placement="left" href="<?php echo base_url(); ?>admin/schoolhouse/delete/<?php echo $house['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                         <i class="fa fa-remove"></i>
                                                     </a>

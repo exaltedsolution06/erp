@@ -9,7 +9,7 @@
     <section class="content">
         <div class="row">
             <?php
-            if ($this->rbac->hasPrivilege('marks_grade', 'can_add') || $this->rbac->hasPrivilege('marks_grade', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('marks_grade', 'can_edit')) {
                 ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
@@ -92,7 +92,7 @@
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('marks_grade', 'can_add') || $this->rbac->hasPrivilege('marks_grade', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('marks_grade', 'can_edit')) {
                 echo "8";
             } else {
                 echo "12";

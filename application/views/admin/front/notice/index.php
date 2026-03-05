@@ -23,7 +23,7 @@
                     <div class="box-header ptbnull">
                         <h3 class="box-title titlefix"><?php echo $this->lang->line('notice_list'); ?></h3>
                         <?php
-                        if ($this->rbac->hasPrivilege('notice', 'can_add')) {
+                        if ($this->rbac->hasPrivilege('update_news', 'can_add')) {
                             ?>
                             <div class="box-tools pull-right">
                                 <a href="<?php echo site_url('admin/front/notice/create'); ?>" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> <?php echo $this->lang->line('add'); ?></a>
@@ -69,14 +69,14 @@
 
                                                     <td class="mailbox-date pull-right no-print">
                                                         <?php
-                                                        if ($this->rbac->hasPrivilege('notice', 'can_edit')) {
+                                                        if ($this->rbac->hasPrivilege('update_news', 'can_edit')) {
                                                             ?>
                                                             <a data-placement="left" href="<?php echo site_url('admin/front/notice/edit/' . $page['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                                 <i class="fa fa-pencil"></i>
                                                             </a>
                                                             <?php
                                                         }
-                                                        if ($this->rbac->hasPrivilege('notice', 'can_delete')) {
+                                                        if ($this->rbac->hasPrivilege('update_news', 'can_delete')) {
                                                             ?>
                                                             <a data-placement="left" href="<?php echo site_url('admin/front/notice/delete/' . $page['slug']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                                 <i class="fa fa-remove"></i>

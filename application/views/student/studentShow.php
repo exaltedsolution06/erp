@@ -229,14 +229,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         <?php
 						
                         if ($this->module_lib->hasActive('fees_collection')) {
-                            if (($this->rbac->hasPrivilege('collect_fees', 'can_view') ||
+                            if (($this->rbac->hasPrivilege('collect_fee', 'can_view') ||
                                     $this->rbac->hasPrivilege('search_fees_payment', 'can_view') ||
                                     $this->rbac->hasPrivilege('search_due_fees', 'can_view') ||
                                     $this->rbac->hasPrivilege('fees_statement', 'can_view') ||
                                     $this->rbac->hasPrivilege('balance_fees_report', 'can_view') ||
                                     $this->rbac->hasPrivilege('fees_carry_forward', 'can_view') ||
                                     $this->rbac->hasPrivilege('fees_master', 'can_view') ||
-                                    $this->rbac->hasPrivilege('fees_group', 'can_view') ||
+                                    $this->rbac->hasPrivilege('fee_category', 'can_view') ||
                                     $this->rbac->hasPrivilege('fees_type', 'can_view') ||
                                     $this->rbac->hasPrivilege('fees_discount', 'can_view') ||
                                     $this->rbac->hasPrivilege('accountants', 'can_view'))) {
@@ -263,7 +263,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                         <?php if ($student["is_active"] == "yes") { ?>
                             <?php
-                            if ($this->rbac->hasPrivilege('disable_student', 'can_view')) {
+                            if ($this->rbac->hasPrivilege('discountinue_students', 'can_add')) {
                                 ?>
                                 <li class="pull-right dropdown">
                                     <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-ellipsis-v"></i></a>
@@ -292,7 +292,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 </li>
                                 <?php
                             }  
-                            if ($this->rbac->hasPrivilege('student', 'can_edit')) {
+                            if ($this->rbac->hasPrivilege('student_full_details', 'can_edit')) {
                                 ?>
 
                                 <li class="pull-right">
@@ -304,14 +304,16 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             }
                         } else {
                             ?>
-                           
+                           <?php
+                            if ($this->rbac->hasPrivilege('discountinue_students', 'can_edit')) {
+                                ?>
                             <li class="pull-right">
                                 <a href="#" onclick="enable('<?php echo $student["id"] ?>')"  class="text-green" data-toggle="tooltip" data-placement="left" title="<?php echo $this->lang->line('enable'); ?>">
                                     <i class="fa fa-thumbs-o-up"></i><?php ?>
                                 </a>
                             </li>
 
-                        <?php } ?>
+                        <?php } }?>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="activity">

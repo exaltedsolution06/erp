@@ -17,7 +17,7 @@
                     <div class="box-header with-border">
                         <h3 class="box-title titlefix"><?php echo $this->lang->line('banner_images'); ?></h3>
                         <?php
-                        if ($this->rbac->hasPrivilege('banner_images', 'can_add')) {
+                        if ($this->rbac->hasPrivilege('banner_image', 'can_add')) {
                             ?>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-primary btn-sm gallery_image" id="gallery_images"><i class="fa fa-plus"></i>  <?php echo $this->lang->line('add_images'); ?>
@@ -39,7 +39,7 @@
                                                 <div class='fadeoverlay'>
                                                     <img class='img-responsive' data-fid='<?php echo $banner_image_value->id ?>' data-content_name='<?php echo $banner_image_value->img_name; ?>' data-img='<?php echo base_url($banner_image_value->thumb_path . $banner_image_value->img_name) ?>' src='<?php echo base_url($banner_image_value->thumb_path . $banner_image_value->img_name) ?>'>
                                                     <?php
-                                                    if ($this->rbac->hasPrivilege('banner_images', 'can_delete')) {
+                                                    if ($this->rbac->hasPrivilege('banner_image', 'can_delete')) {
                                                         ?>
                                                         <div class='overlay3'>
                                                             <a href='#' class='uploadclosebtn delete_gallery_img' data-record_id='<?php echo $banner_image_value->id ?>' data-toggle='modal' data-target='#confirm-delete'><i class=' fa fa-trash-o'></i></a>

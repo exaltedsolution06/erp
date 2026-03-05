@@ -6,9 +6,9 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">
-            
-            
-        
+            <?php
+            if ($this->rbac->hasPrivilege('create_account', 'can_add')) {
+                ?>
             <div class="col-md-4">
                 <div class="box box-primary">
                     <div class="box-header with-border">
@@ -33,10 +33,14 @@
                     </form>
                 </div>  
             </div>  
-
-
-
-            <div class="col-md-8">             
+			<?php } ?>
+            <div class="col-md-<?php
+            if ($this->rbac->hasPrivilege('create_account', 'can_add')) {
+                echo "8";
+            } else {
+                echo "12";
+            }
+            ?>">             
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
                         <h3 class="box-title titlefix">Account List</h3>
@@ -66,12 +70,20 @@
 
                                             <td class="mailbox-name"> <?php echo $section['account'] ?></td>
                                             <td class="mailbox-date pull-right">
+											<?php
+                                                if ($this->rbac->hasPrivilege('create_account', 'can_edit')) {
+                                                    ?>
                                                 <a data-placement="left" href="<?php echo base_url(); ?>account/edit/<?php echo $section['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
+												<?php } ?>
+                                                <?php
+                                                if ($this->rbac->hasPrivilege('create_account', 'can_delete')) {
+                                                    ?>
                                                 <a data-placement="left" href="<?php echo base_url(); ?>account/delete/<?php echo $section['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                     <i class="fa fa-remove"></i>
                                                 </a>
+												<?php } ?>
                                             </td>
                                         </tr>
                                         <?php

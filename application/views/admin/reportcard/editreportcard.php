@@ -396,14 +396,23 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									</div>
 								</div>
 								
-                                <div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('marks_grade_table'); ?></label>
-                                    <div class="material-switch switchcheck">
-                                        <input id="marks_grade_table" name="marks_grade_table" type="checkbox" class="chk" value="1" <?php echo set_checkbox('marks_grade_table', '1', (set_value('marks_grade_table', $reportcard->marks_grade_table) == 1) ? TRUE : FALSE); ?>>
-                                        <label for="marks_grade_table" class="label-success"></label>
-                                    </div>
-                                </div>
-								
+								<div class="clearfix"></div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group switch-inline">
+											<label><?php echo $this->lang->line('marks_grade_table'); ?></label>
+											<div class="material-switch switchcheck">
+												<input id="marks_grade_table" name="marks_grade_table" type="checkbox" class="chk" value="1" onclick="valueMarksTableChanged()" <?php echo set_checkbox('marks_grade_table', '1', (set_value('marks_grade_table', $reportcard->marks_grade_table) == 1) ? TRUE : FALSE); ?>>
+												<label for="marks_grade_table" class="label-success"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12 col-sm-12 img_div_modal enableMarksTableDiv" hidden>
+										<div class="form-group">
+											<input id="grade_table_title" name="grade_table_title" placeholder="<?php echo $this->lang->line('grade_system'); ?>" type="text" class="form-control" value="<?php echo set_value('grade_table_title', $reportcard->grade_table_title); ?>" />
+										</div>
+									</div>
+								</div>
                                 <div class="form-group switch-inline">
                                     <label><?php echo $this->lang->line('max_marks_shift_left'); ?></label>
                                     <div class="material-switch switchcheck">
@@ -438,6 +447,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <div class="material-switch switchcheck">
                                         <input id="is_show_date" name="is_show_date" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_show_date', '1', (set_value('is_show_date', $reportcard->is_show_date) == 1) ? TRUE : FALSE); ?>>
                                         <label for="is_show_date" class="label-success"></label>
+                                    </div>
+                                </div>
+								<div class="form-group switch-inline">
+                                    <label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('place'); ?></label>
+                                    <div class="material-switch switchcheck">
+                                        <input id="place" name="place" type="checkbox" class="chk" value="1" <?php echo set_checkbox('place', '1', (set_value('place', $reportcard->place) == 1) ? TRUE : FALSE); ?>>
+                                        <label for="place" class="label-success"></label>
                                     </div>
                                 </div>
 
@@ -585,6 +601,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         }else{
             $(".enableSchoolReopenDiv").hide();
 		}
+		if ($('#marks_grade_table').is(":checked")){
+            $(".enableMarksTableDiv").show();
+        }else{
+            $(".enableMarksTableDiv").hide();
+		}
     });
 </script>
 <script type="text/javascript">
@@ -702,5 +723,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             $(".enableSchoolReopenDiv").show();
         else
             $(".enableSchoolReopenDiv").hide();
+    }
+    function valueMarksTableChanged()
+    {
+        if ($('#marks_grade_table').is(":checked"))
+            $(".enableMarksTableDiv").show();
+        else
+            $(".enableMarksTableDiv").hide();
     }
 </script>

@@ -11,7 +11,9 @@ class Content extends Admin_Controller {
     }
 
     function index() {
-        
+        if (!$this->rbac->hasPrivilege('upload_section', 'can_view')) {
+            access_denied();
+        }
 
         $this->session->set_userdata('top_menu', 'Download Center');
         $this->session->set_userdata('sub_menu', 'admin/content');
@@ -314,6 +316,9 @@ class Content extends Admin_Controller {
     }
 
     public function assignment() {
+		if (!$this->rbac->hasPrivilege('assignment', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Download Center');
         $this->session->set_userdata('sub_menu', 'content/assignment');
         $data['title_list'] = 'Assignment List';
@@ -325,6 +330,9 @@ class Content extends Admin_Controller {
     }
 
     public function studymaterial() {
+		if (!$this->rbac->hasPrivilege('study_material', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Download Center');
         $this->session->set_userdata('sub_menu', 'content/studymaterial');
         $data['title_list'] = 'Study Material List';
@@ -336,6 +344,9 @@ class Content extends Admin_Controller {
     }
 
     public function syllabus() {
+		if (!$this->rbac->hasPrivilege('syllabus', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Download Center');
         $this->session->set_userdata('sub_menu', 'content/syllabus');
         $data['title_list'] = 'Syllabus List';
@@ -347,6 +358,9 @@ class Content extends Admin_Controller {
     }
 
     public function other() {
+		if (!$this->rbac->hasPrivilege('other_download', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Download Center');
         $this->session->set_userdata('sub_menu', 'content/other');
         $data['title_list'] = 'Other Download List';

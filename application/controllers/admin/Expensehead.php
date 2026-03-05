@@ -92,7 +92,7 @@ class Expensehead extends Admin_Controller {
     }
 
     function edit($id) {
-        if (!$this->rbac->hasPrivilege('expense', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('expense_head', 'can_edit')) {
             access_denied();
         }
         $data['title'] = 'Edit Expense Head';

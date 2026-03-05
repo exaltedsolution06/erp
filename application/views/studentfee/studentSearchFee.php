@@ -184,7 +184,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             echo (number_format(($student['amount'] - ($student['amount_detail'] + $student['amount_discount'])), 2, '.', ''));
                                                 ?></td>
                                                     <td class="text text-right">
-                                                        <?php if ($this->rbac->hasPrivilege('collect_fees', 'can_add')) { ?><a href="<?php echo base_url(); ?>studentfee/addfee/<?php echo $student['student_session_id'] ?>" class="btn btn-info btn-xs">
+                                                        <?php if ($this->rbac->hasPrivilege('collect_fee', 'can_add')) { ?><a href="<?php echo base_url(); ?>studentfee/addfee/<?php echo $student['student_session_id'] ?>" class="btn btn-info btn-xs">
                                                             <?php echo $currency_symbol; ?> <?php echo $this->lang->line('add_fees'); ?>
                                                             </a>
                                                 <?php } ?>

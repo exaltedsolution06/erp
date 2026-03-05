@@ -5,7 +5,7 @@
     </section>
     <section class="content">
         <div class="row">
-            <?php if ($this->rbac->hasPrivilege('complaint', 'can_add') || $this->rbac->hasPrivilege('complaint', 'can_edit')) { ?>
+            <?php if ($this->rbac->hasPrivilege('complaint', 'can_edit')) { ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
                     <div class="box box-primary">
@@ -107,7 +107,7 @@
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('complaint', 'can_add') || $this->rbac->hasPrivilege('complaint', 'can_edit')) {
+            if ($this->rbac->hasPrivilege('complaint', 'can_edit')) {
                 echo "8";
             } else {
                 echo "12";

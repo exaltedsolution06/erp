@@ -17,7 +17,7 @@
     <section class="content">
         <div class="row">
             <?php
-            if ($this->rbac->hasPrivilege('income_head', 'can_add')) {
+            if ($this->rbac->hasPrivilege('income_heads', 'can_add')) {
                 ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
@@ -52,7 +52,7 @@
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('income_head', 'can_add')) {
+            if ($this->rbac->hasPrivilege('income_heads', 'can_add')) {
                 echo "8";
             } else {
                 echo "12";
@@ -104,7 +104,7 @@
                                                 </td>
                                                 <td class="mailbox-date pull-right no-print">
                                                     <?php
-                                                    if ($this->rbac->hasPrivilege('income_head', 'can_edit')) {
+                                                    if ($this->rbac->hasPrivilege('income_heads', 'can_edit')) {
                                                         ?>
 
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/incomehead/edit/<?php echo $category['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
@@ -112,7 +112,7 @@
                                                         </a>
                                                         <?php
                                                     }
-                                                    if ($this->rbac->hasPrivilege('income_head', 'can_delete')) {
+                                                    if ($this->rbac->hasPrivilege('income_heads', 'can_delete')) {
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/incomehead/delete/<?php echo $category['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>

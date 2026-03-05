@@ -406,7 +406,7 @@ class Studentfee extends Admin_Controller
 
     public function index()
     {
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_view')) {
             access_denied();
         }
 
@@ -421,7 +421,7 @@ class Studentfee extends Admin_Controller
     }
 	public function receipt_book()
     {
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('receipt_book', 'can_view')) {
             access_denied();
         }
 		$this->session->set_userdata('top_menu', 'Reports');
@@ -481,7 +481,7 @@ class Studentfee extends Admin_Controller
     public function collection_report()
     {
 
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_view')) {
             access_denied();
         }
 
@@ -642,7 +642,7 @@ class Studentfee extends Admin_Controller
 
     public function search()
     {
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_view')) {
             access_denied();
         }
         $data['title']           = 'Student Search';
@@ -761,7 +761,7 @@ class Studentfee extends Admin_Controller
 	public function fee_register()
     {
         // receipts		
-        if (!$this->rbac->hasPrivilege('fees_statement', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('fee_register', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Reports');
@@ -866,7 +866,7 @@ class Studentfee extends Admin_Controller
         // receipts
      
 				
-        if (!$this->rbac->hasPrivilege('fees_statement', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee_list', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Reports');
@@ -1014,7 +1014,7 @@ class Studentfee extends Admin_Controller
 
     public function view($id)
     {
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_view')) {
             access_denied();
         }
         $data['title']      = 'studentfee List';
@@ -1028,7 +1028,7 @@ class Studentfee extends Admin_Controller
     public function deleteFee()
     {
 
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_delete')) {
             access_denied();
         }
         $invoice_id  = $this->input->post('main_invoice');
@@ -1078,7 +1078,7 @@ class Studentfee extends Admin_Controller
 
     public function addfee($id) 
     {
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_add')) {
             access_denied();
         }
 		
@@ -1144,11 +1144,19 @@ class Studentfee extends Admin_Controller
         $data['data_list']=0;
         $data['addfee']=$id;
 
+		// Get existing deleted receipt number
+		$existing_deleted_receipts = $this->Setting_model->get_deleted_receipt_no();
+        
+		if(!empty($existing_deleted_receipts)){
+			foreach($existing_deleted_receipts as $existing_deleted_receipt_val){
+				$data['existing_deleted_receipt'][] = $this->session_model->get($existing_deleted_receipt_val['session_id'])['session']."/".$existing_deleted_receipt_val['sr_no'];
+			}
+		}
 
         // $data['last_receipt_id']=;
         // // Check if the combination of student_id, month, and fee_head_type already exists
         $existing_entry = $this->Receipt_model->get_pay_mounth($student['id']);
-        $data['pay_mounth']=$existing_entry;
+        $data ['pay_mounth']=$existing_entry;
 
         
         
@@ -1156,6 +1164,8 @@ class Studentfee extends Admin_Controller
         
         if(!empty($_POST['months'])){
             
+            $page_receipt_no =$_POST['page_receipt_no'];
+			$data['receipt_no']=$page_receipt_no;
             $monthsPost =$_POST['months'];
             $class_id=$student['class_id'];
             $route_id=$student['route_id'];
@@ -1241,7 +1251,7 @@ class Studentfee extends Admin_Controller
    
     public function create()
     {
-        if (!$this->rbac->hasPrivilege('collect_fees', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee', 'can_view')) {
             access_denied();
         }
         $data['title'] = 'Add studentfee';
@@ -1262,7 +1272,7 @@ class Studentfee extends Admin_Controller
 
     public function edit($receipt_no)
     {
-		if (!$this->rbac->hasPrivilege('collect_fees', 'can_add')) {
+		if (!$this->rbac->hasPrivilege('collect_fee_list', 'can_edit')) {
             access_denied();
         }
 		$receipt_no = base64_decode($receipt_no);
@@ -1474,7 +1484,7 @@ class Studentfee extends Admin_Controller
 		$this->load->view('studentfee/studentfeeEdit', $data);
 		$this->load->view('layout/footer', $data);
 		
-        /*if (!$this->rbac->hasPrivilege('collect_fees', 'can_edit')) {
+        /*if (!$this->rbac->hasPrivilege('collect_fee', 'can_edit')) {
             access_denied();
         }
         $data['title']      = 'Edit studentfees';
@@ -1498,7 +1508,7 @@ class Studentfee extends Admin_Controller
     }
 	public function feeview($receipt_no)
     {
-		if (!$this->rbac->hasPrivilege('collect_fees', 'can_add')) {
+		if (!$this->rbac->hasPrivilege('collect_fee', 'can_add')) {
             access_denied();
         }
 		$receipt_no = base64_decode($receipt_no);		
@@ -1602,7 +1612,7 @@ class Studentfee extends Admin_Controller
 		$this->load->view('studentfee/studentfeeView', $data);
 		$this->load->view('layout/footer', $data);
 		
-        /*if (!$this->rbac->hasPrivilege('collect_fees', 'can_edit')) {
+        /*if (!$this->rbac->hasPrivilege('collect_fee', 'can_edit')) {
             access_denied();
         }
         $data['title']      = 'Edit studentfees';
@@ -1823,7 +1833,7 @@ class Studentfee extends Admin_Controller
             
         }
 		//$this->session->unset_flashdata('msgdelete');
-        if (!$this->rbac->hasPrivilege('search_fees_payment', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('search_fee_slip', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Fees Collection');
@@ -2146,7 +2156,7 @@ class Studentfee extends Admin_Controller
 
 
 
-        if (!$this->rbac->hasPrivilege('fees_statement', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('collect_fee_list', 'can_view')) {
             access_denied();
         }
         // $this->session->set_userdata('top_menu', 'Reports');
@@ -2283,7 +2293,7 @@ class Studentfee extends Admin_Controller
 
 
 
-        if (!$this->rbac->hasPrivilege('fees_statement', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('delete_fee_list', 'can_view')) {
             access_denied();
         }
         // $this->session->set_userdata('top_menu', 'Reports');
@@ -2364,6 +2374,25 @@ class Studentfee extends Admin_Controller
 			
 			
 			$this->session->set_flashdata('success', '<div class="alert alert-success text-center">Receipts with Receipt No: ' . $receipt_no . ' retrived successfully.</div>');
+			
+            redirect('studentfee/studentfee_deletedlist');
+		}
+		if ($_GET['type'] == 'permanent_delete' && !empty($_GET['receipt_no'])) {
+            $receipt_no = $_GET['receipt_no'];
+						
+			// Step 1: Get all receipts with the same receipt_no
+            $receiptList = $this->Receipt_model->get_deleted_receipts_by_receipt_no($receipt_no);
+			
+			// Step 2: Delete from original receipts table
+            $this->Receipt_model->receipt_no_delete_from_delete_receipts($receipt_no);
+			
+			// Step 3: Update 'receipt_sr_no' for deleted_status - Permanent Delete
+			$explode_receipt = explode('/', $receipt_no);
+			$receipt_sr_no = end($explode_receipt);
+			$this->Receipt_model->receipt_no_permanent_delete_status($receipt_sr_no);
+			
+			
+			$this->session->set_flashdata('success', '<div class="alert alert-success text-center">Receipts with Receipt No: ' . $receipt_no . ' deleted successfully.</div>');
 			
             redirect('studentfee/studentfee_deletedlist');
 		}
@@ -2508,7 +2537,18 @@ class Studentfee extends Admin_Controller
 
 		return $defaultArray;
 	}
-
+	public function student_ledger()
+    {
+        if (!$this->rbac->hasPrivilege('student_ledger', 'can_view')) {
+            access_denied();
+        }
+		$this->session->set_userdata('top_menu', 'Fee Collection');
+        $this->session->set_userdata('sub_menu', 'studentfee/student_ledger');
+        $data['title']     = 'Student Ledger';
+        $this->load->view('layout/header', $data);
+        $this->load->view('studentfee/student_ledger', $data);
+        $this->load->view('layout/footer', $data);
+    }
 
 
 

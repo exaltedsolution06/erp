@@ -11,6 +11,9 @@ class Notification extends Student_Controller {
     }
  
     public function index() {
+		if (!$this->studentmodule_lib->hasActive('notice_board')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'notification');
         $data['title'] = 'Notifications';
         $user_role = $this->customlib->getUserRole();

@@ -57,9 +57,13 @@
                 </div>         
                                                      
                         </div>
+						<?php
+						if ($this->rbac->hasPrivilege('file_types', 'can_edit')) {
+							?>
                         <div class="box-footer">
                           <button type="submit" class="btn btn-primary"> <?php echo $this->lang->line('save'); ?></button>
                         </div>
+						<?php } ?>
 
                     </form>
                 </div>

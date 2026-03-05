@@ -209,6 +209,9 @@ if ($this->session->flashdata('success_msg')) {
             </div>
         </form>
     </div>
+	<?php
+	if ($this->rbac->hasPrivilege('switch_branch', 'can_view')) {
+	?>
     <div class="modal fade" id="switchBranchModal" tabindex="-1" role="dialog" aria-labelledby="branchModalLabel">
         <form action="<?php echo site_url('admin/branch/switch_branch') ?>" method="POST" id="form_switch_branch">
             <div class="modal-dialog" role="document">
@@ -273,6 +276,7 @@ if ($this->session->flashdata('success_msg')) {
             </div>
         </form>
     </div>
+	<?php } ?>
 </div>
 
 

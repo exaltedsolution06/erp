@@ -64,19 +64,26 @@ class Menus extends Admin_Controller {
 
     function additem($slug) {
 
-        $data['title'] = 'Add Book';
-        $data['title_list'] = 'Book Details';
-        $this->session->set_userdata('top_menu', 'Front CMS');
-        $this->session->set_userdata('sub_menu', 'admin/front/menus');
+        if (!$this->rbac->hasPrivilege('add_webs_links', 'can_view')) {
+            access_denied();
+        }
+        $this->session->set_userdata('top_menu', 'Front Web');
+        $this->session->set_userdata('sub_menu', 'frontweb/web-link');
         $result = $this->cms_menu_model->getBySlug(urldecode($slug));
         $data['result'] = $result;
         $data['top_menu'] = urldecode($slug);
         $listMenus = $this->cms_menuitems_model->getMenus($result['id']);
         $data['listdropdown_Menus'] = $listMenus;
         $this->form_validation->set_rules('menu', $this->lang->line('menu'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('ext_url_link', $this->lang->line('external_url'), 'trim|xss_clean|callback_check_exists');
+        // $this->form_validation->set_rules('ext_url_link', $this->lang->line('external_url'), 'trim|xss_clean|callback_check_exists');
         $listPages = $this->cms_page_model->get();
         $data['listPages'] = $listPages;
+		
+		/*$result = $this->cms_program_model->getByCategoryWithoutSession('menu_image');
+        if (!empty($result)) {
+            $data['banner_images'] = $this->cms_program_model->front_cms_program_photos($result[0]['id']);
+        }*/
+		
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('layout/header');
             $this->load->view('admin/front/menus/additem', $data);
@@ -93,10 +100,15 @@ class Menus extends Admin_Controller {
             $this->load->library('slug', $config);
             $data = array(
                 'menu_id' => $this->input->post('menu_id'),
-                'page_id' => $this->input->post('page_id'),
+                'page_id' => $this->input->post('page_id') ?? 0,
                 'menu' => $this->input->post('menu'),
                 'ext_url' => $this->input->post('ext_url'),
                 'open_new_tab' => $this->input->post('open_new_tab'),
+				
+                'content_heading' => $this->input->post('content_heading') ?? '',
+                'menu_description' => $this->input->post('menu_description') ?? '',
+                'image_position' => $this->input->post('image_position') ?? 0,
+                'media_gallery_id' => $this->input->post('gallery_images') ?? null,
             );
             if ($this->input->post('ext_url')) {
 
@@ -124,20 +136,25 @@ class Menus extends Admin_Controller {
     function edititem($slug, $top_menu) {
 
 
-        if (!$this->rbac->hasPrivilege('menus', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('add_webs_links', 'can_edit')) {
             access_denied();
         }
-        $this->session->set_userdata('top_menu', 'Front CMS');
-        $this->session->set_userdata('sub_menu', 'admin/front/menus');
+        $this->session->set_userdata('top_menu', 'Front Web');
+        $this->session->set_userdata('sub_menu', 'frontweb/web-link');
         $menu = $this->cms_menuitems_model->getBySlug(urldecode($slug));
 
         $data['result'] = $menu;
         $data['top_menu'] = $top_menu;
+		
+		if($menu['media_gallery_id'] != null){
+		$data['gallery_images'] = $this->cms_media_model->get($menu['media_gallery_id']);
+		}
+		// echo'<pre>';print_r($data['result']);exit;
 
         $listMenus = $this->cms_menuitems_model->getMenus($menu['menu_id']);
         $data['listdropdown_Menus'] = $listMenus;
         $this->form_validation->set_rules('menu', $this->lang->line('menu'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('ext_url_link', $this->lang->line('external_url'), 'trim|xss_clean|callback_check_exists');
+        // $this->form_validation->set_rules('ext_url_link', $this->lang->line('external_url'), 'trim|xss_clean|callback_check_exists');
         $listPages = $this->cms_page_model->get();
         $data['listPages'] = $listPages;
         if ($this->form_validation->run() == FALSE) {
@@ -157,10 +174,15 @@ class Menus extends Admin_Controller {
             $top_menu = $this->input->post('top_menu');
             $data = array(
                 'id' => $this->input->post('id'),
-                'page_id' => $this->input->post('page_id'),
+                'page_id' => $this->input->post('page_id') ?? 0,
                 'menu' => $this->input->post('menu'),
                 'ext_url' => $this->input->post('ext_url'),
                 'open_new_tab' => $this->input->post('open_new_tab'),
+				
+                'content_heading' => $this->input->post('content_heading') ?? '',
+                'menu_description' => $this->input->post('menu_description') ?? '',
+                'image_position' => $this->input->post('image_position') ?? 0,
+                'media_gallery_id' => $this->input->post('gallery_images') ?? null,
             );
             if ($this->input->post('ext_url')) {
 
@@ -175,7 +197,7 @@ class Menus extends Admin_Controller {
     }
 
     function updateMenu() {
-        if (!$this->rbac->hasPrivilege('menus', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('add_webs_links', 'can_view')) {
             access_denied();
         }
         $order = ($this->input->post('order'));
@@ -210,13 +232,15 @@ class Menus extends Admin_Controller {
     }
 
     function deleteMenuItem() {
-
+		if (!$this->rbac->hasPrivilege('add_webs_links', 'can_delete')) {
+            access_denied();
+        }
         $data['title'] = 'Fees Master List';
         $id = $this->input->post('id');
         if (!$this->cms_menuitems_model->remove($id)) {
             echo json_encode(array('status' => 0, 'message' => $this->lang->line('something_wrong')));
         } else {
-            echo json_encode(array('status' => 1, 'message' => $this->lang->line('session_changed_successfully')));
+            echo json_encode(array('status' => 1, 'message' => 'Menu deleted successfully'));
         }
     }
 

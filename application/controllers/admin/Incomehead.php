@@ -12,7 +12,7 @@ class Incomehead extends Admin_Controller {
     }
 
     function index() {
-        if (!$this->rbac->hasPrivilege('income_head', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('income_heads', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'Income');
@@ -26,7 +26,7 @@ class Incomehead extends Admin_Controller {
     }
 
     function view($id) {
-        if (!$this->rbac->hasPrivilege('income_head', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('income_heads', 'can_view')) {
             access_denied();
         }
         $data['title'] = 'Income Head List';
@@ -38,7 +38,7 @@ class Incomehead extends Admin_Controller {
     }
 
     function delete($id) {
-        if (!$this->rbac->hasPrivilege('income_head', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('income_heads', 'can_delete')) {
             access_denied();
         }
         $data['title'] = 'Income Head List';
@@ -62,7 +62,7 @@ class Incomehead extends Admin_Controller {
     }
 
     function create() {
-        if (!$this->rbac->hasPrivilege('income_head', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('income_heads', 'can_add')) {
             access_denied();
         }
         $data['title'] = 'Add Income Head';
@@ -93,7 +93,7 @@ class Incomehead extends Admin_Controller {
     }
 
     function edit($id) {
-        if (!$this->rbac->hasPrivilege('income_head', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('income_heads', 'can_edit')) {
             access_denied();
         }
         $data['title'] = 'Edit Income Head';

@@ -97,6 +97,9 @@ class Feemaster extends Admin_Controller {
 	
 	public function index()
 	{
+		if (!$this->rbac->hasPrivilege('fee_plan', 'can_view')) {
+            access_denied();
+        }
 		$this->session->set_userdata('top_menu', 'Academics');
 		$this->session->set_userdata('sub_menu', 'admin/feemaster');
 		$data['title'] = 'Feemaster List';
@@ -233,9 +236,9 @@ class Feemaster extends Admin_Controller {
 		$this->load->view('layout/footer', $data);
 	}
     function delete($id) {
-        // if (!$this->rbac->hasPrivilege('fees_master', 'can_delete')) {
-        //     access_denied();
-        // }
+        if (!$this->rbac->hasPrivilege('fee_plan', 'can_delete')) {
+            access_denied();
+        }
 		
         $data['title'] = 'Fees Master List';
         
@@ -281,6 +284,9 @@ class Feemaster extends Admin_Controller {
     }
 
     function edit($id) {
+		if (!$this->rbac->hasPrivilege('fee_plan', 'can_edit')) {
+            access_denied();
+        }
          $this->session->set_userdata('top_menu', 'Academics');
         $this->session->set_userdata('sub_menu', 'admin/feemaster');
         $data['id'] = $id;

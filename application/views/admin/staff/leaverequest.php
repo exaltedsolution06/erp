@@ -63,9 +63,11 @@
 
                                                         <div class="fee_detail_popover" style="display: none"><?php echo $this->lang->line('submitted_by').": " . $value['applied_by']; ?></div></td>
                                                     <td class="pull-right no-print"><a data-placement="left" href="#leavedetails" onclick="getRecord('<?php echo $value["id"] ?>')" role="button" class="btn btn-default btn-xs" data-toggle="tooltip" title="<?php echo $this->lang->line('view'); ?>" ><i class="fa fa-reorder"></i></a>  
-                                                        <?php if ($can_delete == 1) { ?>
+                                                        <?php if ($can_delete == 1) {
+															if ($this->rbac->hasPrivilege('apply_leave', 'can_delete')) {
+															?>
                                                             <a onclick="getDelete('<?php echo $value["id"] ?>')"  class="btn btn-default btn-xs" data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" ><i class="fa fa-remove"> </i></a>
-                                                        <?php } ?>                      
+                                                        <?php } } ?>                      
                                                     </td>
 
                                                 </tr>

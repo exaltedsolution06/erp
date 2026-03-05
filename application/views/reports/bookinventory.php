@@ -189,11 +189,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td class="mailbox-name"> <?php echo ($currency_symbol . $book['perunitcost']); ?></td>
                                                 <td class="mailbox-name"> <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($book['postdate'])); ?></td>
                                                 <td class="mailbox-date no-print text text-right">
-        <?php if ($this->rbac->hasPrivilege('books', 'can_edit')) { ?> 
+        <?php if ($this->rbac->hasPrivilege('book_list', 'can_edit')) { ?> 
                                                         <a href="<?php echo base_url(); ?>admin/book/edit/<?php echo $book['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
-        <?php }if ($this->rbac->hasPrivilege('books', 'can_delete')) { ?> 
+        <?php }if ($this->rbac->hasPrivilege('book_list', 'can_delete')) { ?> 
                                                         <a href="<?php echo base_url(); ?>admin/book/delete/<?php echo $book['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>
                                                         </a>

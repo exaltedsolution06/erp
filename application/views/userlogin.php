@@ -100,6 +100,9 @@ if ($this->session->flashdata('message')) {
 
                                         <p><a href="<?php echo site_url('site/ufpassword') ?>" class="forgot"> <i class="fa fa-key"></i> <?php echo $this->lang->line('forgot_password'); ?></a> </p>
                                     </div>
+									<div class="form-top">
+										<a href="<?php echo base_url(); ?>" target="_blank"><button type="button" class="btn btn-info pull-right">Back to Home</button></a>
+									</div>
                                 </div>
                             </div>
                             <?php

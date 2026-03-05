@@ -41,7 +41,7 @@
             </div><!-- /.box-body --> 
             <div class="box-footer pr0">
                 <?php
-                if ($this->rbac->hasPrivilege('follow_up_admission_enquiry', 'can_add')) {
+                if ($this->rbac->hasPrivilege('follow_up_admission_enq', 'can_add')) {
                     ?>
                     <a onclick="follow_save()" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></a>
                     <?php

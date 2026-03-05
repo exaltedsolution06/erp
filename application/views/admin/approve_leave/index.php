@@ -63,11 +63,11 @@
 
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-users"></i> <?php echo $this->lang->line('approve') . " " . $this->lang->line('leave') . " " . $this->lang->line('list'); ?></h3>
-
+						 <?php if ($this->rbac->hasPrivilege('add_leave', 'can_add')) { ?>
                         <div class="box-tools pull-right">
                             <button type="button" onclick="add_leave()" class="btn btn-sm btn-primary " data-toggle="tooltip" data-placement="left" ><i class="fa fa-plus"></i> <?php echo $this->lang->line('add'); ?></button>
                         </div>
-
+						 <?php } ?>
                     </div>
  
 
@@ -132,11 +132,11 @@
                                                     <?php
                                                 }
                                                 ?>
-
+												<?php if ($this->rbac->hasPrivilege('add_leave', 'can_edit')) { ?>
                                                 <a data-placement="left" onclick="get('<?php echo $value['id']; ?>', '<?php echo $value['class_id']; ?>', '<?php echo $value['section_id']; ?>')" class="btn btn-default btn-xs" data-toggle="tooltip" data-original-title="<?php echo $this->lang->line('edit') ?>"><i class="fa fa-pencil"></i> </a>
-
+												<?php } if ($this->rbac->hasPrivilege('add_leave', 'can_delete')) { ?>
                                                 <a data-placement="left" onclick="delete_leave('<?php echo $value['id']; ?>', '<?php echo $value['class_id']; ?>', '<?php echo $value['section_id']; ?>');"  data-toggle="tooltip" data-original-title="<?php echo $this->lang->line('delete') ?>" class="btn btn-default btn-xs"><i class="fa fa-trash" ></i> </a>
-
+												<?php } ?>
 
 
                                             </td>

@@ -48,8 +48,10 @@
                                 <!--<th><?php echo $this->lang->line('fee_category'); ?></th>-->
                                 <th><?php echo $this->lang->line('gender'); ?></th>
                                 <th><?php echo $this->lang->line('attendence'); ?></th>
+								<?php if ($this->rbac->hasPrivilege('exam_marks', 'can_add')) { ?>
                                 <th><?php echo $this->lang->line('marks') ?></th>
                                 <th><?php echo $this->lang->line('note') ?></th>
+								<?php } ?>
 
                             </tr>
                         </thead>
@@ -88,10 +90,12 @@
 
                                     </div>
                                 </td>
+								<?php if ($this->rbac->hasPrivilege('exam_marks', 'can_add')) { ?>
                                 <td> <input type="number" class="marksssss form-control" name="exam_group_student_mark_<?php echo $student['exam_group_class_batch_exam_students_id']; ?>" value="<?php echo $student['exam_group_exam_result_get_marks']; ?>" step="any"></td>
 
                                 <td> <input type="text" class="form-control note" name="exam_group_student_note_<?php echo $student['exam_group_class_batch_exam_students_id']; ?>" value="<?php echo $student['exam_group_exam_result_note']; ?>"></td>
-
+								<?php } ?>
+									
                                 </tr>
                                 <?php
                             }

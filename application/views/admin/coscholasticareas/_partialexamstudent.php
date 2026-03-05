@@ -66,7 +66,7 @@
 
                 </div>
 
-                <?php if ($this->rbac->hasPrivilege('exam_assign_view_student', 'can_edit')) { ?>
+                <?php if ($this->rbac->hasPrivilege('co_assign_view_students', 'can_edit')) { ?>
                     <button type="submit" class="btn btn-primary btn-sm pull-right" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please Wait.."><?php echo $this->lang->line('save'); ?>
                     </button>
                 <?php } ?>

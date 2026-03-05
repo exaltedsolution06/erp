@@ -10,7 +10,7 @@
     <section class="content">
         <div class="row">
             <?php
-            if (($this->rbac->hasPrivilege('disable_reason', 'can_edit'))) {
+            if (($this->rbac->hasPrivilege('set_disable_reason', 'can_edit'))) {
                 ?>
                 <div class="col-md-4">
                     <div class="box box-primary">
@@ -49,7 +49,7 @@
                 </div> 
             <?php } ?>
             <div class="col-md-<?php
-            if (($this->rbac->hasPrivilege('disable_reason', 'can_edit'))) {
+            if (($this->rbac->hasPrivilege('set_disable_reason', 'can_edit'))) {
                 echo "8";
             } else {
                 echo "12";
@@ -78,10 +78,11 @@
                                     <?php foreach ($results as $value) { ?>
                                         <tr>
                                             <td><?php echo $value['reason']; ?></td>
+											<?php if ($this->rbac->hasPrivilege('set_disable_reason', 'can_edit')) { ?>
                                             <td class="text-right"><a data-placement="left" class="btn btn-default btn-xs" href="<?php echo base_url(); ?>admin/disable_reason/edit/<?php echo $value['id']; ?>" data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>"><i class="fa fa-pencil"></i></a>
-
+											<?php } if ($this->rbac->hasPrivilege('set_disable_reason', 'can_delete')) { ?>
                                                 <a data-placement="left" onclick="return confirm('<?php echo $this->lang->line('delete_confirm'); ?>');" class="btn btn-default btn-xs" href="<?php echo base_url() ?>admin/disable_reason/delete/<?php echo $value['id'] ?>" data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>"><i class="fa fa-remove"></i></a></td>
-
+											<?php } ?>
                                         </tr>
                                         <?php
                                     }

@@ -18,7 +18,7 @@ class Changesessions extends Admin_Controller
 	}
     public function index()
     {
-        if (!$this->rbac->hasPrivilege('session_setting', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('change_session', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'System Settings');
@@ -45,6 +45,9 @@ class Changesessions extends Admin_Controller
     }
     public function add_list()
     {
+		if (!$this->rbac->hasPrivilege('change_session', 'can_add')) {
+            access_denied();
+        }
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules('current_class_id', $this->lang->line('class'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('next_session_id', $this->lang->line('session'), 'required|trim|xss_clean');
@@ -79,6 +82,9 @@ class Changesessions extends Admin_Controller
     }
     public function add_list_category()
     {
+		if (!$this->rbac->hasPrivilege('change_session', 'can_add')) {
+            access_denied();
+        }
         $this->form_validation->set_error_delimiters('', '');
         $this->form_validation->set_rules('current_category_id', $this->lang->line('category'), 'required|trim|xss_clean');
         $this->form_validation->set_rules('next_category_id', $this->lang->line('category'), 'required|trim|xss_clean');
@@ -109,6 +115,9 @@ class Changesessions extends Admin_Controller
     }
     public function transfer_batch()
     {
+		if (!$this->rbac->hasPrivilege('change_session', 'can_add')) {
+            access_denied();
+        }
 		$discontinue = $this->input->post('discontinue_next_session');
 		$carry_zero  = $this->input->post('carry_zero_balance');
 	

@@ -11,6 +11,9 @@ class Print_headerfooter extends Admin_Controller {
     }
 
     public function index() {
+		if (!$this->rbac->hasPrivilege('print_header_footer', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'System Settings');
         $this->session->set_userdata('sub_menu', 'admin/print_headerfooter');
         $data['title'] = 'SMS Config List';
@@ -23,7 +26,6 @@ class Print_headerfooter extends Admin_Controller {
     }
 
     public function edit() {
-		// echo '<pre>'; print_r($_POST); die;
         $message = "";
         if (isset($_POST['type'])) {
             $is_required = $this->setting_model->check_haederimage($_POST['type']);
@@ -39,16 +41,12 @@ class Print_headerfooter extends Admin_Controller {
                 $message = 'message1';
             }
         }
-
-//echo 'dfgfd---',$_POST[$message];die;
-
+		
         if ($this->form_validation->run() == FALSE) {
             
         } else {
 
             if (isset($_FILES["header_image"]) && !empty($_FILES['header_image']['name'])) {
-				 //echo "<pre>";print_r($_FILES);
-				 //echo "<pre>";print_r($_POST);die;
                 $fileInfo = pathinfo($_FILES["header_image"]["name"]);
                 $img_name = 'header_image.' . $fileInfo['extension'];
 

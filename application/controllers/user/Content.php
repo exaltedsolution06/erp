@@ -33,6 +33,9 @@ class Content extends Student_Controller {
     }
 
     public function assignment() {
+		if (!$this->studentmodule_lib->hasActive('download_center')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'Downloads');
         $this->session->set_userdata('sub_menu', 'content/assignment');
         $student_id = $this->customlib->getStudentSessionUserID();
@@ -49,6 +52,9 @@ class Content extends Student_Controller {
     }
 
     public function studymaterial() {
+		if (!$this->studentmodule_lib->hasActive('download_center')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'Downloads');
         $this->session->set_userdata('sub_menu', 'content/studymaterial');
         $student_id = $this->customlib->getStudentSessionUserID();
@@ -65,6 +71,9 @@ class Content extends Student_Controller {
     }
 
     public function syllabus() {
+		if (!$this->studentmodule_lib->hasActive('download_center')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'Downloads');
         $this->session->set_userdata('sub_menu', 'content/syllabus');
         $student_id = $this->customlib->getStudentSessionUserID();
@@ -80,6 +89,9 @@ class Content extends Student_Controller {
     }
 
     public function other() {
+		if (!$this->studentmodule_lib->hasActive('download_center')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'Downloads');
         $this->session->set_userdata('sub_menu', 'content/other');
         $student_id = $this->customlib->getStudentSessionUserID();

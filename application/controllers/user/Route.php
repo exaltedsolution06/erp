@@ -10,6 +10,9 @@ class Route extends Student_Controller {
     }
 
     public function index() {
+		if (!$this->studentmodule_lib->hasActive('transport_routes')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'Transport');
         $this->session->set_userdata('sub_menu', 'route/index');
         $student_id = $this->customlib->getStudentSessionUserID();

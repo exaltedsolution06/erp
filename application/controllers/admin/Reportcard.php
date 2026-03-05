@@ -133,6 +133,13 @@ class Reportcard extends Admin_Controller {
             } else {
                 $is_show_date = 0;
             }
+            if (isset($_POST['place'])) {
+                $place = 1;
+                $grade_table_title = $this->input->post('grade_table_title');
+            } else {
+                $place = 0;
+				$grade_table_title = '';
+            }
 
 
 
@@ -160,6 +167,8 @@ class Reportcard extends Admin_Controller {
                 'marks_grade_table'=>$marks_grade_table,
                 'max_marks_shift_left'=>$max_marks_shift_left,
                 'school_reopen'=>$school_reopen,
+                'place'=>$place,
+                'grade_table_title'=>$grade_table_title,
                 'school_reopen_date'=>$school_reopen_date,
                 'school_reopen_time'=>$school_reopen_time,
                 'is_class_teacher'=>$is_class_teacher,
@@ -169,9 +178,9 @@ class Reportcard extends Admin_Controller {
                 'left_sign' => "",
                 'right_sign' => "",
                 'middle_sign' => "",
-                'left_sign_title' => "",
-                'middle_sign_title' => "",
-                'right_sign_title' => "",
+                'left_sign_title' => $this->input->post('left_sign_title'),
+                'middle_sign_title' => $this->input->post('middle_sign_title'),
+                'right_sign_title' => $this->input->post('right_sign_title'),
                 'background_image' => "",
                 'header_img'=>"",
 				'header_height' => $header_height,
@@ -193,21 +202,18 @@ class Reportcard extends Admin_Controller {
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["left_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['left_sign'] = $img_name;
-                $insert_data['left_sign_title'] = $this->input->post('left_sign_title');
             }if (isset($_FILES["middle_sign"]) && !empty($_FILES["middle_sign"]['name'])) {
                 $time = md5($_FILES["middle_sign"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["middle_sign"]["name"]);
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["middle_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['middle_sign'] = $img_name;
-                $insert_data['middle_sign_title'] = $this->input->post('middle_sign_title');
             }if (isset($_FILES["right_sign"]) && !empty($_FILES["right_sign"]['name'])) {
                 $time = md5($_FILES["right_sign"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["right_sign"]["name"]);
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["right_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['right_sign'] = $img_name;
-                $insert_data['right_sign_title'] = $this->input->post('right_sign_title');
             }if (isset($_FILES["background_image"]) && !empty($_FILES["background_image"]['name'])) {
                 $time = md5($_FILES["background_image"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["background_image"]["name"]);
@@ -397,6 +403,13 @@ class Reportcard extends Admin_Controller {
             } else {
                 $is_show_date = 0;
             }
+            if (isset($_POST['place'])) {
+                $place = 1;
+                $grade_table_title = $this->input->post('grade_table_title');
+            } else {
+                $place = 0;
+                $grade_table_title = '';
+            }
 
 
             $insert_data = array(
@@ -432,6 +445,11 @@ class Reportcard extends Admin_Controller {
                 'is_examination_ic'=>$is_examination_ic,
                 'is_principal'=>$is_principal,
                 'is_show_date'=>$is_show_date,
+                'place'=>$place,
+                'grade_table_title'=>$grade_table_title,
+                'left_sign_title' => $this->input->post('left_sign_title'),
+                'middle_sign_title' => $this->input->post('middle_sign_title'),
+                'right_sign_title' => $this->input->post('right_sign_title'),
             );
             
             
@@ -448,21 +466,18 @@ class Reportcard extends Admin_Controller {
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["left_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['left_sign'] = $img_name;
-				$insert_data['left_sign_title'] = $this->input->post('left_sign_title');
             }if (isset($_FILES["middle_sign"]) && !empty($_FILES["middle_sign"]['name'])) {
                 $time = md5($_FILES["middle_sign"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["middle_sign"]["name"]);
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["middle_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['middle_sign'] = $img_name;
-				$insert_data['middle_sign_title'] = $this->input->post('middle_sign_title');
             }if (isset($_FILES["right_sign"]) && !empty($_FILES["right_sign"]['name'])) {
                 $time = md5($_FILES["right_sign"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["right_sign"]["name"]);
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["right_sign"]["tmp_name"], "./uploads/reportcard/" . $img_name);
                 $insert_data['right_sign'] = $img_name;
-				$insert_data['right_sign_title'] = $this->input->post('right_sign_title');
             }if (isset($_FILES["background_image"]) && !empty($_FILES["background_image"]['name'])) {
                 $time = md5($_FILES["background_image"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["background_image"]["name"]);
@@ -495,6 +510,9 @@ class Reportcard extends Admin_Controller {
     }
 
     public function view() {
+		if (!$this->rbac->hasPrivilege('design_report_card', 'can_view')) {
+            access_denied();
+        }
         $id = $this->input->post('certificateid');
         $output = '';
         $data = array();

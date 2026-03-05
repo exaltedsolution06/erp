@@ -20,7 +20,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 <div class="box box-primary" id="bklist">
                     <div class="box-header ptbnull">
                         <h3 class="box-title titlefix"><?php echo $this->lang->line('book_list'); ?></h3><div class="pull-right">
-                            <?php if ($this->rbac->hasPrivilege('books', 'can_add')) {
+                            <?php if ($this->rbac->hasPrivilege('book_list', 'can_add')) {
                                 ?>
                                 <a href="<?php echo base_url() ?>admin/book">
 
@@ -93,11 +93,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 echo $this->customlib->dateformat($book['postdate']);
                                                     ?></td>
                                                 <td class="mailbox-date no-print text text-right">
-                                                    <?php if ($this->rbac->hasPrivilege('books', 'can_edit')) { ?> 
+                                                    <?php if ($this->rbac->hasPrivilege('book_list', 'can_edit')) { ?> 
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/book/edit/<?php echo $book['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
-                                                    <?php }if ($this->rbac->hasPrivilege('books', 'can_delete')) { ?> 
+                                                    <?php }if ($this->rbac->hasPrivilege('book_list', 'can_delete')) { ?> 
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/book/delete/<?php echo $book['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>
                                                         </a>

@@ -12,7 +12,7 @@
     <section class="content">
         <div class="row">
             <?php
-            if ($this->rbac->hasPrivilege('exam', 'can_add')) {
+            if ($this->rbac->hasPrivilege('add_exam', 'can_add')) {
                 ?>
                 <div class="col-md-4">
                     <!-- Horizontal Form -->
@@ -57,7 +57,7 @@
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('exam', 'can_add')) {
+            if ($this->rbac->hasPrivilege('add_exam', 'can_add')) {
                 echo "8";
             } else {
                 echo "12";
@@ -120,14 +120,14 @@
                                                 </td>
                                                 <td class="mailbox-date pull-right">
                                                     <?php
-                                                    if ($this->rbac->hasPrivilege('exam', 'can_edit')) {
+                                                    if ($this->rbac->hasPrivilege('add_exam', 'can_edit')) {
                                                         ?>
                                                         <a href="<?php echo base_url(); ?>admin/exam/edit/<?php echo $exam['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
                                                         <?php
                                                     }
-                                                    if ($this->rbac->hasPrivilege('exam', 'can_delete')) {
+                                                    if ($this->rbac->hasPrivilege('add_exam', 'can_delete')) {
                                                         ?>
                                                         <a href="<?php echo base_url(); ?>admin/exam/delete/<?php echo $exam['id'] ?>"class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>

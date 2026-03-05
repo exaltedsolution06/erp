@@ -1,5 +1,5 @@
 <div class="divider"></div>
-<?php if ($this->rbac->hasPrivilege('marks_import', 'can_view')) {
+<?php if ($this->rbac->hasPrivilege('import_grade', 'can_view')) {
     ?>
 
     <div class="row">   
@@ -48,8 +48,10 @@
                                 <th><?php echo $this->lang->line('fee_category'); ?></th>
                                 <th><?php echo $this->lang->line('gender'); ?></th>
                                 <th><?php echo $this->lang->line('attendence'); ?></th>
+								<?php if ($this->rbac->hasPrivilege('add_grade', 'can_add')) { ?>
                                 <th><?php echo $this->lang->line('grade').' / '.$this->lang->line('marks') ?></th>
                                 <th><?php echo $this->lang->line('note') ?></th>
+								<?php } ?>
 
                             </tr>
                         </thead>
@@ -88,9 +90,11 @@
 
                                     </div>
                                 </td>
+								<?php if ($this->rbac->hasPrivilege('add_grade', 'can_add')) { ?>
                                 <td> <input type="text" class="marksssss form-control" name="exam_group_student_mark_<?php echo $student['exam_group_class_batch_exam_students_id']; ?>" value="<?php echo $student['exam_group_exam_result_get_marks']; ?>" step="any"></td>
 
                                 <td> <input type="text" class="form-control note" name="exam_group_student_note_<?php echo $student['exam_group_class_batch_exam_students_id']; ?>" value="<?php echo $student['exam_group_exam_result_note']; ?>"></td>
+								<?php } ?>
 
                                 </tr>
                                 <?php

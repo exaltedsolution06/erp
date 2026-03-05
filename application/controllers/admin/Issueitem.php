@@ -28,6 +28,9 @@ class Issueitem extends Admin_Controller {
     }
 
     public function create() {
+		if (!$this->rbac->hasPrivilege('issue_item', 'can_add')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Inventory');
         $this->session->set_userdata('sub_menu', 'issueitem/index');
         $data['title'] = 'Add Issue item';

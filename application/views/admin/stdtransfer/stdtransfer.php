@@ -182,10 +182,12 @@
                         <div class="box-footer clearfix" >
                             <?php
                             if (!empty($resultlist)) {
+								if ($this->rbac->hasPrivilege('promote_students', 'can_add')) {
                                 ?>
 
                                 <a class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#pramoteStudentModal"><?php echo $this->lang->line('promote'); ?></a>
                                 <?php
+                            }
                             }
                             ?>
                         </div>

@@ -19,7 +19,7 @@
                 <div class="timeline-item">
                     <span class="time">
                         <?php
-                        if ($this->rbac->hasPrivilege('follow_up_admission_enquiry', 'can_delete')) {
+                        if ($this->rbac->hasPrivilege('follow_up_admission_enq', 'can_delete')) {
                             ?>
                             <a class="defaults-c text-right" data-toggle="tooltip" title="" onclick="delete_next_call(<?php echo $value['id']; ?>,<?php echo $id; ?>)" data-original-title="Delete"><i class="fa fa-trash"></i></a>
                         <?php } ?></span>

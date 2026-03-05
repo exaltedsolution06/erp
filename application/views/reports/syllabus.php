@@ -86,7 +86,7 @@ $language_name = $language["short_code"];
                         <div class="box-header ptbnull"></div>
                         <div class="box-header with-border">
                             <h3 class="box-title"><i class="fa fa-users"></i> <?php echo $this->lang->line('syllabus_status_report'); ?></h3>
-                            <?php if ($this->rbac->hasPrivilege('homework', 'can_add')) { ?>
+                            <?php if ($this->rbac->hasPrivilege('add_homework', 'can_add')) { ?>
                                 <div class="box-tools pull-right"></div>
                             <?php } ?>
                         </div>

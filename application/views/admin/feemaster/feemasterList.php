@@ -24,7 +24,8 @@
             $class_ids = isset($fee_data['class_ids']) ? json_decode($fee_data['class_ids']) : [];
             $category_ids = isset($fee_data['category_ids']) ? json_decode($fee_data['category_ids']) : [];
             ?>
-
+			<?php if ($this->rbac->hasPrivilege('fee_plan', 'can_edit')) {
+                ?>
             
 
             <div class="row">
@@ -133,13 +134,13 @@
             
             <?php
 
-
+		}
 
         }else{
 
          ?>
         <div class="row">
-            <?php if ($this->rbac->hasPrivilege('fees_master', 'can_add')) {
+            <?php if ($this->rbac->hasPrivilege('fee_plan', 'can_add')) {
                 ?>
                 <div class="col-md-12">
                     <!-- Horizontal Form -->
@@ -236,13 +237,7 @@
                 </div><!--/.col (right) -->
                 <!-- left column -->
             <?php } ?>
-            <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('fees_master', 'can_add')) {
-                echo "12";
-            } else {
-                echo "12";
-            }
-            ?>">
+            <div class="col-md-12">
                 <!-- Horizontal Form -->
                 <div class="box box-primary">
                     <div class="box-header ptbnull">
@@ -381,12 +376,15 @@
 
                                                     </td>
                                                     <td>
+													<?php if ($this->rbac->hasPrivilege('fee_plan', 'can_edit')) { ?>
                                                         <a data-placement="left" href="<?php echo site_url('admin/feemaster/edit/' . $plan['id']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
+													<?php } if ($this->rbac->hasPrivilege('fee_plan', 'can_delete')) { ?>
                                                         <a data-placement="left" href="<?php echo site_url('admin/feemaster/delete/' . $plan['id']); ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>
                                                         </a>
+														<?php } ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>

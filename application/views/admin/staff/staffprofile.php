@@ -248,7 +248,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         
                         if($enable_disable==1){
                         if ($staff["is_active"] == 1) {
-                            if ($this->rbac->hasPrivilege('disable_staff', 'can_view')) {
+                            if ($this->rbac->hasPrivilege('disabled_staff', 'can_view')) {
                                  if($logged_in_User_Role->id == 7){
                                 if ($a) {
                                     ?> 
@@ -286,7 +286,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                 <li class="pull-right"><a href="<?php echo base_url('admin/staff/delete/' . $id); ?>" class="text-red" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('are_you_sure_delete_record'); ?>');"></i><i class="fa fa-trash"></i></a></li>  
                             <?php } 
-                            if($this->rbac->hasPrivilege('disable_staff', 'can_view')) {
+                            if($this->rbac->hasPrivilege('disabled_staff', 'can_view')) {
                             ?>
 
                                 <li class="pull-right"><a href="<?php echo base_url('admin/staff/enablestaff/' . $id); ?>" class="text-green" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('enable'); ?>" onclick="return confirm('<?php echo $this->lang->line('are_you_sure').' '.$this->lang->line('you_want_to_enable_this_record'); ?>');"><i class="fa fa-thumbs-o-up"></i></a></li>  

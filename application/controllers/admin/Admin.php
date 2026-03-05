@@ -108,9 +108,11 @@ class Admin extends Admin_Controller
         $tot_roles = $this->role_model->get();
 
         foreach ($tot_roles as $key => $value) {
-
-            $count_roles[$value["name"]] = $this->role_model->count_roles($value["id"]);
-
+			if($value["is_superadmin"] != 1){
+				$count_roles[$value["name"]] = $this->role_model->count_roles($value["id"]);
+			}else{
+				$count_roles[$value["name"]] = $this->role_model->count_superadmin($value["id"]);
+			}
         }
         $data["roles"] = $count_roles;
 
@@ -421,7 +423,7 @@ class Admin extends Admin_Controller
 
     public function backup()
     {
-        if (!$this->rbac->hasPrivilege('backup', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('data_backup', 'can_view')) {
             access_denied();
         }
         $this->session->set_userdata('top_menu', 'System Settings');
@@ -639,7 +641,7 @@ class Admin extends Admin_Controller
 
     public function dropbackup($file)
     {
-        if (!$this->rbac->hasPrivilege('backup', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('data_backup', 'can_delete')) {
             access_denied();
         }
         unlink('./backup/database_backup/' . $file);
@@ -821,7 +823,9 @@ class Admin extends Admin_Controller
 
     public function filetype()
     {
-    
+		if (!$this->rbac->hasPrivilege('file_types', 'can_view')) {
+            access_denied();
+        }
         $data          = array();
         $data['title'] = 'File Type List';
         $this->session->set_userdata('top_menu', 'System Settings');

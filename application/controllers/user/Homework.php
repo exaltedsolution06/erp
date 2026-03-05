@@ -19,7 +19,9 @@ class Homework extends Student_Controller
 
     public function index()
     {
-
+		if (!$this->studentmodule_lib->hasActive('homework')) {
+			student_access_denied();
+		}
         $this->session->set_userdata('top_menu', 'Homework');
 
         $student_id            = $this->customlib->getStudentSessionUserID();

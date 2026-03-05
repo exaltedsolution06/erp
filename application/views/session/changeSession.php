@@ -5,6 +5,9 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
     </section>
     <!-- Main content -->
     <section class="content">
+		<?php
+		if (($this->rbac->hasPrivilege('change_session', 'can_add'))) {
+		?>
         <div class="row">
 			<div class="col-md-7">
 				<div class="box box-primary">
@@ -243,6 +246,7 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 				<button type="button" class="btn btn-success pull-right transfer_batch">Ok, Transfer these students to next session</button> 
 			</div> 
         </div>
+		<?php } ?>
 		<div class="row mt10">
 			<div class="col-md-12">
 				<div class="box box-primary">
@@ -255,8 +259,8 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 								<thead>
 									<tr>
 										<th>Batch Id</th>
-										<th>Current Class</th>
-										<th>Next Class</th>
+										<th>Class</th>
+										<th>Category</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -292,8 +296,8 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 								<thead>
 									<tr>
 										<th>Batch Id</th>
-										<th>Current Class</th>
-										<th>Next Class</th>
+										<th>Class</th>
+										<th>Category</th>
 									</tr>
 								</thead>
 								<tbody>

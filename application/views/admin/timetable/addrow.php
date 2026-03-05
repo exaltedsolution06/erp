@@ -101,8 +101,9 @@
                                 <td>
                                     <input type="text" name='room_no_<?php echo $counter; ?>' value="<?php echo $prev_rec_value->room_no; ?>" placeholder='Room no' class="form-control room_no" id="room_no_<?php echo $counter; ?>"/>
                                 </td>
+								<?php if ($this->rbac->hasPrivilege('class_timetable', 'can_delete')) { ?>
                                 <td class="text-right"><button class="ibtnDel btn btn-danger btn-sm btn-danger"> <i class="fa fa-trash"></i></button></td>
-
+								<?php } ?>
                             </tr>
 
                             <?php
@@ -161,8 +162,9 @@
                             <td>
                                 <input type="text" name='room_no_<?php echo $total_count; ?>' id='room_no_<?php echo $total_count; ?>' placeholder='Room no' class="form-control room_no"/>
                             </td>
+							<?php if ($this->rbac->hasPrivilege('class_timetable', 'can_delete')) { ?>
                             <td class="text-right"><button class="ibtnDel btn btn-danger btn-sm btn-danger"> <i class="fa fa-trash"></i></button></td>
-
+							<?php } ?>
                         </tr>
                         <?php
                     }

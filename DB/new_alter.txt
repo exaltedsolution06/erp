@@ -53,6 +53,35 @@ ALTER TABLE `template_reportcard` DROP `photo_image_height`;
 ALTER TABLE `template_reportcard` ADD `school_reopen_date` CHAR(36) NULL DEFAULT NULL AFTER `footer_height`, ADD `school_reopen_time` CHAR(36) NULL DEFAULT NULL AFTER `school_reopen_date`;
 ALTER TABLE `template_reportcard` ADD `is_show_date` INT(11) NOT NULL DEFAULT '0' AFTER `footer_height`;
 
+--- 02-02-2026 ---
+ALTER TABLE `template_reportcard` ADD `place` INT(11) NOT NULL DEFAULT '0' AFTER `school_reopen_time`;
+ALTER TABLE `template_reportcard` ADD `grade_table_title` VARCHAR(255) NULL DEFAULT NULL AFTER `place`;
+
+--- 23-02-2026 ---
+ALTER TABLE `front_cms_menu_items` ADD `content_heading` VARCHAR(255) NULL DEFAULT NULL AFTER `is_active`, ADD `menu_description` LONGTEXT NOT NULL AFTER `content_heading`, ADD `image_position` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0=Left, 1=Right' AFTER `menu_description`;
+ALTER TABLE `front_cms_menu_items` ADD `media_gallery_id` INT(11) NULL DEFAULT NULL AFTER `image_position`;
+ALTER TABLE `front_cms_settings` ADD `header_phone` VARCHAR(50) NULL DEFAULT NULL AFTER `fav_icon`, ADD `header_email` VARCHAR(100) NULL DEFAULT NULL AFTER `header_phone`, ADD `header_address` TEXT NULL DEFAULT NULL AFTER `header_email`;
+ALTER TABLE `front_cms_settings` ADD `header_button_enable` INT(1) NOT NULL DEFAULT '0' COMMENT '0=Not active, 1= Active' AFTER `header_address`, ADD `header_button_text` VARCHAR(255) NULL DEFAULT NULL AFTER `header_button_enable`, ADD `header_button_url` VARCHAR(255) NULL DEFAULT NULL AFTER `header_button_text`;
+
+--- 26-02-2026 ---
+ALTER TABLE `receipt_sr_no` ADD `deleted_status` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0=Active(Not delete), 1=Permanent Delete' AFTER `sr_no`;
+TRUNCATE TABLE  front_cms_menus;
+INSERT INTO front_cms_menus (id, menu, slug, description, open_new_tab, ext_url, ext_url_link, publish, content_type, is_active, created_at) VALUES
+(1, 'Main Menu', 'main-menu', 'Main menu', 0, '', '', 0, 'default', 'no', '2018-04-20 14:54:49'),
+(2, 'Bottom Menu', 'bottom-menu', 'Bottom Menu', 0, '', '', 0, 'default', 'no', '2018-04-20 14:54:55');
+
+--- 27-02-2026 ---
+ALTER TABLE `sch_settings` ADD `gender` INT(11) NOT NULL DEFAULT '1' AFTER `middlename`;
+ALTER TABLE `sch_settings` ADD `dob` INT(11) NOT NULL DEFAULT '1' AFTER `gender`;
+ALTER TABLE `sch_settings` ADD `pen_no` INT(11) NOT NULL DEFAULT '1' AFTER `dob`, ADD `aadhar_no` INT(11) NOT NULL DEFAULT '1' AFTER `pen_no`;
+ALTER TABLE `sch_settings` ADD `other_no` INT(11) NOT NULL DEFAULT '1' AFTER `aadhar_no`;
+ALTER TABLE `sch_settings` ADD `legder_amount` INT(11) NOT NULL DEFAULT '1' AFTER `route_list`;
+ALTER TABLE `sch_settings` ADD `father_pan` INT(11) NOT NULL DEFAULT '1' AFTER `father_pic`, ADD `father_aadhar_no` INT(11) NOT NULL DEFAULT '1' AFTER `father_pan`, ADD `father_other_no` INT(11) NOT NULL DEFAULT '1' AFTER `father_aadhar_no`, ADD `father_id_no` INT(11) NOT NULL DEFAULT '1' AFTER `father_other_no`;
+ALTER TABLE `sch_settings` ADD `mother_pan` INT(11) NOT NULL DEFAULT '1' AFTER `mother_pic`, ADD `mother_aadhar_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_pan`, ADD `mother_other_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_aadhar_no`, ADD `mother_id_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_other_no`;
+ALTER TABLE `sch_settings` ADD `rcpt_admission_no` INT(11) NOT NULL DEFAULT '1' AFTER `my_question`, ADD `rcpt_student_name` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_admission_no`, ADD `rcpt_father` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_student_name`, ADD `rcpt_class_section` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_father`, ADD `rcpt_fee_months` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_class_section`;
+
+
+
 ===============================
 File change outside of application folder
 --------
@@ -66,9 +95,14 @@ New folder -
 1) uploads/reportcard
 2) uploads/print_headerfooter/admission_form
 
-
+3) backend\themes\green
 
 ===================================No required column table (optimize)===================================
 
 'exam_group_d' column not required in 'exam_group_class_batch_exams' table.
+
+=========03/03/2026==================
+ALTER TABLE `sch_settings` ADD `rcpt_mother` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_fee_months`, ADD `rcpt_dob` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mother`, ADD `rcpt_mobile_no` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_dob`, ADD `rcpt_total_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mobile_no`, ADD `rcpt_late_fee` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_total_amt`, ADD `rcpt_discount_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_late_fee`, ADD `rcpt_net_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_discount_amt`, ADD `rcpt_received_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_net_amt`, ADD `rcpt_balance_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_received_amt`, ADD `rcpt_amt_in_words` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_balance_amt`, ADD `rcpt_pay_mode` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_amt_in_words`, ADD `rcpt_remark` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_pay_mode`, ADD `rcpt_created_by` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_remark`, ADD `rcpt_note` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_created_by`;
+
+ALTER TABLE `sch_settings` ADD `rcpt_address` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mobile_no`;
 

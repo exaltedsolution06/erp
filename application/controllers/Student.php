@@ -150,7 +150,7 @@ class Student extends Admin_Controller
 
     public function view($id)
     {
-        if (!$this->rbac->hasPrivilege('student', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('student_full_details', 'can_view')) {
             access_denied();
         }
 
@@ -428,7 +428,7 @@ class Student extends Admin_Controller
 
     public function delete($id)
     {
-        if (!$this->rbac->hasPrivilege('student', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('student_full_details', 'can_delete')) {
             access_denied();
         }
         $this->student_model->remove($id);
@@ -445,7 +445,7 @@ class Student extends Admin_Controller
 
     public function create()
     {
-        if (!$this->rbac->hasPrivilege('student', 'can_add')) {
+        if (!$this->rbac->hasPrivilege('new_admission', 'can_add')) {
             access_denied();
         }
 		
@@ -1253,7 +1253,7 @@ class Student extends Admin_Controller
 	}
     public function import()
     {
-        if (!$this->rbac->hasPrivilege('import_student', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('import_admission', 'can_add')) {
             access_denied();
         }
         $data['title']      = 'Import Student';
@@ -1542,7 +1542,7 @@ class Student extends Admin_Controller
 
     public function edit($id)
     {
-        if (!$this->rbac->hasPrivilege('student', 'can_edit')) {
+        if (!$this->rbac->hasPrivilege('student_full_details', 'can_edit')) {
             access_denied();
         }
         $data['title']   = 'Edit Student';
@@ -1918,7 +1918,10 @@ class Student extends Admin_Controller
 
     public function bulkdelete()
     {
-
+		if (!$this->rbac->hasPrivilege('bulk_delete', 'can_view')) {
+            access_denied();
+        }
+		
         $this->session->set_userdata('top_menu', 'Student Information');
         $this->session->set_userdata('sub_menu', 'bulkdelete');
         $class                   = $this->class_model->get();
@@ -1946,7 +1949,7 @@ class Student extends Admin_Controller
 
     public function search()
     {
-        if (!$this->rbac->hasPrivilege('student', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('student_full_details', 'can_view')) {
             access_denied();
         }
 
@@ -2158,7 +2161,7 @@ class Student extends Admin_Controller
 
     public function disablestudentslist()
     {
-        if (!$this->rbac->hasPrivilege('disable_student', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('discountinue_students', 'can_view')) {
             access_denied();
         }
 

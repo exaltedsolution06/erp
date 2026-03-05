@@ -169,9 +169,11 @@
 
                                             <?php
                                             if (!empty($resultlist)) {
+												if ($this->rbac->hasPrivilege('bulk_delete', 'can_delete')) {
                                                 ?>                              
                                                 <button type="submit" class="btn btn-primary pull-right btn-sm mt10" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please wait..."> <?php echo $this->lang->line('delete') ?></button>
                                                 <?php
+												}
                                             }
                                             ?>
 

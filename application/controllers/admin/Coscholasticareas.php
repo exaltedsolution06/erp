@@ -112,7 +112,9 @@ class Coscholasticareas extends Admin_Controller {
     }
 
     public function index() {
-        
+        if (!$this->rbac->hasPrivilege('co_scholastic_areas', 'can_view')) {
+            access_denied();
+        }
         $this->session->set_userdata('top_menu', 'Examinations');
         $this->session->set_userdata('sub_menu', 'Examinations/coscholasticareas');
         $data['title'] = 'Add Batch';
@@ -257,7 +259,7 @@ class Coscholasticareas extends Admin_Controller {
     }
 
     public function delete($id) {
-        if (!$this->rbac->hasPrivilege('exam_group', 'can_delete')) {
+        if (!$this->rbac->hasPrivilege('co_scholastic_areas', 'can_delete')) {
             access_denied();
         }
         $data['title'] = 'Delete Batch';
@@ -283,7 +285,9 @@ class Coscholasticareas extends Admin_Controller {
     }
 
     public function edit($id) {
-        
+        if (!$this->rbac->hasPrivilege('co_scholastic_areas', 'can_edit')) {
+            access_denied();
+        }
         $data['id'] = $id;
         $examgroup = $this->examgroup_model->get_c($id);
 		if(!$examgroup){
@@ -330,7 +334,9 @@ class Coscholasticareas extends Admin_Controller {
     }
 
     public function addexam($id) {
-
+		if (!$this->rbac->hasPrivilege('add_exam', 'can_view')) {
+            access_denied();
+        }
        
         $this->session->set_userdata('top_menu', 'Examinations');
         $this->session->set_userdata('sub_menu', 'Examinations/examgroup');

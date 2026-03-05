@@ -86,7 +86,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 <div class="box-header ptbnull"></div>  
                                 <div class="box-header ptbnull">
                                     <h3 class="box-title titlefix"><i class="fa fa-users"></i> <?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('list'); ?></h3>
+									<?php
+									if ($this->rbac->hasPrivilege('generate_certificate', 'can_add')) {
+									?>
                                     <button  class="btn btn-info btn-sm printSelected pull-right" type="button" name="generate" title="generate multiple certificate"><?php echo $this->lang->line('generate'); ?></button>
+									<?php } ?>
                                 </div>
                                 <div class="box-body table-responsive">
                                     <div class="download_label"><?php echo $title; ?></div>
