@@ -282,6 +282,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
                                 <div class="table-responsive">
+								<form method="post" action="<?php echo base_url('report/printreminderletter') ?>" id="printreminderletter">
+								<button  class="btn btn-info btn-sm printSelected pull-right" type="submit" name="generate" title="generate multiple certificate"><?php echo $this->lang->line('generate'); ?></button>
+								</form>
                                     <div class="download_label"> <?php
                                         // echo $this->lang->line('fees_statement') . "<br>";
                                         $this->customlib->get_postmessage();
@@ -779,6 +782,67 @@ if ($search_type == 'period') {
 
 </script>
 <script>
+$(document).on('submit', 'form#printreminderletter', function (e) {
+
+	e.preventDefault();
+	var form = $(this);
+	var subsubmit_button = $(this).find(':submit');
+	var formdata = form.serializeArray();
+
+	var list_selected =  $('form#printreminderletter input[name="exam_group_class_batch_exam_student_id[]"]:checked').length;
+  // if(list_selected > 0){
+	$.ajax({
+		type: "POST",
+		url: form.attr('action'),
+		data: formdata, // serializes the form's elements.
+		dataType: "JSON", // serializes the form's elements.
+		beforeSend: function () {
+			subsubmit_button.button('loading');
+		},
+		success: function (response)
+		{
+			// $(".abc").html(response.page);
+			Popup(response.page);
+		},
+		error: function (xhr) { // if error occured
+
+			alert("Error occured.please try again");
+			subsubmit_button.button('reset');
+		},
+		complete: function () {
+			subsubmit_button.button('reset');
+		}
+	});
+  /*}else{
+	 confirm("<?php echo $this->lang->line('please_select_student'); ?>");
+  }*/
+});
+function Popup(data)
+{
+
+	var frame1 = $('<iframe />');
+	frame1[0].name = "frame1";
+	$("body").append(frame1);
+	var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+	frameDoc.document.open();
+//Create a new HTML document.
+	frameDoc.document.write('<html>');
+	frameDoc.document.write('<head>');
+	frameDoc.document.write('<title></title>');
+	frameDoc.document.write('</head>');
+	frameDoc.document.write('<body>');
+	frameDoc.document.write(data);
+	frameDoc.document.write('</body>');
+	frameDoc.document.write('</html>');
+	frameDoc.document.close();
+	setTimeout(function () {
+		window.frames["frame1"].focus();
+		window.frames["frame1"].print();
+		frame1.remove();
+	}, 500);
+	return true;
+}
+
   // Handle each section's master checkbox
   document.querySelectorAll('.master-check').forEach(master => {
     master.addEventListener('change', function () {
