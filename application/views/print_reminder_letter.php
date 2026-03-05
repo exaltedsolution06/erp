@@ -11,12 +11,17 @@
 		font-family: Arial, Helvetica, sans-serif;
 		font-size:14px;
 	}*/
+	.mark-container{
+        width: 1000px;position: relative;z-index: 2; margin: 0 auto; padding: 10px 30px;}
+   .maincontent{position: relative;z-index: 2}
 
-	.container{
-		margin:auto;
+	.slip{
 		border:1px solid #000;
 	}
 
+	.header{
+		border-bottom:1px solid #000;
+	}
 	.header img{
 		width:100%;
 		display:block;
@@ -71,65 +76,129 @@
 	</head>
 
 	<body>
-		<div class="container">
-			<!-- HEADER IMAGE -->
-			<div class="header">
-				<img src="<?php echo base_url('uploads/reportcard/4e8d82361c0bd589e9a4d3915965c058.png') ?>" style="height:150px;width:100%">
-			</div>
-			<div class="content">
-				<table class="title-row">
-					<tr>
-						<td style="text-align:center;">BALANCE DUES</td>
-						<td style="text-align:right;">DATED: <strong>27-Feb-26</strong></td>
-					</tr>
-				</table>
-				
-				<table class="info-table">
-					<tr>
-						<td width="120">UID . No.</td>
-						<td width="200"><strong>896</strong></td>
-					</tr>
-					<tr>
-						<td>Student's Name</td>
-						<td><strong>YUVAN</strong></td>
-					</tr>
-					<tr>
-						<td>Father's Name</td>
-						<td><strong>SAHIL</strong></td>
-					</tr>
-					<tr>
-						<td>Class:</td>
-						<td><strong>1st - A</strong></td>
-					</tr>
-				</table>
-
-				<div class="message">
-					<p>
-					Dear Parents / Guardians,
-					<span style="float:right;">Ph. No: <strong>9253303795</strong></span>
-					</p>
-
-					<p>
-					This is to remind you that your ward fees due for the month(s) of 
-					<strong><u>Old Bal..</u></strong>
-					amounts to Rs.
-					<strong><u>1600.00</u></strong>.
-					Kindly Co - Operate and Pay immediately
-					</p>
+		<div class="mark-container mb-5">
+		<div class="row maincontent">
+			<div class="col-6 slip">
+				<!-- HEADER IMAGE -->
+				<div class="header">
+					<img src="<?php echo base_url('uploads/reportcard/4e8d82361c0bd589e9a4d3915965c058.png') ?>" style="height:100px;width:100%">
 				</div>
+				<div class="content">
+					<table class="title-row">
+						<tr>
+							<td style="text-align:center;">BALANCE DUES</td>
+							<td style="text-align:right;">DATED: <strong>27-Feb-26</strong></td>
+						</tr>
+					</table>
+					
+					<table class="info-table">
+						<tr>
+							<td width="120">UID . No.</td>
+							<td width="200"><strong>896</strong></td>
+						</tr>
+						<tr>
+							<td>Student's Name</td>
+							<td><strong>YUVAN</strong></td>
+						</tr>
+						<tr>
+							<td>Father's Name</td>
+							<td><strong>SAHIL</strong></td>
+						</tr>
+						<tr>
+							<td>Class:</td>
+							<td><strong>1st - A</strong></td>
+						</tr>
+					</table>
 
-				<table class="footer">
-					<tr>
-						<td>Thank You,</td>
+					<div class="message">
+						<p>
+						Dear Parents / Guardians,
+						<span style="float:right;">Ph. No: <strong>9253303795</strong></span>
+						</p>
 
-						<td class="signature">
-						<img src="principal_sign.png"><br>
-						Principal
-						</td>
-					</tr>
-				</table>
+						<p>
+						This is to remind you that your ward fees due for the month(s) of 
+						<strong><u>Old Bal..</u></strong>
+						amounts to Rs.
+						<strong><u>1600.00</u></strong>.
+						Kindly Co - Operate and Pay immediately
+						</p>
+					</div>
 
+					<table class="footer">
+						<tr>
+							<td>Thank You,</td>
+
+							<td class="signature">
+							<img src="principal_sign.png"><br>
+							Principal
+							</td>
+						</tr>
+					</table>
+
+				</div>
 			</div>
+			<div class="col-6 slip">
+				<!-- HEADER IMAGE -->
+				<div class="header">
+					<img src="<?php echo base_url('uploads/reportcard/4e8d82361c0bd589e9a4d3915965c058.png') ?>" style="height:100px;width:100%">
+				</div>
+				<div class="content">
+					<table class="title-row">
+						<tr>
+							<td style="text-align:center;">BALANCE DUES</td>
+							<td style="text-align:right;">DATED: <strong>27-Feb-26</strong></td>
+						</tr>
+					</table>
+					
+					<table class="info-table">
+						<tr>
+							<td width="120">UID . No.</td>
+							<td width="200"><strong>896</strong></td>
+						</tr>
+						<tr>
+							<td>Student's Name</td>
+							<td><strong>YUVAN</strong></td>
+						</tr>
+						<tr>
+							<td>Father's Name</td>
+							<td><strong>SAHIL</strong></td>
+						</tr>
+						<tr>
+							<td>Class:</td>
+							<td><strong>1st - A</strong></td>
+						</tr>
+					</table>
+
+					<div class="message">
+						<p>
+						Dear Parents / Guardians,
+						<span style="float:right;">Ph. No: <strong>9253303795</strong></span>
+						</p>
+
+						<p>
+						This is to remind you that your ward fees due for the month(s) of 
+						<strong><u>Old Bal..</u></strong>
+						amounts to Rs.
+						<strong><u>1600.00</u></strong>.
+						Kindly Co - Operate and Pay immediately
+						</p>
+					</div>
+
+					<table class="footer">
+						<tr>
+							<td>Thank You,</td>
+
+							<td class="signature">
+							<img src="principal_sign.png"><br>
+							Principal
+							</td>
+						</tr>
+					</table>
+
+				</div>
+			</div>
+		</div>
 		</div>
 	</body>
 </html>
