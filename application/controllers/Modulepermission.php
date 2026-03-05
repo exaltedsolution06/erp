@@ -82,7 +82,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'New Admission', 		'short_code' => 'new_admission', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Import Admission', 		'short_code' => 'import_admission', 'add' => true, 'view' => false, 'edit' => false, 'delete' => false],
 					['name' => 'Online Admission', 		'short_code' => 'online_admission', 'add' => false, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Student Full Details', 	'short_code' => 'student_full_details', 'add' => false, 'view' => true, 'edit' => true, 'delete' => true],
+					['name' => 'Student Full Details', 	'short_code' => 'student_full_details', 'add' => false, 'view' => true, 'edit' => true, 'delete' => false],
 					['name' => 'Discountinue Students', 'short_code' => 'discountinue_students', 'add' => true, 'view' => true, 'edit' => true, 'delete' => false],
 					['name' => 'Bulk Delete', 			'short_code' => 'bulk_delete', 'add' => false, 'view' => true, 'edit' => false, 'delete' => true],
 					['name' => 'Student Timeline', 		'short_code' => 'student_timeline', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
