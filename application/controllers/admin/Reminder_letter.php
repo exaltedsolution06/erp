@@ -8,7 +8,7 @@ class Reminder_letter extends Admin_Controller {
         parent::__construct();
 
         $this->load->library('Customlib');
-        $this->load->model('reminder_model');
+        $this->load->model('Reminder_model');
         $this->current_session = $this->setting_model->getCurrentSession();
     }
 
@@ -22,9 +22,10 @@ class Reminder_letter extends Admin_Controller {
 
         $custom_fields = $this->customfield_model->get_custom_fields('students');
         $this->data['custom_fields'] = $custom_fields;
-        $this->data['certificateList'] = $this->reminder_model->certificateList();
+        $this->data['certificateList'] = $this->Reminder_model->remindLetterList();
         $this->load->view('layout/header');
-        $this->load->view('admin/certificate/createcertificate', $this->data);
+        //$this->load->view('admin/certificate/createcertificate', $this->data);
+        $this->load->view('admin/certificate/reminder_letter', $this->data);
         $this->load->view('layout/footer');
     }
 
@@ -34,17 +35,19 @@ class Reminder_letter extends Admin_Controller {
         }
 
         $data['title'] = 'Add Library';
+		//echo "<pre>";print_r($_FILES);
+		//echo "<pre>";print_r($this->input->post());die;
 
-        if (!empty($_FILES['background_image']['name'])) {
-            $config['upload_path'] = 'uploads/certificate/';
+        if (!empty($_FILES['header_image']['name'])) {
+            $config['upload_path'] = 'uploads/remind_letter/';
             $config['allowed_types'] = 'jpg|jpeg|png|gif';
-            $config['file_name'] = $_FILES['background_image']['name'];
+            $config['file_name'] = $_FILES['header_image']['name'];
 
             //Load upload library and initialize configuration
             $this->load->library('upload', $config);
             $this->upload->initialize($config);
 
-            if ($this->upload->do_upload('background_image')) {
+            if ($this->upload->do_upload('header_image')) {
                 $uploadData = $this->upload->data();
                 $picture = $uploadData['file_name'];
             } else {
@@ -54,46 +57,71 @@ class Reminder_letter extends Admin_Controller {
             $picture = '';
         }
 
-        $this->form_validation->set_rules('certificate_name', $this->lang->line('certificate_name'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('certificate_text', $this->lang->line('certificate_text'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('description', $this->lang->line('description'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('template_name', $this->lang->line('template_name'), 'trim|required|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
 
-            $this->data['certificateList'] = $this->reminder_model->certificateList();
+            $this->data['certificateList'] = $this->Reminder_model->remindLetterList();
             $this->load->view('layout/header');
-            $this->load->view('admin/certificate/createcertificate', $this->data);
+            $this->load->view('admin/certificate/reminder_letter', $this->data);
             $this->load->view('layout/footer');
         } else {
-            if ($this->input->post('is_active_student_img') == 1) {
-                $enableimg = $this->input->post('is_active_student_img');
-                $imgHeight = $this->input->post('image_height');
+			
+            if ($this->input->post('is_active_uid_no') == 1) {
+                $enable_uid_no = $this->input->post('is_active_uid_no');
             } else {
-                $enableimg = 0;
-                $imgHeight = 0;
+                $enable_uid_no = 0;
             }
+			
+			if ($this->input->post('is_active_student_name') == 1) {
+                $enable_student_name = $this->input->post('is_active_student_name');
+            } else {
+                $enable_student_name = 0;
+            }
+			
+			if ($this->input->post('is_active_father_name') == 1) {
+                $enable_father_name = $this->input->post('is_active_father_name');
+            } else {
+                $enable_father_name = 0;
+            }
+			
+			if ($this->input->post('is_active_class_section') == 1) {
+                $enable_class_section = $this->input->post('is_active_class_section');
+            } else {
+                $enable_class_section = 0;
+            }
+			
+			if ($this->input->post('is_active_phone') == 1) {
+                $enable_phone = $this->input->post('is_active_phone');
+            } else {
+                $enable_phone = 0;
+            }
+			
+			if ($this->input->post('is_active_date') == 1) {
+                $enable_date = $this->input->post('is_active_date');
+            } else {
+                $enable_date = 0;
+            }
+			
+			
             $data = array(
-                'certificate_name' => $this->input->post('certificate_name'),
-                'certificate_text' => $this->input->post('certificate_text'),
-                'left_header' => $this->input->post('left_header'),
-                'center_header' => $this->input->post('center_header'),
-                'right_header' => $this->input->post('right_header'),
-                'left_footer' => $this->input->post('left_footer'),
-                'right_footer' => $this->input->post('right_footer'),
-                'center_footer' => $this->input->post('center_footer'),
-                'created_for' => 2,
-                'status' => 1,
-                'background_image' => $picture,
-                'header_height' => $this->input->post('header_height'),
-                'content_height' => $this->input->post('content_height'),
-                'footer_height' => $this->input->post('footer_height'),
-                'content_width' => $this->input->post('content_width'),
-                'enable_student_image' => $enableimg,
-                'enable_image_height' => $imgHeight,
-                'session_id' => $this->current_session,
+				'session_id' => $this->current_session,
+                'template_name' => $this->input->post('template_name'),
+                'uid_no' => $enable_uid_no,
+                'student_name' => $enable_student_name,
+                'father_name' => $enable_father_name,
+                'class_section' => $enable_class_section,
+                'phone' => $enable_phone,
+                'date' => $enable_date,
+                'header_image' => $picture,
+                
+                'description' => $this->input->post('description'),
+                'created_at' => date('Y-m-d H:i:s')
             );
-            $this->reminder_model->addcertificate($data);
+            $this->Reminder_model->addReminder($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
-            redirect('admin/certificate/index');
+            redirect('admin/Reminder_letter/index');
         }
     }
  
@@ -102,107 +130,124 @@ class Reminder_letter extends Admin_Controller {
         if (!$this->rbac->hasPrivilege('reminder_letter', 'can_edit')) {
             access_denied();
         }
+		
         $data['title'] = 'Add Hostel';
         $data['id'] = $id;
-        $editcertificate = $this->reminder_model->get($id);
-		if(!$editcertificate){
-			redirect('admin/certificate/index');
+        $editcertificate = $this->Reminder_model->get($id);
+		//echo "<pre>";print_r($editcertificate[0]);die;
+		if(empty($editcertificate[0])){
+			redirect('admin/Reminder_letter/index');
 		}
+		
+		
         $this->data['editcertificate'] = $editcertificate;
-
-        $custom_fields = $this->customfield_model->get_custom_fields('students');
-        $this->data['custom_fields'] = $custom_fields;
-        $this->form_validation->set_rules('certificate_name', $this->lang->line('certificate_name'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('certificate_text', $this->lang->line('certificate_text'), 'trim|required|xss_clean');
+		//echo "<pre>";print_r($editcertificate);die;
+        //$custom_fields = $this->customfield_model->get_custom_fields('students');
+        //$this->data['custom_fields'] = $custom_fields;
+        $this->form_validation->set_rules('template_name', $this->lang->line('template_name'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('description', $this->lang->line('description'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
-            $this->data['certificateList'] = $this->reminder_model->certificateList();
+			//echo "<pre>";print_r($editcertificate);die;
+            $this->data['certificateList'] = $this->Reminder_model->remindLetterList();
             $this->load->view('layout/header');
-            $this->load->view('admin/certificate/studentcertificateedit', $this->data);
+            $this->load->view('admin/certificate/edit_reminder_letter', $this->data);
             $this->load->view('layout/footer');
         } else {
-
-            if ($this->input->post('is_active_student_img') == 1) {
-                $enableimg = $this->input->post('is_active_student_img');
-                $imgHeight = $this->input->post('image_height');
+            
+			if ($this->input->post('is_active_uid_no') == 1) {
+                $enable_uid_no = $this->input->post('is_active_uid_no');
             } else {
-                $enableimg = 0;
-                $imgHeight = 0;
+                $enable_uid_no = 0;
             }
-            if (!empty($_FILES['background_image']['name'])) {
+			
+			if ($this->input->post('is_active_student_name') == 1) {
+                $enable_student_name = $this->input->post('is_active_student_name');
+            } else {
+                $enable_student_name = 0;
+            }
+			
+			if ($this->input->post('is_active_father_name') == 1) {
+                $enable_father_name = $this->input->post('is_active_father_name');
+            } else {
+                $enable_father_name = 0;
+            }
+			
+			if ($this->input->post('is_active_class_section') == 1) {
+                $enable_class_section = $this->input->post('is_active_class_section');
+            } else {
+                $enable_class_section = 0;
+            }
+			
+			if ($this->input->post('is_active_phone') == 1) {
+                $enable_phone = $this->input->post('is_active_phone');
+            } else {
+                $enable_phone = 0;
+            }
+			
+			if ($this->input->post('is_active_date') == 1) {
+                $enable_date = $this->input->post('is_active_date');
+            } else {
+                $enable_date = 0;
+            }
+			
+            if (!empty($_FILES['header_image']['name'])) {
 
-                $config['upload_path'] = 'uploads/certificate/';
+                $config['upload_path'] = 'uploads/remind_letter/';
                 $config['allowed_types'] = 'jpg|jpeg|png|gif';
-                $config['file_name'] = $_FILES['background_image']['name'];
+                $config['file_name'] = $_FILES['header_image']['name'];
 
                 //Load upload library and initialize configuration
                 $this->load->library('upload', $config);
                 $this->upload->initialize($config);
 
-                if ($this->upload->do_upload('background_image')) {
+                if ($this->upload->do_upload('header_image')) {
                     $uploadData = $this->upload->data();
                     $picture = $uploadData['file_name'];
                     $data = array(
                         'id' => $this->input->post('id'),
-                        'certificate_name' => $this->input->post('certificate_name'),
-                        'certificate_text' => $this->input->post('certificate_text'),
-                        'left_header' => $this->input->post('left_header'),
-                        'center_header' => $this->input->post('center_header'),
-                        'right_header' => $this->input->post('right_header'),
-                        'left_footer' => $this->input->post('left_footer'),
-                        'right_footer' => $this->input->post('right_footer'),
-                        'center_footer' => $this->input->post('center_footer'),
-                        'created_for' => 2,
-                        'status' => 1,
-                        'background_image' => $picture,
-                        'header_height' => $this->input->post('header_height'),
-                        'content_height' => $this->input->post('content_height'),
-                        'footer_height' => $this->input->post('footer_height'),
-                        'content_width' => $this->input->post('content_width'),
-                        'enable_student_image' => $enableimg,
-                        'enable_image_height' => $imgHeight,
+                        'template_name' => $this->input->post('template_name'),
+						'uid_no' => $enable_uid_no,
+						'student_name' => $enable_student_name,
+						'father_name' => $enable_father_name,
+						'class_section' => $enable_class_section,
+						'phone' => $enable_phone,
+						'date' => $enable_date,
+						'header_image' => $picture,
+						
+						'description' => $this->input->post('description'),
                     );
                 } else {
                     $picture = '';
                     $data = array(
                         'id' => $this->input->post('id'),
-                        'certificate_name' => $this->input->post('certificate_name'),
-                        'certificate_text' => $this->input->post('certificate_text'),
-                        'left_header' => $this->input->post('left_header'),
-                        'center_header' => $this->input->post('center_header'),
-                        'right_header' => $this->input->post('right_header'),
-                        'left_footer' => $this->input->post('left_footer'),
-                        'right_footer' => $this->input->post('right_footer'),
-                        'center_footer' => $this->input->post('center_footer'),
-                        'header_height' => $this->input->post('header_height'),
-                        'content_height' => $this->input->post('content_height'),
-                        'footer_height' => $this->input->post('footer_height'),
-                        'content_width' => $this->input->post('content_width'),
-                        'enable_student_image' => $enableimg,
-                        'enable_image_height' => $imgHeight,
+                       'template_name' => $this->input->post('template_name'),
+						'uid_no' => $enable_uid_no,
+						'student_name' => $enable_student_name,
+						'father_name' => $enable_father_name,
+						'class_section' => $enable_class_section,
+						'phone' => $enable_phone,
+						'date' => $enable_date,
+						'description' => $this->input->post('description'),
                     );
                 }
             } else {
+				
                 $data = array(
                     'id' => $this->input->post('id'),
-                    'certificate_name' => $this->input->post('certificate_name'),
-                    'certificate_text' => $this->input->post('certificate_text'),
-                    'left_header' => $this->input->post('left_header'),
-                    'center_header' => $this->input->post('center_header'),
-                    'right_header' => $this->input->post('right_header'),
-                    'left_footer' => $this->input->post('left_footer'),
-                    'right_footer' => $this->input->post('right_footer'),
-                    'center_footer' => $this->input->post('center_footer'),
-                    'header_height' => $this->input->post('header_height'),
-                    'content_height' => $this->input->post('content_height'),
-                    'footer_height' => $this->input->post('footer_height'),
-                    'content_width' => $this->input->post('content_width'),
-                    'enable_student_image' => $enableimg,
-                    'enable_image_height' => $imgHeight,
-                );
+					'template_name' => $this->input->post('template_name'),
+					'uid_no' => $enable_uid_no,
+					'student_name' => $enable_student_name,
+					'father_name' => $enable_father_name,
+					'class_section' => $enable_class_section,
+					'phone' => $enable_phone,
+					'date' => $enable_date,
+					//'header_image' => $picture,
+					'description' => $this->input->post('description')
+					);
             }
-            $this->reminder_model->addcertificate($data);
+            $this->Reminder_model->addReminder($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
-            redirect('admin/certificate/index');
+            redirect('admin/Reminder_letter/index');
             // redirect('admin/certificate/edit/' . $this->input->post('id'));
         }
     }

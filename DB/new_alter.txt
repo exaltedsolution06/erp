@@ -106,3 +106,21 @@ ALTER TABLE `sch_settings` ADD `rcpt_mother` TINYINT(1) NOT NULL DEFAULT '1' AFT
 
 ALTER TABLE `sch_settings` ADD `rcpt_address` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mobile_no`;
 
+==============05-03-2026=================================
+
+CREATE TABLE `template_reminder_letter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `session_id` int(11) DEFAULT NULL,
+  `template_name` text NOT NULL,
+  `uid_no` tinyint(1) NOT NULL DEFAULT 0,
+  `student_name` tinyint(1) NOT NULL DEFAULT 0,
+  `father_name` tinyint(1) NOT NULL DEFAULT 0,
+  `class_section` tinyint(1) NOT NULL DEFAULT 0,
+  `phone` tinyint(1) NOT NULL DEFAULT 0,
+  `date` tinyint(1) NOT NULL DEFAULT 0,
+  `header_image` varchar(225) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+

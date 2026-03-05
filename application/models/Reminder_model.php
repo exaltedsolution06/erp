@@ -10,14 +10,14 @@ class Reminder_model extends MY_Model {
         $this->current_session = $this->setting_model->getCurrentSession();
     }
 
-    public function addcertificate($data) {
+    public function addReminder($data) {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         if (isset($data['id'])) {
             $this->db->where('id', $data['id']);
-            $this->db->update('certificates', $data);
-            $message = UPDATE_RECORD_CONSTANT . " On  certificates id " . $data['id'];
+            $this->db->update('template_reminder_letter', $data);
+            $message = UPDATE_RECORD_CONSTANT . " On  template reminder letter id " . $data['id'];
             $action = "Update";
             $record_id = $data['id'];
             $this->log($message, $record_id, $action);
@@ -34,9 +34,9 @@ class Reminder_model extends MY_Model {
                 //return $return_value;
             }
         } else {
-            $this->db->insert('certificates', $data);
+            $this->db->insert('template_reminder_letter', $data);
             $insert_id = $this->db->insert_id();
-            $message = INSERT_RECORD_CONSTANT . " On certificates id " . $insert_id;
+            $message = INSERT_RECORD_CONSTANT . " On template reminder letter id " . $insert_id;
             $action = "Insert";
             $record_id = $insert_id;
             $this->log($message, $record_id, $action);
@@ -56,21 +56,18 @@ class Reminder_model extends MY_Model {
         }
     }
 
-    public function certificateList() {
+    public function remindLetterList() {
         $this->db->select('*');
-        $this->db->from('certificates');
+        $this->db->from('template_reminder_letter');
 		$this->db->where('session_id', $this->current_session);
-        $this->db->where('status = 1');
-        $this->db->where('created_for = 2');
         $query = $this->db->get();
         return $query->result();
     }
 
     public function get($id) {
         $this->db->select('*');
-        $this->db->from('certificates');
+        $this->db->from('template_reminder_letter');
 		$this->db->where('session_id', $this->current_session);
-        $this->db->where('status = 1');
         $this->db->where('id', $id);
         $query = $this->db->get();
         return $query->result();
@@ -82,8 +79,8 @@ class Reminder_model extends MY_Model {
         //=======================Code Start===========================
         $this->db->where('id', $id);
 		$this->db->where('session_id', $this->current_session);
-        $this->db->delete('certificates');
-        $message = DELETE_RECORD_CONSTANT . " On certificates id " . $id;
+        $this->db->delete(' template_reminder_letter');
+        $message = DELETE_RECORD_CONSTANT . " On  template reminder letter id " . $id;
         $action = "Delete";
         $record_id = $id;
         $this->log($message, $record_id, $action);

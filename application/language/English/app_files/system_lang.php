@@ -1696,3 +1696,5 @@ $lang['school_will_reopen_on'] = 'School will Reopen on';
 $lang['at'] = 'at';
 $lang['with'] = 'with';
 $lang['dashboard'] = 'Dashboard';
+$lang['paymentdue_header_image'] = 'Header image';
+$lang['uid_no'] = 'UID. NO';
