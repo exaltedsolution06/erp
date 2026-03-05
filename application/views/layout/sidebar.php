@@ -365,7 +365,7 @@
 						<?php } if ($this->rbac->hasPrivilege('defaulter_list', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('Reports/defaulter_list'); ?>"><a href="<?php echo base_url(); ?>report/defaulter_list"><i class="fa fa-angle-double-right"></i> Defaulter List</a></li>
 						<?php } if ($this->rbac->hasPrivilege('reminder_letter', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('Reports/reminder_letter'); ?>"><a href="<?php echo base_url(); ?>report/reminderletter"><i class="fa fa-angle-double-right"></i> Reminder Letter</a></li>
+							<li class="<?php echo set_Submenu('Reports/reminder_letter'); ?>"><a href="<?php echo base_url(); ?>admin/reminder_letter"><i class="fa fa-angle-double-right"></i> Reminder Letter</a></li>
 						<?php } if ($this->rbac->hasPrivilege('delete_fee_list', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('studentfee/studentfee_deletedlist'); ?>"><a href="<?php echo base_url(); ?>studentfee/studentfee_deletedlist"><i class="fa fa-angle-double-right"></i> Delete Fee List </a></li>
 						<?php } if ($this->rbac->hasPrivilege('search_fee_slip', 'can_view')) { ?>
@@ -1080,22 +1080,22 @@
 				if (
 					$this->rbac->hasPrivilege('front_cms_setting', 'can_view') ||
 					$this->rbac->hasPrivilege('add_webs_links', 'can_view') ||
-					$this->rbac->hasPrivilege('add_sub_links', 'can_view') ||
+					// $this->rbac->hasPrivilege('add_sub_links', 'can_view') ||
 					$this->rbac->hasPrivilege('media_manager', 'can_view') ||
-					$this->rbac->hasPrivilege('banner_image', 'can_view') ||
-					$this->rbac->hasPrivilege('gallery_image', 'can_view') ||
-					$this->rbac->hasPrivilege('events', 'can_view') ||
-					$this->rbac->hasPrivilege('new_updates', 'can_view')
+					$this->rbac->hasPrivilege('banner_image', 'can_view')
+					// $this->rbac->hasPrivilege('gallery_image', 'can_view') ||
+					// $this->rbac->hasPrivilege('events', 'can_view') ||
+					// $this->rbac->hasPrivilege('new_updates', 'can_view')
 				) {
 					$activeFwMenu="";
 					if(set_Submenu('frontweb/web-link')
 						|| set_Submenu('frontweb/settings')
-						|| set_Submenu('frontweb/sub-link')
+						// || set_Submenu('frontweb/sub-link')
 						|| set_Submenu('frontweb/media-manager')
 						|| set_Submenu('frontweb/banner-image')
-						|| set_Submenu('frontweb/gallery-image')
-						|| set_Submenu('frontweb/events')
-						|| set_Submenu('frontweb/new-updates')
+						// || set_Submenu('frontweb/gallery-image')
+						// || set_Submenu('frontweb/events')
+						// || set_Submenu('frontweb/new-updates')
 					){
 						$activeFwMenu="active";
 					}
@@ -1111,17 +1111,17 @@
 							<?php } if ($this->rbac->hasPrivilege('add_webs_links', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('frontweb/web-link'); ?>"><a href="<?php echo base_url(); ?>admin/front/menus/additem/main-menu"><i class="fa fa-angle-double-right"></i> Add Webs Links</a></li>
 							<?php } if ($this->rbac->hasPrivilege('add_sub_links', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('frontweb/sub-link'); ?>"><a href="<?php echo base_url(); ?>frontweb/sub_link"><i class="fa fa-angle-double-right"></i> Add Sub-Links</a></li>
+								<!--<li class="<?php echo set_Submenu('frontweb/sub-link'); ?>"><a href="<?php echo base_url(); ?>frontweb/sub_link"><i class="fa fa-angle-double-right"></i> Add Sub-Links</a></li>-->
 							<?php } if ($this->rbac->hasPrivilege('media_manager', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('frontweb/media-manager'); ?>"><a href="<?php echo base_url(); ?>admin/front/media"><i class="fa fa-angle-double-right"></i> Media Manager</a></li>
 							<?php } if ($this->rbac->hasPrivilege('banner_image', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('frontweb/banner-image'); ?>"><a href="<?php echo base_url(); ?>admin/front/banner"><i class="fa fa-angle-double-right"></i> Banner Image</a></li>
 							<?php } if ($this->rbac->hasPrivilege('gallery_image', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('frontweb/gallery-image'); ?>"><a href="<?php echo base_url(); ?>frontweb/gallery_image"><i class="fa fa-angle-double-right"></i> Gallery Image</a></li>
+								<!--<li class="<?php echo set_Submenu('frontweb/gallery-image'); ?>"><a href="<?php echo base_url(); ?>frontweb/gallery_image"><i class="fa fa-angle-double-right"></i> Gallery Image</a></li>-->
 							<?php } if ($this->rbac->hasPrivilege('events', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('frontweb/events'); ?>"><a href="<?php echo base_url(); ?>frontweb/events"><i class="fa fa-angle-double-right"></i> Events</a></li>
+								<!--<li class="<?php echo set_Submenu('frontweb/events'); ?>"><a href="<?php echo base_url(); ?>frontweb/events"><i class="fa fa-angle-double-right"></i> Events</a></li>-->
 							<?php } if ($this->rbac->hasPrivilege('new_updates', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('frontweb/new-updates'); ?>"><a href="<?php echo base_url(); ?>frontweb/new_updates"><i class="fa fa-angle-double-right"></i> New Updates</a></li>
+								<!--<li class="<?php echo set_Submenu('frontweb/new-updates'); ?>"><a href="<?php echo base_url(); ?>frontweb/new_updates"><i class="fa fa-angle-double-right"></i> New Updates</a></li>-->
 							<?php } ?>
 						</ul>
 					</li>
