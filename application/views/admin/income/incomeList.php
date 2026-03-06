@@ -178,7 +178,7 @@ $language_name = $language["short_code"];
                                                     <?php echo $income["receipt_no"] == null ? $income["id"] : $income["receipt_no"]; ?>
                                                 </td>
                                                 <td class="mailbox-name">
-                                                    <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($income['date'])) ?></td>
+                                                    <?php echo date('d-m-Y', strtotime($income['date'])); ?></td>
 
                                                 <td class="mailbox-name">
                                                     <?php
@@ -204,11 +204,15 @@ $language_name = $language["short_code"];
 
                                                     <?php
                                                     if ($this->rbac->hasPrivilege('add_income', 'can_edit')) {
+														if($income["receipt_no"] == null)
+														{
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/income/edit/<?php echo $income['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
-                                                    <?php } ?>
+                                                    <?php 
+														}
+													} ?>
                                                     <?php
                                                     if ($this->rbac->hasPrivilege('add_income', 'can_delete')) {
                                                         ?>

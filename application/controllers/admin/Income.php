@@ -241,6 +241,7 @@ class Income extends Admin_Controller {
         $data['title'] = 'Edit Fees Master';
         $data['id'] = $id;
         $income = $this->income_model->get($id);
+		//echo "<pre>";print_r($income);die;
 		if(!$income){
 			redirect('admin/income/index');
 		}
@@ -250,34 +251,86 @@ class Income extends Admin_Controller {
         $data['incomelist'] = $income_result;
         $expnseHead = $this->incomehead_model->get();
         $data['incheadlist'] = $expnseHead;
-        $this->form_validation->set_rules('inc_head_id', $this->lang->line('income_head'), 'trim|required|xss_clean');
+		$data['student_list'] = $this->Student_model->get();
+        $this->form_validation->set_rules('inc_head_id', $this->lang->line('inc_head_id'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('amount', $this->lang->line('amount'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('amount', $this->lang->line('amount'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('date', $this->lang->line('date'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('documents', $this->lang->line('documents'), 'callback_handle_upload');
+        //$this->form_validation->set_rules('documents', $this->lang->line('documents'), 'callback_handle_upload');
         if ($this->form_validation->run() == false) {
             $this->load->view('layout/header', $data);
             $this->load->view('admin/income/incomeEdit', $data);
             $this->load->view('layout/footer', $data);
         } else {
-            $data = array(
-                'id' => $id,
-                'inc_head_id' => $this->input->post('inc_head_id'),
-                'name' => $this->input->post('name'),
-                'date' => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('date'))),
-                'amount' => $this->input->post('amount'),
-                'invoice_no' => $this->input->post('invoice_no'),
-                'note' => $this->input->post('description'),
-				'session_id' => $this->current_session,
-            );
-            $insert_id = $this->income_model->add($data);
-            if (isset($_FILES["documents"]) && !empty($_FILES['documents']['name'])) {
+            
+			if (!empty($_FILES['documents']['name'])) {
+				$config['upload_path'] = 'uploads/income/';
+				$config['allowed_types'] = 'jpg|jpeg|png|gif';
+				$config['file_name'] = $_FILES['documents']['name'];
+
+				//Load upload library and initialize configuration
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+
+				if ($this->upload->do_upload('documents')) {
+					$uploadData = $this->upload->data();
+					$picture = $uploadData['file_name'];
+					
+					
+					$data = array(
+						'id' => $this->input->post('id'),
+						'session_id' => $this->current_session,
+						'balance_type' =>0,
+						'head_id' => $this->input->post('inc_head_id'),
+						'student_id' => $this->input->post('student_id'),
+						'date' => date('Y-m-d H:i:s', strtotime($this->input->post('date'))),
+						'amount' => $this->input->post('amount'),
+						'attatchment' => $picture,
+						'description' => $this->input->post('description')
+					);
+					
+					if (!empty($income['attatchment'])) {
+							$path = 'uploads/income/' . $income['attatchment'];
+
+							if (is_file($path)) {
+								unlink($path);
+							}
+						}
+					
+				} else {
+					$data = array(
+						'id' => $this->input->post('id'),
+						'session_id' => $this->current_session,
+						'balance_type' =>0,
+						'head_id' => $this->input->post('inc_head_id'),
+						'student_id' => $this->input->post('student_id'),
+						'date' => date('Y-m-d H:i:s', strtotime($this->input->post('date'))),
+						'amount' => $this->input->post('amount'),
+						'description' => $this->input->post('description')
+					);
+				}
+				
+			} else {
+					$data = array(
+						'id' => $this->input->post('id'),
+						'session_id' => $this->current_session,
+						'balance_type' =>0,
+						'head_id' => $this->input->post('inc_head_id'),
+						'student_id' => $this->input->post('student_id'),
+						'date' => date('Y-m-d H:i:s', strtotime($this->input->post('date'))),
+						'amount' => $this->input->post('amount'),
+						'description' => $this->input->post('description')
+					);
+			}
+			
+			$insert_id = $this->income_model->add($data);
+            /*if (isset($_FILES["documents"]) && !empty($_FILES['documents']['name'])) {
                 $fileInfo = pathinfo($_FILES["documents"]["name"]);
                 $img_name = $id . '.' . $fileInfo['extension'];
-                move_uploaded_file($_FILES["documents"]["tmp_name"], "./uploads/school_income/" . $img_name);
-                $data_img = array('id' => $id, 'documents' => 'uploads/school_income/' . $img_name);
+                move_uploaded_file($_FILES["documents"]["tmp_name"], "./uploads/income/" . $img_name);
+                $data_img = array('id' => $id, 'documents' => 'uploads/income/' . $img_name);
                 $this->income_model->add($data_img);
-            }
+            }*/
 
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
             redirect('admin/income/index');
