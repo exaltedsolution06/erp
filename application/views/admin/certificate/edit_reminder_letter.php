@@ -26,7 +26,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 <div class="col-md-4">
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $this->lang->line('add'); ?> <?php echo $this->lang->line('fees_reminder'); ?></h3>
+                            <h3 class="box-title"><?php echo $this->lang->line('edit'); ?> <?php echo $this->lang->line('fees_reminder'); ?></h3>
                         </div><!-- /.box-header -->
 
                         <form id="form1" enctype="multipart/form-data" action="<?php echo site_url('admin/reminder_letter/edit/' . $editcertificate[0]->id) ?>"  id="certificateform" name="certificateform" method="post" accept-charset="utf-8">

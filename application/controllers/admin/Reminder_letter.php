@@ -18,7 +18,7 @@ class Reminder_letter extends Admin_Controller {
         }
 
         $this->session->set_userdata('top_menu', 'Certificate');
-        $this->session->set_userdata('sub_menu', 'admin/certificate');
+        $this->session->set_userdata('sub_menu', 'Reports/reminder_letter');
 
         $custom_fields = $this->customfield_model->get_custom_fields('students');
         $this->data['custom_fields'] = $custom_fields;
