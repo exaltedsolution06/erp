@@ -1,261 +1,181 @@
 <!DOCTYPE html>
 <html>
-	<head>
-	<meta charset="UTF-8">
-	<title>Balance Due</title>
-	<!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-	<style>
+<head>
+<meta charset="UTF-8">
+<title>Balance Due</title>
 
-	/*body{
-		font-family: Arial, Helvetica, sans-serif;
-		font-size:14px;
-	}*/
-	.mark-container{
-        width: 1000px;position: relative;z-index: 2; margin: 0 auto; padding: 10px 30px;}
-   .maincontent{position: relative;z-index: 2}
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-	.slip{
-		border:1px solid #000;
-	}
+<style>
 
-	.header{
-		border-bottom:1px solid #000;
-	}
-	.header img{
-		width:100%;
-		display:block;
-	}
+.mark-container{
+    width:1000px;
+    position:relative;
+    z-index:2;
+    margin:0 auto;
+    /*padding:10px 30px;*/
+}
 
-	.content{
-		padding:15px;
-	}
+.maincontent{
+    position:relative;
+    z-index:2;
+}
 
-	.title-row{
-		width:100%;
-		margin-bottom:10px;
-	}
+/* Prevent breaking between pages */
+.print-block{
+    page-break-inside: avoid;
+    break-inside: avoid;
+	margin-bottom: 30px;
+}
 
-	.title-row td{
-		font-weight:bold;
-	}
+.slip{
+    border:1px solid #000;
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
 
-	.info-table{
-		width:100%;
-		margin-top:10px;
-	}
+.header{
+    border-bottom:1px solid #000;
+}
 
-	.info-table td{
-		padding:4px;
-	}
+.header img{
+    width:100%;
+    display:block;
+}
 
-	.message{
-		margin-top:15px;
-		line-height:1.6;
-	}
+.content{
+    padding:15px;
+}
 
-	.footer{
-		margin-top:40px;
-		width:100%;
-	}
+.title-row{
+    width:100%;
+    margin-bottom:10px;
+}
 
-	.footer td{
-		vertical-align:bottom;
-	}
+.title-row td{
+    font-weight:bold;
+}
 
-	.signature{
-		text-align:right;
-	}
+.info-table{
+    width:100%;
+    margin-top:10px;
+}
 
-	.signature img{
-		height:40px;
-	}
+.info-table td{
+    padding:4px;
+}
 
-	</style>
+.message{
+    margin-top:15px;
+    line-height:1.6;
+}
 
-	</head>
+.footer{
+    margin-top:40px;
+    width:100%;
+}
 
-	<body>
-		<div class="mark-container mb-5">
+.footer td{
+    vertical-align:bottom;
+}
+
+.signature{
+    text-align:right;
+}
+
+.signature img{
+    height:40px;
+}
+
+</style>
+
+</head>
+
+<body>
+	<div class="mark-container mb-5">
 		<div class="row maincontent">
 		<?php 
-		 //echo "<pre>";print_r($result);
-		 foreach($result as $val)
-		 {
-			 
-			$replace = [
-				'[old_balance]' => '<strong><u>Old Bal.</u></strong>',
-				'[amount]'      => '<strong><u>'.$val['amount'].'</u></strong>'
-			];
+		foreach($result as $val)
+		{
+		$replace = [
+			'[old_balance]' => '<strong><u>Old Bal.</u></strong>',
+			'[amount]' => '<strong><u>'.$val['amount'].'</u></strong>'
+		];
 		?>
-			<div class="col-sm-6">
+			<div class="col-sm-6 print-block">
 				<div class="slip">
 					<!-- HEADER IMAGE -->
-					<div class="header" style="border-bottom:1px solid #000;">
+					<div class="header">
 						<img src="<?php echo base_url('uploads/remind_letter/') ?><?php echo $val['header_image'] ?>" style="height:100px;width:100%">
 					</div>
+
 					<div class="content">
 						<table class="title-row">
 							<tr>
 								<td style="text-align:center;">BALANCE DUES</td>
-								<?php 
-								if($val['isdate'] == 1)
-								{
-								?>
-								<td style="text-align:right;">DATED: <strong><?php echo !empty($val['date']) ? date('d-M-y', strtotime($val['date'])) : ''; ?></strong></td>
-								<?php 
-								}
-								?>
+								<?php if($val['isdate'] == 1){ ?>
+								<td style="text-align:right;">
+									DATED: <strong>
+									<?php echo !empty($val['date']) ? date('d-M-y', strtotime($val['date'])) : ''; ?>
+									</strong>
+								</td>
+								<?php } ?>
 							</tr>
 						</table>
-						
+
 						<table class="info-table">
-							<?php
-							if($val['isuid'] == 1)
-							{
-							?>
+						<?php if($val['isuid'] == 1){ ?>
 							<tr>
 								<td width="120">UID . No.</td>
 								<td width="200"><strong><?php echo $val['uid_no'] ?></strong></td>
 							</tr>
-							<?php 
-							}
-							
-							if($val['isstudent'] == 1)
-							{
-							?>
+						<?php } ?>
+						<?php if($val['isstudent'] == 1){ ?>
 							<tr>
 								<td>Student's Name</td>
 								<td><strong><?php echo $val['student_name'] ?></strong></td>
 							</tr>
-							<?php 
-							}
-							
-							if($val['isfather'] == 1)
-							{
-							?>
+						<?php } ?>
+						<?php if($val['isfather'] == 1){ ?>
 							<tr>
 								<td>Father's Name</td>
 								<td><strong><?php echo $val['father_name'] ?></strong></td>
 							</tr>
-							<?php 
-							}
-							
-							if($val['isclass'] == 1)
-							{
-							?>
+						<?php } ?>
+						<?php if($val['isclass'] == 1){ ?>
 							<tr>
 								<td>Class:</td>
 								<td><strong><?php echo $val['class'] ?></strong></td>
 							</tr>
-							<?php 
-							}
-							?>
+						<?php } ?>
 						</table>
-
 						<div class="message">
 							<p>
 							Dear Parents / Guardians,
-							<?php 
-							if($val['isuphone'] == 1)
-							{
-							?>
-							<span style="float:right;">Ph. No: <strong><?php echo $val['phone'] ?></strong></span>
-							<?php 
-							}
-							?>
+							<?php if($val['isuphone'] == 1){ ?>
+							<span style="float:right;">
+							Ph. No: <strong><?php echo $val['phone'] ?></strong>
+							</span>
+							<?php } ?>
 							</p>
-
-							<!--<p>
-							This is to remind you that your ward fees due for the month(s) of 
-							<strong><u>Old Bal..</u></strong>
-							amounts to Rs.
-							<strong><u>1600.00</u></strong>.
-							Kindly Co - Operate and Pay immediately
-							</p>-->
-							<?php
-							echo strtr($val['description'], $replace);
-							?>
+							<?php echo strtr($val['description'], $replace); ?>
 						</div>
 
 						<table class="footer">
 							<tr>
 								<td>Thank You,</td>
-
-								<td class="signature"><br>
+								<td class="signature">
+								<br>
 								Principal
 								</td>
 							</tr>
 						</table>
-
 					</div>
 				</div>
 			</div>
-			<?php 
-			}
-			?>
-			<!--<div class="col-sm-6">
-				<div class="slip">
-					
-					<div class="header" style="border-bottom:1px solid #000;">
-						<img src="<?php echo base_url('uploads/reportcard/4e8d82361c0bd589e9a4d3915965c058.png') ?>" style="height:100px;width:100%">
-					</div>
-					<div class="content">
-						<table class="title-row">
-							<tr>
-								<td style="text-align:center;">BALANCE DUES</td>
-								<td style="text-align:right;">DATED: <strong>27-Feb-26</strong></td>
-							</tr>
-						</table>
-						
-						<table class="info-table">
-							<tr>
-								<td width="120">UID . No.</td>
-								<td width="200"><strong>896</strong></td>
-							</tr>
-							<tr>
-								<td>Student's Name</td>
-								<td><strong>YUVAN</strong></td>
-							</tr>
-							<tr>
-								<td>Father's Name</td>
-								<td><strong>SAHIL</strong></td>
-							</tr>
-							<tr>
-								<td>Class:</td>
-								<td><strong>1st - A</strong></td>
-							</tr>
-						</table>
-
-						<div class="message">
-							<p>
-							Dear Parents / Guardians,
-							<span style="float:right;">Ph. No: <strong>9253303795</strong></span>
-							</p>
-
-							<p>
-							This is to remind you that your ward fees due for the month(s) of 
-							<strong><u>Old Bal..</u></strong>
-							amounts to Rs.
-							<strong><u>1600.00</u></strong>.
-							Kindly Co - Operate and Pay immediately
-							</p>
-						</div>
-
-						<table class="footer">
-							<tr>
-								<td>Thank You,</td>
-
-								<td class="signature"><br>
-								Principal
-								</td>
-							</tr>
-						</table>
-
-					</div>
-				</div>
-			</div>-->
+		<?php } ?>
 		</div>
-		</div>
-	</body>
+	</div>
+</body>
 </html>
