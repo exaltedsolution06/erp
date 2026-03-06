@@ -1698,3 +1698,4 @@ $lang['with'] = 'with';
 $lang['dashboard'] = 'Dashboard';
 $lang['paymentdue_header_image'] = 'Header image';
 $lang['uid_no'] = 'UID. NO';
+$lang['remind_letter'] = 'Remind letter';

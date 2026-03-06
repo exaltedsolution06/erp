@@ -285,10 +285,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 								<form method="post" action="<?php echo base_url('report/printreminderletter') ?>" id="printreminderletter">
 								 <?php if(!empty($filters) and !empty($selectedMonths)){ ?>
 								 
-								<div class="row">
-									<div class="col-sm-3">
-																			
-										<label><?php echo $this->lang->line('report_card') . " " . $this->lang->line('template') ?></label><small class="req"> *</small>
+								<div class="row" style="margin-top:10px;margin-bottom:10px;padding-top:10px;padding-bottom:10px;border-top:1px solid #ccc;border-bottom:1px solid #ccc;">
+									<div class="col-sm-4">
+										<label><?php echo $this->lang->line('remind_letter') . " " . $this->lang->line('template') ?></label><small class="req"> *</small>
+									</div>
+									<div class="col-sm-4">
 										<select required id="reportcard" name="template_name" class="form-control" >
 											<option value=""><?php echo $this->lang->line('select'); ?></option>
 											<?php 
@@ -301,12 +302,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 											?>
 										</select>
 									</div>
-									<div class="col-sm-3">
-									<label></label> <br>  
-								     <button  class="btn btn-info btn-sm printSelected pull-right" type="submit" name="generate" title="generate multiple certificate"><?php echo $this->lang->line('generate'); ?></button>
+									
+									<div class="col-sm-4">
+										 <button  class="btn btn-info btn-sm printSelected pull-right" type="submit" name="generate" title="generate multiple certificate"><?php echo $this->lang->line('generate'); ?></button>
 									</div>
 								
-								</div> <br>
+								</div>
 								
 								 <?php } ?>
 								
