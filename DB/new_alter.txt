@@ -97,6 +97,8 @@ New folder -
 
 3) backend\themes\green
 
+4) uploads\remind_letter
+
 ===================================No required column table (optimize)===================================
 
 'exam_group_d' column not required in 'exam_group_class_batch_exams' table.
