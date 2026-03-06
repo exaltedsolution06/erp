@@ -99,6 +99,7 @@ New folder -
 
 4) uploads\remind_letter
 
+5) uploads\income
 ===================================No required column table (optimize)===================================
 
 'exam_group_d' column not required in 'exam_group_class_batch_exams' table.
