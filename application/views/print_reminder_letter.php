@@ -82,6 +82,11 @@
 		 //echo "<pre>";print_r($result);
 		 foreach($result as $val)
 		 {
+			 
+			$replace = [
+				'[old_balance]' => '<strong><u>'.$val['old_balc'].'</u></strong>',
+				'[amount]'      => '<strong><u>'.$val['amount'].'</u></strong>'
+			];
 		?>
 			<div class="col-sm-6">
 				<div class="slip">
@@ -161,13 +166,16 @@
 							?>
 							</p>
 
-							<p>
+							<!--<p>
 							This is to remind you that your ward fees due for the month(s) of 
 							<strong><u>Old Bal..</u></strong>
 							amounts to Rs.
 							<strong><u>1600.00</u></strong>.
 							Kindly Co - Operate and Pay immediately
-							</p>
+							</p>-->
+							<?php
+							echo strtr($val['description'], $replace);
+							?>
 						</div>
 
 						<table class="footer">
