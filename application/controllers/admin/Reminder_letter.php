@@ -267,13 +267,16 @@ class Reminder_letter extends Admin_Controller {
         if (!$this->rbac->hasPrivilege('reminder_letter', 'can_delete')) {
             access_denied();
         }
-        $data['title'] = 'Certificate List';
+        $data['title'] = 'Reminder letter List';
         $this->reminder_model->remove($id);
         $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('delete_message') . '</div>');
         redirect('admin/certificate/index');
     }
 
     public function view() {
+		 if (!$this->rbac->hasPrivilege('reminder_letter', 'can_view')) {
+            access_denied();
+        }
         $id = $this->input->post('certificateid');
         $output = '';
         $data = array();

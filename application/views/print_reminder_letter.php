@@ -84,7 +84,7 @@
 		 {
 			 
 			$replace = [
-				'[old_balance]' => '<strong><u>'.$val['old_balc'].'</u></strong>',
+				'[old_balance]' => '<strong><u>Old Bal.</u></strong>',
 				'[amount]'      => '<strong><u>'.$val['amount'].'</u></strong>'
 			];
 		?>

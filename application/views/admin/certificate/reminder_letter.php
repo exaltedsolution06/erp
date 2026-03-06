@@ -149,7 +149,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 <!-- left column -->
             <?php } ?>
             <div class="col-md-<?php
-            if ($this->rbac->hasPrivilege('student_certificate', 'can_add')) {
+            if ($this->rbac->hasPrivilege('reminder_letter', 'can_add')) {
                 echo "8";
             } else {
                 echo "12";
@@ -194,18 +194,22 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                 </td>
                                                 <td class="mailbox-date text-right no-print">
+													<?php
+                                                    if ($this->rbac->hasPrivilege('reminder_letter', 'can_view')) {
+                                                        ?>
                                                     <a data-placement="left" id="<?php echo $certificate->id ?>" class="btn btn-default btn-xs view_data" title="<?php echo $this->lang->line('view'); ?>">
                                                         <i class="fa fa-reorder"></i>
                                                     </a>
                                                     <?php
-                                                    if ($this->rbac->hasPrivilege('student_certificate', 'can_edit')) {
+													}
+                                                    if ($this->rbac->hasPrivilege('reminder_letter', 'can_edit')) {
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/Reminder_letter/edit/<?php echo $certificate->id ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
                                                         <?php
                                                     }
-                                                    if ($this->rbac->hasPrivilege('student_certificate', 'can_delete')) {
+                                                    if ($this->rbac->hasPrivilege('reminder_letter', 'can_delete')) {
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/Reminder_letter/delete/<?php echo $certificate->id ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>

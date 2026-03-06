@@ -79,7 +79,7 @@ class Reminder_model extends MY_Model {
         //=======================Code Start===========================
         $this->db->where('id', $id);
 		$this->db->where('session_id', $this->current_session);
-        $this->db->delete(' template_reminder_letter');
+        $this->db->delete('template_reminder_letter');
         $message = DELETE_RECORD_CONSTANT . " On  template reminder letter id " . $id;
         $action = "Delete";
         $record_id = $id;
