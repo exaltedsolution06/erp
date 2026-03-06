@@ -134,6 +134,7 @@ class Reminder_letter extends Admin_Controller {
         $data['title'] = 'Add Hostel';
         $data['id'] = $id;
         $editcertificate = $this->Reminder_model->get($id);
+		
 		//echo "<pre>";print_r($editcertificate[0]);die;
 		if(empty($editcertificate[0])){
 			redirect('admin/Reminder_letter/index');
@@ -216,6 +217,16 @@ class Reminder_letter extends Admin_Controller {
 						
 						'description' => $this->input->post('description'),
                     );
+					
+					//$path = 'uploads/remind_letter' . $editcertificate[0]->header_image;
+					if (!empty($editcertificate[0]->header_image)) {
+						$path = 'uploads/remind_letter/' . $editcertificate[0]->header_image;
+
+						if (is_file($path)) {
+							unlink($path);
+						}
+					}
+					
                 } else {
                     $picture = '';
                     $data = array(
