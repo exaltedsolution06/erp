@@ -21,7 +21,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
             <?php
-            if ($this->rbac->hasPrivilege('student_certificate', 'can_add')) {
+            if ($this->rbac->hasPrivilege('reminder_letter', 'can_add')) {
                 ?>
                 <div class="col-md-4">
                     <div class="box box-primary">
