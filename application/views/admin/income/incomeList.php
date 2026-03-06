@@ -34,7 +34,7 @@ $language_name = $language["short_code"];
                             <h3 class="box-title"><?php echo $this->lang->line('add_income'); ?></h3>
                         </div><!-- /.box-header -->
 
-                        <form id="form1" action="<?php echo base_url() ?>admin/income"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                        <form id="form1" action="<?php echo base_url() ?>admin/income/index"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                             <div class="box-body">
                                 <?php if ($this->session->flashdata('msg')) { ?>
                                     <?php echo $this->session->flashdata('msg') ?>
@@ -70,22 +70,22 @@ $language_name = $language["short_code"];
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('student'); ?></label>
 
-                                    <select autofocus="" id="inc_head_id" name="inc_head_id" class="form-control" >
+                                    <select autofocus="" id="student_id" name="student_id" class="form-control" >
                                         <option value=""><?php echo $this->lang->line('select'); ?></option>
                                         <?php
-                                        foreach ($incheadlist as $inchead) {
+                                        foreach ($student_list as $list) {
                                             ?>
-                                            <option value="<?php echo $inchead['id'] ?>"<?php
-                                            if (set_value('inc_head_id') == $inchead['id']) {
+                                            <option value="<?php echo $list['id'] ?>"<?php
+                                            if (set_value('student_id') == $list['id']) {
                                                 echo "selected = selected";
                                             }
-                                            ?>><?php echo $inchead['income_category'] ?></option>
+                                            ?>><?php echo $list['firstname'] ?></option>
 
                                             <?php
                                             //$count++;
                                         }
                                         ?>
-                                    </select><span class="text-danger"><?php echo form_error('inc_head_id'); ?></span>
+                                    </select><span class="text-danger"><?php echo form_error('student_id'); ?></span>
 
                                 </div>
 
@@ -150,8 +150,8 @@ $language_name = $language["short_code"];
                             <table class="table table-hover table-striped table-bordered example">
                                 <thead>
                                     <tr>
-                                        <th><?php echo $this->lang->line('name'); ?>
-                                        </th>
+                                        <!--<th><?php echo $this->lang->line('name'); ?>
+                                        </th>-->
                                         <th><?php echo $this->lang->line('invoice_no'); ?>
                                         </th>
                                         <th><?php echo $this->lang->line('date'); ?>
@@ -173,25 +173,9 @@ $language_name = $language["short_code"];
                                         foreach ($incomelist as $income) {
                                             ?>
                                             <tr>
+                                                
                                                 <td class="mailbox-name">
-                                                    <a href="#" data-toggle="popover" class="detail_popover"><?php echo $income['name'] ?></a>
-
-                                                    <div class="fee_detail_popover " style="display: none">
-                                                        <?php
-                                                        if ($income['note'] == "") {
-                                                            ?>
-                                                            <p class="text text-danger no-print"><?php echo $this->lang->line('no_description'); ?></p>
-                                                            <?php
-                                                        } else {
-                                                            ?>
-                                                            <p class="text text-info no-print" ><?php echo $income['note']; ?></p>
-                                                            <?php
-                                                        }
-                                                        ?>
-                                                    </div>
-                                                </td>
-                                                <td class="mailbox-name">
-                                                    <?php echo $income["invoice_no"]; ?>
+                                                    <?php echo $income["receipt_no"] == null ? $income["id"] : $income["receipt_no"]; ?>
                                                 </td>
                                                 <td class="mailbox-name">
                                                     <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($income['date'])) ?></td>
@@ -201,9 +185,7 @@ $language_name = $language["short_code"];
                                                     $income_head = $income['income_category'];
                                                     echo "$income_head";
                                                     ?>
-
-
-                                                </td>
+												</td>
 
                                                 <?php
                                                 $inc_head_id = $income['inc_head_id'];
