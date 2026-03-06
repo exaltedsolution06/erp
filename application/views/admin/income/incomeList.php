@@ -67,8 +67,29 @@ $language_name = $language["short_code"];
                                     </select><span class="text-danger"><?php echo form_error('inc_head_id'); ?></span>
 
                                 </div>
-
                                 <div class="form-group">
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('student'); ?></label>
+
+                                    <select autofocus="" id="inc_head_id" name="inc_head_id" class="form-control" >
+                                        <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                        <?php
+                                        foreach ($incheadlist as $inchead) {
+                                            ?>
+                                            <option value="<?php echo $inchead['id'] ?>"<?php
+                                            if (set_value('inc_head_id') == $inchead['id']) {
+                                                echo "selected = selected";
+                                            }
+                                            ?>><?php echo $inchead['income_category'] ?></option>
+
+                                            <?php
+                                            //$count++;
+                                        }
+                                        ?>
+                                    </select><span class="text-danger"><?php echo form_error('inc_head_id'); ?></span>
+
+                                </div>
+
+                                <!--<div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('name'); ?><small class="req"> *</small></label>
                                     <input id="name" name="name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('name'); ?>" />
                                     <span class="text-danger"><?php echo form_error('name'); ?></span>
@@ -77,7 +98,7 @@ $language_name = $language["short_code"];
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('invoice_no'); ?></label>
                                     <input id="invoice_no" name="invoice_no" placeholder="" type="text" class="form-control"  value="<?php echo set_value('invoice_no'); ?>" />
                                     <span class="text-danger"><?php echo form_error('invoice_no'); ?></span>
-                                </div>
+                                </div>-->
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('date'); ?><small class="req"> *</small></label>
                                     <input id="date" name="date" placeholder="" type="text" class="form-control date"  value="<?php echo set_value('date'); ?>" readonly="readonly" />
