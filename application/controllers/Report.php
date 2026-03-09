@@ -17,7 +17,10 @@ class Report extends Admin_Controller
         $this->sch_setting_detail = $this->setting_model->getSetting();
         $this->current_session = $this->setting_model->getCurrentSession();
         $this->current_date    = $this->setting_model->getDateYmd();
+		$this->load->model('Reminder_model');
 		$this->load->model('fee_discount_model');
+		$this->load->model('Student_model');
+		$this->load->model('Reminder_model');
     }
 
     public function pdfStudentFeeRecord()
@@ -1573,6 +1576,8 @@ class Report extends Admin_Controller
        
         $data['receipt_data'] = $this->Receipt_model->get_receipt_student($config['per_page'], $page,$selectedClasses,$selectedFeeCat,$selectedroutes);
         $data['pagination_links'] = $this->pagination->create_links();
+		
+		$data['reminder_letter_list'] = $this->Reminder_model->remindLetterList();
         // end paginate
         $this->load->view('layout/header', $data);
         $this->load->view('reports/defaulter_list', $data);
@@ -1590,6 +1595,58 @@ class Report extends Admin_Controller
         $this->load->view('reports/reminder_letter', $data);
         $this->load->view('layout/footer', $data);
     }
+	
+	public function printreminderletter() {
+		$data = array();
+		//echo "<pre>";print_r($this->input->post());die;
+		$template_id = $this->input->post('template_name');
+		$template_derails = $this->Reminder_model->get($template_id);
+		//echo "<pre>";print_r($template_derails); die;
+		$header_image = $template_derails[0]->header_image;
+		$description = $template_derails[0]->description;
+		//echo $header_image.' '.$description; die;
+		$result = [];
+		foreach($this->input->post('default_data') as $val)
+		{
+			$explode = explode("@@@", $val);
+			$student_id = $explode[0];
+			$old_balc = $explode[1];
+			$amount = $explode[2];
+			if(in_array($student_id, $this->input->post('exam_group_class_batch_exam_student_id')))
+			{
+				$student_details = $this->Student_model->get($student_id);
+				//echo "<pre>";print_r($student_details);die;
+				$result[] = [
+						'student_id' => $student_id,
+						'uid_no' => $student_details['admission_no'],
+						'student_name' => $student_details['firstname'].' '.$student_details['middlename'].' '.$student_details['lastname'],
+						'class' => $student_details['class'].'-'.$student_details['section'],
+						'father_name' => $student_details['father_name'],
+						'phone' => $student_details['mobileno'],
+						'date' => $student_details['admission_date'],
+						'old_balc' => $old_balc,
+						'amount' => $amount,
+						'header_image' => $header_image,
+						'description' => $description,
+						'isuid' => $template_derails[0]->uid_no,
+						'isstudent' => $template_derails[0]->student_name,
+						'isfather' => $template_derails[0]->father_name,
+						'isclass' => $template_derails[0]->class_section,
+						'isuphone' => $template_derails[0]->phone,
+						'isdate' => $template_derails[0]->date
+						
+				];
+			}
+		}
+		
+		//echo "<pre>";print_r($result);die;
+		$data['result'] = $result;
+		
+        $reminder_letter_cards = $this->load->view('print_reminder_letter', $data, true);
+		$array = array('status' => '1', 'error' => '', 'page' => $reminder_letter_cards);
+		echo json_encode($array);
+    }
+	
     public function incomegroup()
     {
 

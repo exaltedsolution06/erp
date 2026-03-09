@@ -34,7 +34,7 @@ $language_name = $language["short_code"];
                             <h3 class="box-title"><?php echo $this->lang->line('add_income'); ?></h3>
                         </div><!-- /.box-header -->
 
-                        <form id="form1" action="<?php echo base_url() ?>admin/income"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                        <form id="form1" action="<?php echo base_url() ?>admin/income/index"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                             <div class="box-body">
                                 <?php if ($this->session->flashdata('msg')) { ?>
                                     <?php echo $this->session->flashdata('msg') ?>
@@ -67,8 +67,29 @@ $language_name = $language["short_code"];
                                     </select><span class="text-danger"><?php echo form_error('inc_head_id'); ?></span>
 
                                 </div>
-
                                 <div class="form-group">
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('student'); ?></label>
+
+                                    <select autofocus="" id="student_id" name="student_id" class="form-control" >
+                                        <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                        <?php
+                                        foreach ($student_list as $list) {
+                                            ?>
+                                            <option value="<?php echo $list['id'] ?>"<?php
+                                            if (set_value('student_id') == $list['id']) {
+                                                echo "selected = selected";
+                                            }
+                                            ?>><?php echo $list['firstname'] ?></option>
+
+                                            <?php
+                                            //$count++;
+                                        }
+                                        ?>
+                                    </select><span class="text-danger"><?php echo form_error('student_id'); ?></span>
+
+                                </div>
+
+                                <!--<div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('name'); ?><small class="req"> *</small></label>
                                     <input id="name" name="name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('name'); ?>" />
                                     <span class="text-danger"><?php echo form_error('name'); ?></span>
@@ -77,7 +98,7 @@ $language_name = $language["short_code"];
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('invoice_no'); ?></label>
                                     <input id="invoice_no" name="invoice_no" placeholder="" type="text" class="form-control"  value="<?php echo set_value('invoice_no'); ?>" />
                                     <span class="text-danger"><?php echo form_error('invoice_no'); ?></span>
-                                </div>
+                                </div>-->
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('date'); ?><small class="req"> *</small></label>
                                     <input id="date" name="date" placeholder="" type="text" class="form-control date"  value="<?php echo set_value('date'); ?>" readonly="readonly" />
@@ -129,8 +150,8 @@ $language_name = $language["short_code"];
                             <table class="table table-hover table-striped table-bordered example">
                                 <thead>
                                     <tr>
-                                        <th><?php echo $this->lang->line('name'); ?>
-                                        </th>
+                                        <!--<th><?php echo $this->lang->line('name'); ?>
+                                        </th>-->
                                         <th><?php echo $this->lang->line('invoice_no'); ?>
                                         </th>
                                         <th><?php echo $this->lang->line('date'); ?>
@@ -152,37 +173,19 @@ $language_name = $language["short_code"];
                                         foreach ($incomelist as $income) {
                                             ?>
                                             <tr>
+                                                
                                                 <td class="mailbox-name">
-                                                    <a href="#" data-toggle="popover" class="detail_popover"><?php echo $income['name'] ?></a>
-
-                                                    <div class="fee_detail_popover " style="display: none">
-                                                        <?php
-                                                        if ($income['note'] == "") {
-                                                            ?>
-                                                            <p class="text text-danger no-print"><?php echo $this->lang->line('no_description'); ?></p>
-                                                            <?php
-                                                        } else {
-                                                            ?>
-                                                            <p class="text text-info no-print" ><?php echo $income['note']; ?></p>
-                                                            <?php
-                                                        }
-                                                        ?>
-                                                    </div>
+                                                    <?php echo $income["receipt_no"] == null ? $income["id"] : $income["receipt_no"]; ?>
                                                 </td>
                                                 <td class="mailbox-name">
-                                                    <?php echo $income["invoice_no"]; ?>
-                                                </td>
-                                                <td class="mailbox-name">
-                                                    <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($income['date'])) ?></td>
+                                                    <?php echo date('d-m-Y', strtotime($income['date'])); ?></td>
 
                                                 <td class="mailbox-name">
                                                     <?php
                                                     $income_head = $income['income_category'];
                                                     echo "$income_head";
                                                     ?>
-
-
-                                                </td>
+												</td>
 
                                                 <?php
                                                 $inc_head_id = $income['inc_head_id'];
@@ -201,18 +204,27 @@ $language_name = $language["short_code"];
 
                                                     <?php
                                                     if ($this->rbac->hasPrivilege('add_income', 'can_edit')) {
+														if($income["receipt_no"] == null)
+														{
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/income/edit/<?php echo $income['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
-                                                    <?php } ?>
+                                                    <?php 
+														}
+													} ?>
                                                     <?php
                                                     if ($this->rbac->hasPrivilege('add_income', 'can_delete')) {
+														
+														if($income["receipt_no"] == null)
+														{
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/income/delete/<?php echo $income['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>
                                                         </a>
-                                                    <?php } ?>
+                                                    <?php 
+														}
+													} ?>
                                                 </td>
                                             </tr>
                                             <?php

@@ -1302,7 +1302,7 @@ class Cron extends CI_Controller
 				echo 'yes'; 
 			}
 		}
-        echo "<pre>";print_r($sectionArr);die;
+        //echo "<pre>";print_r($sectionArr);die;
         
     }
 	function student_fees_balance($id='', $current_session_id='')

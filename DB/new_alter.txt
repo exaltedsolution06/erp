@@ -97,6 +97,9 @@ New folder -
 
 3) backend\themes\green
 
+4) uploads\remind_letter
+
+5) uploads\income
 ===================================No required column table (optimize)===================================
 
 'exam_group_d' column not required in 'exam_group_class_batch_exams' table.
@@ -106,3 +109,36 @@ ALTER TABLE `sch_settings` ADD `rcpt_mother` TINYINT(1) NOT NULL DEFAULT '1' AFT
 
 ALTER TABLE `sch_settings` ADD `rcpt_address` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mobile_no`;
 
+=================================05-03-2026=================================
+CREATE TABLE `template_reminder_letter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `session_id` int(11) DEFAULT NULL,
+  `template_name` text NOT NULL,
+  `uid_no` tinyint(1) NOT NULL DEFAULT 0,
+  `student_name` tinyint(1) NOT NULL DEFAULT 0,
+  `father_name` tinyint(1) NOT NULL DEFAULT 0,
+  `class_section` tinyint(1) NOT NULL DEFAULT 0,
+  `phone` tinyint(1) NOT NULL DEFAULT 0,
+  `date` tinyint(1) NOT NULL DEFAULT 0,
+  `header_image` varchar(225) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+=================================06-03-2026=================================
+CREATE TABLE `balance_sheets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `session_id` int(11) DEFAULT NULL,
+  `balance_type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0=Income, 1=Expense',
+  `student_id` int(11) DEFAULT NULL,
+  `receipt_no` varchar(255) DEFAULT NULL,
+  `staff_id` int(11) DEFAULT NULL,
+  `head_id` int(11) NOT NULL,
+  `amount` decimal(10,2) DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `attatchment` varchar(200) DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0=Active, 1=Delete',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci

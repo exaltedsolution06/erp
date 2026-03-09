@@ -13,20 +13,21 @@ class Modulepermission extends Public_Controller
 
     public function index()
     {
-		/*$truncate_permission_group = "TRUNCATE TABLE `permission_group`";
+		$truncate_permission_group = "TRUNCATE TABLE `permission_group`";
 		$truncate_permission_group_sql = $this->db->query($truncate_permission_group);
 		
 		$truncate_permission_category = "TRUNCATE TABLE `permission_category`";
 		$truncate_permission_category_sql = $this->db->query($truncate_permission_category);
 		
 		$truncate_roles_permissions = "TRUNCATE TABLE `roles_permissions`";
-		$truncate_roles_permissions_sql = $this->db->query($truncate_roles_permissions);*/
+		$truncate_roles_permissions_sql = $this->db->query($truncate_roles_permissions);
 		
 		$modules = [
 			[
 				'module' => 'Software Subscription',
 				'links' => [
 					['name' => 'Package List', 			'short_code' => 'package_list', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'Quick Session Change', 			'short_code' => 'quick_session_change', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'School Registration', 	'short_code' => 'school_registration', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Subscription Details', 	'short_code' => 'subscription_details', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Invoice Details', 		'short_code' => 'invoice_details', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
@@ -81,7 +82,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'New Admission', 		'short_code' => 'new_admission', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Import Admission', 		'short_code' => 'import_admission', 'add' => true, 'view' => false, 'edit' => false, 'delete' => false],
 					['name' => 'Online Admission', 		'short_code' => 'online_admission', 'add' => false, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Student Full Details', 	'short_code' => 'student_full_details', 'add' => false, 'view' => true, 'edit' => true, 'delete' => true],
+					['name' => 'Student Full Details', 	'short_code' => 'student_full_details', 'add' => false, 'view' => true, 'edit' => true, 'delete' => false],
 					['name' => 'Discountinue Students', 'short_code' => 'discountinue_students', 'add' => true, 'view' => true, 'edit' => true, 'delete' => false],
 					['name' => 'Bulk Delete', 			'short_code' => 'bulk_delete', 'add' => false, 'view' => true, 'edit' => false, 'delete' => true],
 					['name' => 'Student Timeline', 		'short_code' => 'student_timeline', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
@@ -98,7 +99,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Fee Register',       'short_code' => 'fee_register', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Fee Card',           'short_code' => 'fee_card', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Defaulter List',     'short_code' => 'defaulter_list', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
-					['name' => 'Reminder Letter',    'short_code' => 'reminder_letter', 'add' => true,  'view' => true,  'edit' => false, 'delete' => false],
+					['name' => 'Reminder Letter',    'short_code' => 'reminder_letter', 'add' => true,  'view' => true,  'edit' => true, 'delete' => true],
 					['name' => 'Delete Fee List',    'short_code' => 'delete_fee_list', 'add' => false, 'view' => true,  'edit' => true, 'delete' => true],
 					['name' => 'Search Fee Slip',    'short_code' => 'search_fee_slip', 'add' => false, 'view' => true,  'edit' => false, 'delete' => false],
 					['name' => 'Student Ledger',     'short_code' => 'student_ledger', 'add' => false,  'view' => true,  'edit' => false,  'delete' => false],
@@ -272,12 +273,12 @@ class Modulepermission extends Public_Controller
 				'links' => [
 					['name' => 'Front Web Settings',  'short_code' => 'front_cms_setting', 'add' => false, 'view' => true, 'edit' => true, 'delete' => false],
 					['name' => 'Add Webs Links',  'short_code' => 'add_webs_links', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Add Sub-Links',   'short_code' => 'add_sub_links', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					// ['name' => 'Add Sub-Links',   'short_code' => 'add_sub_links', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Media Manager',   'short_code' => 'media_manager', 'add' => true, 'view' => true, 'edit' => false, 'delete' => true],
 					['name' => 'Banner Image',    'short_code' => 'banner_image', 'add' => true, 'view' => true, 'edit' => false, 'delete' => true],
-					['name' => 'Gallery Image',   'short_code' => 'gallery_image', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Events',          'short_code' => 'events', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'New Updates',     'short_code' => 'new_updates', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					// ['name' => 'Gallery Image',   'short_code' => 'gallery_image', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					// ['name' => 'Events',          'short_code' => 'events', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					// ['name' => 'New Updates',     'short_code' => 'new_updates', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
 			[

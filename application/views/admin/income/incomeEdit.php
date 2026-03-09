@@ -34,7 +34,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     echo "<div class='alert alert-danger'>" . $error_message . "</div>";
                                 }
                                 ?>   
-                                <?php echo $this->customlib->getCSRF(); ?>                       
+                                <?php echo $this->customlib->getCSRF(); ?>         
+								<input type="hidden" name="id" value="<?php echo $income['id'] ;?>">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('income_head'); ?></label>
                                     <select autofocus="" id="inc_head_id" name="inc_head_id" class="form-control" >
@@ -43,7 +44,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         foreach ($incheadlist as $inchead) {
                                             ?>
                                             <option value="<?php echo $inchead['id'] ?>"<?php
-                                            if ($income['inc_head_id'] == $inchead['id']) {
+                                            if ($income['head_id'] == $inchead['id']) {
                                                 echo "selected =selected";
                                             }
                                             ?>><?php echo $inchead['income_category'] ?></option>
@@ -55,18 +56,29 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <span class="text-danger"><?php echo form_error('inc_head_id'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('name'); ?><small class="req"> *</small></label>
-                                    <input id="name" name="name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('name', $income['name']); ?>" />
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('student'); ?><small class="req"> *</small></label>
+                                    <select autofocus="" id="student_id" name="student_id" class="form-control" >
+                                        <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                        <?php
+                                        foreach ($student_list as $list) {
+                                            ?>
+                                            <option value="<?php echo $list['id'] ?>"<?php
+                                            if ($income['student_id'] == $list['id']) {
+                                                echo "selected = selected";
+                                            }
+                                            ?>><?php echo $list['firstname'] ?></option>
+
+                                            <?php
+                                            //$count++;
+                                        }
+                                        ?>
+                                    </select>
                                     <span class="text-danger"><?php echo form_error('name'); ?></span>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('invoice_no'); ?></label>
-                                    <input id="invoice_no" name="invoice_no" placeholder="" type="text" class="form-control"  value="<?php echo set_value('invoice_no', $income['invoice_no']); ?>" />
-                                    <span class="text-danger"><?php echo form_error('invoice_no'); ?></span>
-                                </div>
+                                
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('date'); ?><small class="req"> *</small></label>
-                                    <input id="date" name="date" placeholder="" type="text" class="form-control date"  value="<?php echo set_value('date', date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($income['date']))); ?>" readonly="readonly" />
+                                    <input id="date" name="date" placeholder="" type="text" class="form-control date"  value="<?php echo date('d-m-Y', strtotime($income['date'])); ?>" readonly="readonly" />
                                     <span class="text-danger"><?php echo form_error('date'); ?></span>
                                 </div>
                                 <div class="form-group">
@@ -81,7 +93,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('description'); ?></label>
-                                    <textarea class="form-control" id="description" name="description" placeholder="" rows="3" placeholder="Enter ..."><?php echo set_value('description'); ?><?php echo set_value('description', $income['note']) ?></textarea>
+                                    <textarea class="form-control" id="description" name="description" placeholder="" rows="3" placeholder="Enter ..."><?php echo $income['description']; ?></textarea>
                                     <span class="text-danger"><?php echo form_error('description'); ?></span>
                                 </div>
                             </div><!-- /.box-body -->
@@ -115,8 +127,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <table class="table table-hover table-striped table-bordered example">
                                 <thead>
                                     <tr>
-                                        <th><?php echo $this->lang->line('name'); ?>
-                                        </th>
                                         <th><?php echo $this->lang->line('invoice_no'); ?>
                                         </th>
                                         <th><?php echo $this->lang->line('date'); ?>
@@ -138,28 +148,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         foreach ($incomelist as $income) {
                                             ?>
                                             <tr>
+                                                
                                                 <td class="mailbox-name">
-                                                    <a href="#" data-toggle="popover" class="detail_popover"><?php echo $income['name'] ?></a>
-
-                                                    <div class="fee_detail_popover" style="display: none">
-                                                        <?php
-                                                        if ($income['note'] == "") {
-                                                            ?>
-                                                            <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
-                                                            <?php
-                                                        } else {
-                                                            ?>
-                                                            <p class="text text-info"><?php echo $income['note']; ?></p>
-                                                            <?php
-                                                        }
-                                                        ?>
-                                                    </div>
+                                                     <?php echo $income["receipt_no"] == null ? $income["id"] : $income["receipt_no"]; ?>
                                                 </td>
                                                 <td class="mailbox-name">
-                                                    <?php echo $income["invoice_no"]; ?>
-                                                </td>
-                                                <td class="mailbox-name">
-                                                    <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($income['date'])) ?></td>
+                                                     <?php echo date('d-m-Y', strtotime($income['date'])); ?></td>
 
                                                 <td class="mailbox-name">
                                                     <?php
@@ -187,18 +181,28 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                     <?php
                                                     if ($this->rbac->hasPrivilege('add_income', 'can_edit')) {
+														
+														if($income["receipt_no"] == null)
+														{
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/income/edit/<?php echo $income['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
-                                                    <?php } ?>
+                                                    <?php 
+														}
+													} ?>
                                                     <?php
                                                     if ($this->rbac->hasPrivilege('add_income', 'can_delete')) {
+														
+														if($income["receipt_no"] == null)
+														{
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/income/delete/<?php echo $income['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                             <i class="fa fa-remove"></i>
                                                         </a>
-                                                    <?php } ?>
+                                                    <?php 
+														}
+													} ?>
                                                 </td>
                                             </tr>
                                             <?php

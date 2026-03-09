@@ -24,7 +24,8 @@ class Studentfee extends Admin_Controller
     public function saveFee(){
 
         $data = $this->input->post(); 
-        //echo "<pre>";print_r($data);die;receipt_sr_no
+		
+        //echo "<pre>";print_r($data);die;
 		//echo $current_session_id = $this->current_session;die;
        
         if (empty($data['receipt_no']) || empty($data['student_id'])) {
@@ -48,7 +49,7 @@ class Studentfee extends Admin_Controller
                         $fee_head = $data['fee_head'][$key];
 
                         // Check if the combination of student_id, month, and fee_head_type already exists
-                        $existing_entry = $this->Receipt_model->check_existing_entry($student_id, $month, $fee_head_type,$fee_head);
+                        $existing_entry = $this->Receipt_model->check_existing_entry($student_id, $month, $fee_head_type,$fee_head,$this->current_session);
 
                         if ($existing_entry) {
                             // If exists, return an error
@@ -99,6 +100,19 @@ class Studentfee extends Admin_Controller
                     }
                 }
             }
+			
+			// insert into balance_sheets table 
+			$balance_sheet = array(
+				'session_id'   =>  $this->current_session,
+				'balance_type'   => 0,
+				'student_id'   => $data['student_id'],
+				'receipt_no'   => $data['receipt_no'],
+				'amount'   => $data['receipt_amt'],
+				'date'   => date('Y-m-d H:i:s'),
+			);
+			
+			$this->Receipt_model->insert_balance_sheet($balance_sheet);
+			
 			// die;
             // $data['balance_amt']
             $this->Receipt_model->update_student($data['student_id'],$data['balance_amt']);
@@ -171,6 +185,19 @@ class Studentfee extends Admin_Controller
 			}
 			
 			$this->setting_model->insert_receipt_sr_no($receipt_sr_no, $current_session_id);
+			
+			
+			// insert into balance_sheets table 
+			$balance_sheet = array(
+				'session_id'   =>  $this->current_session,
+				'balance_type'   => 0,
+				'student_id'   => $data['student_id'],
+				'receipt_no'   => $data['receipt_no'],
+				'amount'   => $data['ledger_amt'],
+				'date'   => date('Y-m-d H:i:s'),
+			);
+			
+			$this->Receipt_model->insert_balance_sheet($balance_sheet);
 		}
 
 
@@ -191,7 +218,9 @@ class Studentfee extends Admin_Controller
             return;
         }
 		
-		$this->Receipt_model->delete_receipts_by_receipt_no($data['receipt_no']);
+		//echo "<pre>";print_r($data);die;
+		
+		//$this->Receipt_model->delete_receipts_by_receipt_no($data['receipt_no']);
 		
         $last_id=[];
         if(!empty($data['pay'][0])){            
@@ -207,7 +236,9 @@ class Studentfee extends Admin_Controller
                         $fee_head = $data['fee_head'][$key];
 
                         // Check if the combination of student_id, month, and fee_head_type already exists
-                        $existing_entry = $this->Receipt_model->check_existing_entry($student_id, $month, $fee_head_type,$fee_head);
+                        $existing_entry = $this->Receipt_model->check_existing_entry($student_id, $month, $fee_head_type,$fee_head,$this->current_session);
+						
+						//die;
 
                         if ($existing_entry) {
                             // If exists, return an error
@@ -216,6 +247,18 @@ class Studentfee extends Admin_Controller
                             $this->session->set_flashdata('msg', '<div class="alert alert-danger  text-center">This record already exists</div>');
                             redirect('studentfee/edit/'.base64_encode($data['receipt_no']));
                         }
+						
+						if($keys == 0)
+						{
+							$this->Receipt_model->delete_receipts_by_receipt_no($data['receipt_no']);
+						}
+						
+						/*$searchArr['receipt_no'] = $data['receipt_no'];
+						$searchArr['student_id'] = $data['student_id'];
+						$searchArr['months'] = $month;
+						$searchArr['fee_head'] = $fee_head;
+						$searchArr['fee_head_type'] = $fee_head_type;
+						$this->Receipt_model->delete_receipts_by_receipt_no_months($searchArr);*/
 
                         $insert_data = array(
                             'receipt_no'   => $data['receipt_no'],
@@ -260,8 +303,21 @@ class Studentfee extends Admin_Controller
             // die;
             // $data['balance_amt']
             $this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt']));
+			
+			// insert into balance_sheets table 
+			$balance_sheet = array(
+				'session_id'   =>  $this->current_session,
+				'balance_type'   => 0,
+				'student_id'   => $data['student_id'],
+				'receipt_no'   => $data['receipt_no'],
+				'amount'   => $data['receipt_amt'],
+				'date'   => date('Y-m-d H:i:s'),
+			);
+			
+			$this->Receipt_model->insert_balance_sheet($balance_sheet);
             //$this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt'] - $data['prev_balance_amt']));
         }else{
+			$this->Receipt_model->delete_receipts_by_receipt_no($data['receipt_no']);
             $insert_data = array(
                 'receipt_no'   => $data['receipt_no'],
                 'student_id'   => $data['student_id'],
@@ -293,6 +349,19 @@ class Studentfee extends Admin_Controller
 			$id=$this->Receipt_model->insert_receipt($insert_data); 
             array_push($last_id,$id);
             $this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt']));
+			
+			
+			// insert into balance_sheets table 
+			$balance_sheet = array(
+				'session_id'   =>  $this->current_session,
+				'balance_type'   => 0,
+				'student_id'   => $data['student_id'],
+				'receipt_no'   => $data['receipt_no'],
+				'amount'   => $data['ledger_amt'],
+				'date'   => date('Y-m-d H:i:s'),
+			);
+			
+			$this->Receipt_model->insert_balance_sheet($balance_sheet);
             //$this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt'] - $data['prev_balance_amt']));
         }
         $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Fees Edited successfully</div>');
@@ -1276,7 +1345,7 @@ class Studentfee extends Admin_Controller
             access_denied();
         }
 		$receipt_no = base64_decode($receipt_no);
-        
+        //echo $receipt_no;die;
 		$receiptArr=$this->Receipt_model->get_receipts_by_receipt_no($receipt_no);
 		//echo '<pre>'; print_r($receiptArr);echo '</pre>';die;
 		$id = $receiptArr[0]['back_id'];
@@ -2145,6 +2214,10 @@ class Studentfee extends Admin_Controller
 
             //$this->session->set_flashdata('success', 'Receipts with Receipt No: ' . $receipt_no . ' backed up and deleted successfully.');
 			
+			// edit balance_sheet table 
+			$balcSheetArr = array('receipt_no'=> $receipt_no, 'status'=> 1);
+			$this->Receipt_model->update_balc_sheet_status($balcSheetArr);
+			
 			$this->session->set_flashdata('success', '<div class="alert alert-success text-center">Receipts with Receipt No: ' . $receipt_no . ' backed up and deleted successfully.</div>');
 			
             redirect('studentfee/studentfeelist');
@@ -2371,6 +2444,9 @@ class Studentfee extends Admin_Controller
 			// Step 3: Delete from original receipts table
             $this->Receipt_model->receipt_no_delete_from_delete_receipts($receipt_no);
 			
+			// edit balance_sheet table 
+			$balcSheetArr = array('receipt_no'=> $receipt_no, 'status'=> 0);
+			$this->Receipt_model->update_balc_sheet_status($balcSheetArr);
 			
 			
 			$this->session->set_flashdata('success', '<div class="alert alert-success text-center">Receipts with Receipt No: ' . $receipt_no . ' retrived successfully.</div>');
@@ -2390,6 +2466,10 @@ class Studentfee extends Admin_Controller
 			$explode_receipt = explode('/', $receipt_no);
 			$receipt_sr_no = end($explode_receipt);
 			$this->Receipt_model->receipt_no_permanent_delete_status($receipt_sr_no);
+			
+			
+			// parmanant delete balance_sheet table
+			$this->Receipt_model->delete_balance_sheet($receipt_no);
 			
 			
 			$this->session->set_flashdata('success', '<div class="alert alert-success text-center">Receipts with Receipt No: ' . $receipt_no . ' deleted successfully.</div>');
