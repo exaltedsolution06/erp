@@ -212,5 +212,31 @@ class Expense_model extends MY_Model
         $query = $this->db->query($query);
         return $query->row();
     }
+	
+	 public function search_all_report($text = null, $start_date = null, $end_date = null)
+    {
+        if (!empty($text)) {
+            $this->db->select('balance_sheets.*, expense_head.exp_category')->from('balance_sheets');
+            $this->db->join('expense_head', 'expense_head.id = balance_sheets.head_id', 'left');
+			$this->db->join('staff', 'staff.id = balance_sheets.staff_id', 'left');
+			$this->db->where('balance_sheets.session_id', $this->current_session);
+            $this->db->like('staff.name', $text);
+			$this->db->where('balance_sheets.status', 0);
+			//$this->db->where('balance_sheets.balance_type', 1);
+            $query = $this->db->get();
+            return $query->result_array();
+        } else {
+			
+            $this->db->select('balance_sheets.*, expense_head.exp_category')->from('balance_sheets');
+            $this->db->join('expense_head', 'expense_head.id = balance_sheets.head_id', 'left');
+            $this->db->where('balance_sheets.date >=', $start_date);
+            $this->db->where('balance_sheets.date <=', $end_date);
+			$this->db->where('balance_sheets.session_id', $this->current_session);
+			$this->db->where('balance_sheets.status', 0);
+			//$this->db->where('balance_sheets.balance_type', 1);
+            $query = $this->db->get();
+            return $query->result_array();
+        }
+    }
 
 }

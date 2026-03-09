@@ -22,7 +22,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
-                                    <form role="form" action="<?php echo site_url('admin/expense/expenseSearch') ?>" method="post" class="">
+                                    <form role="form" action="<?php echo site_url('admin/expense/all_report') ?>" method="post" class="">
                                         <?php echo $this->customlib->getCSRF(); ?>
                                         <div class="col-sm-6 col-md-6">
                                             <div class="form-group">
@@ -90,15 +90,19 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <table class="table table-striped table-bordered table-hover example">
                                         <thead>
                                             <tr>
-                                               <th><?php echo $this->lang->line('invoice_no'); ?>
-												</th>
-												<th><?php echo $this->lang->line('staff'); ?>
-												</th>
-												<th><?php echo $this->lang->line('expense_head'); ?>
+												<th><?php echo $this->lang->line('invoice_no'); ?>
 												</th>
 												<th><?php echo $this->lang->line('date'); ?>
 												</th>
-                                                <th class="text-right"><?php echo $this->lang->line('amount'); ?> <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>
+                                               <th><?php echo $this->lang->line('credit'); ?>
+												</th>
+												<th><?php echo $this->lang->line('debit'); ?>
+												</th>
+												<th><?php echo $this->lang->line('balance'); ?>
+												</th>
+												<th><?php echo $this->lang->line('description'); ?>
+												</th>
+                                                <!--<th class="text-right"><?php echo $this->lang->line('amount'); ?> <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>-->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -119,20 +123,60 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             foreach ($resultList as $key => $value) {
                                                 $grand_total = $grand_total + $value['amount'];
 												
-												$staffDetls = $this->staff_model->get($value['staff_id']);
-                                                ?>
+												$credit = '';
+												$debit  = '';
+												$forby = '';
+
+												if ($value['balance_type'] == 0) {
+													$invoice_no = $value['receipt_no'];
+													$credit = $value['amount'];
+													$balance += $value['amount'];
+													
+													
+													//$this->load->model('Student_model');
+													if($value['student_id'] !='')
+													{
+														$students = $this->student_model->get($value['student_id']);
+														$forby = 'Credited by '.$students['firstname'].' (Student)';
+														
+														if($value['description']!='')
+														{
+															 $forby .= ' ('. $value['description'].')';
+														}
+													}
+													else{
+														$forby = $value['description'];
+													}
+													
+												} elseif ($value['balance_type'] == 1) {
+													$invoice_no = $value['id'];
+													$debit = $value['amount'];
+													$balance -= $value['amount'];
+													
+													if($value['staff_id'] !='')
+													{
+														$staffDetls = $this->staff_model->get($value['staff_id']);
+														
+														$forby = 'Debited by '.$staffDetls['name'].' ('.$staffDetls['user_type'].')';
+														
+														if($value['description'] != '')
+														{
+															 $forby .= ' ('. $value['description'].')';
+														}
+														
+													}
+													else{
+														$forby = $value['description'];
+													}
+												}
+												?>
                                                 <tr>
-                                                   
-                                                    <td><?php echo $value['id']; ?></td>
-													<td class="mailbox-name"><?php echo $staffDetls['name'] .' ('.$staffDetls['user_type'] .')'; ?></td>
-													
-													<td><?php echo $value['exp_category'] ?></td>
-													
-													 <td class="mailbox-name">
-                                                    <?php echo date('d-m-Y', strtotime($value['date'])) ?></td>
-													
-                                                    
-													<td class="pull-right"><?php echo ($value['amount']); ?>  </td>
+                                                    <td><?php echo $invoice_no; ?></td>
+                                                    <td><?php echo date('d-m-Y', strtotime($value['date'])) ?></td>
+                                                    <td><?php echo $credit; ?></td>
+													<td><?php echo $debit; ?></td>
+													<td><?php echo $balance; ?></td>
+													<td><?php echo $forby; ?></td>
                                                 </tr>
                                                 <?php
                                                 $count++;
@@ -143,9 +187,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td class="pull-right text-bold"><?php echo $this->lang->line('grand_total'); ?> : <?php echo ($currency_symbol . number_format($grand_total, 2, '.', '')); ?>
+                                                <td class="pull-right text-bold"><?php echo $this->lang->line('closing_balance'); ?> : <?php echo ($currency_symbol . number_format($grand_total, 2, '.', '')); ?>
 
                                                 </td>
+												<td></td>
                                             </tr>
                                             <?php
                                         }

@@ -355,5 +355,75 @@ class Expense extends Admin_Controller
             $this->load->view('layout/footer', $data);
        
     }
+	
+	public function all_report()
+	{
+		if (!$this->rbac->hasPrivilege('income_expense_report', 'can_view')) {
+            access_denied();
+        }
+		
+		$data['searchlist']  = $this->customlib->get_searchtype();
+		$data['search_type'] = '';
+        $this->session->set_userdata('top_menu', 'Expenses');
+        $this->session->set_userdata('sub_menu', 'expense/all_report');
+        $data['title'] = 'Search Expense';
+		
+		$search = $this->input->post('search');
+		
+		if ($search == "search_filter") {
+			 $this->form_validation->set_rules('search_type', $this->lang->line('search')." ".$this->lang->line('type'), 'trim|required|xss_clean');
+			if ($this->form_validation->run() == false) {
+
+			} else {
+
+				 $search              = $this->input->post('search_type');
+			$data['search_type'] = $_POST['search_type'];
+
+			if (isset($_POST['search_type']) && $_POST['search_type'] != '') {
+
+				if ($_POST['search_type'] == 'all') {
+
+					$dates = $this->customlib->get_betweendate('this_year');
+				} else {
+					$dates = $this->customlib->get_betweendate($_POST['search_type']);
+				}
+			} else {
+				$dates               = $this->customlib->get_betweendate('this_year');
+				$data['search_type'] = '';
+			}
+			
+			$dateformat = $this->customlib->getSchoolDateFormat();
+
+			$date_from         = date('Y-m-d', strtotime($dates['from_date']));
+			$date_to           = date('Y-m-d', strtotime($dates['to_date']));
+			$data['exp_title'] = 'Expense Result From ' . date($dateformat, strtotime($date_from)) . " To " . date($dateformat, strtotime($date_to));
+			$date_from         = date('Y-m-d', $this->customlib->dateYYYYMMDDtoStrtotime($date_from));
+			$date_to           = date('Y-m-d', $this->customlib->dateYYYYMMDDtoStrtotime($date_to));
+
+			$resultList         = $this->expense_model->search_all_report("", $date_from, $date_to);
+			$data['resultList'] = $resultList;
+			}
+			//echo "<pre>";print_r($resultList);die;
+
+		   
+		} else {
+			$data['exp_title'] = 'Expense Result';
+			$this->form_validation->set_rules('search_text', $this->lang->line('search_text'), 'trim|required|xss_clean');
+			if ($this->form_validation->run() == false) {
+
+			} else {
+
+				$search_text        = $this->input->post('search_text');
+				$resultList         = $this->expense_model->search($search_text, "", "");
+				$data['resultList'] = $resultList;
+			}
+		}
+		
+		
+		
+		$this->load->view('layout/header', $data);
+        $this->load->view('admin/incomeexpensereport/incomeexpenseSearch', $data);
+        $this->load->view('layout/footer', $data);
+	}
 
 }

@@ -1313,7 +1313,8 @@
                     $this->rbac->hasPrivilege('stock_management', 'can_view') ||
                     $this->rbac->hasPrivilege('set_transport', 'can_view') ||
                     $this->rbac->hasPrivilege('user_log', 'can_view') ||
-                    $this->rbac->hasPrivilege('audit_trail_report', 'can_view')
+                    $this->rbac->hasPrivilege('audit_trail_report', 'can_view') ||
+                    $this->rbac->hasPrivilege('income_expense_report', 'can_view')
                 ) {
 					//$CI = get_instance();
 					//$session_sub_menu = $CI->session->userdata('sub_menu');
@@ -1332,6 +1333,7 @@
 						|| set_Submenu('Reports/attendance')
 						|| set_Submenu('Reports/finance')
 						|| set_Submenu('Reports/student_information')
+						|| set_Submenu('expense/all_report')
 					){
 						$activeOrMenu="active";
 					}
@@ -1366,7 +1368,13 @@
                                 <li class="<?php echo set_Submenu('Reports/userlog'); ?>"><a href="<?php echo base_url(); ?>admin/userlog"><i class="fa fa-angle-double-right"></i> User Log</a></li>
                             <?php } if ($this->rbac->hasPrivilege('audit_trail_report', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('audit/index'); ?>"><a href="<?php echo base_url(); ?>admin/audit"><i class="fa fa-angle-double-right"></i> Audit Trail Report</a></li>
-                            <?php } ?>
+                            <?php }
+							 if ($this->rbac->hasPrivilege('income_expense_report', 'can_view')) { ?>
+							 <li class="<?php echo set_Submenu('expense/all_report'); ?>"><a href="<?php echo base_url(); ?>admin/expense/all_report"><i class="fa fa-angle-double-right"></i> Income Expense Report</a></li>
+							 <?php 
+							 }
+							 ?>
+							
                         </ul>
                     </li>
                     <?php

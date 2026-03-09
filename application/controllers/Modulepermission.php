@@ -334,6 +334,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Transport Section',     'short_code' => 'transport_section', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],*/
 					['name' => 'User Log',               'short_code' => 'user_log', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Audit Trail Report',    'short_code' => 'audit_trail_report', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'Income Expense Report',    'short_code' => 'income_expense_report', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
