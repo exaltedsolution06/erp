@@ -36,6 +36,7 @@ class Receipt_model extends CI_Model {
 
     public function insert_receipt($insert_data)
     {
+		//echo "<pre>";print_r($insert_data);die;
         // Define the condition to check if the same data already exists
         $this->db->where($insert_data);
         $query = $this->db->get('receipts');
@@ -63,7 +64,7 @@ class Receipt_model extends CI_Model {
     }
 
 
-    public function check_existing_entry($student_id, $month, $fee_head_type,$fee_head)
+    public function check_existing_entry($student_id, $month, $fee_head_type,$fee_head,$session_id)
     {
         // Query the database to check if the combination exists
         $this->db->select('id');  // Select any field (e.g., `id`), just to check existence
@@ -72,9 +73,12 @@ class Receipt_model extends CI_Model {
         $this->db->where('months', $month);
         $this->db->where('fee_head', $fee_head);
         $this->db->where('fee_head_type', $fee_head_type);
+        $this->db->where('session_id', $session_id);
 
         // Execute the query
         $query = $this->db->get();
+		
+		//echo $this->db->last_query();die;
 
         // If a record is found, return true (meaning record exists)
         if ($query->num_rows() > 0) {
@@ -1564,6 +1568,9 @@ class Receipt_model extends CI_Model {
     public function delete_receipts_by_receipt_no($receipt_no) {
         return $this->db->delete('receipts', ['receipt_no' => $receipt_no]);
     }
+	/*public function delete_receipts_by_receipt_no_months($data) {
+        return $this->db->delete('receipts', ['receipt_no' => $data['receipt_no'], 'student_id' => $data['student_id'], 'months' => $data['months'], 'fee_head' => $data['fee_head'], 'fee_head_type' => $data['fee_head_type']]);
+    }*/
 
 	public function search_fee_slip($receipt_no)
     {
@@ -1658,4 +1665,37 @@ class Receipt_model extends CI_Model {
         $this->db->where('sr_no', $sr_no)->where('session_id', $this->current_session); // Condition to match the sr_no
         $this->db->update('receipt_sr_no', $data); // Update the `receipt_sr_no` table
     }
+	
+	public function insert_balance_sheet($balance_sheet)
+	{
+		$this->db->trans_start();
+		
+		$this->db->from('balance_sheets');  // Replace with your actual table name
+        $this->db->where('receipt_no', $balance_sheet['receipt_no']);
+        $query = $this->db->get();
+		if ($query->num_rows() > 0) {
+            $this->db->where('receipt_no', $balance_sheet['receipt_no'])->where('session_id', $this->current_session);
+			$this->db->update('balance_sheets', $balance_sheet);
+			
+        } else {
+            $this->db->insert('balance_sheets', $balance_sheet);
+        }
+		
+		$this->db->trans_complete();
+	}
+	
+	public function update_balc_sheet_status($balcSheetArr)
+	{
+		$this->db->trans_start();
+		$this->db->where('receipt_no', $balcSheetArr['receipt_no'])->where('session_id', $this->current_session);
+		$this->db->update('balance_sheets', $balcSheetArr);
+		$this->db->trans_complete();
+	}
+	
+	public function delete_balance_sheet($receipt_no)
+	{
+		$this->db->trans_start();
+		$this->db->delete('balance_sheets', ['receipt_no' => $receipt_no]);
+		$this->db->trans_complete();
+	}
 }
