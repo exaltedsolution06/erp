@@ -27,32 +27,54 @@ class Expense extends Admin_Controller
         $data['title_list'] = 'Recent Expenses';
         $this->form_validation->set_rules('exp_head_id', $this->lang->line('expense_head'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('amount', $this->lang->line('amount'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('staff_id', $this->lang->line('staff'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('date', $this->lang->line('date'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('documents', $this->lang->line('documents'), 'callback_handle_upload');
         if ($this->form_validation->run() == false) {
 
         } else {
+			
+			if (!empty($_FILES['documents']['name'])) {
+				$config['upload_path'] = 'uploads/expence/';
+				$config['allowed_types'] = 'jpg|jpeg|png|gif';
+				$config['file_name'] = $_FILES['documents']['name'];
+
+				//Load upload library and initialize configuration
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+
+				if ($this->upload->do_upload('documents')) {
+					$uploadData = $this->upload->data();
+					$picture = $uploadData['file_name'];
+				} else {
+					$picture = '';
+				}
+			} else {
+				$picture = null;
+			}
+			
+			
             $data = array(
-                'exp_head_id' => $this->input->post('exp_head_id'),
-                'name'        => $this->input->post('name'),
-                'date'        => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('date'))),
-                'amount'      => $this->input->post('amount'),
-                'invoice_no'  => $this->input->post('invoice_no'),
-                'note'        => $this->input->post('description'),
-                'session_id'  => $this->current_session,
+                'session_id' => $this->current_session,
+                'balance_type' =>1,
+                'head_id' => $this->input->post('exp_head_id'),
+                'staff_id' => $this->input->post('staff_id'),
+                'date' => date('Y-m-d H:i:s', strtotime($this->input->post('date'))),
+                'amount' => $this->input->post('amount'),
+                'attatchment' => $picture,
+                'description' => $this->input->post('description')
             );
 
             $insert_id = $this->expense_model->add($data);
 
-            if (isset($_FILES["documents"]) && !empty($_FILES['documents']['name'])) {
+            /*if (isset($_FILES["documents"]) && !empty($_FILES['documents']['name'])) {
                 $fileInfo = pathinfo($_FILES["documents"]["name"]);
                 $img_name = $insert_id . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["documents"]["tmp_name"], "./uploads/school_expense/" . $img_name);
                 $data_img = array('id' => $insert_id, 'documents' => 'uploads/school_expense/' . $img_name);
 
                 $this->expense_model->add($data_img);
-            }
+            }*/
 			
 			if($insert_id)
 			{
@@ -63,7 +85,14 @@ class Expense extends Admin_Controller
 			}
             redirect('admin/expense/index');
         }
+		
+		
+		$staffList = $this->staff_model->get();
+		//echo "<pre>";print_r($staffList);die;
+		 $data['staffList'] = $staffList;
+		
         $expense_result      = $this->expense_model->get();
+		//echo "<pre>";print_r($expense_result);die;
         $data['expenselist'] = $expense_result;
         $expnseHead          = $this->expensehead_model->get();
         $data['expheadlist'] = $expnseHead;
@@ -202,33 +231,59 @@ class Expense extends Admin_Controller
         $data['expenselist'] = $expense_result;
         $expnseHead          = $this->expensehead_model->get();
         $data['expheadlist'] = $expnseHead;
+		$staffList = $this->staff_model->get();
+		$data['staffList'] = $staffList;
+		 
         $this->form_validation->set_rules('exp_head_id', $this->lang->line('expense_head'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('documents', $this->lang->line('documents'), 'callback_handle_upload');
+        //$this->form_validation->set_rules('documents', $this->lang->line('documents'), 'callback_handle_upload');
         $this->form_validation->set_rules('amount', $this->lang->line('amount'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('name', $this->lang->line('name'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('date', $this->lang->line('date'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('staff_id', $this->lang->line('staff'), 'trim|required|xss_clean');
+        //$this->form_validation->set_rules('date', $this->lang->line('date'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == false) {
             $this->load->view('layout/header', $data);
             $this->load->view('admin/expense/expenseEdit', $data);
             $this->load->view('layout/footer', $data);
         } else {
+			
+            if (!empty($_FILES['documents']['name'])) {
+				$config['upload_path'] = 'uploads/expence/';
+				$config['allowed_types'] = 'jpg|jpeg|png|gif';
+				$config['file_name'] = $_FILES['documents']['name'];
+
+				//Load upload library and initialize configuration
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+
+				if ($this->upload->do_upload('documents')) {
+					$uploadData = $this->upload->data();
+					$picture = $uploadData['file_name'];
+				} else {
+					$picture = '';
+				}
+			} else {
+				$picture = null;
+			}
+			
+			
             $data = array(
-                'id'          => $id,
-                'exp_head_id' => $this->input->post('exp_head_id'),
-                'name'        => $this->input->post('name'),
-                'invoice_no'  => $this->input->post('invoice_no'),
-                'date'        => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('date'))),
-                'amount'      => $this->input->post('amount'),
-                'note'        => $this->input->post('description'),
+				'id' => $this->input->post('id'),
+                'session_id' => $this->current_session,
+                'balance_type' =>1,
+                'head_id' => $this->input->post('exp_head_id'),
+                'staff_id' => $this->input->post('staff_id'),
+                'date' => date('Y-m-d H:i:s', strtotime($this->input->post('date'))),
+                'amount' => $this->input->post('amount'),
+                'attatchment' => $picture,
+                'description' => $this->input->post('description')
             );
             $insert_id = $this->expense_model->add($data);
-            if (isset($_FILES["documents"]) && !empty($_FILES['documents']['name'])) {
+            /*if (isset($_FILES["documents"]) && !empty($_FILES['documents']['name'])) {
                 $fileInfo = pathinfo($_FILES["documents"]["name"]);
                 $img_name = $id . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["documents"]["tmp_name"], "./uploads/school_expense/" . $img_name);
                 $data_img = array('id' => $id, 'documents' => 'uploads/school_expense/' . $img_name);
                 $this->expense_model->add($data_img);
-            }
+            }*/
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
             redirect('admin/expense/index');
         }

@@ -154,10 +154,13 @@ $language_name = $language["short_code"];
                                         </th>-->
                                         <th><?php echo $this->lang->line('invoice_no'); ?>
                                         </th>
+										<th><?php echo $this->lang->line('student_name'); ?>
+                                        </th>
+										<th><?php echo $this->lang->line('income_head'); ?>
+                                        </th>
                                         <th><?php echo $this->lang->line('date'); ?>
                                         </th>
-                                        <th><?php echo $this->lang->line('income_head'); ?>
-                                        </th>
+                                        
                                         <th><?php echo $this->lang->line('amount'); ?>
                                         </th>
                                         <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
@@ -171,21 +174,28 @@ $language_name = $language["short_code"];
                                         <?php
                                     } else {
                                         foreach ($incomelist as $income) {
+											$this->load->model('Student_model');
+											$students = $this->Student_model->get($income['student_id']);
+											//echo "<pre>";print_r($students);die;
                                             ?>
                                             <tr>
                                                 
                                                 <td class="mailbox-name">
                                                     <?php echo $income["receipt_no"] == null ? $income["id"] : $income["receipt_no"]; ?>
                                                 </td>
+												<td class="mailbox-name">
+                                                    <?php echo $students['firstname'];?>
+                                                </td>
+												<td class="mailbox-name">
+                                                    <?php
+                                                    $income_head = $income['income_category'];
+                                                    echo !empty($income_head) ? "$income_head" : '--';
+                                                    ?>
+												</td>
                                                 <td class="mailbox-name">
                                                     <?php echo date('d-m-Y', strtotime($income['date'])); ?></td>
 
-                                                <td class="mailbox-name">
-                                                    <?php
-                                                    $income_head = $income['income_category'];
-                                                    echo "$income_head";
-                                                    ?>
-												</td>
+                                                
 
                                                 <?php
                                                 $inc_head_id = $income['inc_head_id'];

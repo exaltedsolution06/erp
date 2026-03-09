@@ -21,20 +21,26 @@ class Income_model extends My_Model
      */
     public function search($text = null, $start_date = null, $end_date = null)
     {
+		//echo 'search';die;
         if (!empty($text)) {
-            $this->db->select('income.id,income.date,income.name,income.invoice_no,income.amount,income.documents,income.note,income_head.income_category,income.inc_head_id')->from('income');
-            $this->db->join('income_head', 'income.inc_head_id = income_head.id');
+            $this->db->select('balance_sheets.* ,income_head.income_category')->from('balance_sheets');
+            $this->db->join('income_head', 'income_head.id = balance_sheets.head_id', 'left');
+            $this->db->join('students', 'students.id = balance_sheets.student_id', 'left');
 
-            $this->db->like('income.name', $text);
-			$this->db->where('income.session_id', $this->current_session);
+            $this->db->like('students.firstname', $text);
+			$this->db->where('balance_sheets.session_id', $this->current_session);
+			$this->db->where('balance_sheets.status', 0);
+			$this->db->where('balance_sheets.balance_type', 0); // for income
             $query = $this->db->get();
             return $query->result_array();
         } else {
-            $this->db->select('income.id,income.date,income.name,income.invoice_no,income.amount,income.documents,income.note,income_head.income_category,income.inc_head_id')->from('income');
-            $this->db->join('income_head', 'income.inc_head_id = income_head.id');
-            $this->db->where('income.date >=', $start_date);
-            $this->db->where('income.date <=', $end_date);
-			$this->db->where('income.session_id', $this->current_session);
+            $this->db->select('balance_sheets.* ,income_head.income_category')->from('balance_sheets');
+            $this->db->join('income_head', 'income_head.id = balance_sheets.head_id', 'left');
+            $this->db->where('balance_sheets.date >=', $start_date);
+            $this->db->where('balance_sheets.date <=', $end_date);
+			$this->db->where('balance_sheets.session_id', $this->current_session);
+			$this->db->where('balance_sheets.status', 0);
+			$this->db->where('balance_sheets.balance_type', 0); // for income
             $query = $this->db->get();
             return $query->result_array();
         }
@@ -70,9 +76,12 @@ class Income_model extends My_Model
     public function get($id = null)
     {
         $this->db->select('balance_sheets.* ,income_head.income_category')->from('balance_sheets');
-        $this->db->join('income_head', 'balance_sheets.head_id = income_head.id');
-		$this->db->where('income_head.session_id', $this->current_session);
+       //$this->db->join('income_head', 'balance_sheets.head_id = income_head.id');
+        $this->db->join('income_head', 'income_head.id = balance_sheets.head_id', 'left');
+		//$this->db->where('income_head.session_id', $this->current_session);
 		$this->db->where('balance_sheets.session_id', $this->current_session);
+		$this->db->where('balance_sheets.balance_type', 0); // for income
+		
         if ($id != null) {
             $this->db->where('balance_sheets.id', $id);
         } else {
@@ -118,7 +127,7 @@ class Income_model extends My_Model
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
-        $this->db->delete('income');
+        $this->db->delete('balance_sheets');
         
         $message   = DELETE_RECORD_CONSTANT . " On  Income   id " . $id;
         $action    = "Delete";

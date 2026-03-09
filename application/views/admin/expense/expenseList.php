@@ -19,7 +19,7 @@
                         <div class="box-header with-border">
                             <h3 class="box-title"><?php echo $this->lang->line('add_expense'); ?></h3>
                         </div><!-- /.box-header -->
-                        <form id="form1" action="<?php echo base_url() ?>admin/expense"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                        <form id="form1" action="<?php echo base_url() ?>admin/expense/index"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                             <div class="box-body">
                                 <?php if ($this->session->flashdata('msg')) { ?>
                                     <?php echo $this->session->flashdata('msg') ?>
@@ -51,8 +51,24 @@
                                     </select>
                                     <span class="text-danger"><?php echo form_error('exp_head_id'); ?></span>
                                 </div>
+								
+								<div class="form-group">
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('staff'); ?></label> <small class="req">*</small>
+									<select name="staff_id" class="form-control">
+										<option value=""><?php echo $this->lang->line('select'); ?></option>
+										<?php 
+										foreach($staffList as $staff)
+										{
+										?>
+											<option value="<?php echo $staff['id'];?>"><?php echo $staff['name'].' ('.$staff['user_type'].')' ;?></option>
+										<?php 
+										}
+										?>
+									</select>
+                                    <span class="text-danger"><?php echo form_error('staff_id'); ?></span>
+                                </div>
 
-                                <div class="form-group">
+                                <!--<div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('name'); ?></label> <small class="req">*</small>
                                     <input id="name" name="name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('name'); ?>" />
                                     <span class="text-danger"><?php echo form_error('name'); ?></span>
@@ -61,9 +77,9 @@
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('invoice_no'); ?></label>
                                     <input id="invoice_no" name="invoice_no" placeholder="" type="text" class="form-control"  value="<?php echo set_value('invoice_no'); ?>" />
                                     <span class="text-danger"><?php echo form_error('invoice_no'); ?></span>
-                                </div>
+                                </div>-->
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('date'); ?></label> <small class="req">*</small>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('date'); ?></label>
                                     <input id="date" name="date" placeholder="" type="text" class="form-control date"  value="<?php echo set_value('date', date($this->customlib->getSchoolDateFormat())); ?>" readonly="readonly" />
                                     <span class="text-danger"><?php echo form_error('date'); ?></span>
                                 </div>
@@ -114,14 +130,15 @@
                                 <table class="table table-hover table-striped table-bordered example">
                                     <thead>
                                         <tr>
-                                            <th><?php echo $this->lang->line('name'); ?>
-                                            </th>
                                             <th><?php echo $this->lang->line('invoice_no'); ?>
+                                            </th>
+											<th><?php echo $this->lang->line('staff'); ?>
+                                            </th>
+											<th><?php echo $this->lang->line('expense_head'); ?>
                                             </th>
                                             <th><?php echo $this->lang->line('date'); ?>
                                             </th>
-                                            <th><?php echo $this->lang->line('expense_head'); ?>
-                                            </th>
+                                           
                                             <th><?php echo $this->lang->line('amount'); ?>
                                             </th>
                                             <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
@@ -135,35 +152,22 @@
                                             <?php
                                         } else {
                                             foreach ($expenselist as $expense) {
+												
+												$staffDetls = $this->staff_model->get($expense['staff_id']);
                                                 ?>
                                                 <tr>
-                                                    <td class="mailbox-name">
-                                                        <a href="#" data-toggle="popover" class="detail_popover"><?php echo $expense['name'] ?></a>
-
-                                                        <div class="fee_detail_popover" style="display: none">
-                                                            <?php
-                                                            if ($expense['note'] == "") {
-                                                                ?>
-                                                                <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
-                                                                <?php
-                                                            } else {
-                                                                ?>
-                                                                <p class="text text-info"><?php echo $expense['note']; ?></p>
-                                                                <?php
-                                                            }
-                                                            ?>
-                                                        </div>
-                                                    </td>
-                                                    <td class="mailbox-name"><?php echo $expense["invoice_no"]; ?></td>
-                                                    <td class="mailbox-name">
-
-                                                        <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($expense['date'])) ?></td>
-
-                                                    <td class="mailbox-name">
+                                                    <td class="mailbox-name"><?php echo $expense["id"]; ?></td>
+													<td class="mailbox-name"><?php echo $staffDetls['name'] .' ('.$staffDetls['user_type'] .')'; ?></td>
+													 <td class="mailbox-name">
                                                         <?php echo $expense['exp_category'] ?>
 
                                                     </td>
-                                                    <td class="mailbox-name"><?php echo ($currency_symbol . $expense['amount']); ?></td>
+                                                    <td class="mailbox-name">
+
+                                                        <?php echo date('d-m-Y', strtotime($expense['date'])) ?></td>
+
+                                                   
+                                                    <td class="mailbox-name"><?php echo ($currency_symbol .' '.$expense['amount']); ?></td>
                                                     <td class="mailbox-date pull-right">
                                                         <?php if ($expense['documents']) {
                                                             ?>

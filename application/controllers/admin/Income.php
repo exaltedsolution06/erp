@@ -351,11 +351,12 @@ class Income extends Admin_Controller {
             $search = $this->input->post('search');
 
             if ($search == "search_filter") {
+				
                   $this->form_validation->set_rules('search_type', $this->lang->line('search')." ".$this->lang->line('type'), 'trim|required|xss_clean');
                 if ($this->form_validation->run() == false) {
                     
                 } else {
-
+					
                     $data['search_type'] = $_POST['search_type'];
                 if (isset($_POST['search_type']) && $_POST['search_type'] != '') {
                     if ($_POST['search_type'] == 'all') {
@@ -370,7 +371,7 @@ class Income extends Admin_Controller {
                     $dates = $this->customlib->get_betweendate('this_year');
                     $data['search_type'] = '';
                 }
-
+				//echo 'hello10';die;
                 $dateformat = $this->customlib->getSchoolDateFormat();
                 $this->customlib->dateFormatToYYYYMMDD($dates['from_date']);
                 $date_from = date('Y-m-d', strtotime($dates['from_date']));
@@ -380,23 +381,34 @@ class Income extends Admin_Controller {
 
                 $date_from = date('Y-m-d', $this->customlib->dateYYYYMMDDtoStrtotime($date_from));
                 $date_to = date('Y-m-d', $this->customlib->dateYYYYMMDDtoStrtotime($date_to));
+				
+				//echo $date_from.'###'.$date_to; die;
                 $resultList = $this->income_model->search("", $date_from, $date_to);
                 $data['resultList'] = $resultList;
+				//echo "<pre>";print_r($resultList);die;
                 }
                 
             } else {
-
+				
                 $data['inc_title'] = 'Income Result';
                 $this->form_validation->set_rules('search_text', $this->lang->line('search_text'), 'trim|required|xss_clean');
                 if ($this->form_validation->run() == false) {
-                    
+                    //echo 'hello1';die;
+					//$resultLists = $this->income_model->get();
+					//$data['resultList'] = $resultLists;
+					//echo "<pre>";print_r($resultLists);die;
                 } else {
-
+					
                     $search_text = $this->input->post('search_text');
-                    $resultList = $this->income_model->search($search_text, "", "");
-                    $data['resultList'] = $resultList;
+                    $resultLists = $this->income_model->search($search_text, "", "");
+                    $data['resultList'] = $resultLists;
+					//echo "<pre>";print_r($resultLists);die;
                 }
+				
+				
             }
+			
+			
 
             $this->load->view('layout/header', $data);
             $this->load->view('admin/income/incomeSearch', $data);
