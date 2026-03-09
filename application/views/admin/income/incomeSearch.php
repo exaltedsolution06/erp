@@ -68,7 +68,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('search'); ?></label><small class="req"> *</small>
-                                                <input autofocus="" type="text" value="<?php echo set_value('search_text', ""); ?>" name="search_text"  class="form-control" placeholder="Search by Income">
+                                                <input autofocus="" type="text" value="<?php echo set_value('search_text', ""); ?>" name="search_text"  class="form-control" placeholder="Search by Student Name">
                                                 <span class="text-danger"><?php echo form_error('search_text'); ?></span>
                                             </div>
                                         </div>
@@ -99,9 +99,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 <table class="table table-striped table-bordered table-hover example">
                                     <thead>
                                         <tr>
-
-                                            <th><?php echo $this->lang->line('name'); ?></th>
-                                            <th><?php echo $this->lang->line('invoice_no'); ?></th>
+											<th><?php echo $this->lang->line('invoice_no'); ?></th>
+                                            <th><?php echo $this->lang->line('student_name'); ?></th>
+                                            
                                             <th><?php echo $this->lang->line('income_head'); ?></th>
                                             <th><?php echo $this->lang->line('date'); ?></th>
                                             <th class="text-right"><?php echo $this->lang->line('amount'); ?> <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>
@@ -124,12 +124,17 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         $grand_total = 0;
                                         foreach ($resultList as $key => $value) {
                                             $grand_total = $grand_total + $value['amount'];
+											
+											$this->load->model('Student_model');
+											$students = $this->Student_model->get($value['student_id']);
                                             ?>
                                             <tr>
-                                                <td><?php echo $value['name']; ?> </td>
-                                                <td><?php echo $value['invoice_no']; ?> </td>
-                                                <td><?php echo $value['income_category'] ?></td>
-                                                <td><?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($value['date'])); ?>     </td>
+                                                <td><?php echo $value['receipt_no']; ?> </td>
+                                                <td class="mailbox-name">
+                                                    <?php echo $students['firstname'];?>
+                                                </td>
+                                                <td><?php echo !empty($value['income_category']) ? $value['income_category'] : '--'; ?></td>
+                                                <td><?php echo  date('d-m-Y', strtotime($value['date']));; ?>     </td>
 
                                                 <td class="pull-right"><?php echo ($value['amount']); ?>  </td>
                                             </tr>

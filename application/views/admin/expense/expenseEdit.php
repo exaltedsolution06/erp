@@ -34,7 +34,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     echo "<div class='alert alert-danger'>" . $error_message . "</div>";
                                 }
                                 ?>   
-                                <?php echo $this->customlib->getCSRF(); ?>                       
+                                <?php echo $this->customlib->getCSRF(); ?>
+								<input type="hidden" name="id" value="<?php echo $expense['id'] ;?>">								
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('expense_head'); ?></label><small class="req"> *</small>
                                     <select autofocus="" id="exp_head_id" name="exp_head_id" class="form-control" >
@@ -43,7 +44,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         foreach ($expheadlist as $exphead) {
                                             ?>
                                             <option value="<?php echo $exphead['id'] ?>"<?php
-                                            if ($expense['exp_head_id'] == $exphead['id']) {
+                                            if ($expense['head_id'] == $exphead['id']) {
                                                 echo "selected =selected";
                                             }
                                             ?>><?php echo $exphead['exp_category'] ?></option>
@@ -55,18 +56,32 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <span class="text-danger"><?php echo form_error('exp_head_id'); ?></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('name'); ?></label><small class="req"> *</small>
-                                    <input id="name" name="name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('name', $expense['name']); ?>" />
-                                    <span class="text-danger"><?php echo form_error('name'); ?></span>
+                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('staff'); ?></label> <small class="req">*</small>
+									<select name="staff_id" class="form-control">
+										<option value=""><?php echo $this->lang->line('select'); ?></option>
+										<?php 
+										foreach($staffList as $staff)
+										{
+										?>
+											<option value="<?php echo $staff['id'];?>"<?php
+                                            if ($expense['staff_id'] == $staff['id']) {
+                                                echo "selected =selected";
+                                            }
+                                            ?>><?php echo $staff['name'].' ('.$staff['user_type'].')' ;?></option>
+										<?php 
+										}
+										?>
+									</select>
+                                    <span class="text-danger"><?php echo form_error('staff_id'); ?></span>
                                 </div>
-                                <div class="form-group">
+                                <!--<div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('invoice_no'); ?></label>
                                     <input id="invoice_no" name="invoice_no" placeholder="" type="text" class="form-control"  value="<?php echo set_value('invoice_no', $expense['invoice_no']); ?>" />
                                     <span class="text-danger"><?php echo form_error('invoice_no'); ?></span>
-                                </div>
+                                </div>-->
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('date'); ?></label><small class="req"> *</small>
-                                    <input id="date" name="date" placeholder="" type="text" class="form-control date"  value="<?php echo set_value('date', date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($expense['date']))); ?>" readonly="readonly" />
+                                    <input id="date" name="date" placeholder="" type="text" class="form-control date"  value="<?php echo date('d-m-Y', strtotime($expense['date'])); ?>" readonly="readonly" />
                                     <span class="text-danger"><?php echo form_error('date'); ?></span>
                                 </div>
                                 <div class="form-group">
@@ -81,7 +96,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('description'); ?></label>
-                                    <textarea class="form-control" id="description" name="description" placeholder="" rows="3" placeholder="Enter ..."><?php echo set_value('description'); ?><?php echo set_value('description', $expense['note']) ?></textarea>
+                                    <textarea class="form-control" id="description" name="description" placeholder="" rows="3" placeholder="Enter ..."><?php echo set_value('description'); ?><?php echo set_value('description', $expense['description']) ?></textarea>
                                     <span class="text-danger"><?php echo form_error('description'); ?></span>
                                 </div>
                             </div><!-- /.box-body -->
@@ -115,18 +130,19 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <table class="table table-hover table-striped table-bordered example">
                                 <thead>
                                     <tr>
-                                        <th><?php echo $this->lang->line('name'); ?>
-                                        </th>
-                                        <th><?php echo $this->lang->line('invoice_no'); ?>
-                                        </th>
-                                        <th><?php echo $this->lang->line('date'); ?>
-                                        </th>
-                                        <th><?php echo $this->lang->line('expense_head'); ?>
-                                        </th>
-                                        <th><?php echo $this->lang->line('amount'); ?>
-                                        </th>
-                                        <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
-                                    </tr>
+										<th><?php echo $this->lang->line('invoice_no'); ?>
+										</th>
+										<th><?php echo $this->lang->line('staff'); ?>
+										</th>
+										<th><?php echo $this->lang->line('expense_head'); ?>
+										</th>
+										<th><?php echo $this->lang->line('date'); ?>
+										</th>
+									   
+										<th><?php echo $this->lang->line('amount'); ?>
+										</th>
+										<th class="text-right"><?php echo $this->lang->line('action'); ?></th>
+									</tr>
                                 </thead>
                                 <tbody>
                                     <?php
@@ -136,28 +152,16 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <?php
                                     } else {
                                         foreach ($expenselist as $expense) {
+											
+											$staffDetls = $this->staff_model->get($expense['staff_id']);
                                             ?>
                                             <tr>
+                                                
+                                                <td class="mailbox-name"><?php echo $expense["id"]; ?></td>
+												<td class="mailbox-name"><?php echo $staffDetls['name'] .' ('.$staffDetls['user_type'] .')'; ?></td>
+												
                                                 <td class="mailbox-name">
-                                                    <a href="#" data-toggle="popover" class="detail_popover"><?php echo $expense['name'] ?></a>
-
-                                                    <div class="fee_detail_popover" style="display: none">
-                                                        <?php
-                                                        if ($expense['note'] == "") {
-                                                            ?>
-                                                            <p class="text text-danger"><?php echo $this->lang->line('no_description'); ?></p>
-                                                            <?php
-                                                        } else {
-                                                            ?>
-                                                            <p class="text text-info"><?php echo $expense['note']; ?></p>
-                                                            <?php
-                                                        }
-                                                        ?>
-                                                    </div>
-                                                </td>
-                                                <td class="mailbox-name"><?php echo $expense["invoice_no"]; ?></td>
-                                                <td class="mailbox-name">
-                                                    <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($expense['date'])) ?></td>
+                                                    <?php echo date('d-m-Y', strtotime($expense['date'])) ?></td>
 
                                                 <td class="mailbox-name">
                                                     <?php echo $expense['exp_category'] ?>

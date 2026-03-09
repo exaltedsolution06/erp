@@ -22,18 +22,24 @@ class Expense_model extends MY_Model
     public function search($text = null, $start_date = null, $end_date = null)
     {
         if (!empty($text)) {
-            $this->db->select('expenses.id,expenses.date,expenses.invoice_no,expenses.name,expenses.amount,expenses.documents,expenses.note,expense_head.exp_category,expenses.exp_head_id')->from('expenses');
-            $this->db->join('expense_head', 'expenses.exp_head_id = expense_head.id');
-			$this->db->where('expenses.session_id', $this->current_session);
-            $this->db->like('expenses.name', $text);
+            $this->db->select('balance_sheets.*, expense_head.exp_category')->from('balance_sheets');
+            $this->db->join('expense_head', 'expense_head.id = balance_sheets.head_id', 'left');
+			$this->db->join('staff', 'staff.id = balance_sheets.staff_id', 'left');
+			$this->db->where('balance_sheets.session_id', $this->current_session);
+            $this->db->like('staff.name', $text);
+			$this->db->where('balance_sheets.status', 0);
+			$this->db->where('balance_sheets.balance_type', 1);
             $query = $this->db->get();
             return $query->result_array();
         } else {
-            $this->db->select('expenses.id,expenses.date,expenses.name,expenses.invoice_no,expenses.amount,expenses.documents,expenses.note,expense_head.exp_category,expenses.exp_head_id')->from('expenses');
-            $this->db->join('expense_head', 'expenses.exp_head_id = expense_head.id');
-            $this->db->where('expenses.date >=', $start_date);
-            $this->db->where('expenses.date <=', $end_date);
-			$this->db->where('expenses.session_id', $this->current_session);
+			
+            $this->db->select('balance_sheets.*, expense_head.exp_category')->from('balance_sheets');
+            $this->db->join('expense_head', 'expense_head.id = balance_sheets.head_id', 'left');
+            $this->db->where('balance_sheets.date >=', $start_date);
+            $this->db->where('balance_sheets.date <=', $end_date);
+			$this->db->where('balance_sheets.session_id', $this->current_session);
+			$this->db->where('balance_sheets.status', 0);
+			$this->db->where('balance_sheets.balance_type', 1);
             $query = $this->db->get();
             return $query->result_array();
         }
@@ -41,13 +47,16 @@ class Expense_model extends MY_Model
 
     public function get($id = null)
     {
-        $this->db->select('expenses.id,expenses.date,expenses.name,expenses.invoice_no,expenses.amount,expenses.documents,expenses.note,expense_head.exp_category,expenses.exp_head_id')->from('expenses');
-        $this->db->join('expense_head', 'expenses.exp_head_id = expense_head.id');
-		$this->db->where('expenses.session_id', $this->current_session);
+        $this->db->select('balance_sheets.*, expense_head.exp_category')->from('balance_sheets');
+        //$this->db->join('expense_head', 'expenses.exp_head_id = expense_head.id');
+        $this->db->join('expense_head', 'expense_head.id = balance_sheets.head_id', 'left');
+		$this->db->where('balance_sheets.session_id', $this->current_session);
+		$this->db->where('balance_sheets.balance_type', 1);
+		$this->db->where('balance_sheets.status', 0);
         if ($id != null) {
-            $this->db->where('expenses.id', $id);
+            $this->db->where('balance_sheets.id', $id);
         } else {
-            $this->db->order_by('expenses.id', 'DESC');
+            $this->db->order_by('balance_sheets.id', 'DESC');
         }
 
         $query = $this->db->get();
@@ -69,7 +78,7 @@ class Expense_model extends MY_Model
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
         $this->db->where('id', $id);
-        $this->db->delete('expenses');
+        $this->db->delete('balance_sheets');
        
         $message   = DELETE_RECORD_CONSTANT . " On  expenses   id " . $id;
         $action    = "Delete";
@@ -102,49 +111,39 @@ class Expense_model extends MY_Model
 
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
-        //=======================Code Start===========================
-		$this->db->where('session_id', $this->current_session);
-		$this->db->where('exp_head_id', $data['exp_head_id']);
-		$this->db->where('name', $data['name']);
-		$check = $this->db->get('expenses');
-		if($check->num_rows() > 0)
-		{
+        
+		if (isset($data['id']) && $data['id'] != '') {
+
+			$this->db->where('id', $data['id']);
+			$this->db->update('balance_sheets', $data);
+
+			$message   = UPDATE_RECORD_CONSTANT . " On  expenses   id " . $data['id'];
+			$action    = "Update";
+			$record_id = $data['id'];
+		} else {
+			$this->db->insert('balance_sheets', $data);
+
+			$record_id = $this->db->insert_id();
+			$message   = INSERT_RECORD_CONSTANT . " On  expenses   id " . $record_id;
+			$action    = "Insert";
+		}
+
+		$this->log($message, $record_id, $action);
+
+		//======================Code End==============================
+
+		$this->db->trans_complete(); # Completing transaction
+		/* Optional */
+
+		if ($this->db->trans_status() === false) {
+			# Something went wrong.
+			$this->db->trans_rollback();
 			return false;
+		} else {
+
+			return $record_id;
 		}
-		else
-		{
-			if (isset($data['id']) && $data['id'] != '') {
-
-				$this->db->where('id', $data['id']);
-				$this->db->update('expenses', $data);
-
-				$message   = UPDATE_RECORD_CONSTANT . " On  expenses   id " . $data['id'];
-				$action    = "Update";
-				$record_id = $data['id'];
-			} else {
-				$this->db->insert('expenses', $data);
-
-				$record_id = $this->db->insert_id();
-				$message   = INSERT_RECORD_CONSTANT . " On  expenses   id " . $record_id;
-				$action    = "Insert";
-			}
-
-			$this->log($message, $record_id, $action);
-
-			//======================Code End==============================
-
-			$this->db->trans_complete(); # Completing transaction
-			/* Optional */
-
-			if ($this->db->trans_status() === false) {
-				# Something went wrong.
-				$this->db->trans_rollback();
-				return false;
-			} else {
-
-				return $record_id;
-			}
-		}
+		
     }
 
     public function check_Exits_group($data)
