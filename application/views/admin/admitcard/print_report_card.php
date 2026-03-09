@@ -86,6 +86,16 @@
 	.ml-5px {
 		margin-left: 5px;
 	}
+	.top_left_width {
+		width:25%
+	}
+	.top_right_width {
+		width:27%
+	}
+	.allBold {
+		font-size:15px !important;
+		font-weight:bold;
+	}	
   
 </style>
 
@@ -98,7 +108,7 @@
 	$grade_html = '';
 	if($desc->marks_grade_table==1){
 ?>
-	<div class="col-12 mt-5" style="padding-left:0px;padding-right:0px;padding-bottom:0px; border-top: 2px solid #000;">
+	<div class="col-12 mt-2" style="padding-left:0px;padding-right:0px;padding-bottom:0px; border-top: 2px solid #000;">
 		<div class="text-center mt-2"><h4 style="font-size: 18px;"><?php echo $desc->grade_table_title; ?></h4></div>
 		<?php
 			$grades = $this->db->order_by('mark_from', 'DESC')->where('session_id', $current_session['id'])->get('grades')->result();
@@ -182,7 +192,7 @@
 			<?php } } } ?>
 			<?php if(!empty($desc->title)){ ?>
 			<div class="col-12 text-center mt-3">
-				<p class="h3"><?php echo $desc->title; ?> (<?php echo $this->lang->line('session'); ?> : <?php echo $current_session['session']; ?>)</p>
+				<p class="h3"><strong><?php echo $desc->title; ?> (<?php echo $this->lang->line('session'); ?> : <?php echo $current_session['session']; ?>)</strong></p>
 			</div>
 			<?php } ?>
 			<div class="col-12" style="border:1px solid">
@@ -199,29 +209,29 @@
 						}
 						?>
 					<div class="col-<?php echo $is_photo_exists ? 5 : 6; ?>" >
-						<table class="table table-borderless">
+						<table class="table table-borderless allBold">
 						<tbody>
 							<?php if($desc->is_admission_no==1){ ?>
 							<tr>
-							  <th  class="th" scope="row"><?php echo $this->lang->line('admission_no'); ?></th>
+							  <th class="th top_left_width" scope="row"><?php echo $this->lang->line('admission_no'); ?></th>
 							  <td>:</td>
 							  <td><?=$stddata->admission_no?></td>
 							</tr>
 							<?php } if($desc->is_name==1){ ?>
 							<tr>
-							  <th class="th" scope="row"><?php echo $this->lang->line('student_name'); ?></th>
+							  <th class="th top_left_width" scope="row"><?php echo $this->lang->line('student_name'); ?></th>
 							  <td>:  &nbsp;</td>
 							  <td><?=$stddata->firstname.' '.$stddata->middlename.' '.$stddata->lastname ?></td>
 							</tr>
 							<?php } if($desc->is_father_name==1){ ?>
 							<tr>
-							  <th scope="row"  class="th"><?php echo $this->lang->line('father_name'); ?></th>
+							  <th scope="row"  class="th top_left_width"><?php echo $this->lang->line('father_name'); ?></th>
 							  <td>:</td>
 							  <td><?=$stddata->father_name?></td>
 							</tr>
 							<?php } if($desc->is_mother_name==1){ ?>
 							<tr>
-							  <th scope="row"  class="th"><?php echo $this->lang->line('mother_name'); ?></th>
+							  <th scope="row"  class="th top_left_width"><?php echo $this->lang->line('mother_name'); ?></th>
 							  <td>:</td>
 							  <td><?=$stddata->mother_name?></td>
 							</tr>
@@ -231,29 +241,29 @@
 					</div>
 					<div class="col-<?php echo $is_photo_exists ? 5 : 6; ?>">
 					
-						<table class="table table-borderless">
+						<table class="table table-borderless allBold">
 						  <tbody>
 						  	<?php if($desc->is_roll_no==1){ ?>
 							<tr>
-							  <th  class="th"><?php echo $this->lang->line('roll_no'); ?></th>
+							  <th  class="th top_right_width"><?php echo $this->lang->line('roll_no'); ?></th>
 							  <td>:  &nbsp;</td>
 							  <td><?=$stddata->roll_no?></td>
 							</tr>
 							<?php } if($desc->is_class==1 or $desc->is_section==1){ ?>
 							<tr>
-							  <th scope="row"  class="th"><?php echo $this->lang->line('class_and_section'); ?></th>
+							  <th scope="row"  class="th top_right_width"><?php echo $this->lang->line('class_and_section'); ?></th>
 							  <td>:</td>
 							  <td><?=$stddata->class?>  <?=$stddata->section?>  </td>
 							</tr>
 							<?php } if($desc->is_dob==1){ ?>							
 							<tr>
-							  <th scope="row"  class="th"><?php echo $this->lang->line('d_o_b'); ?></th>
+							  <th scope="row"  class="th top_right_width"><?php echo $this->lang->line('d_o_b'); ?></th>
 							  <td>:</td>
 							  <td><?=date('d-M-Y',strtotime($stddata->dob))?></td>
 							</tr>
 							<?php } if($desc->is_contactno==1){ ?>
 							<tr>
-							  <th  class="th" scope="row"><?php echo $this->lang->line('contactno'); ?></th>
+							  <th  class="th top_right_width" scope="row"><?php echo $this->lang->line('contactno'); ?></th>
 							  <td>:</td>
 							  <td><?=$stddata->mobileno?></td>
 							</tr>
@@ -452,7 +462,7 @@
 								?>
 								
 										<tr>
-											<td class="subject-color" style="text-align:left;padding-left:8px;font-weight: bold; --subject-color: <?= htmlspecialchars($desc->subject_color, ENT_QUOTES, 'UTF-8') ?>;" ><?=$rowdata->name?></td>
+											<td class="subject-color" style="text-align:left;padding:5px 8px 5px 8px;font-weight: bold; --subject-color: <?= htmlspecialchars($desc->subject_color, ENT_QUOTES, 'UTF-8') ?>;" ><?=$rowdata->name?></td>
 											
 											<?php
 
@@ -502,7 +512,7 @@
 												if(isset($saved_max_marks_json[$exam_group_id]) && $saved_max_marks_json[$exam_group_id] == 1){
 													array_push($array,$max_marks1);
 												?>
-												<td style="width:100px"><?php echo $max_marks1; ?></td>
+												<td style="width:100px"><strong><?php echo $max_marks1; ?></strong></td>
 												<?php
 												}
 											}
@@ -518,7 +528,7 @@
 												if(isset($saved_max_marks_json[$exam_group_id]) && $saved_max_marks_json[$exam_group_id] == 1){
 													array_push($array,$max_marks1);
 												?>
-												<td style="width:100px"><?php echo $max_marks1; ?></td>
+												<td style="width:100px"><strong><?php echo $max_marks1; ?></strong></td>
 												<?php
 												}
 											}
@@ -549,25 +559,25 @@
 											if($desc->max_marks_shift_left==1){
 												if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
 												?>
-												<td><?=$max_marks; ?></td>
+												<td><strong><?=$max_marks; ?></strong></td>
 												<?php
 												}
 											}
 											if(isset($saved_marks_obtained_json['overall']) && $saved_marks_obtained_json['overall'] == 1){
 											?>
-											<td><?=$total1; ?></td>
+											<td><strong><?=$total1; ?></strong></td>
 											<?php
 											}
 											if($desc->max_marks_shift_left==0){
 												if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
 												?>
-												<td><?=$max_marks; ?></td>
+												<td><strong><?=$max_marks; ?></strong></td>
 												<?php
 												}
 											}
 											if(isset($saved_json['overall']) && $saved_json['overall'] == 1){
 											?>
-											<td><?php 
+											<td><strong><?php 
 											
 											
 											
@@ -583,7 +593,7 @@
 											//echo ($gd[0]->name);
 												echo ($gd[0]->name);
 											
-											?></td>
+											?></strong></td>
 											<?php } 
 											if($min_marks > $total1){
 												$is_fail = 1;
@@ -600,7 +610,7 @@
 										$optional_html = '';
 									?>
 										<tr class="optional">
-											<td class="subject-color" style="text-align:left;padding-left:8px;font-weight: bold; --subject-color: <?= htmlspecialchars($desc->subject_color, ENT_QUOTES, 'UTF-8') ?>;" ><?=$rowdata->name?></td>
+											<td class="subject-color" style="text-align:left;padding:5px 8px 5px 8px;font-weight: bold; --subject-color: <?= htmlspecialchars($desc->subject_color, ENT_QUOTES, 'UTF-8') ?>;" ><?=$rowdata->name?></td>
 											
 											<?php
 
@@ -650,7 +660,7 @@
 											if($desc->max_marks_shift_left==1){
 												if(isset($saved_max_marks_json[$exam_group_id_op]) && $saved_max_marks_json[$exam_group_id_op] == 1){
 												?>
-												<td style="width:100px"><?php echo $max_marks1_op; ?></td>
+												<td style="width:100px"><strong><?php echo $max_marks1_op; ?></strong></td>
 												<?php
 												}
 											}
@@ -684,25 +694,25 @@
 											if($desc->max_marks_shift_left==1){
 												if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
 												?>
-												<td><?=$max_marks_op; ?></td>
+												<td><strong><?=$max_marks_op; ?></strong></td>
 												<?php
 												}
 											}
 											if(isset($saved_marks_obtained_json['overall']) && $saved_marks_obtained_json['overall'] == 1){
 											?>
-											<td><?=$total1_op; ?></td>
+											<td><strong><?=$total1_op; ?></strong></td>
 											<?php
 											}
 											if($desc->max_marks_shift_left==0){
 												if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
 												?>
-												<td><?=$max_marks_op; ?></td>
+												<td><strong><?=$max_marks_op; ?></strong></td>
 												<?php
 												}
 											}
 											if(isset($saved_json['overall']) && $saved_json['overall'] == 1){
 											?>
-											<td><?php 
+											<td><strong><?php 
 											
 											
 											
@@ -718,7 +728,7 @@
 											//echo ($gd[0]->name);
 												echo ($gd_op[0]->name);
 											
-											?></td>
+											?></strong></td>
 											<?php } ?>	
 										</tr>
 									<?php
@@ -805,7 +815,7 @@
 							
 							<tfoot>
 									<tr style="font-weight:bold">
-										<th class="" style="text-align:left;padding-left:8px;"><?php echo $this->lang->line('total'); ?></th>
+										<th class="" style="text-align:left;padding:5px 8px 5px 8px;"><?php echo $this->lang->line('total'); ?></th>
 										<?php
 										$i=count($final);
 										foreach($final as $row){
@@ -822,7 +832,7 @@
 										if($desc->max_marks_shift_left==1){
 											if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
 											?>
-											<td><?php echo array_sum($maxMark); ?></td>
+											<td><strong><?php echo array_sum($maxMark); ?></strong></td>
 											<?php
 											}
 										}
@@ -834,7 +844,7 @@
 										if($desc->max_marks_shift_left==0){
 											if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
 											?>
-											<td><?php echo array_sum($maxMark); ?></td>
+											<td><strong><?php echo array_sum($maxMark); ?></strong></td>
 											<?php
 											}
 										}
@@ -868,7 +878,7 @@
 										$final_column_count = sizeof($final)+3+$overallgradecount;
 									?>
 										<tr style="text-align: left !important;">
-											<th style="padding-left: 8px !important;"  colspan="<?=$final_column_count; ?>"><?php echo $this->lang->line('optional'); ?> <?php echo $this->lang->line('subject'); ?></th>
+											<th style="padding: 5px 8px !important;"  colspan="<?=$final_column_count; ?>"><?php echo $this->lang->line('optional'); ?> <?php echo $this->lang->line('subject'); ?></th>
 										</tr>
 									<?php
 										echo $optional_html;
@@ -926,7 +936,7 @@
 						</th>
 					</tr>
 					<tr>	
-						<th style="text-align: left !important;padding-left: 15px !important; padding-top:7px;padding-bottom:7px;"><em style="">Activities</em></th>
+						<th style="text-align: left !important;padding:5px 8px 5px 8px;"><em style="">Activities</em></th>
 						<?php /*$z=1; for ($i=0; $i < count($tearm_count); $i++) { 
 							echo '<th>G'.$z++.'</th>';
 						}*/ ?>
@@ -940,10 +950,10 @@
 					foreach($list as $res){ 
 					?>
 					<tr>
-						<th class="" style="text-align: left !important;padding-left: 15px !important; padding-top:7px;padding-bottom:7px;">
+						<th class="" style="text-align: left !important;padding:5px 8px 5px 8px;">
 							<?=$res->exam; ?>
 						</th>
-						<td style="padding-top:7px;padding-bottom:7px;"><?=$res->get_marks; ?></td>
+						<td style="padding:5px 8px 5px 8px;"><?=$res->get_marks; ?></td>
 						<?php 
 						/*$z=1; for ($i=0; $i < count($tearm_count); $i++) {
 							$term_id=$tearm_count[$i];
@@ -989,7 +999,7 @@
 						<?php 
 						if($is_fail){
 						?>
-						<span class="text-underline" style="width:420px; text-align:center;">&nbsp</span>
+						<span class="text-underline" style="width:420px; text-align:center;">&nbsp;</span>
 						<?php
 						}else{
 						?>
@@ -1006,7 +1016,7 @@
 						<?php if($exam_pass_status){
 							if($is_fail){
 						?>		
-								<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <span class="text-underline" style="width:330px; text-align:center;">&nbsp</span>
+								<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <span class="text-underline" style="width:330px; text-align:center;">&nbsp;</span>
 						<?php		
 							}else{
 						?>		
@@ -1015,7 +1025,7 @@
 							}
 						}else{
 						?>
-						<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <span class="text-underline" style="width:330px; text-align:center;">&nbsp</span>
+						<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <span class="text-underline" style="width:330px; text-align:center;">&nbsp;</span>
 						<?php } ?>
 					</div>
 					<div class="col-12 mb-3 d-flex">
@@ -1044,14 +1054,14 @@
 					if($desc->place==1){
 					?>
 					<div class="col-12 mb-3 d-flex">
-						<strong><?php echo $this->lang->line('place'); ?> :</strong> <span class="text-underline" style="width:300px; text-align:center;">&nbsp</span>
+						<strong><?php echo $this->lang->line('place'); ?> :</strong> <span class="text-underline" style="width:300px; text-align:center;">&nbsp;</span>
 					</div>
 					<?php
 					}
 					if($desc->is_show_date==1){
 					?>
 					<div class="col-12 d-flex">
-						<strong><?php echo $this->lang->line('date'); ?> :</strong> <span class="text-underline" style="width:300px; text-align:center;">&nbsp</span>
+						<strong><?php echo $this->lang->line('date'); ?> :</strong> <span class="text-underline" style="width:300px; text-align:center;">&nbsp;</span>
 					</div>
 					<?php
 					}
@@ -1066,9 +1076,7 @@
 				if($sign_count > 0){
 			?>
 			<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px;">
-				<div class="row text-center">
-					<?php
-					?>
+				<div class="row text-center" style="background-color: #000000">
 					<div class="col-4">
 						<?php
 						if($desc->is_class_teacher==1){
