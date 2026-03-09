@@ -22,18 +22,24 @@ class Expense_model extends MY_Model
     public function search($text = null, $start_date = null, $end_date = null)
     {
         if (!empty($text)) {
-            $this->db->select('expenses.id,expenses.date,expenses.invoice_no,expenses.name,expenses.amount,expenses.documents,expenses.note,expense_head.exp_category,expenses.exp_head_id')->from('expenses');
-            $this->db->join('expense_head', 'expenses.exp_head_id = expense_head.id');
-			$this->db->where('expenses.session_id', $this->current_session);
-            $this->db->like('expenses.name', $text);
+            $this->db->select('balance_sheets.*, expense_head.exp_category')->from('balance_sheets');
+            $this->db->join('expense_head', 'expense_head.id = balance_sheets.head_id', 'left');
+			$this->db->join('staff', 'staff.id = balance_sheets.staff_id', 'left');
+			$this->db->where('balance_sheets.session_id', $this->current_session);
+            $this->db->like('staff.name', $text);
+			$this->db->where('balance_sheets.status', 0);
+			$this->db->where('balance_sheets.balance_type', 1);
             $query = $this->db->get();
             return $query->result_array();
         } else {
-            $this->db->select('expenses.id,expenses.date,expenses.name,expenses.invoice_no,expenses.amount,expenses.documents,expenses.note,expense_head.exp_category,expenses.exp_head_id')->from('expenses');
-            $this->db->join('expense_head', 'expenses.exp_head_id = expense_head.id');
-            $this->db->where('expenses.date >=', $start_date);
-            $this->db->where('expenses.date <=', $end_date);
-			$this->db->where('expenses.session_id', $this->current_session);
+			
+            $this->db->select('balance_sheets.*, expense_head.exp_category')->from('balance_sheets');
+            $this->db->join('expense_head', 'expense_head.id = balance_sheets.head_id', 'left');
+            $this->db->where('balance_sheets.date >=', $start_date);
+            $this->db->where('balance_sheets.date <=', $end_date);
+			$this->db->where('balance_sheets.session_id', $this->current_session);
+			$this->db->where('balance_sheets.status', 0);
+			$this->db->where('balance_sheets.balance_type', 1);
             $query = $this->db->get();
             return $query->result_array();
         }

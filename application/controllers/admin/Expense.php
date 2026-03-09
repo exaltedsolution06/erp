@@ -323,7 +323,7 @@ class Expense extends Admin_Controller
                     $dates               = $this->customlib->get_betweendate('this_year');
                     $data['search_type'] = '';
                 }
-
+				
                 $dateformat = $this->customlib->getSchoolDateFormat();
 
                 $date_from         = date('Y-m-d', strtotime($dates['from_date']));
@@ -335,6 +335,7 @@ class Expense extends Admin_Controller
                 $resultList         = $this->expense_model->search("", $date_from, $date_to);
                 $data['resultList'] = $resultList;
                 }
+				//echo "<pre>";print_r($resultList);die;
 
                
             } else {

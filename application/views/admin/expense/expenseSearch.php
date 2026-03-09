@@ -60,7 +60,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('search'); ?></label><small class="req"> *</small>
-                                                <input autofocus=""  type="text" value="<?php echo set_value('search_text', ""); ?>" name="search_text"  class="form-control" placeholder="Search by Expense">
+                                                <input autofocus=""  type="text" value="<?php echo set_value('search_text', ""); ?>" name="search_text"  class="form-control" placeholder="Search by Staff">
                                                 <span class="text-danger"><?php echo form_error('search_text'); ?></span>
                                             </div>
                                         </div>
@@ -90,10 +90,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <table class="table table-striped table-bordered table-hover example">
                                         <thead>
                                             <tr>
-                                                <th><?php echo $this->lang->line('name'); ?></th>
-                                                <th><?php echo $this->lang->line('invoice_no'); ?></th>
-                                                <th><?php echo $this->lang->line('expense_head'); ?></th>
-                                                <th><?php echo $this->lang->line('date'); ?></th>
+                                               <th><?php echo $this->lang->line('invoice_no'); ?>
+												</th>
+												<th><?php echo $this->lang->line('staff'); ?>
+												</th>
+												<th><?php echo $this->lang->line('expense_head'); ?>
+												</th>
+												<th><?php echo $this->lang->line('date'); ?>
+												</th>
                                                 <th class="text-right"><?php echo $this->lang->line('amount'); ?> <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>
                                             </tr>
                                         </thead>
@@ -114,14 +118,19 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             $grand_total = 0;
                                             foreach ($resultList as $key => $value) {
                                                 $grand_total = $grand_total + $value['amount'];
+												
+												$staffDetls = $this->staff_model->get($value['staff_id']);
                                                 ?>
                                                 <tr>
-                                                    <td><?php echo $value['name']; ?></td>
-                                                    <td><?php echo $value['invoice_no']; ?></td>
+                                                   
+                                                    <td><?php echo $value['id']; ?></td>
+													<td class="mailbox-name"><?php echo $staffDetls['name'] .' ('.$staffDetls['user_type'] .')'; ?></td>
+													
+													 <td class="mailbox-name">
+                                                    <?php echo date('d-m-Y', strtotime($value['date'])) ?></td>
+													
                                                     <td><?php echo $value['exp_category'] ?></td>
-
-                                                    <td> <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($value['date'])); ?>     </td>
-                                                    <td class="pull-right"><?php echo ($value['amount']); ?>  </td>
+													<td class="pull-right"><?php echo ($value['amount']); ?>  </td>
                                                 </tr>
                                                 <?php
                                                 $count++;
