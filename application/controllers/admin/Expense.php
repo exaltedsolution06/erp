@@ -35,7 +35,7 @@ class Expense extends Admin_Controller
         } else {
 			
 			if (!empty($_FILES['documents']['name'])) {
-				$config['upload_path'] = 'uploads/expence/';
+				$config['upload_path'] = 'uploads/expense/';
 				$config['allowed_types'] = 'jpg|jpeg|png|gif';
 				$config['file_name'] = $_FILES['documents']['name'];
 
@@ -246,7 +246,7 @@ class Expense extends Admin_Controller
         } else {
 			
             if (!empty($_FILES['documents']['name'])) {
-				$config['upload_path'] = 'uploads/expence/';
+				$config['upload_path'] = 'uploads/expense/';
 				$config['allowed_types'] = 'jpg|jpeg|png|gif';
 				$config['file_name'] = $_FILES['documents']['name'];
 
