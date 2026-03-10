@@ -76,7 +76,7 @@ class Admin extends Admin_Controller
             $month_expense = $month_expense + $expense->amount;
         }
 		
-		// yearly expences
+		// yearly expenses
 		$yearly_expenses = 0;
 		$expenseYearly                  = $this->expense_model->getTotalExpenseBwdateYearly($first_day_this_year, $last_day_this_year);
         if (!empty($expenseYearly)) {
@@ -85,7 +85,7 @@ class Admin extends Admin_Controller
 		//echo $yearly_expenses; die;
 		$data['yearly_expenses']    = $yearly_expenses;
 		
-		// weekly expences
+		// weekly expenses
 		$weekly_expense = 0;
 		$expenseWeekly                  = $this->expense_model->getTotalExpenseBwdateWeekly($first_day_this_week, $last_day_this_week);
         if (!empty($expenseWeekly)) {

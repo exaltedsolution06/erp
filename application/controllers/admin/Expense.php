@@ -81,7 +81,7 @@ class Expense extends Admin_Controller
 				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
 			}
 			else{
-				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Name w.r.t Expence Head already exists</div>');
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Name w.r.t Expense Head already exists</div>');
 			}
             redirect('admin/expense/index');
         }

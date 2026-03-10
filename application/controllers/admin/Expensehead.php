@@ -50,7 +50,7 @@ class Expensehead extends Admin_Controller {
 		$ifsection = $this->Setting_model->checkDeleteList($checkData);
 		if($ifsection > 0)
 		{
-			$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Expence Head already used in Expences</div>');
+			$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Expense Head already used in Expenses</div>');
 		}
 		else{
 			$this->expensehead_model->remove($id);
@@ -83,7 +83,7 @@ class Expensehead extends Admin_Controller {
 				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
 			}
 			else{
-				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Expence Head already exists</div>');
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Expense Head already exists</div>');
 			}
 			
 			
