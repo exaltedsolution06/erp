@@ -938,8 +938,8 @@
 				if (
 					$this->rbac->hasPrivilege('income_heads', 'can_view') ||
 					$this->rbac->hasPrivilege('add_income', 'can_view') ||
-					$this->rbac->hasPrivilege('search_income', 'can_view') ||
-					$this->rbac->hasPrivilege('income_section_report', 'can_view')
+					$this->rbac->hasPrivilege('search_income', 'can_view')
+					// $this->rbac->hasPrivilege('income_section_report', 'can_view')
 				) {
 					//$CI = get_instance();
 					//$session_sub_menu = $CI->session->userdata('sub_menu');
@@ -964,9 +964,9 @@
 							<?php } if ($this->rbac->hasPrivilege('add_income', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('income/index'); ?>"><a href="<?php echo base_url(); ?>admin/income"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('add_income'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('search_income', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('income/incomesearch'); ?>"><a href="<?php echo base_url(); ?>admin/income/incomesearch"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('search_income'); ?></a></li>
+								<li class="<?php echo set_Submenu('income/incomesearch'); ?>"><a href="<?php echo base_url(); ?>admin/income/incomesearch"><i class="fa fa-angle-double-right"></i>Income Report</a></li>
 							<?php } if ($this->rbac->hasPrivilege('income_section_report', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('report/income-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/income_section_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
+								<!--<li class="<?php echo set_Submenu('report/income-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/income_section_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>-->
 							<?php } ?>
 						</ul>
 					</li>
@@ -981,8 +981,8 @@
 				if (
 					$this->rbac->hasPrivilege('add_expense', 'can_view') ||
 					$this->rbac->hasPrivilege('search_expense', 'can_view') ||
-					$this->rbac->hasPrivilege('expense_head', 'can_view') ||
-					$this->rbac->hasPrivilege('expense_section_report', 'can_view')
+					$this->rbac->hasPrivilege('expense_head', 'can_view')
+					// $this->rbac->hasPrivilege('expense_section_report', 'can_view')
 				) {
 					//$CI = get_instance();
 					//$session_sub_menu = $CI->session->userdata('sub_menu');
@@ -1007,9 +1007,9 @@
 							<?php } if ($this->rbac->hasPrivilege('add_expense', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('expense/index'); ?>"><a href="<?php echo base_url(); ?>admin/expense"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('add_expense'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('search_expense', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('expense/expensesearch'); ?>"><a href="<?php echo base_url(); ?>admin/expense/expensesearch"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('search_expense'); ?></a></li>
+								<li class="<?php echo set_Submenu('expense/expensesearch'); ?>"><a href="<?php echo base_url(); ?>admin/expense/expensesearch"><i class="fa fa-angle-double-right"></i>Expense Report</a></li>
 							<?php } if ($this->rbac->hasPrivilege('expense_section_report', 'can_view')) { ?>
-								<li class="<?php echo set_Submenu('report/expense-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/expense_section_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
+								<!--<li class="<?php echo set_Submenu('report/expense-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/expense_section_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>-->
 							<?php } ?>
 						</ul>
 					</li>

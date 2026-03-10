@@ -243,17 +243,17 @@ class Modulepermission extends Public_Controller
 				'links' => [
 					['name' => 'Income Heads',   'short_code' => 'income_heads', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Add Income',     'short_code' => 'add_income', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Search Income',  'short_code' => 'search_income', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'All Report',     'short_code' => 'income_section_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
+					['name' => 'Income Report',  'short_code' => 'search_income', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
+					// ['name' => 'All Report',     'short_code' => 'income_section_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
 				]
 			],
 			[
 				'module' => 'Expense Section',
 				'links' => [
-					['name' => 'Add Expense',     'short_code' => 'add_expense', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'Search Expense',  'short_code' => 'search_expense', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'Expense Head',    'short_code' => 'expense_head', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
-					['name' => 'All Report',      'short_code' => 'expense_section_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
+					['name' => 'Add Expense',     'short_code' => 'add_expense', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
+					['name' => 'Expense Report',  'short_code' => 'search_expense', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
+					// ['name' => 'All Report',      'short_code' => 'expense_section_report', 'add' => false, 'view' => true,'edit' => false,'delete' => false],
 				]
 			],
 			[
