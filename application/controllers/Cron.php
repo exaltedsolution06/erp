@@ -174,6 +174,7 @@ class Cron extends CI_Controller
 	
 	public function changeSessions($key = "")
 	{
+		
 		// If called from browser
 		if (!is_cli()) {
 			$key = $this->input->get('key');
@@ -188,7 +189,7 @@ class Cron extends CI_Controller
 		$this->db->where('move_students.status', 1);
 		$this->db->group_by('batch_id');
 		$query = $this->db->get();
-		// echo '<pre>'; print_r($query->result_array()); exit;
+		//echo '<pre>'; print_r($query->result_array()); die;
 		
 		foreach($query->result_array() as $result){
 			
@@ -199,7 +200,7 @@ class Cron extends CI_Controller
 			// $qr = $this->db->where('move_students.current_session_id', $this->current_session)->get();
 			$qr = $this->db->get();
 			$classData = $qr->result_array();
-			// echo "<pre>";print_r($classData);die;
+			//echo "<pre>";print_r($classData);die;
 			foreach($qr->result_array() as $val){
 				$sectionArr = [];
 				$new_section_array = [];
@@ -208,9 +209,9 @@ class Cron extends CI_Controller
 				$new_fee_category_array = [];
 				$new_route_array = [];
 				
-				// echo "<pre>";print_r($val);die;
+				//echo "<pre>";print_r($val);die;
 				$classes = $val;
-				
+				$this->insert_opening_balance($classes);
 				// Create section start
 					$this->db->select('sections.*')->from('class_sections');
 					$this->db->join('sections', 'sections.id = class_sections.section_id');
@@ -312,6 +313,8 @@ class Cron extends CI_Controller
 				$this->create_designation($classes);
 				$this->create_disable_reason($classes);
 				$this->create_staff($classes);
+				
+				$this->insert_opening_balance($classes);
 			}
 			
 			$this->db->where('batch_id', $result['batch_id']);
@@ -1447,6 +1450,79 @@ class Cron extends CI_Controller
 		}
 
 		return $defaultArray;
+	}
+	public function insert_opening_balance($classes)
+	{
+		$this->db->from('balance_sheets');
+		$this->db->where('session_id', $classes['next_session_id']);
+		$qr = $this->db->get();
+		if($qr->num_rows() == 0)
+		{
+			// credit total
+			$this->db->from('balance_sheets');
+			$this->db->select_sum('amount');
+
+			$this->db->where('session_id', $classes['current_session_id']);
+			$this->db->where('status', 0);
+			$this->db->where('balance_type', 0);
+
+			$query = $this->db->get();
+			$result = $query->row();
+
+			$total_credit_amount = $result->amount;
+			
+			// debit total
+			$this->db->from('balance_sheets');
+			$this->db->select_sum('amount');
+
+			$this->db->where('session_id', $classes['current_session_id']);
+			$this->db->where('status', 0);
+			$this->db->where('balance_type', 1);
+
+			$query = $this->db->get();
+			$result = $query->row();
+
+			$total_debit_amount = $result->amount;
+	
+			if($total_credit_amount > $total_debit_amount)
+			{
+				$data = array(
+					'session_id' => $classes['next_session_id'],
+					'balance_type' => 0,
+					'amount' => $total_credit_amount,
+					'date' => date('Y-m-d_H-i-s'),
+					'description' => 'Opening balance'
+				);
+				
+				$this->db->insert('balance_sheets', $data);
+			}
+			
+			if($total_debit_amount > $total_credit_amount)
+			{
+				$data = array(
+					'session_id' => $classes['next_session_id'],
+					'balance_type' => 1,
+					'amount' => $total_debit_amount,
+					'date' => date('Y-m-d_H-i-s'),
+					'description' => 'Opening balance'
+				);
+				
+				$this->db->insert('balance_sheets', $data);
+			}
+			
+			if($total_debit_amount == $total_credit_amount)
+			{
+				$data = array(
+					'session_id' => $classes['next_session_id'],
+					'balance_type' => 1,
+					'amount' => 0,
+					'date' => date('Y-m-d_H-i-s'),
+					'description' => 'Opening balance'
+				);
+				
+				$this->db->insert('balance_sheets', $data);
+			}
+		}
 	}
 	
 
