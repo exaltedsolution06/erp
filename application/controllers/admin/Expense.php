@@ -400,22 +400,49 @@ class Expense extends Admin_Controller
 			$date_from         = date('Y-m-d', $this->customlib->dateYYYYMMDDtoStrtotime($date_from));
 			$date_to           = date('Y-m-d', $this->customlib->dateYYYYMMDDtoStrtotime($date_to));
 
-			$resultList         = $this->expense_model->search_all_report("", $date_from, $date_to);
+			$resultList         = $this->expense_model->search_all_report("", $date_from, $date_to, "");
 			$data['resultList'] = $resultList;
 			}
+			$data['credit_or_debit'] = '';
 			//echo "<pre>";print_r($resultList);die;
 
 		   
-		} else {
+		}
+		else if($search == "search_credit_debit")
+		{
+			
+			$this->form_validation->set_rules('credit_debit', $this->lang->line('credit_debit'), 'trim|required|xss_clean');
+			if ($this->form_validation->run() == false) {
+
+			} else {
+				
+				$search_balance = $this->input->post('credit_debit');
+				if($search_balance == 0)
+				{
+					$resultList         = $this->expense_model->search_all_report("","","",$search_balance);
+				}
+				
+				if($search_balance == 1)
+				{
+					$resultList         = $this->expense_model->search_all_report("","","",$search_balance);
+				}
+				$data['credit_or_debit'] = 1;
+				$data['resultList'] = $resultList;
+			}
+		}
+		else {
+			
 			$data['exp_title'] = 'Expense Result';
 			$this->form_validation->set_rules('search_text', $this->lang->line('search_text'), 'trim|required|xss_clean');
 			if ($this->form_validation->run() == false) {
 
 			} else {
-
+				
 				$search_text        = $this->input->post('search_text');
-				$resultList         = $this->expense_model->search($search_text, "", "");
+				$resultList         = $this->expense_model->search_all_report($search_text, "", "","");
 				$data['resultList'] = $resultList;
+				$data['credit_or_debit'] = '';
+				//echo "<pre>";print_r($resultList);die;
 			}
 		}
 		

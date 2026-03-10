@@ -20,7 +20,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                     </div>
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="row">
                                     <form role="form" action="<?php echo site_url('admin/expense/all_report') ?>" method="post" class="">
                                         <?php echo $this->customlib->getCSRF(); ?>
@@ -52,9 +52,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </form>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="row">
-                                    <form role="form" action="<?php echo site_url('admin/expense/expenseSearch') ?>" method="post" class="">
+                                    <form role="form" action="<?php echo site_url('admin/expense/all_report') ?>" method="post" class="">
                                         <?php echo $this->customlib->getCSRF(); ?>
 
                                         <div class="col-sm-12">
@@ -68,6 +68,33 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <button type="submit" name="search" value="search_full" class="btn btn-primary btn-sm checkbox-toggle pull-right"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+							
+							<div class="col-md-4">
+                                <div class="row">
+                                    <form role="form" action="<?php echo site_url('admin/expense/all_report') ?>" method="post" class="">
+                                        <?php echo $this->customlib->getCSRF(); ?>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label><?php echo $this->lang->line('search'); ?></label><small class="req"> *</small>
+                                                <select name="credit_debit" class="form-control">
+													<option value=""> <?php echo $this->lang->line('select'); ?></option>
+													<option value="0">Income</option>
+													<option value="1">Expense</option>
+												</select>
+                                                <span class="text-danger"><?php echo form_error('credit_debit'); ?></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <button type="submit" name="search" value="search_credit_debit" class="btn btn-primary btn-sm checkbox-toggle pull-right"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
 
                                             </div>
                                         </div>
@@ -98,8 +125,15 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 												</th>
 												<th><?php echo $this->lang->line('debit'); ?>
 												</th>
+												<?php 
+												if($credit_or_debit == '')
+												{
+												?>
 												<th><?php echo $this->lang->line('balance'); ?>
 												</th>
+												<?php 
+												}
+												?>
 												<th><?php echo $this->lang->line('description'); ?>
 												</th>
                                                 <!--<th class="text-right"><?php echo $this->lang->line('amount'); ?> <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>-->
@@ -175,7 +209,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <td><?php echo date('d-m-Y', strtotime($value['date'])) ?></td>
                                                     <td><?php echo $credit; ?></td>
 													<td><?php echo $debit; ?></td>
+													<?php 
+													if($credit_or_debit == '')
+													{
+													?>
 													<td><?php echo $balance; ?></td>
+													<?php 
+													}
+													?>
 													<td><?php echo $forby; ?></td>
                                                 </tr>
                                                 <?php
@@ -186,7 +227,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
+												<?php 
+												if($credit_or_debit == '')
+												{
+												?>
                                                 <td></td>
+												<?php 
+												}
+												?>
                                                 <td class="pull-right text-bold"><?php echo $this->lang->line('closing_balance'); ?> : <?php echo ($currency_symbol . number_format($grand_total, 2, '.', '')); ?>
 
                                                 </td>
