@@ -101,7 +101,7 @@ New folder -
 
 5) uploads\income
 
-5) uploads\expence
+5) uploads\expense
 ===================================No required column table (optimize)===================================
 
 'exam_group_d' column not required in 'exam_group_class_batch_exams' table.
