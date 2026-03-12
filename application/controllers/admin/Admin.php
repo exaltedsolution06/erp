@@ -97,7 +97,96 @@ class Admin extends Admin_Controller
         $data['month_expense']    = $month_expense;
 		
         $data['total_expenses']    = $yearly_expenses+$month_expense+$weekly_expense;
-
+		
+		//--- student count-- 
+		$total_male_students = 0;
+		$total_female_students = 0;
+		$tot_male_students = $this->studentsession_model->getTotalMaleStudentBySession();
+        if (!empty($tot_male_students)) {
+            $total_male_students = $tot_male_students->total_student;
+        }
+		$data['total_male_students'] = $total_male_students;
+		
+		$tot_female_students = $this->studentsession_model->getTotalFemaleStudentBySession();
+        if (!empty($tot_female_students)) {
+            $total_female_students = $tot_female_students->total_student;
+        }
+		$data['total_female_students'] = $total_female_students;
+		$sum_total_student = $total_male_students + $total_female_students;
+		$data['total_male_female_student'] = $sum_total_student;
+		
+		$data['total_male_percent'] = 0;
+		$data['total_female_percent'] = 0;
+		if($sum_total_student > 0)
+		{
+			$data['total_male_percent'] = ($total_male_students/$sum_total_student)*100;
+			$data['total_female_percent'] = ($total_female_students/$sum_total_student)*100;
+		}
+		
+		// total attandance
+		$data['total_present_student'] = 0;
+		$data['total_absent_student'] = 0;
+		$data['total_present_percent'] = 0;
+		$data['total_absent_percent'] = 0;
+		
+		$tot_present_students = $this->stuattendence_model->getTodayPresentStudents();
+		$data['total_present_student'] = $tot_present_students;
+		
+		$tot_absent_students = $this->stuattendence_model->getTodayAbsentStudents();
+		$data['total_absent_student'] = $tot_absent_students;
+		$tot_attandence = $tot_present_students + $tot_absent_students;
+		if($tot_attandence > 0)
+		{
+			$data['total_present_percent'] = ($tot_present_students/$sum_total_student) * 100;
+			$data['total_absent_percent'] = ($tot_absent_students/$sum_total_student) * 100;
+		}
+		
+		//-- student fee collection --
+		$studentTransportFees = $this->studentfee_model->getTodayStudentTransportFees();
+		$data['studentTransportColls'] = $studentTransportFees;
+		$studentAcademicFees = $this->studentfee_model->getTodayStudentAcademicFees();
+		$data['studentAcademicColls'] = $studentAcademicFees;
+		
+		$todayTotalCollection = $studentTransportFees + $studentAcademicFees;
+		
+		$data['studentTransportCollsPercent'] = 0;
+		$data['studentAcademicCollsPercent'] = 0;
+		if($todayTotalCollection > 0)
+		{
+			$data['studentTransportCollsPercent'] = ($studentTransportFees/$todayTotalCollection)*100;
+			$data['studentAcademicCollsPercent'] = ($studentAcademicFees/$todayTotalCollection)*100;
+		}
+		$data['todayTotalCollection']  = $todayTotalCollection;
+		
+		//  todays incone and expense 
+		$today_total_income  = $this->income_model->todays_income();
+		$data['today_total_income'] = $today_total_income;
+		
+		$today_total_expense  = $this->expense_model->todays_expense();
+		$data['today_total_expense'] = $today_total_expense;
+		
+		$total_financial_summary = $today_total_income + $today_total_expense;
+		$data['total_financial_summary'] =  $total_financial_summary;
+		
+		$data['total_income_percent'] = 0;
+		$data['total_expense_percent'] = 0;
+		$data['net_cash_in_hands'] = 0;
+		
+		if($total_financial_summary > 0)
+		{
+			$data['total_income_percent'] = ($today_total_income/$total_financial_summary) *100;
+			$data['total_expense_percent'] = ($today_total_expense/$total_financial_summary) *100;
+		}
+		
+		if($today_total_income > $today_total_expense)
+		{
+			$data['net_cash_in_hands'] = $today_total_income - $today_total_expense;
+		}
+		else{
+			$data['net_cash_in_hands'] = 0;
+		}
+		
+		//--------
         $tot_students = $this->studentsession_model->getTotalStudentBySession();
         if (!empty($tot_students)) {
             $total_students = $tot_students->total_student;
@@ -359,7 +448,7 @@ class Admin extends Admin_Controller
 
         $this->load->view('layout/header', $data);
         $this->load->view('admin/dashboard', $data);
-        $this->load->view('layout/footer', $data);
+        $this->load->view('layout/footer', $data); 
     }
 
     public function getUserImage()

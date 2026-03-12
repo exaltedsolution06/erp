@@ -151,5 +151,27 @@ class Studentfee_model extends CI_Model {
         $query = $this->db->query($query);
         return $query->row();
     }
+	public function getTodayStudentTransportFees()
+	{
+		$this->db->select('SUM(receipt_amt) as total_transport_fees');
+		$this->db->from('receipts');
+		$this->db->where('fee_head_type','route');
+		$this->db->where('DATE(date_time)',date('Y-m-d'));
+		$this->db->where('session_id',$this->current_session);
+
+		$query = $this->db->get();
+		return $query->row()->total_transport_fees;
+	}
+	public function getTodayStudentAcademicFees()
+	{
+		$this->db->select('SUM(receipt_amt) as total_academic_fees');
+		$this->db->from('receipts');
+		$this->db->where('fee_head_type','fees');
+		$this->db->where('DATE(date_time)',date('Y-m-d'));
+		$this->db->where('session_id',$this->current_session);
+
+		$query = $this->db->get();
+		return $query->row()->total_academic_fees;
+	}
 
 }

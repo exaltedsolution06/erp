@@ -161,5 +161,31 @@ class Stuattendence_model extends MY_Model {
 
         return $count_studentattendance;
     }
+	
+	public function getTodayPresentStudents()
+	{
+		$this->db->select('COUNT(*) as total_present');
+		$this->db->from('student_attendences');
+		$this->db->join('student_session','student_attendences.student_session_id = student_session.id');
+		$this->db->where_in('attendence_type_id', [1,3,6]);
+		$this->db->where('DATE(date)',date('Y-m-d'));
+		$this->db->where('student_session.session_id',$this->current_session);
+
+		$query = $this->db->get();
+		return $query->row()->total_present;
+	}
+
+	public function getTodayAbsentStudents()
+	{
+		$this->db->select('COUNT(*) as total_absent');
+		$this->db->from('student_attendences');
+		$this->db->join('student_session','student_attendences.student_session_id = student_session.id');
+		$this->db->where('attendence_type_id',4);
+		$this->db->where('DATE(date)',date('Y-m-d'));
+		$this->db->where('student_session.session_id',$this->current_session);
+
+		$query = $this->db->get();
+		return $query->row()->total_absent;
+	}
 
 }
