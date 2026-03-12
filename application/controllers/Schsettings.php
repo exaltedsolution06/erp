@@ -196,7 +196,7 @@ class Schsettings extends Admin_Controller {
                 return false;
             }
             if ($_FILES["file"]["size"] > 102400) {
-                $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than')." 1MB");
+                $this->form_validation->set_message('handle_upload', $this->lang->line('file_size_shoud_be_less_than').$_FILES["file"]["size"]."- 100KB");
                 return false;
             }
             return true;
