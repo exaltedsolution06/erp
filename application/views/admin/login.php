@@ -32,7 +32,7 @@
         <!-- Top content -->
         <div class="top-content">
             <div class="inner-bg">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row">
                         <?php
                         $empty_notice = 0;
@@ -103,55 +103,52 @@
                                             <button type="submit" class="btn"><?php echo $this->lang->line('sign_in'); ?></button>
                                         </form>
                                         <a href="<?php echo site_url('site/forgotpassword') ?>" class="forgot"><i class="fa fa-key"></i> <?php echo $this->lang->line('forgot_password'); ?>?</a>
+										<a href="<?php echo base_url(); ?>" target="_blank" class="forgot pull-right"> <i class="fa fa-home"></i> Back to Home</a>
                                     </div>
-									<div class="form-top">
-										<a href="<?php echo base_url(); ?>" target="_blank"><button type="button" class="btn btn-info pull-right">Back to Home</button></a>
-									</div>
+									<span class="copyright_text">Designed and Maintained by <a href="https://easyskool.in/" class="color_black" target="_blank">easyskool.in</a></span>
                                 </div>
                             </div>
                             <?php
                             if (!$empty_notice) {
                                 ?>
                                 <!-- <div class="col-lg-1 col-sm-1"><div class="separatline"></div></div>  -->
-                                <div class="col-lg-8 col-md-8 col-sm-12">
-                                    <h3 class="h3"><?php echo $this->lang->line('what_is_new_in'); ?> <?php echo $school['name']; ?></h3>
-                                    <div class="loginright mCustomScrollbar">
-                                        <div class="messages"> 
+                                <div class="col-lg-8 col-md-8 col-sm-12 nopadding-2">
+									<div class="d-flex align-items-center text-wrap flex-column justify-content-center bg-position-sm-left bg-position-lg-center" style="background: url('https://demo.smart-school.in/uploads/school_content/login_image/1663064530-1070210809632059d2b8b0b!1662796232-1721792380631c41c80d038!login_bg3.jpg') no-repeat; background-size:cover">  
+										<div class=" bg-shadow-remove ">
+										
+											<h3 class="h3"><?php echo $this->lang->line('what_is_new_in'); ?> <?php echo $school['name']; ?></h3>
+											<div class="loginright mCustomScrollbar">
+												<div class="messages"> 
+													<?php
+													/*foreach ($notice as $notice_key => $notice_value) {
+														?>
+														<h4><?php echo $notice_value['title']; ?></h4>
 
+														<?php
+														$string = ($notice_value['description']);
+														$string = strip_tags($string);
+														if (strlen($string) > 100) {
 
-                                            <?php
-                                            foreach ($notice as $notice_key => $notice_value) {
-                                                ?>
-                                                <h4><?php echo $notice_value['title']; ?></h4>
+															// truncate string
+															$stringCut = substr($string, 0, 100);
+															$endPoint = strrpos($stringCut, ' ');
 
-                                                <?php
-                                                $string = ($notice_value['description']);
-                                                $string = strip_tags($string);
-                                                if (strlen($string) > 100) {
+															//if the string doesn't contain any space then it will cut without word basis.
+															$string = $endPoint ? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
+															$string .= '... <a class=more href="' . site_url('read/' . $notice_value['slug']) . '" target="_blank">' . $this->lang->line('read') . ' ' . $this->lang->line('more') . '  </a>';
+														}
+														echo '<p>' . $string . '</p>';
+														?>
 
-                                                    // truncate string
-                                                    $stringCut = substr($string, 0, 100);
-                                                    $endPoint = strrpos($stringCut, ' ');
-
-                                                    //if the string doesn't contain any space then it will cut without word basis.
-                                                    $string = $endPoint ? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-                                                    $string .= '... <a class=more href="' . site_url('read/' . $notice_value['slug']) . '" target="_blank">' . $this->lang->line('read') . ' ' . $this->lang->line('more') . '  </a>';
-                                                }
-                                                echo '<p>' . $string . '</p>';
-                                                ?>
-
-                                                <div class="logdivider"></div>
-                                                <?php
-                                            }
-                                            ?>
-
-
-
-
-
-                                        </div>  
-                                    </div>
-                                        <!-- <img src="<?php echo base_url(); ?>backend/usertemplate/assets/img/backgrounds/bg3.jpg" class="img-responsive" style="border-radius:4px;" /> -->
+														<div class="logdivider"></div>
+													<?php
+													}*/
+													?>
+												</div>  
+											</div>
+											<!-- <img src="<?php echo base_url(); ?>backend/usertemplate/assets/img/backgrounds/bg3.jpg" class="img-responsive" style="border-radius:4px;" /> -->
+										</div>
+									</div>
                                 </div><!--./col-lg-6-->
 
 
