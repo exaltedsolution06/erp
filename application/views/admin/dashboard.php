@@ -218,26 +218,6 @@
 						
 						<div class="col-md-4 col-sm-6 mb10">
 							<div class="topprograssstart flex-card">
-								<h5 class="pro-border">Todays Total attendance</h5>
-								<p class="text-uppercase mt10 clearfix">Total Present<span class="pull-right"><?php echo isset($total_present_student) ? $total_present_student : 0;  ?></span>
-								</p>
-								<div class="progress-group">
-									<div class="progress progress-minibar">
-										<div class="progress-bar  progress-bar-red" style="width: <?php echo round($total_present_percent) ?>%"></div>
-									</div>
-								</div>
-								<p class="text-uppercase mt10 clearfix">Total Absent<span class="pull-right"><?php echo isset($total_absent_student) ? $total_absent_student : 0;  ?></span>
-								</p>
-								<div class="progress-group">
-									<div class="progress progress-minibar">
-										<div class="progress-bar progress-bar-aqua" style="width: <?php echo round($total_absent_percent) ?>%"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="col-md-4 col-sm-6 mb10">
-							<div class="topprograssstart flex-card">
 								<h5 class="pro-border">Today's Total collection</h5>
 								<p class="text-uppercase mt10 clearfix">Transport Collection<span class="pull-right"><?php echo isset($studentTransportColls) ? $studentTransportColls : 0;  ?></span>
 								</p>
@@ -279,8 +259,29 @@
 								</p>
 							</div>
                         </div>
+						<div class="col-md-4 col-sm-6 mb10">
+							<div class="topprograssstart flex-card">
+								<h5 class="pro-border">Todays Total attendance</h5>
+								<p class="text-uppercase mt10 clearfix">Total Present<span class="pull-right"><?php echo isset($total_present_student) ? $total_present_student : 0;  ?></span>
+								</p>
+								<div class="progress-group">
+									<div class="progress progress-minibar">
+										<div class="progress-bar  progress-bar-red" style="width: <?php echo round($total_present_percent) ?>%"></div>
+									</div>
+								</div>
+								<p class="text-uppercase mt10 clearfix">Total Absent<span class="pull-right"><?php echo isset($total_absent_student) ? $total_absent_student : 0;  ?></span>
+								</p>
+								<div class="progress-group">
+									<div class="progress progress-minibar">
+										<div class="progress-bar progress-bar-aqua" style="width: <?php echo round($total_absent_percent) ?>%"></div>
+									</div>
+								</div>
+							</div>
+						</div>
 						
                     </div>
+					
+					
 					
 					
 					
@@ -312,6 +313,61 @@
             </div><!--./col-lg-3-->
         
         </div><!--./row-->
+		
+		<div class="row">
+                                <div class="col-lg-7 col-md-7 col-sm-12 col60">
+                        <div class="box box-primary borderwhite">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Fees Collection &amp; Expenses For March 2026</h3>
+                                
+                            </div>
+                            <div class="box-body">
+                                <div class="chart">
+                                  <canvas id="barChart" height="200" width="583" style="width: 583px; height: 200px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--./col-lg-7-->
+                                                <div class="col-lg-5 col-md-5 col-sm-12 col40">
+                        <div class="box box-primary borderwhite">
+                            <div class="box-header with-border"><h3 class="box-title">Income - March 2026</h3></div>
+                            <div class="box-body">
+                                <div class="chart-responsive"><iframe class="chartjs-hidden-iframe" style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;" tabindex="-1"></iframe>
+                                    <canvas id="doughnut-chart" class="pb20" height="200" style="display: block; width: 401px; height: 200px;" width="401"></canvas>
+                                </div>
+                            </div>
+                        </div><!--./col-md-6-->
+                    </div><!--./col-lg-5-->
+            </div>
+			<div class="row">
+                                <div class="col-lg-7 col-md-7 col-sm-12 col60">
+                        <div class="box box-info borderwhite">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Fees Collection &amp; Expenses For Session 2025-26</h3>
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="chart">
+                                      <canvas id="lineChart" height="200" width="583" style="width: 583px; height: 200px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--./col-lg-7-->
+                                            <div class="col-lg-5 col-md-5 col-sm-12 col40">
+                        <div class="box box-primary borderwhite">
+                            <div class="box-header with-border"><h3 class="box-title">Expense - March 2026</h3>
+                            </div><!--./info-box-->
+                            <div class="box-body">
+                                <div class="chart-responsive"><iframe class="chartjs-hidden-iframe" style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;" tabindex="-1"></iframe>
+                                    <canvas id="doughnut-chart1" class="pb20" height="200" style="display: block; width: 401px; height: 200px;" width="401"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--./col-lg-5-->
+            </div>
         
         </div><!--./row-->
 
@@ -847,7 +903,7 @@ foreach ($expensegraph as $value) {
             }
     });
 <?php
-if (($this->module_lib->hasActive('fees_collection')) || ($this->module_lib->hasActive('expense'))) {
+//if (($this->module_lib->hasActive('fees_collection')) || ($this->module_lib->hasActive('expense'))) {
     ?>
         $(function () {
         var areaChartOptions = {
@@ -963,7 +1019,7 @@ if (($this->module_lib->hasActive('fees_collection')) || ($this->module_lib->has
         }
         });
     <?php
-}
+//}
 ?>
 
 

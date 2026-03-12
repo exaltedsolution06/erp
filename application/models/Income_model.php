@@ -64,6 +64,18 @@ class Income_model extends My_Model
     public function getIncomeHeadsData($start_date, $end_date)
     {
 
+        $condition = "balance_sheets.balance_type=0";
+
+        $this->db->select('sum(balance_sheets.amount) as total,income_category')->from('balance_sheets');
+        $this->db->join('income_head', 'balance_sheets.head_id = income_head.id');
+        $this->db->where($condition)->group_by('income_head.id');
+        $r = $this->db->get()->result_array();
+        return $r;
+    }
+	
+	public function getIncomeHeadsData_bck($start_date, $end_date)
+    {
+
         $condition = "date_format(date,'%Y-%m-%d') between '" . $start_date . "' and '" . $end_date . "'";
 
         $this->db->select('sum(amount) as total,income_category')->from('income');

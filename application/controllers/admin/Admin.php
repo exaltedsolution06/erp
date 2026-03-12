@@ -339,7 +339,10 @@ class Admin extends Admin_Controller
                 }
             }
         }
-
+		
+		//bar_chart
+		$start_date = '2024-12-06';
+		$end_date = '2026-03-12';
         $data['incomegraph'] = $this->income_model->getIncomeHeadsData($start_date, $end_date);
         $data['expensegraph'] = $this->expense_model->getExpenseHeadData($start_date, $end_date);
         $enquiry       = $this->admin_model->getAllEnquiryCount($start_date, $end_date);
