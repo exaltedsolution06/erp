@@ -60,7 +60,13 @@ class Admin extends Admin_Controller
         $ar                 = $this->startmonthandend();
         $year_str_month     = $Current_year . '-' . $ar[0] . '-01';
         $year_end_month     = date("Y-m-t", strtotime($Next_year . '-' . $ar[1] . '-01'));
+		
+		//-------
+		$year_str_month = date('Y-m-01');
+		$year_end_month   = date('Y-m-t');
+		//echo $year_str_month.' '.$year_end_month;die;
         $getDepositeAmount  = $this->studentfeemaster_model->getDepositAmountBetweenDate($year_str_month, $year_end_month);
+		//echo "<pre>"; print_r($getDepositeAmount); die;
         //======================Current Month Collection ==============================
         $first_day_this_month     = date('Y-m-01');
 		//------------------------------
@@ -248,6 +254,7 @@ class Admin extends Admin_Controller
         $data['total_month']       = $total_month;
 
         //======================= current month collection /expense ===================
+		//echo "<pre>";print_r($getDepositeAmount);die;
         // hardcoded '01' for first day
         $startdate       = date('m/01/Y');
         $enddate         = date('m/t/Y');
@@ -258,11 +265,14 @@ class Admin extends Admin_Controller
         $days_collection = array();
         while ($currentdate <= $end) {
             $cur_date          = date('Y-m-d', $currentdate);
+            $end_date          = date('Y-m-d', $end);
             $month_days[]      = date('d', $currentdate);
-            $coll_amt          = $this->whatever($getDepositeAmount, $cur_date, $cur_date);
+			//$coll_amt          = $this->whatever($getDepositeAmount, $cur_date, $cur_date);
+            $coll_amt          = $this->whateverdays($getDepositeAmount, $cur_date, $end_date);
             $days_collection[] = $coll_amt;
             $currentdate       = strtotime('+1 day', $currentdate);
         }
+		//echo "<pre>";print_r($days_collection);die;
         $data['current_month_days'] = $month_days;
         $data['days_collection']    = $days_collection;
 
@@ -341,7 +351,7 @@ class Admin extends Admin_Controller
         }
 		
 		//echo INCOME_HEAD_FEE; die;
-		//bar_chart
+		//bar_chart days_collection
 		$start_date = date('Y-m-01');
 		$end_date   = date('Y-m-t');
         $data['incomegraph'] = $this->income_model->getIncomeHeadsData($start_date, $end_date);
@@ -804,6 +814,27 @@ class Admin extends Admin_Controller
         $result = $this->admin_model->getMonthlyExpense();
         return $result;
     }
+	
+	public function whateverdays($feecollection_array, $start_month_date, $end_month_date)
+	{
+		$return_amount = 0;
+		
+        //echo $start_month_date;die;
+		if (!empty($feecollection_array)) {
+			
+				$date = $start_month_date;
+				foreach ($feecollection_array as $k=>$value) {
+					
+					$array_date = date('Y-m-d', strtotime($value['date']));
+					//echo $array_date.'@@@@'.$date; die;
+						if ($array_date == $date) {
+							// echo date('Y-m-d', strtotime($value['date'])) .' '. $date.' '.$value['amount'];die;
+							$return_amount += $value['amount'];
+						}
+				}
+		}
+		return $return_amount;
+	}
 
     public function whatever($feecollection_array, $start_month_date, $end_month_date)
     {
@@ -816,10 +847,11 @@ class Admin extends Admin_Controller
                 $date = date('Y-m-d', $st_date);
                 foreach ($feecollection_array as $key => $value) {
 
-                    if ($value['date'] == $date) {
+                    //if ($value['date'] == $date) {
 
-                        $return_amount = $return_amount + $value['amount'] + $value['amount_fine'];
-                    }
+                        $return_amount =  $value['amount'];
+                        //$return_amount = $return_amount + $value['amount'] + $value['amount_fine'];
+                    //}
                 }
                 $st_date = $st_date + 86400;
             }

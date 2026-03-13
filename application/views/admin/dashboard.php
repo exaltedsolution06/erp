@@ -318,7 +318,7 @@
                         <div class="col-lg-7 col-md-7 col-sm-12 col60">
 							<div class="box box-primary borderwhite">
 								<div class="box-header with-border">
-									<h3 class="box-title">Fees Collection &amp; Expenses For <?php echo date('F Y'); ?></h3>
+									<h3 class="box-title">Income &amp; Expenses For <?php echo date('F Y'); ?></h3>
 									
 								</div>
 								<div class="box-body">

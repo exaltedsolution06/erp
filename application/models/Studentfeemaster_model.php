@@ -448,6 +448,42 @@ class Studentfeemaster_model extends MY_Model
     public function getDepositAmountBetweenDate($start_date, $end_date)
     {
 
+        $this->db->select('`balance_sheets`.*')->from('balance_sheets');
+        $this->db->where('balance_type', 0);
+        $this->db->order_by('balance_sheets.date','ASC');
+        $query        = $this->db->get();
+        $result_value = $query->result();
+		//echo "<pre>";print_r($result_value);die;
+        $return_array = array();
+        if (!empty($result_value)) {
+            $st_date = strtotime($start_date);
+            $ed_date = strtotime($end_date);
+            foreach ($result_value as $key => $value) {
+                //$return = $this->findObjectById($value, $st_date, $ed_date);
+				//echo $st_date.' '.$ed_date;
+				//echo "<pre>";print_r($return);die;
+                //if (!empty($return)) {
+                    //foreach ($return as $r_key => $r_value) {
+                        $a                    = array();
+                        $a['amount']          = $value->amount;
+                        $a['date']            = $value->date;
+                        //$a['amount_discount'] = $r_value->amount_discount;
+                        //$a['amount_fine']     = $r_value->amount_fine;
+                        $a['description']     = $value->description;
+                        //$a['payment_mode']    = $r_value->payment_mode;
+                        $a['inv_no']          = $value->receipt_no;
+                        $return_array[]       = $a;
+                    //}
+               // }
+            }
+        }
+
+        return $return_array;
+    }
+	
+	 public function getDepositAmountBetweenDate_bck($start_date, $end_date)
+    {
+
         $this->db->select('`student_fees_deposite`.*')->from('student_fees_deposite');
         $this->db->order_by('student_fees_deposite.id');
         $query        = $this->db->get();
@@ -499,7 +535,8 @@ class Studentfeemaster_model extends MY_Model
     public function findObjectById($array, $st_date, $ed_date)
     {
 
-        $ar = json_decode($array->amount_detail);
+        //$ar = json_decode($array->amount_detail);
+        $ar = $array->amount;
 
         $array = array();
         for ($i = $st_date; $i <= $ed_date; $i += 86400) {
