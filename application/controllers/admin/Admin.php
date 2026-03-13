@@ -818,19 +818,14 @@ class Admin extends Admin_Controller
 	public function whateverdays($feecollection_array, $start_month_date, $end_month_date)
 	{
 		$return_amount = 0;
-		
-        //echo $start_month_date;die;
 		if (!empty($feecollection_array)) {
 			
 				$date = $start_month_date;
 				foreach ($feecollection_array as $k=>$value) {
-					
 					$array_date = date('Y-m-d', strtotime($value['date']));
-					//echo $array_date.'@@@@'.$date; die;
-						if ($array_date == $date) {
-							// echo date('Y-m-d', strtotime($value['date'])) .' '. $date.' '.$value['amount'];die;
-							$return_amount += $value['amount'];
-						}
+					if ($array_date == $date) {
+						$return_amount += $value['amount'];
+					}
 				}
 		}
 		return $return_amount;
