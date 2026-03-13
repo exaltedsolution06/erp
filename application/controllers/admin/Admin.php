@@ -273,15 +273,10 @@ class Admin extends Admin_Controller
 			
 			$month_start   = date('Y-m-d', $expense_start_month);
             $month_end     = date("Y-m-t", $expense_start_month);
-			//echo $month_start.' '.$month_end; die;
+			
             //$expense_monthly = $this->expense_model->getTotalExpenseBwdate($month_start, $month_end);
 			
 			$return  = $this->Expense_model->getExpenseAmountMonthlySessionWise($month_start,$month_end);
-
-            /*if (!empty($expense_monthly)) {
-                $amt  = 0;
-                $ex[] = $amt + $expense_monthly->amount;
-            }*/
 			
 			if ($return) {
                 $ex[] = $return;
@@ -299,7 +294,7 @@ class Admin extends Admin_Controller
         $data['total_month']       = $total_month;
 
         //======================= current month collection /expense ===================
-		//echo "<pre>";print_r($getDepositeAmount);die;
+		
         // hardcoded '01' for first day
         $startdate       = date('m/01/Y');
         $enddate         = date('m/t/Y');
@@ -894,25 +889,6 @@ class Admin extends Admin_Controller
 		return $return_amount;
 	}
 	
-	/*public function whatevermonths($feecollection_array, $start_month_date, $end_month_date)
-	{
-		$return_amount = 0;
-		echo $start_month_date.' '.$end_month_date; die;
-		$amount = $this->Income_model->getSumAmountMonthlySessionWise($start_month_date,$end_month_date)
-		$this->
-		if (!empty($feecollection_array)) {
-			
-				$date = $start_month_date;
-				foreach ($feecollection_array as $k=>$value) {
-					$array_date = date('Y-m-d', strtotime($value['date']));
-					if ($array_date == $date) {
-						$return_amount += $value['amount'];
-					}
-				}
-		}
-		return $return_amount;
-	}*/
-
     public function whatever($feecollection_array, $start_month_date, $end_month_date)
     {
         $return_amount = 0;
