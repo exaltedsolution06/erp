@@ -96,8 +96,10 @@ class Reportcard extends Admin_Controller {
             }
             if (isset($_POST['marks_grade_table'])) {
                 $marks_grade_table = 1;
+                $grade_table_title = $this->input->post('grade_table_title');
             } else {
                 $marks_grade_table = 0;
+				$grade_table_title = '';
             }
             if (isset($_POST['max_marks_shift_left'])) {
                 $max_marks_shift_left = 1;
@@ -135,10 +137,8 @@ class Reportcard extends Admin_Controller {
             }
             if (isset($_POST['place'])) {
                 $place = 1;
-                $grade_table_title = $this->input->post('grade_table_title');
             } else {
                 $place = 0;
-				$grade_table_title = '';
             }
 
 
@@ -366,8 +366,10 @@ class Reportcard extends Admin_Controller {
 
             if (isset($_POST['marks_grade_table'])) {
                 $marks_grade_table = 1;
+                $grade_table_title = $this->input->post('grade_table_title');
             } else {
                 $marks_grade_table = 0;
+                $grade_table_title = '';
             }
             if (isset($_POST['max_marks_shift_left'])) {
                 $max_marks_shift_left = 1;
@@ -405,10 +407,8 @@ class Reportcard extends Admin_Controller {
             }
             if (isset($_POST['place'])) {
                 $place = 1;
-                $grade_table_title = $this->input->post('grade_table_title');
             } else {
                 $place = 0;
-                $grade_table_title = '';
             }
 
 
