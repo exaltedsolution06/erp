@@ -283,5 +283,27 @@ class Expense_model extends MY_Model
 		$query = $this->db->get();
 		return $query->row()->today_total_expense;
 	}
+	 public function getExpenseAmountBetweenDate($start_date, $end_date)
+    {
+		$condition = "balance_sheets.balance_type=1 AND date_format(date,'%Y-%m-%d') between '" . $start_date . "' and '" . $end_date . "'";
+        $this->db->select('`balance_sheets`.*')->from('balance_sheets');
+        $this->db->where($condition);
+        $this->db->order_by('balance_sheets.date','ASC');
+        $query        = $this->db->get();
+        $result_value = $query->result();
+		
+        $return_array = array();
+        if (!empty($result_value)) {
+            foreach ($result_value as $key => $value) {
+                $a                    = array();
+				$a['amount']          = $value->amount;
+				$a['date']            = $value->date;
+				$a['description']     = $value->description;
+				$a['inv_no']          = $value->receipt_no;
+				$return_array[]       = $a;
+			}
+        }
+        return $return_array;
+    }
 
 }

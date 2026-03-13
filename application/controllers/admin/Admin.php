@@ -14,7 +14,7 @@ class Admin extends Admin_Controller
         $this->load->model("Staff_model");
         $this->load->library('Enc_lib');
         $this->sch_setting_detail = $this->setting_model->getSetting();
-
+		$this->load->model("Expense_model");
     }
 
     public function unauthorized()
@@ -66,7 +66,8 @@ class Admin extends Admin_Controller
 		$year_end_month   = date('Y-m-t');
 		//echo $year_str_month.' '.$year_end_month;die;
         $getDepositeAmount  = $this->studentfeemaster_model->getDepositAmountBetweenDate($year_str_month, $year_end_month);
-		//echo "<pre>"; print_r($getDepositeAmount); die;
+		$getExpenseAmount  = $this->Expense_model->getExpenseAmountBetweenDate($year_str_month, $year_end_month);
+		//echo "<pre>"; print_r($getExpenseAmount); die;
         //======================Current Month Collection ==============================
         $first_day_this_month     = date('Y-m-01');
 		//------------------------------
@@ -287,9 +288,11 @@ class Admin extends Admin_Controller
         $days_expense = array();
         while ($currentdate <= $end) {
             $cur_date       = date('Y-m-d', $currentdate);
+			$end_date          = date('Y-m-d', $end);
             $month_days[]   = date('d', $currentdate);
             $currentdate    = strtotime('+1 day', $currentdate);
-            $ct             = $this->getExpensebyday($cur_date);
+			$ct          = $this->whateverExpensebyday($getExpenseAmount, $cur_date, $end_date);
+            //$ct             = $this->getExpensebyday($cur_date);
             $days_expense[] = $ct;
         }
 
@@ -816,6 +819,22 @@ class Admin extends Admin_Controller
     }
 	
 	public function whateverdays($feecollection_array, $start_month_date, $end_month_date)
+	{
+		$return_amount = 0;
+		if (!empty($feecollection_array)) {
+			
+				$date = $start_month_date;
+				foreach ($feecollection_array as $k=>$value) {
+					$array_date = date('Y-m-d', strtotime($value['date']));
+					if ($array_date == $date) {
+						$return_amount += $value['amount'];
+					}
+				}
+		}
+		return $return_amount;
+	}
+	
+	public function whateverExpensebyday($feecollection_array, $start_month_date, $end_month_date)
 	{
 		$return_amount = 0;
 		if (!empty($feecollection_array)) {
