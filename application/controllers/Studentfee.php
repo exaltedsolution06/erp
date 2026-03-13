@@ -18,6 +18,8 @@ class Studentfee extends Admin_Controller
         $this->sch_setting_detail = $this->setting_model->getSetting();
 		$this->load->model('fee_discount_model');
 		$this->current_session = $this->setting_model->getCurrentSession();
+		
+		$this->load->model('Income_model');
     }
 
 
@@ -34,6 +36,10 @@ class Studentfee extends Admin_Controller
             return;
         }
         $last_id=[];
+		
+		// get the income head 
+		$income_head = $this->Income_model->get_income_head();
+		//
         if(!empty($data['pay'][0])){
 
             
@@ -107,6 +113,7 @@ class Studentfee extends Admin_Controller
 				'balance_type'   => 0,
 				'student_id'   => $data['student_id'],
 				'receipt_no'   => $data['receipt_no'],
+				'head_id'   => $income_head,
 				'amount'   => $data['receipt_amt'],
 				'date'   => date('Y-m-d H:i:s'),
 			);
@@ -193,6 +200,7 @@ class Studentfee extends Admin_Controller
 				'balance_type'   => 0,
 				'student_id'   => $data['student_id'],
 				'receipt_no'   => $data['receipt_no'],
+				'head_id'   => $income_head,
 				'amount'   => $data['ledger_amt'],
 				'date'   => date('Y-m-d H:i:s'),
 			);

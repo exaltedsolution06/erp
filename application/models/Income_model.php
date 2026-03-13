@@ -64,7 +64,7 @@ class Income_model extends My_Model
     public function getIncomeHeadsData($start_date, $end_date)
     {
 
-        $condition = "balance_sheets.balance_type=0";
+        $condition = "balance_sheets.balance_type=0 AND date_format(date,'%Y-%m-%d') between '" . $start_date . "' and '" . $end_date . "'";
 
         $this->db->select('sum(balance_sheets.amount) as total,income_category')->from('balance_sheets');
         $this->db->join('income_head', 'balance_sheets.head_id = income_head.id');
@@ -269,6 +269,31 @@ class Income_model extends My_Model
 
 		$query = $this->db->get();
 		return $query->row()->today_total_income;
+	}
+	public function get_income_head()
+	{
+		$this->db->select('id');
+        $this->db->from('income_head');
+        $this->db->where('session_id', $this->current_session);
+        $this->db->where('income_category', INCOME_HEAD_FEE);
+        $query = $this->db->get();
+        if ($query->num_rows() == 1) {
+            return $query->row()->id;
+        } else {
+            
+			$data = array(
+				'session_id' => $this->current_session,
+				'income_category' => INCOME_HEAD_FEE, // define in config/constants
+				'description' => INCOME_HEAD_FEE,
+				'is_active' => 'yes',
+				'is_deleted' => 'no',
+				'created_at' => date('Y-m-d h:i:s'),
+			);
+			$this->db->insert('income_head', $data);
+			$return_value = $this->db->insert_id();
+			return $return_value;
+        }
+		
 	}
 
 }

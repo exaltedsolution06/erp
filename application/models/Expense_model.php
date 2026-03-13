@@ -188,8 +188,21 @@ class Expense_model extends MY_Model
         $query = $this->db->query($query);
         return $query->row();
     }
+	
+	public function getExpenseHeadData($start_date, $end_date)
+    {
+        $condition = "balance_sheets.balance_type=1 AND date_format(date,'%Y-%m-%d') between '" . $start_date . "' and '" . $end_date . "'";
 
-    public function getExpenseHeadData($start_date, $end_date)
+        $this->db->select('sum(balance_sheets.amount) as total,expense_head.exp_category')->from('balance_sheets');
+        $this->db->join('expense_head', 'balance_sheets.head_id = expense_head.id');
+        $this->db->where($condition)->group_by('expense_head.id');
+        $r = $this->db->get()->result_array();
+        return $r;
+		
+		//expense_head.exp_category
+    }
+	
+    public function getExpenseHeadData_bck($start_date, $end_date)
     {
         $condition = "date_format(date,'%Y-%m-%d') between '" . $start_date . "' and '" . $end_date . "'";
 

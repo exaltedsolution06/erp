@@ -340,9 +340,10 @@ class Admin extends Admin_Controller
             }
         }
 		
+		//echo INCOME_HEAD_FEE; die;
 		//bar_chart
-		$start_date = '2024-12-06';
-		$end_date = '2026-03-12';
+		$start_date = date('Y-m-01');
+		$end_date   = date('Y-m-t');
         $data['incomegraph'] = $this->income_model->getIncomeHeadsData($start_date, $end_date);
         $data['expensegraph'] = $this->expense_model->getExpenseHeadData($start_date, $end_date);
         $enquiry       = $this->admin_model->getAllEnquiryCount($start_date, $end_date);

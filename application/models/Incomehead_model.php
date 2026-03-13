@@ -22,6 +22,7 @@ class Incomehead_model extends My_Model {
         if ($id != null) {
             $this->db->where('id', $id);
         } else {
+			$this->db->where('income_category !=', INCOME_HEAD_FEE);
             $this->db->order_by('id');
         }
         $query = $this->db->get();
