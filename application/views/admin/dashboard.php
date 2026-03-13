@@ -44,9 +44,9 @@
         $widget = 4;
         ?> 
         
-        <div class="row">
         
-            <div class="col-lg-9 col-md-9 col-sm-12 col80">
+        
+            <div class="col-lg-12 col-md-12 col-sm-12 col801">
                 <div class="row">
 					<?php if ($this->rbac->hasPrivilege('monthly_fees_collection_widget', 'can_view')) { ?>
                     <div class="col-md-4 col-sm-6">
@@ -193,8 +193,9 @@
                         </div>
                     </div>
 					<?php } ?>
-					<div class="row row-flex3">
-						<div class="col-md-4 col-sm-6 mb10">
+				</div>  	
+				<div class="row row-flex3">	
+						<div class="col-md-3 col-sm-6 mb10">
 							<div class="topprograssstart flex-card">
 								<h5 class="pro-border">Total student</h5>
 								<p class="text-uppercase mt10 clearfix">Total Male Student<span class="pull-right"><?php echo isset($total_male_students) ? $total_male_students : 0;  ?></span>
@@ -216,7 +217,7 @@
 							</div>
                         </div>
 						
-						<div class="col-md-4 col-sm-6 mb10">
+						<div class="col-md-3 col-sm-6 mb10">
 							<div class="topprograssstart flex-card">
 								<h5 class="pro-border">Today's Total collection</h5>
 								<p class="text-uppercase mt10 clearfix">Transport Collection<span class="pull-right"><?php echo isset($studentTransportColls) ? $studentTransportColls : 0;  ?></span>
@@ -238,7 +239,7 @@
 							</div>
                         </div>
 						
-						<div class="col-md-4 col-sm-6 mb10">
+						<div class="col-md-3 col-sm-6 mb10">
 							<div class="topprograssstart flex-card">
 								<h5 class="pro-border">Today's Financial Summary</h5>
 								<p class="text-uppercase mt10 clearfix">Todays income<span class="pull-right"><?php echo isset($today_total_income) ? $today_total_income : 0;  ?></span>
@@ -259,7 +260,7 @@
 								</p>
 							</div>
                         </div>
-						<div class="col-md-4 col-sm-6 mb10">
+						<div class="col-md-3 col-sm-6 mb10">
 							<div class="topprograssstart flex-card">
 								<h5 class="pro-border">Todays Total attendance</h5>
 								<p class="text-uppercase mt10 clearfix">Total Present<span class="pull-right"><?php echo isset($total_present_student) ? $total_present_student : 0;  ?></span>
@@ -279,7 +280,6 @@
 							</div>
 						</div>
 						
-                    </div>
 					
 					
 					
@@ -287,30 +287,25 @@
 					
                 </div>   
         
-                <div class="box box-primary borderwhite">
-                    <div class="box-body">
-                        <!-- THE CALENDAR -->
-                        <div id="calendar"></div>
-                    </div>
-                </div>
+                
         
             </div><!--./col-lg-9-->
 			
 			
         
-            <div class="col-lg-3 col-md-3 col-sm-12 col20">
-                <?php foreach ($roles as $key => $value) { ?>
-                    <div class="info-box">
-                        <a href="#">
-                            <span class="info-box-icon bg-yellow"><i class="fa fa-user-secret"></i></span>
-                            <div class="info-box-content">
-                                <span class="info-box-text"><?php echo $key; ?></span>
-                                <span class="info-box-number"><?php echo $value; ?></span>
-                            </div>
-                        </a>
-                    </div>     
-                <?php } ?>
-            </div><!--./col-lg-3-->
+            <?php foreach ($roles as $key => $value) { ?>
+			<div class="col-lg-3 col-md-3 col-sm-12 col201">
+					<div class="info-box">
+						<a href="#">
+							<span class="info-box-icon bg-yellow"><i class="fa fa-user-secret"></i></span>
+							<div class="info-box-content">
+								<span class="info-box-text"><?php echo $key; ?></span>
+								<span class="info-box-number"><?php echo $value; ?></span>
+							</div>
+						</a>
+					</div>  
+			</div><!--./col-lg-3-->   
+            <?php } ?>
         
         </div><!--./row-->
 		
@@ -369,7 +364,16 @@
                     </div><!--./col-lg-5-->
 				</div>
         
-        </div><!--./row-->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box box-primary borderwhite">
+					<div class="box-body">
+						<!-- THE CALENDAR -->
+						<div id="calendar"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 
         
         </section>

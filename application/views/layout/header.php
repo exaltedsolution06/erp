@@ -66,7 +66,8 @@
         span.flag-icon.flag-icon-us{text-orientation: mixed;}
   </style>
     </head>
-    <body class="hold-transition skin-blue fixed sidebar-mini">
+    <!--<body class="hold-transition skin-blue fixed sidebar-mini">-->
+    <body class="skin-blue sidebar-mini light-mode shadow-applied fixed">
 
 
  <?php

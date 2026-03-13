@@ -465,7 +465,8 @@ a.more:hover{color: #0084B4;text-decoration: none;}
 	
 }
 .color_black, .color_black:hover{
-	color: #000;
+	color: #0051ff;
+	text-decoration: underline;
 }
 .flex-column {flex-direction: column!important;}
 .justify-content-center{justify-content: center;}
