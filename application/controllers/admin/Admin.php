@@ -213,17 +213,46 @@ class Admin extends Admin_Controller
         $data["roles"] = $count_roles;
 
         //======================== get collection by month ==========================
+		
+		// get the financial month 
+		
+		$currentMonth = date('n'); // 1-12
+		$currentYear  = date('Y');
+
+		if ($currentMonth >= 4) {
+			$year_str_month = $currentYear . '-04-01';
+			$year_end_month   = ($currentYear + 1) . '-03-31';
+		} else {
+			$year_str_month = ($currentYear - 1) . '-04-01';
+			$year_end_month   = $currentYear . '-03-31';
+		}
+		
+		
+		
         $start_month = strtotime($year_str_month);
         $start       = strtotime($year_str_month);
         $end         = strtotime($year_end_month);
         $coll_month  = array();
         $s           = array();
         $total_month = array();
+		
+		$expense_start_month = $start_month;
+		
+
+		$getDepositeAmountSessionWise  = $this->studentfeemaster_model->getDepositAmountSessionWise();
+		
+		$getExpenseAmountSessionWise  = $this->Expense_model->getExpenseAmountSessionWise();
+		
+		//echo "<pre>";print_r($getExpenseAmountSessionWise);die;
+		   
         while ($start_month <= $end) {
             $total_month[] = date('M', $start_month);
             $month_start   = date('Y-m-d', $start_month);
             $month_end     = date("Y-m-t", $start_month);
-            $return        = $this->whatever($getDepositeAmount, $month_start, $month_end);
+			//echo $month_start.' '.$month_end; die;
+            $return  = $this->income_model->getIncomeAmountMonthlySessionWise($month_start,$month_end);
+			
+            //$return        = $this->whatevermonths($getDepositeAmountSessionWise, $month_start, $month_end);
             if ($return) {
                 $s[] = $return;
             } else {
@@ -232,24 +261,39 @@ class Admin extends Admin_Controller
 
             $start_month = strtotime("+1 month", $start_month);
         }
+		
         //======================== getexpense by month ==============================
         $ex                  = array();
         $start_session_month = strtotime($year_str_month);
-        while ($start_session_month <= $end) {
+        //while ($start_session_month <= $end) {
+        while ($expense_start_month <= $end) {
 
-            $month_start = date('Y-m-d', $start_session_month);
-            $month_end   = date("Y-m-t", $start_session_month);
+            //$month_start = date('Y-m-d', $start_session_month);
+            //$month_end   = date("Y-m-t", $start_session_month);
+			
+			$month_start   = date('Y-m-d', $expense_start_month);
+            $month_end     = date("Y-m-t", $expense_start_month);
+			//echo $month_start.' '.$month_end; die;
+            //$expense_monthly = $this->expense_model->getTotalExpenseBwdate($month_start, $month_end);
+			
+			$return  = $this->Expense_model->getExpenseAmountMonthlySessionWise($month_start,$month_end);
 
-            $expense_monthly = $this->expense_model->getTotalExpenseBwdate($month_start, $month_end);
-
-            if (!empty($expense_monthly)) {
+            /*if (!empty($expense_monthly)) {
                 $amt  = 0;
                 $ex[] = $amt + $expense_monthly->amount;
+            }*/
+			
+			if ($return) {
+                $ex[] = $return;
+            } else {
+                $ex[] = "0.00";
             }
 
-            $start_session_month = strtotime("+1 month", $start_session_month);
+            $expense_start_month = strtotime("+1 month", $expense_start_month);
         }
-
+		
+		//echo "<pre>";print_r($s);die;
+       
         $data['yearly_collection'] = $s;
         $data['yearly_expense']    = $ex;
         $data['total_month']       = $total_month;
@@ -354,7 +398,7 @@ class Admin extends Admin_Controller
         }
 		
 		//echo INCOME_HEAD_FEE; die;
-		//bar_chart days_collection
+		//bar_chart days_collection yearly_collection
 		$start_date = date('Y-m-01');
 		$end_date   = date('Y-m-t');
         $data['incomegraph'] = $this->income_model->getIncomeHeadsData($start_date, $end_date);
@@ -849,6 +893,25 @@ class Admin extends Admin_Controller
 		}
 		return $return_amount;
 	}
+	
+	/*public function whatevermonths($feecollection_array, $start_month_date, $end_month_date)
+	{
+		$return_amount = 0;
+		echo $start_month_date.' '.$end_month_date; die;
+		$amount = $this->Income_model->getSumAmountMonthlySessionWise($start_month_date,$end_month_date)
+		$this->
+		if (!empty($feecollection_array)) {
+			
+				$date = $start_month_date;
+				foreach ($feecollection_array as $k=>$value) {
+					$array_date = date('Y-m-d', strtotime($value['date']));
+					if ($array_date == $date) {
+						$return_amount += $value['amount'];
+					}
+				}
+		}
+		return $return_amount;
+	}*/
 
     public function whatever($feecollection_array, $start_month_date, $end_month_date)
     {

@@ -742,5 +742,27 @@ class Studentfeemaster_model extends MY_Model
 
         return $result;
     }
-
+	
+	public function getDepositAmountSessionWise()
+    {
+        $this->db->select('`balance_sheets`.*')->from('balance_sheets');
+        $this->db->where('balance_type', 0);
+        $this->db->where('session_id', $this->current_session);
+        $this->db->order_by('balance_sheets.date','ASC');
+        $query        = $this->db->get();
+        $result_value = $query->result();
+		//echo "<pre>";print_r($result_value);die;
+        $return_array = array();
+        if (!empty($result_value)) {
+            foreach ($result_value as $key => $value) {
+				$a                    = array();
+				$a['amount']          = $value->amount;
+				$a['date']            = $value->date;
+				$a['description']     = $value->description;
+				$a['inv_no']          = $value->receipt_no;
+				$return_array[]       = $a;
+            }
+        }
+		return $return_array;
+    }
 }

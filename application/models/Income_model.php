@@ -295,5 +295,15 @@ class Income_model extends My_Model
         }
 		
 	}
+	public function getIncomeAmountMonthlySessionWise($start_month, $end_month)
+	{
+		$condition = "balance_type = 0 AND date_format(date,'%Y-%m-%d') between '" . $start_month . "' and '" . $end_month . "'";
+		$this->db->select('SUM(amount) as total_amount')->from('balance_sheets');
+        $this->db->where($condition);
+        $this->db->where('session_id', $this->current_session);
+        //$this->db->order_by('date','ASC');
+        $query        = $this->db->get();
+        return $query->row()->total_amount;
+	}
 
 }

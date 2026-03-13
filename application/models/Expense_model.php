@@ -305,5 +305,38 @@ class Expense_model extends MY_Model
         }
         return $return_array;
     }
+	public function getExpenseAmountSessionWise()
+    {
+        $this->db->select('`balance_sheets`.*')->from('balance_sheets');
+        $this->db->where('balance_type', 1);
+        $this->db->where('session_id', $this->current_session);
+        $this->db->order_by('balance_sheets.date','ASC');
+        $query        = $this->db->get();
+        $result_value = $query->result();
+		//echo "<pre>";print_r($result_value);die;
+        $return_array = array();
+        if (!empty($result_value)) {
+            foreach ($result_value as $key => $value) {
+				$a                    = array();
+				$a['amount']          = $value->amount;
+				$a['date']            = $value->date;
+				$a['description']     = $value->description;
+				$a['inv_no']          = $value->receipt_no;
+				$return_array[]       = $a;
+            }
+        }
+		return $return_array;
+    }
+	
+	public function getExpenseAmountMonthlySessionWise($start_month, $end_month)
+	{
+		$condition = "balance_type = 1 AND date_format(date,'%Y-%m-%d') between '" . $start_month . "' and '" . $end_month . "'";
+		$this->db->select('SUM(amount) as total_amount')->from('balance_sheets');
+        $this->db->where($condition);
+        $this->db->where('session_id', $this->current_session);
+        //$this->db->order_by('date','ASC');
+        $query        = $this->db->get();
+        return $query->row()->total_amount;
+	}
 
 }

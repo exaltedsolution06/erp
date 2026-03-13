@@ -343,7 +343,7 @@
                     <div class="col-lg-7 col-md-7 col-sm-12 col60">
                         <div class="box box-info borderwhite">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Fees Collection &amp; Expenses For Session 2025-26</h3>
+                                <h3 class="box-title">Income &amp; Expenses For Session 2025-26</h3>
                                 <div class="box-tools pull-right">
                                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
