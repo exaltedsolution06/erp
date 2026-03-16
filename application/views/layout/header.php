@@ -15,9 +15,10 @@
         <?php
           $this->load->view('layout/theme');
          ?>
-       
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/fontawesome.min.css">	
         <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/font-awesome.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/ionicons.min.css">
+			
         <link rel="stylesheet" href="<?php echo base_url(); ?>backend/plugins/iCheck/flat/blue.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>backend/plugins/morris/morris.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>backend/plugins/jvectormap/jquery-jvectormap-1.2.2.css">

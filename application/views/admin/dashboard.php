@@ -8,7 +8,10 @@
 <div class="content-wrapper" style="min-height: 946px;">
     <section class="content">
         
-        
+        <div class="dashalertpay alert alert-danger alert-dismissible" role="alert">
+			<a class="link pull-right" autocomplete="off">Pay Now</a>
+			Important notice! payment due
+		</div>
         
         
         

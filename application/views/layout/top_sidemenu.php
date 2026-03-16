@@ -9,7 +9,7 @@
         </li>
     <?php } ?>
 
-    <li class="dropdown">
+    <!--<li class="dropdown">
 
         <a class="dropdown-toggle drop5" data-toggle="dropdown" href="#" aria-expanded="false">
             <span><?php echo $this->lang->line('quick_links'); ?></span> <i class="fa fa-th pull-right ftlayer"></i>
@@ -101,5 +101,5 @@
                 <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="<?php echo base_url(); ?>admin/mailsms/compose"><i class="fa fa-envelope-o"></i><?php echo $this->lang->line('send_email_/_sms'); ?></a></li>
                     <?php } ?>
         </ul>
-    </li>
+    </li>--> 
 </ul>  

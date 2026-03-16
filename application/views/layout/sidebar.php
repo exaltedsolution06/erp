@@ -47,7 +47,7 @@
 		?>
 					<li class="treeview <?php echo $activeSoftwareSuMenu; ?>">
 						<a href="#">
-							<i class="fa fa-ticket ftlayer"></i> <span>Software Subscription</span>
+							<i class="fa fa-cart-plus"></i> <span>Software Subscription</span>
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
