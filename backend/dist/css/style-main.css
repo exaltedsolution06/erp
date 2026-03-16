@@ -4144,7 +4144,7 @@ td.dt-body-right {min-width: 100px;}
 .skin-blue .treeview-menu > li.active > a {
 	background-color: #2146fc !important;
 }
-.btn-info {
+.btn-info, .btn-primary {
   background-color: #3758f9 !important;
   border-color: #2146fc !important;
 }
@@ -4157,6 +4157,14 @@ td.dt-body-right {min-width: 100px;}
 }
 .fixedmenu {
 	background-color: #3758f9 !important;
+}
+.fc-button {
+	background-color: #3758f9 !important;
+	border-color: #2146fc !important;
+}
+.fc-state-disabled {
+	background-color: #2146fc !important;
+	border-color: #3758f9 !important;
 }	
 .skin-blue .main-header .navbar, 
 .skin-blue .main-header .logo {
@@ -4180,8 +4188,19 @@ td.dt-body-right {min-width: 100px;}
 	text-decoration: none;
 	color: #e91e63;
 }
-	
-	
+.bg-own {
+	background-color: #3758f9 !important;
+	color: #ffffff !important;
+}
+.walletdiv {
+	float:left;
+	position: relative;
+	padding: 15px 10px;
+	display: block;
+	color: #ffffff;
+	font-size:15px;
+	font-weight: bold;
+}	
 	
 	
 	

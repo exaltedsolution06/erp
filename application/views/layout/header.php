@@ -15,7 +15,8 @@
         <?php
           $this->load->view('layout/theme');
          ?>
-       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/fontawesome.min.css">	
+		 <!-- https://fontawesome.com/v6/search?q=income&ic=free-collection-->
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.css" integrity="sha512-GmZYQ9SKTnOea030Tbiat0Y+jhnYLIpsGAe6QTnToi8hI2nNbVMETHeK4wm4MuYMQdrc38x+sX77+kVD01eNsQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />	
         <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/font-awesome.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/ionicons.min.css">
 			
@@ -141,19 +142,26 @@ if ($this->config->item('SSLK') == "") {
  
                                 </form>
                             <?php }?>
+							
                             <div class="navbar-custom-menu">
+								<div class="walletdiv" data-placement="bottom" data-toggle="tooltip" data-original-title="Wallet Ballance" title="Wallet Ballance">
+										<i class="fa-solid fa-wallet"></i> Rs. 50000
+								</div> 
                                 <?php if($this->rbac->hasPrivilege('language_switcher','can_view')){
                                     ?>
-                                    <div class="langdiv"><select class="languageselectpicker" onchange="set_languages(this.value)"  type="text" id="languageSwitcher" >
+                                    <!--<div class="langdiv"><select class="languageselectpicker" onchange="set_languages(this.value)"  type="text" id="languageSwitcher" >
                                           
                                            <?php $this->load->view('admin/language/languageSwitcher')?>
 
-                                        </select></div> 
+                                        </select></div> -->
                                     <?php
                                }?>
                                 
                                      
                                 <ul class="nav navbar-nav headertopmenu">
+								<li class="cal15">
+									
+                                </li>
 									<?php
 										$mainUrl = $this->setting_model->get_main_domain_url();
 										if($this->session->userdata('branch_switch') || $mainUrl.'/' == base_url()){

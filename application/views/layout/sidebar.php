@@ -663,7 +663,7 @@
 		?>
 					<li class="treeview <?php echo $activeLpMenu; ?>">
 						<a href="#">
-							<i class="fa fa-book ftlayer"></i> <span>Lesson Plan </span>
+							<i class="fa-solid fa-person-chalkboard"></i> <span>Lesson Plan </span>
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
@@ -955,7 +955,7 @@
 		?>
 					<li class="treeview <?php echo $activeIsMenu; ?>">
 						<a href="#">
-							<i class="fa fa-money ftlayer"></i> <span>Income Section</span>
+							<i class="fa-solid fa-file-invoice-dollar"></i> <span>Income Section</span>
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
@@ -1102,7 +1102,7 @@
 		?>
 					<li class="treeview <?php echo $activeFwMenu; ?>">
 						<a href="#">
-							<i class="fa fa-ticket ftlayer"></i> <span>Front Web</span>
+							<i class="fa fa-web-awesome"></i> <span>Front Web</span>
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
@@ -1355,7 +1355,7 @@
                             <?php } if ($this->rbac->hasPrivilege('online_exam_section', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('Reports/online_examinations'); ?>"><a href="<?php echo base_url(); ?>admin/onlineexam/report"><i class="fa fa-angle-double-right"></i> Online Exam Section</a></li>
                             <?php } if ($this->rbac->hasPrivilege('lesson_plan', 'can_view')) { ?>
-                                <li class="<?php echo set_Submenu('Reports/lesson_plan'); ?>"><a href="<?php echo base_url(); ?>report/lesson_plan"><i class="fa fa-angle-double-right"></i> Lesson Plan</a></li>
+                                <li class="<?php echo set_Submenu('Reports/lesson_plan'); ?>"><a href="<?php echo base_url(); ?>report/lesson_plan"><i class="fa-solid fa-person-chalkboard"></i> Lesson Plan</a></li>
                             <?php } if ($this->rbac->hasPrivilege('staff_management', 'can_view')) { ?>
                                 <li class="<?php echo set_Submenu('Reports/human_resource'); ?>"><a href="<?php echo base_url(); ?>report/staff_report"><i class="fa fa-angle-double-right"></i> Staff Management</a></li>
                             <?php } if ($this->rbac->hasPrivilege('library_management', 'can_view')) { ?>

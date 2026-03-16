@@ -34,7 +34,138 @@
         
         </div> 
         
+		<div class="row row-flex3">	
+			<div class="col-md-3 col-sm-6 mb10">
+				<div class="topprograssstart flex-card">
+					<h5 class="pro-border">Total student</h5>
+					<p class="text-uppercase mt10 clearfix">Total Male Student<span class="pull-right"><?php echo isset($total_male_students) ? $total_male_students : 0;  ?></span>
+					</p>
+					<div class="progress-group">
+						<div class="progress progress-minibar">
+							<div class="progress-bar" style="width: <?php echo round($total_male_percent) ?>%"></div>
+						</div>
+					</div>
+					<p class="text-uppercase mt10 clearfix">Total Female Student<span class="pull-right"><?php echo isset($total_female_students) ? $total_female_students : 0;  ?></span>
+					</p>
+					<div class="progress-group">
+						<div class="progress progress-minibar">
+							<div class="progress-bar progress-bar-aqua" style="width: <?php echo round($total_female_percent) ?>%"></div>
+						</div>
+					</div>
+					<p class="text-uppercase mt10 clearfix">Total Student<span class="pull-right"><?php echo isset($total_male_female_student) ? $total_male_female_student: ''; ?></span>
+					</p>
+				</div>
+			</div>
+			
+			<div class="col-md-3 col-sm-6 mb10">
+				<div class="topprograssstart flex-card">
+					<h5 class="pro-border">Today's Total collection</h5>
+					<p class="text-uppercase mt10 clearfix">Transport Collection<span class="pull-right"><?php echo isset($studentTransportColls) ? $studentTransportColls : 0;  ?></span>
+					</p>
+					<div class="progress-group">
+						<div class="progress progress-minibar">
+							<div class="progress-bar progress-bar-purple" style="width: <?php echo round($studentTransportCollsPercent) ?>%"></div>
+						</div>
+					</div>
+					<p class="text-uppercase mt10 clearfix">Academics collection<span class="pull-right"><?php echo isset($studentAcademicColls) ? $studentAcademicColls : 0;  ?></span>
+					</p>
+					<div class="progress-group">
+						<div class="progress progress-minibar">
+							<div class="progress-bar progress-bar-green" style="width: <?php echo round($studentAcademicCollsPercent) ?>%"></div>
+						</div>
+					</div>
+					<p class="text-uppercase mt10 clearfix">Today's Total collection<span class="pull-right"><?php echo isset($todayTotalCollection) ? $todayTotalCollection: ''; ?></span>
+					</p>
+				</div>
+			</div>
+			
+			<div class="col-md-3 col-sm-6 mb10">
+				<div class="topprograssstart flex-card">
+					<h5 class="pro-border">Today's Financial Summary</h5>
+					<p class="text-uppercase mt10 clearfix">Todays income<span class="pull-right"><?php echo isset($today_total_income) ? $today_total_income : 0;  ?></span>
+					</p>
+					<div class="progress-group">
+						<div class="progress progress-minibar">
+							<div class="progress-bar progress-bar-purple" style="width: <?php echo round($total_income_percent) ?>%"></div>
+						</div>
+					</div>
+					<p class="text-uppercase mt10 clearfix">Todays expense<span class="pull-right"><?php echo isset($today_total_expense) ? $today_total_expense : 0;  ?></span>
+					</p>
+					<div class="progress-group">
+						<div class="progress progress-minibar">
+							<div class="progress-bar progress-bar-green" style="width: <?php echo round($total_expense_percent) ?>%"></div>
+						</div>
+					</div>
+					<p class="text-uppercase mt10 clearfix">Net cash in hand<span class="pull-right"><?php echo isset($net_cash_in_hands) ? $net_cash_in_hands: ''; ?></span>
+					</p>
+				</div>
+			</div>
+			<div class="col-md-3 col-sm-6 mb10">
+				<div class="topprograssstart flex-card">
+					<h5 class="pro-border">Todays Total attendance</h5>
+					<p class="text-uppercase mt10 clearfix">Total Present<span class="pull-right"><?php echo isset($total_present_student) ? $total_present_student : 0;  ?></span>
+					</p>
+					<div class="progress-group">
+						<div class="progress progress-minibar">
+							<div class="progress-bar  progress-bar-red" style="width: <?php echo round($total_present_percent) ?>%"></div>
+						</div>
+					</div>
+					<p class="text-uppercase mt10 clearfix">Total Absent<span class="pull-right"><?php echo isset($total_absent_student) ? $total_absent_student : 0;  ?></span>
+					</p>
+					<div class="progress-group">
+						<div class="progress progress-minibar">
+							<div class="progress-bar progress-bar-aqua" style="width: <?php echo round($total_absent_percent) ?>%"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>  
+				
         <div class="row">    
+			<?php foreach ($roles as $key => $value) { ?>
+			<div class="col-lg-3 col-md-3 col-sm-12 col201">
+					<div class="info-box">
+						<a href="#">
+							<span class="info-box-icon bg-own">
+							<?php if($key == 'Admin') { ?>
+							<i class="fa-solid fa-user-tie"></i>
+							<?php } else if($key == 'Teacher') { ?>
+							<i class="fa-solid fa-person-chalkboard"></i>
+							<?php } else if($key == 'Accountant') { ?>
+							<i class="fa-solid fa-user-shield"></i>
+							<?php } else if($key == 'Librarian') { ?>
+							<i class="fa-solid fa-address-book"></i>
+							<?php } else if($key == 'Receptionist') { ?>
+							<i class="fa-solid fa-person-shelter"></i>
+							<?php } else if($key == 'Super Admin') { ?>
+							<i class="fa-solid fa-user-gear"></i>
+							<?php } else { ?>
+							<i class="fa-solid fa-user-tie"></i>
+							<?php } ?>
+							</span>
+							<div class="info-box-content">
+								<span class="info-box-text"><?php echo $key; ?></span>
+								<span class="info-box-number"><?php echo $value; ?></span>
+							</div>
+						</a>
+					</div>  
+			</div><!--./col-lg-3-->   
+            <?php } ?>
+			<?php if ($this->rbac->hasPrivilege('student_count_widget', 'can_view')) { ?>
+			<div class="col-lg-3 col-md-3 col-sm-12">
+				<div class="info-box">
+					<a href="<?php echo site_url('student/search') ?>">
+						<span class="info-box-icon bg-own"><i class="fa-solid fa-user-graduate"></i></span>
+						<div class="info-box-content">
+							<span class="info-box-text"><?php echo $this->lang->line('student'); ?></span>
+							<span class="info-box-number"><?php echo $total_students; ?></span>
+						</div>
+					</a>
+				</div>
+			</div>
+			<?php } ?>
+		</div>  
+       <!-- <div class="row">    
         
         <?php
         $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
@@ -183,132 +314,17 @@
                             </a>
                         </div>
                     </div>
-					<?php } if ($this->rbac->hasPrivilege('student_count_widget', 'can_view')) { ?>
-                    <div class="col-md-4 col-sm-6">
-                        <div class="info-box">
-                            <a href="<?php echo site_url('student/search') ?>">
-                                <span class="info-box-icon bg-aqua"><i class="fa fa-user"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text"><?php echo $this->lang->line('student'); ?></span>
-                                    <span class="info-box-number"><?php echo $total_students; ?></span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
 					<?php } ?>
 				</div>  	
-				<div class="row row-flex3">	
-						<div class="col-md-3 col-sm-6 mb10">
-							<div class="topprograssstart flex-card">
-								<h5 class="pro-border">Total student</h5>
-								<p class="text-uppercase mt10 clearfix">Total Male Student<span class="pull-right"><?php echo isset($total_male_students) ? $total_male_students : 0;  ?></span>
-								</p>
-								<div class="progress-group">
-									<div class="progress progress-minibar">
-										<div class="progress-bar" style="width: <?php echo round($total_male_percent) ?>%"></div>
-									</div>
-								</div>
-								<p class="text-uppercase mt10 clearfix">Total Female Student<span class="pull-right"><?php echo isset($total_female_students) ? $total_female_students : 0;  ?></span>
-								</p>
-								<div class="progress-group">
-									<div class="progress progress-minibar">
-										<div class="progress-bar progress-bar-aqua" style="width: <?php echo round($total_female_percent) ?>%"></div>
-									</div>
-								</div>
-								<p class="text-uppercase mt10 clearfix">Total Student<span class="pull-right"><?php echo isset($total_male_female_student) ? $total_male_female_student: ''; ?></span>
-								</p>
-							</div>
-                        </div>
-						
-						<div class="col-md-3 col-sm-6 mb10">
-							<div class="topprograssstart flex-card">
-								<h5 class="pro-border">Today's Total collection</h5>
-								<p class="text-uppercase mt10 clearfix">Transport Collection<span class="pull-right"><?php echo isset($studentTransportColls) ? $studentTransportColls : 0;  ?></span>
-								</p>
-								<div class="progress-group">
-									<div class="progress progress-minibar">
-										<div class="progress-bar progress-bar-purple" style="width: <?php echo round($studentTransportCollsPercent) ?>%"></div>
-									</div>
-								</div>
-								<p class="text-uppercase mt10 clearfix">Academics collection<span class="pull-right"><?php echo isset($studentAcademicColls) ? $studentAcademicColls : 0;  ?></span>
-								</p>
-								<div class="progress-group">
-									<div class="progress progress-minibar">
-										<div class="progress-bar progress-bar-green" style="width: <?php echo round($studentAcademicCollsPercent) ?>%"></div>
-									</div>
-								</div>
-								<p class="text-uppercase mt10 clearfix">Today's Total collection<span class="pull-right"><?php echo isset($todayTotalCollection) ? $todayTotalCollection: ''; ?></span>
-								</p>
-							</div>
-                        </div>
-						
-						<div class="col-md-3 col-sm-6 mb10">
-							<div class="topprograssstart flex-card">
-								<h5 class="pro-border">Today's Financial Summary</h5>
-								<p class="text-uppercase mt10 clearfix">Todays income<span class="pull-right"><?php echo isset($today_total_income) ? $today_total_income : 0;  ?></span>
-								</p>
-								<div class="progress-group">
-									<div class="progress progress-minibar">
-										<div class="progress-bar progress-bar-purple" style="width: <?php echo round($total_income_percent) ?>%"></div>
-									</div>
-								</div>
-								<p class="text-uppercase mt10 clearfix">Todays expense<span class="pull-right"><?php echo isset($today_total_expense) ? $today_total_expense : 0;  ?></span>
-								</p>
-								<div class="progress-group">
-									<div class="progress progress-minibar">
-										<div class="progress-bar progress-bar-green" style="width: <?php echo round($total_expense_percent) ?>%"></div>
-									</div>
-								</div>
-								<p class="text-uppercase mt10 clearfix">Net cash in hand<span class="pull-right"><?php echo isset($net_cash_in_hands) ? $net_cash_in_hands: ''; ?></span>
-								</p>
-							</div>
-                        </div>
-						<div class="col-md-3 col-sm-6 mb10">
-							<div class="topprograssstart flex-card">
-								<h5 class="pro-border">Todays Total attendance</h5>
-								<p class="text-uppercase mt10 clearfix">Total Present<span class="pull-right"><?php echo isset($total_present_student) ? $total_present_student : 0;  ?></span>
-								</p>
-								<div class="progress-group">
-									<div class="progress progress-minibar">
-										<div class="progress-bar  progress-bar-red" style="width: <?php echo round($total_present_percent) ?>%"></div>
-									</div>
-								</div>
-								<p class="text-uppercase mt10 clearfix">Total Absent<span class="pull-right"><?php echo isset($total_absent_student) ? $total_absent_student : 0;  ?></span>
-								</p>
-								<div class="progress-group">
-									<div class="progress progress-minibar">
-										<div class="progress-bar progress-bar-aqua" style="width: <?php echo round($total_absent_percent) ?>%"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-					
-					
-					
-					
-					
-                </div>   
+				 
         
                 
         
-            </div><!--./col-lg-9-->
+            </div>
 			
 			
         
-            <?php foreach ($roles as $key => $value) { ?>
-			<div class="col-lg-3 col-md-3 col-sm-12 col201">
-					<div class="info-box">
-						<a href="#">
-							<span class="info-box-icon bg-yellow"><i class="fa fa-user-secret"></i></span>
-							<div class="info-box-content">
-								<span class="info-box-text"><?php echo $key; ?></span>
-								<span class="info-box-number"><?php echo $value; ?></span>
-							</div>
-						</a>
-					</div>  
-			</div><!--./col-lg-3-->   
-            <?php } ?>
+            
         
         </div><!--./row-->
 		
