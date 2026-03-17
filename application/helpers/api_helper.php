@@ -30,3 +30,15 @@ function call_api_get($url, $headers = []) {
         'data'   => json_decode($response, true)
     ];
 }
+function api_response($status,$message,$data = [])
+{
+    header('Content-Type: application/json');
+
+    echo json_encode([
+        'status' => $status,
+        'message' => $message,
+        'data' => $data
+    ]);
+
+    exit;
+}

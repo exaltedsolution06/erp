@@ -80,6 +80,47 @@ ALTER TABLE `sch_settings` ADD `father_pan` INT(11) NOT NULL DEFAULT '1' AFTER `
 ALTER TABLE `sch_settings` ADD `mother_pan` INT(11) NOT NULL DEFAULT '1' AFTER `mother_pic`, ADD `mother_aadhar_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_pan`, ADD `mother_other_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_aadhar_no`, ADD `mother_id_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_other_no`;
 ALTER TABLE `sch_settings` ADD `rcpt_admission_no` INT(11) NOT NULL DEFAULT '1' AFTER `my_question`, ADD `rcpt_student_name` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_admission_no`, ADD `rcpt_father` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_student_name`, ADD `rcpt_class_section` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_father`, ADD `rcpt_fee_months` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_class_section`;
 
+--- 03/03/2026 ---
+ALTER TABLE `sch_settings` ADD `rcpt_mother` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_fee_months`, ADD `rcpt_dob` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mother`, ADD `rcpt_mobile_no` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_dob`, ADD `rcpt_total_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mobile_no`, ADD `rcpt_late_fee` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_total_amt`, ADD `rcpt_discount_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_late_fee`, ADD `rcpt_net_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_discount_amt`, ADD `rcpt_received_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_net_amt`, ADD `rcpt_balance_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_received_amt`, ADD `rcpt_amt_in_words` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_balance_amt`, ADD `rcpt_pay_mode` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_amt_in_words`, ADD `rcpt_remark` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_pay_mode`, ADD `rcpt_created_by` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_remark`, ADD `rcpt_note` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_created_by`;
+
+ALTER TABLE `sch_settings` ADD `rcpt_address` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mobile_no`;
+
+--- 05-03-2026 ---
+CREATE TABLE `template_reminder_letter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `session_id` int(11) DEFAULT NULL,
+  `template_name` text NOT NULL,
+  `uid_no` tinyint(1) NOT NULL DEFAULT 0,
+  `student_name` tinyint(1) NOT NULL DEFAULT 0,
+  `father_name` tinyint(1) NOT NULL DEFAULT 0,
+  `class_section` tinyint(1) NOT NULL DEFAULT 0,
+  `phone` tinyint(1) NOT NULL DEFAULT 0,
+  `date` tinyint(1) NOT NULL DEFAULT 0,
+  `header_image` varchar(225) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+--- 06-03-2026 ---
+CREATE TABLE `balance_sheets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `session_id` int(11) DEFAULT NULL,
+  `balance_type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0=Income, 1=Expense',
+  `student_id` int(11) DEFAULT NULL,
+  `receipt_no` varchar(255) DEFAULT NULL,
+  `staff_id` int(11) DEFAULT NULL,
+  `head_id` int(11) NOT NULL,
+  `amount` decimal(10,2) DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `attatchment` varchar(200) DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0=Active, 1=Delete',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+--- 16-03-2026 ---
+ALTER TABLE `api_domains` ADD `status` TINYINT(4) NULL DEFAULT '1' COMMENT '0=Inactive, 1=Active' AFTER `api_key`;
 
 
 ===============================
@@ -106,41 +147,3 @@ New folder -
 
 'exam_group_d' column not required in 'exam_group_class_batch_exams' table.
 
-=========03/03/2026==================
-ALTER TABLE `sch_settings` ADD `rcpt_mother` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_fee_months`, ADD `rcpt_dob` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mother`, ADD `rcpt_mobile_no` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_dob`, ADD `rcpt_total_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mobile_no`, ADD `rcpt_late_fee` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_total_amt`, ADD `rcpt_discount_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_late_fee`, ADD `rcpt_net_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_discount_amt`, ADD `rcpt_received_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_net_amt`, ADD `rcpt_balance_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_received_amt`, ADD `rcpt_amt_in_words` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_balance_amt`, ADD `rcpt_pay_mode` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_amt_in_words`, ADD `rcpt_remark` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_pay_mode`, ADD `rcpt_created_by` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_remark`, ADD `rcpt_note` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_created_by`;
-
-ALTER TABLE `sch_settings` ADD `rcpt_address` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mobile_no`;
-
-=================================05-03-2026=================================
-CREATE TABLE `template_reminder_letter` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `session_id` int(11) DEFAULT NULL,
-  `template_name` text NOT NULL,
-  `uid_no` tinyint(1) NOT NULL DEFAULT 0,
-  `student_name` tinyint(1) NOT NULL DEFAULT 0,
-  `father_name` tinyint(1) NOT NULL DEFAULT 0,
-  `class_section` tinyint(1) NOT NULL DEFAULT 0,
-  `phone` tinyint(1) NOT NULL DEFAULT 0,
-  `date` tinyint(1) NOT NULL DEFAULT 0,
-  `header_image` varchar(225) DEFAULT NULL,
-  `description` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
-
-=================================06-03-2026=================================
-CREATE TABLE `balance_sheets` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `session_id` int(11) DEFAULT NULL,
-  `balance_type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0=Income, 1=Expense',
-  `student_id` int(11) DEFAULT NULL,
-  `receipt_no` varchar(255) DEFAULT NULL,
-  `staff_id` int(11) DEFAULT NULL,
-  `head_id` int(11) NOT NULL,
-  `amount` decimal(10,2) DEFAULT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `attatchment` varchar(200) DEFAULT NULL,
-  `description` longtext DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0=Active, 1=Delete',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
