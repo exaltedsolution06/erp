@@ -1,4 +1,3 @@
-
 <!DOCTYPE html> 
 <html <?php echo $this->customlib->getRTL(); ?>>
     <head>
