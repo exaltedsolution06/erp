@@ -244,7 +244,8 @@ class Studentfee extends Admin_Controller
                         $fee_head = $data['fee_head'][$key];
 
                         // Check if the combination of student_id, month, and fee_head_type already exists
-                        $existing_entry = $this->Receipt_model->check_existing_entry($student_id, $month, $fee_head_type,$fee_head,$this->current_session);
+                        // $existing_entry = $this->Receipt_model->check_existing_entry($student_id, $month, $fee_head_type,$fee_head,$this->current_session);
+                        $existing_entry = $this->Receipt_model->check_existing_entry_edit($student_id, $month, $fee_head_type,$fee_head,$this->current_session, $data['receipt_no']);
 						
 						//die;
 

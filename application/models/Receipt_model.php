@@ -87,6 +87,30 @@ class Receipt_model extends CI_Model {
             return false;  // No such record
         }
     }
+    public function check_existing_entry_edit($student_id, $month, $fee_head_type,$fee_head,$session_id, $receipt_no)
+    {
+        // Query the database to check if the combination exists
+        $this->db->select('id');  // Select any field (e.g., `id`), just to check existence
+        $this->db->from('receipts');  // Replace with your actual table name
+        $this->db->where('student_id', $student_id);
+        $this->db->where('months', $month);
+        $this->db->where('fee_head', $fee_head);
+        $this->db->where('fee_head_type', $fee_head_type);
+        $this->db->where('session_id', $session_id);
+        $this->db->where('receipt_no !=', $receipt_no);
+
+        // Execute the query
+        $query = $this->db->get();
+		
+		//echo $this->db->last_query();die;
+
+        // If a record is found, return true (meaning record exists)
+        if ($query->num_rows() > 0) {
+            return true;  // Record exists
+        } else {
+            return false;  // No such record
+        }
+    }
 
 
     public function update_student($id, $fees_discount)

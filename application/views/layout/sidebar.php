@@ -47,7 +47,7 @@
 		?>
 					<li class="treeview <?php echo $activeSoftwareSuMenu; ?>">
 						<a href="#">
-							<i class="fa fa-cart-plus"></i> <span>Software Subscription</span>
+							<i class="fa fa-cart-plus ftlayer"></i> <span>Software Subscription</span>
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
@@ -663,7 +663,7 @@
 		?>
 					<li class="treeview <?php echo $activeLpMenu; ?>">
 						<a href="#">
-							<i class="fa-solid fa-person-chalkboard"></i> <span>Lesson Plan </span>
+							<i class="fa-solid fa-person-chalkboard ftlayer"></i> <span>Lesson Plan </span>
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
@@ -955,7 +955,7 @@
 		?>
 					<li class="treeview <?php echo $activeIsMenu; ?>">
 						<a href="#">
-							<i class="fa-solid fa-file-invoice-dollar"></i> <span>Income Section</span>
+							<i class="fa-solid fa-file-invoice-dollar ftlayer"></i> <span>Income Section</span>
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
@@ -1102,7 +1102,7 @@
 		?>
 					<li class="treeview <?php echo $activeFwMenu; ?>">
 						<a href="#">
-							<i class="fa fa-web-awesome"></i> <span>Front Web</span>
+							<i class="fa fa-web-awesome ftlayer"></i> <span>Front Web</span>
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
