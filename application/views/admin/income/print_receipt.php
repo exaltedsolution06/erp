@@ -43,6 +43,7 @@
 }
 .table {
 	margin-bottom: 0;
+	border: 0;
 }
 
 .table td {
@@ -73,8 +74,8 @@
 					<table class="table">
 						<tbody>
 							<tr style="border-bottom: 1px solid #000;">
-								<th><strong>Rec. No.:</strong> 2025-2026/10</th>
-								<th class="text-end"><strong>Date:</strong> <?=date('d-m-Y',strtotime('2026-02-27'))?></th>
+								<th style="border: 0;"><strong>Rec. No.:</strong> 2025-2026/10</th>
+								<th style="border: 0;" class="text-end"><strong>Date:</strong> <?=date('d-m-Y',strtotime('2026-02-27'))?></th>
 							</tr>
 						</tbody>
 					</table>
@@ -82,7 +83,7 @@
 					<table class="table">
 						<tbody>
 							<tr>
-								<td>
+								<td style="border: 0;">
 									<div style="margin-bottom: 50px;">
 										<span style="width:90px; display:inline-block;">Party :</span> <strong>132 - Aaryan Khatiyan</strong>
 									</div>
