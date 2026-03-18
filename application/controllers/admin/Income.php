@@ -415,5 +415,14 @@ class Income extends Admin_Controller {
             $this->load->view('layout/footer', $data);
       
     }
+	public function printIncome() {
+		$data = array();
+		
+        $data['header_image']= $this->setting_model->get_receiptheader_return();
+		
+        $print_page = $this->load->view('admin/income/print_receipt', $data, true);
+		$array = array('status' => '1', 'error' => '', 'page' => $print_page);
+		echo json_encode($array);
+    }
 
 }
