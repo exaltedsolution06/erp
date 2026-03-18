@@ -338,5 +338,13 @@ class Expense_model extends MY_Model
         $query        = $this->db->get();
         return $query->row()->total_amount;
 	}
+	public function get_total_expense()
+	{
+		$this->db->select('SUM(amount) as total_amount')->from('balance_sheets');
+		$this->db->where('balance_type', 1);
+		$this->db->where('session_id', $this->current_session);
+		$query        = $this->db->get();
+		return $query->row()->total_amount;
+	}
 
 }

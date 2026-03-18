@@ -305,5 +305,13 @@ class Income_model extends My_Model
         $query        = $this->db->get();
         return $query->row()->total_amount;
 	}
+	public function get_total_income()
+	{
+		$this->db->select('SUM(amount) as total_amount')->from('balance_sheets');
+		$this->db->where('balance_type', 0);
+		$this->db->where('session_id', $this->current_session);
+		$query        = $this->db->get();
+		return $query->row()->total_amount;
+	}
 
 }
