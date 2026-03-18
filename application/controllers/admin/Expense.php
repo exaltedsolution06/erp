@@ -38,8 +38,11 @@ class Expense extends Admin_Controller
 			// check expense less than income 
 			$expense_amt = $this->input->post('amount');
 			$total_income = $this->Income_model->get_total_income($data);
-			//echo $total_income; die;
-			if($total_income > $expense_amt)
+			$total_expense = $this->expense_model->get_total_expense($data);
+			//echo $total_expense; die;
+			$bal_amt = $total_income - ($total_expense + $expense_amt);
+			//echo $bal_amt; die;
+			if($bal_amt > 0)
 			{
 				if (!empty($_FILES['documents']['name'])) {
 					$config['upload_path'] = 'uploads/expense/';
@@ -85,7 +88,8 @@ class Expense extends Admin_Controller
 			}
 			else
 			{
-				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('expense_check') . '</div>');
+				$remaining_bal = $total_income - $total_expense;
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">' . $this->lang->line('expense_check') . ' ('. $remaining_bal .')' .'</div>');
 			}
             redirect('admin/expense/index');
         }
