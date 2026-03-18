@@ -470,6 +470,8 @@ a.more:hover{color: #0084B4;text-decoration: none;}
 }
 .flex-column {flex-direction: column!important;}
 .justify-content-center{justify-content: center;}
+.justify-content-between{justify-content: space-between;}
+.align-center{align-items: center;}
 .messages {padding-left: 15px;}
 .bg-shadow-remove{width:90%;}
 .bg-shadow-remove:after{ 
@@ -482,6 +484,7 @@ a.more:hover{color: #0084B4;text-decoration: none;}
     height: 100%;
     z-index: -1;
 }
+.mr25{margin-right: 25px;}
 .ptt10{padding-top: 10px;}
 .pb10{padding-bottom: 10px;}
 .top-content2 {
