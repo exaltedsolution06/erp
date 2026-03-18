@@ -168,6 +168,7 @@ $language_name = $language["short_code"];
                                 </thead>
                                 <tbody>
                                     <?php
+									$tot_amt = 0;
                                     if (empty($incomelist)) {
                                         ?>
 
@@ -242,16 +243,17 @@ $language_name = $language["short_code"];
                                                 </td>
                                             </tr>
                                             <?php
+											$tot_amt = $tot_amt + $income['amount'];
                                         }
                                     }
                                     ?>
 
                                 </tbody>
+								
                             </table><!-- /.table -->
-
-
-
-                        </div><!-- /.mail-box-messages -->
+							
+						</div><!-- /.mail-box-messages -->
+						<span class="text-right"><h4><strong>Total income: <?php echo (isset($tot_amt) ? $currency_symbol . $tot_amt : 0); ?></h4></strong></span>
                     </div><!-- /.box-body -->
                 </div>
             </div><!--/.col (left) -->

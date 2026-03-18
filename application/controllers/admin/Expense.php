@@ -13,6 +13,7 @@ class Expense extends Admin_Controller
         $this->load->library('Customlib');
         $this->config->load('app-config');
 		$this->current_session = $this->setting_model->getCurrentSession();
+		$this->load->model('Income_model');
     }
 
     public function index()
@@ -34,54 +35,57 @@ class Expense extends Admin_Controller
 
         } else {
 			
-			if (!empty($_FILES['documents']['name'])) {
-				$config['upload_path'] = 'uploads/expense/';
-				$config['allowed_types'] = 'jpg|jpeg|png|gif';
-				$config['file_name'] = $_FILES['documents']['name'];
-
-				//Load upload library and initialize configuration
-				$this->load->library('upload', $config);
-				$this->upload->initialize($config);
-
-				if ($this->upload->do_upload('documents')) {
-					$uploadData = $this->upload->data();
-					$picture = $uploadData['file_name'];
-				} else {
-					$picture = '';
-				}
-			} else {
-				$picture = null;
-			}
-			
-			
-            $data = array(
-                'session_id' => $this->current_session,
-                'balance_type' =>1,
-                'head_id' => $this->input->post('exp_head_id'),
-                'staff_id' => $this->input->post('staff_id'),
-                'date' => date('Y-m-d H:i:s', strtotime($this->input->post('date'))),
-                'amount' => $this->input->post('amount'),
-                'attatchment' => $picture,
-                'description' => $this->input->post('description')
-            );
-
-            $insert_id = $this->expense_model->add($data);
-
-            /*if (isset($_FILES["documents"]) && !empty($_FILES['documents']['name'])) {
-                $fileInfo = pathinfo($_FILES["documents"]["name"]);
-                $img_name = $insert_id . '.' . $fileInfo['extension'];
-                move_uploaded_file($_FILES["documents"]["tmp_name"], "./uploads/school_expense/" . $img_name);
-                $data_img = array('id' => $insert_id, 'documents' => 'uploads/school_expense/' . $img_name);
-
-                $this->expense_model->add($data_img);
-            }*/
-			
-			if($insert_id)
+			// check expense less than income 
+			$expense_amt = $this->input->post('amount');
+			$total_income = $this->Income_model->get_total_income($data);
+			//echo $total_income; die;
+			if($total_income > $expense_amt)
 			{
-				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+				if (!empty($_FILES['documents']['name'])) {
+					$config['upload_path'] = 'uploads/expense/';
+					$config['allowed_types'] = 'jpg|jpeg|png|gif';
+					$config['file_name'] = $_FILES['documents']['name'];
+
+					//Load upload library and initialize configuration
+					$this->load->library('upload', $config);
+					$this->upload->initialize($config);
+
+					if ($this->upload->do_upload('documents')) {
+						$uploadData = $this->upload->data();
+						$picture = $uploadData['file_name'];
+					} else {
+						$picture = '';
+					}
+				} else {
+					$picture = null;
+				}
+				
+				
+				$data = array(
+					'session_id' => $this->current_session,
+					'balance_type' =>1,
+					'head_id' => $this->input->post('exp_head_id'),
+					'staff_id' => $this->input->post('staff_id'),
+					'date' => date('Y-m-d H:i:s', strtotime($this->input->post('date'))),
+					'amount' => $this->input->post('amount'),
+					'attatchment' => $picture,
+					'description' => $this->input->post('description')
+				);
+
+				$insert_id = $this->expense_model->add($data);
+
+				
+				if($insert_id)
+				{
+					$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+				}
+				else{
+					$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Name w.r.t Expense Head already exists</div>');
+				}
 			}
-			else{
-				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Name w.r.t Expense Head already exists</div>');
+			else
+			{
+				$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('expense_check') . '</div>');
 			}
             redirect('admin/expense/index');
         }

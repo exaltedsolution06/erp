@@ -19,6 +19,8 @@
                         <div class="box-header with-border">
                             <h3 class="box-title"><?php echo $this->lang->line('add_expense'); ?></h3>
                         </div><!-- /.box-header -->
+						
+
                         <form id="form1" action="<?php echo base_url() ?>admin/expense/index"  id="employeeform" name="employeeform" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                             <div class="box-body">
                                 <?php if ($this->session->flashdata('msg')) { ?>
@@ -146,6 +148,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
+										$tot_amt = 0;
                                         if (empty($expenselist)) {
                                             ?>
 
@@ -196,6 +199,8 @@
                                                     </td>
                                                 </tr>
                                                 <?php
+												
+												$tot_amt = $tot_amt + $expense['amount'];
                                             }
                                         }
                                         ?>
@@ -204,6 +209,8 @@
                                 </table><!-- /.table -->
 
                             </div>  
+							
+							<span class="text-right"><h4><strong>Total expense: <?php echo (isset($tot_amt) ? $currency_symbol . $tot_amt : 0); ?></h4></strong></span>
 
                         </div><!-- /.mail-box-messages -->
                     </div><!-- /.box-body -->
