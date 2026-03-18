@@ -539,6 +539,12 @@ class Systemfield extends Admin_Controller {
 				} else {
 					$data['rcpt_student_name'] = 0;
 				}
+			} else if ($role == 'rcpt_photo') {
+				if ($status == "yes") {
+					$data['rcpt_photo'] = 1;
+				} else {
+					$data['rcpt_photo'] = 0;
+				}
 			} else if ($role == 'rcpt_father') {
 				if ($status == "yes") {
 					$data['rcpt_father'] = 1;

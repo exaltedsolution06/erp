@@ -190,20 +190,22 @@ th, td {
 
 
 <div class="text-center p-3 pb-0">
-    <?php
+	<?php
 	if(!empty($header_image)){
 	?>
 	<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">
 	<?php } else { ?>
 	<?php if ($result->rcpt_student_name) { ?>
-	<h5><b><?=$result->name?></b></h5>
+    <h5><b><?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></b></h5>
 	<?php } if ($result->rcpt_address) { ?>
-    <span><?=$result->address?></span> <br>
+    <span><?=$student['current_address'] ?></span> <br>
 	<?php } if ($result->rcpt_mobile_no) { ?>
-    <span><b>Phone No.</b>: <?=$result->phone?></span>,
-	<?php } ?>	
-	<span><b>Email Id.</b>: <?=$result->email?></span> <br>
-	<span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br>
+    <span><b>Phone No.</b>: <?=$student['mobileno']?></span>, 
+	<?php } if ($result->rcpt_dob) { ?>
+    <span><b>DOB</b>: <?=date('d-m-Y',strtotime($student['dob']))?></span>, 
+	<?php } ?>
+	<span><b>Email Id.</b>: <?=$student['email']?></span> <br>
+    <span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br>
 	<?php } ?>
 </div>
 
@@ -237,6 +239,11 @@ th, td {
     <?php } ?>
       <!-- <span><strong style="width:90px; display:inline-block;">Note</strong> This is a System Generated Slip Not Required Stamp.</span>  -->
   </div>
+  <?php if ($result->rcpt_photo) { ?>
+	  <div class="p-3" style="display: flex; align-items: center;">
+		<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 2px solid #fff;outline: 1px solid #000000; width: auto;">
+	  </div>
+	<?php } ?>
 </div>
 
 <div style="padding:1px">
@@ -417,13 +424,15 @@ th, td {
 	<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">
 	<?php } else { ?>
 	<?php if ($result->rcpt_student_name) { ?>
-    <h5><b><?=$result->name?></b></h5>
+    <h5><b><?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></b></h5>
 	<?php } if ($result->rcpt_address) { ?>
-    <span><?=$result->address?></span> <br>
+    <span><?=$student['current_address'] ?></span> <br>
 	<?php } if ($result->rcpt_mobile_no) { ?>
-    <span><b>Phone No.</b>: <?=$result->phone?></span>, 
+    <span><b>Phone No.</b>: <?=$student['mobileno']?></span>, 
+	<?php } if ($result->rcpt_dob) { ?>
+    <span><b>DOB</b>: <?=date('d-m-Y',strtotime($student['dob']))?></span>, 
 	<?php } ?>
-	<span><b>Email Id.</b>: <?=$result->email?></span> <br>
+	<span><b>Email Id.</b>: <?=$student['email']?></span> <br>
     <span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br>
 	<?php } ?>
 </div>
@@ -458,6 +467,11 @@ th, td {
 	<?php } ?>
       <!-- <span><strong style="width:90px; display:inline-block;">Note</strong> This is a System Generated Slip Not Required Stamp.</span>  -->
   </div>
+  <?php if ($result->rcpt_photo) { ?>
+	  <div class="p-3" style="display: flex; align-items: center;">
+		<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 2px solid #fff;outline: 1px solid #000000; width: auto;">
+	  </div>
+	<?php } ?>
 </div>
 
 
@@ -867,21 +881,24 @@ th, td {
 
 
                     <div class="text-center p-3 pb-0">
-                        <?php
+						<?php
 						if(!empty($header_image)){
 						?>
 						<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">
 						<?php } else { ?>
 						<?php if ($result->rcpt_student_name) { ?>
-						<h5><b><?=$result->name?></b></h5>
+						<h5><b><?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></b></h5>
 						<?php } if ($result->rcpt_address) { ?>
-                        <span><?=$result->address?></span> <br>
+						<span><?=$student['current_address'] ?></span> <br>
 						<?php } if ($result->rcpt_mobile_no) { ?>
-                        <span><b>Phone No.</b>: <?=$result->phone?></span>, 
+						<span><b>Phone No.</b>: <?=$student['mobileno']?></span>, 
+						<?php } if ($result->rcpt_dob) { ?>
+						<span><b>DOB</b>: <?=date('d-m-Y',strtotime($student['dob']))?></span>, 
 						<?php } ?>
-						<span><b>Email Id.</b>: <?=$result->email?></span> <br>
-                        <span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br><?php } ?>
-                    </div>
+						<span><b>Email Id.</b>: <?=$student['email']?></span> <br>
+						<span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br>
+						<?php } ?>
+					</div>
 
 
                     <table class="table mt-3">
@@ -913,6 +930,11 @@ th, td {
                         <?php } ?>
                           <!-- <span><strong style="width:90px; display:inline-block;">Note</strong> This is a System Generated Slip Not Required Stamp.</span>  -->
                       </div>
+					  <?php if ($result->rcpt_photo) { ?>
+						  <div class="p-3" style="display: flex; align-items: center;">
+							<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 2px solid #fff;outline: 1px solid #000000; width: auto;">
+						  </div>
+						<?php } ?>
                     </div>
 
                     <div style="padding:1px">

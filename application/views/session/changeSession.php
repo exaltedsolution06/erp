@@ -154,6 +154,7 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 									<tr>
 										<th>Batch Id</th>
 										<th>Current Class</th>
+										<th>Next Session</th>
 										<th>Next Class</th>
 										<th class="text-right">Action</th>
 									</tr>
@@ -166,6 +167,7 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 											<tr>
 												<td><?php echo $list_val['batch_id']; ?></td>
 												<td><?php echo $this->class_model->getClassNameById($list_val['current_class_id']); ?></td>
+												<td><?php echo $this->session_model->get($list_val['next_session_id'])['session']; ?></td>
 												<td><?php echo $this->class_model->getClassNameById($list_val['next_class_id']); ?></td>
 												<td class="mailbox-date pull-right">
 													<a data-placement="left" href="<?php echo base_url(); ?>changesessions/delete_list/<?php echo $list_val['id']; ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('delete'); ?>" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">

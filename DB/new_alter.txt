@@ -122,6 +122,9 @@ CREATE TABLE `balance_sheets` (
 --- 16-03-2026 ---
 ALTER TABLE `api_domains` ADD `status` TINYINT(4) NULL DEFAULT '1' COMMENT '0=Inactive, 1=Active' AFTER `api_key`;
 
+--- 18-03-2026 ---
+ALTER TABLE `sch_settings` ADD `rcpt_photo` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_student_name`;
+
 
 ===============================
 File change outside of application folder
