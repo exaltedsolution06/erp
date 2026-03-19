@@ -125,6 +125,9 @@ ALTER TABLE `sch_settings` ADD `domain_api_key` VARCHAR(255) NULL DEFAULT NULL A
 --- 18-03-2026 ---
 ALTER TABLE `sch_settings` ADD `rcpt_photo` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_student_name`;
 
+--- 19-03-2026 ---
+UPDATE `sch_settings` SET `theme`='white.jpg' WHERE 1;
+
 
 ===============================
 File change outside of application folder
