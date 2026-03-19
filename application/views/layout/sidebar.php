@@ -273,6 +273,7 @@
 					|| set_Submenu('student/search')
 					|| set_Submenu('student/disablestudentslist')
 					|| set_Submenu('bulkdelete')
+					|| set_Submenu('bulkupload')
 					|| set_Submenu('Reports/student_information')
 				){
 					$activeSsMenu="active";
@@ -293,8 +294,9 @@
 						<?php } if ($this->rbac->hasPrivilege('discountinue_students', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('student/disablestudentslist'); ?>"><a href="<?php echo base_url(); ?>student/disablestudentslist"><i class="fa fa-angle-double-right"></i> Discontinue Students</a></li>
 						<?php } if ($this->rbac->hasPrivilege('bulk_delete', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('bulkdelete'); ?>"><a href="<?php echo site_url('student/bulkdelete'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('bulk') . " " . $this->lang->line('delete'); ?></a>
-									</li>
+							<li class="<?php echo set_Submenu('bulkdelete'); ?>"><a href="<?php echo site_url('student/bulkdelete'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('bulk') . " " . $this->lang->line('delete'); ?></a></li>
+						<?php } if ($this->rbac->hasPrivilege('bulk_upload', 'can_view')) { ?>
+						<li class="<?php echo set_Submenu('bulkupload'); ?>"><a href="<?php echo site_url('student/bulkupload'); ?>"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('bulk') . " " . $this->lang->line('upload'); ?></a></li>
 						<?php } if ($this->rbac->hasPrivilege('admission_all_reports', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('Reports/student_information'); ?>"><a href="<?php echo base_url(); ?>report/studentinformation"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 						<?php } ?>

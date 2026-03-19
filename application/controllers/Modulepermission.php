@@ -85,6 +85,7 @@ class Modulepermission extends Public_Controller
 					['name' => 'Student Full Details', 	'short_code' => 'student_full_details', 'add' => false, 'view' => true, 'edit' => true, 'delete' => false],
 					['name' => 'Discountinue Students', 'short_code' => 'discountinue_students', 'add' => true, 'view' => true, 'edit' => true, 'delete' => false],
 					['name' => 'Bulk Delete', 			'short_code' => 'bulk_delete', 'add' => false, 'view' => true, 'edit' => false, 'delete' => true],
+					['name' => 'Bulk Upload', 			'short_code' => 'bulk_upload', 'add' => true, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Student Timeline', 		'short_code' => 'student_timeline', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'All Reports', 'short_code' => 'admission_all_reports', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 				]
