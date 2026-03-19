@@ -1084,13 +1084,13 @@
 							$is_left_sign_file_path = FCPATH . 'uploads/reportcard/' . $desc->left_sign;
 								if (file_exists($is_left_sign_file_path)) {						
 							?>
-							<img src="<?php echo base_url('uploads/reportcard/'.$desc->left_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
+							<img src="<?php echo base_url('uploads/reportcard/'.$desc->left_sign) ?>" style="height:90px;width:auto;margin-top: 5px;">
 							<?php
 								}else{
-									echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+									echo '<div style="height:90px;width:auto;margin-top: 5px;"></div>';
 								}
 							}else{
-								echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+								echo '<div style="height:90px;width:auto;margin-top: 5px;"></div>';
 							}
 							echo '<h6 class="mt-1">'.$desc->left_sign_title.'</h6>';
 						} 
@@ -1103,13 +1103,13 @@
 							$is_middle_sign_file_path = FCPATH . 'uploads/reportcard/' . $desc->middle_sign;
 								if (file_exists($is_middle_sign_file_path)) {						
 							?>
-							<img src="<?php echo base_url('uploads/reportcard/'.$desc->middle_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
+							<img src="<?php echo base_url('uploads/reportcard/'.$desc->middle_sign) ?>" style="height:90px;width:auto;margin-top: 5px;">
 							<?php
 								}else{
-									echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+									echo '<div style="height:90px;width:auto;margin-top: 5px;"></div>';
 								}
 							}else{
-								echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+								echo '<div style="height:90px;width:auto;margin-top: 5px;"></div>';
 							}
 							echo '<h6 class="mt-1">'.$desc->middle_sign_title.'</h6>';
 						}
@@ -1122,13 +1122,13 @@
 							$is_right_sign_file_path = FCPATH . 'uploads/reportcard/' . $desc->right_sign;
 								if (file_exists($is_right_sign_file_path)) {						
 							?>
-							<img src="<?php echo base_url('uploads/reportcard/'.$desc->right_sign) ?>" style="height:65px;width:auto;margin-top: 5px;">
+							<img src="<?php echo base_url('uploads/reportcard/'.$desc->right_sign) ?>" style="height:90px;width:auto;margin-top: 5px;">
 							<?php
 								}else{
-									echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+									echo '<div style="height:90px;width:auto;margin-top: 5px;"></div>';
 								}
 							}else{
-								echo '<div style="height:65px;width:auto;margin-top: 5px;"></div>';
+								echo '<div style="height:90px;width:auto;margin-top: 5px;"></div>';
 							}
 							echo '<h6 class="mt-1">'.$desc->right_sign_title.'</h6>';
 						}
