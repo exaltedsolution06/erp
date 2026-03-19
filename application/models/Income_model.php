@@ -313,5 +313,14 @@ class Income_model extends My_Model
 		$query        = $this->db->get();
 		return $query->row()->total_amount;
 	}
+	public function income_details($res = array())
+	{
+		$this->db->select('*')->from('balance_sheets');
+		$this->db->where('balance_type', $res['balance_type']);
+		$this->db->where('id', $res['id']);
+		$this->db->where('session_id', $this->current_session);
+		$query = $this->db->get();
+		return $query->row_array();
+	}
 
 }

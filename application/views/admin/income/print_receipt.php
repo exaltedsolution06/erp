@@ -56,7 +56,10 @@
 </style>
 
 </head>
-
+<?php 
+$this->load->helper('number_to_word_helper');
+//echo "<pre>"; print_r($resultLists); die;
+?>
 <body>
 	<div class="mark-container mb-5">
 		<div class="row maincontent">
@@ -74,8 +77,8 @@
 					<table class="table">
 						<tbody>
 							<tr style="border-bottom: 1px solid #000;">
-								<th style="border: 0;"><strong>Rec. No.:</strong> 2025-2026/10</th>
-								<th style="border: 0;" class="text-end"><strong>Date:</strong> <?=date('d-m-Y',strtotime('2026-02-27'))?></th>
+								<th style="border: 0;"><strong>Rec. No.:</strong> <?php echo isset($resultLists['receipt_no']) ? $resultLists['receipt_no'] : 'N/A'; ?></th>
+								<th style="border: 0;" class="text-end"><strong>Date:</strong> <?=date('d-m-Y',strtotime($resultLists['date']))?></th>
 							</tr>
 						</tbody>
 					</table>
@@ -84,19 +87,58 @@
 						<tbody>
 							<tr>
 								<td style="border: 0;">
+								<?php 
+								if(isset($resultLists['student_id']) && $resultLists['student_id'] != '')
+								{
+									$this->load->model('Student_model');
+									$student_data = $this->Student_model->getRecentRecord($resultLists['student_id']);
+									//echo "<pre>";print_r($student_data);die;
+									$student_name = '';
+									if(isset($student_data['firstname']))
+									{
+										$student_name .= $student_data['firstname'];
+									}
+									
+									if(isset($student_data['middlename']))
+									{
+										$student_name .= ' '.$student_data['middlename'];
+									}
+									
+									if(isset($student_data['lastname']))
+									{
+										$student_name .= ' '.$student_data['lastname'];
+									}
+									
+								?>
 									<div style="margin-bottom: 50px;">
-										<span style="width:90px; display:inline-block;">Party :</span> <strong>132 - Aaryan Khatiyan</strong>
+										<span style="width:90px; display:inline-block;">Party :</span> <strong><?php echo isset($student_data['admission_no']) ? $student_data['admission_no'] : '' ;?> - <?php echo $student_name ;?></strong>
 									</div>
+								<?php 
+								}
+								
+								if(isset($resultLists['staff_id']) && $resultLists['staff_id'] !='')
+								{
+									
+									$this->load->model('staff_model');
+									$staff_data = $this->staff_model->get($resultLists['staff_id']);
+									//echo "<pre>";print_r($staff_data);die;
+								?>
+									<div style="margin-bottom: 50px;">
+										<span style="width:90px; display:inline-block;">Party :</span> <strong><?php echo $staff_data['name'] ;?></strong>
+									</div>
+								<?php 
+								}
+								?>
 									<div style="margin-bottom: 5px;">Please find enclosed herewith a sum of</div>
-									<div style="font-size: 13px;"><strong>Rupees Five Thousand Only</strong></div>
-									<div style="border-bottom: 1px solid #000;"><strong>As per details given below</strong></div>
-									<div style="border-bottom: 1px solid #000;font-style: italic;"><strong>Testing Only</strong></div>
+									<div style="font-size: 13px;"><strong><?php echo numberToWords($resultLists['amount']); ?></strong></div>
+									<div style="border-bottom: 1px solid #000;">As per details given below</div>
+									<div style="border-bottom: 1px solid #000;font-style: italic;"><strong><?php echo isset($resultLists['description']) ? $resultLists['description'] : 'N/A'; ?></strong></div>
 									<div style="display: flex;">
 										<div style="width: 50%; padding:0; display: flex; align-items: center;">
-											<strong style="font-size: 13px;">5000</strong>
+											<strong style="font-size: 13px;"> <?php echo isset($resultLists['amount']) ? $resultLists['amount'] : 'N/A'; ?></strong>
 										</div>
 										<div style="width: 50%; text-align: right; padding:0;">
-											<div style="font-weight: bold; font-size: 13px; margin-bottom: 15px;">For GURUKUL INTERNATIONAL SCHOOL</div>
+											<div style="font-weight: bold; font-size: 13px; margin-bottom: 15px;">For <?php echo $this->setting_model->getCurrentSchoolName(); ?></div>
 											<div>Auth. Signatory</div>
 										</div>
 									</div>

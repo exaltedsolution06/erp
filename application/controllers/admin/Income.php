@@ -417,6 +417,12 @@ class Income extends Admin_Controller {
     }
 	public function printIncome() {
 		$data = array();
+		$id = $this->input->post('id');
+		$balance_type = $this->input->post('balance_type');
+		$res = array('id'=>$id, 'balance_type'=> $balance_type);
+		$resultLists = $this->income_model->income_details($res);
+		//echo "<pre>";print_r($resultLists);die;
+		$data['resultLists'] = $resultLists;
 		
         $data['header_image']= $this->setting_model->get_receiptheader_return();
 		

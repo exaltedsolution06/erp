@@ -269,11 +269,12 @@ $language_name = $language["short_code"];
 	$(document).on('click', '.print_receipt', function(){
 		var id = $(this).data('id');
 		var base_url = '<?php echo base_url() ?>';
-		
+		var balance_type = 0;
+		//alert(id);
 		$.ajax({
 			type: "POST",
 			url: base_url + "admin/income/printIncome",
-            data: {'id': id},
+            data: {'id': id, 'balance_type':balance_type},
 			dataType: "JSON", // serializes the form's elements.
 			success: function (response)
 			{

@@ -172,7 +172,7 @@
                                                    
                                                     <td class="mailbox-name"><?php echo ($currency_symbol .' '.$expense['amount']); ?></td>
                                                     <td class="mailbox-date pull-right">
-														<a href="javascript:void(0)" data-id="<?php echo $income["id"]; ?>" class="btn btn-default btn-xs print_receipt" data-toggle="tooltip" title="" data-original-title="Print Receipt">
+														<a href="javascript:void(0)" data-id="<?php echo $expense["id"]; ?>" class="btn btn-default btn-xs print_receipt" data-toggle="tooltip" title="" data-original-title="Print Receipt">
 															<i class="fa fa-print"></i>
 														</a>
                                                         <?php if ($expense['documents']) {
@@ -233,12 +233,14 @@
 <script type="text/javascript">
 	$(document).on('click', '.print_receipt', function(){
 		var id = $(this).data('id');
+		//alert(id);
 		var base_url = '<?php echo base_url() ?>';
+		var balance_type = 1;
 		
 		$.ajax({
 			type: "POST",
 			url: base_url + "admin/income/printIncome",
-            data: {'id': id},
+            data: {'id': id, 'balance_type':balance_type},
 			dataType: "JSON", // serializes the form's elements.
 			success: function (response)
 			{
