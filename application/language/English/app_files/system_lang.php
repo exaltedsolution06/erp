@@ -1705,3 +1705,4 @@ $lang['debit'] = 'Debit';
 $lang['balance'] = 'Balance';
 $lang['closing_balance'] = 'Closing Balance';
 $lang['expense_check'] = 'Amount greater than total income';
+$lang['bulk_upload'] = 'Bulk upload';

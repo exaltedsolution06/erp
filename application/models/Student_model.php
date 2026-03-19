@@ -1788,6 +1788,31 @@ class Student_model extends MY_Model
 			return null;
 		}
 	}
+	public function bulk_uploads($name='')
+	{
+		//student_images
+	
+		$path = FCPATH . 'uploads/bulk_upload/student';
+		$files = scandir($path);
+		$files = array_diff($files, array('.', '..'));
+		
+		
+		
+		$arrfiles = [];
+		
+		foreach($files as $file){
+			
+			$exp_file = explode('.', $file);
+			$addmission_no = $exp_file[0];
+			$arrfiles[] = $addmission_no;
+			$this->db->where('admission_no', $addmission_no);
+			$qr = $this->db->get('students')->row_array();
+			echo "<pre>";print_r($qr);die;
+			
+		}
+		
+		//echo "<pre>";print_r($arrfiles);die;
+	}
 
 
 

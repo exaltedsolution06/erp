@@ -2498,5 +2498,25 @@ class Student extends Admin_Controller
 
 		return $defaultArray;
 	}
+	public function bulkupload()
+	{
+		if (!$this->rbac->hasPrivilege('bulk_upload', 'can_view')) {
+            access_denied();
+        }
+        $this->session->set_userdata('top_menu', 'Student Information');
+        $this->session->set_userdata('sub_menu', 'bulkupload');
+        $data['title'] = 'Account List';
+		
+		$name = $this->input->post('name');
+		if($name !='')
+		{
+			$this->student_model->bulk_uploads($name);
+		}
+
+        $this->load->view('layout/header', $data);
+		$this->load->view('student/bulkupload', $data);
+		$this->load->view('layout/footer', $data);
+        
+	}
 
 }
