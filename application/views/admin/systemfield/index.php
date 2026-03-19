@@ -809,6 +809,15 @@
                                         </td>                                                
                                     </tr>
                                     <tr>
+                                        <td>Student Photo</td>
+                                        <td>
+                                            <div class="material-switch pull-right">
+                                                <input id="rcpt_photo" name="rcpt_photo" type="checkbox" data-role="rcpt_photo" class="chk" data-rowid="1" value="checked" <?php if ($result->rcpt_photo == "1") echo "checked='checked'"; ?> />
+                                                <label for="rcpt_photo" class="label-success"></label>
+                                            </div>																			
+                                        </td>                                                
+                                    </tr>
+                                    <tr>
                                         <td><?php echo $this->lang->line('father'); ?> <?php echo $this->lang->line('name'); ?></td>
                                         <td>
                                             <div class="material-switch pull-right">

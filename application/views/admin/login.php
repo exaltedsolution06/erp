@@ -53,7 +53,7 @@
                             <div class="col-lg-4 col-md-4 col-sm-12 nopadding <?php echo $bgoffsetbgno; ?> <?php echo $offset; ?>">
                                 <div class="loginbg loginradius login390">  
                                     <div class="form-top">
-                                        <div class="form-top-left logowidth">
+                                        <div class="form-top-left logowidth text-center">
                                             <img src="<?php echo base_url(); ?>uploads/school_content/admin_logo/<?php $this->setting_model->getAdminlogo(); ?>" />    
                                         </div>
                                         <!-- <div class="form-top-right"><i class="fa fa-key"></i></div> -->
@@ -103,9 +103,10 @@
                                             <button type="submit" class="btn"><?php echo $this->lang->line('sign_in'); ?></button>
                                         </form>
                                         <a href="<?php echo site_url('site/forgotpassword') ?>" class="forgot"><i class="fa fa-key"></i> <?php echo $this->lang->line('forgot_password'); ?>?</a>
-										<a href="<?php echo base_url(); ?>" target="_blank" class="forgot pull-right"> <i class="fa fa-home"></i> Back to Home</a>
+										<a href="<?php echo site_url('site/userlogin'); ?>" class="forgot pull-right"> <i class="fa fa-user"></i> User Login</a>
+										<a href="<?php echo base_url(); ?>" target="_blank" class="forgot pull-right mr25"> <i class="fa fa-home"></i> Front Site</a>
                                     </div>
-									<span class="copyright_text">Designed and Maintained by <a href="https://easyskool.in/" class="color_black" target="_blank">easyskool.in</a></span>
+									<!--<span class="copyright_text">Designed and Maintained by <a href="https://easyskool.in/" class="color_black" target="_blank">easyskool.in</a></span>-->
                                 </div>
                             </div>
                             <?php
@@ -115,10 +116,30 @@
                                 <div class="col-lg-8 col-md-8 col-sm-12 nopadding-2">
 									<div class="d-flex align-items-center text-wrap flex-column justify-content-center bg-position-sm-left bg-position-lg-center" style="background: url('https://demo.smart-school.in/uploads/school_content/login_image/1663064530-1070210809632059d2b8b0b!1662796232-1721792380631c41c80d038!login_bg3.jpg') no-repeat; background-size:cover">  
 										<div class=" bg-shadow-remove ">
-										
-											<h3 class="h3"><?php echo $this->lang->line('what_is_new_in'); ?> <?php echo $school['name']; ?></h3>
+											<div class="d-flex justify-content-between">
+												<h3 class="h3"><?php echo $this->lang->line('what_is_new_in'); ?> Easy Skool ERP</h3>
+												<div class="d-flex align-center logowidth">
+													<a href="https://easyskool.in/" target="_blank"><img src="<?php echo base_url(); ?>uploads/school_content/erp_logo.png" /></a>
+												</div>
+											</div>
 											<div class="loginright mCustomScrollbar">
 												<div class="messages"> 
+													<h4>Title : UT-7 Starts from 15-Nov-2025</h4>
+													<p>Details : In this section you can track all Income and Expense Related Reports</p>
+													<p>Release Date : 15-03-2026</p>
+													<div class="logdivider"></div>
+													<h4>Title : UT-6 Starts from 15-Nov-2025</h4>
+													<p>Details : In this section you can track all Income and Expense Related Reports</p>
+													<p>Release Date : 15-03-2026</p>
+													<div class="logdivider"></div>
+													<h4>Title : UT-5 Starts from 15-Nov-2025</h4>
+													<p>Details : In this section you can track all Income and Expense Related Reports</p>
+													<p>Release Date : 15-03-2026</p>
+													<div class="logdivider"></div>
+													<h4>Title : UT-4 Starts from 15-Nov-2025</h4>
+													<p>Details : In this section you can track all Income and Expense Related Reports</p>
+													<p>Release Date : 15-03-2026</p>
+													<div class="logdivider"></div>
 													<?php
 													/*foreach ($notice as $notice_key => $notice_value) {
 														?>

@@ -203,6 +203,7 @@ class Receipt_model extends CI_Model {
             students.created_at,
             students.updated_at,
             students.father_name,
+            students.mother_name,
             students.rte,
             students.gender,
             users.id as user_tbl_id,

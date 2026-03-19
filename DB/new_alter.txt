@@ -120,7 +120,10 @@ CREATE TABLE `balance_sheets` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
 
 --- 16-03-2026 ---
-ALTER TABLE `api_domains` ADD `status` TINYINT(4) NULL DEFAULT '1' COMMENT '0=Inactive, 1=Active' AFTER `api_key`;
+ALTER TABLE `sch_settings` ADD `domain_api_key` VARCHAR(255) NULL DEFAULT NULL AFTER `rcpt_note`;
+
+--- 18-03-2026 ---
+ALTER TABLE `sch_settings` ADD `rcpt_photo` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_student_name`;
 
 
 ===============================
