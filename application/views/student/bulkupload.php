@@ -17,37 +17,35 @@
                             <?php if ($this->session->flashdata('msg')) { ?> <div class="alert alert-success">  <?php echo $this->session->flashdata('msg') ?> </div> <?php } ?>
                             <form role="form" action="<?php echo site_url('student/bulkupload') ?>" method="post" class="">
                                 <?php echo $this->customlib->getCSRF(); ?>
-                                <div class="col-sm-2">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label><?php echo $this->lang->line('student'); ?></label> 
                                          
-                                        <button type="button" class="btn btn-primary d-block mt-2 bulk-upload" data-name="student">Upload</button>
+                                        <button type="button" class="btn btn-primary d-block mt-2 bulk-upload student" data-name="student"><span class="btn-text">Upload</span>
+										<span class="btn-loader" style="display:none;">
+											<i class="fa fa-spinner fa-spin"></i> Processing...
+										</span></button>
                                     </div>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label><?php echo $this->lang->line('father'); ?></label>
-                                         <button type="button" class="btn btn-primary d-block mt-2 bulk-upload" data-name="father">Upload</button>
+                                         <button type="button" class="btn btn-primary d-block mt-2 bulk-upload father" data-name="father">Upload</button>
                                     </div>
                                 </div>
-								<div class="col-sm-2">
+								<div class="col-md-12">
                                     <div class="form-group">
                                         <label><?php echo $this->lang->line('mother'); ?></label>
-                                         <button type="button" class="btn btn-primary d-block mt-2 bulk-upload" data-name="mother">Upload</button>
+                                         <button type="button" class="btn btn-primary d-block mt-2 bulk-upload mother" data-name="mother">Upload</button>
                                     </div>
                                 </div>
-								<div class="col-sm-2">
+								<div class="col-md-12">
                                     <div class="form-group">
                                         <label><?php echo $this->lang->line('guardian'); ?></label>
-                                         <button type="button" class="btn btn-primary d-block mt-2 bulk-upload" data-name="guardian">Upload</button>
+                                         <button type="button" class="btn btn-primary d-block mt-2 bulk-upload guardian" data-name="guardian">Upload</button>
                                     </div>
                                 </div>
 
-                                <!--<div class="col-sm-12">
-                                    <div class="form-group">
-                                        <button type="submit" name="search" value="search_filter" class="btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
-                                    </div>
-                                </div>-->
                             </form>
 
 
@@ -114,16 +112,93 @@
 <script type="text/javascript">
    $(document).on('click', '.bulk-upload', function(){
 	   let name = $(this).data('name');
+	   
+	   let btn  = $(this);
+	    btn.find('.btn-loader').show();
+		//btn.prop('disabled', true);
+        btn.find('.btn-text').hide();
+        btn.find('.btn-loader').show();
+	   
+	   if(name == 'student')
+	   {
+		   $('.father').prop('disabled', true);
+		   $('.mother').prop('disabled', true);
+		   $('.guardian').prop('disabled', true);
+	   }
+	   
+	   if(name == 'father')
+	   {
+		   $('.mother').prop('disabled', true);
+		   $('.guardian').prop('disabled', true);
+		   $('.student').prop('disabled', true);
+	   }
+	   
+	   if(name == 'mother')
+	   {
+		   $('.father').prop('disabled', true);
+		   $('.guardian').prop('disabled', true);
+		   $('.student').prop('disabled', true);
+	   }
+	   
+	   if(name == 'guardian')
+	   {
+		   $('.mother').prop('disabled', true);
+		   $('.father').prop('disabled', true);
+		   $('.student').prop('disabled', true);
+	   }
+	   
+	   
 	   //alert(name);
 	   $.ajax({
 			type: "POST",
-			url: base_url + "student/bulkupload",
+			url: base_url + "student/bulkuploadprocess",
 			data: {'name': name},
 			dataType: "json",
 			success: function (data) {
+				//alert(data);
+				successMsg('Files uploaded successfully');
+			},
+
+			error: function () {
+				alert('Something went wrong');
+			},
+
+			complete: function () {
+				// 🔹 hide loader (always run)
+				//btn.prop('disabled', false);
+				btn.find('.btn-text').show();
+				btn.find('.btn-loader').hide();
+				
+				 if(name == 'student')
+				   {
+					   $('.father').prop('disabled', false);
+					   $('.mother').prop('disabled', false);
+					   $('.guardian').prop('disabled', false);
+				   }
+				   
+				   if(name == 'father')
+				   {
+					   $('.mother').prop('disabled', false);
+					   $('.guardian').prop('disabled', false);
+					   $('.student').prop('disabled', false);
+				   }
+				   
+				   if(name == 'mother')
+				   {
+					   $('.father').prop('disabled', false);
+					   $('.guardian').prop('disabled', false);
+					   $('.student').prop('disabled', false);
+				   }
+				   
+				   if(name == 'guardian')
+				   {
+					   $('.mother').prop('disabled', false);
+					   $('.father').prop('disabled', false);
+					   $('.student').prop('disabled', false);
+				   }
+				
 				
 			}
 		});
-	   
-   })
+	})
 </script>

@@ -1791,27 +1791,118 @@ class Student_model extends MY_Model
 	public function bulk_uploads($name='')
 	{
 		//student_images
-	
-		$path = FCPATH . 'uploads/bulk_upload/student';
+		if($name == 'student')
+		{
+			$path = FCPATH . 'uploads/bulk_upload/student/';
+		}
+		
+		if($name == 'father')
+		{
+			$path = FCPATH . 'uploads/bulk_upload/father/';
+		}
+		
+		if($name == 'mother')
+		{
+			$path = FCPATH . 'uploads/bulk_upload/mother/';
+		} 
+		
+		if($name == 'guardian')
+		{
+			$path = FCPATH . 'uploads/bulk_upload/guardian/';
+		} 
+		
 		$files = scandir($path);
 		$files = array_diff($files, array('.', '..'));
 		
-		
+		$pathto = FCPATH . 'uploads/student_images/';
+		//$pathto = FCPATH . 'uploads/bulk_upload/student_images/';
 		
 		$arrfiles = [];
-		
 		foreach($files as $file){
 			
-			$exp_file = explode('.', $file);
-			$addmission_no = $exp_file[0];
-			$arrfiles[] = $addmission_no;
-			$this->db->where('admission_no', $addmission_no);
-			$qr = $this->db->get('students')->row_array();
-			echo "<pre>";print_r($qr);die;
-			
+			if(!empty($file))
+			{
+				$oldPath = $path . $file; 
+				$ext = pathinfo($file, PATHINFO_EXTENSION);
+				
+				//-- student data--
+				$exp_file = explode('.', $file);
+				$addmission_no = $exp_file[0];
+				$arrfiles[] = $addmission_no;
+				$this->db->where('admission_no', $addmission_no);
+				$student_data = $this->db->get('students')->row_array();
+				$student_id = $student_data['id'];
+				//
+				if(!empty($student_id))
+				{
+					if($name == 'student')
+					{
+						$newName = $student_id . '.' . $ext;
+					}
+					
+					if($name == 'father')
+					{
+						$newName = $student_id . 'father.' . $ext;
+					}
+					
+					if($name == 'mother')
+					{
+						$newName = $student_id . 'mother.' . $ext;
+					}
+					
+					if($name == 'guardian')
+					{
+						$newName = $student_id . 'guardian.' . $ext;
+					}
+					
+					
+					
+					$newPath = $pathto . $newName;
+					if (file_exists($newPath)) {
+						
+						unlink($newPath);
+					}
+					
+					rename($oldPath, $newPath); // upload the file
+					
+					// update student  table 
+					if($name == 'student')
+					{
+						$image_path = 'uploads/student_images/';
+						$image_name = $image_path . $newName;
+						$data   = array('image' => $image_name);
+					}
+					
+					if($name == 'father')
+					{
+						$image_path = 'uploads/student_images/';
+						$image_name = $image_path . $newName;
+						$data   = array('father_pic' => $image_name);
+					}
+					
+					if($name == 'mother')
+					{
+						$image_path = 'uploads/student_images/';
+						$image_name = $image_path . $newName;
+						$data   = array('mother_pic' => $image_name);
+					}
+					
+					if($name == 'guardian')
+					{
+						$image_path = 'uploads/student_images/';
+						$image_name = $image_path . $newName;
+						$data   = array('guardian_pic' => $image_name);
+					}
+					
+					$this->db->where('id', $student_id);
+					$this->db->update('students', $data);
+				}
+				
+			}
 		}
 		
-		//echo "<pre>";print_r($arrfiles);die;
+		return true;
+		
 	}
 
 

@@ -135,7 +135,7 @@ $this->load->helper('number_to_word_helper');
 									<div style="border-bottom: 1px solid #000;font-style: italic;"><strong><?php echo isset($resultLists['description']) ? $resultLists['description'] : 'N/A'; ?></strong></div>
 									<div style="display: flex;">
 										<div style="width: 50%; padding:0; display: flex; align-items: center;">
-											<strong style="font-size: 13px;"> <?php echo isset($resultLists['amount']) ? $resultLists['amount'] : 'N/A'; ?></strong>
+											<strong style="font-size: 13px;"> Rs. <?php echo isset($resultLists['amount']) ? $resultLists['amount'] : 'N/A'; ?></strong>
 										</div>
 										<div style="width: 50%; text-align: right; padding:0;">
 											<div style="font-weight: bold; font-size: 13px; margin-bottom: 15px;">For <?php echo $this->setting_model->getCurrentSchoolName(); ?></div>

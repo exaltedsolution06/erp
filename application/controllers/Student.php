@@ -2507,16 +2507,21 @@ class Student extends Admin_Controller
         $this->session->set_userdata('sub_menu', 'bulkupload');
         $data['title'] = 'Account List';
 		
-		$name = $this->input->post('name');
-		if($name !='')
-		{
-			$this->student_model->bulk_uploads($name);
-		}
-
-        $this->load->view('layout/header', $data);
+		$this->load->view('layout/header', $data);
 		$this->load->view('student/bulkupload', $data);
 		$this->load->view('layout/footer', $data);
         
+	}
+	
+	public function bulkuploadprocess()
+	{
+		$name = $this->input->post('name');
+		if($name !='')
+		{
+			$res = $this->student_model->bulk_uploads($name);
+		}
+		
+		echo json_encode(['status' => true]);
 	}
 
 }
