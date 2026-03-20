@@ -4298,3 +4298,6 @@ td.dt-body-right {min-width: 100px;}
 	font-weight: 600 !important;
 	font-family: inherit !important;
 }
+.haveDropify .dropify-filename {
+	display: none;
+}

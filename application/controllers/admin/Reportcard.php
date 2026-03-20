@@ -452,7 +452,46 @@ class Reportcard extends Admin_Controller {
                 'right_sign_title' => $this->input->post('right_sign_title'),
             );
             
-            
+            if ($_POST['remove_header_img'] == 1) {
+				$path1 = "uploads/reportcard/" . $reportcard->header_img;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+				$insert_data['header_img'] = '';
+			}
+            if ($_POST['remove_left_sign'] == 1) {
+				$path1 = "uploads/reportcard/" . $reportcard->left_sign;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+				$insert_data['left_sign'] = '';
+			}
+            if ($_POST['remove_middle_sign'] == 1) {
+				$path1 = "uploads/reportcard/" . $reportcard->middle_sign;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+				$insert_data['middle_sign'] = '';
+			}
+            if ($_POST['remove_right_sign'] == 1) {
+				$path1 = "uploads/reportcard/" . $reportcard->right_sign;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+				$insert_data['right_sign'] = '';
+			}
+            if ($_POST['remove_background_image'] == 1) {
+				$path1 = "uploads/reportcard/" . $reportcard->background_image;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+				$insert_data['background_image'] = '';
+			}
             if (isset($_FILES["header_img"]) && !empty($_FILES["header_img"]['name'])) {
                 $time = md5($_FILES["header_img"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["header_img"]["name"]);

@@ -29,7 +29,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <h3 class="box-title"><?php echo $this->lang->line('edit'); ?> <?php echo $this->lang->line('report_card'); ?></h3>
                         </div><!-- /.box-header -->
 
-                        <form  enctype="multipart/form-data" action="<?php echo site_url('admin/reportcard/edit/' . $reportcard->id) ?>"  id="editform" name="editform" method="post" accept-charset="utf-8">
+                        <form  enctype="multipart/form-data" action="<?php echo site_url('admin/reportcard/edit/' . $reportcard->id) ?>"  id="editform" name="editform" method="post" accept-charset="utf-8" class="haveDropify">
                             <div class="box-body">
                                 <?php echo validation_errors(); ?>
                                 <input type="hidden" name="id" value="<?php echo $reportcard->id; ?>">
@@ -70,7 +70,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									</div>
 									<div class="col-md-12 col-sm-12 img_div_modal">
 										<div class="form-group enableHeaderImageDiv" hidden>
-											<input id="documents" name="header_img" placeholder="" type="file" class="filestyle form-control" data-height="40">
+											<input id="documents" data-default-file="<?php echo base_url() ?>./uploads/reportcard/<?php echo $reportcard->header_img; ?>" name="header_img" placeholder="" type="file" class="filestyle form-control" data-height="40">
+											<input type="hidden" name="remove_header_img" class="remove_image">
 										</div>
 									</div>
 									<div class="col-md-6 col-sm-6 img_div_modal enableHeadFootDiv">
@@ -84,20 +85,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										</div>
 									</div>
 								</div>
-                                <!--<div class="form-group switch-inline width-100">
-                                    <label><?php echo $this->lang->line('left') . " " . $this->lang->line('sign'); ?></label>
-                                    <div class="material-switch switchcheck float-right">
-                                        <input id="is_class_teacher" name="is_class_teacher" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_class_teacher', '1', (set_value('is_class_teacher', $reportcard->is_class_teacher) == 1) ? TRUE : FALSE); ?>>
-                                        <label for="is_class_teacher" class="label-success"></label>
-                                    </div>
-                                    <input id="documents" name="left_sign" placeholder="" type="file" class="filestyle form-control" data-height="40">
-                                    <span class="text-danger"><?php echo form_error('left_sign'); ?></span>
-                                </div>
-								<div class="form-group">
-                                    <label><?php echo $this->lang->line('left'); ?> <?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?></label>	
-                                    <input autofocus="" id="left_sign_title" name="left_sign_title" placeholder="" type="text" class="form-control" value="<?php echo set_value('left_sign_title', $reportcard->left_sign_title); ?>"/>
-                                    <span class="text-danger"><?php echo form_error('left_sign_title'); ?></span>
-                                </div>-->
 								
 								<div class="clearfix"></div>
                                 <div class="row">
@@ -112,8 +99,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									</div>
 									<div class="col-md-12 col-sm-12 img_div_modal">
 										<div class="form-group enableLeftSignDiv" hidden>
-											<input id="documents" name="left_sign" placeholder="" type="file" class="filestyle form-control" data-height="40">
+											<input id="documents" data-default-file="<?php echo base_url() ?>./uploads/reportcard/<?php echo $reportcard->left_sign; ?>" name="left_sign" placeholder="" type="file" class="filestyle form-control" data-height="40">
 											<span class="text-danger"><?php echo form_error('left_sign'); ?></span>
+											<input type="hidden" name="remove_left_sign" class="remove_image">
 										</div>
 									</div>
 									<div class="col-md-12 col-sm-12 img_div_modal">
@@ -124,20 +112,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									</div>
 								</div>
 								
-                                <!--<div class="form-group switch-inline width-100">
-                                    <label><?php echo $this->lang->line('middle') . " " . $this->lang->line('sign'); ?></label>
-                                    <div class="material-switch switchcheck float-right">
-                                        <input id="is_examination_ic" name="is_examination_ic" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_examination_ic', '1', (set_value('is_examination_ic', $reportcard->is_examination_ic) == 1) ? TRUE : FALSE); ?>>
-                                        <label for="is_examination_ic" class="label-success"></label>
-                                    </div>
-                                    <input id="documents" name="middle_sign" placeholder="" type="file" class="filestyle form-control" data-height="40">
-                                    <span class="text-danger"><?php echo form_error('middle_sign'); ?></span>
-                                </div>
-								<div class="form-group">
-                                    <label><?php echo $this->lang->line('middle'); ?> <?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?></label>
-                                    <input autofocus="" id="middle_sign_title" name="middle_sign_title" placeholder="" type="text" class="form-control" value="<?php echo set_value('middle_sign_title', $reportcard->middle_sign_title); ?>"/>
-                                    <span class="text-danger"><?php echo form_error('middle_sign_title'); ?></span>
-                                </div>-->
 								<div class="clearfix"></div>
                                 <div class="row">
 									<div class="col-md-12">
@@ -151,8 +125,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									</div>
 									<div class="col-md-12 col-sm-12 img_div_modal">
 										<div class="form-group enableMiddleSignDiv" hidden>
-											<input id="documents" name="middle_sign" placeholder="" type="file" class="filestyle form-control" data-height="40">
+											<input id="documents" data-default-file="<?php echo base_url() ?>./uploads/reportcard/<?php echo $reportcard->middle_sign; ?>" name="middle_sign" placeholder="" type="file" class="filestyle form-control" data-height="40">
 											<span class="text-danger"><?php echo form_error('middle_sign'); ?></span>
+											<input type="hidden" name="remove_middle_sign" class="remove_image">
 										</div>
 									</div>
 									<div class="col-md-12 col-sm-12 img_div_modal">
@@ -163,20 +138,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									</div>
 								</div>
 								
-                                <!--<div class="form-group switch-inline width-100">
-                                    <label><?php echo $this->lang->line('right') . " " . $this->lang->line('sign'); ?></label>
-                                    <div class="material-switch switchcheck float-right">
-                                        <input id="is_principal" name="is_principal" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_principal', '1', (set_value('is_principal', $reportcard->is_principal) == 1) ? TRUE : FALSE); ?>>
-                                        <label for="is_principal" class="label-success"></label>
-                                    </div>
-                                    <input id="documents" name="right_sign" placeholder="" type="file" class="filestyle form-control" data-height="40">
-                                    <span class="text-danger"><?php echo form_error('right_sign'); ?></span>
-                                </div>
-								<div class="form-group">
-                                    <label><?php echo $this->lang->line('right'); ?> <?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?></label>
-                                    <input autofocus="" id="right_sign_title" name="right_sign_title" placeholder="" type="text" class="form-control" value="<?php echo set_value('right_sign_title', $reportcard->right_sign_title); ?>"/>
-                                    <span class="text-danger"><?php echo form_error('right_sign_title'); ?></span>
-                                </div>-->
 								<div class="clearfix"></div>
                                 <div class="row">
 									<div class="col-md-12">
@@ -190,8 +151,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									</div>
 									<div class="col-md-12 col-sm-12 img_div_modal">
 										<div class="form-group enableRightSignDiv" hidden>
-											<input id="documents" name="right_sign" placeholder="" type="file" class="filestyle form-control" data-height="40">
+											<input id="documents" data-default-file="<?php echo base_url() ?>./uploads/reportcard/<?php echo $reportcard->right_sign; ?>" name="right_sign" placeholder="" type="file" class="filestyle form-control" data-height="40">
 											<span class="text-danger"><?php echo form_error('right_sign'); ?></span>
+											<input type="hidden" name="remove_right_sign" class="remove_image">
 										</div>
 									</div>
 									<div class="col-md-12 col-sm-12 img_div_modal">
@@ -204,8 +166,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 								
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('background_image'); ?></label>
-                                    <input id="documents" name="background_image" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="background_image">
+                                    <input id="documents" data-default-file="<?php echo base_url() ?>./uploads/reportcard/<?php echo $reportcard->background_image; ?>" name="background_image" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="background_image">
                                     <span class="text-danger"><?php echo form_error('background_image'); ?></span>
+									<input type="hidden" name="remove_background_image" class="remove_image">
                                 </div>
 								
 								<div class="form-group">
@@ -566,6 +529,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     </div>
 </div>
 <script type="text/javascript">
+	$(document).ready(function (e) {
+		$("body").on('click', '.dropify-clear', function () {
+			$(this).closest('.form-group').find('.remove_image').val(1);
+		});
+	});
     $(document).ready(function () {
 
         $("#btnreset").click(function () {
