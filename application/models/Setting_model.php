@@ -343,6 +343,11 @@ class Setting_model extends MY_Model {
         $image = $this->db->select('header_image')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'staff_payslip')->get()->row_array();
         return $image['header_image'];
     }
+	
+    public function unlink_commonheader() {
+        $image = $this->db->select('header_image')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'common_header')->get()->row_array();
+        return $image['header_image'];
+    }
 
     public function get_payslipfooter() {
         $image = $this->db->select('footer_content')->from('print_headerfooter')->where('session_id', $this->current_session)->where('print_type', 'staff_payslip')->get()->row_array();

@@ -20,6 +20,7 @@ class Print_headerfooter extends Admin_Controller {
         $data['result_admission'] = $this->setting_model->get_printheader('admission_form');
         $data['result_receipt'] = $this->setting_model->get_printheader('student_receipt');
         $data['result_payslip'] = $this->setting_model->get_printheader('staff_payslip');
+        $data['result_common_header'] = $this->setting_model->get_printheader('common_header');
         $this->load->view('layout/header', $data);
         $this->load->view('admin/print_headerfooter/print_headerfooter', $data);
         $this->load->view('layout/footer', $data);
@@ -30,7 +31,10 @@ class Print_headerfooter extends Admin_Controller {
         if (isset($_POST['type'])) {
             $is_required = $this->setting_model->check_haederimage($_POST['type']);
             $this->form_validation->set_rules('header_image', $this->lang->line('header') . " " . $this->lang->line('image'), 'trim|xss_clean|callback_handle_upload[' . $is_required . ']');
-            if ($_POST['type'] == 'staff_payslip') {
+            if ($_POST['type'] == 'common_header') {
+                //$this->form_validation->set_rules('message3', $this->lang->line('message'), 'required|trim|xss_clean');
+                $message = 'message3';
+            } else if ($_POST['type'] == 'staff_payslip') {
                 //$this->form_validation->set_rules('message', $this->lang->line('message'), 'required|trim|xss_clean');
                 $message = 'message';
             } else if ($_POST['type'] == 'admission_form') {
@@ -75,6 +79,19 @@ class Print_headerfooter extends Admin_Controller {
                     }
                     move_uploaded_file($_FILES["header_image"]["tmp_name"], "./uploads/print_headerfooter/admission_form/" . $img_name);
                 } 
+				else if ($_POST['type'] == 'common_header') {
+					
+
+                    $path = $this->setting_model->unlink_commonheader($_POST['type']);
+
+                    $path1 = "uploads/print_headerfooter/common_header/" . $path;
+                    $url = FCPATH . $path1;
+
+                    if (file_exists($url)) {
+                        unlink($url);
+                    }
+                    move_uploaded_file($_FILES["header_image"]["tmp_name"], "./uploads/print_headerfooter/common_header/" . $img_name);
+                } 
 				else {
                     $path = $this->setting_model->unlink_payslipheader();
 
@@ -103,6 +120,14 @@ class Print_headerfooter extends Admin_Controller {
 					} else if ($_POST['type'] == 'admission_form') {	
 						$path = $this->setting_model->unlink_receiptheader($_POST['type']);
 						$path1 = "uploads/print_headerfooter/admission_form/" . $path;
+						$url = FCPATH . $path1;
+
+						if (file_exists($url)) {
+							unlink($url);
+						}
+					} else if ($_POST['type'] == 'common_header') {	
+						$path = $this->setting_model->unlink_commonheader($_POST['type']);
+						$path1 = "uploads/print_headerfooter/common_header/" . $path;
 						$url = FCPATH . $path1;
 
 						if (file_exists($url)) {

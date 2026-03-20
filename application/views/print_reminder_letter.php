@@ -64,6 +64,7 @@
 
 .info-table td{
     padding:4px;
+	font-size: 12px;
 }
 
 .message{
@@ -72,7 +73,6 @@
 }
 
 .footer{
-    margin-top:40px;
     width:100%;
 }
 
@@ -84,9 +84,6 @@
     text-align:right;
 }
 
-.signature img{
-    height:40px;
-}
 
 </style>
 
@@ -107,13 +104,17 @@
 				<div class="slip">
 					<!-- HEADER IMAGE -->
 					<div class="header">
-						<img src="<?php echo base_url('uploads/remind_letter/') ?><?php echo $val['header_image'] ?>" style="height:100px;width:100%">
+						<?php
+						if(!empty($val['header_image'])){
+						?>
+						<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/common_header/<?php echo $val['header_image']; ?>" style="height:100px;width:100%">
+						<?php } ?>
 					</div>
 
 					<div class="content">
 						<table class="title-row">
 							<tr>
-								<td style="text-align:center;">BALANCE DUES</td>
+								<td style="text-align:center;"><?php echo $val['heading_title'] ?? ''; ?></td>
 								<?php if($val['isdate'] == 1){ ?>
 								<td style="text-align:right;">
 									DATED: <strong>
@@ -123,41 +124,55 @@
 								<?php } ?>
 							</tr>
 						</table>
-
-						<table class="info-table">
-						<?php if($val['isuid'] == 1){ ?>
-							<tr>
-								<td width="120">UID . No.</td>
-								<td width="200"><strong><?php echo $val['uid_no'] ?></strong></td>
-							</tr>
-						<?php } ?>
-						<?php if($val['isstudent'] == 1){ ?>
-							<tr>
-								<td>Student's Name</td>
-								<td><strong><?php echo $val['student_name'] ?></strong></td>
-							</tr>
-						<?php } ?>
-						<?php if($val['isfather'] == 1){ ?>
-							<tr>
-								<td>Father's Name</td>
-								<td><strong><?php echo $val['father_name'] ?></strong></td>
-							</tr>
-						<?php } ?>
-						<?php if($val['isclass'] == 1){ ?>
-							<tr>
-								<td>Class:</td>
-								<td><strong><?php echo $val['class'] ?></strong></td>
-							</tr>
-						<?php } ?>
-						</table>
+						<div class="row">
+							<div class="col-md-6">
+								<table class="info-table">
+								<?php if($val['isuid'] == 1){ ?>
+									<tr>
+										<td >Admission No</td>
+										<td ><strong><?php echo $val['uid_no'] ?></strong></td>
+									</tr>
+								<?php } ?>
+								<?php if($val['isstudent'] == 1){ ?>
+									<tr>
+										<td>Student's Name</td>
+										<td><strong><?php echo $val['student_name'] ?></strong></td>
+									</tr>
+								<?php } ?>
+								<?php if($val['isfather'] == 1){ ?>
+									<tr>
+										<td>Father's Name</td>
+										<td><strong><?php echo $val['father_name'] ?></strong></td>
+									</tr>
+								<?php } ?>
+								</table>
+							</div>
+							<div class="col-md-6">
+								<table class="info-table">
+								<?php if($val['isclass'] == 1){ ?>
+									<tr>
+										<td>Class:</td>
+										<td><strong><?php echo $val['class'] ?></strong></td>
+									</tr>
+								<?php } ?>
+								<?php if($val['isroute'] == 1){ ?>
+									<tr>
+										<td>Route:</td>
+										<td><strong><?php echo $val['route'] ?></strong></td>
+									</tr>
+								<?php } ?>
+								<?php if($val['isuphone'] == 1){ ?>
+									<tr>
+										<td>Ph. No:</td>
+										<td><strong><?php echo $val['phone'] ?></strong></td>
+									</tr>
+								<?php } ?>
+								</table>
+							</div>
+						</div>
 						<div class="message">
 							<p>
 							Dear Parents / Guardians,
-							<?php if($val['isuphone'] == 1){ ?>
-							<span style="float:right;">
-							Ph. No: <strong><?php echo $val['phone'] ?></strong>
-							</span>
-							<?php } ?>
 							</p>
 							<?php echo strtr($val['description'], $replace); ?>
 						</div>
@@ -166,8 +181,17 @@
 							<tr>
 								<td>Thank You,</td>
 								<td class="signature">
-								<br>
-								Principal
+									<?php if($val['is_signature'] == 1){
+											$is_signature_path = FCPATH . 'uploads/remind_letter/' . $val['signature'];
+											if (file_exists($is_signature_path)) {
+											?>
+										<img src="<?php echo base_url('uploads/remind_letter/'.$val['signature']) ?>" style="height:60px;width:auto">
+									<?php }else{
+										echo '<div style="height:60px;width:auto;"></div>';
+									} ?>
+									<br>
+									<?php echo $val['signature_title'] ?>
+									<?php } ?>
 								</td>
 							</tr>
 						</table>

@@ -5,7 +5,7 @@
             <?php
             echo $this->lang->line('system_settings');
 		$activeTab = $this->session->flashdata('type');
-		$activeTab = $activeTab ?: 'student_receipt';
+		$activeTab = $activeTab ?: 'admission_form';
             // print_r(validation_errors());
             //die; 
 			//print_r($_POST['type']);die; 
@@ -21,6 +21,7 @@
                 <div class="nav-tabs-custom box box-primary theme-shadow">
 
                     <ul class="nav nav-tabs pull-right">
+                        <li class="<?php echo ($activeTab == 'common_header') ? 'active' : ''?>"><a href="#tab_5" data-toggle="tab">Common Header</a></li>
                         <li class="<?php echo ($activeTab == 'staff_payslip') ? 'active' : ''?>"><a href="#tab_4" data-toggle="tab"><?php echo $this->lang->line('payslip') ?></a></li>
 						
                         <li class="<?php echo ($activeTab == 'student_receipt') ? 'active' : ''?>"><a href="#tab_3" data-toggle="tab"><?php echo $this->lang->line('fees_receipt'); ?></a></li>
@@ -137,6 +138,35 @@
                                 </div>  
                             </form>
                         </div>
+                        <div class="tab-pane <?php echo ($activeTab == 'common_header') ? 'active' : ''?>" id="tab_5">
+                            <form role="form" action="<?php echo site_url('admin/print_headerfooter/edit') ?>" class="" enctype="multipart/form-data" method="post">
+                                <div class="row">
+                                    <div class="col-md-12">     
+                                        <div class="form-group">
+                                            <label><?php echo $this->lang->line('header') . " " . $this->lang->line('image') . " (2230px X 300px)"; ?></label>
+                                            <input id="documents" data-default-file="<?php echo base_url() ?>./uploads/print_headerfooter/common_header/<?php echo $result_common_header['header_image'] ?>" placeholder="" type="file" class="filestyle form-control" data-height="180"  name="header_image">
+                                            <input  placeholder="" type="hidden" class="form-control" value="common_header" name="type">
+                                            <span class="text-danger"><?php echo form_error('header_image'); ?></span>
+											<input type="hidden" name="remove_image" class="remove_image">
+                                        </div>
+                                        <div class="form-group"><label><?php echo $this->lang->line('footer') . " " . $this->lang->line('content'); ?><small class="req"> *</small></label>
+                                            <textarea id="common_textarea" name="message3" class="form-control" style="height: 250px">
+                                                <?php echo set_value('message', $result_common_header['footer_content']); ?>
+                                            </textarea>
+                                            <span class="text-danger"><?php echo form_error('message'); ?></span>
+                                        </div>
+
+                                    </div>
+									<?php if ($this->rbac->hasPrivilege('print_header_footer', 'can_edit')) { ?>
+                                    <div class="col-lg-12">
+                                        <div class="pull-right">
+                                            <button type="submit" class="btn btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> <?php echo $this->lang->line('save'); ?>"><?php echo $this->lang->line('save'); ?></button>
+                                        </div>
+                                    </div>  
+									<?php } ?>
+                                </div>  
+                            </form>
+                        </div>
                         <!-- /.tab-pane -->
                     </div>
                     <!-- /.tab-content -->
@@ -155,6 +185,7 @@
         $("#admission_textarea").wysihtml5();
         $("#staff_textarea").wysihtml5();
         $("#student_textarea").wysihtml5();
+        $("#common_textarea").wysihtml5();
 
     });
 	$(document).ready(function (e) {

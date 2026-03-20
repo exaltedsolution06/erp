@@ -53,10 +53,15 @@
                             <div class="col-lg-4 col-md-4 col-sm-12 nopadding <?php echo $bgoffsetbgno; ?> <?php echo $offset; ?>">
                                 <div class="loginbg loginradius login390">  
                                     <div class="form-top">
-                                        <div class="form-top-left logowidth text-center">
+                                        <!--<div class="form-top-left logowidth text-center">
                                             <img src="<?php echo base_url(); ?>uploads/school_content/admin_logo/<?php $this->setting_model->getAdminlogo(); ?>" />    
-                                        </div>
+                                        </div>-->
                                         <!-- <div class="form-top-right"><i class="fa fa-key"></i></div> -->
+										<div class="form-top-left text-center">
+                                            <div class="logo-box">
+												<img src="<?php echo base_url(); ?>uploads/school_content/admin_logo/<?php $this->setting_model->getAdminlogo(); ?>" />    
+											</div>
+                                        </div>
                                     </div>
 
                                     <div class="form-bottom">

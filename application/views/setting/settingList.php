@@ -47,7 +47,7 @@
                         ?>
                         <br/>
                         <br/>
-                        <a href="#admin_logo" role="button" class="btn btn-primary btn-sm upload_admin_logo" data-toggle="tooltip" title="<?php echo $this->lang->line('edit') . " " . $this->lang->line('admin') . " " . $this->lang->line('logo'); ?>" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"><i class="fa fa-picture-o"></i> <?php echo $this->lang->line('edit') . " " . $this->lang->line('admin') . " " . $this->lang->line('logo'); ?></a>
+                        <a href="#admin_logo" role="button" class="btn btn-primary btn-sm upload_admin_logo" data-toggle="tooltip" title="<?php echo $this->lang->line('edit') . " " . $this->lang->line('school') . " " . $this->lang->line('logo'); ?>" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"><i class="fa fa-picture-o"></i> <?php echo $this->lang->line('edit') . " " . $this->lang->line('school') . " " . $this->lang->line('logo'); ?></a>
                     </div>
                 </div>
                 <div class="box box-primary">

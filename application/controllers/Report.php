@@ -1602,9 +1602,12 @@ class Report extends Admin_Controller
 		$template_id = $this->input->post('template_name');
 		$template_derails = $this->Reminder_model->get($template_id);
 		//echo "<pre>";print_r($template_derails); die;
-		$header_image = $template_derails[0]->header_image;
+		// $header_image = $template_derails[0]->header_image;
 		$description = $template_derails[0]->description;
 		//echo $header_image.' '.$description; die;
+		
+		$header_image= $this->setting_model->get_header_return('common_header');
+		
 		$result = [];
 		foreach($this->input->post('default_data') as $val)
 		{
@@ -1632,7 +1635,15 @@ class Report extends Admin_Controller
 						'isstudent' => $template_derails[0]->student_name,
 						'isfather' => $template_derails[0]->father_name,
 						'isclass' => $template_derails[0]->class_section,
+						'isroute' => $template_derails[0]->route,
+						'route' => $student_details['route_title'],
 						'isuphone' => $template_derails[0]->phone,
+						'heading_title' => $template_derails[0]->heading_title,
+						'heading_title' => $template_derails[0]->heading_title,
+						'is_signature' => $template_derails[0]->is_signature,
+						// 'signature' => base_url() . '/uploads/remind_letter/'. $template_derails[0]->signature,
+						'signature' => $template_derails[0]->signature,
+						'signature_title' => $template_derails[0]->signature_title,
 						'isdate' => $template_derails[0]->date
 						
 				];

@@ -38,16 +38,16 @@ class Reminder_letter extends Admin_Controller {
 		//echo "<pre>";print_r($_FILES);
 		//echo "<pre>";print_r($this->input->post());die;
 
-        if (!empty($_FILES['header_image']['name'])) {
+        if (!empty($_FILES['signature']['name'])) {
             $config['upload_path'] = 'uploads/remind_letter/';
             $config['allowed_types'] = 'jpg|jpeg|png|gif';
-            $config['file_name'] = $_FILES['header_image']['name'];
+            $config['file_name'] = $_FILES['signature']['name'];
 
             //Load upload library and initialize configuration
             $this->load->library('upload', $config);
             $this->upload->initialize($config);
 
-            if ($this->upload->do_upload('header_image')) {
+            if ($this->upload->do_upload('signature')) {
                 $uploadData = $this->upload->data();
                 $picture = $uploadData['file_name'];
             } else {
@@ -59,6 +59,7 @@ class Reminder_letter extends Admin_Controller {
 
         $this->form_validation->set_rules('description', $this->lang->line('description'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('template_name', $this->lang->line('template_name'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('heading_title', $this->lang->line('heading_title'), 'trim|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
 
@@ -92,6 +93,12 @@ class Reminder_letter extends Admin_Controller {
                 $enable_class_section = 0;
             }
 			
+			if ($this->input->post('is_active_route') == 1) {
+                $enable_route = $this->input->post('is_active_route');
+            } else {
+                $enable_route = 0;
+            }
+			
 			if ($this->input->post('is_active_phone') == 1) {
                 $enable_phone = $this->input->post('is_active_phone');
             } else {
@@ -104,17 +111,27 @@ class Reminder_letter extends Admin_Controller {
                 $enable_date = 0;
             }
 			
+			if ($this->input->post('is_signature') == 1) {
+                $enable_signature = $this->input->post('is_signature');
+            } else {
+                $enable_signature = 0;
+            }
+			
 			
             $data = array(
 				'session_id' => $this->current_session,
                 'template_name' => $this->input->post('template_name'),
+                'heading_title' => $this->input->post('heading_title'),
+                'signature_title' => $this->input->post('signature_title'),
                 'uid_no' => $enable_uid_no,
                 'student_name' => $enable_student_name,
                 'father_name' => $enable_father_name,
                 'class_section' => $enable_class_section,
+                'route' => $enable_route,
                 'phone' => $enable_phone,
                 'date' => $enable_date,
-                'header_image' => $picture,
+                'signature' => $picture,
+                'is_signature' => $enable_signature,
                 
                 'description' => $this->input->post('description'),
                 'created_at' => date('Y-m-d H:i:s')
@@ -146,6 +163,7 @@ class Reminder_letter extends Admin_Controller {
         //$custom_fields = $this->customfield_model->get_custom_fields('students');
         //$this->data['custom_fields'] = $custom_fields;
         $this->form_validation->set_rules('template_name', $this->lang->line('template_name'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('heading_title', $this->lang->line('heading_title'), 'trim|xss_clean');
         $this->form_validation->set_rules('description', $this->lang->line('description'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
 			//echo "<pre>";print_r($editcertificate);die;
@@ -179,6 +197,12 @@ class Reminder_letter extends Admin_Controller {
                 $enable_class_section = 0;
             }
 			
+			if ($this->input->post('is_active_route') == 1) {
+                $enable_route = $this->input->post('is_active_route');
+            } else {
+                $enable_route = 0;
+            }
+			
 			if ($this->input->post('is_active_phone') == 1) {
                 $enable_phone = $this->input->post('is_active_phone');
             } else {
@@ -191,36 +215,54 @@ class Reminder_letter extends Admin_Controller {
                 $enable_date = 0;
             }
 			
-            if (!empty($_FILES['header_image']['name'])) {
+			if ($this->input->post('is_signature') == 1) {
+                $enable_signature = $this->input->post('is_signature');
+            } else {
+                $enable_signature = 0;
+            }
+			
+			if ($_POST['remove_signature'] == 1) {
+				$path1 = "uploads/remind_letter/" . $editcertificate[0]->signature;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+				$picture = '';
+			}
+            if (!empty($_FILES['signature']['name'])) {
 
                 $config['upload_path'] = 'uploads/remind_letter/';
                 $config['allowed_types'] = 'jpg|jpeg|png|gif';
-                $config['file_name'] = $_FILES['header_image']['name'];
+                $config['file_name'] = $_FILES['signature']['name'];
 
                 //Load upload library and initialize configuration
                 $this->load->library('upload', $config);
                 $this->upload->initialize($config);
 
-                if ($this->upload->do_upload('header_image')) {
+                if ($this->upload->do_upload('signature')) {
                     $uploadData = $this->upload->data();
                     $picture = $uploadData['file_name'];
                     $data = array(
                         'id' => $this->input->post('id'),
                         'template_name' => $this->input->post('template_name'),
+                        'heading_title' => $this->input->post('heading_title'),
+                        'signature_title' => $this->input->post('signature_title'),
 						'uid_no' => $enable_uid_no,
 						'student_name' => $enable_student_name,
 						'father_name' => $enable_father_name,
 						'class_section' => $enable_class_section,
+						'route' => $enable_route,
 						'phone' => $enable_phone,
 						'date' => $enable_date,
-						'header_image' => $picture,
+						'signature' => $picture,
+						'is_signature' => $enable_signature,
 						
 						'description' => $this->input->post('description'),
                     );
 					
 					//$path = 'uploads/remind_letter' . $editcertificate[0]->header_image;
-					if (!empty($editcertificate[0]->header_image)) {
-						$path = 'uploads/remind_letter/' . $editcertificate[0]->header_image;
+					if (!empty($editcertificate[0]->signature)) {
+						$path = 'uploads/remind_letter/' . $editcertificate[0]->signature;
 
 						if (is_file($path)) {
 							unlink($path);
@@ -232,11 +274,16 @@ class Reminder_letter extends Admin_Controller {
                     $data = array(
                         'id' => $this->input->post('id'),
                        'template_name' => $this->input->post('template_name'),
+                       'heading_title' => $this->input->post('heading_title'),
+                       'signature_title' => $this->input->post('signature_title'),
 						'uid_no' => $enable_uid_no,
 						'student_name' => $enable_student_name,
 						'father_name' => $enable_father_name,
 						'class_section' => $enable_class_section,
+						'route' => $enable_route,
 						'phone' => $enable_phone,
+						'is_signature' => $enable_signature,
+						'signature' => $picture,
 						'date' => $enable_date,
 						'description' => $this->input->post('description'),
                     );
@@ -246,15 +293,20 @@ class Reminder_letter extends Admin_Controller {
                 $data = array(
                     'id' => $this->input->post('id'),
 					'template_name' => $this->input->post('template_name'),
+					'heading_title' => $this->input->post('heading_title'),
+					'signature_title' => $this->input->post('signature_title'),
 					'uid_no' => $enable_uid_no,
 					'student_name' => $enable_student_name,
 					'father_name' => $enable_father_name,
 					'class_section' => $enable_class_section,
+					'route' => $enable_route,
 					'phone' => $enable_phone,
 					'date' => $enable_date,
+					'signature' => $picture,
 					//'header_image' => $picture,
-					'description' => $this->input->post('description')
-					);
+					'description' => $this->input->post('description'),
+					'is_signature' => $enable_signature,
+				);
             }
             $this->Reminder_model->addReminder($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');

@@ -111,8 +111,8 @@ if ($this->config->item('SSLK') == "") {
 
             <header class="main-header" id="alert">
                 <a href="<?php echo base_url(); ?>admin/admin/dashboard" class="logo">
-                    <span class="logo-mini"><img src="<?php echo base_url(); ?>uploads/school_content/admin_small_logo/<?php $this->setting_model->getAdminsmalllogo();?>" alt="<?php echo $this->customlib->getAppName() ?>" /></span>
-                    <span class="logo-lg"><img src="<?php echo base_url(); ?>uploads/school_content/admin_logo/<?php $this->setting_model->getAdminlogo();?>" alt="<?php echo $this->customlib->getAppName() ?>" /></span>
+                    <span class="logo-mini"><img src="<?php echo base_url(); ?>uploads/school_content/erp_logo.png" alt="<?php echo $this->customlib->getAppName() ?>" /></span>
+                    <span class="logo-lg"><img src="<?php echo base_url(); ?>uploads/school_content/erp_logo.png" alt="<?php echo $this->customlib->getAppName() ?>" /></span>
                 </a>
                 <nav class="navbar navbar-static-top" role="navigation">
                     <a onclick="collapseSidebar()"  class="sidebar-toggle" data-toggle="offcanvas" role="button">

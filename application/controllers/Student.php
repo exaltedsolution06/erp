@@ -2519,9 +2519,14 @@ class Student extends Admin_Controller
 		if($name !='')
 		{
 			$res = $this->student_model->bulk_uploads($name);
+			if($res->status){
+				echo json_encode(['status' => true]);
+			}else{
+				echo json_encode($res);
+			}
 		}
 		
-		echo json_encode(['status' => true]);
+		// echo json_encode(['status' => true]);
 	}
 
 }

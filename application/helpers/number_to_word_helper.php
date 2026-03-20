@@ -55,6 +55,6 @@ function numberToWords($number)
 
     $points = ($point) ? "and " . $words[$point / 10] . " " . $words[$point % 10] . " Paise" : '';
 
-    return $result . "Rupees " . $points;
+    return "Rupees " . $result . $points . "Only";
 }
  

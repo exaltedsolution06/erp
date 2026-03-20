@@ -1794,21 +1794,37 @@ class Student_model extends MY_Model
 		if($name == 'student')
 		{
 			$path = FCPATH . 'uploads/bulk_upload/student/';
+			if(!is_dir($path)){
+				$return_val = ['status'=>false, 'msg'=>'`uploads/bulk_upload/student` this folder not exists'];
+				return $return_val;
+			}
 		}
 		
 		if($name == 'father')
 		{
 			$path = FCPATH . 'uploads/bulk_upload/father/';
+			if(!is_dir($path)){
+				$return_val = ['status'=>false, 'msg'=>'`uploads/bulk_upload/father` this folder not exists'];
+				return $return_val;
+			}
 		}
 		
 		if($name == 'mother')
 		{
 			$path = FCPATH . 'uploads/bulk_upload/mother/';
+			if(!is_dir($path)){
+				$return_val = ['status'=>false, 'msg'=>'`uploads/bulk_upload/mother` this folder not exists'];
+				return $return_val;
+			}
 		} 
 		
 		if($name == 'guardian')
 		{
 			$path = FCPATH . 'uploads/bulk_upload/guardian/';
+			if(!is_dir($path)){
+				$return_val = ['status'=>false, 'msg'=>'`uploads/bulk_upload/guardian` this folder not exists'];
+				return $return_val;
+			}
 		} 
 		
 		$files = scandir($path);
@@ -1901,7 +1917,8 @@ class Student_model extends MY_Model
 			}
 		}
 		
-		return true;
+		$return_val = ['status'=>true, 'msg'=>'Files uploaded successfully'];
+		return $return_val;
 		
 	}
 

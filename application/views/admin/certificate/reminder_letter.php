@@ -1,3 +1,4 @@
+<script src="<?php echo base_url(); ?>backend/plugins/ckeditor/ckeditor.js"></script>
 <style type="text/css">
     @media print
     {
@@ -43,23 +44,28 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 ?>
                                 
 								
-								<div class="form-group">
+								<!--<div class="form-group">
                                     <label><?php echo $this->lang->line('paymentdue_header_image'); ?></label>
                                     <input id="documents" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="header_image">
-                                </div>
+                                </div>-->
 								
 								<div class="form-group">
                                     <label><?php echo $this->lang->line('template'); ?> <?php echo $this->lang->line('name'); ?></label><small class="req"> *</small>
                                     <input id="template_name" name="template_name" placeholder="Template name" type="text" class="form-control" value="<?php echo isset($editcertificate[0]->template_name) ? $editcertificate[0]->template_name : ''?>">
 									<span class="text-danger"><?php echo form_error('template_name'); ?></span>
                                 </div>
+								<div class="form-group">
+                                    <label>Letter Heading Title</label><small class="req"> *</small>
+                                    <input id="heading_title" name="heading_title" placeholder="Letter Heading Title" type="text" class="form-control" value="<?php echo isset($editcertificate[0]->heading_title) ? $editcertificate[0]->heading_title : ''?>">
+									<span class="text-danger"><?php echo form_error('heading_title'); ?></span>
+                                </div>
 
                                 <div class="mediarow">
                                     <div class="row">
                                         
-										<div class="col-md-7 col-sm-7">
+										<div class="col-md-12 col-sm-12">
                                             <div class="form-group switch-inline">
-                                                <label><?php echo $this->lang->line('uid_no'); ?></label>
+                                                <label>Admission No</label>
                                                 <div class="material-switch switchcheck">
                                                     <input id="enable_uid_no" name="is_active_uid_no" type="checkbox" class="chk" value="1" <?php echo isset($editcertificate[0]->uid_no) &&  $editcertificate[0]->uid_no == 1 ? 'checked': ''?>>
                                                     <label for="enable_uid_no" class="label-success"></label>
@@ -67,7 +73,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             </div>
                                         </div>
 										
-										<div class="col-md-7 col-sm-7">
+										<div class="col-md-12 col-sm-12">
                                             <div class="form-group switch-inline">
                                                 <label><?php echo $this->lang->line('student_name'); ?></label>
                                                 <div class="material-switch switchcheck">
@@ -77,7 +83,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             </div>
                                         </div>
 										
-										<div class="col-md-7 col-sm-7">
+										<div class="col-md-12 col-sm-12">
                                             <div class="form-group switch-inline">
                                                 <label><?php echo $this->lang->line('father_name'); ?></label>
                                                 <div class="material-switch switchcheck">
@@ -87,7 +93,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             </div>
                                         </div>
 										
-										<div class="col-md-7 col-sm-7">
+										<div class="col-md-12 col-sm-12">
                                             <div class="form-group switch-inline">
                                                 <label><?php echo $this->lang->line('class_and_section'); ?></label>
                                                 <div class="material-switch switchcheck">
@@ -97,7 +103,17 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             </div>
                                         </div>
                                         
-										<div class="col-md-7 col-sm-7">
+										<div class="col-md-12 col-sm-12">
+                                            <div class="form-group switch-inline">
+                                                <label><?php echo $this->lang->line('route'); ?></label>
+                                                <div class="material-switch switchcheck">
+                                                    <input id="enable_route" name="is_active_route" type="checkbox" class="chk"  value="1" <?php echo isset($editcertificate[0]->route) && $editcertificate[0]->route== 1 ? 'checked': ''?>>
+                                                    <label for="enable_route" class="label-success"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+										<div class="col-md-12 col-sm-12">
                                             <div class="form-group switch-inline">
                                                 <label><?php echo $this->lang->line('phone'); ?></label>
                                                 <div class="material-switch switchcheck">
@@ -107,7 +123,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             </div>
                                         </div>
 										
-										<div class="col-md-7 col-sm-7">
+										<div class="col-md-12 col-sm-12">
                                             <div class="form-group switch-inline">
                                                 <label><?php echo $this->lang->line('date'); ?></label>
                                                 <div class="material-switch switchcheck">
@@ -118,11 +134,35 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         </div>
 
                                     </div><!--./row-->
+									<div class="clearfix"></div>
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group switch-inline">
+													<label><?php echo $this->lang->line('sign'); ?></label>
+													<div class="material-switch switchcheck">
+														<input id="is_signature" name="is_signature" type="checkbox" class="chk" value="1" onclick="valueSignChanged()">
+														<label for="is_signature" class="label-success"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-12 col-sm-12 img_div_modal">
+												<div class="form-group enableSignDiv" hidden>
+													<input id="documents" name="signature" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="signature">
+													<span class="text-danger"><?php echo form_error('signature'); ?></span>
+												</div>
+											</div>
+											<div class="col-md-12 col-sm-12 img_div_modal">
+												<div class="form-group enableSignDiv" hidden>
+													<input autofocus="" id="signature_title" value="<?php echo set_value('signature_title'); ?>" name="signature_title" placeholder="<?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?>" type="text" class="form-control" />
+													<span class="text-danger"><?php echo form_error('signature_title'); ?></span>
+												</div>
+											</div>
+										</div>
 									
 									<div class="row">
 										<div class="form-group">
 											<label><?php echo $this->lang->line('body_text'); ?></label><small class="req"> *</small>
-											<textarea class="form-control" id="description" name="description" placeholder="" rows="3" placeholder=""><?php echo isset($editcertificate[0]->description) ? $editcertificate[0]->description : ''?></textarea>
+											<textarea class="form-control ss" id="editor1" name="description" placeholder="" rows="3" placeholder=""><?php echo isset($editcertificate[0]->description) ? $editcertificate[0]->description : ''?></textarea>
 											<span class="text-primary">[old_balance] [amount]
 											</span>
 											<span class="text-danger"><?php echo form_error('description'); ?></span>
@@ -168,7 +208,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <tr>
                                         <th><?php echo $this->lang->line('template'); ?> <?php echo $this->lang->line('name'); ?></th>
 
-                                        <th><?php echo $this->lang->line('paymentdue_header_image'); ?></th>
+                                        <!--<th><?php echo $this->lang->line('paymentdue_header_image'); ?></th>-->
                                         <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
                                 </thead>
@@ -185,14 +225,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td class="mailbox-name">
                                                     <a style="cursor: pointer;" class="view_data" id="<?php echo $certificate->id ?>" data-toggle="popover" class="detail_popover" ><?php echo $certificate->template_name; ?></a>
                                                 </td>
-                                                <td class="mailbox-name">
+                                                <!--<td class="mailbox-name">
                                                     <?php if ($certificate->header_image != '' && !is_null($certificate->header_image)) { ?>
                                                         <img src="<?php echo base_url('uploads/remind_letter/') ?><?php echo $certificate->header_image ?>" width="40">
                                                     <?php } else { ?>
                                                         <i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>
                                                     <?php } ?>
 
-                                                </td>
+                                                </td>-->
                                                 <td class="mailbox-date text-right no-print">
 													<?php
                                                     if ($this->rbac->hasPrivilege('reminder_letter', 'can_view')) {
@@ -252,6 +292,17 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 </div>
 
 <script type="text/javascript">
+	function valueSignChanged()
+    {
+        if ($('#is_signature').is(":checked"))
+            $(".enableSignDiv").show();
+        else
+            $(".enableSignDiv").hide();
+    }
+	CKEDITOR.replace('editor1',
+	{
+		allowedContent: true
+	});
     var base_url = '<?php echo base_url() ?>';
     function printDiv(elem) {
         Popup(jQuery(elem).html());

@@ -128,6 +128,11 @@ ALTER TABLE `sch_settings` ADD `rcpt_photo` TINYINT(1) NOT NULL DEFAULT '1' AFTE
 --- 19-03-2026 ---
 UPDATE `sch_settings` SET `theme`='white.jpg' WHERE 1;
 
+--- 20-03-2026 ---
+ALTER TABLE `template_reminder_letter` ADD `route` TINYINT(1) NOT NULL DEFAULT '0' AFTER `class_section`;
+ALTER TABLE `template_reminder_letter` ADD `heading_title` VARCHAR(255) NULL DEFAULT NULL AFTER `template_name`;
+ALTER TABLE `template_reminder_letter` ADD `is_signature` TINYINT(1) NOT NULL DEFAULT '0' AFTER `description`, ADD `signature` VARCHAR(255) NULL DEFAULT NULL AFTER `is_signature`, ADD `signature_title` VARCHAR(255) NULL DEFAULT NULL AFTER `signature`;
+
 
 ===============================
 File change outside of application folder
@@ -149,6 +154,8 @@ New folder -
 5) uploads\income
 
 5) uploads\expense
+
+6) uploads/print_headerfooter/common_header
 ===================================No required column table (optimize)===================================
 
 'exam_group_d' column not required in 'exam_group_class_batch_exams' table.
