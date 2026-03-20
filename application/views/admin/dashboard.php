@@ -34,6 +34,50 @@
         
         </div> 
         
+        <div class="row">    
+			<?php foreach ($roles as $key => $value) { ?>
+			<div class="col-lg-3 col-md-3 col-sm-12 col201">
+					<div class="info-box">
+						<a href="#">
+							<span class="info-box-icon bg-own">
+							<?php if($key == 'Admin') { ?>
+							<i class="fa-solid fa-user-tie"></i>
+							<?php } else if($key == 'Teacher') { ?>
+							<i class="fa-solid fa-person-chalkboard"></i>
+							<?php } else if($key == 'Accountant') { ?>
+							<i class="fa-solid fa-user-shield"></i>
+							<?php } else if($key == 'Librarian') { ?>
+							<i class="fa-solid fa-address-book"></i>
+							<?php } else if($key == 'Receptionist') { ?>
+							<i class="fa-solid fa-person-shelter"></i>
+							<?php } else if($key == 'Super Admin') { ?>
+							<i class="fa-solid fa-user-gear"></i>
+							<?php } else { ?>
+							<i class="fa-solid fa-user-tie"></i>
+							<?php } ?>
+							</span>
+							<div class="info-box-content">
+								<span class="info-box-text"><?php echo $key; ?></span>
+								<span class="info-box-number"><?php echo $value; ?></span>
+							</div>
+						</a>
+					</div>  
+			</div><!--./col-lg-3-->   
+            <?php } ?>
+			<?php if ($this->rbac->hasPrivilege('student_count_widget', 'can_view')) { ?>
+			<div class="col-lg-3 col-md-3 col-sm-12">
+				<div class="info-box">
+					<a href="<?php echo site_url('student/search') ?>">
+						<span class="info-box-icon bg-own"><i class="fa-solid fa-user-graduate"></i></span>
+						<div class="info-box-content">
+							<span class="info-box-text"><?php echo $this->lang->line('student'); ?></span>
+							<span class="info-box-number"><?php echo $total_students; ?></span>
+						</div>
+					</a>
+				</div>
+			</div>
+			<?php } ?>
+		</div>  
 		<div class="row row-flex3">	
 			<div class="col-md-3 col-sm-6 mb10">
 				<div class="topprograssstart flex-card">
@@ -72,6 +116,13 @@
 					<div class="progress-group">
 						<div class="progress progress-minibar">
 							<div class="progress-bar progress-bar-purple" style="width: <?php echo round($studentTransportCollsPercent) ?>%"></div>
+						</div>
+					</div>
+					<p class="text-uppercase mt10 clearfix">Other Collection<span class="pull-right"><?php echo isset($today_total_income) ? $today_total_income : 0;  ?></span>
+					</p>
+					<div class="progress-group">
+						<div class="progress progress-minibar">
+							<div class="progress-bar progress-bar-aqua" style="width: <?php echo round($studentOtherCollsPercent) ?>%"></div>
 						</div>
 					</div>
 					<p class="text-uppercase mt10 clearfix">Today's Total collection<span class="pull-right"><?php echo isset($todayTotalCollection) ? $todayTotalCollection: ''; ?></span>
@@ -121,50 +172,6 @@
 			</div>
 		</div>  
 				
-        <div class="row">    
-			<?php foreach ($roles as $key => $value) { ?>
-			<div class="col-lg-3 col-md-3 col-sm-12 col201">
-					<div class="info-box">
-						<a href="#">
-							<span class="info-box-icon bg-own">
-							<?php if($key == 'Admin') { ?>
-							<i class="fa-solid fa-user-tie"></i>
-							<?php } else if($key == 'Teacher') { ?>
-							<i class="fa-solid fa-person-chalkboard"></i>
-							<?php } else if($key == 'Accountant') { ?>
-							<i class="fa-solid fa-user-shield"></i>
-							<?php } else if($key == 'Librarian') { ?>
-							<i class="fa-solid fa-address-book"></i>
-							<?php } else if($key == 'Receptionist') { ?>
-							<i class="fa-solid fa-person-shelter"></i>
-							<?php } else if($key == 'Super Admin') { ?>
-							<i class="fa-solid fa-user-gear"></i>
-							<?php } else { ?>
-							<i class="fa-solid fa-user-tie"></i>
-							<?php } ?>
-							</span>
-							<div class="info-box-content">
-								<span class="info-box-text"><?php echo $key; ?></span>
-								<span class="info-box-number"><?php echo $value; ?></span>
-							</div>
-						</a>
-					</div>  
-			</div><!--./col-lg-3-->   
-            <?php } ?>
-			<?php if ($this->rbac->hasPrivilege('student_count_widget', 'can_view')) { ?>
-			<div class="col-lg-3 col-md-3 col-sm-12">
-				<div class="info-box">
-					<a href="<?php echo site_url('student/search') ?>">
-						<span class="info-box-icon bg-own"><i class="fa-solid fa-user-graduate"></i></span>
-						<div class="info-box-content">
-							<span class="info-box-text"><?php echo $this->lang->line('student'); ?></span>
-							<span class="info-box-number"><?php echo $total_students; ?></span>
-						</div>
-					</a>
-				</div>
-			</div>
-			<?php } ?>
-		</div>  
        <!-- <div class="row">    
         
         <?php

@@ -154,20 +154,23 @@ class Admin extends Admin_Controller
 		$studentAcademicFees = $this->studentfee_model->getTodayStudentAcademicFees();
 		$data['studentAcademicColls'] = $studentAcademicFees;
 		
-		$todayTotalCollection = $studentTransportFees + $studentAcademicFees;
+		$today_total_income  = $this->income_model->todays_income();
+		$data['today_total_income'] = $today_total_income;
+		
+		$todayTotalCollection = $studentTransportFees + $studentAcademicFees + $today_total_income;
 		
 		$data['studentTransportCollsPercent'] = 0;
 		$data['studentAcademicCollsPercent'] = 0;
+		$data['studentOtherCollsPercent'] = 0;
 		if($todayTotalCollection > 0)
 		{
 			$data['studentTransportCollsPercent'] = ($studentTransportFees/$todayTotalCollection)*100;
 			$data['studentAcademicCollsPercent'] = ($studentAcademicFees/$todayTotalCollection)*100;
+			$data['studentOtherCollsPercent'] = ($today_total_income/$todayTotalCollection)*100;
 		}
 		$data['todayTotalCollection']  = $todayTotalCollection;
 		
 		//  todays incone and expense 
-		$today_total_income  = $this->income_model->todays_income();
-		$data['today_total_income'] = $today_total_income;
 		
 		$today_total_expense  = $this->expense_model->todays_expense();
 		$data['today_total_expense'] = $today_total_expense;
