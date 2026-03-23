@@ -927,7 +927,9 @@
 			$tearm_count=($_POST['exam_group_id']);
 			$examgroup_result = $this->examgroup_model->get_c_by_exam_group($tearm_count);
 			
-			foreach ($examgroup_result as $key => $value) {							
+			foreach ($examgroup_result as $key => $value) {			
+				$list=$this->examgroup_model->getExamByExamGroup_reportCard_c($value->id,$student_id);
+				if(count($list) > 0){
 			?>
 			<div class="col-6 mt-3" style="padding:0px">
 				<table class="w-100 border-dark text-center table-bordered">
@@ -944,9 +946,7 @@
 						
 						
 					</tr>
-					<?php  
-					$list=$this->examgroup_model->getExamByExamGroup_reportCard_c($value->id,$student_id);
-					
+					<?php					
 					foreach($list as $res){ 
 					?>
 					<tr>
@@ -973,7 +973,7 @@
 				</table>
 			</div>
 
-				<?php
+				<?php }
 			} ?>
 			
 			<!--<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px">
