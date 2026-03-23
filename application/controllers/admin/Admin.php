@@ -504,7 +504,8 @@ class Admin extends Admin_Controller
         } else {
             $data['std_graphclass'] = "col-lg-4 col-md-6 col-sm-6";
         }
-
+		
+		
         $this->load->view('layout/header', $data);
         $this->load->view('admin/dashboard', $data);
         $this->load->view('layout/footer', $data); 

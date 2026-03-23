@@ -18,7 +18,7 @@ function call_api_get($url, $headers = []) {
 
     curl_close($ch);
 	
-	print_r($response);die;
+	
 
     if ($error) {
         return [
