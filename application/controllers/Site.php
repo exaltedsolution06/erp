@@ -52,15 +52,16 @@ class Site extends Public_Controller
             $this->auth->is_logged_in(true);
         }
 		
-		//$url = CRM_URL .'company_settings/get_company_settings'; 
-		//echo $url; die;
-		//$curl_data = call_api_get($url, []);
-		//echo "<pre>";print_r($curl_data);	die;		
-		//$url = 'http://localhost/erp/api/Branch';
-           
-		//---
-
-        $data          = array();
+		$data          = array();
+		 
+		//start fetch from CRM
+		$url = CRM_URL .'api/company_settings/get_company_settings'; 
+		$curl_data = call_api_get($url);		
+		//echo "<pre>";print_r($curl_data);	die;
+		$data['crm_name'] = $curl_data['data']['school_name'];
+		$data['crm_logo'] = CRM_COMPANY_SETTINGS_FOLDER . $curl_data['data']['logo'];
+		//end fetch from CRM
+       
         $data['title'] = 'Login';
         $school        = $this->setting_model->get();
 
