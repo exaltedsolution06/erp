@@ -122,9 +122,9 @@
 									<div class="d-flex align-items-center text-wrap flex-column justify-content-center bg-position-sm-left bg-position-lg-center" style="background: url('https://demo.smart-school.in/uploads/school_content/login_image/1663064530-1070210809632059d2b8b0b!1662796232-1721792380631c41c80d038!login_bg3.jpg') no-repeat; background-size:cover">  
 										<div class=" bg-shadow-remove ">
 											<div class="d-flex justify-content-between">
-												<h3 class="h3"><?php echo $this->lang->line('what_is_new_in'); ?> Easy Skool ERP</h3>
+												<h3 class="h3"><?php echo $this->lang->line('what_is_new_in'); ?> <?php echo $crm_name; ?></h3>
 												<div class="d-flex align-center logowidth">
-													<a href="https://easyskool.in/" target="_blank"><img src="<?php echo base_url(); ?>uploads/school_content/erp_logo.png" /></a>
+													<a href="https://easyskool.in/" target="_blank"><img src="<?php echo $crm_logo; ?>" /></a>
 												</div>
 											</div>
 											<div class="loginright mCustomScrollbar">

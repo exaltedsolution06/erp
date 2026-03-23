@@ -842,6 +842,7 @@
 					$this->rbac->hasPrivilege('generate_id_card', 'can_view') ||
 					$this->rbac->hasPrivilege('staff_id_card', 'can_view') ||
 					$this->rbac->hasPrivilege('generate_staff_id_card', 'can_view') ||
+					$this->rbac->hasPrivilege('design_tc', 'can_view') ||
 					$this->rbac->hasPrivilege('certificate_section_report', 'can_view')
 				) {
 					//$CI = get_instance();
@@ -854,6 +855,7 @@
 						|| set_Submenu('admin/generateidcard')
 						|| set_Submenu('admin/staffidcard')
 						|| set_Submenu('admin/generatestaffidcard')
+						|| set_Submenu('admin/designtc')
 						|| set_Submenu('report/certificate-section')
 					){
 						$activeCsMenu="active";
@@ -877,6 +879,10 @@
 								<li class="<?php echo set_Submenu('admin/staffidcard'); ?>"><a href="<?php echo base_url('admin/staffidcard/'); ?>"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('staff'); ?> <?php echo $this->lang->line('icard'); ?></a></li>
 							<?php } if ($this->rbac->hasPrivilege('generate_staff_id_card', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('admin/generatestaffidcard'); ?>"><a href="<?php echo base_url('admin/generatestaffidcard/'); ?>"><i class="fa fa-angle-double-right"></i><?php echo $this->lang->line('generate'); ?> <?php echo $this->lang->line('staff'); ?> <?php echo $this->lang->line('icard'); ?></a></li>
+							<?php } if ($this->rbac->hasPrivilege('design_tc', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('admin/designtc'); ?>"><a href="<?php echo base_url('admin/designtc/'); ?>"><i class="fa fa-angle-double-right"></i> Design TC</a></li>
+							<?php } if ($this->rbac->hasPrivilege('print_tc', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('admin/printtc'); ?>"><a href="<?php echo base_url('admin/printtc/'); ?>"><i class="fa fa-angle-double-right"></i> Print TC</a></li>
 							<?php } if ($this->rbac->hasPrivilege('certificate_section_report', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('report/certificate-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/certificate_section_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 							<?php } ?>
