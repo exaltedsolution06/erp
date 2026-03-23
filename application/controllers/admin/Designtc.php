@@ -32,6 +32,8 @@ class Designtc extends Admin_Controller {
         if (!$this->rbac->hasPrivilege('design_tc', 'can_add')) {
             access_denied();
         }
+		$this->session->set_userdata('top_menu', 'Certificate');
+        $this->session->set_userdata('sub_menu', 'admin/designtc');
 		
         $this->form_validation->set_rules('certificate_name', 'Certificate Name', 'required');
 
@@ -104,13 +106,16 @@ class Designtc extends Admin_Controller {
         if (!$this->rbac->hasPrivilege('design_tc', 'can_edit')) {
             access_denied();
         }
+		$this->session->set_userdata('top_menu', 'Certificate');
+        $this->session->set_userdata('sub_menu', 'admin/designtc');
+		
         $data['title'] = 'Add Hostel';
         $data['id'] = $id;
         $editcertificate = $this->designtc_model->get($id);
 		if(!$editcertificate){
 			redirect('admin/designtc');
 		}
-        $this->data['editcertificate'] = $editcertificate;
+        // $this->data['editcertificate'] = $editcertificate;
 
         $custom_fields = $this->customfield_model->get_custom_fields('students');
         $this->data['custom_fields'] = $custom_fields;
@@ -144,7 +149,7 @@ class Designtc extends Admin_Controller {
                 $enable_signature = 0;
             }
 			if ($_POST['remove_signature'] == 1) {
-				$path1 = "uploads/remind_letter/" . $editcertificate[0]->signature;
+				$path1 = "uploads/transfer_certificate/" . $editcertificate[0]->signature;
 				$url = FCPATH . $path1;
 				if (file_exists($url)) {
 					unlink($url);
