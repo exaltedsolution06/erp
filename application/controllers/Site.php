@@ -51,6 +51,14 @@ class Site extends Public_Controller
         if ($this->auth->logged_in()) {
             $this->auth->is_logged_in(true);
         }
+		
+		$url = CRM_URL .'company_settings/get_company_settings'; 
+		//echo $url; die;
+		$curl_data = call_api_get($url, []);
+		echo "<pre>";print_r($curl_data);	die;		
+		$url = 'http://localhost/erp/api/Branch';
+           
+		//---
 
         $data          = array();
         $data['title'] = 'Login';

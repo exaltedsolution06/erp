@@ -99,3 +99,6 @@ define('UPDATE_RECORD_CONSTANT', 'Record updated');
 define('DELETE_RECORD_CONSTANT', 'Record deleted');
 define('IMPORT_RECORD_CONSTANT', 'Record imported');
 define('INCOME_HEAD_FEE', 'Fees Collection');
+
+// crm url 
+define('CRM_URL', 'http://localhost/erpcrm/api/');
