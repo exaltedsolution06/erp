@@ -99,3 +99,15 @@ define('UPDATE_RECORD_CONSTANT', 'Record updated');
 define('DELETE_RECORD_CONSTANT', 'Record deleted');
 define('IMPORT_RECORD_CONSTANT', 'Record imported');
 define('INCOME_HEAD_FEE', 'Fees Collection');
+
+/*
+  |--------------------------------------------------------------------------
+  | Manage CRM URLs
+  |--------------------------------------------------------------------------
+  |
+  | All urls will be manage from here
+  |
+ */
+define('CRM_URL', 'http://localhost/erpcrm/'); // should be change as per domain URL
+define('CRM_UPLOADS_FOLDER', CRM_URL.'uploads/');
+define('CRM_COMPANY_SETTINGS_FOLDER', CRM_UPLOADS_FOLDER.'company_settings/');

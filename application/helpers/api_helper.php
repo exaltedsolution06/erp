@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 function call_api_get($url, $headers = []) {
-
+    
     $ch = curl_init();
 
     curl_setopt_array($ch, [
@@ -17,6 +17,8 @@ function call_api_get($url, $headers = []) {
     $error    = curl_error($ch);
 
     curl_close($ch);
+	
+	
 
     if ($error) {
         return [
