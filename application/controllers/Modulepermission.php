@@ -225,6 +225,8 @@ class Modulepermission extends Public_Controller
 					['name' => 'Generate ID Card',            'short_code' => 'generate_id_card', 'add' => true, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Staff ID Card',               'short_code' => 'staff_id_card', 'add' => true, 'view' => true, 'edit' => true,  'delete' => true],
 					['name' => 'Generate Staff ID Card',      'short_code' => 'generate_staff_id_card', 'add' => true, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'Design TC',      			  'short_code' => 'design_tc', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
+					['name' => 'Print TC',      			  'short_code' => 'print_tc', 'add' => true, 'view' => true, 'edit' => true, 'delete' => true],
 					['name' => 'All Reports',                 'short_code' => 'certificate_section_report', 'add' => false, 'view' => true,'edit' => false, 'delete' => false],
 				]
 			],
