@@ -18,8 +18,6 @@ function call_api_get($url, $headers = []) {
 
     curl_close($ch);
 	
-	
-
     if ($error) {
         return [
             'status' => false,

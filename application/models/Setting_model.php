@@ -133,8 +133,55 @@ class Setting_model extends MY_Model {
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
+		//echo "<pre>";print_r($data);die;
         if (isset($data['id'])) {
-            $this->db->where('id', $data['id']);
+			//-- upload admin small logo 
+			if (isset($_FILES['admin_small_logo']) && $_FILES['admin_small_logo']['error'] == 0) {
+
+				$_FILES['file'] = $_FILES['admin_small_logo'];
+
+				$config['upload_path']   = FCPATH . 'uploads/school_content/admin_small_logo/';
+				$config['allowed_types'] = 'jpg|jpeg|png|gif';
+
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+
+				if ($this->upload->do_upload('file')) {
+
+					$uploadData = $this->upload->data();
+					$admin_small_logo = $uploadData['file_name'];
+					$data['admin_small_logo'] = $admin_small_logo;
+
+				} else {
+					echo $this->upload->display_errors();
+					die;
+				}
+			}
+			
+			if (isset($_FILES['admin_logo']) && $_FILES['admin_logo']['error'] == 0) {
+
+				$_FILES['file'] = $_FILES['admin_logo'];
+
+				$config['upload_path']   = FCPATH . 'uploads/school_content/admin_logo/';
+				$config['allowed_types'] = 'jpg|jpeg|png|gif';
+
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+
+				if ($this->upload->do_upload('file')) {
+
+					$uploadData = $this->upload->data();
+					$admin_logo = $uploadData['file_name'];
+					$data['admin_logo'] = $admin_logo;
+
+				} else {
+					echo $this->upload->display_errors();
+					die;
+				}
+			}
+			//-------------
+			
+			$this->db->where('id', $data['id']);
             $this->db->update('sch_settings', $data);
             $message = UPDATE_RECORD_CONSTANT . " On settings id " . $data['id'];
             $action = "Update";

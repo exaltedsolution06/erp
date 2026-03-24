@@ -30,6 +30,7 @@ class Setting extends CI_Controller {
 		$this->api_auth->check();
 		
 		$datas = $this->input->post();
+		//echo "<pre>";print_r($datas);die;
         $update = $this->setting_model->add($datas);
 		
         if($update)
