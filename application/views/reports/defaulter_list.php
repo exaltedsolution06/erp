@@ -528,7 +528,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         ?>
                                                         
                                                             <?php 
-                                                             foreach($routes as $list){ 
+															$student_routes = $this->db->where('id', $record['route_id'])->get('route_head')->result_array();
+                                                             foreach($student_routes as $list){ 
                                                                 $class_id = $record['class_id'];
                                                                 $category_id = $record['category_id'];
                                                                 $fee_group_id = $list['fees_heading'];
@@ -719,6 +720,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                         <?php endforeach; ?>
                                          <tr style="font-weight: bold;">
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
