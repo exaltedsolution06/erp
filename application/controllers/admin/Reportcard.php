@@ -132,13 +132,22 @@ class Reportcard extends Admin_Controller {
             }
             if (isset($_POST['is_show_date'])) {
                 $is_show_date = 1;
+                $show_date = $this->input->post('show_date');
             } else {
                 $is_show_date = 0;
+                $show_date = '';
             }
             if (isset($_POST['place'])) {
                 $place = 1;
+                $show_place = $this->input->post('show_place');
             } else {
                 $place = 0;
+                $show_place = $this->input->post('show_place');
+            }
+            if (isset($_POST['is_show_attendance'])) {
+                $is_show_attendance = 1;
+            } else {
+                $is_show_attendance = 0;
             }
 
 
@@ -168,6 +177,8 @@ class Reportcard extends Admin_Controller {
                 'max_marks_shift_left'=>$max_marks_shift_left,
                 'school_reopen'=>$school_reopen,
                 'place'=>$place,
+                'show_place'=>$show_place,
+                'is_show_attendance'=>$is_show_attendance,
                 'grade_table_title'=>$grade_table_title,
                 'school_reopen_date'=>$school_reopen_date,
                 'school_reopen_time'=>$school_reopen_time,
@@ -175,6 +186,7 @@ class Reportcard extends Admin_Controller {
                 'is_examination_ic'=>$is_examination_ic,
                 'is_principal'=>$is_principal,
                 'is_show_date'=>$is_show_date,
+                'show_date'=>$show_date,
                 'left_sign' => "",
                 'right_sign' => "",
                 'middle_sign' => "",
@@ -402,13 +414,22 @@ class Reportcard extends Admin_Controller {
             }
             if (isset($_POST['is_show_date'])) {
                 $is_show_date = 1;
+                $show_date = $this->input->post('show_date');
             } else {
                 $is_show_date = 0;
+                $show_date = '';
             }
             if (isset($_POST['place'])) {
                 $place = 1;
+                $show_place = $this->input->post('show_place');
             } else {
                 $place = 0;
+                $show_place = '';
+            }
+            if (isset($_POST['is_show_attendance'])) {
+                $is_show_attendance = 1;
+            } else {
+                $is_show_attendance = 0;
             }
 
 
@@ -445,7 +466,10 @@ class Reportcard extends Admin_Controller {
                 'is_examination_ic'=>$is_examination_ic,
                 'is_principal'=>$is_principal,
                 'is_show_date'=>$is_show_date,
+                'show_date'=>$show_date,
                 'place'=>$place,
+                'show_place'=>$show_place,
+                'is_show_attendance'=>$is_show_attendance,
                 'grade_table_title'=>$grade_table_title,
                 'left_sign_title' => $this->input->post('left_sign_title'),
                 'middle_sign_title' => $this->input->post('middle_sign_title'),

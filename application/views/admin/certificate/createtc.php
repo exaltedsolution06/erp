@@ -107,6 +107,32 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										</div>
 									</div>
 								</div>
+								<div class="row">
+									<div class="col-md-12 col-sm-12">
+										<div class="form-group">
+											<label><?php echo $this->lang->line('background_image'); ?></label>
+											<input id="documents" name="background_image" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="background_image">
+											<span class="text-danger"><?php echo form_error('background_image'); ?></span>
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group switch-inline">
+											<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('date'); ?></label>
+											<div class="material-switch switchcheck">
+												<input id="is_show_date" name="is_show_date" type="checkbox" class="chk" value="1" onclick="valueDateChanged()">
+												<label for="is_show_date" class="label-success"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-6 img_div_modal enableDateDiv" hidden>
+										<div class="form-group">
+											<input id="show_date" name="show_date" placeholder="<?php echo $this->lang->line('date'); ?>" type="text" class="form-control" />
+										</div>
+									</div>
+								</div>
                             </div><!-- /.box-body -->
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
@@ -330,5 +356,12 @@ $(document).ready(function(){
             $("#enableImageDiv").show();       
         else
             $("#enableImageDiv").hide();        
+    }
+    function valueDateChanged()
+    {
+        if ($('#is_show_date').is(":checked"))
+            $(".enableDateDiv").show();
+        else
+            $(".enableDateDiv").hide();
     }
 </script>

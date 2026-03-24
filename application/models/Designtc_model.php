@@ -101,7 +101,7 @@ class Designtc_model extends MY_Model {
         }
     }
 
-    public function certifiatebyid($id) {
+    public function certificatebyid($id) {
         $this->db->select('*');
         $this->db->from('template_designtc');
 		$this->db->where('session_id', $this->current_session);

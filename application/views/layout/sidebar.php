@@ -843,6 +843,7 @@
 					$this->rbac->hasPrivilege('staff_id_card', 'can_view') ||
 					$this->rbac->hasPrivilege('generate_staff_id_card', 'can_view') ||
 					$this->rbac->hasPrivilege('design_tc', 'can_view') ||
+					$this->rbac->hasPrivilege('print_tc', 'can_view') ||
 					$this->rbac->hasPrivilege('certificate_section_report', 'can_view')
 				) {
 					//$CI = get_instance();
@@ -856,6 +857,7 @@
 						|| set_Submenu('admin/staffidcard')
 						|| set_Submenu('admin/generatestaffidcard')
 						|| set_Submenu('admin/designtc')
+						|| set_Submenu('admin/printtc')
 						|| set_Submenu('report/certificate-section')
 					){
 						$activeCsMenu="active";

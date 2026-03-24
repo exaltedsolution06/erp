@@ -999,15 +999,15 @@
 						<?php 
 						if($is_fail){
 						?>
-						<span class="text-underline" style="width:420px; text-align:center;">&nbsp;</span>
+						<strong class="text-underline" style="width:420px; text-align:center;">&nbsp;</strong>
 						<?php
 						}else{
 						?>
-						<span class="text-underline" style="width:420px;">
+						<strong class="text-underline" style="width:420px;">
 						<?php
 							echo $exam_pass_status ? $this->lang->line('pass') : $this->lang->line('fail'); ?> <?php echo $this->lang->line('with'); ?> <?php echo $exam_pass_status ? '('.get_division_by_percentage($totalNumber).' '.$this->lang->line('division').')' : ''; 
 						?>
-						</span>
+						</strong>
 						<?php
 						}
 						?>
@@ -1016,24 +1016,24 @@
 						<?php if($exam_pass_status){
 							if($is_fail){
 						?>		
-								<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <span class="text-underline" style="width:330px; text-align:center;">&nbsp;</span>
+								<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <strong class="text-underline" style="width:330px; text-align:center;">&nbsp;</strong>
 						<?php		
 							}else{
 						?>		
-								<strong><?php echo $this->lang->line('promoted_to'); ?> :</strong> <span class="text-underline" style="width:370px;"><?php echo $this->lang->line('next_class'); ?></span>
+								<strong><?php echo $this->lang->line('promoted_to'); ?> :</strong> <strong class="text-underline" style="width:370px;"><?php echo $this->lang->line('next_class'); ?></strong>
 						<?php		
 							}
 						}else{
 						?>
-						<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <span class="text-underline" style="width:330px; text-align:center;">&nbsp;</span>
+						<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <strong class="text-underline" style="width:330px; text-align:center;">&nbsp;</strong>
 						<?php } ?>
 					</div>
 					<div class="col-12 mb-3 d-flex">
 						<strong><?php echo $this->lang->line('remarks'); ?></strong>
 						<strong class="ml-5px">:</strong> 
-						<span class="text-underline" style="width:400px;">
+						<strong class="text-underline" style="width:400px;">
 							<?php echo !empty($gd[0]->description) ? $gd[0]->description : '&nbsp;'; ?>
-						</span>
+						</strong>
 					</div>
 					<?php
 					if($desc->school_reopen==1){
@@ -1041,27 +1041,34 @@
 					<div class="col-12 mb-3 d-flex">
 						<strong><?php echo $this->lang->line('school_will_reopen_on'); ?></strong>
 						<strong class="ml-5px">:</strong>
-						<span class="text-underline" style="width:150px; text-align:center;">
+						<strong class="text-underline" style="width:150px; text-align:center;">
 							<?php echo $desc->school_reopen_date != '' ? $desc->school_reopen_date : '&nbsp;'; ?>
-						</span>
-						<span class="ml-5px"><?php echo $this->lang->line('at'); ?></span>
-						<span class="text-underline" style="width:124px; text-align:center;">
+						</strong>
+						<strong class="ml-5px"><?php echo $this->lang->line('at'); ?></strong>
+						<strong class="text-underline" style="width:124px; text-align:center;">
 							<?php echo $desc->school_reopen_time != '' ? $desc->school_reopen_time : '&nbsp;'; ?>
-						</span>
+						</strong>
 					</div>
 					<?php
 					}					
 					if($desc->place==1){
 					?>
 					<div class="col-12 mb-3 d-flex">
-						<strong><?php echo $this->lang->line('place'); ?> :</strong> <span class="text-underline" style="width:300px; text-align:center;">&nbsp;</span>
+						<strong><?php echo $this->lang->line('place'); ?> :</strong> <strong class="text-underline" style="width:300px; text-align:center;">&nbsp;</strong>
 					</div>
 					<?php
 					}
 					if($desc->is_show_date==1){
 					?>
+					<div class="col-12 mb-3 d-flex">
+						<strong><?php echo $this->lang->line('date'); ?> :</strong> <strong class="text-underline" style="width:300px; text-align:center;">&nbsp;</strong>
+					</div>
+					<?php
+					}
+					if($desc->is_show_attendance==1){
+					?>
 					<div class="col-12 d-flex">
-						<strong><?php echo $this->lang->line('date'); ?> :</strong> <span class="text-underline" style="width:300px; text-align:center;">&nbsp;</span>
+						<strong>Attendance :</strong> <strong class="text-underline" style="width:300px; text-align:center;">&nbsp;</strong>
 					</div>
 					<?php
 					}

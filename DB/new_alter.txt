@@ -143,8 +143,14 @@ CREATE TABLE `template_designtc` (
   `is_signature` tinyint(1) NOT NULL DEFAULT 0,
   `signature` varchar(255) DEFAULT NULL,
   `signature_title` varchar(255) DEFAULT NULL,
+  `background_image` varchar(255) DEFAULT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+--- 24-03-2026 ---
+ALTER TABLE `template_reportcard` ADD `show_date` CHAR(36) NULL DEFAULT NULL AFTER `place`, ADD `show_place` CHAR(36) NULL DEFAULT NULL AFTER `show_date`;
+ALTER TABLE `template_designtc` ADD `is_show_date` TINYINT(1) NOT NULL DEFAULT '0' AFTER `background_image`, ADD `show_date` CHAR(36) NULL DEFAULT NULL AFTER `is_show_date`;
+ALTER TABLE `template_reportcard` ADD `is_show_attendance` INT(1) NOT NULL DEFAULT '0' AFTER `show_place`;
 
 
 ===============================

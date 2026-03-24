@@ -30,7 +30,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <h3 class="box-title"><?php echo $this->lang->line('edit'); ?> <?php echo $this->lang->line('fees_reminder'); ?></h3>
                         </div><!-- /.box-header -->
 
-                        <form id="form1" enctype="multipart/form-data" action="<?php echo site_url('admin/reminder_letter/edit/' . $editcertificate[0]->id) ?>"  id="certificateform" name="certificateform" method="post" accept-charset="utf-8">
+                        <form id="form1" enctype="multipart/form-data" action="<?php echo site_url('admin/reminder_letter/edit/' . $editcertificate[0]->id) ?>"  id="certificateform" name="certificateform" method="post" accept-charset="utf-8" class="haveDropify">
                             <div class="box-body">
                                 <?php if ($this->session->flashdata('msg')) { ?>
                                     <?php echo $this->session->flashdata('msg') ?>
