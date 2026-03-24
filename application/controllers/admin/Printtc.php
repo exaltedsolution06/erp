@@ -20,7 +20,7 @@ class Printtc extends Admin_Controller {
         }
         $this->session->set_userdata('top_menu', 'Certificate');
         $this->session->set_userdata('sub_menu', 'admin/printtc');
-
+		
         $certificateList = $this->designtc_model->get();
         $data['certificateList'] = $certificateList;
         $class = $this->class_model->get();
@@ -88,6 +88,7 @@ class Printtc extends Admin_Controller {
         foreach ($student_array as $key => $value) {
             $std_arr[] = $value->student_id;
         }
+		
         $data['students'] = $this->student_model->getStudentsByArray($std_arr);
         foreach ($data['students'] as $key => $value) {
            $data['students'][$key]->name=$this->customlib->getFullName($value->firstname,$value->middlename,$value->lastname,$this->sch_setting_detail->middlename,$this->sch_setting_detail->lastname);
