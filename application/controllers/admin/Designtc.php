@@ -46,7 +46,7 @@ class Designtc extends Admin_Controller {
 			if (!empty($_FILES['signature']['name'])) {
 				$config['upload_path'] = 'uploads/transfer_certificate/';
 				$config['allowed_types'] = 'jpg|jpeg|png|gif';
-				$config['file_name'] = $_FILES['signature']['name'];
+				$config['file_name'] = time().$_FILES['signature']['name'];
 
 				//Load upload library and initialize configuration
 				$this->load->library('upload', $config);
@@ -60,6 +60,24 @@ class Designtc extends Admin_Controller {
 				}
 			} else {
 				$picture = '';
+			}
+			if (!empty($_FILES['background_image']['name'])) {
+				$config['upload_path'] = 'uploads/transfer_certificate/';
+				$config['allowed_types'] = 'jpg|jpeg|png|gif';
+				$config['file_name'] = time().$_FILES['background_image']['name'].'bg';
+
+				//Load upload library and initialize configuration
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+
+				if ($this->upload->do_upload('background_image')) {
+					$uploadData = $this->upload->data();
+					$bg_image = $uploadData['file_name'];
+				} else {
+					$bg_image = '';
+				}
+			} else {
+				$bg_image = '';
 			}
 			
             $titles = $this->input->post('field_title');
@@ -83,6 +101,13 @@ class Designtc extends Admin_Controller {
             } else {
                 $enable_signature = 0;
             }
+            if (isset($_POST['is_show_date'])) {
+                $is_show_date = 1;
+                $show_date = $this->input->post('show_date');
+            } else {
+                $is_show_date = 0;
+                $show_date = '';
+            }
 
             $data = [
                 'certificate_name' => $this->input->post('certificate_name'),
@@ -92,6 +117,9 @@ class Designtc extends Admin_Controller {
                 'signature_title' => $this->input->post('signature_title'),
                 'signature' => $picture,
                 'is_signature' => $enable_signature,
+                'background_image' => $bg_image,
+                'is_show_date'=>$is_show_date,
+                'show_date'=>$show_date,
             ];
 
             $this->designtc_model->addcertificate($data);
@@ -148,6 +176,16 @@ class Designtc extends Admin_Controller {
             } else {
                 $enable_signature = 0;
             }
+            if (isset($_POST['is_show_date'])) {
+                $is_show_date = 1;
+                $show_date = $this->input->post('show_date');
+            } else {
+                $is_show_date = 0;
+                $show_date = '';
+            }
+			
+			$picture = $editcertificate[0]->signature;
+			$bg_image = $editcertificate[0]->background_image;
 			if ($_POST['remove_signature'] == 1) {
 				$path1 = "uploads/transfer_certificate/" . $editcertificate[0]->signature;
 				$url = FCPATH . $path1;
@@ -156,10 +194,18 @@ class Designtc extends Admin_Controller {
 				}
 				$picture = '';
 			}
+			if ($_POST['remove_background_image'] == 1) {
+				$path1 = "uploads/transfer_certificate/" . $editcertificate[0]->background_image;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+				$bg_image = '';
+			}
 			if (!empty($_FILES['signature']['name'])) {
 				$config['upload_path'] = 'uploads/transfer_certificate/';
 				$config['allowed_types'] = 'jpg|jpeg|png|gif';
-				$config['file_name'] = $_FILES['signature']['name'];
+				$config['file_name'] = time().$_FILES['signature']['name'];
 
 				//Load upload library and initialize configuration
 				$this->load->library('upload', $config);
@@ -168,6 +214,32 @@ class Designtc extends Admin_Controller {
 				if ($this->upload->do_upload('signature')) {
 					$uploadData = $this->upload->data();
 					$picture = $uploadData['file_name'];
+				}
+				
+				$path1 = "uploads/transfer_certificate/" . $editcertificate[0]->signature;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+			}
+			if (!empty($_FILES['background_image']['name'])) {
+				$config['upload_path'] = 'uploads/transfer_certificate/';
+				$config['allowed_types'] = 'jpg|jpeg|png|gif';
+				$config['file_name'] = 'bg'.time().$_FILES['background_image']['name'];
+
+				//Load upload library and initialize configuration
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+
+				if ($this->upload->do_upload('background_image')) {
+					$uploadData = $this->upload->data();
+					$bg_image = $uploadData['file_name'];
+				}
+				
+				$path1 = "uploads/transfer_certificate/" . $editcertificate[0]->background_image;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
 				}
 			}
 			
@@ -178,6 +250,9 @@ class Designtc extends Admin_Controller {
                 'signature_title' => $this->input->post('signature_title'),
 				'signature' => $picture,
 				'is_signature' => $enable_signature,
+				'background_image' => $bg_image,
+                'is_show_date'=>$is_show_date,
+                'show_date'=>$show_date,
 			];
 
 			$this->designtc_model->addcertificate($data);

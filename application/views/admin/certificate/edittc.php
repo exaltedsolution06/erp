@@ -29,7 +29,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <h3 class="box-title"><?php echo $this->lang->line('edit'); ?> Tc</h3>
                         </div><!-- /.box-header -->
 
-                        <form id="form1" enctype="multipart/form-data" action="<?php echo site_url('admin/designtc/edit/' . $editcertificate[0]->id) ?>"  id="certificateform" name="certificateform" method="post" accept-charset="utf-8">
+                        <form id="form1" enctype="multipart/form-data" action="<?php echo site_url('admin/designtc/edit/' . $editcertificate[0]->id) ?>"  id="certificateform" name="certificateform" method="post" accept-charset="utf-8" class="haveDropify">
                             <div class="box-body">
                                 <?php if ($this->session->flashdata('msg')) { ?>
                                     <?php echo $this->session->flashdata('msg') ?>
@@ -127,6 +127,33 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										<div class="form-group enableSignDiv" hidden>
 											<input autofocus="" id="signature_title" name="signature_title" placeholder=" <?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?>" type="text" class="form-control" value="<?php echo set_value('signature_title', $editcertificate[0]->signature_title); ?>"/>
 											<span class="text-danger"><?php echo form_error('signature_title'); ?></span>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 col-sm-12">
+										<div class="form-group">
+											<label><?php echo $this->lang->line('background_image'); ?></label>
+											<input id="documents" data-default-file="<?php echo base_url() ?>./uploads/transfer_certificate/<?php echo $editcertificate[0]->background_image; ?>" name="background_image" placeholder="" type="file" class="filestyle form-control" data-height="40">
+											<span class="text-danger"><?php echo form_error('background_image'); ?></span>
+											<input type="hidden" name="remove_background_image" class="remove_image">
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group switch-inline">
+											<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('date'); ?></label>
+											<div class="material-switch switchcheck">
+												<input id="is_show_date" name="is_show_date" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_show_date', '1', (set_value('is_show_date', $editcertificate[0]->is_show_date) == 1) ? TRUE : FALSE); ?> onclick="valueDateChanged()">
+												<label for="is_show_date" class="label-success"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-6 img_div_modal enableDateDiv" hidden>
+										<div class="form-group">
+											<input id="show_date" name="show_date" placeholder="<?php echo $this->lang->line('date'); ?>" type="text" class="form-control" value="<?php echo set_value('show_date', $editcertificate[0]->show_date); ?>" />
 										</div>
 									</div>
 								</div>
@@ -235,12 +262,25 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 		else
 			$(".enableSignDiv").hide();
 	}
+    function valueDateChanged()
+    {
+        if ($('#is_show_date').is(":checked"))
+            $(".enableDateDiv").show();
+        else
+            $(".enableDateDiv").hide();
+    }
     $(document).ready(function () {
 		if ($('#is_signature').is(":checked")) {
             $(".enableSignDiv").show();
         } else {
             $(".enableSignDiv").hide();
         }
+		if ($('#is_show_date').is(":checked")){
+            $(".enableDateDiv").show();
+        }else{
+            $(".enableDateDiv").hide();
+		}
+		
 		$("body").on('click', '.dropify-clear', function () {
 			$(this).closest('.form-group').find('.remove_image').val(1);
 		});

@@ -433,20 +433,48 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										</div>
 									</div>
 								</div>
+								<div class="clearfix"></div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group switch-inline">
+											<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('date'); ?></label>
+											<div class="material-switch switchcheck">
+												<input id="is_show_date" name="is_show_date" type="checkbox" class="chk" value="1" onclick="valueDateChanged()">
+												<label for="is_show_date" class="label-success"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-6 img_div_modal enableDateDiv" hidden>
+										<div class="form-group">
+											<input id="show_date" name="show_date" placeholder="<?php echo $this->lang->line('date'); ?>" type="text" class="form-control" />
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group switch-inline">
+											<label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('place'); ?></label>
+											<div class="material-switch switchcheck">
+												<input id="place" name="place" type="checkbox" class="chk" value="1" onclick="valuePlaceChanged()">
+												<label for="place" class="label-success"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-6 img_div_modal enablePlaceDiv" hidden>
+										<div class="form-group">
+											<input id="show_place" name="show_place" placeholder="<?php echo $this->lang->line('place'); ?>" type="text" class="form-control" />
+										</div>
+									</div>
+								</div>
 								<div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('date'); ?></label>
-                                    <div class="material-switch switchcheck">
-                                        <input id="is_show_date" name="is_show_date" type="checkbox" class="chk" value="1">
-                                        <label for="is_show_date" class="label-success"></label>
-                                    </div>
-                                </div>
-								<div class="form-group switch-inline">
-                                    <label><?php echo $this->lang->line('show'); ?> <?php echo $this->lang->line('place'); ?></label>
-                                    <div class="material-switch switchcheck">
-                                        <input id="place" name="place" type="checkbox" class="chk" value="1">
-                                        <label for="place" class="label-success"></label>
-                                    </div>
-                                </div>
+									<label><?php echo $this->lang->line('show'); ?> Attendance</label>
+									<div class="material-switch switchcheck">
+										<input id="is_show_attendance" name="is_show_attendance" type="checkbox" class="chk" value="1">
+										<label for="is_show_attendance" class="label-success"></label>
+									</div>
+								</div>
+								
 								
                             </div><!-- /.box-body -->
                             <div class="box-footer">
@@ -689,5 +717,19 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             $(".enableMarksTableDiv").show();
         else
             $(".enableMarksTableDiv").hide();
+    }
+    function valueDateChanged()
+    {
+        if ($('#is_show_date').is(":checked"))
+            $(".enableDateDiv").show();
+        else
+            $(".enableDateDiv").hide();
+    }
+    function valuePlaceChanged()
+    {
+        if ($('#place').is(":checked"))
+            $(".enablePlaceDiv").show();
+        else
+            $(".enablePlaceDiv").hide();
     }
 </script>
