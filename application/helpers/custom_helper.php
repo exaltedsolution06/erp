@@ -264,3 +264,13 @@ if (!function_exists('get_division_by_percentage')) {
     }
 }
 
+if (!function_exists('fetch_crm_company')) 
+{
+	function fetch_crm_company()
+	{
+		$url = CRM_URL .'api/company_settings/get_company_settings'; 
+		$curl_data = call_api_get($url);
+		return $curl_data;
+	}
+}
+

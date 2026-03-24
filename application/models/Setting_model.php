@@ -135,7 +135,15 @@ class Setting_model extends MY_Model {
         //=======================Code Start===========================
 		//echo "<pre>";print_r($data);die;
         if (isset($data['id'])) {
-			//-- upload admin small logo 
+			
+			
+			$this->db->where('id', $data['id']);
+			$this->db->where('session_id', $this->current_session);
+			$fetch_rec = $this->db->get('sch_settings')->row_array();
+			$unlinkAdminSmallLogo = $fetch_rec['admin_small_logo'];
+			$unlinkAdminLogo = $fetch_rec['admin_logo'];
+			
+			//-- upload  logo 
 			if (isset($_FILES['admin_small_logo']) && $_FILES['admin_small_logo']['error'] == 0) {
 
 				$_FILES['file'] = $_FILES['admin_small_logo'];
@@ -151,7 +159,14 @@ class Setting_model extends MY_Model {
 					$uploadData = $this->upload->data();
 					$admin_small_logo = $uploadData['file_name'];
 					$data['admin_small_logo'] = $admin_small_logo;
-
+					
+					// unlink file 
+					$pathSmallLogo = FCPATH . 'uploads/school_content/admin_small_logo/'. $unlinkAdminSmallLogo;
+					if(file_exists($pathSmallLogo))
+					{
+						unlink($pathSmallLogo);
+					}
+					
 				} else {
 					echo $this->upload->display_errors();
 					die;
@@ -173,6 +188,14 @@ class Setting_model extends MY_Model {
 					$uploadData = $this->upload->data();
 					$admin_logo = $uploadData['file_name'];
 					$data['admin_logo'] = $admin_logo;
+					
+					// unlink
+					
+					$pathAdminLogo = FCPATH . 'uploads/school_content/admin_logo/'. $unlinkAdminLogo;
+					if(file_exists($pathAdminLogo))
+					{
+						unlink($pathAdminLogo);
+					}
 
 				} else {
 					echo $this->upload->display_errors();
@@ -188,6 +211,53 @@ class Setting_model extends MY_Model {
             $record_id = $insert_id = $data['id'];
             $this->log($message, $record_id, $action);
         } else {
+			
+			//-- upload  logo 
+			if (isset($_FILES['admin_small_logo']) && $_FILES['admin_small_logo']['error'] == 0) {
+
+				$_FILES['file'] = $_FILES['admin_small_logo'];
+
+				$config['upload_path']   = FCPATH . 'uploads/school_content/admin_small_logo/';
+				$config['allowed_types'] = 'jpg|jpeg|png|gif';
+
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+
+				if ($this->upload->do_upload('file')) {
+
+					$uploadData = $this->upload->data();
+					$admin_small_logo = $uploadData['file_name'];
+					$data['admin_small_logo'] = $admin_small_logo;
+					
+				} else {
+					echo $this->upload->display_errors();
+					die;
+				}
+			}
+			
+			if (isset($_FILES['admin_logo']) && $_FILES['admin_logo']['error'] == 0) {
+
+				$_FILES['file'] = $_FILES['admin_logo'];
+
+				$config['upload_path']   = FCPATH . 'uploads/school_content/admin_logo/';
+				$config['allowed_types'] = 'jpg|jpeg|png|gif';
+
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+
+				if ($this->upload->do_upload('file')) {
+
+					$uploadData = $this->upload->data();
+					$admin_logo = $uploadData['file_name'];
+					$data['admin_logo'] = $admin_logo;
+				} else {
+					echo $this->upload->display_errors();
+					die;
+				}
+			}
+			//-------------
+			
+			
             $this->db->insert('sch_settings', $data);
             $insert_id = $this->db->insert_id();
             $message = INSERT_RECORD_CONSTANT . " On settings id " . $insert_id;

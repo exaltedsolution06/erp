@@ -114,9 +114,7 @@
 									<!--<span class="copyright_text">Designed and Maintained by <a href="https://easyskool.in/" class="color_black" target="_blank">easyskool.in</a></span>-->
                                 </div>
                             </div>
-                            <?php
-                            if (!$empty_notice) {
-                                ?>
+                            
                                 <!-- <div class="col-lg-1 col-sm-1"><div class="separatline"></div></div>  -->
                                 <div class="col-lg-8 col-md-8 col-sm-12 nopadding-2">
 									<div class="d-flex align-items-center text-wrap flex-column justify-content-center bg-position-sm-left bg-position-lg-center" style="background: url('https://demo.smart-school.in/uploads/school_content/login_image/1663064530-1070210809632059d2b8b0b!1662796232-1721792380631c41c80d038!login_bg3.jpg') no-repeat; background-size:cover">  
@@ -124,51 +122,42 @@
 											<div class="d-flex justify-content-between">
 												<h3 class="h3"><?php echo $this->lang->line('what_is_new_in'); ?> <?php echo $crm_name; ?></h3>
 												<div class="d-flex align-center logowidth">
-													<a href="https://easyskool.in/" target="_blank"><img src="<?php echo $crm_logo; ?>" /></a>
+													<a href="<?= $crm_website_url ?>" target="_blank"><img src="<?php echo $crm_logo; ?>" /></a>
 												</div>
 											</div>
 											<div class="loginright mCustomScrollbar">
 												<div class="messages"> 
-													<h4>Title : UT-7 Starts from 15-Nov-2025</h4>
+												<?php 
+												if(!empty($crm_school_update))
+												{
+													foreach($crm_school_update as $k=>$newlyupdates)  
+													{
+												?>
+													<h4>Title : <?= $newlyupdates['title'] ?></h4>
+													<p>Details : <?= $newlyupdates['details'] ?></p>
+													<p>Release Date :  <?= date('d-m-Y',  strtotime($newlyupdates['release_date'])); ?></p>
+													<div class="logdivider"></div>
+												<?php 
+													}
+												}
+												else{
+												  echo $message;
+												}
+												?>
+													<!--<h4>Title : UT-6 Starts from 16-Nov-2025</h4>
+													<p>Details : In this section you can track all Income and Expense Related Reports</p>
+													<p>Release Date : 15-04-2026</p>
+													<div class="logdivider"></div>
+													<h4>Title : UT-5 Starts from 17-Nov-2025</h4>
 													<p>Details : In this section you can track all Income and Expense Related Reports</p>
 													<p>Release Date : 15-03-2026</p>
 													<div class="logdivider"></div>
-													<h4>Title : UT-6 Starts from 15-Nov-2025</h4>
+													<h4>Title : UT-4 Starts from 18-Nov-2025</h4>
 													<p>Details : In this section you can track all Income and Expense Related Reports</p>
 													<p>Release Date : 15-03-2026</p>
-													<div class="logdivider"></div>
-													<h4>Title : UT-5 Starts from 15-Nov-2025</h4>
-													<p>Details : In this section you can track all Income and Expense Related Reports</p>
-													<p>Release Date : 15-03-2026</p>
-													<div class="logdivider"></div>
-													<h4>Title : UT-4 Starts from 15-Nov-2025</h4>
-													<p>Details : In this section you can track all Income and Expense Related Reports</p>
-													<p>Release Date : 15-03-2026</p>
-													<div class="logdivider"></div>
+													<div class="logdivider"></div>-->
 													<?php
-													/*foreach ($notice as $notice_key => $notice_value) {
-														?>
-														<h4><?php echo $notice_value['title']; ?></h4>
-
-														<?php
-														$string = ($notice_value['description']);
-														$string = strip_tags($string);
-														if (strlen($string) > 100) {
-
-															// truncate string
-															$stringCut = substr($string, 0, 100);
-															$endPoint = strrpos($stringCut, ' ');
-
-															//if the string doesn't contain any space then it will cut without word basis.
-															$string = $endPoint ? substr($stringCut, 0, $endPoint) : substr($stringCut, 0);
-															$string .= '... <a class=more href="' . site_url('read/' . $notice_value['slug']) . '" target="_blank">' . $this->lang->line('read') . ' ' . $this->lang->line('more') . '  </a>';
-														}
-														echo '<p>' . $string . '</p>';
-														?>
-
-														<div class="logdivider"></div>
-													<?php
-													}*/
+													
 													?>
 												</div>  
 											</div>
@@ -178,9 +167,7 @@
                                 </div><!--./col-lg-6-->
 
 
-                                <?php
-                            }
-                            ?>
+                                
                         </div>  
                     </div>
                 </div>

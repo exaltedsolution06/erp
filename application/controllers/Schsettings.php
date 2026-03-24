@@ -44,6 +44,7 @@ class Schsettings extends Admin_Controller {
     }
 
     public function index() {
+		
         if (!$this->rbac->hasPrivilege('general_setting', 'can_view')) {
             access_denied();
         }

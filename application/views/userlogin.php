@@ -120,7 +120,7 @@ if (!$empty_notice) {
 											<div class="d-flex justify-content-between">
 												<h3 class="h3"><?php echo $this->lang->line('what_is_new_in'); ?> <?php echo $school['name']; ?></h3>
 												<div class="d-flex align-center logowidth">
-													<a href="https://easyskool.in/" target="_blank"><img src="<?php echo base_url(); ?>uploads/school_content/erp_logo.png" /></a>
+													<a href="<?= $crm_website_url ?>" target="_blank"><img src="<?php echo $crm_logo; ?>"/></a>
 												</div>
 											</div>
 											<div class="loginright mCustomScrollbar">

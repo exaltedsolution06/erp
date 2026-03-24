@@ -54,12 +54,22 @@ class Site extends Public_Controller
 		
 		$data          = array();
 		 
-		//start fetch from CRM
-		$url = CRM_URL .'api/company_settings/get_company_settings'; 
-		$curl_data = call_api_get($url);		
-		//echo "<pre>";print_r($curl_data);	die;
+		//start fetch from CRM 
+		//$url = CRM_URL .'api/company_settings/get_company_settings';
+		//$curl_data = call_api_get($url);	
+		$curl_data = fetch_crm_company(); 		
 		$data['crm_name'] = $curl_data['data']['school_name'];
+		$data['crm_website_url'] = $curl_data['data']['website_url'];
 		$data['crm_logo'] = CRM_COMPANY_SETTINGS_FOLDER . $curl_data['data']['logo'];
+		
+		// get school newly update 
+		$urlSkoolUpdate = CRM_URL .'api/School_newly_update/get_school_newly_settings'; 
+		$curl_Skool_data = call_api_get($urlSkoolUpdate);
+		//echo "<pre>";print_r($curl_Skool_data);die;
+		$data['crm_school_update'] = $curl_Skool_data['data'];
+		$data['message'] = $curl_Skool_data['msg'];
+		
+		
 		//end fetch from CRM
        
         $data['title'] = 'Login';
@@ -354,7 +364,17 @@ class Site extends Public_Controller
         if ($this->auth->user_logged_in()) {
             $this->auth->user_redirect();
         }
-        $data               = array();
+		
+		$data               = array();
+		
+		// ferch company crm data 
+		$curl_data = fetch_crm_company(); 
+		//echo "<pre>";print_r($curl_data);die;
+		$data['crm_name'] = $curl_data['data']['school_name'];
+		$data['crm_website_url'] = $curl_data['data']['website_url'];
+		$data['crm_logo'] = CRM_COMPANY_SETTINGS_FOLDER . $curl_data['data']['logo'];
+		// --
+		
         $data['title']      = 'Login';
         $school             = $this->setting_model->get();
         $data['name']       = $school[0]['name'];

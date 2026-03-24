@@ -24,10 +24,12 @@ function call_api_get($url, $headers = []) {
             'error'  => $error
         ];
     }
-
+	$data = json_decode($response, true);
+//echo "<pre>";print_r($response);
     return [
         'status' => true,
-        'data'   => json_decode($response, true)
+        'msg' => $data['msg'],
+        'data'   => $data['data']
     ];
 }
 function api_response($status,$message,$data = [])
