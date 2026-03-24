@@ -152,6 +152,18 @@ ALTER TABLE `template_reportcard` ADD `show_date` CHAR(36) NULL DEFAULT NULL AFT
 ALTER TABLE `template_designtc` ADD `is_show_date` TINYINT(1) NOT NULL DEFAULT '0' AFTER `background_image`, ADD `show_date` CHAR(36) NULL DEFAULT NULL AFTER `is_show_date`;
 ALTER TABLE `template_reportcard` ADD `is_show_attendance` INT(1) NOT NULL DEFAULT '0' AFTER `show_place`;
 
+ALTER TABLE `template_designtc` ADD `book_no` VARCHAR(50) NULL DEFAULT NULL AFTER `certificate_name`, ADD `serial_no_prefix` VARCHAR(50) NULL DEFAULT NULL AFTER `book_no`, ADD `serial_no_suffix` INT(11) NULL DEFAULT NULL AFTER `serial_no_prefix`;
+
+CREATE TABLE `tc_certificate_generates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `session_id` int(11) DEFAULT NULL,
+  `serial_no` varchar(50) DEFAULT NULL,
+  `student_id` int(11) DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 
 ===============================
 File change outside of application folder

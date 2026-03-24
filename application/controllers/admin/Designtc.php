@@ -36,6 +36,10 @@ class Designtc extends Admin_Controller {
         $this->session->set_userdata('sub_menu', 'admin/designtc');
 		
         $this->form_validation->set_rules('certificate_name', 'Certificate Name', 'required');
+		
+		$this->form_validation->set_rules('book_no', 'Book No', 'required');
+		$this->form_validation->set_rules('serial_no_prefix', 'Serial No Prefix', 'required');
+		$this->form_validation->set_rules('serial_no_suffix', 'Serial No Suffix', 'required');
 
         if ($this->form_validation->run() == FALSE) {
 			$this->data['certificateList'] = $this->designtc_model->get();
@@ -111,6 +115,9 @@ class Designtc extends Admin_Controller {
 
             $data = [
                 'certificate_name' => $this->input->post('certificate_name'),
+                'book_no'		   => $this->input->post('book_no'),
+                'serial_no_prefix' => $this->input->post('serial_no_prefix'),
+                'serial_no_suffix' => $this->input->post('serial_no_suffix'),
                 'fields_json'      => json_encode($fields),
                 'status'           => 1,
                 'session_id'       => $this->current_session,
@@ -148,6 +155,11 @@ class Designtc extends Admin_Controller {
         $custom_fields = $this->customfield_model->get_custom_fields('students');
         $this->data['custom_fields'] = $custom_fields;
         $this->form_validation->set_rules('certificate_name', 'Certificate Name', 'required');
+		
+		$this->form_validation->set_rules('book_no', 'Book No', 'required');
+		$this->form_validation->set_rules('serial_no_prefix', 'Serial No Prefix', 'required');
+		$this->form_validation->set_rules('serial_no_suffix', 'Serial No Suffix', 'required');
+		
         if ($this->form_validation->run() == FALSE) {
             $data['editcertificate'] = $this->designtc_model->get($id);
 			$data['certificateList'] = $this->designtc_model->get();
@@ -246,6 +258,9 @@ class Designtc extends Admin_Controller {
 			$data = [
 				'id'               => $id,
 				'certificate_name' => $this->input->post('certificate_name'),
+				'book_no'		   => $this->input->post('book_no'),
+                'serial_no_prefix' => $this->input->post('serial_no_prefix'),
+                'serial_no_suffix' => $this->input->post('serial_no_suffix'),
 				'fields_json'      => json_encode($fields),
                 'signature_title' => $this->input->post('signature_title'),
 				'signature' => $picture,

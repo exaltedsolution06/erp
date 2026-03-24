@@ -62,7 +62,60 @@
 </head>
 <body>
 <?php
+//$this->load->model('designtc_model');
+//echo "<pre>";print_r($certificate);die;
 foreach ($students as $student) {
+	$student_name = '';
+	if(isset($student->firstname))
+	{
+		$student_name = $student->firstname;
+	}
+	
+	if(isset($student->middlename))
+	{
+		$student_name .= $student->middlename;
+	}
+	if(isset($student->lastname))
+	{
+		$student_name .= $student->lastname;
+	}
+	
+	$replaceArr = [
+        '[name]' => $student_name,
+        '[dob]' => date('d/m/Y' , strtotime($student->dob)),
+		'[present_address]' => $student->current_address,
+		'[guardian]' => $student->guardian_name,
+		'[created_at]' => date('d/m/Y' , strtotime($student->created_at)),
+        '[admission_no]'  => $student->admission_no,
+        '[roll_no]'  => $student->roll_no,
+        '[class]'  => $student->class,
+        '[section]'  => $student->section,
+        '[gender]'  => $student->gender,
+        '[gender]'  => $student->gender,
+		'[admission_date]'  => date('d/m/Y' , strtotime($student->admission_date)),
+        '[category]'  => $student->cast,
+        '[cast]'  => $student->cast,
+        '[father_name]'  => $student->father_name,
+        '[mother_name]'  => $student->mother_name,
+        '[religion]'  => $student->religion,
+        '[email]'  => $student->email,
+        '[phone]'  => $student->guardian_phone,
+        '[CASTE CATEGORY]'  => $student->cast,
+        '[PAN Card]'  => $student->cast
+    ];
+	
+	$check_student_id = $this->designtc_model->check_student_id($student->id);
+	if($check_student_id)
+	{
+		$data = [
+			'session_id' => $certificate->session_id,
+			'serial_no'  => $certificate->serial_no_prefix.' '.$certificate->serial_no_suffix,
+			'student_id' => $student->id,
+			'created_date' => date('Y-m-d h:i:s')
+		];
+		$this->designtc_model->addCertificateGenerate($data);
+	}
+	
 	?>
 	<div class="mark-container mb-5">
 		<?php
@@ -88,19 +141,33 @@ foreach ($students as $student) {
 						
 						<?php
 							if ($certificate->certificate_name != "") {
+								$fields_json = json_decode($certificate->fields_json);
+								//echo "<pre>";print_r($fields_json);
 						?>
 							<h4 class="text-center mt-3" style="font-size: 20px;">
-								<strong><?php echo $certificate->certificate_name; ?><strong>
+								<strong><?php echo $certificate->certificate_name; ?></strong> <?php //echo $fields_json[0]->title; ?>
 							</h4>
 						<?php
 							}
 						?>
 						<div class="row mt-5">
+						<?php 
+						foreach($fields_json as $val)
+						{
+							$value = str_replace(
+								array_keys($replaceArr),
+								array_values($replaceArr),
+								$val->value
+							);
+						?>
 							<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">1. Pupil's Name :</strong>
-								<span class="text-underline" style="text-align:center;">RAGHAB BHARADWAJ</span>
+								<strong class="label-text">1. <?php echo $val->title ?> :</strong>
+								<span class="text-underline" style="text-align:center;"><?php echo $value; ?></span>
 							</div>
-							<div class="col-12 mb-3 d-flex mt-2">	
+						<?php 
+						}
+						?>
+							<!--<div class="col-12 mb-3 d-flex mt-2">	
 								<strong class="label-text">2. Father's Name :</strong>
 								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
 							</div>
@@ -151,7 +218,7 @@ foreach ($students as $student) {
 							<div class="col-12 mb-3 d-flex mt-2">	
 								<strong class="label-text">14. Father's Name :</strong>
 								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
-							</div>
+							</div>-->
 						</div>
 						<div style="display: flex;justify-content: space-between;" class="mt-5">
 							<div style="width: 50%; padding:0; display: flex; align-items: center;">
