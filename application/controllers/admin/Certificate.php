@@ -55,7 +55,7 @@ class Certificate extends Admin_Controller {
         }
 
         $this->form_validation->set_rules('certificate_name', $this->lang->line('certificate_name'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('certificate_text', $this->lang->line('certificate_text'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('certificate_text', $this->lang->line('certificate_text'), 'trim|required');
 
         if ($this->form_validation->run() == FALSE) {
 
@@ -71,26 +71,75 @@ class Certificate extends Admin_Controller {
                 $enableimg = 0;
                 $imgHeight = 0;
             }
+            if ($this->input->post('is_active_header_img') == 1) {
+                $enableheadimg = $this->input->post('is_active_header_img');
+            } else {
+                $enableheadimg = 0;
+            }
+			if (isset($_POST['is_left_footer'])) {
+                $is_left_footer = 1;
+            } else {
+                $is_left_footer = 0;
+            }
+            if (isset($_POST['is_center_footer'])) {
+                $is_center_footer = 1;
+            } else {
+                $is_center_footer = 0;
+            }
+            if (isset($_POST['is_right_footer'])) {
+                $is_right_footer = 1;
+            } else {
+                $is_right_footer = 0;
+            }
+			
             $data = array(
                 'certificate_name' => $this->input->post('certificate_name'),
                 'certificate_text' => $this->input->post('certificate_text'),
                 'left_header' => $this->input->post('left_header'),
                 'center_header' => $this->input->post('center_header'),
                 'right_header' => $this->input->post('right_header'),
-                'left_footer' => $this->input->post('left_footer'),
-                'right_footer' => $this->input->post('right_footer'),
-                'center_footer' => $this->input->post('center_footer'),
                 'created_for' => 2,
                 'status' => 1,
                 'background_image' => $picture,
                 'header_height' => $this->input->post('header_height'),
-                'content_height' => $this->input->post('content_height'),
+                // 'content_height' => $this->input->post('content_height'),
                 'footer_height' => $this->input->post('footer_height'),
-                'content_width' => $this->input->post('content_width'),
+                // 'content_width' => $this->input->post('content_width'),
                 'enable_student_image' => $enableimg,
                 'enable_image_height' => $imgHeight,
+                'is_active_header_img' => $enableheadimg,
                 'session_id' => $this->current_session,
+				
+                'is_left_footer'=>$is_left_footer,
+                'is_center_footer'=>$is_center_footer,
+                'is_right_footer'=>$is_right_footer,
+                'left_sign' => "",
+                'middle_sign' => "",
+                'right_sign' => "",
+                'left_footer' => $this->input->post('left_footer'),
+                'center_footer' => $this->input->post('center_footer'),
+                'right_footer' => $this->input->post('right_footer'),
             );
+			if (isset($_FILES["left_sign"]) && !empty($_FILES["left_sign"]['name'])) {
+                $time = 'left_'.md5($_FILES["left_sign"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["left_sign"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["left_sign"]["tmp_name"], "./uploads/certificate/" . $img_name);
+                $data['left_sign'] = $img_name;
+            }if (isset($_FILES["middle_sign"]) && !empty($_FILES["middle_sign"]['name'])) {
+                $time = 'middle_'.md5($_FILES["middle_sign"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["middle_sign"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["middle_sign"]["tmp_name"], "./uploads/certificate/" . $img_name);
+                $data['middle_sign'] = $img_name;
+            }if (isset($_FILES["right_sign"]) && !empty($_FILES["right_sign"]['name'])) {
+                $time = 'right_'.md5($_FILES["right_sign"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["right_sign"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["right_sign"]["tmp_name"], "./uploads/certificate/" . $img_name);
+                $data['right_sign'] = $img_name;
+            }
+			
             $this->certificate_model->addcertificate($data);
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
             redirect('admin/certificate/index');
@@ -113,7 +162,7 @@ class Certificate extends Admin_Controller {
         $custom_fields = $this->customfield_model->get_custom_fields('students');
         $this->data['custom_fields'] = $custom_fields;
         $this->form_validation->set_rules('certificate_name', $this->lang->line('certificate_name'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('certificate_text', $this->lang->line('certificate_text'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('certificate_text', $this->lang->line('certificate_text'), 'trim|required');
         if ($this->form_validation->run() == FALSE) {
             $this->data['certificateList'] = $this->certificate_model->certificateList();
             $this->load->view('layout/header');
@@ -128,6 +177,75 @@ class Certificate extends Admin_Controller {
                 $enableimg = 0;
                 $imgHeight = 0;
             }
+            if ($this->input->post('is_active_header_img') == 1) {
+                $enableheadimg = $this->input->post('is_active_header_img');
+            } else {
+                $enableheadimg = 0;
+            }
+			if (isset($_POST['is_left_footer'])) {
+                $is_left_footer = 1;
+            } else {
+                $is_left_footer = 0;
+            }
+            if (isset($_POST['is_center_footer'])) {
+                $is_center_footer = 1;
+            } else {
+                $is_center_footer = 0;
+            }
+            if (isset($_POST['is_right_footer'])) {
+                $is_right_footer = 1;
+            } else {
+                $is_right_footer = 0;
+            }
+			
+			$left_sign_image = $editcertificate[0]->left_sign;
+			$middle_sign_image = $editcertificate[0]->middle_sign;
+			$right_sign_image = $editcertificate[0]->right_sign;
+			if ($_POST['remove_left_sign'] == 1) {
+				$path1 = "uploads/certificate/" . $editcertificate[0]->left_sign;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+				$left_sign_image = '';
+			}
+            if ($_POST['remove_middle_sign'] == 1) {
+				$path1 = "uploads/certificate/" . $editcertificate[0]->middle_sign;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+				$middle_sign_image = '';
+			}
+            if ($_POST['remove_right_sign'] == 1) {
+				$path1 = "uploads/certificate/" . $editcertificate[0]->right_sign;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+				$right_sign_image = '';
+			}
+			
+			if (isset($_FILES["left_sign"]) && !empty($_FILES["left_sign"]['name'])) {
+                $time = 'left_'.md5($_FILES["left_sign"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["left_sign"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["left_sign"]["tmp_name"], "./uploads/certificate/" . $img_name);
+                $left_sign_image = $img_name;
+            }if (isset($_FILES["middle_sign"]) && !empty($_FILES["middle_sign"]['name'])) {
+                $time = 'middle_'.md5($_FILES["middle_sign"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["middle_sign"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["middle_sign"]["tmp_name"], "./uploads/certificate/" . $img_name);
+                $middle_sign_image = $img_name;
+            }if (isset($_FILES["right_sign"]) && !empty($_FILES["right_sign"]['name'])) {
+                $time = 'right_'.md5($_FILES["right_sign"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["right_sign"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["right_sign"]["tmp_name"], "./uploads/certificate/" . $img_name);
+                $right_sign_image = $img_name;
+            }
+			
             if (!empty($_FILES['background_image']['name'])) {
 
                 $config['upload_path'] = 'uploads/certificate/';
@@ -148,18 +266,29 @@ class Certificate extends Admin_Controller {
                         'left_header' => $this->input->post('left_header'),
                         'center_header' => $this->input->post('center_header'),
                         'right_header' => $this->input->post('right_header'),
-                        'left_footer' => $this->input->post('left_footer'),
-                        'right_footer' => $this->input->post('right_footer'),
-                        'center_footer' => $this->input->post('center_footer'),
+                        // 'left_footer' => $this->input->post('left_footer'),
+                        // 'right_footer' => $this->input->post('right_footer'),
+                        // 'center_footer' => $this->input->post('center_footer'),
                         'created_for' => 2,
                         'status' => 1,
                         'background_image' => $picture,
                         'header_height' => $this->input->post('header_height'),
-                        'content_height' => $this->input->post('content_height'),
+                        // 'content_height' => $this->input->post('content_height'),
                         'footer_height' => $this->input->post('footer_height'),
-                        'content_width' => $this->input->post('content_width'),
+                        // 'content_width' => $this->input->post('content_width'),
                         'enable_student_image' => $enableimg,
                         'enable_image_height' => $imgHeight,
+                        'is_active_header_img' => $enableheadimg,
+						
+						'is_left_footer'=>$is_left_footer,
+						'is_center_footer'=>$is_center_footer,
+						'is_right_footer'=>$is_right_footer,
+						'left_sign' => $left_sign_image,
+						'middle_sign' => $middle_sign_image,
+						'right_sign' => $right_sign_image,
+						'left_footer' => $this->input->post('left_footer'),
+						'center_footer' => $this->input->post('center_footer'),
+						'right_footer' => $this->input->post('right_footer'),
                     );
                 } else {
                     $picture = '';
@@ -170,15 +299,26 @@ class Certificate extends Admin_Controller {
                         'left_header' => $this->input->post('left_header'),
                         'center_header' => $this->input->post('center_header'),
                         'right_header' => $this->input->post('right_header'),
-                        'left_footer' => $this->input->post('left_footer'),
-                        'right_footer' => $this->input->post('right_footer'),
-                        'center_footer' => $this->input->post('center_footer'),
+                        // 'left_footer' => $this->input->post('left_footer'),
+                        // 'right_footer' => $this->input->post('right_footer'),
+                        // 'center_footer' => $this->input->post('center_footer'),
                         'header_height' => $this->input->post('header_height'),
-                        'content_height' => $this->input->post('content_height'),
+                        // 'content_height' => $this->input->post('content_height'),
                         'footer_height' => $this->input->post('footer_height'),
-                        'content_width' => $this->input->post('content_width'),
+                        // 'content_width' => $this->input->post('content_width'),
                         'enable_student_image' => $enableimg,
                         'enable_image_height' => $imgHeight,
+                        'is_active_header_img' => $enableheadimg,
+						
+						'is_left_footer'=>$is_left_footer,
+						'is_center_footer'=>$is_center_footer,
+						'is_right_footer'=>$is_right_footer,
+						'left_sign' => $left_sign_image,
+						'middle_sign' => $middle_sign_image,
+						'right_sign' => $right_sign_image,
+						'left_footer' => $this->input->post('left_footer'),
+						'center_footer' => $this->input->post('center_footer'),
+						'right_footer' => $this->input->post('right_footer'),
                     );
                 }
             } else {
@@ -189,15 +329,26 @@ class Certificate extends Admin_Controller {
                     'left_header' => $this->input->post('left_header'),
                     'center_header' => $this->input->post('center_header'),
                     'right_header' => $this->input->post('right_header'),
-                    'left_footer' => $this->input->post('left_footer'),
-                    'right_footer' => $this->input->post('right_footer'),
-                    'center_footer' => $this->input->post('center_footer'),
+                    // 'left_footer' => $this->input->post('left_footer'),
+                    // 'right_footer' => $this->input->post('right_footer'),
+                    // 'center_footer' => $this->input->post('center_footer'),
                     'header_height' => $this->input->post('header_height'),
-                    'content_height' => $this->input->post('content_height'),
+                    // 'content_height' => $this->input->post('content_height'),
                     'footer_height' => $this->input->post('footer_height'),
-                    'content_width' => $this->input->post('content_width'),
+                    // 'content_width' => $this->input->post('content_width'),
                     'enable_student_image' => $enableimg,
                     'enable_image_height' => $imgHeight,
+                    'is_active_header_img' => $enableheadimg,
+						
+					'is_left_footer'=>$is_left_footer,
+					'is_center_footer'=>$is_center_footer,
+					'is_right_footer'=>$is_right_footer,
+					'left_sign' => $left_sign_image,
+					'middle_sign' => $middle_sign_image,
+					'right_sign' => $right_sign_image,
+					'left_footer' => $this->input->post('left_footer'),
+					'center_footer' => $this->input->post('center_footer'),
+					'right_footer' => $this->input->post('right_footer'),
                 );
             }
             $this->certificate_model->addcertificate($data);

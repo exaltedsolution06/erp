@@ -490,18 +490,18 @@
 								
 		$resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_batch_exam_subjects.max_marks FROM exam_group_exam_results left JOIN exam_group_class_batch_exam_subjects ON exam_group_class_batch_exam_subjects.id=exam_group_exam_results.exam_group_class_batch_exam_subject_id left JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.id=exam_group_exam_results.`exam_group_class_batch_exam_student_id` WHERE exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id='".$type->id."' and exam_group_class_batch_exam_students.exam_group_class_batch_exam_id='".$type->id."' and exam_group_class_batch_exam_subjects.subject_id='".$rowdata->id."' and exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result()[0];
 
-													$min_marks+=round($maxMarks->min_marks);
-													$max_marks+=round($maxMarks->max_marks);
-													$max_marks1+=round($maxMarks->max_marks);
+													$min_marks+=$maxMarks->min_marks;
+													$max_marks+=$maxMarks->max_marks;
+													$max_marks1+=$maxMarks->max_marks;
 												
-													$marks = !empty($resultData) ? ($resultData->attendence == 'absent' ? 'AB' : round($resultData->get_marks)) : "-";
+													$marks = !empty($resultData) ? ($resultData->attendence == 'absent' ? 'AB' : $resultData->get_marks) : "-";
 													// echo $marks;
 
 													$total_subject++; 
 													// array_push($array, !empty($resultData) ? $resultData->get_marks : 0);
 													array_push($term_array, !empty($resultData) ? $resultData->get_marks : 0);
 												
-													$term_html .= '<td>'.$marks.'</td>';
+													$term_html .= '<td>'.format_amount($marks).'</td>';
 													
 												 
 													$total+=$resultData->get_marks; 
@@ -636,18 +636,18 @@
 								
 		$resultData_op=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_batch_exam_subjects.max_marks FROM exam_group_exam_results left JOIN exam_group_class_batch_exam_subjects ON exam_group_class_batch_exam_subjects.id=exam_group_exam_results.exam_group_class_batch_exam_subject_id left JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.id=exam_group_exam_results.`exam_group_class_batch_exam_student_id` WHERE exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id='".$type_op->id."' and exam_group_class_batch_exam_students.exam_group_class_batch_exam_id='".$type_op->id."' and exam_group_class_batch_exam_subjects.subject_id='".$rowdata->id."' and exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result()[0];		
 
-													$max_marks_op+=round($maxMarks_op->max_marks);
-													$max_marks1_op+=round($maxMarks_op->max_marks);
+													$max_marks_op+=$maxMarks_op->max_marks;
+													$max_marks1_op+=$maxMarks_op->max_marks;
 												?>
 													
 														<?php 
-															$marks_op = !empty($resultData_op) ? ($resultData_op->attendence == 'absent' ? 'AB' : round($resultData_op->get_marks)) : "-";
+															$marks_op = !empty($resultData_op) ? ($resultData_op->attendence == 'absent' ? 'AB' : $resultData_op->get_marks) : "-";
 															// echo $marks_op;
 
 															$total_subject_op++; 
 															array_push($array_op, !empty($resultData_op) ? $resultData_op->get_marks : 0);
 												
-													$term_html_op .= '<td>'.$marks_op.'</td>';
+													$term_html_op .= '<td>'.format_amount($marks_op).'</td>';
 													
 												
 														$total_op+=$resultData_op->get_marks; 
@@ -926,12 +926,24 @@
 			<?php 
 			$tearm_count=($_POST['exam_group_id']);
 			$examgroup_result = $this->examgroup_model->get_c_by_exam_group($tearm_count);
+			$count_examgroup_result = count($examgroup_result);
+
+			// decide column
+			if($count_examgroup_result == 1){
+				$col = 'col-12';
+			}elseif($count_examgroup_result == 3){
+				$col = 'col-4';
+			}elseif($count_examgroup_result == 4){
+				$col = 'col-3';
+			}else{
+				$col = 'col-6';
+			}
 			
 			foreach ($examgroup_result as $key => $value) {			
 				$list=$this->examgroup_model->getExamByExamGroup_reportCard_c($value->id,$student_id);
 				if(count($list) > 0){
 			?>
-			<div class="col-6 mt-3" style="padding:0px">
+			<div class="<?= $col ?> mt-3" style="padding:0px">
 				<table class="w-100 border-dark text-center table-bordered">
 					<tr class="text-start">
 						<th colspan="2" style="padding-left:8px; padding-top:7px;padding-bottom:7px;"><span class="" style="color:#000;"><?=$value->name ?>: <span style="color:#000;"><?=$value->description ?></span></span>
@@ -1083,7 +1095,7 @@
 				if($sign_count > 0){
 			?>
 			<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px;">
-				<div class="row text-center" style="background-color: #000000">
+				<div class="row text-center" style="background-color: transparent">
 					<div class="col-4">
 						<?php
 						if($desc->is_class_teacher==1){

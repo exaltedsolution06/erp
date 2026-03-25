@@ -94,6 +94,7 @@ class Printtc extends Admin_Controller {
            $data['students'][$key]->name=$this->customlib->getFullName($value->firstname,$value->middlename,$value->lastname,$this->sch_setting_detail->middlename,$this->sch_setting_detail->lastname);
         }
 
+		$data['result'] = $this->setting_model->getSetting();
         $certificates = $this->load->view('admin/certificate/printtccertificate', $data, true);
         echo $certificates;
     }

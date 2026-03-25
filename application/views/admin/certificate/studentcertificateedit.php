@@ -1,3 +1,4 @@
+<script src="<?php echo base_url(); ?>backend/plugins/ckeditor/ckeditor.js"></script>
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 ?>
@@ -20,7 +21,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <h3 class="box-title"><?php echo $this->lang->line('edit '); ?> <?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('certificate'); ?></h3>
                         </div><!-- /.box-header -->
                         <!-- form start -->
-                        <form action="<?php echo site_url('admin/certificate/edit/' . $editcertificate[0]->id) ?>"  id="certificateform" enctype="multipart/form-data" name="certificateform" method="post" accept-charset="utf-8">
+                        <form action="<?php echo site_url('admin/certificate/edit/' . $editcertificate[0]->id) ?>"  id="certificateform" enctype="multipart/form-data" name="certificateform" method="post" accept-charset="utf-8" class="haveDropify">
                             <div class="box-body">
                                 <?php if ($this->session->flashdata('msg')) { ?>
                                     <?php echo $this->session->flashdata('msg') ?>
@@ -68,7 +69,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 </div>
 
 
-                                <div class="form-group">
+                                <!--<div class="form-group">
                                     <label><?php echo $this->lang->line('footer_left_text'); ?></label>
                                     <input autofocus="" id="left_footer" name="left_footer" placeholder="" type="text" class="form-control"  value="<?php echo set_value('left_footer', $editcertificate[0]->left_footer); ?>" />
                                 </div>
@@ -79,11 +80,98 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('footer_right_text'); ?></label>
                                     <input autofocus="" id="right_footer" name="right_footer" placeholder="" type="text" class="form-control"  value="<?php echo set_value('right_footer', $editcertificate[0]->right_footer); ?>" />
-                                </div>
+                                </div>-->
+								
+								<div class="clearfix"></div>
+                                <div class="row">
+									<div class="col-md-12">
+										<div class="form-group switch-inline">
+											<label><?php echo $this->lang->line('left') . " " . $this->lang->line('sign'); ?></label>
+											<div class="material-switch switchcheck">
+												<input id="is_left_footer" name="is_left_footer" type="checkbox" class="chk" value="1" onclick="valueLeftSignChanged()" <?php echo set_checkbox('is_left_footer', '1', (set_value('is_left_footer', $editcertificate[0]->is_left_footer) == 1) ? TRUE : FALSE); ?>>
+												<label for="is_left_footer" class="label-success"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12 col-sm-12 img_div_modal">
+										<div class="form-group enableLeftSignDiv" hidden>
+											<input id="documents" data-default-file="<?php echo base_url() ?>./uploads/certificate/<?php echo $editcertificate[0]->left_sign; ?>" name="left_sign" placeholder="" type="file" class="filestyle form-control" data-height="40">
+											<span class="text-danger"><?php echo form_error('left_sign'); ?></span>
+											<input type="hidden" name="remove_left_sign" class="remove_image">
+										</div>
+									</div>
+									<div class="col-md-12 col-sm-12 img_div_modal">
+										<div class="form-group enableLeftSignDiv" hidden>
+											<input autofocus="" id="left_footer" name="left_footer" placeholder="<?php echo $this->lang->line('left'); ?> <?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?>" type="text" class="form-control" value="<?php echo set_value('left_footer', $editcertificate[0]->left_footer); ?>"/>
+											<span class="text-danger"><?php echo form_error('left_footer'); ?></span>
+										</div>
+									</div>
+								</div>
+								
+								<div class="clearfix"></div>
+                                <div class="row">
+									<div class="col-md-12">
+										<div class="form-group switch-inline">
+											<label><?php echo $this->lang->line('middle') . " " . $this->lang->line('sign'); ?></label>
+											<div class="material-switch switchcheck">
+												<input id="is_center_footer" name="is_center_footer" type="checkbox" class="chk" value="1" onclick="valueMiddleSignChanged()" <?php echo set_checkbox('is_center_footer', '1', (set_value('is_center_footer', $editcertificate[0]->is_center_footer) == 1) ? TRUE : FALSE); ?>>
+												<label for="is_center_footer" class="label-success"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12 col-sm-12 img_div_modal">
+										<div class="form-group enableMiddleSignDiv" hidden>
+											<input id="documents" data-default-file="<?php echo base_url() ?>./uploads/certificate/<?php echo $editcertificate[0]->middle_sign; ?>" name="middle_sign" placeholder="" type="file" class="filestyle form-control" data-height="40">
+											<span class="text-danger"><?php echo form_error('middle_sign'); ?></span>
+											<input type="hidden" name="remove_middle_sign" class="remove_image">
+										</div>
+									</div>
+									<div class="col-md-12 col-sm-12 img_div_modal">
+										<div class="form-group enableMiddleSignDiv" hidden>
+											<input autofocus="" id="center_footer" name="center_footer" placeholder="<?php echo $this->lang->line('middle'); ?> <?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?>" type="text" class="form-control" value="<?php echo set_value('center_footer', $editcertificate[0]->center_footer); ?>"/>
+											<span class="text-danger"><?php echo form_error('center_footer'); ?></span>
+										</div>
+									</div>
+								</div>
+								
+								<div class="clearfix"></div>
+                                <div class="row">
+									<div class="col-md-12">
+										<div class="form-group switch-inline">
+											<label><?php echo $this->lang->line('right') . " " . $this->lang->line('sign'); ?></label>
+											<div class="material-switch switchcheck">
+												<input id="is_right_footer" name="is_right_footer" type="checkbox" class="chk" value="1" onclick="valueRightSignChanged()" <?php echo set_checkbox('is_right_footer', '1', (set_value('is_right_footer', $editcertificate[0]->is_right_footer) == 1) ? TRUE : FALSE); ?>>
+												<label for="is_right_footer" class="label-success"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12 col-sm-12 img_div_modal">
+										<div class="form-group enableRightSignDiv" hidden>
+											<input id="documents" data-default-file="<?php echo base_url() ?>./uploads/certificate/<?php echo $editcertificate[0]->right_sign; ?>" name="right_sign" placeholder="" type="file" class="filestyle form-control" data-height="40">
+											<span class="text-danger"><?php echo form_error('right_sign'); ?></span>
+											<input type="hidden" name="remove_right_sign" class="remove_image">
+										</div>
+									</div>
+									<div class="col-md-12 col-sm-12 img_div_modal">
+										<div class="form-group enableRightSignDiv" hidden>
+											<input autofocus="" id="right_footer" name="right_footer" placeholder="<?php echo $this->lang->line('right'); ?> <?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?>" type="text" class="form-control" value="<?php echo set_value('right_footer', $editcertificate[0]->right_footer); ?>"/>
+											<span class="text-danger"><?php echo form_error('right_footer'); ?></span>
+										</div>
+									</div>
+								</div>
 
 
                                 <div class="mediarow">    
                                     <div class="row">
+										<div class="col-md-12 col-sm-12 img_div_modal minh45">
+                                            <div class="form-group switch-inline">
+                                                <label>Common Header Image</label>
+                                                <div class="material-switch switchcheck">
+                                                    <input id="is_active_header_img" name="is_active_header_img" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_active_header_img', '1', (set_value('is_active_header_img', $editcertificate[0]->is_active_header_img) == 1) ? TRUE : FALSE); ?>>
+                                                    <label for="is_active_header_img" class="label-success"></label>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="img_div_modal"><label><?php echo $this->lang->line('certificate'); ?> <?php echo $this->lang->line('design'); ?></label></div>
                                         <div class="col-md-6 col-sm-6 img_div_modal">
                                             <div class="form-group">
@@ -95,19 +183,19 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <input id="footer_height" name="footer_height" placeholder="<?php echo $this->lang->line('footer'); ?> <?php echo $this->lang->line('height'); ?>" type="number" class="form-control" min="0" value="<?php echo set_value('footer_height', $editcertificate[0]->footer_height); ?>" />
                                             </div>
                                         </div><!--./col-md-6-->
-                                        <div class="col-md-6 col-sm-6 img_div_modal">
+                                        <!--<div class="col-md-6 col-sm-6 img_div_modal">
                                             <div class="form-group">
                                                 <input id="content_height" name="content_height" placeholder="<?php echo $this->lang->line('body'); ?> <?php echo $this->lang->line('height'); ?>" type="number" class="form-control" min="0" value="<?php echo set_value('content_height', $editcertificate[0]->content_height); ?>" />
                                             </div>
-                                        </div><!--./col-md-6-->
+                                        </div>--><!--./col-md-6-->
 
 
 
-                                        <div class="col-md-6 col-sm-6 img_div_modal"> 
+                                        <!--<div class="col-md-6 col-sm-6 img_div_modal"> 
                                             <div class="form-group">
                                                 <input id="content_width" name="content_width" placeholder="<?php echo $this->lang->line('body'); ?> <?php echo $this->lang->line('width'); ?>" type="number" class="form-control" min="0" value="<?php echo set_value('content_width', $editcertificate[0]->content_width); ?>" />
                                             </div>
-                                        </div><!--./col-md-6-->
+                                        </div>--><!--./col-md-6-->
                                         <div class="col-md-6 col-sm-6 img_div_modal minh45">
                                             <div class="form-group switch-inline">
                                                 <label><?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('photo'); ?></label>
@@ -254,6 +342,15 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 </div>
 
 <script>
+	$(document).ready(function (e) {
+		$("body").on('click', '.dropify-clear', function () {
+			$(this).closest('.form-group').find('.remove_image').val(1);
+		});
+	});
+	CKEDITOR.replace('certificate_text',
+	{
+		allowedContent: true
+	});
     $(document).ready(function () {
         $('.detail_popover').popover({
             placement: 'right',
@@ -270,7 +367,21 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             $("#enableImageDiv").show();
         } else {
             $("#enableImageDiv").hide();
-
+        }
+		if ($('#is_left_footer').is(":checked")) {
+            $(".enableLeftSignDiv").show();
+        } else {
+            $(".enableLeftSignDiv").hide();
+        }
+		if ($('#is_center_footer').is(":checked")) {
+            $(".enableMiddleSignDiv").show();
+        } else {
+            $(".enableMiddleSignDiv").hide();
+        }
+		if ($('#is_right_footer').is(":checked")) {
+            $(".enableRightSignDiv").show();
+        } else {
+            $(".enableRightSignDiv").hide();
         }
     });
 </script>
@@ -297,5 +408,26 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             $("#enableImageDiv").show();
         else
             $("#enableImageDiv").hide();
+    }
+    function valueLeftSignChanged()
+    {
+        if ($('#is_left_footer').is(":checked"))
+            $(".enableLeftSignDiv").show();
+        else
+            $(".enableLeftSignDiv").hide();
+    }
+    function valueMiddleSignChanged()
+    {
+        if ($('#is_center_footer').is(":checked"))
+            $(".enableMiddleSignDiv").show();
+        else
+            $(".enableMiddleSignDiv").hide();
+    }
+    function valueRightSignChanged()
+    {
+        if ($('#is_right_footer').is(":checked"))
+            $(".enableRightSignDiv").show();
+        else
+            $(".enableRightSignDiv").hide();
     }
 </script>

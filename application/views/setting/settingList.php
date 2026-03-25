@@ -815,6 +815,43 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="settinghr"></div>
+                                        <div class="relative">
+                                            <h4 class="session-head">Transfer Certificate</h4>
+                                        </div>
+                                    </div><!--./col-md-12-->
+
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-5"> Book No.</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" name="book_no" id="book_no" class="form-control" value="<?php echo $result->book_no; ?>">
+                                                <span class="text-danger"><?php echo form_error('book_no'); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-5"> Serial No Prefix.</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" name="serial_no_prefix" id="serial_no_prefix" class="form-control" value="<?php echo $result->serial_no_prefix; ?>">
+                                                <span class="text-danger"><?php echo form_error('serial_no_prefix'); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-5"> Serial No Suffix.</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" name="serial_no_suffix" id="serial_no_suffix" class="form-control" value="<?php echo $result->serial_no_suffix; ?>" onkeypress="return /\d/.test(String.fromCharCode(event.keyCode || event.which))">
+                                                <span class="text-danger"><?php echo form_error('serial_no_suffix'); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--./row-->
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="settinghr"></div>
                                         <h4 class="session-head"><?php echo $this->lang->line('current_theme'); ?></h4>
                                     </div><!--./col-md-12-->
                                     <div class="col-sm-12">

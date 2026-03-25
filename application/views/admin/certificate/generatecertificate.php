@@ -159,6 +159,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 </div>  
             </div>  
         </div> 
+	<div class="abc"></div>
     </section>
 </div>
 <script type="text/javascript">
@@ -256,7 +257,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                     data: {'data': JSON.stringify(array_to_print), 'class_id': classId, 'certificate_id': certificateId, },
                     success: function (response) {                       
                         Popup(response);
-
+						// $('.abc').html(response);
                     }
                 });
             }

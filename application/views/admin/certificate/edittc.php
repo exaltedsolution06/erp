@@ -50,22 +50,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <input autofocus="" id="certificate_name" name="certificate_name" value="<?= $certificate_val->certificate_name ?? '' ?>" placeholder="" type="text" class="form-control" />
                                     <span class="text-danger"><?php echo form_error('certificate_name'); ?></span>
                                 </div>
-								<div class="form-group">
-                                    <label>Book No.</label><small class="req"> *</small>
-                                    <input autofocus="" id="book_no" name="book_no" placeholder="Book No" type="text" class="form-control" value="<?= $certificate_val->book_no ?? '' ?>"/>
-                                    <span class="text-danger"><?php echo form_error('book_no'); ?></span>
-                                </div>
-								
-								<div class="form-group">
-                                    <label>Serial No Prefix.</label><small class="req"> *</small>
-                                    <input autofocus="" id="serial_no_prefix" name="serial_no_prefix" placeholder="Prefix" type="text" class="form-control" value="<?= $certificate_val->serial_no_prefix ?? '' ?>"/>
-                                    <span class="text-danger"><?php echo form_error('serial_no_prefix'); ?></span>
-                                </div>
-								<div class="form-group">
-                                    <label>Serial No Suffix.</label><small class="req"> *</small>
-                                    <input autofocus="" id="serial_no_suffix" name="serial_no_suffix" placeholder="Suffix" type="text" class="form-control" onkeypress="return /\d/.test(String.fromCharCode(event.keyCode || event.which))" value="<?= $certificate_val->serial_no_suffix ?? '' ?>"/>
-                                    <span class="text-danger"><?php echo form_error('serial_no_suffix'); ?></span>
-                                </div>
                                 <div id="dynamic-fields">
 									<div class="row field-row">
 										<div class="col-md-5">

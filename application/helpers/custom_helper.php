@@ -274,3 +274,18 @@ if (!function_exists('fetch_crm_company'))
 	}
 }
 
+if (!function_exists('format_amount')) 
+{
+	function format_amount($amount){
+
+		// convert to float safely
+		$amount = is_numeric($amount) ? (float)$amount : 0;
+
+		if(floor($amount) == $amount){
+			return (int)$amount;
+		}else{
+			return number_format($amount, 2, '.', '');
+		}
+	}
+}
+

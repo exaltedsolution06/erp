@@ -104,17 +104,19 @@ foreach ($students as $student) {
         '[PAN Card]'  => $student->cast
     ];
 	
-	$check_student_id = $this->designtc_model->check_student_id($student->id);
+	/*$check_student_id = $this->designtc_model->check_student_id($student->id);
 	if($check_student_id)
 	{
 		$data = [
 			'session_id' => $certificate->session_id,
-			'serial_no'  => $certificate->serial_no_prefix.' '.$certificate->serial_no_suffix,
+			'serial_no'  => $result->serial_no_suffix,
 			'student_id' => $student->id,
+			'template_id' => $certificate->id,
 			'created_date' => date('Y-m-d h:i:s')
 		];
-		$this->designtc_model->addCertificateGenerate($data);
-	}
+		$i_id = $this->designtc_model->addCertificateGenerate($data);
+	echo $i_id;exit;
+	}*/
 	
 	?>
 	<div class="mark-container mb-5">
@@ -152,6 +154,7 @@ foreach ($students as $student) {
 						?>
 						<div class="row mt-5">
 						<?php 
+						$i=0;
 						foreach($fields_json as $val)
 						{
 							$value = str_replace(
@@ -159,66 +162,15 @@ foreach ($students as $student) {
 								array_values($replaceArr),
 								$val->value
 							);
+							$i++;
 						?>
 							<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">1. <?php echo $val->title ?> :</strong>
+								<strong class="label-text"><?php echo $i ?>. <?php echo $val->title ?> :</strong>
 								<span class="text-underline" style="text-align:center;"><?php echo $value; ?></span>
 							</div>
 						<?php 
 						}
 						?>
-							<!--<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">2. Father's Name :</strong>
-								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
-							</div>
-							<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">3. Father's Name :</strong>
-								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
-							</div>
-							<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">4. Father's Name :</strong>
-								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
-							</div>
-							<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">5. Father's Name :</strong>
-								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
-							</div>
-							<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">6. Father's Name Father's Name :</strong>
-								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
-							</div>
-							<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">7. Father's Name :</strong>
-								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
-							</div>
-							<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">8. Father's Name :</strong>
-								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
-							</div>
-							<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">9. Father's Name :</strong>
-								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
-							</div>
-							<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">10. Father's Name :</strong>
-								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
-							</div>
-							<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">11. Father's Name :</strong>
-								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
-							</div>
-							<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">12. Father's Name :</strong>
-								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
-							</div>
-							<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">13. Father's Name :</strong>
-								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
-							</div>
-							<div class="col-12 mb-3 d-flex mt-2">	
-								<strong class="label-text">14. Father's Name :</strong>
-								<span class="text-underline" style="text-align:center;">SHASHIKANT BHARADWAJ</span>
-							</div>-->
 						</div>
 						<div style="display: flex;justify-content: space-between;" class="mt-5">
 							<div style="width: 50%; padding:0; display: flex; align-items: center;">

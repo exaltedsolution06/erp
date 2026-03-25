@@ -247,6 +247,10 @@ class Schsettings extends Admin_Controller {
         $this->form_validation->set_rules('online_admission', $this->lang->line('online') . " " . $this->lang->line('admission'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('is_duplicate_fees_invoice', $this->lang->line('duplicate') . " " . $this->lang->line('fees') . " " . $this->lang->line('invoice'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('main_domain_url', $this->lang->line('main_domain_url'), 'trim|required|xss_clean');
+		
+		$this->form_validation->set_rules('book_no', 'Book No', 'required');
+		$this->form_validation->set_rules('serial_no_prefix', 'Serial No Prefix', 'required');
+		$this->form_validation->set_rules('serial_no_suffix', 'Serial No Suffix', 'required');
 
 
         if ($this->input->post('adm_auto_insert')) {
@@ -293,6 +297,9 @@ class Schsettings extends Admin_Controller {
                 'attendence_type' => form_error('attendence_type'),
                 'fee_due_days' => form_error('fee_due_days'),
                 'main_domain_url' => form_error('main_domain_url'),
+                'book_no' => form_error('book_no'),
+                'serial_no_prefix' => form_error('serial_no_prefix'),
+                'serial_no_suffix' => form_error('serial_no_suffix'),
             );
             $array = array('status' => 'fail', 'error' => $data);
             echo json_encode($array);
@@ -336,6 +343,9 @@ class Schsettings extends Admin_Controller {
                 'mobile_api_url' => $this->input->post('mobile_api_url'),
                 'my_question' => $this->input->post('my_question'),
                 'main_domain_url' => $this->input->post('main_domain_url'),
+                'book_no' => $this->input->post('book_no'),
+                'serial_no_prefix' => $this->input->post('serial_no_prefix'),
+                'serial_no_suffix' => $this->input->post('serial_no_suffix'),
             );
             $this->session->userdata['admin']['is_rtl'] = $this->input->post('sch_is_rtl');
             $language_result = $this->language_model->get($this->input->post('sch_lang_id'));

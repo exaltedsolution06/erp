@@ -124,7 +124,6 @@ class Designtc_model extends MY_Model {
 		//======================Code End==============================
 
 		$this->db->trans_complete(); # Completing transaction
-		/* Optional */
 
 		if ($this->db->trans_status() === false) {
 			# Something went wrong.

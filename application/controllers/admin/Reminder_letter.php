@@ -57,7 +57,7 @@ class Reminder_letter extends Admin_Controller {
             $picture = '';
         }
 
-        $this->form_validation->set_rules('description', $this->lang->line('description'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('description', $this->lang->line('description'), 'trim|required');
         $this->form_validation->set_rules('template_name', $this->lang->line('template_name'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('heading_title', $this->lang->line('heading_title'), 'trim|xss_clean');
 
@@ -164,7 +164,7 @@ class Reminder_letter extends Admin_Controller {
         //$this->data['custom_fields'] = $custom_fields;
         $this->form_validation->set_rules('template_name', $this->lang->line('template_name'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('heading_title', $this->lang->line('heading_title'), 'trim|xss_clean');
-        $this->form_validation->set_rules('description', $this->lang->line('description'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('description', $this->lang->line('description'), 'trim|required');
         if ($this->form_validation->run() == FALSE) {
 			//echo "<pre>";print_r($editcertificate);die;
             $this->data['certificateList'] = $this->Reminder_model->remindLetterList();

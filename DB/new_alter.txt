@@ -152,8 +152,6 @@ ALTER TABLE `template_reportcard` ADD `show_date` CHAR(36) NULL DEFAULT NULL AFT
 ALTER TABLE `template_designtc` ADD `is_show_date` TINYINT(1) NOT NULL DEFAULT '0' AFTER `background_image`, ADD `show_date` CHAR(36) NULL DEFAULT NULL AFTER `is_show_date`;
 ALTER TABLE `template_reportcard` ADD `is_show_attendance` INT(1) NOT NULL DEFAULT '0' AFTER `show_place`;
 
-ALTER TABLE `template_designtc` ADD `book_no` VARCHAR(50) NULL DEFAULT NULL AFTER `certificate_name`, ADD `serial_no_prefix` VARCHAR(50) NULL DEFAULT NULL AFTER `book_no`, ADD `serial_no_suffix` INT(11) NULL DEFAULT NULL AFTER `serial_no_prefix`;
-
 CREATE TABLE `tc_certificate_generates` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `session_id` int(11) DEFAULT NULL,
@@ -162,6 +160,12 @@ CREATE TABLE `tc_certificate_generates` (
   `created_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--- 25-03-2026 ---
+ALTER TABLE `certificates` ADD `is_active_header_img` TINYINT(1) NOT NULL DEFAULT '0' AFTER `enable_image_height`;
+ALTER TABLE `certificates` ADD `is_left_footer` INT(11) NOT NULL DEFAULT '0' AFTER `center_footer`, ADD `is_center_footer` INT(11) NOT NULL DEFAULT '0' AFTER `is_left_footer`, ADD `is_right_footer` INT(11) NOT NULL DEFAULT '0' AFTER `is_center_footer`, ADD `left_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `is_right_footer`, ADD `middle_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `left_sign`, ADD `right_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `middle_sign`;
+
+ALTER TABLE `sch_settings` ADD `book_no` VARCHAR(50) NULL DEFAULT NULL AFTER `domain_api_key`, ADD `serial_no_prefix` VARCHAR(50) NULL DEFAULT NULL AFTER `book_no`, ADD `serial_no_suffix` INT(11) NULL DEFAULT NULL AFTER `serial_no_prefix`;
 
 
 

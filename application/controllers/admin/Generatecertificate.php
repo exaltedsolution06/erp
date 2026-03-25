@@ -118,7 +118,7 @@ class Generatecertificate extends Admin_Controller {
         foreach ($data['students'] as $key => $value) {
            $data['students'][$key]->name=$this->customlib->getFullName($value->firstname,$value->middlename,$value->lastname,$this->sch_setting_detail->middlename,$this->sch_setting_detail->lastname);
         }
-
+		$data['header_image']= $this->setting_model->get_header_return('common_header');
         $data['sch_setting'] = $this->sch_setting_detail;
         $certificates = $this->load->view('admin/certificate/printcertificate', $data, true);
         echo $certificates;
