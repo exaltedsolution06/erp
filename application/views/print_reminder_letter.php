@@ -95,10 +95,22 @@
 		<?php 
 		foreach($result as $val)
 		{
-		$replace = [
-			'[old_balance]' => '<strong><u>Old Bal.</u></strong>',
-			'[amount]'      => '<strong><u>'.$val['amount'].'</u></strong>'
-		];
+			$html = '- ';
+			if($val['old_balc'] > 0){
+				$html .= 'Old Bal. - <strong>'.$val['old_balc'].'</strong>, ';
+			}
+			if($val['fees_month_amount'] > 0){
+				$html .= 'Fees <strong>('.$val['fees_month'].') - '.$val['fees_month_amount'].',</strong> ';
+			}
+			if($val['routes_month_amount'] > 0){
+				$html .= 'Route Fees <strong>('.$val['routes_month'].') - '.$val['routes_month_amount'].',</strong> ';
+			}
+			if($val['amount'] > 0){
+				$html .= 'Total Bal. - <strong>'.$val['amount'].'</strong>, ';
+			}
+			$replace = [
+				'[fees_details]' => $html
+			];
 		?>
 			<div class="col-sm-6 print-block">
 				<div class="slip">

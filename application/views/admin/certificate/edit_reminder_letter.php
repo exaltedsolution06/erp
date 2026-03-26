@@ -163,7 +163,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										<div class="form-group">
 											<label><?php echo $this->lang->line('body_text'); ?></label><small class="req"> *</small>
 											<textarea class="form-control ss" id="editor1" name="description" placeholder="" rows="3" placeholder=""><?php echo isset($editcertificate[0]->description) ? $editcertificate[0]->description : ''?></textarea>
-											<span class="text-primary">[old_balance] [amount]
+											<span class="text-primary">[fees_details]
 											</span>
 											<span class="text-danger"><?php echo form_error('description'); ?></span>
 										</div>

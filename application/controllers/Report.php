@@ -1609,7 +1609,7 @@ class Report extends Admin_Controller
 		$header_image= $this->setting_model->get_header_return('common_header');
 		
 		$result = [];
-		foreach($this->input->post('default_data') as $val)
+		foreach($this->input->post('default_data') as $k=>$val)
 		{
 			$explode = explode("@@@", $val);
 			$student_id = $explode[0];
@@ -1627,8 +1627,12 @@ class Report extends Admin_Controller
 						'father_name' => $student_details['father_name'],
 						'phone' => $student_details['mobileno'],
 						'date' => $student_details['admission_date'],
-						'old_balc' => $old_balc,
-						'amount' => $amount,
+						'old_balc' => format_amount($old_balc),
+						'fees_month' => $this->input->post('fees_month')[$k],
+						'fees_month_amount' => format_amount($this->input->post('fees_month_amount')[$k]),
+						'routes_month' => $this->input->post('routes_month')[$k],
+						'routes_month_amount' => format_amount($this->input->post('routes_month_amount')[$k]),
+						'amount' => format_amount($amount),
 						'header_image' => $header_image,
 						'description' => $description,
 						'isuid' => $template_derails[0]->uid_no,
