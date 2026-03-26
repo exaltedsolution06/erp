@@ -149,6 +149,38 @@ class Receipt_model extends CI_Model {
         return $months_array;
     }
 
+    public function get_fees_pay_mounth($id){
+        $this->db->select('DISTINCT(months)');
+        $this->db->from('receipts');
+        $this->db->where('student_id', $id);
+		$this->db->where('session_id', $this->current_session);
+		$this->db->where('fee_head_type', 'fees');
+        $query = $this->db->get();
+        $result = $query->result();
+
+        $months_array = array_map(function($row) {
+            return $row->months;
+        }, $result);
+ 
+        return $months_array;
+    }
+
+    public function get_route_pay_mounth($id){
+        $this->db->select('DISTINCT(months)');
+        $this->db->from('receipts');
+        $this->db->where('student_id', $id);
+		$this->db->where('session_id', $this->current_session);
+		$this->db->where('fee_head_type', 'route');
+        $query = $this->db->get();
+        $result = $query->result();
+
+        $months_array = array_map(function($row) {
+            return $row->months;
+        }, $result);
+ 
+        return $months_array;
+    }
+
 
 
     public function get_receipts_by_ids($ids = []) {

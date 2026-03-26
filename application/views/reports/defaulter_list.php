@@ -518,6 +518,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                         // $pay+= $amt_fee_heads->amount??0;
 																		
 																		$pay+= isset($amt_fee_heads->amount[$month]) ? (float)$amt_fee_heads->amount[$month] : 0;
+																		
                                                                     } else {
                                                                         // $pay+=$receipt->fees_received;
                                                                         $pay+=0;

@@ -100,7 +100,7 @@
                             </div>
                         </form>
                     </div>
-                    <!--<div class="box box-primary">
+                    <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title"><?php echo $this->lang->line('cron_secret_key') ?></h3>
                             <div class="box-tools pull-right">   
@@ -118,11 +118,11 @@
                             <div style="display:none" id="cronkey">
                                 <p class="hideeyep"><?php print_r($settinglist[0]['cron_secret_key']); ?></p>
                             </div>
-                            <a class="hideeye" data-toggle="tooltip" title="<?php echo $this->lang->line('cron_secret_key') ?>" id="showbtn" onclick="showkey()" href="#"><i class="fa fa-eye"></i></a>
+                            <a class="hideeye" data-toggle="tooltip" title="<?php echo $this->lang->line('cron_secret_key') ?>" id="showbtn" onclick="showkey()" href="javascript:void(0);"><i class="fa fa-eye"></i></a>
 
                         </div>
 
-                    </div>--><!--./box box-warning-->
+                    </div><!--./box box-warning-->
                 </div><!--./col-md-4-->
                 <!-- <div class="col-md-4"></div> -->
 <?php } ?>
