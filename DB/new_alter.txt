@@ -167,6 +167,8 @@ ALTER TABLE `certificates` ADD `is_left_footer` INT(11) NOT NULL DEFAULT '0' AFT
 
 ALTER TABLE `sch_settings` ADD `book_no` VARCHAR(50) NULL DEFAULT NULL AFTER `domain_api_key`, ADD `serial_no_prefix` VARCHAR(50) NULL DEFAULT NULL AFTER `book_no`, ADD `serial_no_suffix` INT(11) NULL DEFAULT NULL AFTER `serial_no_prefix`;
 
+--- 26-03-2026 ---
+ALTER TABLE `template_reportcard` ADD `is_class_position` INT(1) NOT NULL DEFAULT '0' AFTER `is_show_attendance`;
 
 
 ===============================

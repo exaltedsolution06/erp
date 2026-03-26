@@ -474,6 +474,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										<label for="is_show_attendance" class="label-success"></label>
 									</div>
 								</div>
+								<div class="form-group switch-inline">
+									<label><?php echo $this->lang->line('show'); ?> Position in class</label>
+									<div class="material-switch switchcheck">
+										<input id="is_class_position" name="is_class_position" type="checkbox" class="chk" value="1">
+										<label for="is_class_position" class="label-success"></label>
+									</div>
+								</div>
 								
 								
                             </div><!-- /.box-body -->

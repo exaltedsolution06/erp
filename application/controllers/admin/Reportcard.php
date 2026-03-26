@@ -149,6 +149,11 @@ class Reportcard extends Admin_Controller {
             } else {
                 $is_show_attendance = 0;
             }
+            if (isset($_POST['is_class_position'])) {
+                $is_class_position = 1;
+            } else {
+                $is_class_position = 0;
+            }
 
 
 
@@ -179,6 +184,7 @@ class Reportcard extends Admin_Controller {
                 'place'=>$place,
                 'show_place'=>$show_place,
                 'is_show_attendance'=>$is_show_attendance,
+                'is_class_position'=>$is_class_position,
                 'grade_table_title'=>$grade_table_title,
                 'school_reopen_date'=>$school_reopen_date,
                 'school_reopen_time'=>$school_reopen_time,
@@ -431,6 +437,11 @@ class Reportcard extends Admin_Controller {
             } else {
                 $is_show_attendance = 0;
             }
+            if (isset($_POST['is_class_position'])) {
+                $is_class_position = 1;
+            } else {
+                $is_class_position = 0;
+            }
 
 
             $insert_data = array(
@@ -470,6 +481,7 @@ class Reportcard extends Admin_Controller {
                 'place'=>$place,
                 'show_place'=>$show_place,
                 'is_show_attendance'=>$is_show_attendance,
+                'is_class_position'=>$is_class_position,
                 'grade_table_title'=>$grade_table_title,
                 'left_sign_title' => $this->input->post('left_sign_title'),
                 'middle_sign_title' => $this->input->post('middle_sign_title'),

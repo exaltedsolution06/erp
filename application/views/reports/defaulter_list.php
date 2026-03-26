@@ -457,29 +457,41 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 																	"Feb" => "month_feb",
 																	"Mar" => "month_mar"
 																];
+																if(!empty($feeDiscountsArr)){
+																	foreach ($feeDiscountsArr as $paid) {
 
-																foreach ($feeDiscountsArr as $paid) {
+																		if ($paid['fee_type_id'] == $amt_fee_heads->id) {
 
-																	if ($paid['fee_type_id'] == $amt_fee_heads->id) {
+																			$months = json_decode($amt_fee_heads->months, true);
 
-																		$months = json_decode($amt_fee_heads->months, true);
+																			if (!is_array($months)) continue;
 
-																		if (!is_array($months)) continue;
+																			$amounts = [];
 
-																		$amounts = [];
+																			foreach ($months as $month) {
 
-																		foreach ($months as $month) {
+																				$column = $monthMap[$month];
 
-																			$column = $monthMap[$month];
+																				$amounts[$month] = isset($paid[$column])
+																					? floatval($paid[$column])
+																					: floatval($amt_fee_heads->amount); // fallback
+																			}
 
-																			$amounts[$month] = isset($paid[$column])
-																				? floatval($paid[$column])
-																				: floatval($amt_fee_heads->amount); // fallback
+																			// Replace amount with month-wise array
+																			$amt_fee_heads->amount = $amounts;
 																		}
-
-																		// Replace amount with month-wise array
-																		$amt_fee_heads->amount = $amounts;
 																	}
+																}else{
+																	$months = json_decode($amt_fee_heads->months, true);
+																	if (!is_array($months)) continue;
+																	$amounts = [];
+																	foreach ($months as $month) {
+
+																		$column = $monthMap[$month];
+
+																		$amounts[$month] = floatval($amt_fee_heads->amount); // fallback
+																	}
+																	$amt_fee_heads->amount = $amounts;
 																}
 																
                                                                 foreach ($selected_months as $month) {
@@ -498,6 +510,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                                     // echo json_encode($receipt);
                                                                     // echo $amt_fee_heads->amount;
+																	if($list['fees_heading'] == 'Registration Fee'){
+																		// echo '<pre>'; print_r($amt_fee_heads);exit;
+																	}
                                                                     
                                                                     if (empty($receipt)) {
                                                                         // $pay+= $amt_fee_heads->amount??0;
@@ -583,29 +598,41 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 																	"Feb" => "month_feb",
 																	"Mar" => "month_mar"
 																];
+																if(!empty($routeDiscountsArr)){
+																	foreach ($routeDiscountsArr as $paid) {
 
-																foreach ($routeDiscountsArr as $paid) {
+																		if ($paid['fee_type_id'] == $amt_fee_heads->id) {
 
-																	if ($paid['fee_type_id'] == $amt_fee_heads->id) {
+																			$months = json_decode($amt_fee_heads->months, true);
 
-																		$months = json_decode($amt_fee_heads->months, true);
+																			if (!is_array($months)) continue;
 
-																		if (!is_array($months)) continue;
+																			$amounts = [];
 
-																		$amounts = [];
+																			foreach ($months as $month) {
 
-																		foreach ($months as $month) {
+																				$column = $monthMap[$month];
 
-																			$column = $monthMap[$month];
+																				$amounts[$month] = isset($paid[$column])
+																					? floatval($paid[$column])
+																					: floatval($amt_fee_heads->amount); // fallback
+																			}
 
-																			$amounts[$month] = isset($paid[$column])
-																				? floatval($paid[$column])
-																				: floatval($amt_fee_heads->amount); // fallback
+																			// Replace amount with month-wise array
+																			$amt_fee_heads->amount = $amounts;
 																		}
-
-																		// Replace amount with month-wise array
-																		$amt_fee_heads->amount = $amounts;
 																	}
+																}else{
+																	$months = json_decode($amt_fee_heads->months, true);
+																	if (!is_array($months)) continue;
+																	$amounts = [];
+																	foreach ($months as $month) {
+
+																		$column = $monthMap[$month];
+
+																		$amounts[$month] = floatval($amt_fee_heads->amount); // fallback
+																	}
+																	$amt_fee_heads->amount = $amounts;
 																}
 																
                                                                 foreach ($selected_months as $month) {

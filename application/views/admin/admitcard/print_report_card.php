@@ -512,7 +512,7 @@
 												if(isset($saved_max_marks_json[$exam_group_id]) && $saved_max_marks_json[$exam_group_id] == 1){
 													array_push($array,$max_marks1);
 												?>
-												<td style="width:100px"><strong><?php echo $max_marks1; ?></strong></td>
+												<td style="width:100px"><strong><?php echo format_amount($max_marks1); ?></strong></td>
 												<?php
 												}
 											}
@@ -521,14 +521,14 @@
 											if(isset($saved_marks_obtained_json[$exam_group_id]) && $saved_marks_obtained_json[$exam_group_id] == 1){
 												array_push($array,$total); 
 											?>
-											<td style="width:100px"><?php echo $total; ?></td>
+											<td style="width:100px"><?php echo format_amount($total); ?></td>
 											<?php
 											}
 											if($desc->max_marks_shift_left==0){
 												if(isset($saved_max_marks_json[$exam_group_id]) && $saved_max_marks_json[$exam_group_id] == 1){
 													array_push($array,$max_marks1);
 												?>
-												<td style="width:100px"><strong><?php echo $max_marks1; ?></strong></td>
+												<td style="width:100px"><strong><?php echo format_amount($max_marks1); ?></strong></td>
 												<?php
 												}
 											}
@@ -559,19 +559,19 @@
 											if($desc->max_marks_shift_left==1){
 												if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
 												?>
-												<td><strong><?=$max_marks; ?></strong></td>
+												<td><strong><?=format_amount($max_marks); ?></strong></td>
 												<?php
 												}
 											}
 											if(isset($saved_marks_obtained_json['overall']) && $saved_marks_obtained_json['overall'] == 1){
 											?>
-											<td><strong><?=$total1; ?></strong></td>
+											<td><strong><?=format_amount($total1); ?></strong></td>
 											<?php
 											}
 											if($desc->max_marks_shift_left==0){
 												if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
 												?>
-												<td><strong><?=$max_marks; ?></strong></td>
+												<td><strong><?=format_amount($max_marks); ?></strong></td>
 												<?php
 												}
 											}
@@ -660,20 +660,20 @@
 											if($desc->max_marks_shift_left==1){
 												if(isset($saved_max_marks_json[$exam_group_id_op]) && $saved_max_marks_json[$exam_group_id_op] == 1){
 												?>
-												<td style="width:100px"><strong><?php echo $max_marks1_op; ?></strong></td>
+												<td style="width:100px"><strong><?php echo format_amount($max_marks1_op); ?></strong></td>
 												<?php
 												}
 											}
 											echo $term_html_op;
 											if(isset($saved_marks_obtained_json[$exam_group_id_op]) && $saved_marks_obtained_json[$exam_group_id_op] == 1){
 											?>
-											<td style="width:100px"><?php echo $total_op; ?></td>
+											<td style="width:100px"><?php echo format_amount($total_op); ?></td>
 											<?php
 											}
 											if($desc->max_marks_shift_left==0){
 												if(isset($saved_max_marks_json[$exam_group_id_op]) && $saved_max_marks_json[$exam_group_id_op] == 1){
 												?>
-												<td style="width:100px"><?php echo $max_marks1_op; ?></td>
+												<td style="width:100px"><?php echo format_amount($max_marks1_op); ?></td>
 												<?php
 												}
 											}
@@ -694,19 +694,19 @@
 											if($desc->max_marks_shift_left==1){
 												if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
 												?>
-												<td><strong><?=$max_marks_op; ?></strong></td>
+												<td><strong><?=format_amount($max_marks_op); ?></strong></td>
 												<?php
 												}
 											}
 											if(isset($saved_marks_obtained_json['overall']) && $saved_marks_obtained_json['overall'] == 1){
 											?>
-											<td><strong><?=$total1_op; ?></strong></td>
+											<td><strong><?=format_amount($total1_op); ?></strong></td>
 											<?php
 											}
 											if($desc->max_marks_shift_left==0){
 												if(isset($saved_max_marks_json['overall']) && $saved_max_marks_json['overall'] == 1){
 												?>
-												<td><strong><?=$max_marks_op; ?></strong></td>
+												<td><strong><?=format_amount($max_marks_op); ?></strong></td>
 												<?php
 												}
 											}
@@ -1079,8 +1079,15 @@
 					}
 					if($desc->is_show_attendance==1){
 					?>
-					<div class="col-12 d-flex">
+					<div class="col-12 mb-3 d-flex">
 						<strong>Attendance :</strong> <strong class="text-underline" style="width:300px; text-align:center;">&nbsp;</strong>
+					</div>
+					<?php
+					}
+					if($desc->is_class_position==1){
+					?>
+					<div class="col-12 d-flex">
+						<strong>Position in class :</strong> <strong class="text-underline" style="width:300px; text-align:center;">&nbsp;</strong>
 					</div>
 					<?php
 					}
