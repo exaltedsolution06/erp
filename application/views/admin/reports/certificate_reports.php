@@ -93,7 +93,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <table  cellpadding="8" cellspacing="0" class="table example table-striped table-bordered table-hover example table-fixed-header" style="">
                                         <thead>
                                             <tr>
-                                                <th style="">Book No</th>
                                                 <th style="">Sr No</th>
                                                 <th style="">Date</th>
 												<th style="width:70px !imortant">Adm. No</th>
@@ -112,12 +111,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <tbody>
                                         
                                             <?php if (!empty($certificate_data)): ?>
-                                                <?php foreach ($certificate_data as $record): ?>
+                                                <?php $sr_no = 0; foreach ($certificate_data as $record): ?>
+												<?php $sr_no++;  ?>
 												<?php $record=(array)$record;  ?>
 												<?php $setting_result=(array)$setting_result;  ?>
                                             <tr>
-                                                <td style=""><?= $setting_result['book_no'] ?></td>
-                                                <td style=""><?= $setting_result['serial_no_prefix'].$record['serial_no'] ?></td>
+                                                <td style=""><?= $sr_no; ?></td>
                                                 <td style=""><?= date('d-m-Y',strtotime($record["created_date"])) ?></td>
                                                 <td ><?= $record["admission_no"] ?></td>
                                                 <td ><?= $record["firstname"].' '.$record["middlename"].' '.$record["lastname"] ?></td>
@@ -131,14 +130,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 													<a href="javascript:void(0)" class="btn btn-default btn-xs reprint" data-toggle="tooltip" title="" data-original-title="Reprint" data-id="<?= $record["id"] ?>" data-cid="<?= $record["template_id"] ?>">
                                                         <i class="fa fa-print"></i>
                                                     </a>
-													<a href="<?php echo base_url(); ?>admin/printtc/delete/<?php echo $record["certificate_id"] ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="Delete" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
+													<a href="<?php echo base_url(); ?>admin/generatecertificate/delete/<?php echo $record["certificate_id"] ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="Delete" onclick="return confirm('<?php echo $this->lang->line('delete_confirm') ?>');">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
 												</td>
                                             </tr>
                                         <?php endforeach; ?>
                                         <?php else: ?>
-                                            <tr><td colspan="6" class="text-center">No records found</td></tr>
+                                            <tr><td colspan="5" class="text-center">No records found</td></tr>
                                         <?php endif; ?>
                                     </tbody>
                                     
@@ -175,7 +174,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                 alert("<?php echo $this->lang->line('no_record_selected'); ?>");
             } else {
                 $.ajax({
-                    url: '<?php echo site_url("admin/printtc/generatemultiple") ?>',
+                    url: '<?php echo site_url("admin/generatecertificate/generatemultiple") ?>',
                     type: 'post',
                     dataType: "html",
                     data: {'data': JSON.stringify(array_to_print), 'class_id': classId, 'certificate_id': certificateId, },

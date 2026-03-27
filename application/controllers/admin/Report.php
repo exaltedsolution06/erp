@@ -185,6 +185,76 @@ class Report extends Admin_Controller
             }
         }
     }
+	public function certificate_reports() {
+		if (!$this->rbac->hasPrivilege('certificate_section_report', 'can_view')) {
+            access_denied();
+        }
+		
+        $this->session->set_userdata('top_menu', 'Reports');
+        $this->session->set_userdata('sub_menu', 'report/certificate-section');
+        $this->session->set_userdata('subsub_menu', 'Reports/certificate/certificate');
+        $data['title'] = 'Certificate Report';
+		$data['setting_result'] = $this->setting_model->getSetting();
+		$from_date = $this->input->get('from_date');
+        $to_date   = $this->input->get('to_date');
+		
+		// paginate
+        $per_page_input = $this->input->get('per_page');
+        $total_rows = $this->Generatecertificate_model->get_generated_certificates_count($from_date, $to_date);
+
+        $per_page = (!empty($per_page_input) && $per_page_input != 'all') ? (int)$per_page_input : 10;
+        $per_page = ($per_page_input == 'all') ? $total_rows : $per_page;
+
+        $config['base_url'] = base_url('admin/report/certificate_reports');
+        $config['total_rows'] = $total_rows;
+        $config['per_page'] = $per_page;
+        $config['uri_segment'] = 3;
+        $config['reuse_query_string'] = TRUE;
+
+        // Pagination Bootstrap Styling (same as you already have)
+        $config['full_tag_open'] = '<ul class="pagination justify-content-center">';
+        $config['full_tag_close'] = '</ul>';
+        $config['attributes'] = ['class' => 'page-link'];
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+
+        $this->pagination->initialize($config);
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+        $data['certificate_data'] = $this->Generatecertificate_model->get_generated_certificates($config['per_page'], $page,$from_date, $to_date);
+        $data['pagination_links'] = $this->pagination->create_links();
+		
+		if ($this->input->server('REQUEST_METHOD') == "GET") {
+			// echo '<pre>';print_r($data);exit;
+			$this->load->view('layout/header', $data);
+			$this->load->view('admin/reports/certificate_reports', $data);
+			$this->load->view('layout/footer', $data);
+        } else {
+
+            $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
+            $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
+            $this->form_validation->set_rules('student_id', $this->lang->line('student'), 'trim|required|xss_clean');
+
+            if ($this->form_validation->run() == false) {
+
+                $this->load->view('layout/header', $data);
+                $this->load->view('studentfee/certificate_reports', $data);
+                $this->load->view('layout/footer', $data);
+            }
+        }
+    }
 	public function library_management_reports() {
         $this->session->set_userdata('top_menu', 'Reports');
         $this->session->set_userdata('sub_menu', 'report/library-management');

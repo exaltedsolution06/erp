@@ -105,17 +105,17 @@ foreach ($students as $student) {
         '[PAN Card]'  => $student->cast
     ];
 	
-	/*$check_student_id = $this->designtc_model->check_student_id($student->id);
+	$check_student_id = $this->Generatecertificate_model->check_student_id($student->id);
 	if($check_student_id)
 	{
 		$data = [
 			'session_id' => $certificate->session_id,
-			'serial_no'  => $certificate->serial_no_prefix.' '.$certificate->serial_no_suffix,
 			'student_id' => $student->id,
+			'template_id' => $certificate->id,
 			'created_date' => date('Y-m-d h:i:s')
 		];
-		$this->designtc_model->addCertificateGenerate($data);
-	}*/
+		$i_id = $this->Generatecertificate_model->addCertificateGenerate($data);
+	}
 	
 	?>
 	<?php 

@@ -13,7 +13,7 @@
                         <li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/certificate/tc-certificate'); ?>"><a href="<?php echo base_url(); ?>admin/report/tc_reports"><i class="fa fa-file-text-o"></i> TC Reports</a></li>
                      
 
-                        <li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/finance/studentacademicreport'); ?>"><a href="<?php echo base_url(); ?>admin/transaction/studentacademicreport"><i class="fa fa-file-text-o"></i>
+                        <li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/certificate/certificate'); ?>"><a href="<?php echo base_url(); ?>admin/report/certificate_reports"><i class="fa fa-file-text-o"></i>
                                 Certificate Reports</a></li>
 
                 </ul>

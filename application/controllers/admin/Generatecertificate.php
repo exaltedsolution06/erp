@@ -123,5 +123,13 @@ class Generatecertificate extends Admin_Controller {
         $certificates = $this->load->view('admin/certificate/printcertificate', $data, true);
         echo $certificates;
     }
-
+	function delete($id) {
+        if (!$this->rbac->hasPrivilege('generate_certificate', 'can_delete')) {
+            access_denied();
+        }
+        $data['title'] = 'Print Certificate Delete';
+        $this->Generatecertificate_model->print_delete($id);
+        $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('delete_message') . '</div>');
+        redirect('admin/report/certificate_reports');
+    }
 }

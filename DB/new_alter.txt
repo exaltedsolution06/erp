@@ -170,6 +170,19 @@ ALTER TABLE `sch_settings` ADD `book_no` VARCHAR(50) NULL DEFAULT NULL AFTER `do
 --- 26-03-2026 ---
 ALTER TABLE `template_reportcard` ADD `is_class_position` INT(1) NOT NULL DEFAULT '0' AFTER `is_show_attendance`;
 
+--- 27-03-2026 ---
+CREATE TABLE `certificate_generates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `session_id` int(11) DEFAULT NULL,
+  `student_id` int(11) DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `tc_certificate_generates` ADD `template_id` INT(11) NULL DEFAULT NULL AFTER `student_id`;
+ALTER TABLE `certificate_generates` ADD `template_id` INT(11) NULL DEFAULT NULL AFTER `student_id`;
+
+
 
 ===============================
 File change outside of application folder
