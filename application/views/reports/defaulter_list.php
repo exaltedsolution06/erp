@@ -738,11 +738,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                     ?>
                                                     <td style="text-align:right"><?=number_format($final,2)?>
-													<input name="fees_month[]" type="text" value="<?php echo  implode(',', $fees_month); ?>">
-													<input name="fees_month_amount[]" type="text" value="<?php echo number_format($fees_month_amount ?? 0, 2); ?>">
-													<input name="routes_month[]" type="text" value="<?php echo  implode(',', $routes_month); ?>">
-													<input name="routes_month_amount[]" type="text" value="<?php echo number_format($routeFees,2); ?>">
-													<input name="default_data[]" type="text" value="<?php echo  $record['student_id'] .'@@@'.$record["fees_discount"].'@@@'.$final ;?>"></td>
+													<input name="fees_month[]" type="hidden" value="<?php echo  implode(',', $fees_month); ?>">
+													<input name="fees_month_amount[]" type="hidden" value="<?php echo number_format($fees_month_amount ?? 0, 2); ?>">
+													<input name="routes_month[]" type="hidden" value="<?php echo  implode(',', $routes_month); ?>">
+													<input name="routes_month_amount[]" type="hidden" value="<?php echo number_format($routeFees,2); ?>">
+													<input name="default_data[]" type="hidden" value="<?php echo  $record['student_id'] .'@@@'.$record["fees_discount"].'@@@'.$final ;?>"></td>
                                                     
                                                 </tr>
                                                 <?php

@@ -104,19 +104,27 @@ foreach ($students as $student) {
         '[PAN Card]'  => $student->cast
     ];
 	
-	/*$check_student_id = $this->designtc_model->check_student_id($student->id);
+	$check_student_id = $this->designtc_model->check_student_id($student->id);
 	if($check_student_id)
 	{
+		$max_serial_no = $this->designtc_model->get_max_serial_no();
+		if($max_serial_no > 0){
+			$sl_no = $max_serial_no+1;
+		}else{
+			$sl_no = $result->serial_no_suffix;
+		}
 		$data = [
 			'session_id' => $certificate->session_id,
-			'serial_no'  => $result->serial_no_suffix,
+			'serial_no'  => $sl_no,
 			'student_id' => $student->id,
 			'template_id' => $certificate->id,
 			'created_date' => date('Y-m-d h:i:s')
 		];
 		$i_id = $this->designtc_model->addCertificateGenerate($data);
-	echo $i_id;exit;
-	}*/
+	}else{
+		$check_certificate = $this->designtc_model->get_certificate($student->id);
+		$sl_no = $check_certificate['serial_no'];
+	}
 	
 	?>
 	<div class="mark-container mb-5">
@@ -153,6 +161,14 @@ foreach ($students as $student) {
 							}
 						?>
 						<div class="row mt-5">
+						<div class="col-6 mb-3 d-flex mt-2">	
+							<strong class="label-text">Book No :</strong>
+							<span class="text-underline" style="text-align:center;"><?php echo $result->book_no; ?></span>
+						</div>
+						<div class="col-6 mb-3 d-flex mt-2">	
+							<strong class="label-text">SR No :</strong>
+							<span class="text-underline" style="text-align:center;"><?php echo $result->serial_no_prefix.$sl_no; ?></span>
+						</div>
 						<?php 
 						$i=0;
 						foreach($fields_json as $val)

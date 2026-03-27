@@ -98,5 +98,13 @@ class Printtc extends Admin_Controller {
         $certificates = $this->load->view('admin/certificate/printtccertificate', $data, true);
         echo $certificates;
     }
-
+	function delete($id) {
+        if (!$this->rbac->hasPrivilege('print_tc', 'can_delete')) {
+            access_denied();
+        }
+        $data['title'] = 'Print TC Delete';
+        $this->designtc_model->print_delete($id);
+        $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('delete_message') . '</div>');
+        redirect('admin/report/tc_reports');
+    }
 }

@@ -278,8 +278,15 @@ if (!function_exists('format_amount'))
 {
 	function format_amount($amount){
 
-		// convert to float safely
-		$amount = is_numeric($amount) ? (float)$amount : 0;
+		// remove commas & trim
+		$amount = str_replace(',', '', trim($amount));
+
+		// validate numeric
+		if(!is_numeric($amount)){
+			return 0;
+		}
+
+		$amount = (float)$amount;
 
 		if(floor($amount) == $amount){
 			return (int)$amount;
