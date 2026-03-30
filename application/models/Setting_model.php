@@ -493,7 +493,7 @@ class Setting_model extends MY_Model {
 		
 		$num_rows = '';
 		if($receipt_status == 1 && ($receipt_start_sequence_existing == '' || $receipt_start_sequence != $receipt_start_sequence_existing)) { 
-			$query = $this->db->where('session_id', $current_session_id)->get('receipt_sr_no');
+			$query = $this->db->where('session_id', $current_session_id)->where('deleted_status !=', 1)->get('receipt_sr_no');
 			$num_rows = $query->num_rows();
 		}
         if ($num_rows > 0) {

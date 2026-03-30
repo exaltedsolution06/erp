@@ -547,6 +547,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             <?php 
 															$student_routes = $this->db->where('id', $record['route_id'])->get('route_head')->result_array();
 															$routes_month = [];
+                                                                $pay=0;
                                                              foreach($student_routes as $list){ 
                                                                 $class_id = $record['class_id'];
                                                                 $category_id = $record['category_id'];
@@ -584,7 +585,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                     $selected_months = [$selected_months];
                                                                 }
                                                                 
-                                                                $pay=0;
 																
 																$routeDiscountsArr    = $this->fee_discount_model->get_all_routes($record['student_session_id']);
 																$monthMap = [

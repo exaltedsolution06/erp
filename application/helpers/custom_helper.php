@@ -278,21 +278,26 @@ if (!function_exists('format_amount'))
 {
 	function format_amount($amount){
 
-		// remove commas & trim
-		$amount = str_replace(',', '', trim($amount));
+        // trim only (don't force numeric yet)
+        $clean = trim($amount);
 
-		// validate numeric
-		if(!is_numeric($amount)){
-			return 0;
-		}
+        // remove commas for numeric check
+        $numeric = str_replace(',', '', $clean);
 
-		$amount = (float)$amount;
+        // if NOT numeric → return original
+        if(!is_numeric($numeric)){
+            return $amount;
+        }
 
-		if(floor($amount) == $amount){
-			return (int)$amount;
-		}else{
-			return number_format($amount, 2, '.', '');
-		}
-	}
+        $numeric = (float)$numeric;
+
+        // if whole number → return int
+        if(floor($numeric) == $numeric){
+            return (int)$numeric;
+        }
+
+        // else return with 2 decimal
+        return number_format($numeric, 2, '.', '');
+    }
 }
 

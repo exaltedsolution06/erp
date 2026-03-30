@@ -1423,7 +1423,7 @@ class Receipt_model extends CI_Model {
             student_session.transport_fees,
             student_session.route_id,
             vehicle_routes.vehicle_id,
-            transport_route.route_title,
+            route_head.fees_heading as route_title,
             vehicles.vehicle_no,
             hostel_rooms.room_no,
             vehicles.driver_name,
@@ -1510,8 +1510,9 @@ class Receipt_model extends CI_Model {
         $this->db->join('hostel_rooms', 'hostel_rooms.id = students.hostel_room_id', 'left');
         $this->db->join('hostel', 'hostel.id = hostel_rooms.hostel_id', 'left');
         $this->db->join('room_types', 'room_types.id = hostel_rooms.room_type_id', 'left');
-        $this->db->join('vehicle_routes', 'vehicle_routes.id = student_session.route_id', 'left');
-        $this->db->join('transport_route', 'vehicle_routes.route_id = transport_route.id', 'left');
+        $this->db->join('vehicle_routes', 'vehicle_routes.route_id = student_session.route_id', 'left');
+        // $this->db->join('transport_route', 'vehicle_routes.route_id = transport_route.id', 'left');
+        $this->db->join('route_head', 'student_session.route_id = route_head.id', 'left');
         $this->db->join('vehicles', 'vehicles.id = vehicle_routes.vehicle_id', 'left');
         $this->db->join('school_houses', 'school_houses.id = student_session.school_house_id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
