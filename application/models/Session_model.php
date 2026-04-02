@@ -166,6 +166,7 @@ class Session_model extends MY_Model {
     public function addedListData() {
         $this->db->where('current_session_id', $this->current_session);
         $this->db->where('status', 0);
+		$this->db->order_by('id', 'DESC');
         $query = $this->db->get('move_students');
 		return $query->result_array();
     }
