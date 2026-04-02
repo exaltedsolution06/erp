@@ -39,12 +39,12 @@
                         $offset = "";
                         $bgoffsetbg = "bgoffsetbg";
                         $bgoffsetbgno = "";
-                        if (empty($notice)) {
+                        /*if (empty($notice)) {
                             $empty_notice = 1;
                             $offset = "col-md-offset-4";
                             $bgoffsetbg = "";
                             $bgoffsetbgno = "bgoffsetbgno";
-                        }
+                        }*/
                         ?>  
                         <div class="<?php echo $bgoffsetbg; ?>">   
 
