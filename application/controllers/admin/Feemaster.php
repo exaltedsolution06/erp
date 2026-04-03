@@ -148,25 +148,31 @@ class Feemaster extends Admin_Controller {
 			$existing_records = $this->db->where('session_id', $this->current_session)->get('fees_plan')->result_array();
 
 			$is_duplicate = false;
-			$duplicate_classes = [];
 
 			foreach ($existing_records as $record) {
-				$existing_classes = json_decode($record['class_ids'], true);
-				if (!is_array($existing_classes)) {
-					continue;
-				}
 
-				// Check if any class overlaps
-				$overlap = array_intersect($classes, $existing_classes);
-				if (!empty($overlap)) {
-					$is_duplicate = true;
-					$duplicate_classes = array_merge($duplicate_classes, $overlap);
+				$existing_classes = json_decode($record['class_ids'], true);
+				$existing_categories = json_decode($record['category_ids'], true);
+
+				$existing_classes = is_array($existing_classes) ? $existing_classes : [];
+				$existing_categories = is_array($existing_categories) ? $existing_categories : [];
+
+				// CHECK EXACT PAIR MATCH
+				foreach ($classes as $class) {
+					foreach ($feetypes as $category) {
+
+						if (in_array($class, $existing_classes) && in_array($category, $existing_categories)) {
+							$is_duplicate = true;
+							break 2; // stop both loops
+						}
+
+					}
 				}
 			}
 
 			if ($is_duplicate) {
-				$duplicate_list = implode(', ', array_unique($duplicate_classes));
-				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Duplicate entry! The following class(es) already exist under this Fees Head</b>.</div>');
+				// $duplicate_list = implode(', ', array_unique($duplicate_classes));
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">Duplicate entry! Same Class + Category already exists under this Fees Head</b>.</div>');
 				if (!empty($update_id)) {
 					redirect('admin/feemaster/edit/' . $update_id);
 				} else {

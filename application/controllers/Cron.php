@@ -27,6 +27,7 @@ class Cron extends CI_Controller
         $this->load->model('subjectgroup_model');
         $this->load->model('department_model');
         $this->load->model('designation_model');
+        $this->load->model('examgroup_model');
 		$this->load->library('mailsmsconf');
 		$this->current_session = $this->setting_model->getCurrentSession();
 		$this->current_active_session = $this->setting_model->getCurrentActiveSession();
@@ -309,6 +310,7 @@ class Cron extends CI_Controller
 				$move = $this->student_move($classes, $new_class_array, $new_section_array, $new_house_array, $new_fee_category_array, $new_route_array, $fee_category_by_move_category);
 				// echo "<pre>";print_r($move);die;
 				
+				$this->create_terms($classes);
 				$this->create_department($classes);
 				$this->create_designation($classes);
 				$this->create_disable_reason($classes);
@@ -318,10 +320,10 @@ class Cron extends CI_Controller
 			}
 			
 			$this->db->where('batch_id', $result['batch_id']);
-            $this->db->update('move_students', ['status' => 2]);
+            // $this->db->update('move_students', ['status' => 2]);
 			
 			$this->db->where('batch_id', $result['batch_id']);
-            $this->db->update('move_students_category', ['status' => 2]);
+            // $this->db->update('move_students_category', ['status' => 2]);
 		}
 		//$this->subject_create($new_class_array, $new_section_array, $classes['current_session_id'], $classes['next_session_id']);
 		
@@ -519,7 +521,7 @@ class Cron extends CI_Controller
 				$this->db->from('fees_plan');
 				$this->db->where("fee_group_id", $new_fee_head_id); // 23
 				$this->db->where("JSON_CONTAINS(class_ids, '\"" . current($new_class_array[0]) . "\"')", NULL, FALSE); // 98
-				// $this->db->where("JSON_CONTAINS(category_ids, '\"" . current($new_fee_category_array_val) . "\"')", NULL, FALSE); // 178
+				$this->db->where("JSON_CONTAINS(category_ids, '\"" . $new_fee_category_array_val . "\"')", NULL, FALSE); // 178
 				$qr = $this->db->get();
 				if($qr->num_rows() > 0){
 					$fees_plan_query = $qr->row_array();
@@ -534,8 +536,8 @@ class Cron extends CI_Controller
 					$data_insert = [
 						'fee_group_id' => $new_fee_head_id,
 						'amount'       => $feePlanDataVal['amount'],
-						'class_ids'    => json_encode(array(current($new_class_array[0]))),
-						'category_ids' => json_encode(array($new_fee_category_array_val)),
+						'class_ids'    => json_encode(array((string)current($new_class_array[0]))),
+						'category_ids' => json_encode(array((string)$new_fee_category_array_val)),
 						'session_id' => $next_session_id,
 					];
 					$this->db->insert('fees_plan', $data_insert);
@@ -663,7 +665,7 @@ class Cron extends CI_Controller
 				$this->db->from('route_plan');
 				$this->db->where("fee_group_id", $new_route_head_id); // 23
 				$this->db->where("JSON_CONTAINS(class_ids, '\"" . current($new_class_array[0]) . "\"')", NULL, FALSE); // 98
-				// $this->db->where("JSON_CONTAINS(category_ids, '\"" . current($new_route_category_array_val) . "\"')", NULL, FALSE); // 178
+				$this->db->where("JSON_CONTAINS(category_ids, '\"" . $new_route_category_array_val . "\"')", NULL, FALSE); // 178
 				$qr = $this->db->get();
 				if($qr->num_rows() > 0){
 					$route_plan_query = $qr->row_array();
@@ -678,8 +680,8 @@ class Cron extends CI_Controller
 					$data_insert = [
 						'fee_group_id' => $new_route_head_id,
 						'amount'       => $routePlanDataVal['amount'],
-						'class_ids'    => json_encode(array(current($new_class_array[0]))),
-						'category_ids' => json_encode(array($new_route_category_array_val)),
+						'class_ids'    => json_encode(array((string)current($new_class_array[0]))),
+						'category_ids' => json_encode(array((string)$new_route_category_array_val)),
 						'session_id' => $next_session_id,
 					];
 					$this->db->insert('route_plan', $data_insert);
@@ -1026,6 +1028,59 @@ class Cron extends CI_Controller
 					'session_id' => $classes['next_session_id'],
 				);
 				$this->disable_reason_model->add($data);
+			}
+		}
+	}
+	public function create_terms($classes)
+	{
+		$new_term_array = [];
+		$query = $this->db->from('exam_groups')->where('session_id', $classes['current_session_id'])->get();
+		foreach($query->result_array() as $val)
+		{
+			$this->db->from('exam_groups');
+			$this->db->where('session_id', $classes['next_session_id']);
+			$this->db->where('name', $val['name']);
+			$qr = $this->db->get();
+			if($qr->num_rows() == 0)
+			{
+				$data = array(
+					'name' => $val['name'],
+					'exam_type' => $val['exam_type'],
+					'is_active' => $val['is_active'],
+					'description' => $val['description'],
+					'session_id' => $classes['next_session_id']
+				);
+				$insert_id = $this->examgroup_model->add($data);
+				$new_term_array[$val['id']] =  $insert_id;
+			}else{
+				$term_query = $qr->row_array();
+				$new_term_array[$val['id']] = $term_query['id'];
+			}
+		}
+		
+		$this->create_scholastic($classes, $new_term_array);
+		
+	}
+	public function create_scholastic($classes, $new_term_array)
+	{
+		$query = $this->db->from('coscholasticareas')->where('session_id', $classes['current_session_id'])->get();
+		foreach($query->result_array() as $val)
+		{
+			$this->db->from('coscholasticareas');
+			$this->db->where('session_id', $classes['next_session_id']);
+			$this->db->where('name', $val['name']);
+			$qr = $this->db->get();
+			if($qr->num_rows() == 0)
+			{
+				$data = array(
+					'name' => $val['name'],
+					// 'exam_type' => $this->input->post('exam_type'),
+					'is_active' => $val['is_active'],
+					'description' => $val['description'],
+					'exam_group' => $new_term_array[$val['exam_group']],
+					'session_id' => $classes['next_session_id']
+				);
+				$insert_id = $this->examgroup_model->add_c($data);
 			}
 		}
 	}
