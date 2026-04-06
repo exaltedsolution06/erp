@@ -459,8 +459,33 @@ class Cron extends CI_Controller
 		}
 		return $new_fee_category_array;
 	}
+	function replace_fee_head_id($data) {
+		$this->db->from('fee_head');
+		$this->db->where('id', $data['fee_group_id']);
+		$this->db->where('session_id', $data['prev_session_id']);
+		$qr = $this->db->get();
+		if($qr->num_rows() > 0){
+			$qrfeeHeadData = $qr->row_array();
+			$fees_heading = $qrfeeHeadData['fees_heading'];
+			
+			$this->db->from('fee_head');
+			$this->db->where('session_id', $next_session_id);
+			$this->db->where('fees_heading', $fees_heading);
+			$qr = $this->db->get();
+			if($qr->num_rows() > 0){
+				$fee_head_query = $qr->row_array();
+				$fee_group_id = $fee_head_query['id'];
+			}
+		}
+		return $fee_group_id;
+	}	
 	public function fee_plan_create($next_session_id, $next_class_id, $qrArrayData, $new_fee_category_array, $new_class_array)
     {
+		/*
+		** fees_plan table fee_group_id = fee_head table id
+		** fees_plan table category_ids = fee_groups table id
+		** fees_plan table class_ids 	= classes table id
+		*/
 		// return $qrArrayData;
 		foreach($qrArrayData as $qrArrayDataVal){
 			$this->db->from('fees_plan');
