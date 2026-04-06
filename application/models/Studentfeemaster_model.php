@@ -215,7 +215,9 @@ class Studentfeemaster_model extends MY_Model
 
     public function getStudentFees($student_session_id)
     {
-        $sql    = "SELECT `student_fees_master`.*,fee_groups.name FROM `student_fees_master` INNER JOIN fee_session_groups on student_fees_master.fee_session_group_id=fee_session_groups.id INNER JOIN fee_groups on fee_groups.id=fee_session_groups.fee_groups_id  WHERE `student_session_id` = " . $student_session_id . " ORDER BY `student_fees_master`.`id`";
+        $sql    = "SELECT `student_fees_master`.*,fee_groups.name FROM `student_fees_master` 
+		INNER JOIN fee_session_groups on student_fees_master.fee_session_group_id=fee_session_groups.id INNER JOIN fee_groups on fee_groups.id=fee_session_groups.fee_groups_id  
+		WHERE `student_session_id` = " . $student_session_id . " ORDER BY `student_fees_master`.`id`";
         $query  = $this->db->query($sql);
         $result = $query->result();
         if (!empty($result)) {
@@ -226,7 +228,10 @@ class Studentfeemaster_model extends MY_Model
                 $result_value->fees     = $this->getDueFeeByFeeSessionGroup($fee_session_group_id, $student_fees_master_id);
 
                 if ($result_value->is_system != 0) {
-                    $result_value->fees[0]->amount = $result_value->amount;
+                    //$result_value->fees[0]->amount = $result_value->amount;
+					if (!empty($result_value->fees) && isset($result_value->fees[0])) {
+						$result_value->fees[0]->amount = $result_value->amount;
+					}
                 }
             }
         }
