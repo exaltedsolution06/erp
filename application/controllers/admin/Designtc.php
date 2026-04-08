@@ -43,7 +43,7 @@ class Designtc extends Admin_Controller {
             $this->load->view('admin/certificate/createtc', $this->data);
             $this->load->view('layout/footer');
         } else {
-			if (!empty($_FILES['signature']['name'])) {
+			/*if (!empty($_FILES['signature']['name'])) {
 				$config['upload_path'] = 'uploads/transfer_certificate/';
 				$config['allowed_types'] = 'jpg|jpeg|png|gif';
 				$config['file_name'] = time().$_FILES['signature']['name'];
@@ -60,8 +60,8 @@ class Designtc extends Admin_Controller {
 				}
 			} else {
 				$picture = '';
-			}
-			if (!empty($_FILES['background_image']['name'])) {
+			}*/
+			/*if (!empty($_FILES['background_image']['name'])) {
 				$config['upload_path'] = 'uploads/transfer_certificate/';
 				$config['allowed_types'] = 'jpg|jpeg|png|gif';
 				$config['file_name'] = time().$_FILES['background_image']['name'].'bg';
@@ -78,7 +78,7 @@ class Designtc extends Admin_Controller {
 				}
 			} else {
 				$bg_image = '';
-			}
+			}*/
 			
             $titles = $this->input->post('field_title');
             $values = $this->input->post('field_value');
@@ -96,10 +96,20 @@ class Designtc extends Admin_Controller {
                 }
             }
 			
-			if ($this->input->post('is_signature') == 1) {
-                $enable_signature = $this->input->post('is_signature');
+			if (isset($_POST['is_class_teacher'])) {
+                $is_class_teacher = 1;
             } else {
-                $enable_signature = 0;
+                $is_class_teacher = 0;
+            }
+            if (isset($_POST['is_examination_ic'])) {
+                $is_examination_ic = 1;
+            } else {
+                $is_examination_ic = 0;
+            }
+            if (isset($_POST['is_principal'])) {
+                $is_principal = 1;
+            } else {
+                $is_principal = 0;
             }
             if (isset($_POST['is_show_date'])) {
                 $is_show_date = 1;
@@ -108,19 +118,59 @@ class Designtc extends Admin_Controller {
                 $is_show_date = 0;
                 $show_date = '';
             }
+			if (isset($_POST['is_common_header'])) {
+                $is_common_header = 1;
+				$header_height = 0;
+				$footer_height = 0;
+            } else {
+                $is_common_header = 0;
+				$header_height = $this->input->post('header_height');
+				$footer_height = $this->input->post('footer_height');
+            }
 
             $data = [
                 'certificate_name' => $this->input->post('certificate_name'),
                 'fields_json'      => json_encode($fields),
                 'status'           => 1,
                 'session_id'       => $this->current_session,
-                'signature_title' => $this->input->post('signature_title'),
-                'signature' => $picture,
-                'is_signature' => $enable_signature,
-                'background_image' => $bg_image,
+				'is_common_header'=>$is_common_header,
+				'header_height' => $header_height,
+                'footer_height' => $footer_height,
+                'is_class_teacher'=>$is_class_teacher,
+                'is_examination_ic'=>$is_examination_ic,
+                'is_principal'=>$is_principal,
+				'left_sign' => "",
+                'right_sign' => "",
+                'middle_sign' => "",
+                'background_image' => "",
                 'is_show_date'=>$is_show_date,
                 'show_date'=>$show_date,
             ];
+			if (isset($_FILES["left_sign"]) && !empty($_FILES["left_sign"]['name'])) {
+                $time = md5($_FILES["left_sign"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["left_sign"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["left_sign"]["tmp_name"], "./uploads/transfer_certificate/" . $img_name);
+                $data['left_sign'] = $img_name;
+            }if (isset($_FILES["middle_sign"]) && !empty($_FILES["middle_sign"]['name'])) {
+                $time = md5($_FILES["middle_sign"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["middle_sign"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["middle_sign"]["tmp_name"], "./uploads/transfer_certificate/" . $img_name);
+                $data['middle_sign'] = $img_name;
+            }if (isset($_FILES["right_sign"]) && !empty($_FILES["right_sign"]['name'])) {
+                $time = md5($_FILES["right_sign"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["right_sign"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["right_sign"]["tmp_name"], "./uploads/transfer_certificate/" . $img_name);
+                $data['right_sign'] = $img_name;
+            }if (isset($_FILES["background_image"]) && !empty($_FILES["background_image"]['name'])) {
+                $time = md5($_FILES["background_image"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["background_image"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["background_image"]["tmp_name"], "./uploads/transfer_certificate/" . $img_name);
+                $data['background_image'] = $img_name;
+            }
 
             $this->designtc_model->addcertificate($data);
 
@@ -172,10 +222,20 @@ class Designtc extends Admin_Controller {
 				}
 			}
 			
-			if ($this->input->post('is_signature') == 1) {
-                $enable_signature = $this->input->post('is_signature');
+			if (isset($_POST['is_class_teacher'])) {
+                $is_class_teacher = 1;
             } else {
-                $enable_signature = 0;
+                $is_class_teacher = 0;
+            }
+            if (isset($_POST['is_examination_ic'])) {
+                $is_examination_ic = 1;
+            } else {
+                $is_examination_ic = 0;
+            }
+            if (isset($_POST['is_principal'])) {
+                $is_principal = 1;
+            } else {
+                $is_principal = 0;
             }
             if (isset($_POST['is_show_date'])) {
                 $is_show_date = 1;
@@ -183,6 +243,15 @@ class Designtc extends Admin_Controller {
             } else {
                 $is_show_date = 0;
                 $show_date = '';
+            }
+			if (isset($_POST['is_common_header'])) {
+                $is_common_header = 1;
+				$header_height = 0;
+				$footer_height = 0;
+            } else {
+                $is_common_header = 0;
+				$header_height = $this->input->post('header_height');
+				$footer_height = $this->input->post('footer_height');
             }
 			
 			$picture = $editcertificate[0]->signature;
@@ -203,7 +272,7 @@ class Designtc extends Admin_Controller {
 				}
 				$bg_image = '';
 			}
-			if (!empty($_FILES['signature']['name'])) {
+			/*if (!empty($_FILES['signature']['name'])) {
 				$config['upload_path'] = 'uploads/transfer_certificate/';
 				$config['allowed_types'] = 'jpg|jpeg|png|gif';
 				$config['file_name'] = time().$_FILES['signature']['name'];
@@ -222,7 +291,7 @@ class Designtc extends Admin_Controller {
 				if (file_exists($url)) {
 					unlink($url);
 				}
-			}
+			}*/
 			if (!empty($_FILES['background_image']['name'])) {
 				$config['upload_path'] = 'uploads/transfer_certificate/';
 				$config['allowed_types'] = 'jpg|jpeg|png|gif';
@@ -248,13 +317,62 @@ class Designtc extends Admin_Controller {
 				'id'               => $id,
 				'certificate_name' => $this->input->post('certificate_name'),
 				'fields_json'      => json_encode($fields),
-                'signature_title' => $this->input->post('signature_title'),
-				'signature' => $picture,
-				'is_signature' => $enable_signature,
+				'is_common_header'=>$is_common_header,
+				'header_height' => $header_height,
+                'footer_height' => $footer_height,
+				'is_class_teacher'=>$is_class_teacher,
+                'is_examination_ic'=>$is_examination_ic,
+                'is_principal'=>$is_principal,
+				'left_sign_title' => $this->input->post('left_sign_title'),
+                'middle_sign_title' => $this->input->post('middle_sign_title'),
+                'right_sign_title' => $this->input->post('right_sign_title'),
 				'background_image' => $bg_image,
                 'is_show_date'=>$is_show_date,
                 'show_date'=>$show_date,
 			];
+			if ($_POST['remove_left_sign'] == 1) {
+				$path1 = "uploads/transfer_certificate/" . $editcertificate[0]->left_sign;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+				$data['left_sign'] = '';
+			}
+            if ($_POST['remove_middle_sign'] == 1) {
+				$path1 = "uploads/transfer_certificate/" . $editcertificate[0]->middle_sign;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+				$data['middle_sign'] = '';
+			}
+            if ($_POST['remove_right_sign'] == 1) {
+				$path1 = "uploads/transfer_certificate/" . $editcertificate[0]->right_sign;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+				$data['right_sign'] = '';
+			}
+			if (isset($_FILES["left_sign"]) && !empty($_FILES["left_sign"]['name'])) {
+                $time = md5($_FILES["left_sign"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["left_sign"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["left_sign"]["tmp_name"], "./uploads/transfer_certificate/" . $img_name);
+                $data['left_sign'] = $img_name;
+            }if (isset($_FILES["middle_sign"]) && !empty($_FILES["middle_sign"]['name'])) {
+                $time = md5($_FILES["middle_sign"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["middle_sign"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["middle_sign"]["tmp_name"], "./uploads/transfer_certificate/" . $img_name);
+                $data['middle_sign'] = $img_name;
+            }if (isset($_FILES["right_sign"]) && !empty($_FILES["right_sign"]['name'])) {
+                $time = md5($_FILES["right_sign"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["right_sign"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["right_sign"]["tmp_name"], "./uploads/transfer_certificate/" . $img_name);
+                $data['right_sign'] = $img_name;
+            }
 
 			$this->designtc_model->addcertificate($data);
 

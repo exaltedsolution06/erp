@@ -462,7 +462,7 @@ th, td {
       <span><strong style="width:90px; display:inline-block;">Class & Sec</strong> <?=$student['class']?> (<?=$student['section']?>)</span> <br>
 	<?php } if ($result->rcpt_fee_months) { ?>
        <?php if($fees[0]->fee_head_name != 'Ledger Amount'){ ?>
-      <span><strong style="width:90px; display:inline-block;">Fee Months</strong> <?=$month_names?></span> <br>
+      <span><strong style="width:90px; display:inline-block;">Fee Months</strong> <?=sort_by_custom_month_order($month_names)?></span> <br>
       <?php } ?>
 	<?php } ?>
       <!-- <span><strong style="width:90px; display:inline-block;">Note</strong> This is a System Generated Slip Not Required Stamp.</span>  -->

@@ -23,7 +23,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             <?php
             if ($this->rbac->hasPrivilege('design_tc', 'can_add')) {
                 ?>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title"><?php echo $this->lang->line('add'); ?> Tc</h3>
@@ -40,7 +40,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 }
                                 ?>
 								<div class="form-group">
-                                    <span class="text-primary">[name] [dob] [present_address] [guardian] [created_at] [admission_no] [roll_no] [class] [section] [gender] [admission_date] [category] [cast] [father_name] [mother_name] [religion] [email] [phone] [CASTE CATEGORY] [PAN Card] 
+                                    <span class="text-primary">[roll_no] [name] [class] [section] [Student Pen No] [Student Adhar No] [father_name]  [Father PAN No] [Father Adhar No] [mother_name] [Mother PAN No] [Mother Adhar No] [dob] [admission_date] [gender] [category] [phone] [CASTE CATEGORY] [present_address]          
                                     </span>
                                     <span class="text-danger"><?php echo form_error('certificate_text'); ?></span>
                                 </div>
@@ -83,28 +83,98 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										<button type="button" id="add-more" class="btn btn-primary">Add More</button>
 									</div>
 								</div>
-								<div class="clearfix"></div>
 								<br>
+								<div class="clearfix"></div>
                                 <div class="row">
 									<div class="col-md-12">
 										<div class="form-group switch-inline">
-											<label><?php echo $this->lang->line('sign'); ?></label>
+											<label>Common Header</label>
 											<div class="material-switch switchcheck">
-												<input id="is_signature" name="is_signature" type="checkbox" class="chk" value="1" onclick="valueSignChanged()">
-												<label for="is_signature" class="label-success"></label>
+												<input id="is_common_header" name="is_common_header" type="checkbox" class="chk" value="1" onclick="valueHeaderImageChanged()">
+												<label for="is_common_header" class="label-success"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-6 img_div_modal enableHeadFootDiv">
+										<div class="form-group">
+											<input id="header_height" name="header_height" placeholder="<?php echo $this->lang->line('header'); ?> <?php echo $this->lang->line('height'); ?>" type="number" class="form-control" min="0" />
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-6 img_div_modal enableHeadFootDiv">
+										<div class="form-group">
+											<input id="footer_height" name="footer_height" placeholder="<?php echo $this->lang->line('footer'); ?> <?php echo $this->lang->line('height'); ?>" type="number" class="form-control" min="0" />
+										</div>
+									</div>
+								</div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+									<div class="col-md-12">
+										<div class="form-group switch-inline">
+											<label><?php echo $this->lang->line('left') . " " . $this->lang->line('sign'); ?></label>
+											<div class="material-switch switchcheck">
+												<input id="is_class_teacher" name="is_class_teacher" type="checkbox" class="chk" value="1" onclick="valueLeftSignChanged()">
+												<label for="is_class_teacher" class="label-success"></label>
 											</div>
 										</div>
 									</div>
 									<div class="col-md-12 col-sm-12 img_div_modal">
-										<div class="form-group enableSignDiv" hidden>
-											<input id="documents" name="signature" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="signature">
-											<span class="text-danger"><?php echo form_error('signature'); ?></span>
+										<div class="form-group enableLeftSignDiv" hidden>
+											<input id="documents" name="left_sign" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="left_sign">
+											<span class="text-danger"><?php echo form_error('left_sign'); ?></span>
 										</div>
 									</div>
 									<div class="col-md-12 col-sm-12 img_div_modal">
-										<div class="form-group enableSignDiv" hidden>
-											<input autofocus="" id="signature_title" name="signature_title" placeholder="<?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?>" type="text" class="form-control" />
-											<span class="text-danger"><?php echo form_error('signature_title'); ?></span>
+										<div class="form-group enableLeftSignDiv" hidden>
+											<input autofocus="" id="left_sign_title" value="<?php echo set_value('left_sign_title'); ?>" name="left_sign_title" placeholder="<?php echo $this->lang->line('left'); ?> <?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?>" type="text" class="form-control" />
+											<span class="text-danger"><?php echo form_error('left_sign_title'); ?></span>
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+                                <div class="row">
+									<div class="col-md-12">
+										<div class="form-group switch-inline">
+											<label><?php echo $this->lang->line('middle') . " " . $this->lang->line('sign'); ?></label>
+											<div class="material-switch switchcheck">
+												<input id="is_examination_ic" name="is_examination_ic" type="checkbox" class="chk" value="1" onclick="valueMiddleSignChanged()">
+												<label for="is_examination_ic" class="label-success"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12 col-sm-12 img_div_modal">
+										<div class="form-group enableMiddleSignDiv" hidden>
+											<input id="documents" name="middle_sign" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="middle_sign">
+											<span class="text-danger"><?php echo form_error('middle_sign'); ?></span>
+										</div>
+									</div>
+									<div class="col-md-12 col-sm-12 img_div_modal">
+										<div class="form-group enableMiddleSignDiv" hidden>
+											<input autofocus="" id="middle_sign_title" value="<?php echo set_value('middle_sign_title'); ?>" name="middle_sign_title" placeholder="<?php echo $this->lang->line('middle'); ?> <?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?>" type="text" class="form-control" />
+											<span class="text-danger"><?php echo form_error('middle_sign_title'); ?></span>
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+                                <div class="row">
+									<div class="col-md-12">
+										<div class="form-group switch-inline">
+											<label><?php echo $this->lang->line('right') . " " . $this->lang->line('sign'); ?></label>
+											<div class="material-switch switchcheck">
+												<input id="is_principal" name="is_principal" type="checkbox" class="chk" value="1" onclick="valueRightSignChanged()">
+												<label for="is_principal" class="label-success"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12 col-sm-12 img_div_modal">
+										<div class="form-group enableRightSignDiv" hidden>
+											<input id="documents" name="right_sign" placeholder="" type="file" class="filestyle form-control" data-height="40"  name="right_sign">
+											<span class="text-danger"><?php echo form_error('right_sign'); ?></span>
+										</div>
+									</div>
+									<div class="col-md-12 col-sm-12 img_div_modal">
+										<div class="form-group enableRightSignDiv" hidden>
+											<input autofocus="" id="right_sign_title" value="<?php echo set_value('right_sign_title'); ?>" name="right_sign_title" placeholder="<?php echo $this->lang->line('right'); ?> <?php echo $this->lang->line('sign'); ?> <?php echo $this->lang->line('title'); ?>" type="text" class="form-control" />
+											<span class="text-danger"><?php echo form_error('right_sign_title'); ?></span>
 										</div>
 									</div>
 								</div>
@@ -146,7 +216,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             <?php } ?>
             <div class="col-md-<?php
             if ($this->rbac->hasPrivilege('design_tc', 'can_add')) {
-                echo "8";
+                echo "6";
             } else {
                 echo "12";
             }
@@ -232,6 +302,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 </div>
 
 <script>
+function valueHeaderImageChanged()
+{
+	if ($('#is_common_header').is(":checked")){
+		$(".enableHeadFootDiv").hide();
+	}else{
+		$(".enableHeadFootDiv").show();
+	}
+}
 function valueSignChanged()
 {
 	if ($('#is_signature').is(":checked"))
@@ -351,12 +429,26 @@ $(document).ready(function(){
     });
 </script>
 <script type="text/javascript">
-    function valueChanged()
+    function valueLeftSignChanged()
     {
-        if ($('#enable_student_img').is(":checked"))
-            $("#enableImageDiv").show();       
+        if ($('#is_class_teacher').is(":checked"))
+            $(".enableLeftSignDiv").show();
         else
-            $("#enableImageDiv").hide();        
+            $(".enableLeftSignDiv").hide();
+    }
+    function valueMiddleSignChanged()
+    {
+        if ($('#is_examination_ic').is(":checked"))
+            $(".enableMiddleSignDiv").show();
+        else
+            $(".enableMiddleSignDiv").hide();
+    }
+    function valueRightSignChanged()
+    {
+        if ($('#is_principal').is(":checked"))
+            $(".enableRightSignDiv").show();
+        else
+            $(".enableRightSignDiv").hide();
     }
     function valueDateChanged()
     {

@@ -8,6 +8,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
+.pagebreak { page-break-before: always; } 
 .mark-container{
     width:1000px;
     position:relative;
@@ -64,7 +65,7 @@
 <?php
 //$this->load->model('designtc_model');
 //echo "<pre>";print_r($certificate);die;
-foreach ($students as $student) {
+foreach ($students as $s=>$student) {
 	$student_name = '';
 	if(isset($student->firstname))
 	{
@@ -81,26 +82,31 @@ foreach ($students as $student) {
 	}
 	
 	$replaceArr = [
+        '[roll_no]'  => $student->roll_no,
         '[name]' => $student_name,
+        '[class]'  => $student->class,
+        '[section]'  => $student->section,
+        '[Student Pen No]'  => $student->pan_no,
+        '[Student Adhar No]'  => $student->aadhan_no,
+        '[father_name]'  => $student->father_name,
+        '[Father PAN No]'  => $student->father_pan_no,
+        '[Father Adhar No]'  => $student->father_aadhar_no,
+        '[mother_name]'  => $student->mother_name,
+        '[Mother PAN No]'  => $student->mother_pan_no,
+        '[Mother Adhar No]'  => $student->mother_aadhar_no,
         '[dob]' => date('d/m/Y' , strtotime($student->dob)),
+		'[admission_date]'  => date('d/m/Y' , strtotime($student->admission_date)),
+        '[gender]'  => $student->gender,
+        '[category]'  => $student->category,
+        '[phone]'  => $student->mobileno,
+        '[CASTE CATEGORY]'  => $student->cast_category,
 		'[present_address]' => $student->current_address,
 		'[guardian]' => $student->guardian_name,
 		'[created_at]' => date('d/m/Y' , strtotime($student->created_at)),
         '[admission_no]'  => $student->admission_no,
-        '[roll_no]'  => $student->roll_no,
-        '[class]'  => $student->class,
-        '[section]'  => $student->section,
-        '[gender]'  => $student->gender,
-        '[gender]'  => $student->gender,
-		'[admission_date]'  => date('d/m/Y' , strtotime($student->admission_date)),
-        '[category]'  => $student->cast,
         '[cast]'  => $student->cast,
-        '[father_name]'  => $student->father_name,
-        '[mother_name]'  => $student->mother_name,
         '[religion]'  => $student->religion,
         '[email]'  => $student->email,
-        '[phone]'  => $student->guardian_phone,
-        '[CASTE CATEGORY]'  => $student->cast,
         '[PAN Card]'  => $student->cast
     ];
 	
@@ -127,6 +133,16 @@ foreach ($students as $student) {
 	}
 	
 	?>
+	<?php if ($s > 0): ?>
+		<div class="pagebreak"></div>
+	<?php endif; ?>
+	<?php 
+	if($certificate->is_common_header==0){
+	?>
+		<div class="" style="height:<?php echo $certificate->header_height; ?>px;"></div>
+	<?php
+		}
+	?>
 	<div class="mark-container mb-5">
 		<?php
 			if ($certificate->background_image != "") {
@@ -139,13 +155,16 @@ foreach ($students as $student) {
 			<div class="col-sm-12 print-block">
 				<div class="slip">
 					<!-- HEADER IMAGE -->
+					<?php 
+					if($certificate->is_common_header==1){
+					if(!empty($header_image)){
+					$is_header_file_path = FCPATH . 'uploads/print_headerfooter/common_header/' . $header_image;
+					if (file_exists($is_header_file_path)) {
+					?>
 					<div class="header">
-						<?php
-						if(!empty($header_image)){
-						?>
 						<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/common_header/<?php echo $header_image; ?>" style="height:100px;width:100%">
-						<?php } ?>
 					</div>
+					<?php } } } ?>
 					
 					<div class="content">
 						
@@ -161,13 +180,17 @@ foreach ($students as $student) {
 							}
 						?>
 						<div class="row mt-5">
-						<div class="col-6 mb-3 d-flex mt-2">	
+						<div class="col-4 mb-3 d-flex mt-2">	
 							<strong class="label-text">Book No :</strong>
 							<span class="text-underline" style="text-align:center;"><?php echo $result->book_no; ?></span>
 						</div>
-						<div class="col-6 mb-3 d-flex mt-2">	
+						<div class="col-4 mb-3 d-flex mt-2">	
 							<strong class="label-text">SR No :</strong>
 							<span class="text-underline" style="text-align:center;"><?php echo $result->serial_no_prefix.$sl_no; ?></span>
+						</div>
+						<div class="col-4 mb-3 d-flex mt-2">	
+							<strong class="label-text">Admission No :</strong>
+							<span class="text-underline" style="text-align:center;"><?php echo $student->admission_no; ?></span>
 						</div>
 						<?php 
 						$i=0;
@@ -188,33 +211,90 @@ foreach ($students as $student) {
 						}
 						?>
 						</div>
-						<div style="display: flex;justify-content: space-between;" class="mt-5">
-							<div style="width: 50%; padding:0; display: flex; align-items: center;">
-							<?php if($certificate->is_show_date == 1){ ?>
-								<strong>Date:</strong> <span class="text-underline" style="width:200px;text-align:center;"><?php echo $certificate->show_date; ?></span>
-							<?php } ?>	
+						<?php
+						$sign_count = 0;
+						if($certificate->is_class_teacher==1){ $sign_count++; }
+						if($certificate->is_examination_ic==1){ $sign_count++; }
+						if($certificate->is_principal==1){ $sign_count++; }
+						if($sign_count > 0){
+						?>
+						<div class="col-12 mt-3" style="padding-left:0px;padding-right:0px;padding-bottom:0px;">
+							<div class="row text-center" style="background-color: transparent">
+								<div class="col-4">
+									<?php
+									if($certificate->is_class_teacher==1){
+										if($certificate->left_sign!='' || $certificate->left_sign!=null){
+										$is_left_sign_file_path = FCPATH . 'uploads/transfer_certificate/' . $certificate->left_sign;
+											if (file_exists($is_left_sign_file_path)) {						
+										?>
+										<img src="<?php echo base_url('uploads/transfer_certificate/'.$certificate->left_sign) ?>" style="height:90px;width:auto;margin-top: 5px;">
+										<?php
+											}else{
+												echo '<div style="height:90px;width:auto;margin-top: 5px;"></div>';
+											}
+										}else{
+											echo '<div style="height:90px;width:auto;margin-top: 5px;"></div>';
+										}
+										echo '<h6 class="mt-1">'.$certificate->left_sign_title.'</h6>';
+									} 
+									?>						
+								</div>
+								<div class="col-4">
+									<?php
+									if($certificate->is_examination_ic==1){
+										if($certificate->middle_sign!='' || $certificate->middle_sign!=null){
+										$is_middle_sign_file_path = FCPATH . 'uploads/transfer_certificate/' . $certificate->middle_sign;
+											if (file_exists($is_middle_sign_file_path)) {						
+										?>
+										<img src="<?php echo base_url('uploads/transfer_certificate/'.$certificate->middle_sign) ?>" style="height:90px;width:auto;margin-top: 5px;">
+										<?php
+											}else{
+												echo '<div style="height:90px;width:auto;margin-top: 5px;"></div>';
+											}
+										}else{
+											echo '<div style="height:90px;width:auto;margin-top: 5px;"></div>';
+										}
+										echo '<h6 class="mt-1">'.$certificate->middle_sign_title.'</h6>';
+									}
+									?>
+								</div>
+								<div class="col-4">
+									<?php
+									if($certificate->is_principal==1){
+										if($certificate->right_sign!='' || $certificate->right_sign!=null){
+										$is_right_sign_file_path = FCPATH . 'uploads/transfer_certificate/' . $certificate->right_sign;
+											if (file_exists($is_right_sign_file_path)) {						
+										?>
+										<img src="<?php echo base_url('uploads/transfer_certificate/'.$certificate->right_sign) ?>" style="height:90px;width:auto;margin-top: 5px;">
+										<?php
+											}else{
+												echo '<div style="height:90px;width:auto;margin-top: 5px;"></div>';
+											}
+										}else{
+											echo '<div style="height:90px;width:auto;margin-top: 5px;"></div>';
+										}
+										echo '<h6 class="mt-1">'.$certificate->right_sign_title.'</h6>';
+									}
+									?>						
+								</div>
 							</div>
-							<div class="text-center" style="width: 20%; text-align: right; padding:0;">
-								<span>
-									<?php if($certificate->is_signature == 1){
-											$is_signature_path = FCPATH . 'uploads/transfer_certificate/' . $certificate->signature;
-											if (file_exists($is_signature_path)) {
-											?>
-										<img src="<?php echo base_url('uploads/transfer_certificate/'.$certificate->signature) ?>" style="height:60px;width:auto">
-									<?php }else{
-										echo '<div style="height:60px;width:auto;"></div>';
-									} ?>
-									<br>
-									<strong style="font-style:italic;"><?php echo $certificate->signature_title ?></strong>
-									<?php } ?>
-								</span>
-							</div>
+							
 						</div>
+						<?php
+							}
+						?>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<?php 
+	if($certificate->is_common_header==0){
+	?>
+		<div class="" style="height:<?php echo $certificate->footer_height; ?>px;"></div>
+	<?php
+		}
+	?>
 <?php } ?>
 </body>
 </html>

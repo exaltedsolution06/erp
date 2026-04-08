@@ -214,9 +214,10 @@ class Cron extends CI_Controller
 				$classes = $val;
 				$this->insert_opening_balance($classes);
 				// Create section start
-					$this->db->select('sections.*')->from('class_sections');
-					$this->db->join('sections', 'sections.id = class_sections.section_id');
-					$this->db->where('class_sections.class_id', $classes['current_class_id']);
+					$this->db->select('sections.*')->from('sections');
+					$this->db->where('session_id', $classes['current_session_id']);
+					// $this->db->join('sections', 'sections.id = class_sections.section_id');
+					// $this->db->where('class_sections.class_id', $classes['current_class_id']);
 					$qr = $this->db->get();
 					$sectionData = $qr->result_array();
 					foreach($sectionData as $sec)
@@ -243,37 +244,39 @@ class Cron extends CI_Controller
 				
 				// Create class start
 					$this->db->from('classes');
-					$this->db->where('session_id',  $classes['next_session_id']);
-					$this->db->where('class', $classes['class']);
-					$query = $this->db->get();
-					if($query->num_rows() == 0) // If class not exists
-					{
-						$class_array = array(
-							'class' => $classes['class'],
-							'session_id' => $classes['next_session_id'],
-						);
-						$class_id = $this->classsection_model->add($class_array, $sectionArr);
-					}else{ // If class exists
-						$class_query = $query->row_array();
-						$class_id = $class_query['id'];
-						foreach($sectionArr as $sectionArrVal){
-							$check_array = array(
-								'class_id' => $class_query['id'],
-								'section_id' => $sectionArrVal,
+					$this->db->where('session_id',  $classes['current_session_id']);
+					// $this->db->where('class', $classes['class']);
+					$qr = $this->db->get();
+					$classData = $qr->result_array();
+					foreach($classData as $clas){
+						$this->db->where('session_id',  $classes['next_session_id']);
+						$this->db->where('class', $clas['class']);
+						$class_query = $this->db->get('classes');
+						if($class_query->num_rows() > 0){
+							$class_query = $class_query->row_array();
+							$class_id = $class_query['id'];
+						}else{
+							$class_array = array(
+								'class' => $clas['class'],
+								'session_id' => $classes['next_session_id'],
 							);
-							// echo "<pre>";print_r($sectionArr);die;
-							$check_class_sec_exists = $this->classsection_model->check_data_exists($check_array);
-							if(!$check_class_sec_exists){
-								$class_array = array(
-									'id' => $class_query['id'],
-									'class' => $class_query['class'],
-									'session_id' => $classes['next_session_id'],
-								);
-								$class_id = $this->classsection_model->add($class_array, array($sectionArrVal));
+							
+							$this->db->where('class_id',  $clas['id']);
+							$csec_query = $this->db->get('class_sections');
+							$csec_query = $csec_query->result_array();
+							$sectionArr = [];
+							foreach ($csec_query as $csec_val) {
+								foreach ($new_section_array as $map) {
+									if (isset($map[$csec_val['section_id']])) {
+										$sectionArr[] = $map[$csec_val['section_id']];
+									}
+								}
 							}
+							
+							$class_id = $this->classsection_model->add($class_array, $sectionArr);
 						}
+						$new_class_array[] = array($clas['id'] => $class_id);
 					}
-					$new_class_array[] = array($classes['current_class_id'] => $class_id);
 					// echo '<pre>'; print_r($new_class_array); exit;
 				// Create class end	
 				
@@ -328,10 +331,10 @@ class Cron extends CI_Controller
 			}
 			
 			$this->db->where('batch_id', $result['batch_id']);
-            // $this->db->update('move_students', ['status' => 2]);
+            $this->db->update('move_students', ['status' => 2]);
 			
 			$this->db->where('batch_id', $result['batch_id']);
-            // $this->db->update('move_students_category', ['status' => 2]);
+            $this->db->update('move_students_category', ['status' => 2]);
 		}
 		//$this->subject_create($new_class_array, $new_section_array, $classes['current_session_id'], $classes['next_session_id']);
 		

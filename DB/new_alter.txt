@@ -182,6 +182,11 @@ CREATE TABLE `certificate_generates` (
 ALTER TABLE `tc_certificate_generates` ADD `template_id` INT(11) NULL DEFAULT NULL AFTER `student_id`;
 ALTER TABLE `certificate_generates` ADD `template_id` INT(11) NULL DEFAULT NULL AFTER `student_id`;
 
+--- 08-04-2026 ---
+ALTER TABLE `template_designtc` DROP `is_signature`, DROP `signature`, DROP `signature_title`;
+ALTER TABLE `template_designtc` ADD `left_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `fields_json`, ADD `middle_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `left_sign`, ADD `right_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `middle_sign`, ADD `left_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `right_sign`, ADD `middle_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `left_sign_title`, ADD `right_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `middle_sign_title`, ADD `is_class_teacher` INT(11) NOT NULL DEFAULT '0' AFTER `right_sign_title`, ADD `is_examination_ic` INT(11) NOT NULL DEFAULT '0' AFTER `is_class_teacher`, ADD `is_principal` INT(11) NOT NULL DEFAULT '0' AFTER `is_examination_ic`;
+ALTER TABLE `template_designtc` ADD `is_common_header` INT(11) NOT NULL DEFAULT '0' AFTER `fields_json`, ADD `header_height` INT(11) NOT NULL AFTER `is_common_header`, ADD `footer_height` INT(11) NOT NULL AFTER `header_height`;
+
 
 
 ===============================

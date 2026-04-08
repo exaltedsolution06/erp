@@ -228,7 +228,7 @@ class Studentfee extends Admin_Controller
 		
 		//echo "<pre>";print_r($data);die;
 		
-		//$this->Receipt_model->delete_receipts_by_receipt_no($data['receipt_no']);
+		$this->Receipt_model->delete_receipts_by_receipt_no($data['receipt_no']);
 		
         $last_id=[];
         if(!empty($data['pay'][0])){            
@@ -257,10 +257,10 @@ class Studentfee extends Admin_Controller
                             redirect('studentfee/edit/'.base64_encode($data['receipt_no']));
                         }
 						
-						if($keys == 0)
+						/*if($keys == 0)
 						{
 							$this->Receipt_model->delete_receipts_by_receipt_no($data['receipt_no']);
-						}
+						}*/
 						
 						/*$searchArr['receipt_no'] = $data['receipt_no'];
 						$searchArr['student_id'] = $data['student_id'];
@@ -326,7 +326,7 @@ class Studentfee extends Admin_Controller
 			$this->Receipt_model->insert_balance_sheet($balance_sheet);
             //$this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt'] - $data['prev_balance_amt']));
         }else{
-			$this->Receipt_model->delete_receipts_by_receipt_no($data['receipt_no']);
+			// $this->Receipt_model->delete_receipts_by_receipt_no($data['receipt_no']);
             $insert_data = array(
                 'receipt_no'   => $data['receipt_no'],
                 'student_id'   => $data['student_id'],
