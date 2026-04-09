@@ -525,7 +525,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                         $pay+=0;
                                                                     }
                                                                 }
-                                                                array_push($cat_list_amount,$pay);
+                                                                // array_push($cat_list_amount,$pay);
+                                                                $cat_list_amount[$list['fees_heading']] = $pay;
                                                                 $final += $pay;
                                                             
                                                             ?>
@@ -708,8 +709,17 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         }
 
 
-
-                                                        if(in_array('Fees Head Wise', $filters)){
+														
+														if(in_array('Fees Head Wise', $filters)){
+															$fees_month_amount = 0;
+															foreach($fee_heads as $list){
+																$head_wise_totals[$list['fees_heading']] += $cat_list_amount[$list['fees_heading']];
+                                                                $fees_month_amount += $cat_list_amount[$list['fees_heading']];
+																?>
+																<td style="text-align:right"><?=number_format($cat_list_amount[$list['fees_heading']],2); ?></td>
+															<?php }
+														}
+                                                        /*if(in_array('Fees Head Wise', $filters)){
 															$fees_month_amount = 0;
                                                             foreach($cat_list_amount as $key=>$value){ 
                                                                 $head_wise_totals[$key] += $value; 
@@ -722,7 +732,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                 </td>
                                                             <?php  
                                                             }
-                                                        }
+                                                        }*/
 
 
 
@@ -941,9 +951,9 @@ function Popup(data)
 
 
 <script type="text/javascript">
-    function removeElement() {
+    /*function removeElement() {
         document.getElementById("imgbox1").style.display = "block";
-    }
+    }*/
     function getSectionByClass(class_id, section_id) {
         if (class_id != "" && section_id != "") {
             $('#section_id').html("");
@@ -1041,7 +1051,7 @@ function Popup(data)
 </script>
 <script>
 
-    document.getElementById("print").style.display = "block";
+    /*document.getElementById("print").style.display = "block";
     document.getElementById("btnExport").style.display = "block";
 
     function printDiv() {
@@ -1056,7 +1066,7 @@ function Popup(data)
         document.body.innerHTML = oldPage;
 
         location.reload(true);
-    }
+    }*/
 
     function fnExcelReport()
     {
@@ -1096,7 +1106,7 @@ function Popup(data)
 
 
 
-    $(document).ready(function() {
+    /*$(document).ready(function() {
         var table = $('.example').DataTable();
 
         table.on('draw', function() {
@@ -1104,7 +1114,7 @@ function Popup(data)
         });
 
         updateTotals(table); // Initial total on load
-    });
+    });*/
 
 
     function updateTotals(table) {
