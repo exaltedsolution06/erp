@@ -1542,40 +1542,8 @@ class Report extends Admin_Controller
         $selectedroutes = $_POST['routes'] ?? [];
         // 
 
-        // var_dump($selectedClasses);
-        // die;
- 
-        // paginate
-        $config['base_url'] = base_url('report/defaulter_list');
-        $config['total_rows'] = $this->Receipt_model->get_receipt_count_student($selectedClasses,$selectedFeeCat,$selectedroutes);
-
-        // die;
-        $config['per_page'] = 100;
-        $config['uri_segment'] = 3;
-        // Pagination Bootstrap Styling
-        $config['full_tag_open'] = '<ul class="pagination justify-content-center">';
-        $config['full_tag_close'] = '</ul>';
-        $config['attributes'] = ['class' => 'page-link'];
-        $config['first_link'] = 'First';
-        $config['last_link'] = 'Last';
-        $config['first_tag_open'] = '<li class="page-item">';
-        $config['first_tag_close'] = '</li>';
-        $config['last_tag_open'] = '<li class="page-item">';
-        $config['last_tag_close'] = '</li>';
-        $config['next_tag_open'] = '<li class="page-item">';
-        $config['next_tag_close'] = '</li>';
-        $config['prev_tag_open'] = '<li class="page-item">';
-        $config['prev_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
-        $config['cur_tag_close'] = '</a></li>';
-        $config['num_tag_open'] = '<li class="page-item">';
-        $config['num_tag_close'] = '</li>';
-        
-        $this->pagination->initialize($config);
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-       
-        $data['receipt_data'] = $this->Receipt_model->get_receipt_student($config['per_page'], $page,$selectedClasses,$selectedFeeCat,$selectedroutes);
-        $data['pagination_links'] = $this->pagination->create_links();
+        $data['receipt_data'] = $this->Receipt_model->get_receipt_student_defaulter_list($selectedClasses,$selectedFeeCat,$selectedroutes);
+        // $data['pagination_links'] = $this->pagination->create_links();
 		
 		$data['reminder_letter_list'] = $this->Reminder_model->remindLetterList();
         // end paginate

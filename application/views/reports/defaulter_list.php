@@ -84,6 +84,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     .form-check-label{
         padding-left:1rem;
     }
+	table.dataTable tfoot td {
+		padding: 5px;
+	}
 </style>
 
 
@@ -766,6 +769,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
                                         <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <!--<tr><td colspan="21" class="text-center">No records found</td></tr>-->
+                                        <?php endif; ?>
+                                    </tbody>
+                                    <tfoot style="display:revert;">
                                          <tr style="font-weight: bold;">
                                                 <td></td>
                                                 <td></td>
@@ -794,14 +802,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                 <td style="text-align:right"><?= number_format($grand_total, 2) ?></td>
                                             </tr>
-                                        <?php else: ?>
-                                            <!--<tr><td colspan="21" class="text-center">No records found</td></tr>-->
-                                        <?php endif; ?>
-                                    </tbody>
+                                    </tfoot>
                                     
                                     </table>
                                     <div class="d-flex justify-content-center">
-                                        <?= $pagination_links; ?>
+                                        
                                     </div>
                                     <?php }else{
                                         if(isset($_POST['filter_button'])){
@@ -1042,10 +1047,11 @@ function Popup(data)
     });
     $(document).ready(function () {
         $.extend($.fn.dataTable.defaults, {
+			// pageLength: 5,
             ordering: false,
-            paging: false,
+            // paging: false,
             bSort: false,
-            info: false
+            // info: false
         });
     });
 </script>
