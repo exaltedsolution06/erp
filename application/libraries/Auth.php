@@ -75,7 +75,12 @@ class Auth
 
             return false;
         } else {
-            $active_status = $this->CI->db->select('is_active')->from('staff')->where('id', $admin['id'])->get()->row_array();
+            // $active_status = $this->CI->db->select('is_active')->from('staff')->where('id', $admin['id'])->get()->row_array();
+			$this->CI->db->select('is_active')->from('staff')->where('email', $admin['email']);
+			if (!empty($admin['session_id']) || $admin['session_id'] != '' || $admin['session_id'] != null) {
+				$this->CI->db->where('session_id', $admin['session_id']);
+			}
+			$active_status = $this->CI->db->get()->row_array();
 
             if ($active_status['is_active'] == 1) {
                 $this->app_routine();

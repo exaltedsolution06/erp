@@ -73,8 +73,12 @@ class Certificate extends Admin_Controller {
             }
             if ($this->input->post('is_active_header_img') == 1) {
                 $enableheadimg = $this->input->post('is_active_header_img');
+				$header_height = 0;
+				$footer_height = 0;
             } else {
                 $enableheadimg = 0;
+				$header_height = $this->input->post('header_height');
+				$footer_height = $this->input->post('footer_height');
             }
 			if (isset($_POST['is_left_footer'])) {
                 $is_left_footer = 1;
@@ -101,9 +105,9 @@ class Certificate extends Admin_Controller {
                 'created_for' => 2,
                 'status' => 1,
                 'background_image' => $picture,
-                'header_height' => $this->input->post('header_height'),
+                'header_height' => $header_height,
                 // 'content_height' => $this->input->post('content_height'),
-                'footer_height' => $this->input->post('footer_height'),
+                'footer_height' => $footer_height,
                 // 'content_width' => $this->input->post('content_width'),
                 'enable_student_image' => $enableimg,
                 'enable_image_height' => $imgHeight,
@@ -179,8 +183,12 @@ class Certificate extends Admin_Controller {
             }
             if ($this->input->post('is_active_header_img') == 1) {
                 $enableheadimg = $this->input->post('is_active_header_img');
+				$header_height = 0;
+				$footer_height = 0;
             } else {
                 $enableheadimg = 0;
+				$header_height = $this->input->post('header_height');
+				$footer_height = $this->input->post('footer_height');
             }
 			if (isset($_POST['is_left_footer'])) {
                 $is_left_footer = 1;
@@ -272,9 +280,9 @@ class Certificate extends Admin_Controller {
                         'created_for' => 2,
                         'status' => 1,
                         'background_image' => $picture,
-                        'header_height' => $this->input->post('header_height'),
+                        'header_height' => $header_height,
                         // 'content_height' => $this->input->post('content_height'),
-                        'footer_height' => $this->input->post('footer_height'),
+                        'footer_height' => $footer_height,
                         // 'content_width' => $this->input->post('content_width'),
                         'enable_student_image' => $enableimg,
                         'enable_image_height' => $imgHeight,
@@ -302,9 +310,9 @@ class Certificate extends Admin_Controller {
                         // 'left_footer' => $this->input->post('left_footer'),
                         // 'right_footer' => $this->input->post('right_footer'),
                         // 'center_footer' => $this->input->post('center_footer'),
-                        'header_height' => $this->input->post('header_height'),
+                        'header_height' => $header_height,
                         // 'content_height' => $this->input->post('content_height'),
-                        'footer_height' => $this->input->post('footer_height'),
+                        'footer_height' => $footer_height,
                         // 'content_width' => $this->input->post('content_width'),
                         'enable_student_image' => $enableimg,
                         'enable_image_height' => $imgHeight,
@@ -332,9 +340,9 @@ class Certificate extends Admin_Controller {
                     // 'left_footer' => $this->input->post('left_footer'),
                     // 'right_footer' => $this->input->post('right_footer'),
                     // 'center_footer' => $this->input->post('center_footer'),
-                    'header_height' => $this->input->post('header_height'),
-                    // 'content_height' => $this->input->post('content_height'),
-                    'footer_height' => $this->input->post('footer_height'),
+                    'header_height' => $header_height,
+					// 'content_height' => $this->input->post('content_height'),
+					'footer_height' => $footer_height,
                     // 'content_width' => $this->input->post('content_width'),
                     'enable_student_image' => $enableimg,
                     'enable_image_height' => $imgHeight,

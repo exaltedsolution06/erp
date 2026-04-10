@@ -221,6 +221,7 @@ class Reminder_letter extends Admin_Controller {
                 $enable_signature = 0;
             }
 			
+			$picture = $editcertificate[0]->signature;
 			if ($_POST['remove_signature'] == 1) {
 				$path1 = "uploads/remind_letter/" . $editcertificate[0]->signature;
 				$url = FCPATH . $path1;

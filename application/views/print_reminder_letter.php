@@ -4,214 +4,226 @@
 <meta charset="UTF-8">
 <title>Balance Due</title>
 
-<!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-
-.mark-container{
-    width:1000px;
-    position:relative;
-    z-index:2;
-    margin:0 auto;
-    /*padding:10px 30px;*/
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-.maincontent{
-    position:relative;
-    z-index:2;
+body {
+    background: #fff;
+    font-size: 9px;
 }
 
-/* Prevent breaking between pages */
-.print-block{
-    page-break-inside: avoid;
+/* A4 */
+@page {
+    size: A4 portrait;
+    margin: 6mm;
+}
+
+@media print {
+    body { margin: 0; }
+}
+
+/* GRID: 2 columns */
+.page-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    width: 100%;
+}
+
+/* Each slip = 1/3 height */
+.slip-wrap {
+    height: calc(100vh / 3 - 10px);
     break-inside: avoid;
-	margin-bottom: 30px;
-}
-
-.slip{
-    border:1px solid #000;
     page-break-inside: avoid;
-    break-inside: avoid;
 }
 
-.header{
-    border-bottom:1px solid #000;
+/* CARD */
+.slip {
+    border: 1px solid #333;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-.header img{
-    width:100%;
-    display:block;
+/* HEADER */
+.slip-header img {
+    width: 100%;
+    height: auto;
 }
 
-.content{
-    padding:15px;
+/* CONTENT */
+.slip-content {
+    padding: 5px;
+    flex: 1;
 }
 
-.title-row{
-    width:100%;
-    margin-bottom:10px;
+/* TITLE */
+.title-row {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 4px;
 }
 
-.title-row td{
-    font-weight:bold;
+/* INFO */
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
 }
 
-.info-table{
-    width:100%;
-    margin-top:10px;
+.info-table td {
+    font-size: 8px;
+    padding: 1px;
 }
 
-.info-table td{
-    padding:4px;
-	font-size: 12px;
+/* MESSAGE */
+.message {
+    font-size: 8px;
+    margin-top: 4px;
+    border-top: 1px dashed #ccc;
+    padding-top: 3px;
 }
 
-.message{
-    margin-top:15px;
-    line-height:1.6;
+/* FOOTER */
+.slip-footer {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #ccc;
+    font-size: 8px;
+    padding-top: 3px;
 }
 
-.footer{
-    width:100%;
+.signature-block img {
+    height: 25px;
 }
-
-.footer td{
-    vertical-align:bottom;
-}
-
-.signature{
-    text-align:right;
-}
-
-
 </style>
-
 </head>
 
 <body>
-	<div class="mark-container mb-5">
-		<div class="row maincontent">
-		<?php 
-		foreach($result as $val)
-		{
-			$html = '- ';
-			if($val['old_balc'] > 0){
-				$html .= 'Old Bal. - <strong>'.$val['old_balc'].'</strong>, ';
-			}
-			if($val['fees_month_amount'] > 0){
-				$html .= 'Fees <strong>('.$val['fees_month'].') - '.$val['fees_month_amount'].',</strong> ';
-			}
-			if($val['routes_month_amount'] > 0){
-				$html .= 'Route Fees <strong>('.$val['routes_month'].') - '.$val['routes_month_amount'].',</strong> ';
-			}
-			if($val['amount'] > 0){
-				$html .= 'Total Bal. - <strong>'.$val['amount'].'</strong>, ';
-			}
-			$replace = [
-				'[fees_details]' => $html
-			];
-		?>
-			<div class="col-sm-6 print-block">
-				<div class="slip">
-					<!-- HEADER IMAGE -->
-					<div class="header">
-						<?php
-						if(!empty($val['header_image'])){
-						?>
-						<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/common_header/<?php echo $val['header_image']; ?>" style="height:100px;width:100%">
-						<?php } ?>
-					</div>
 
-					<div class="content">
-						<table class="title-row">
-							<tr>
-								<td style="text-align:center;"><?php echo $val['heading_title'] ?? ''; ?></td>
-								<?php if($val['isdate'] == 1){ ?>
-								<td style="text-align:right;">
-									DATED: <strong>
-									<?php echo !empty($val['date']) ? date('d-M-y', strtotime($val['date'])) : ''; ?>
-									</strong>
-								</td>
-								<?php } ?>
-							</tr>
-						</table>
-						<div class="row">
-							<div class="col-md-6">
-								<table class="info-table">
-								<?php if($val['isuid'] == 1){ ?>
-									<tr>
-										<td >Admission No</td>
-										<td ><strong><?php echo $val['uid_no'] ?></strong></td>
-									</tr>
-								<?php } ?>
-								<?php if($val['isstudent'] == 1){ ?>
-									<tr>
-										<td>Student's Name</td>
-										<td><strong><?php echo $val['student_name'] ?></strong></td>
-									</tr>
-								<?php } ?>
-								<?php if($val['isfather'] == 1){ ?>
-									<tr>
-										<td>Father's Name</td>
-										<td><strong><?php echo $val['father_name'] ?></strong></td>
-									</tr>
-								<?php } ?>
-								</table>
-							</div>
-							<div class="col-md-6">
-								<table class="info-table">
-								<?php if($val['isclass'] == 1){ ?>
-									<tr>
-										<td>Class:</td>
-										<td><strong><?php echo $val['class'] ?></strong></td>
-									</tr>
-								<?php } ?>
-								<?php if($val['isroute'] == 1){ ?>
-									<tr>
-										<td>Route:</td>
-										<td><strong><?php echo $val['route'] ?></strong></td>
-									</tr>
-								<?php } ?>
-								<?php if($val['isuphone'] == 1){ ?>
-									<tr>
-										<td>Ph. No:</td>
-										<td><strong><?php echo $val['phone'] ?></strong></td>
-									</tr>
-								<?php } ?>
-								</table>
-							</div>
-						</div>
-						<div class="message">
-							<p>
-							Dear Parents / Guardians,
-							</p>
-							<?php echo strtr($val['description'], $replace); ?>
-						</div>
+<div class="page-grid">
 
-						<table class="footer">
-							<tr>
-								<td>Thank You,</td>
-								<td class="signature">
-									<?php if($val['is_signature'] == 1){
-											$is_signature_path = FCPATH . 'uploads/remind_letter/' . $val['signature'];
-											if (file_exists($is_signature_path)) {
-											?>
-										<img src="<?php echo base_url('uploads/remind_letter/'.$val['signature']) ?>" style="height:60px;width:auto">
-									<?php }else{
-										echo '<div style="height:60px;width:auto;"></div>';
-									} ?>
-									<br>
-									<?php echo $val['signature_title'] ?>
-									<?php } ?>
-								</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-			</div>
-		<?php } ?>
-		</div>
-	</div>
+<?php
+$count = 0;
+
+foreach ($result as $val) {
+    $count++;
+
+    $old_balance = $net_balance = 0;
+    $selected_months = '';
+
+    if ($val['old_balc'] > 0) {
+        $old_balance = (int)$val['old_balc'];
+    }
+    if ($val['fees_month_amount'] > 0 || $val['routes_month_amount'] > 0) {
+        $net_balance = (int)($val['fees_month_amount'] ?? 0) + (int)($val['routes_month_amount'] ?? 0);
+    }
+    $arr1 = explode(',', $val['fees_month']);
+	$arr2 = explode(',', $val['routes_month']);
+	$common = array_intersect($arr1, $arr2);
+	$selected_months = implode(',', $common);
+
+    $replaceArr = [
+        '[Old Balance]'   => $old_balance,
+        '[Net Balance]'   => $net_balance,
+        '[Total Balance]' => $net_balance+$old_balance,
+        '[Selected Months]'  => $selected_months,
+    ];
+
+    $body = str_replace(array_keys($replaceArr), array_values($replaceArr), $val['description']);
+?>
+
+    <div class="slip-wrap">
+        <div class="slip">
+
+            <!-- HEADER -->
+            <div class="slip-header">
+                <?php if (!empty($val['header_image'])): ?>
+                    <img src="<?php echo base_url('uploads/print_headerfooter/common_header/'.$val['header_image']); ?>">
+                <?php endif; ?>
+            </div>
+
+            <div class="slip-content">
+
+                <!-- TITLE -->
+                <div class="title-row">
+                    <span><?php echo $val['heading_title']; ?></span>
+                    <?php if ($val['isdate']): ?>
+                        <span><?php echo date('d-M-y', strtotime($val['date'])); ?></span>
+                    <?php endif; ?>
+                </div>
+
+                <!-- INFO -->
+                <div class="info-grid">
+                    <table class="info-table">
+                        <?php if ($val['isuid']): ?>
+                        <tr><td>Adm:</td><td><strong><?php echo $val['uid_no']; ?></strong></td></tr>
+                        <?php endif; ?>
+                        <?php if ($val['isstudent']): ?>
+                        <tr><td>Name:</td><td><strong><?php echo $val['student_name']; ?></strong></td></tr>
+                        <?php endif; ?>
+                        <?php if ($val['isfather']): ?>
+                        <tr><td>Father:</td><td><strong><?php echo $val['father_name']; ?></strong></td></tr>
+                        <?php endif; ?>
+                    </table>
+
+                    <table class="info-table">
+                        <?php if ($val['isclass']): ?>
+                        <tr><td>Class:</td><td><strong><?php echo $val['class']; ?></strong></td></tr>
+                        <?php endif; ?>
+                        <?php if ($val['isroute']): ?>
+                        <tr><td>Route:</td><td><strong><?php echo $val['route']; ?></strong></td></tr>
+                        <?php endif; ?>
+                        <?php if ($val['isuphone']): ?>
+                        <tr><td>Phone:</td><td><strong><?php echo $val['phone']; ?></strong></td></tr>
+                        <?php endif; ?>
+                    </table>
+                </div>
+
+                <!-- MESSAGE -->
+                <div class="message">
+                    <strong>Dear Parents,</strong><br>
+                    <?php echo $body; ?>
+                </div>
+
+                <!-- FOOTER -->
+                <div class="slip-footer">
+                    <span>Thank You</span>
+
+                    <?php if ($val['is_signature']): ?>
+                    <div class="signature-block">
+                        <?php
+                        $sig = 'uploads/remind_letter/'.$val['signature'];
+                        if (file_exists(FCPATH.$sig)):
+                        ?>
+                            <img src="<?php echo base_url($sig); ?>">
+                        <?php endif; ?>
+                        <div><?php echo $val['signature_title']; ?></div>
+                    </div>
+                    <?php endif; ?>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+<?php
+// ✅ PAGE BREAK AFTER 6
+if ($count % 6 == 0) {
+    echo '</div><div class="page-grid" style="page-break-after: always;">';
+}
+}
+?>
+
+</div>
+
 </body>
 </html>

@@ -117,6 +117,7 @@ class Site extends Public_Controller
                     }
 
                     $session_data = array(
+                        'session_id'      => $result->session_id,
                         'id'              => $result->id,
                         'username'        => $logusername,
                         'email'           => $result->email,

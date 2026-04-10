@@ -24,7 +24,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             <?php
             if ($this->rbac->hasPrivilege('student_certificate', 'can_add')) {
                 ?>
-                <div class="col-md-4">
+                <div class="col-md-9">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title"><?php echo $this->lang->line('add'); ?> <?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('certificate'); ?></h3>
@@ -61,7 +61,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('body_text'); ?></label><small class="req"> *</small>
                                     <textarea class="form-control" id="certificate_text" name="certificate_text" placeholder="" rows="3" placeholder=""></textarea>
-                                    <span class="text-primary">[name] [dob] [present_address] [guardian] [created_at] [admission_no] [roll_no] [class] [section] [gender] [admission_date] [category] [cast] [father_name] [mother_name] [religion] [email] [phone]
+                                    <span class="text-primary">[roll_no] [name] [class] [section] [Student Pen No] [Student Adhar No] [father_name] [Father PAN No] [Father Adhar No] [mother_name] [Mother PAN No] [Mother Adhar No] [dob] [admission_date] [gender] [category] [phone]
                                         <?php
                                         if (!empty($custom_fields)) {
                                             foreach ($custom_fields as $field_key => $field_value) {
@@ -169,18 +169,17 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <div class="form-group switch-inline">
                                                 <label>Common Header Image</label>
                                                 <div class="material-switch switchcheck">
-                                                    <input id="is_active_header_img" name="is_active_header_img" type="checkbox" class="chk" value="1">
+                                                    <input id="is_active_header_img" name="is_active_header_img" type="checkbox" class="chk" value="1" onclick="valueHeaderImageChanged()">
                                                     <label for="is_active_header_img" class="label-success"></label>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="img_div_modal"><label><?php echo $this->lang->line('certificate'); ?> <?php echo $this->lang->line('design'); ?></label></div>
-                                        <div class="col-md-6 col-sm-6 img_div_modal">
+                                        <div class="col-md-6 col-sm-6 img_div_modal enableHeadFootDiv">
                                             <div class="form-group">
                                                 <input id="header_height" name="header_height" placeholder="<?php echo $this->lang->line('header'); ?> <?php echo $this->lang->line('height'); ?>" type="text" class="form-control" min="0" />
                                             </div>
                                         </div><!--./col-md-6-->
-                                        <div class="col-md-6 col-sm-6 img_div_modal">
+                                        <div class="col-md-6 col-sm-6 img_div_modal enableHeadFootDiv">
                                             <div class="form-group">
                                                 <input id="footer_height" name="footer_height" placeholder="<?php echo $this->lang->line('footer'); ?> <?php echo $this->lang->line('height'); ?>" type="text" class="form-control" min="0" />
                                             </div>
@@ -236,7 +235,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             <?php } ?>
             <div class="col-md-<?php
             if ($this->rbac->hasPrivilege('student_certificate', 'can_add')) {
-                echo "8";
+                echo "3";
             } else {
                 echo "12";
             }
@@ -254,7 +253,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <tr>
                                         <th><?php echo $this->lang->line('certificate'); ?> <?php echo $this->lang->line('name'); ?></th>
 
-                                        <th><?php echo $this->lang->line('background_image'); ?></th>
                                         <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
                                 </thead>
@@ -270,14 +268,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <tr>
                                                 <td class="mailbox-name">
                                                     <a style="cursor: pointer;" class="view_data" id="<?php echo $certificate->id ?>" data-toggle="popover" class="detail_popover" ><?php echo $certificate->certificate_name; ?></a>
-                                                </td>
-                                                <td class="mailbox-name">
-                                                    <?php if ($certificate->background_image != '' && !is_null($certificate->background_image)) { ?>
-                                                        <img src="<?php echo base_url('uploads/certificate/') ?><?php echo $certificate->background_image ?>" width="40">
-                                                    <?php } else { ?>
-                                                        <i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>
-                                                    <?php } ?>
-
                                                 </td>
                                                 <td class="mailbox-date text-right no-print">
                                                     <a data-placement="left" id="<?php echo $certificate->id ?>" class="btn btn-default btn-xs view_data" title="<?php echo $this->lang->line('view'); ?>">
@@ -414,6 +404,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     });
 </script>
 <script type="text/javascript">
+	function valueHeaderImageChanged()
+	{
+		if ($('#is_active_header_img').is(":checked")){
+			$(".enableHeadFootDiv").hide();
+		}else{
+			$(".enableHeadFootDiv").show();
+		}
+	}
     function valueChanged()
     {
         if ($('#enable_student_img').is(":checked"))

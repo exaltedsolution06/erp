@@ -23,7 +23,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             <?php
             if ($this->rbac->hasPrivilege('design_tc', 'can_add')) {
                 ?>
-                <div class="col-md-6">
+                <div class="col-md-9">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title"><?php echo $this->lang->line('edit'); ?> Tc</h3>
@@ -247,7 +247,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             <?php } ?>
             <div class="col-md-<?php
             if ($this->rbac->hasPrivilege('design_tc', 'can_add')) {
-                echo "6";
+                echo "3";
             } else {
                 echo "12";
             }

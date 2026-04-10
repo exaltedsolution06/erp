@@ -26,7 +26,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             <?php
             if ($this->rbac->hasPrivilege('reminder_letter', 'can_add')) {
                 ?>
-                <div class="col-md-4">
+                <div class="col-md-9">
                     <div class="box box-primary">
                         <div class="box-header with-border">
                             <h3 class="box-title"><?php echo $this->lang->line('add'); ?> <?php echo $this->lang->line('fees_reminder'); ?></h3>
@@ -163,7 +163,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										<div class="form-group">
 											<label><?php echo $this->lang->line('body_text'); ?></label><small class="req"> *</small>
 											<textarea class="form-control ss" id="editor1" name="description" placeholder="" rows="3" placeholder=""><?php echo isset($editcertificate[0]->description) ? $editcertificate[0]->description : ''?></textarea>
-											<span class="text-primary">[fees_details]
+											<span class="text-primary">[Old Balance] [Net Balance] [Total Balance] [Selected Months] 
 											</span>
 											<span class="text-danger"><?php echo form_error('description'); ?></span>
 										</div>
@@ -190,7 +190,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             <?php } ?>
             <div class="col-md-<?php
             if ($this->rbac->hasPrivilege('reminder_letter', 'can_add')) {
-                echo "8";
+                echo "3";
             } else {
                 echo "12";
             }
