@@ -84,8 +84,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     .form-check-label{
         padding-left:1rem;
     }
+	
 	table.dataTable tfoot td {
 		padding: 5px;
+	}
+	table thead th {
+		position: sticky;
+		top: 0;
 	}
 </style>
 
@@ -284,7 +289,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
 
-                                <div class="table-responsive">
+                                <div class="table-responsive1">
 								<form method="post" action="<?php echo base_url('report/printreminderletter') ?>" id="printreminderletter">
 								 <?php if(!empty($filters) and !empty($selectedMonths)){ ?>
 								 
@@ -314,12 +319,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 								
 								 <?php } ?>
 								
-                                    <div class="download_label"> <?php
-                                        // echo $this->lang->line('fees_statement') . "<br>";
-                                        $this->customlib->get_postmessage();
-                                        ?></div>
+                                    <div class="download_label">Defaulter List</div>
 
                                     <?php if(!empty($filters) and !empty($selectedMonths)){ ?>
+									<div style="max-height: 400px; overflow-y: auto;">
                                     <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header">
                                         <thead>
                                             <tr>
@@ -412,10 +415,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
 
-                                                     
+                                                    
+													$fees_month = []; 
                                                     if(in_array('Fees Head Wise', $filters)){
                                                         $cat_list_amount=[];
-														$fees_month = [];
                                                         foreach($fee_heads as $list){ 
                                                            
                                                         ?>
@@ -543,6 +546,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     $routeFees=0;
 
 
+													$routes_month = [];
                                                     if(in_array('Include Route', $filters)){
 
                                                        
@@ -550,7 +554,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         
                                                             <?php 
 															$student_routes = $this->db->where('id', $record['route_id'])->get('route_head')->result_array();
-															$routes_month = [];
                                                                 $pay=0;
                                                              foreach($student_routes as $list){ 
                                                                 $class_id = $record['class_id'];
@@ -712,7 +715,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         }
 
 
-														
 														if(in_array('Fees Head Wise', $filters)){
 															$fees_month_amount = 0;
 															foreach($fee_heads as $list){
@@ -791,10 +793,18 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <?php endif; ?>
 
                                                 <?php 
-                                                if (in_array('Fees Head Wise', $filters)) {
-                                                    foreach($cat_list_amount as $key => $value): ?>
+                                                /*if (in_array('Fees Head Wise', $filters)) {
+                                                    foreach($cat_list_amount as $key => $value){ ?>
                                                         <td style="text-align:right"><?= number_format($head_wise_totals[$key] ?? 0, 2) ?></td>
-                                                <?php endforeach; } ?>
+                                                <?php } }*/ ?>
+												
+												<?php if(in_array('Fees Head Wise', $filters)){
+													foreach($fee_heads as $list){
+												?>
+														<td style="text-align:right"><?=number_format($head_wise_totals[$list['fees_heading']] ?? 0, 2); ?></td>
+												<?php }
+												}
+												?>
 
                                                 <?php if (in_array('Include Route', $filters)): ?>
                                                     <td style="text-align:right"><?= number_format($total_route, 2) ?></td>
@@ -805,7 +815,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </tfoot>
                                     
                                     </table>
-                                    <div class="d-flex justify-content-center">
+                                    </div>
+									<div class="d-flex justify-content-center">
                                         
                                     </div>
                                     <?php }else{

@@ -15,7 +15,8 @@ $(document).ready(function () {
                     title: $('.download_label').html(),
                     exportOptions: {
                         columns: ':visible'
-                    }
+                    },
+					footer: true
                 },
 
                 {
@@ -27,6 +28,7 @@ $(document).ready(function () {
                     exportOptions: {
                         columns: ':visible'
                     },
+					footer: true
 					/*customize: function (xlsx) {
 
 						var sheet = xlsx.xl.worksheets['sheet1.xml'];
@@ -72,7 +74,8 @@ $(document).ready(function () {
                     title: $('.download_label').html(),
                     exportOptions: {
                         columns: ':visible'
-                    }
+                    },
+					footer: true
                 },
 
                 {
@@ -83,7 +86,8 @@ $(document).ready(function () {
                     exportOptions: {
                         columns: ':visible'
                         
-                    }
+                    },
+					footer: true
                 },
 
                 {
@@ -101,7 +105,8 @@ $(document).ready(function () {
                 },
                     exportOptions: {
                         columns: ':visible'
-                    }
+                    },
+					footer: true
                 },
 
                 {
