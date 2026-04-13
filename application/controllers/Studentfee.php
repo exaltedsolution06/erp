@@ -2361,6 +2361,7 @@ class Studentfee extends Admin_Controller
 	}
 	
 	public function callback_receipts_ids_by_receipt_no($receipt_no){
+		$receipt_no = urldecode($receipt_no);
 		$ids = $this->Receipt_model->get_receipts_ids_by_receipt_no(base64_decode($receipt_no));
 		redirect('studentfee/print_receipt/'.base64_encode(json_encode($ids)));
 	}
