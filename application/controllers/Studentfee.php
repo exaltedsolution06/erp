@@ -431,7 +431,7 @@ class Studentfee extends Admin_Controller
     }
 	
 	public function print_receipt($id){
-		
+		$id = urldecode($id);
         $ids=json_decode(base64_decode($id));
         //print_r($ids);die;
         $this->db->select('GROUP_CONCAT(DISTINCT months) as month_names');
@@ -1353,6 +1353,7 @@ class Studentfee extends Admin_Controller
 		if (!$this->rbac->hasPrivilege('collect_fee_list', 'can_edit')) {
             access_denied();
         }
+		$receipt_no = urldecode($receipt_no);
 		$receipt_no = base64_decode($receipt_no);
         //echo $receipt_no;die;
 		$receiptArr=$this->Receipt_model->get_receipts_by_receipt_no($receipt_no);
