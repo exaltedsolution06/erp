@@ -187,7 +187,10 @@ ALTER TABLE `template_designtc` DROP `is_signature`, DROP `signature`, DROP `sig
 ALTER TABLE `template_designtc` ADD `left_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `fields_json`, ADD `middle_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `left_sign`, ADD `right_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `middle_sign`, ADD `left_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `right_sign`, ADD `middle_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `left_sign_title`, ADD `right_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `middle_sign_title`, ADD `is_class_teacher` INT(11) NOT NULL DEFAULT '0' AFTER `right_sign_title`, ADD `is_examination_ic` INT(11) NOT NULL DEFAULT '0' AFTER `is_class_teacher`, ADD `is_principal` INT(11) NOT NULL DEFAULT '0' AFTER `is_examination_ic`;
 ALTER TABLE `template_designtc` ADD `is_common_header` INT(11) NOT NULL DEFAULT '0' AFTER `fields_json`, ADD `header_height` INT(11) NOT NULL AFTER `is_common_header`, ADD `footer_height` INT(11) NOT NULL AFTER `header_height`;
 
-
+--- 14-04-2026 ---
+ALTER TABLE `sch_settings` ADD `fee_receipt_print_mode` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '1=Landscape, 2=Potrait' AFTER `serial_no_suffix`;
+ALTER TABLE `sch_settings` ADD `rcpt_common_header` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_note`;
+ALTER TABLE `sch_settings` ADD `rcpt_header_height` INT(10) NOT NULL AFTER `rcpt_common_header`, ADD `rcpt_footer_height` INT(10) NOT NULL AFTER `rcpt_header_height`;
 
 ===============================
 File change outside of application folder

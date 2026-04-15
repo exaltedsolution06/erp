@@ -16,91 +16,160 @@ if($_GET['copy']=='2'){
   <title>Fee Receipt</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    @media print {
-		/* 🔥 Dynamic Orientation via body class */
-		body.portrait {
-			page: portraitPage;
-		}
+    body {
+      background-color: #f8f9fa;
+    }
+    .receipt-card {
+      /*max-width: 1400px;*/
+      margin: 30px auto;
+    }
+    .card-header {
+      background-color: white;
+      color: black;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      padding: 10px 0;
+    }
+    .student-name {
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+      margin: 15px 0;
+    }
+    .table th, .table td {
+      font-size: 14px;
+      padding: 6px;
+    }
+    .card-footer {
+      background-color: #fff;
+      border-top: none;
+    }
+    .print-options label {
+      margin-right: 15px;
+    }
+    tbody, td, tfoot, th, thead, tr {
+        border-color: inherit;
+        border-style: solid;
+        border-width: 0;
+        border: navajowhite;
+    }
+  
 
-		body.landscape {
-			page: landscapePage;
-		}
 
-		@page portraitPage {
-			size: A4 portrait;
-			margin: 0mm;
-		}
+@media print {
+  @page {
+    size: A4 landscape;
+    /*margin: 0;
+    margin-left:10px;*/
+    margin-top:10px;
+  }
 
-		@page landscapePage {
-			size: A4 landscape;
-			margin: 0mm;
-		}
+  .f12_new{
+    font-size:9px !important;
+  }
 
-	  body * {
-		visibility: hidden;
-		font-size: 11px !important;
-		font-family: arial;
-	  }
 
-	  #print-area, #print-area * {
-		visibility: visible;
-		margin: 0 !important;
-		line-height: 1.3 !important;
-	  }
+  body * {
+    visibility: hidden;
+    font-size: 11pt !important; /* Standard readable size */
+  }
 
-	  #print-area {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		display: flex;
-		flex-wrap: wrap;
-	  }
+  #print-area, #print-area * {
+    visibility: visible;
+    font-size: 11pt !important;
+    /* //padding: 5pt !important; */
+    margin: 0 !important;
+    line-height: 1.3 !important;
+  }
 
-	  .card-footer,
-	  .print-options {
-		display: none !important;
-	  }
 
-	  /* ========================= */
-	  /* 🎯 ALWAYS 2 COPIES */
-	  /* ========================= */
+  #print-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /*width: 280mm;*/
+    /*height: 100vh;*/
+    padding: 0 !important;
+    box-sizing: border-box;
+    overflow: hidden;
+    border: none !important;
+    margin: 0 !important;
+  }
+  .card-footer,
+  .print-options {
+    display: none !important;
+  }
 
-	  .receipt-card {
-		width: 100% !important;
-		max-width: 100% !important;
-		box-sizing: border-box;
-		padding: 5mm !important;
-	  }
+  .receipt-card {
+    /*margin: 0 !important;*/
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
 
-	  /* TABLE FIX */
-	  .table th, .table td {
-		padding: 1pt !important;
-	  }
+  .table th, .table td {
+    font-size: 12pt !important;
+    padding: 2pt !important;
+  }
 
-	  h5, span {
-		padding: 0 !important;
-	  }
+  h5,span{
+    font-size: 12pt !important;
+    padding: 0pt !important;
+  }
+  
+  .accountant-sign {
+    /* position: absolute; */
+    padding-top:3.3rem;
+    text-align: right;
+    padding-right:0 !important;
+  }
 
-	  .accountant-sign {
-		padding-top: 3rem;
-		text-align: right;
-		padding-right: 0 !important;
-	  }
-
-	  .abd {
-		padding: 0 !important;
-	  }
-
-	  .footer-content {
-		padding: 0 !important;
-	  }
-
+  .abd{
+    padding:0px !important;
+  }
+  
+	.footer-content{
+		padding:0 !important;
 	}
+  .abd>.f12_new{
+    font-size:9px !important;
+  }
+
+}
+
+
+table {
+  border-collapse: collapse; /* Important for removing spacing */
+}
+
+th, td {
+  
+ 
+  padding: 0px !important; /* Optional: remove all padding */
+  margin: 0px !important; 
+
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+
+.accountant-sign {
+    /* position: absolute; */
+   padding-top:3.3rem;
+    text-align: right;
+    padding-right:4px;
+  }
+.abd{
+  padding:4px;
+}
+.footer-content{
+  padding:0 4px 4px 4px;
+}
 
   </style>
 </head>
-<body class="<?php echo ($result->fee_receipt_print_mode == 2) ? 'portrait' : 'landscape'; ?>">
+<body>
   <div class="card receipt-card">
    
   
@@ -113,11 +182,11 @@ if($_GET['copy']=='2'){
     <div id="print-area" >
         
         <div class="row">
-          <div class="col-sm-6" style="padding-left: 40px; padding-top:10px">
+          <div class="col-sm-6" style="padding-left: 40px; padding-top:20px">
 
 
 
-          <div  style="border:1px solid;" >
+          <div  style="border:2px solid;" >
 
 
 <?php if($result->rcpt_common_header == 1 && !empty($header_image)){ ?>
@@ -125,7 +194,7 @@ if($_GET['copy']=='2'){
 		<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">		
 	</div>
 <?php } else if($result->rcpt_common_header == 0 && $result->rcpt_header_height != 0) { ?>
-	<div style="border:0px; height:<?php echo $result->rcpt_header_height; ?>px"></div>
+	<div style="height:<?php echo $result->rcpt_header_height; ?>px"></div>
 <?php } else { ?>
 	<?php if ($result->rcpt_student_name) { ?>
 	<h5><b><?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></b></h5>
@@ -141,13 +210,13 @@ if($_GET['copy']=='2'){
 <?php } ?>
 
 
-<table class="table mt-1 mb-1" style="border:1px solid #000000;">
+<table class="table mt-3">
     <thead>
-        <tr>
-			<th>Rec. No.: <?=$fees[0]->receipt_no?></th>
-			<th>School Copy</th>
-			<th class="text-end">Date: <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
-		</tr>
+        <tr style="border-top:2px solid;border-bottom:2px solid">
+            <th><strong>Rec. No.:</strong> <?=$fees[0]->receipt_no?></th>
+			<th><strong>School Copy</strong></th>
+            <th class="text-end"><strong>Date:</strong> <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
+        </tr>
     </thead>
 </table> 
 
@@ -172,7 +241,7 @@ if($_GET['copy']=='2'){
   </div>
   <?php if ($result->rcpt_photo) { ?>
 	  <div class="p-3" style="display: flex; align-items: center;">
-		<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
+		<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 2px solid #fff;outline: 1px solid #000000; width: auto;">
 	  </div>
 	<?php } ?>
 </div>
@@ -180,7 +249,7 @@ if($_GET['copy']=='2'){
 <div style="padding:1px">
 
         
-<table class="table mt-1 mb-1" >
+<table class="table mt-3" >
     <thead>
     <?php if($fees[0]->fee_head_name == 'Ledger Amount'){ ?>
     <!--<tr> 
@@ -189,7 +258,7 @@ if($_GET['copy']=='2'){
         <th class="text-end"><?=$fees[0]->ledger_amt?></th>
     </tr>-->
     <?php } ?>
-    <tr style="border-top:1px solid;border-bottom:1px solid">
+    <tr style="border-top:2px solid;border-bottom:2px solid">
         <th>Sr.</th>
         <th>Particulars</th>
         <th class="text-end">Total Amt.</th>
@@ -240,7 +309,7 @@ if($_GET['copy']=='2'){
                         </tr>
                         <?php } ?>
     <?php if ($result->rcpt_total_amt) { ?>
-    <tr style="border-top:1px solid">
+    <tr style="border-top:2px solid">
         <td colspan="2" class="text-end"><strong>Total Amount</strong></td>
         <?php if($fees[0]->fee_head_name!='Ledger Amount'){ ?>
         <td class="text-end"><h6><b><?=$pay+$fees[0]->ledger_amt?></b></h6></td>
@@ -259,7 +328,7 @@ if($_GET['copy']=='2'){
         <td class="text-end"><?=$fees[0]->discount_amt?></td>
     </tr>
 	<?php } if ($result->rcpt_net_amt) { ?>
-    <tr style="border-top:1px solid">
+    <tr style="border-top:2px solid">
         <td colspan="2" class="text-end"><strong>Net Fees</strong></td>
         <td class="text-end"><strong><h6><b>
         <?php
@@ -346,9 +415,9 @@ if($_GET['copy']=='2'){
 
 
           </div>
-          <div class="col-sm-6" style="padding-left: 40px; padding-top:10px">
+          <div class="col-sm-6" style="padding-left: 10px; padding-right:30px;  padding-top:20px">
 
-          <div  style="border:1px solid;" >
+          <div  style="border:2px solid;" >
 
 
 <?php if($result->rcpt_common_header == 1 && !empty($header_image)){ ?>
@@ -356,7 +425,7 @@ if($_GET['copy']=='2'){
 		<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">		
 	</div>
 <?php } else if($result->rcpt_common_header == 0 && $result->rcpt_header_height != 0) { ?>
-	<div style="border:0px; height:<?php echo $result->rcpt_header_height; ?>px"></div>
+	<div style="height:<?php echo $result->rcpt_header_height; ?>px"></div>
 <?php } else { ?>
 	<?php if ($result->rcpt_student_name) { ?>
 	<h5><b><?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></b></h5>
@@ -372,12 +441,12 @@ if($_GET['copy']=='2'){
 <?php } ?>
 
 
-<table class="table mt-1 mb-1">
+<table class="table mt-3">
     <thead>
-        <tr style="border:1px solid #000000;">
-            <th>Rec. No.: <?=$fees[0]->receipt_no?></th>
-			<th>Parent Copy</th>
-			<th class="text-end">Date: <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
+        <tr style="border-top:2px solid;border-bottom:2px solid">
+            <th><strong>Rec. No.:</strong> <?=$fees[0]->receipt_no?></th>
+			<th><strong>Parent Copy</strong></th>
+            <th class="text-end"><strong>Date:</strong> <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
         </tr>
     </thead>
 </table> 
@@ -403,7 +472,7 @@ if($_GET['copy']=='2'){
   </div>
   <?php if ($result->rcpt_photo) { ?>
 	  <div class="p-3" style="display: flex; align-items: center;">
-		<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
+		<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 2px solid #fff;outline: 1px solid #000000; width: auto;">
 	  </div>
 	<?php } ?>
 </div>
@@ -413,7 +482,7 @@ if($_GET['copy']=='2'){
 <div style="padding:1px">
 
         
-<table class="table mt-1 mb-1" >
+<table class="table mt-3" >
   <thead>
   <?php if($fees[0]->fee_head_name == 'Ledger Amount'){ ?>
   <!--<tr> 
@@ -422,7 +491,7 @@ if($_GET['copy']=='2'){
       <th class="text-end"><?=$fees[0]->ledger_amt?></th>
   </tr>-->
   <?php } ?>
-  <tr style="border-top:1px solid;border-bottom:1px solid">
+  <tr style="border-top:2px solid;border-bottom:2px solid">
       <th>Sr.</th>
       <th>Particulars</th>
       <th class="text-end">Total Amt.</th>
@@ -469,7 +538,7 @@ if($_GET['copy']=='2'){
                         </tr>
                         <?php } ?>
 <?php if ($result->rcpt_total_amt) { ?>
-  <tr style="border-top:1px solid">
+  <tr style="border-top:2px solid">
       <td colspan="2" class="text-end"><strong>Total Amount</strong></td>
       <?php if($fees[0]->fee_head_name!='Ledger Amount'){ ?>
       <td class="text-end"><h6><b><?=$pay+$fees[0]->ledger_amt?></b></h6></td>
@@ -488,7 +557,7 @@ if($_GET['copy']=='2'){
       <td class="text-end"><?=$fees[0]->discount_amt?></td>
   </tr>
 <?php } if ($result->rcpt_net_amt) { ?>
-  <tr style="border-top:1px solid">
+  <tr style="border-top:2px solid">
       <td colspan="2" class="text-end"><strong>Net Fees</strong></td>
       <td class="text-end"><strong><h6><b>
       <?php
@@ -647,98 +716,162 @@ if($_GET['copy']=='2'){
   <title>Fee Receipt</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    @media print {
+    body {
+      background-color: #f8f9fa;
+    }
+    .receipt-card {
+      max-width: 700px;
+      margin: 30px auto;
+    }
+    .card-header {
+      background-color: white;
+      color: black;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      padding: 10px 0;
+    }
+    .student-name {
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+      margin: 15px 0;
+    }
+    .table th, .table td {
+      font-size: 14px;
+      padding: 6px;
+    }
+    .card-footer {
+      background-color: #fff;
+      border-top: none;
+    }
+    .print-options label {
+      margin-right: 15px;
+    }
+    tbody, td, tfoot, th, thead, tr {
+        border-color: inherit;
+        border-style: solid;
+        border-width: 0;
+        border: navajowhite;
+    }
+  
 
-	  /* 🔥 Dynamic Orientation via body class */
-		body.portrait {
-			page: portraitPage;
-		}
 
-		body.landscape {
-			page: landscapePage;
-		}
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 0;
+    margin-left:10px;
+    margin-top:10px;
+  }
 
-		@page portraitPage {
-			size: A4 portrait;
-			margin: 0mm;
-		}
+  .f12_new{
+    font-size:9px !important;
+  }
 
-		@page landscapePage {
-			size: A4 landscape;
-			margin: 0mm;
-		}
 
-	  body * {
-		visibility: hidden;
-		font-size: 11px !important;
-		font-family: arial;
-	  }
+  body * {
+    visibility: hidden;
+    font-size: 11pt !important; /* Standard readable size */
+  }
 
-	  #print-area, #print-area * {
-		visibility: visible;
-		margin: 0 !important;
-		line-height: 1.3 !important;
-	  }
+  #print-area, #print-area * {
+    visibility: visible;
+    font-size: 11pt !important;
+    /* //padding: 5pt !important; */
+    margin: 0 !important;
+    line-height: 1.3 !important;
+  }
 
-	  #print-area {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 50%;
-		display: flex;
-		flex-wrap: wrap;
-	  }
 
-	  .card-footer,
-	  .print-options {
-		display: none !important;
-	  }
+  #print-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150mm;
+    /*height: 100vh;*/
+    padding: 0 !important;
+    box-sizing: border-box;
+    overflow: hidden;
+    border: none !important;
+    margin: 0 !important;
+  }
+  .card-footer,
+  .print-options {
+    display: none !important;
+  }
 
-	  /* ========================= */
-	  /* 🎯 ALWAYS 1 COPY */
-	  /* ========================= */
+  .receipt-card {
+    /*margin: 0 !important;*/
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+	
+	max-width: none !important;
+    width: 100% !important;
+  }
 
-	  .receipt-card {
-		  width: 100% !important;
-		  max-width: 100% !important;
-		  box-sizing: border-box;
-		  padding: 5mm !important;
-		  page-break-after: always;   /* 🔥 Important */
-		  break-after: page;          /* modern support */
-		}
-		.receipt-card:last-child {
-		  page-break-after: auto;
-		}
+  .table th, .table td {
+    font-size: 12pt !important;
+    padding: 2pt !important;
+  }
 
-	  /* TABLE FIX */
-	  .table th, .table td {
-		padding: 1pt !important;
-	  }
+  h5,span{
+    font-size: 12pt !important;
+    padding: 0pt !important;
+  }
+  
+  .accountant-sign {
+    /* position: absolute; */
+    padding-top:3.3rem;
+    text-align: right;
+    padding-right:0 !important;
+  }
 
-	  h5, span {
-		font-size: 11px !important;
-		padding: 0 !important;
-	  }
-
-	  .accountant-sign {
-		padding-top: 3rem;
-		text-align: right;
-		padding-right: 0 !important;
-	  }
-
-	  .abd {
-		padding: 0 !important;
-	  }
-
-	  .footer-content {
-		padding: 0 !important;
-	  }
-
+  .abd{
+    padding:0px !important;
+  }
+  .footer-content{
+	padding:0 !important;
 	}
+  .abd>.f12_new{
+    font-size:9px !important;
+  }
+
+}
+
+
+table {
+  border-collapse: collapse; /* Important for removing spacing */
+}
+
+th, td {
+  
+ 
+  padding: 0px !important; /* Optional: remove all padding */
+  margin: 0px !important; 
+
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+
+.accountant-sign {
+    /* position: absolute; */
+   padding-top:3.3rem;
+    text-align: right;
+    padding-right:4px;
+  }
+.abd{
+  padding:4px;
+}
+.footer-content{
+  padding:0 4px 4px 4px;
+}
 
   </style>
 </head>
-<body class="<?php echo ($result->fee_receipt_print_mode == 2) ? 'portrait' : 'landscape'; ?>">
+<body>
   <div class="card receipt-card">
    
   
@@ -749,14 +882,14 @@ if($_GET['copy']=='2'){
      <?php //var_dump($fees); ?>
 
     <div id="print-area">
-        <div  style="padding-left: 40px; padding-right: 0px; padding-top:10px" >
-            <div  style="border:1px solid;" >
+        <div  style="padding-left: 40px; padding-right: 20px; padding-top:20px" >
+            <div  style="border:2px solid;" >
 				<?php if($result->rcpt_common_header == 1 && !empty($header_image)){ ?>
 					<div class="text-center p-3 pb-0">
 						<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">		
 					</div>
 				<?php } else if($result->rcpt_common_header == 0 && $result->rcpt_header_height != 0) { ?>
-					<div style="border:0px; height:<?php echo $result->rcpt_header_height; ?>px"></div>
+					<div style="height:<?php echo $result->rcpt_header_height; ?>px"></div>
 				<?php } else { ?>
 					<?php if ($result->rcpt_student_name) { ?>
 					<h5><b><?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></b></h5>
@@ -772,12 +905,12 @@ if($_GET['copy']=='2'){
 				<?php } ?>
 
 
-                    <table class="table mt-1 mb-1">
+                    <table class="table mt-3">
                         <thead>
-                            <tr style="border:1px solid #000000;">
-                                <th>Rec. No.: <?=$fees[0]->receipt_no?></th>
-								<th>Parent Copy</th>
-                                <th class="text-end">Date: <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
+                            <tr style="border-top:2px solid;border-bottom:2px solid">
+                                <th><strong>Rec. No.:</strong> <?=$fees[0]->receipt_no?></th>
+								<th><strong>Parent Copy</strong></th>
+                                <th class="text-end"><strong>Date:</strong> <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
                             </tr>
                         </thead>
                     </table> 
@@ -803,7 +936,7 @@ if($_GET['copy']=='2'){
                       </div>
 					  <?php if ($result->rcpt_photo) { ?>
 						  <div class="p-3" style="display: flex; align-items: center;">
-							<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
+							<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 2px solid #fff;outline: 1px solid #000000; width: auto;">
 						  </div>
 						<?php } ?>
                     </div>
@@ -811,7 +944,7 @@ if($_GET['copy']=='2'){
                     <div style="padding:1px">
 
                             
-                    <table class="table mt-1 mb-1" >
+                    <table class="table mt-3" >
                         <thead>
                         <?php if($fees[0]->fee_head_name == 'Ledger Amount'){ ?>
                         <!--<tr> 
@@ -820,7 +953,7 @@ if($_GET['copy']=='2'){
                             <th class="text-end"><?=$fees[0]->ledger_amt?></th>
                         </tr>-->
                         <?php } ?>
-                        <tr style="border-top:1px solid;border-bottom:1px solid">
+                        <tr style="border-top:2px solid;border-bottom:2px solid">
                             <th>Sr.</th>
                             <th>Particulars</th>
                             <th class="text-end">Total Amt.</th>
@@ -865,7 +998,7 @@ if($_GET['copy']=='2'){
                         </tr>
                         <?php } ?>
 						<?php if ($result->rcpt_total_amt) { ?>
-                        <tr style="border-top:1px solid">
+                        <tr style="border-top:2px solid">
                             <td colspan="2" class="text-end"><strong>Total Amount</strong></td>
                             <?php if($fees[0]->fee_head_name!='Ledger Amount'){ ?>
                             <td class="text-end"><h6><b><?=$pay+$fees[0]->ledger_amt?></b></h6></td>
@@ -884,7 +1017,7 @@ if($_GET['copy']=='2'){
                             <td class="text-end"><?=$fees[0]->discount_amt?></td>
                         </tr>
 						<?php } if ($result->rcpt_net_amt) { ?>
-                        <tr style="border-top:1px solid">
+                        <tr style="border-top:2px solid">
                             <td colspan="2" class="text-end"><strong>Net Fees</strong></td>
                             <td class="text-end"><strong><h6><b>
                             <?php

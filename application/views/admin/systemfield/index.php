@@ -979,6 +979,33 @@
                                             </div>		
                                         </td>                                                
                                     </tr>
+									<tr>
+                                        <td>Common Header</td>
+                                        <td>
+                                            <div class="material-switch pull-right">
+                                                <input id="rcpt_common_header" name="rcpt_common_header" type="checkbox" data-role="rcpt_common_header" class="chk" data-rowid="1" value="checked" <?php if ($result->rcpt_common_header == "1") echo "checked='checked'"; ?>  onclick="valueHeaderImageChanged()"/>
+                                                <label for="rcpt_common_header" class="label-success"></label>
+                                            </div>		
+                                        </td>                                                
+                                    </tr>
+									<tr class="enableHeadFootDiv" <?php echo $result->rcpt_common_header == 1 ? 'style="display:none"' : ''; ?>>
+                                        <td><input id="header_height" name="header_height" placeholder="<?php echo $this->lang->line('header'); ?> <?php echo $this->lang->line('height'); ?>" type="number" class="form-control" min="0"  value="<?php echo $result->rcpt_header_height; ?>"/></td>
+                                        <td>
+											<div class="material-switch pull-right">
+											<input id="rcpt_header_height" name="rcpt_header_height" type="checkbox" data-role="rcpt_header_height" class="chk" data-rowid="1" value="checked" <?php echo !empty($result->rcpt_header_height) ? "checked='checked'" : ''; ?> />
+											<label for="rcpt_header_height" class="label-success"></label>											
+											</div>
+										</td>             
+                                    </tr>
+									<tr class="enableHeadFootDiv" <?php echo $result->rcpt_common_header == 1 ? 'style="display:none"' : ''; ?>>
+                                        <td><input id="footer_height" name="footer_height" placeholder="<?php echo $this->lang->line('footer'); ?> <?php echo $this->lang->line('height'); ?>" type="number" class="form-control" min="0" value="<?php echo $result->rcpt_footer_height; ?>"/></td>
+                                        <td>
+											<div class="material-switch pull-right">
+											<input id="rcpt_footer_height" name="rcpt_footer_height" type="checkbox" data-role="rcpt_footer_height" class="chk" data-rowid="1" value="checked" <?php echo !empty($result->rcpt_footer_height) ? "checked='checked'" : ''; ?> />
+											<label for="rcpt_footer_height" class="label-success"></label>	
+											</div>   
+										</td>              
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -992,39 +1019,59 @@
 </div>
 
 <script type="text/javascript">
+	function valueHeaderImageChanged()
+	{
+		if ($('#rcpt_common_header').is(":checked")){
+			$(".enableHeadFootDiv").hide();
+		}else{
+			$(".enableHeadFootDiv").show();
+		}
+	}
+
     $(document).ready(function () {
 
         $(document).on('click', '.chk', function () {
             var checked = $(this).is(':checked');
             var rowid = $(this).data('rowid');
             var role = $(this).data('role');
+			var header_height = '';	
+			var footer_height = '';	
 			//var ta = $(this).closest('.tab-pane').attr('id');
             if (checked) {
                 if (!confirm('<?php echo $this->lang->line('confirm_status'); ?>')) {
                     $(this).removeAttr('checked');
                 } else {
                     var status = "yes";
-                    changeStatus(rowid, status, role);
+					if(role == 'rcpt_header_height') {
+						header_height = $('#header_height').val();
+					} if(role == 'rcpt_footer_height') {
+						footer_height = $('#footer_height').val();
+					} if(role == 'rcpt_common_header') {
+						$('#rcpt_header_height, #rcpt_footer_height').removeAttr('checked');
+						$('#header_height, #footer_height').val('');
+					}
+					
+                    changeStatus(rowid, status, role, header_height, footer_height);
 
                 }
             } else if (!confirm('<?php echo $this->lang->line('confirm_status'); ?>')) {
                 $(this).prop("checked", true);
             } else {
                 var status = "no";
-                changeStatus(rowid, status, role);
+                changeStatus(rowid, status, role, header_height, footer_height);
 
             }
         });
     });  
 
-    function changeStatus(rowid, status, role) {
+    function changeStatus(rowid, status, role, header_height, footer_height) {
 
         var base_url = '<?php echo base_url() ?>';
 
         $.ajax({
             type: "POST",
             url: base_url + "admin/systemfield/changeStatus",
-            data: {'id': rowid, 'status': status, 'role': role},
+            data: {'id': rowid, 'status': status, 'role': role, 'header_height': header_height, 'footer_height': footer_height},
             dataType: "json",
             success: function (data) {
                 if(data.status == 1){

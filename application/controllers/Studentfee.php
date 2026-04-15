@@ -375,7 +375,7 @@ class Studentfee extends Admin_Controller
         }
         $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Fees Edited successfully</div>');
 		
-		//print_r($last_id); 
+		print_r($last_id); 
 		//print_r($receiptIds); die;
         redirect('studentfee/print_receipt/'.base64_encode(json_encode($last_id)));
     }

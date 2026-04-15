@@ -653,7 +653,31 @@ class Systemfield extends Admin_Controller {
 				} else {
 					$data['rcpt_note'] = 0;
 				}
+			} else if ($role == 'rcpt_common_header') {
+				if ($status == "yes") {
+					$data['rcpt_common_header'] = 1;
+					$data['rcpt_header_height'] = '';
+					$data['rcpt_footer_height'] = '';
+				} else {
+					$data['rcpt_common_header'] = 0;
+				}
+			} else if ($role == 'rcpt_header_height') {
+				if ($status == "yes") {
+					$data['rcpt_common_header'] = 0;
+					$data['rcpt_header_height'] = $this->input->post('header_height');
+				} else {
+					$data['rcpt_common_header'] = 1;
+				}
+			} else if ($role == 'rcpt_footer_height') {
+				if ($status == "yes") {
+					$data['rcpt_common_header'] = 0;
+					$data['rcpt_footer_height'] = $this->input->post('footer_height');
+				} else {
+					$data['rcpt_common_header'] = 1;
+				}
 			}
+			
+			
 
 			if($this->findSelected($this->student_edit_field_model->get(),$role)){
 

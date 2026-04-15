@@ -848,6 +848,27 @@
                                         </div>
                                     </div>
                                 </div><!--./row-->
+								
+								<div class="row">
+                                    <div class="col-md-12">
+                                        <div class="settinghr"></div>
+                                        <div class="relative">
+                                            <h4 class="session-head">Fee Receipt</h4>
+                                        </div>
+                                    </div><!--./col-md-12-->
+
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-5"> Print Mode</label>
+                                            <div class="col-sm-7">
+                                                <select name="fee_receipt_print_mode" class="form-control" >
+                                                    <option value="1">Landscape</option>
+                                                    <option value="2" <?php echo $result->fee_receipt_print_mode == 2 ? 'selected' : ''; ?>>Potrait</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--./row-->
 
                                 <div class="row">
                                     <div class="col-md-12">
