@@ -1147,7 +1147,7 @@ class Receipt_model extends CI_Model {
 
     }
 
-    public function get_receipt_income($limit, $offset,$filters = [])
+    public function get_receipt_income($limit, $offset,$filters = [], $selectedFeeHead = [])
     {
 
         // var_dump($filters); die;
@@ -1217,8 +1217,8 @@ class Receipt_model extends CI_Model {
         $this->db->where('receipts.fee_head_name !=', 'Ledger Amount');
 
 
-        if (!empty($filters['feesHead']) and $filters['feesHead']!='All') {
-            $this->db->where('receipts.fee_head_name', $filters['feesHead']);
+        if (!empty($selectedFeeHead)) {
+            //$this->db->where_in('receipts.fee_head_name', $selectedFeeHead);
         }
         if (!empty($filters['routeHead']) and $filters['routeHead']!='All') {
             $this->db->where('receipts.fee_head_name', $filters['routeHead']);
@@ -1358,7 +1358,7 @@ class Receipt_model extends CI_Model {
         return [];
     }
 
-    public function get_receipt_count_income($filters = [])
+    public function get_receipt_count_income($filters = [], $selectedFeeHead = [])
     {
         $this->db->select('receipts.receipt_no'); // Select only grouped field
         $this->db->from('receipts');
@@ -1367,8 +1367,8 @@ class Receipt_model extends CI_Model {
         $this->db->join('users', 'users.user_id = students.id', 'left');
         $this->db->where('receipts.fee_head_name !=', 'Ledger Amount');
 
-        if (!empty($filters['feesHead']) and $filters['feesHead']!='All') {
-            $this->db->where('receipts.fee_head_name', $filters['feesHead']);
+        if (!empty($selectedFeeHead)) {
+           // $this->db->where_in('receipts.fee_head_name', $selectedFeeHead);
         }
         if (!empty($filters['routeHead']) and $filters['routeHead']!='All') {
             $this->db->where('receipts.fee_head_name', $filters['routeHead']);

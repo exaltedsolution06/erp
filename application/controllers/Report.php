@@ -1263,24 +1263,25 @@ class Report extends Admin_Controller
     //     $to_date = $this->input->get('to_date');
 
         $filters = [
-            'per_page'      => $this->input->get('per_page'),
-            'feesHead'      => $this->input->get('feesHead'),
-            'routeHead'     => $this->input->get('routeHead'),
-            'categoryHead'  => $this->input->get('categoryHead'),
-            'class_id'      => $this->input->get('class_id'),
-            'from_date'     => $this->input->get('from_date'),
-            'to_date'       => $this->input->get('to_date'),
+            'per_page'      => $this->input->post('per_page'),
+            //'feesHead'      => $this->input->post('feesHead'),
+            //'routeHead'     => $this->input->post('routeHead'),
+            'categoryHead'  => $this->input->post('categoryHead'),
+            'class_id'      => $this->input->post('class_id'),
+            'from_date'     => $this->input->post('from_date'),
+            'to_date'       => $this->input->post('to_date'),
         ];
+		$selectedFeeHead = $_POST['feesHead'] ?? [];
 
         // 2. Handle per_page or default
         $per_page = ($filters['per_page'] == 'all') ? 10000 : ($filters['per_page'] ?? 10);
 
         // paginate
         $config['base_url'] = base_url('report/income');
-        $config['total_rows'] = $this->Receipt_model->get_receipt_count_income($filters);
+        $config['total_rows'] = $this->Receipt_model->get_receipt_count_income($filters, $selectedFeeHead);
 
         // die;
-        $config['per_page'] = 10;  $per_page = $this->input->get('per_page');  $per_page = $this->input->get('per_page');
+        $config['per_page'] = 10;  $per_page = $this->input->post('per_page');  $per_page = $this->input->post('per_page');
    
         // var_dump($filters);
         // echo "<hr>";
@@ -1307,8 +1308,10 @@ class Report extends Admin_Controller
         
         $this->pagination->initialize($config);
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+		
+		
        
-        $data['receipt_data'] = $this->Receipt_model->get_receipt_income($config['per_page'], $page,$filters);
+        $data['receipt_data'] = $this->Receipt_model->get_receipt_income($config['per_page'], $page,$filters, $selectedFeeHead);
        
         $data['pagination_links'] = $this->pagination->create_links();
 

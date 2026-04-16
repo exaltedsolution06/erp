@@ -19,6 +19,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 .example thead th:nth-child(5) {
     z-index: 3;
 }
+.filter-box {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      max-height: 125px;
+      overflow-y: auto;
+    }
  </style>
 <div class="content-wrapper">
 
@@ -43,43 +50,58 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         </div>
 						<div class="box-body" style="padding-top:0;">
 						    
-                                <form method="get"  action="">
+                                <form method="POST"  action="">
                                     <div class="row">
                                     <!-- Per Page Dropdown -->
                                     <div class="form-group col-md-2">
                                         <label for="per_page">Records per page:</label>
                                         <select name="per_page" id="per_page" onchange="this.form.submit()" class="form-control">
-                                            <option value="10" <?= ($this->input->get('per_page') == 10) ? 'selected' : '' ?>>10</option>
-                                            <option value="25" <?= ($this->input->get('per_page') == 25) ? 'selected' : '' ?>>25</option>
-                                            <option value="50" <?= ($this->input->get('per_page') == 50) ? 'selected' : '' ?>>50</option>
-                                            <option value="100" <?= ($this->input->get('per_page') == 100) ? 'selected' : '' ?>>100</option>
-                                            <option value="all" <?= ($this->input->get('per_page') == 'all') ? 'selected' : '' ?>>All</option>
+                                            <option value="10" <?= ($this->input->post('per_page') == 10) ? 'selected' : '' ?>>10</option>
+                                            <option value="25" <?= ($this->input->post('per_page') == 25) ? 'selected' : '' ?>>25</option>
+                                            <option value="50" <?= ($this->input->post('per_page') == 50) ? 'selected' : '' ?>>50</option>
+                                            <option value="100" <?= ($this->input->post('per_page') == 100) ? 'selected' : '' ?>>100</option>
+                                            <option value="all" <?= ($this->input->post('per_page') == 'all') ? 'selected' : '' ?>>All</option>
                                         </select>
                                     </div>
 
                                     <!-- Fees Head -->
-                                    <div class="form-group col-md-2">
-                                        <label for="feesHead">Fees Head</label>
-                                        <select class="form-control form-control-sm" id="feesHead" name="feesHead">
+                                    <div class="col-md-2">
+                                        <!--<select class="form-control form-control-sm" id="feesHead" name="feesHead">
                                             <option value="">N/A</option>
                                             <?php foreach ($head_data as $row): ?>
-                                                <option value="<?= $row->fees_heading ?>" <?= ($this->input->get('feesHead') == $row->fees_heading) ? 'selected' : '' ?>><?= $row->fees_heading ?></option>
+                                                <option value="<?= $row->fees_heading ?>" <?= ($this->input->post('feesHead') == $row->fees_heading) ? 'selected' : '' ?>><?= $row->fees_heading ?></option>
                                             <?php endforeach; ?>
-                                            <option value="All" <?= ($this->input->get('feesHead') == 'All') ? 'selected' : '' ?>>All Heads</option>
-                                        </select>
+                                            <option value="All" <?= ($this->input->post('feesHead') == 'All') ? 'selected' : '' ?>>All Heads</option>
+                                        </select>-->
+										<div class="form-check">
+											<input type="checkbox" class="form-check-input master-check" data-target="fee-check" id="selectAllFeeHead">
+											<label class="form-check-label" for="selectAllFeeHead">Select Fees Head.</label>
+										</div>
+										<div class="filter-box">
+											<?php
+											$selectedFeeHead = isset($_POST['feesHead']) ? (array)$_POST['feesHead'] : [];
+											foreach ($fee_heads as $row) {
+											$checked = in_array($row['id'], $selectedFeeHead) ? 'checked' : '';
+											echo "<div class='form-check'>
+													<input type='checkbox' class='form-check-input fee-check' name='feesHead[]' value='{$row['id']}' id='fee{$row['id']}' $checked>
+													<label class='form-check-label' for='fee{$row['id']}'>{$row['fees_heading']}</label>
+												</div>";
+											}
+											?>
+										</div>
                                     </div>
 
                                     <!-- Route -->
-                                    <div class="form-group col-md-2">
+                                    <!--<div class="form-group col-md-2">
                                         <label for="routeHead">Route</label>
                                         <select class="form-control form-control-sm" id="routeHead" name="routeHead">
                                             <option value="">N/A</option>
                                             <?php foreach ($route_head as $row): ?>
-                                                <option value="<?= $row->fees_heading ?>" <?= ($this->input->get('routeHead') == $row->fees_heading) ? 'selected' : '' ?>><?= $row->fees_heading ?></option>
+                                                <option value="<?= $row->fees_heading ?>" <?= ($this->input->post('routeHead') == $row->fees_heading) ? 'selected' : '' ?>><?= $row->fees_heading ?></option>
                                             <?php endforeach; ?>
-                                            <option value="All" <?= ($this->input->get('routeHead') == 'All') ? 'selected' : '' ?>>All Routes</option>
+                                            <option value="All" <?= ($this->input->post('routeHead') == 'All') ? 'selected' : '' ?>>All Routes</option>
                                         </select>
-                                    </div>
+                                    </div>-->
 
                                     <!-- Category -->
                                     <div class="form-group col-md-2">
@@ -87,9 +109,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <select class="form-control form-control-sm" id="categoryHead" name="categoryHead">
                                             <option value="">N/A</option>
                                             <?php foreach ($category_head as $row): ?>
-                                                <option value="<?= $row['id'] ?>" <?= ($this->input->get('categoryHead') == $row['id']) ? 'selected' : '' ?>><?= $row['name'] ?></option>
+                                                <option value="<?= $row['id'] ?>" <?= ($this->input->post('categoryHead') == $row['id']) ? 'selected' : '' ?>><?= $row['name'] ?></option>
                                             <?php endforeach; ?>
-                                            <option value="All" <?= ($this->input->get('categoryHead') == 'All') ? 'selected' : '' ?>>All Categories</option>
+                                            <option value="All" <?= ($this->input->post('categoryHead') == 'All') ? 'selected' : '' ?>>All Categories</option>
                                         </select>
                                     </div>
 
@@ -99,9 +121,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <select class="form-control form-control-sm" id="classSelect" name="class_id">
                                             <option value="">N/A</option>
                                             <?php foreach ($classes_data as $row): ?>
-                                                <option value="<?= $row->id ?>" <?= ($this->input->get('class_id') == $row->id) ? 'selected' : '' ?>><?= $row->class ?></option>
+                                                <option value="<?= $row->id ?>" <?= ($this->input->post('class_id') == $row->id) ? 'selected' : '' ?>><?= $row->class ?></option>
                                             <?php endforeach; ?>
-                                            <option value="All" <?= ($this->input->get('class_id') == 'All') ? 'selected' : '' ?>>All Classes</option>
+                                            <option value="All" <?= ($this->input->post('class_id') == 'All') ? 'selected' : '' ?>>All Classes</option>
                                         </select>
                                     </div>
 
@@ -111,13 +133,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <!-- From Date -->
                                     <div class="form-group col-md-2">
                                         <label for="fromDate">From</label>
-                                        <input type="date" class="form-control" id="fromDate" name="from_date" value="<?= $this->input->get('from_date') ?? date('Y-m-d') ?>" required>
+                                        <input type="date" class="form-control" id="fromDate" name="from_date" value="<?= $this->input->post('from_date') ?? date('Y-m-d') ?>" required>
                                     </div>
 
                                     <!-- To Date -->
                                     <div class="form-group col-md-2">
                                         <label for="toDate">To</label>
-                                        <input type="date" class="form-control" id="toDate" name="to_date" value="<?= $this->input->get('to_date') ?? date('Y-m-d') ?>" required>
+                                        <input type="date" class="form-control" id="toDate" name="to_date" value="<?= $this->input->post('to_date') ?? date('Y-m-d') ?>" required>
                                     </div>
 
                                     <!-- Submit Button -->
@@ -167,7 +189,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 <div class="table-responsive--" style="overflow: auto;">
                                     <div class="download_label"><?php echo $this->lang->line('head_wise_collection');?></div>
 <div class="table-header-sticky">
-                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header" style="width:100% !important">
+                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header" style="width:1800px !important">
                                         <thead>
                                             <tr>
                                                 <th>S.No</th>
@@ -180,9 +202,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th>Sec.</th>
                                                 <th>Fee Cat.</th>
                                                 <th>Months</th>
-                                                <?php foreach($fee_heads as $list){ ?>
+                                                <?php foreach($fee_heads as $list)
+													{ 
+														if(in_array($list['id'], $selectedFeeHead))
+														{
+												?>
                                                 <th style="text-align:right"><?=$list['fees_heading']?></th>
-                                                <?php } ?>
+                                                <?php } } ?>
                                                 <th  style="text-align: right;">Net Fees</th>
                                                 <th  style="text-align: right;">Receipt. Amt.</th>
 												<th style="text-align: right;">Discount Amt</th>
@@ -210,7 +236,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 $balance_amt_sum  += (float)$record["balance_amt"];
 												
 												$fees_months = [];
-												$receipt_fee_head_name = [];
 												if(!empty($record['fee_head'])){
                                                     // echo $record["receipt_months"];
 													$financial_year_order = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
@@ -228,8 +253,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 												$cat_list_amount=[];
 												
 												//echo '<pre>'; print_r($fee_heads); echo '</pre>';die;
-												foreach($fee_heads as $list){ 
-
+												foreach($fee_heads as $list) {
+														
+													if(in_array($list['id'], $selectedFeeHead))
+													{
 													$class_id = $record['class_id'];
 													$category_id = $record['category_id'];
 													$fee_group_id = $list['fees_heading'];
@@ -255,8 +282,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 													}
 													
 													$pay=0;
-													
-													$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($record['student_session_id']);
+													//echo 'student_session_id--'.$record['student_session_id'];die;
+													$feeDiscountsArr = [];
+													if ($record['student_session_id'] != null) {
+														$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($record['student_session_id']);
+													}
 													
 													//echo '<pre>'; print_r($feeDiscountsArr); echo '</pre>';die;
 													$monthMap = [
@@ -349,6 +379,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 													
 													//echo '<pre>'; print_r($cat_list_amount);
 												}
+												}
 											?>
                                             <tr>
 
@@ -372,14 +403,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     ?>
                                                 </td>
                                                <?php
-													
-													$fees_month_amount = 0;
 													foreach($fee_heads as $list){
-														$head_wise_totals[$list['fees_heading']] += $cat_list_amount[$list['fees_heading']];
-														$fees_month_amount += $cat_list_amount[$list['fees_heading']];
+														if(in_array($list['id'], $selectedFeeHead))
+														{
+															$head_wise_totals[$list['fees_heading']] += $cat_list_amount[$list['fees_heading']];
 													?>
 														<td style="text-align:right"><?=number_format($cat_list_amount[$list['fees_heading']],2); ?></td>
 													<?php 
+														}
 														}
 													?>
 												<td style="text-align: right;"><?= sprintf('%.2f', $record["net_fees"]) ?></td>
@@ -400,9 +431,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <th></th>
                                             <th></th>
                                             <th>Total</th>
-  											<?php foreach($fee_heads as $list) { ?>
+  											<?php foreach($fee_heads as $list) 
+												{ 
+												if(in_array($list['id'], $selectedFeeHead))
+														{
+											?>
 												<th style="text-align:right"><?=number_format($head_wise_totals[$list['fees_heading']] ?? 0, 2); ?></th>
-											<?php } ?>
+											<?php } } ?>
                                            <th style="text-align: right;"><?= sprintf('%.2f', $net_fees_sum) ?></th>
                                             <th style="text-align: right;"><?= sprintf('%.2f', $receipt_amt_sum) ?></th>
                                             <th style="text-align: right;"><?= sprintf('%.2f', $discount_amt_sum) ?></th>
@@ -457,6 +492,21 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
 <script type="text/javascript">
+// Handle each section's master checkbox
+document.addEventListener('DOMContentLoaded', function () {
+
+  document.querySelectorAll('.master-check').forEach(master => {
+    master.addEventListener('change', function () {
+      const targetClass = this.dataset.target;
+
+      document.querySelectorAll('.' + targetClass).forEach(cb => {
+        cb.checked = this.checked;
+      });
+    });
+  });
+
+});
+
     function removeElement() {
         document.getElementById("imgbox1").style.display = "block";
     }

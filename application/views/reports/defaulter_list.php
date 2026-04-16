@@ -449,7 +449,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                 
                                                                 $pay=0;
 																
-																$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($record['student_session_id']);
+																$feeDiscountsArr = [];
+																if ($record['student_session_id'] != null) {
+																	$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($record['student_session_id']);
+																}
 																$monthMap = [
 																	"Apr" => "month_apr",
 																	"May" => "month_may",
@@ -585,8 +588,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                     $selected_months = [$selected_months];
                                                                 }
                                                                 
-																
-																$routeDiscountsArr    = $this->fee_discount_model->get_all_routes($record['student_session_id']);
+																$routeDiscountsArr = [];
+																if ($record['student_session_id'] != null) {
+																	$routeDiscountsArr    = $this->fee_discount_model->get_all_routes($record['student_session_id']);
+																}
+														
 																$monthMap = [
 																	"Apr" => "month_apr",
 																	"May" => "month_may",
