@@ -228,7 +228,7 @@ if (!function_exists('sort_by_custom_month_order')) {
         });
 
         // Step 4: Return sorted list (as array or string)
-        return implode(',', $data);
+        return implode(', ', $data);
     }
 }
 

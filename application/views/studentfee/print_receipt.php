@@ -28,12 +28,14 @@ if($_GET['copy']=='2'){
 
 		@page portraitPage {
 			size: A4 portrait;
-			margin: 0mm;
+			margin-left: 10mm;
+			margin-right: 5mm;
 		}
 
 		@page landscapePage {
 			size: A4 landscape;
-			margin: 0mm;
+			margin-left: 10mm;
+			margin-right: 5mm;
 		}
 
 	  body * {
@@ -83,7 +85,7 @@ if($_GET['copy']=='2'){
 	  }
 
 	  .accountant-sign {
-		padding-top: 3rem;
+		padding-top: 1.5rem;
 		text-align: right;
 		padding-right: 0 !important;
 	  }
@@ -105,7 +107,7 @@ if($_GET['copy']=='2'){
 		<div class="card-body">
 			<div id="print-area">
 				<div class="row">
-					<div class="col-sm-6" style="padding-left: 40px; padding-top:10px">
+					<div class="col-sm-6" style="padding-left: 0px; padding-top:10px">
 						<div  style="border:1px solid;" >
 						<?php if($result->rcpt_common_header == 1 && !empty($header_image)){ ?>
 							<div class="text-center p-3 pb-0">
@@ -127,7 +129,7 @@ if($_GET['copy']=='2'){
 							<span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br>
 						<?php } ?>
 
-							<table class="table mt-1 mb-1" style="border:1px solid #000000;">
+							<table class="table mt-1 mb-1" style="border-top:1px solid #000000; border-bottom:1px solid #000000;">
 								<thead>
 									<tr>
 										<th>Rec. No.: <?=$fees[0]->receipt_no?></th>
@@ -254,18 +256,20 @@ if($_GET['copy']=='2'){
 									</tbody>
 								</table>
 							</div>
-							
+							<?php if ($result->rcpt_amt_in_words) { ?>
+							<div class="row">
+								<div class="col-12"><h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6></div>
+							</div>
+							<?php } ?>
 							<div class="row">
 								<div class="col-8">
 									<div class="abd">
-									<?php if ($result->rcpt_amt_in_words) { ?> 
-										<h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
-									<?php } if ($result->rcpt_pay_mode) { ?>
+									<?php if ($result->rcpt_pay_mode) { ?>
 										<h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
 									<?php } if ($result->rcpt_remark) { ?>
 										<span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
 									<?php } if ($result->rcpt_created_by) { ?>  
-									   <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important"><?= implode(' ', array_filter([$create_by->name ?? '',$create_by->surname ?? ''])); ?> (<?=$create_by->employee_id?>)</span></label>
+									   <label class="f12_new" for=""><b>Created By</b> : <span><?= implode(' ', array_filter([$create_by->name ?? '',$create_by->surname ?? ''])); ?> (<?=$create_by->employee_id?>)</span></label>
 									<?php } ?>
 									</div>
 								</div>
@@ -297,7 +301,7 @@ if($_GET['copy']=='2'){
 							<?php } ?>
 						</div>
 					</div>
-					<div class="col-sm-6" style="padding-left: 40px;  padding-top:10px">
+					<div class="col-sm-6" style="padding-left: 0px;  padding-top:10px">
 						<div  style="border:1px solid;" >
 						<?php if($result->rcpt_common_header == 1 && !empty($header_image)){ ?>
 							<div class="text-center p-3 pb-0">
@@ -320,7 +324,7 @@ if($_GET['copy']=='2'){
 						<?php } ?>
 							<table class="table mt-1 mb-1">
 								<thead>
-									<tr style="border:1px solid #000000;">
+									<tr style="border-top:1px solid #000000; border-bottom:1px solid #000000;">
 										<th>Rec. No.: <?=$fees[0]->receipt_no?></th>
 										<th>Parent Copy</th>
 										<th class="text-end">Date: <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
@@ -437,17 +441,20 @@ if($_GET['copy']=='2'){
 									</tbody>
 								</table>
 							</div>
+							<?php if ($result->rcpt_amt_in_words) { ?>
+							<div class="row">
+								<div class="col-12"><h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6></div>
+							</div>
+							<?php } ?>
 							<div class="row">
 								<div class="col-8">
 									<div class="abd">
-									<?php if ($result->rcpt_amt_in_words) { ?>
-										<h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
-									<?php } if ($result->rcpt_pay_mode) { ?>
+									<?php if ($result->rcpt_pay_mode) { ?>
 										<h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
 									<?php } if ($result->rcpt_remark) { ?>
 										<span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
 									<?php } if ($result->rcpt_created_by) { ?>
-										<label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important"><?= implode(' ', array_filter([$create_by->name ?? '',$create_by->surname ?? ''])); ?> (<?=$create_by->employee_id?>)</span></label>
+										<label class="f12_new" for=""><b>Created By</b> : <span><?= implode(' ', array_filter([$create_by->name ?? '',$create_by->surname ?? ''])); ?> (<?=$create_by->employee_id?>)</span></label>
 									<?php } ?>
 									</div>
 								</div>
@@ -541,12 +548,14 @@ if($_GET['copy']=='2'){
 
 		@page portraitPage {
 			size: A4 portrait;
-			margin: 0mm;
+			margin-left: 10mm;
+			margin-right: 10mm;
 		}
 
 		@page landscapePage {
 			size: A4 landscape;
-			margin: 0mm;
+			margin-left: 10mm;
+			margin-right: 10mm;
 		}
 
 	  body * {
@@ -602,7 +611,7 @@ if($_GET['copy']=='2'){
 	  }
 
 	  .accountant-sign {
-		padding-top: 3rem;
+		padding-top: 1.5rem;
 		text-align: right;
 		padding-right: 0 !important;
 	  }
@@ -627,10 +636,10 @@ if($_GET['copy']=='2'){
     <div class="card-body">
       <!-- <div class="student-name">Nitya Sharma D/o Durgesh Sharma</div> -->
 
-     <?php //var_dump($fees); ?>
+     <?php //echo '<pre>'; print_r($result); echo '</pre>';?>
 
     <div id="print-area">
-        <div  style="padding-left: 40px; padding-right: 0px; padding-top:10px" >
+        <div  style="padding-left: 0px; padding-right: 0px; padding-top:10px" >
             <div  style="border:1px solid;" >
 				<?php if($result->rcpt_common_header == 1 && !empty($header_image)){ ?>
 					<div class="text-center p-3 pb-0">
@@ -655,7 +664,7 @@ if($_GET['copy']=='2'){
 
                     <table class="table mt-1 mb-1">
                         <thead>
-                            <tr style="border:1px solid #000000;">
+                            <tr style="border-top:1px solid #000000; border-bottom:1px solid #000000;">
                                 <th>Rec. No.: <?=$fees[0]->receipt_no?></th>
 								<th>Parent Copy</th>
                                 <th class="text-end">Date: <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
@@ -798,19 +807,20 @@ if($_GET['copy']=='2'){
                     </div>
 
 
-
+					<?php if ($result->rcpt_amt_in_words) { ?>
+					<div class="row">
+						<div class="col-12"><h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6></div>
+					</div>
+					<?php } ?>
                     <div class="row">
                       <div class="col-8">
                         <div class="abd">
-
-                         <?php if ($result->rcpt_amt_in_words) { ?>
-                          <h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt);?> Only</h6>
-						  <?php } if ($result->rcpt_pay_mode) { ?>
+						  <?php if ($result->rcpt_pay_mode) { ?>
                           <h5><strong>Payment Mode :  <?=$fees[0]->mode?> </strong></h5>
 						  <?php } if ($result->rcpt_remark) { ?>
                           <span><strong>Remark:</strong> <?=$fees[0]->remarks?></span> <br>
                           <?php } if ($result->rcpt_created_by) { ?>
-						    <label class="f12_new" for=""><b>Created By</b> : <span style="font-size:13px !important">
+						    <label class="f12_new" for=""><b>Created By</b> : <span>
 							<?= implode(' ', array_filter([
 								$create_by->name ?? '',
 								$create_by->surname ?? ''
