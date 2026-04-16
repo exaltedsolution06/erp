@@ -1,7 +1,25 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 ?>
- 
+ <style>
+ .table-header-sticky {
+	max-height: 400px; 
+	overflow-y: auto;
+} 
+/* Sticky 5th column */
+.example thead th:nth-child(5),
+.example tbody td:nth-child(5) {
+    position: sticky;
+    left: 0;
+    background: #fff;
+    z-index: 2;
+}
+
+/* Header priority */
+.example thead th:nth-child(5) {
+    z-index: 3;
+}
+ </style>
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
@@ -61,7 +79,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <label for="toDate">To</label>
                                         <input type="date" class="form-control" id="toDate" name="to_date" value="<?= $this->input->get('to_date') ?? date('Y-m-d') ?>" required>
                                     </div>
-
+									<div class="form-group col-md-2 d-flex align-items-end">
+                                        <div class="form-check" style="margin-top:25px">
+                                            <input type="checkbox" name="route" class="form-check-input" <?php if(isset($_GET['route']) && $_GET['route']=='on') { echo 'checked="checked"'; } ?>>
+                                            <label class="form-check-label">Include Route</label>
+                                        </div>
+                                    </div>
                                     <!-- Submit Button -->
                                     <div class="form-group col-md-2 d-flex align-items-end">
                                         <br>
@@ -83,7 +106,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                  <div class="table-responsive-" style="overflow: auto;">
                                     <div class="download_label"><?php echo $this->lang->line('fee_day_book');?></div>
-
+<div class="table-header-sticky">
                                     <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header" style="width:1800px !important">
                                         <thead>
                                             <tr>
@@ -96,8 +119,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th>Class</th>
                                                 <th>Sec.</th>
                                                 <th>Fee Cat.</th>
-                                                <th>Route</th>
                                                 <th>Months</th>
+												<?php if(isset($_GET['route'])) { ?>
+                                                <th>Transport</th>
+												<?php } foreach($fee_heads as $list){ ?>
+                                                <th style="text-align:right"><?=$list['fees_heading']?></th>
+                                                <?php } ?>
 
 
                                                 <!-- <th >Fee</th>
@@ -107,6 +134,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th >Discount Amt</th> -->
                                                 <th  style="text-align: right;">Net Fees</th>
                                                 <th  style="text-align: right;">Receipt. Amt.</th>
+												<th style="text-align: right;">Discount Amt</th>
                                                 <th style="text-align: right;">Balance Amt</th>
 
 
@@ -119,9 +147,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                        
                                     
                                     <tbody>
-                                        
+											
                                             <?php if (!empty($receipt_data)): ?>
-                                                <?php $sno = 1; foreach ($receipt_data as $record): ?>
+												<?php $sno = 1; foreach ($receipt_data as $record): ?>
                                              <?php  
                                                 $record=(array)$record; 
                                                 $fees_received_sum       += (float)$record["fees_received"];
@@ -132,6 +160,271 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 $net_fees_sum  += (float)$record["net_fees"];
                                                 $receipt_amt_sum  += (float)$record["receipt_amt"];
                                                 $balance_amt_sum  += (float)$record["balance_amt"];
+												
+												//echo '<pre>'; print_r($record); echo '</pre>';
+												
+												
+												$fees_months = [];
+												$receipt_fee_head_name = [];
+												if(!empty($record['fee_head'])){
+                                                    // echo $record["receipt_months"];
+													$financial_year_order = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
+
+													$fees_months = explode(',', $record["receipt_months"]);
+													$fees_months = array_map('trim', $fees_months); // TRIM SPACES
+													usort($fees_months, function($a, $b) use ($financial_year_order) {
+														return array_search($a, $financial_year_order) - array_search($b, $financial_year_order);
+													});
+													
+												}
+												//echo '<pre>'; print_r($fees_months); echo '</pre>';
+												
+												$fees_month = []; 
+												$cat_list_amount=[];
+												
+												//echo '<pre>'; print_r($fee_heads); echo '</pre>';die;
+												foreach($fee_heads as $list){ 
+
+													$class_id = $record['class_id'];
+													$category_id = $record['category_id'];
+													$fee_group_id = $list['fees_heading'];
+												  
+													//echo 'class_id-'.$class_id.'<br/>';
+													//echo 'category_id-'.$category_id.'<br/>';
+													//echo 'fee_group_id-'.$fee_group_id.'<br/>';
+													$this->db->from('fee_head');
+													$this->db->join('fees_plan', 'fee_head.id = fees_plan.fee_group_id');
+													$this->db->where('fees_plan.fee_group_id', $list['id']);
+													$this->db->where("JSON_CONTAINS(fees_plan.class_ids, '\"$class_id\"')", null, false);
+													$this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
+													$query = $this->db->get();
+													$amt_fee_heads = $query->row();
+													
+													//echo $this->db->last_query();
+
+													$db_months = json_decode($list['months'] ?? '[]');
+//echo '<pre>'; print_r($fees_months); echo '</pre>';
+													$selected_months = $fees_months ?? [];
+													if (!is_array($selected_months)) {
+														$selected_months = [$selected_months];
+													}
+													
+													$pay=0;
+													
+													$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($record['student_session_id']);
+													
+													//echo '<pre>'; print_r($feeDiscountsArr); echo '</pre>';die;
+													$monthMap = [
+														"Apr" => "month_apr",
+														"May" => "month_may",
+														"Jun" => "month_jun",
+														"Jul" => "month_jul",
+														"Aug" => "month_aug",
+														"Sep" => "month_sep",
+														"Oct" => "month_oct",
+														"Nov" => "month_nov",
+														"Dec" => "month_dec",
+														"Jan" => "month_jan",
+														"Feb" => "month_feb",
+														"Mar" => "month_mar"
+													];
+													if(!empty($feeDiscountsArr)){
+														foreach ($feeDiscountsArr as $paid) {
+
+															if ($paid['fee_type_id'] == $amt_fee_heads->id) {
+
+																$months = json_decode($amt_fee_heads->months, true);
+
+																if (!is_array($months)) continue;
+
+																$amounts = [];
+
+																foreach ($months as $month) {
+
+																	$column = $monthMap[$month];
+
+																	$amounts[$month] = isset($paid[$column])
+																		? floatval($paid[$column])
+																		: floatval($amt_fee_heads->amount); // fallback
+																}
+
+																// Replace amount with month-wise array
+																$amt_fee_heads->amount = $amounts;
+															}
+														}
+													}else{
+														$months = json_decode($amt_fee_heads->months, true);
+														if (!is_array($months)) continue;
+														$amounts = [];
+														foreach ($months as $month) {
+
+															$column = $monthMap[$month];
+
+															$amounts[$month] = floatval($amt_fee_heads->amount); // fallback
+														}
+														$amt_fee_heads->amount = $amounts;
+													}
+													
+													foreach ($selected_months as $month) {
+														// Check if this month is part of the allowed months in the fee plan
+														if (!in_array($month, $db_months)) {
+															continue; // Skip months not in the plan
+														}
+
+														// Fetch receipt for this student, fee heading, and month
+														$this->db->where([
+															'student_id' => $record["student_id"],
+															'fee_head_name' => $fee_group_id,
+															'fee_head_type' => 'fees',
+															'months' => $month
+														]);
+														$receipt = $this->db->get('receipts')->row();
+														//echo $this->db->last_query();
+														// echo json_encode($receipt);
+														// echo $amt_fee_heads->amount;
+														if($list['fees_heading'] == 'Registration Fee'){
+															// echo '<pre>'; print_r($amt_fee_heads);exit;
+														}
+														
+														if (!empty($receipt)) {
+															// $pay+= $amt_fee_heads->amount??0;
+															
+															$pay+= isset($amt_fee_heads->amount[$month]) ? (float)$amt_fee_heads->amount[$month] : 0;
+															$fees_month[$month] = $month;
+														} else {
+															// $pay+=$receipt->fees_received;
+															$pay+=0;
+														}
+													}
+													// array_push($cat_list_amount,$pay);
+													$cat_list_amount[$list['fees_heading']] = $pay;
+													$final += $pay;
+													
+													//echo '<pre>'; print_r($cat_list_amount);
+												}
+												$routeFees=0;
+												$routes_month = [];
+												if(isset($_GET['route'])){
+													/*$student_routes = $this->db->where('id', $record['route_id'])->get('route_head')->result_array();
+														$pay=0;
+													 foreach($student_routes as $list){*/ 
+														
+
+														
+														$route = $this->db->get_where('route_head', ['id' => $record['route_id']])->row();
+														
+														$class_id = $record['class_id'];
+														$category_id = $record['category_id'];
+														$fee_group_id = $route->fees_heading;
+
+														$db_months = [];
+														if ($route && !empty($route->months)) {
+															$decoded = json_decode($route->months, true);
+															$db_months = is_array($decoded) ? $decoded : [];
+														}
+
+														$this->db->from('route_head');
+														$this->db->join('route_plan', 'route_head.id = route_plan.fee_group_id');
+														$this->db->where("JSON_CONTAINS(route_plan.class_ids, '\"$class_id\"')", null, false);
+														$this->db->where("JSON_CONTAINS(route_plan.category_ids, '\"$category_id\"')", null, false);
+														$this->db->where('route_head.id', $record['route_id']);
+														// echo "<pre>";print_r($record['route_id']);die;
+
+														$query = $this->db->get();
+														$amt_fee_heads = $query->row();
+														
+														// $db_months = json_decode($db_months);
+													  
+														$selected_months = $fees_months ?? [];
+														if (!is_array($selected_months)) {
+															$selected_months = [$selected_months];
+														}
+														
+														
+														$routeDiscountsArr    = $this->fee_discount_model->get_all_routes($record['student_session_id']);
+														$monthMap = [
+															"Apr" => "month_apr",
+															"May" => "month_may",
+															"Jun" => "month_jun",
+															"Jul" => "month_jul",
+															"Aug" => "month_aug",
+															"Sep" => "month_sep",
+															"Oct" => "month_oct",
+															"Nov" => "month_nov",
+															"Dec" => "month_dec",
+															"Jan" => "month_jan",
+															"Feb" => "month_feb",
+															"Mar" => "month_mar"
+														];
+														if(!empty($routeDiscountsArr)){
+															foreach ($routeDiscountsArr as $paid) {
+
+																if ($paid['fee_type_id'] == $amt_fee_heads->id) {
+
+																	$months = json_decode($amt_fee_heads->months, true);
+
+																	if (!is_array($months)) continue;
+
+																	$amounts = [];
+
+																	foreach ($months as $month) {
+
+																		$column = $monthMap[$month];
+
+																		$amounts[$month] = isset($paid[$column])
+																			? floatval($paid[$column])
+																			: floatval($amt_fee_heads->amount); // fallback
+																	}
+
+																	// Replace amount with month-wise array
+																	$amt_fee_heads->amount = $amounts;
+																}
+															}
+														}else{
+															$months = json_decode($amt_fee_heads->months, true);
+															if (!is_array($months)) continue;
+															$amounts = [];
+															foreach ($months as $month) {
+
+																$column = $monthMap[$month];
+
+																$amounts[$month] = floatval($amt_fee_heads->amount); // fallback
+															}
+															$amt_fee_heads->amount = $amounts;
+														}
+														$pay=0;
+														foreach ($selected_months as $month) {
+															// Check if this month is part of the allowed months in the fee plan
+															if (!in_array($month, $db_months)) {
+																continue; // Skip months not in the plan
+															}
+
+															// Fetch receipt for this student, fee heading, and month
+															$this->db->where([
+																'student_id' => $record["student_id"],
+																'fee_head_name' => $fee_group_id,
+																'fee_head_type' => 'route',
+																'months' => $month
+															]);
+															$receipt = $this->db->get('receipts')->row();
+//echo $this->db->last_query();
+															// echo json_encode($receipt);
+															 //echo '<pre>'; print_r($amt_fee_heads->amount[$month]); echo '</pre>';
+															
+															if (!empty($receipt)) {
+																// $pay+= $amt_fee_heads->amount??0;
+																
+																$pay+= isset($amt_fee_heads->amount[$month]) ? (float)$amt_fee_heads->amount[$month] : 0;
+																$routes_month[$month] = $month;
+															} else {
+																// $pay+=$receipt->fees_received;
+																$pay+=0;
+															}
+														}
+
+													//}
+													$finalRF += $routeFees = $pay;
+												}
                                             ?>
                                             <tr>
                                                 <td><?= $sno++ ?></td>
@@ -143,34 +436,39 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td ><?= $record["class"] ?></td>
                                                 <td ><?= $record["section"] ?></td>
                                                 <td ><?=  ($this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()) ? $this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()->name : 'N.A'; ?>  </td>
-                                                <td ><?=  ($this->db->get_where('route_head', ['id' => $record['route_id']])->row()) ? $this->db->get_where('route_head', ['id' => $record['route_id']])->row()->fees_heading : 'N.A'; ?>  </td>
-                                                
-                                                <td >
+                                                <td>
                                                     <?php
                                                         if(!empty($record['fee_head'])){
-                                                            // echo $record["receipt_months"];
-                                                            $financial_year_order = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
-
-                                                            $months = explode(',', $record["receipt_months"]);
-                                                            $months = array_map('trim', $months); // TRIM SPACES
-
-                                                            usort($months, function($a, $b) use ($financial_year_order) {
-                                                                return array_search($a, $financial_year_order) - array_search($b, $financial_year_order);
-                                                            });
-
-                                                            echo implode(', ', $months);
+															
+                                                            echo implode(', ', $fees_months);
                                                         }else{
                                                             echo "Old Bal.";
                                                         }
                                                     ?>
                                             
                                                 </td>
+												<?php if(isset($_GET['route'])){ ?>
+                                                       <td style="text-align:right"><?= number_format($routeFees,2);?></td>
+                                                <?php } ?>
+                                                <!--<td ><?=  ($this->db->get_where('route_head', ['id' => $record['route_id']])->row()) ? $this->db->get_where('route_head', ['id' => $record['route_id']])->row()->fees_heading : 'N.A'; ?>  </td>-->
+												<?php
+													
+													$fees_month_amount = 0;
+													foreach($fee_heads as $list){
+														$head_wise_totals[$list['fees_heading']] += $cat_list_amount[$list['fees_heading']];
+														$fees_month_amount += $cat_list_amount[$list['fees_heading']];
+													?>
+														<td style="text-align:right"><?=number_format($cat_list_amount[$list['fees_heading']],2); ?></td>
+													<?php 
+														}
+													?>
 
 
                                               
 
                                             <td style="text-align: right;"><?= sprintf('%.2f', $record["net_fees"]) ?></td>
                                                 <td style="text-align: right;"><?= sprintf('%.2f', $record["receipt_amt"]) ?></td>
+                                                <td style="text-align: right;"><?= sprintf('%.2f', $record["discount_amt"]) ?></td>
                                                 <td style="text-align: right;"><?= sprintf('%.2f', $record["balance_amt"]) ?></td>
 
                                                 <td ><?= $record["mode"] ?></td>
@@ -180,26 +478,30 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <?php endforeach; ?>
                                          <tr>
                                            
-                                            <th>Total - </th>
-                                            <th>-</th>
-                                            <th>-</th>
-                                            <th>-</th>
-                                            <th>-</th>
-                                            <th>-</th>
-                                            <th>-</th>
-                                            <th>-</th>
-                                            <th>-</th>
-                                            <th>-</th>
-
-                                            <th>-</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th>Total</th>
+                                            <?php if(isset($_GET['route'])){ ?>
+												<th><?= number_format($finalRF,2);?></th>
+											<?php } foreach($fee_heads as $list) { ?>
+												<th style="text-align:right"><?=number_format($head_wise_totals[$list['fees_heading']] ?? 0, 2); ?></th>
+											<?php } ?>
                                           
                                            <th style="text-align: right;"><?= sprintf('%.2f', $net_fees_sum) ?></th>
                                             <th style="text-align: right;"><?= sprintf('%.2f', $receipt_amt_sum) ?></th>
+                                            <th style="text-align: right;"><?= sprintf('%.2f', $discount_amt_sum) ?></th>
                                             <th style="text-align: right;"><?= sprintf('%.2f', $balance_amt_sum) ?></th>
 
-                                            <th>-</th>
-                                            <th>-</th>
-                                            <th>-</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                         <?php else: ?>
                                             <tr><td colspan="17" class="text-center">No records found</td></tr>
@@ -210,6 +512,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <div class="d-flex justify-content-center">
                                         <?= $pagination_links; ?>
                                     </div>
+                                </div>
 
                                 </div> 
 

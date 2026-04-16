@@ -104,21 +104,21 @@
 			<div class="col-md-3 col-sm-6 mb10">
 				<div class="topprograssstart flex-card">
 					<h5 class="pro-border">Today's Total collection</h5>
-					<p class="text-uppercase mt10 clearfix">Academics collection<span class="pull-right"><?php echo isset($studentAcademicColls) ? $studentAcademicColls : 0;  ?></span>
+					<p class="text-uppercase mt10 clearfix">Collection<span class="pull-right"><?php echo isset($studentAcademicColls) ? $studentAcademicColls : 0;  ?></span>
 					</p>
 					<div class="progress-group">
 						<div class="progress progress-minibar">
 							<div class="progress-bar progress-bar-green" style="width: <?php echo round($studentAcademicCollsPercent) ?>%"></div>
 						</div>
 					</div>
-					<p class="text-uppercase mt10 clearfix">Transport Collection<span class="pull-right"><?php echo isset($studentTransportColls) ? $studentTransportColls : 0;  ?></span>
+					<!--<p class="text-uppercase mt10 clearfix">Transport Collection<span class="pull-right"><?php echo isset($studentTransportColls) ? $studentTransportColls : 0;  ?></span>
 					</p>
 					<div class="progress-group">
 						<div class="progress progress-minibar">
 							<div class="progress-bar progress-bar-purple" style="width: <?php echo round($studentTransportCollsPercent) ?>%"></div>
 						</div>
-					</div>
-					<p class="text-uppercase mt10 clearfix">Other Collection<span class="pull-right"><?php echo isset($today_total_income) ? $today_total_income : 0;  ?></span>
+					</div>-->
+					<p class="text-uppercase mt10 clearfix">Other Collection<span class="pull-right"><?php echo isset($today_other_collection) ? $today_other_collection : 0;  ?></span>
 					</p>
 					<div class="progress-group">
 						<div class="progress progress-minibar">

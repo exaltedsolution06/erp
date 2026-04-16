@@ -8,7 +8,9 @@ class Transaction extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->sch_setting_detail = $this->setting_model->getSetting();
+		$this->current_session = $this->setting_model->getCurrentSession();
         $this->load->model('Receipt_model');
+		$this->load->model('fee_discount_model');
         $this->load->library('pagination');
     }
 
@@ -250,7 +252,10 @@ class Transaction extends Admin_Controller {
         }
 
         */
+		
+		$data['fee_heads'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('fee_head')->result_array();
 
+		//echo '<pre>'; print_r($data['fee_heads']); echo '</pre>';die;
         $this->load->view('layout/header', $data);
         $this->load->view('admin/transaction/studentAcademicReport', $data);
         $this->load->view('layout/footer', $data);

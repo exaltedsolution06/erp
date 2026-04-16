@@ -192,6 +192,9 @@ ALTER TABLE `sch_settings` ADD `fee_receipt_print_mode` TINYINT(1) NOT NULL DEFA
 ALTER TABLE `sch_settings` ADD `rcpt_common_header` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_note`;
 ALTER TABLE `sch_settings` ADD `rcpt_header_height` INT(10) NOT NULL AFTER `rcpt_common_header`, ADD `rcpt_footer_height` INT(10) NOT NULL AFTER `rcpt_header_height`;
 
+--- 16-04-2026 ---
+ALTER TABLE `fee_discounts` CHANGE `fee_type_id` `fee_type_id` INT(10) NOT NULL COMMENT 'fees_plan table primary id';
+
 ===============================
 File change outside of application folder
 --------

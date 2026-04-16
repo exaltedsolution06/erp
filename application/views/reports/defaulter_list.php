@@ -544,15 +544,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     
                                                    
                                                     $routeFees=0;
-
-
 													$routes_month = [];
                                                     if(in_array('Include Route', $filters)){
-
-                                                       
-                                                        ?>
-                                                        
-                                                            <?php 
 															$student_routes = $this->db->where('id', $record['route_id'])->get('route_head')->result_array();
                                                                 $pay=0;
                                                              foreach($student_routes as $list){ 
@@ -676,21 +669,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             }
                                                                
                                                                 $final += $routeFees= $pay;
-                                                            
-                                                            ?>  
-                                                       
-                                                        <?php
-
-
-
-
-
-
                                                     }
-                                                    
-                                                    
-
-                                                
                                                 ?>
 
 

@@ -1327,6 +1327,8 @@ class Report extends Admin_Controller
         $to_date='';
         // $months = $this->Receipt_model->get_fiscal_order_receipt_months($from_date, $to_date);
         // $data['months']=$months;
+		
+		$data['fee_heads'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('fee_head')->result_array();
 
         $this->load->view('layout/header', $data);
         $this->load->view('reports/income', $data);

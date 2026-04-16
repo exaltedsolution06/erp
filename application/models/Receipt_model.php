@@ -1235,13 +1235,17 @@ class Receipt_model extends CI_Model {
         }
 		
 		$this->db->where('student_session.session_id', $this->current_session);
+		$this->db->where('receipts.session_id', $this->current_session);
 
-        $this->db->group_by(['receipts.receipt_no', 'receipts.fee_head_name']);
+        //$this->db->group_by(['receipts.receipt_no', 'receipts.fee_head_name']);
+        $this->db->group_by('receipts.receipt_no');
 
         $this->db->order_by('MAX(receipts.id)', 'DESC');
         $this->db->limit($limit, $offset);
 
         $query = $this->db->get();
+		
+		//echo $this->db->last_query();die;
         return  $query->result();
 
         
@@ -1354,9 +1358,6 @@ class Receipt_model extends CI_Model {
         return [];
     }
 
-    
-
-
     public function get_receipt_count_income($filters = [])
     {
         $this->db->select('receipts.receipt_no'); // Select only grouped field
@@ -1365,7 +1366,6 @@ class Receipt_model extends CI_Model {
         $this->db->join('student_session', 'student_session.student_id = students.id');
         $this->db->join('users', 'users.user_id = students.id', 'left');
         $this->db->where('receipts.fee_head_name !=', 'Ledger Amount');
-
 
         if (!empty($filters['feesHead']) and $filters['feesHead']!='All') {
             $this->db->where('receipts.fee_head_name', $filters['feesHead']);
@@ -1385,10 +1385,11 @@ class Receipt_model extends CI_Model {
         }
 		
 		$this->db->where('student_session.session_id', $this->current_session);
+		$this->db->where('receipts.session_id', $this->current_session);
 
-        $this->db->group_by(['receipts.receipt_no', 'receipts.fee_head_name']);
+        //$this->db->group_by(['receipts.receipt_no', 'receipts.fee_head_name']);
 
-        //$this->db->group_by('receipts.receipt_no');
+        $this->db->group_by('receipts.receipt_no');
     
         $query = $this->db->get();
         return $query->num_rows(); // This returns the count of grouped rows

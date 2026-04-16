@@ -149,28 +149,30 @@ class Admin extends Admin_Controller
 		}
 		
 		//-- student fee collection --
-		$studentTransportFees = $this->studentfee_model->getTodayStudentTransportFees();
-		$data['studentTransportColls'] = $studentTransportFees;
+		//$studentTransportFees = $this->studentfee_model->getTodayStudentTransportFees();
+		//$data['studentTransportColls'] = $studentTransportFees;
 		$studentAcademicFees = $this->studentfee_model->getTodayStudentAcademicFees();
 		$data['studentAcademicColls'] = $studentAcademicFees;
 		
-		$today_total_income  = $this->income_model->todays_income();
-		$data['today_total_income'] = $today_total_income;
+		$today_other_collection  = $this->income_model->todays_other_collection();
+		$data['today_other_collection'] = $today_other_collection;
 		
-		$todayTotalCollection = $studentTransportFees + $studentAcademicFees + $today_total_income;
+		$todayTotalCollection = $studentAcademicFees + $today_other_collection;
 		
-		$data['studentTransportCollsPercent'] = 0;
+		//$data['studentTransportCollsPercent'] = 0;
 		$data['studentAcademicCollsPercent'] = 0;
 		$data['studentOtherCollsPercent'] = 0;
 		if($todayTotalCollection > 0)
 		{
-			$data['studentTransportCollsPercent'] = ($studentTransportFees/$todayTotalCollection)*100;
+			//$data['studentTransportCollsPercent'] = ($studentTransportFees/$todayTotalCollection)*100;
 			$data['studentAcademicCollsPercent'] = ($studentAcademicFees/$todayTotalCollection)*100;
-			$data['studentOtherCollsPercent'] = ($today_total_income/$todayTotalCollection)*100;
+			$data['studentOtherCollsPercent'] = ($today_other_collection/$todayTotalCollection)*100;
 		}
 		$data['todayTotalCollection']  = $todayTotalCollection;
 		
 		//  todays incone and expense 
+		$today_total_income  = $this->income_model->todays_income();
+		$data['today_total_income'] = $today_total_income;
 		
 		$today_total_expense  = $this->expense_model->todays_expense();
 		$data['today_total_expense'] = $today_total_expense;
