@@ -1253,67 +1253,77 @@ class Report extends Admin_Controller
         $data['searchlist']  = $this->customlib->get_searchtype();
         $data['date_type']   = $this->customlib->date_type();
         $data['date_typeid'] = '';
-        
-    //    $per_page = $this->input->get('per_page');
-    //     $feesHead = $this->input->get('feesHead');
-    //     $routeHead = $this->input->get('routeHead');
-    //     $categoryHead = $this->input->get('categoryHead');
-    //     $class_id = $this->input->get('class_id');
-    //     $from_date = $this->input->get('from_date');
-    //     $to_date = $this->input->get('to_date');
 
-        $filters = [
-            'per_page'      => $this->input->post('per_page'),
-            //'feesHead'      => $this->input->post('feesHead'),
-            //'routeHead'     => $this->input->post('routeHead'),
-            'categoryHead'  => $this->input->post('categoryHead'),
-            'class_id'      => $this->input->post('class_id'),
-            'from_date'     => $this->input->post('from_date'),
-            'to_date'       => $this->input->post('to_date'),
-        ];
-		$selectedFeeHead = $_POST['feesHead'] ?? [];
+        // 1. Store filters in session if POST exists
+		if ($this->input->post()) {
 
-        // 2. Handle per_page or default
-        $per_page = ($filters['per_page'] == 'all') ? 10000 : ($filters['per_page'] ?? 10);
+			$filters = [
+				'per_page'      => $this->input->post('per_page'),
+				'categoryHead'  => $this->input->post('categoryHead'),
+				'class_id'      => $this->input->post('class_id'),
+				'from_date'     => $this->input->post('from_date'),
+				'to_date'       => $this->input->post('to_date'),
+			];
 
-        // paginate
-        $config['base_url'] = base_url('report/income');
-        $config['total_rows'] = $this->Receipt_model->get_receipt_count_income($filters, $selectedFeeHead);
+			$selectedFeeHead = $this->input->post('feesHead') ?? [];
 
-        // die;
-        $config['per_page'] = 10;  $per_page = $this->input->post('per_page');  $per_page = $this->input->post('per_page');
-   
-        // var_dump($filters);
-        // echo "<hr>";
-        
-        $config['uri_segment'] = 3;
-        // Pagination Bootstrap Styling
-        $config['full_tag_open'] = '<ul class="pagination justify-content-center">';
-        $config['full_tag_close'] = '</ul>';
-        $config['attributes'] = ['class' => 'page-link'];
-        $config['first_link'] = 'First';
-        $config['last_link'] = 'Last';
-        $config['first_tag_open'] = '<li class="page-item">';
-        $config['first_tag_close'] = '</li>';
-        $config['last_tag_open'] = '<li class="page-item">';
-        $config['last_tag_close'] = '</li>';
-        $config['next_tag_open'] = '<li class="page-item">';
-        $config['next_tag_close'] = '</li>';
-        $config['prev_tag_open'] = '<li class="page-item">';
-        $config['prev_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
-        $config['cur_tag_close'] = '</a></li>';
-        $config['num_tag_open'] = '<li class="page-item">';
-        $config['num_tag_close'] = '</li>';
-        
-        $this->pagination->initialize($config);
-        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-		
-		
-       
-        $data['receipt_data'] = $this->Receipt_model->get_receipt_income($config['per_page'], $page,$filters, $selectedFeeHead);
-       
-        $data['pagination_links'] = $this->pagination->create_links();
+			// save in session
+			$this->session->set_userdata('income_filters', $filters);
+			$this->session->set_userdata('income_feehead', $selectedFeeHead);
+
+		} else {
+
+			// fallback (pagination click)
+			$filters = $this->session->userdata('income_filters') ?? [];
+			$selectedFeeHead = $this->session->userdata('income_feehead') ?? [];
+		}
+
+		// 🔥 IMPORTANT: always send to view
+		$data['filters'] = $filters;
+		$data['selectedFeeHead'] = $selectedFeeHead;
+
+		// 3. Per page logic
+		$per_page = ($filters['per_page'] == 'all') ? 10000 : ($filters['per_page'] ?? 10);
+
+		// 4. Pagination config
+		$config['base_url'] = base_url('report/income');
+		$config['total_rows'] = $this->Receipt_model->get_receipt_count_income($filters, $selectedFeeHead);
+		$config['per_page'] = $per_page;
+		$config['uri_segment'] = 3;
+
+		// Bootstrap styling
+		$config['full_tag_open'] = '<ul class="pagination justify-content-center">';
+		$config['full_tag_close'] = '</ul>';
+		$config['attributes'] = ['class' => 'page-link'];
+		$config['first_link'] = 'First';
+		$config['last_link'] = 'Last';
+		$config['first_tag_open'] = '<li class="page-item">';
+		$config['first_tag_close'] = '</li>';
+		$config['last_tag_open'] = '<li class="page-item">';
+		$config['last_tag_close'] = '</li>';
+		$config['next_tag_open'] = '<li class="page-item">';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_tag_open'] = '<li class="page-item">';
+		$config['prev_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+		$config['cur_tag_close'] = '</a></li>';
+		$config['num_tag_open'] = '<li class="page-item">';
+		$config['num_tag_close'] = '</li>';
+
+		$this->pagination->initialize($config);
+
+		// 5. Current page
+		$page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+		// 6. Fetch data
+		$data['receipt_data'] = $this->Receipt_model->get_receipt_income(
+			$config['per_page'],
+			$page,
+			$filters,
+			$selectedFeeHead
+		);
+
+		$data['pagination_links'] = $this->pagination->create_links();
 
         // end paginate
 
@@ -1336,11 +1346,16 @@ class Report extends Admin_Controller
         $this->load->view('layout/header', $data);
         $this->load->view('reports/income', $data);
         $this->load->view('layout/footer', $data);
-
-
-
     }
+	public function income_reset()
+	{
+		// Remove stored filters
+		$this->session->unset_userdata('income_filters');
+		$this->session->unset_userdata('income_feehead');
 
+		// Redirect back to listing page
+		redirect('report/income');
+	}
     public function expense()
     {
         $this->session->set_userdata('top_menu', 'Reports');
@@ -1895,11 +1910,29 @@ class Report extends Admin_Controller
         $data['adm_auto_insert'] = $this->sch_setting_detail->adm_auto_insert;
 
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
+        //$this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
         if ($this->form_validation->run() == false) {
             $data['resultlist'] = array();
         } else {
-            $condition .= " classes.id='" . $this->input->post('class_id') . "' and sections.id='" . $this->input->post('section_id') . "'";
+			
+			$class_id   = $this->input->post('class_id');
+			$section_id = $this->input->post('section_id');
+
+			$conditions = [];
+
+			// ✅ Apply only if not 'all'
+			if ($class_id !='' && $class_id != 'all') {
+				$conditions[] = "classes.id = '".$class_id."'";
+			}
+
+			if ($section_id !='' && $section_id != 'all') {
+				$conditions[] = "sections.id = '".$section_id."'";
+			}
+
+			// Combine conditions
+			$condition .= !empty($conditions) ? implode(' AND ', $conditions) : '';
+	
+            //$condition .= " classes.id='" . $this->input->post('class_id') . "' and sections.id='" . $this->input->post('section_id') . "'";
 
             $data['resultlist'] = $this->student_model->student_profile($condition);
         }

@@ -135,6 +135,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     $count++;
                                                 }
                                                 ?>
+										<option value="all">All</option>
                                     </select>
                                     <span class="text-danger"><?php echo form_error('class_id'); ?></span>
                                 </div>
@@ -156,6 +157,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <?php
                                             }
                                             ?>
+											<option value="all">All</option>
                                     </select>
                                     <span class="text-danger"><?php echo form_error('section_id'); ?></span>
                                 </div>

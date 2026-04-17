@@ -1218,7 +1218,7 @@ class Receipt_model extends CI_Model {
 
 
         if (!empty($selectedFeeHead)) {
-            //$this->db->where_in('receipts.fee_head_name', $selectedFeeHead);
+            $this->db->where_in('receipts.fee_head_name', $selectedFeeHead);
         }
         if (!empty($filters['routeHead']) and $filters['routeHead']!='All') {
             $this->db->where('receipts.fee_head_name', $filters['routeHead']);
@@ -1368,7 +1368,7 @@ class Receipt_model extends CI_Model {
         $this->db->where('receipts.fee_head_name !=', 'Ledger Amount');
 
         if (!empty($selectedFeeHead)) {
-           // $this->db->where_in('receipts.fee_head_name', $selectedFeeHead);
+            $this->db->where_in('receipts.fee_head_name', $selectedFeeHead);
         }
         if (!empty($filters['routeHead']) and $filters['routeHead']!='All') {
             $this->db->where('receipts.fee_head_name', $filters['routeHead']);

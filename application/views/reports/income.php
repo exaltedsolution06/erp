@@ -60,11 +60,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <div class="form-group col-md-2">
                                         <label for="per_page">Records per page:</label>
                                         <select name="per_page" id="per_page" onchange="this.form.submit()" class="form-control">
-                                            <option value="10" <?= ($this->input->post('per_page') == 10) ? 'selected' : '' ?>>10</option>
-                                            <option value="25" <?= ($this->input->post('per_page') == 25) ? 'selected' : '' ?>>25</option>
-                                            <option value="50" <?= ($this->input->post('per_page') == 50) ? 'selected' : '' ?>>50</option>
-                                            <option value="100" <?= ($this->input->post('per_page') == 100) ? 'selected' : '' ?>>100</option>
-                                            <option value="all" <?= ($this->input->post('per_page') == 'all') ? 'selected' : '' ?>>All</option>
+                                            <option value="10" <?= ($filters['per_page'] ?? '') == 10 ? 'selected' : '' ?>>10</option>
+                                            <option value="25" <?= ($filters['per_page'] ?? '') == 25 ? 'selected' : '' ?>>25</option>
+                                            <option value="50" <?= ($filters['per_page'] ?? '') == 50 ? 'selected' : '' ?>>50</option>
+                                            <option value="100" <?= ($filters['per_page'] ?? '') == 100 ? 'selected' : '' ?>>100</option>
+                                            <option value="all" <?= ($filters['per_page'] ?? '') == 'all' ? 'selected' : '' ?>>All</option>
                                         </select>
                                     </div>
 
@@ -81,14 +81,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <option value="All" <?= ($this->input->post('routeHead') == 'All') ? 'selected' : '' ?>>All Routes</option>
                                         </select>
                                     </div>-->
-
+ 
                                     <!-- Category -->
                                     <div class="form-group col-md-2">
                                         <label for="categoryHead">Fees Category</label>
                                         <select class="form-control form-control-sm" id="categoryHead" name="categoryHead">
                                             <option value="">N/A</option>
                                             <?php foreach ($category_head as $row): ?>
-                                                <option value="<?= $row['id'] ?>" <?= ($this->input->post('categoryHead') == $row['id']) ? 'selected' : '' ?>><?= $row['name'] ?></option>
+                                                <option value="<?= $row['id'] ?>" <?= ($filters['categoryHead'] ?? '') == $row['id'] ? 'selected' : '' ?>><?= $row['name'] ?></option>
                                             <?php endforeach; ?>
                                             <option value="All" <?= ($this->input->post('categoryHead') == 'All') ? 'selected' : '' ?>>All Categories</option>
                                         </select>
@@ -100,7 +100,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <select class="form-control form-control-sm" id="classSelect" name="class_id">
                                             <option value="">N/A</option>
                                             <?php foreach ($classes_data as $row): ?>
-                                                <option value="<?= $row->id ?>" <?= ($this->input->post('class_id') == $row->id) ? 'selected' : '' ?>><?= $row->class ?></option>
+                                                <option value="<?= $row->id ?>" <?= ($filters['class_id'] ?? '') == $row->id ? 'selected' : '' ?>><?= $row->class ?></option>
                                             <?php endforeach; ?>
                                             <option value="All" <?= ($this->input->post('class_id') == 'All') ? 'selected' : '' ?>>All Classes</option>
                                         </select>
@@ -110,13 +110,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <!-- From Date -->
                                     <div class="form-group col-md-2">
                                         <label for="fromDate">From</label>
-                                        <input type="date" class="form-control" id="fromDate" name="from_date" value="<?= $this->input->post('from_date') ?? date('Y-m-d') ?>" required>
+                                        <input type="date" class="form-control" id="fromDate" name="from_date" value="<?= $filters['from_date'] ?? date('Y-m-d') ?>" required>
                                     </div>
 
                                     <!-- To Date -->
                                     <div class="form-group col-md-2">
                                         <label for="toDate">To</label>
-                                        <input type="date" class="form-control" id="toDate" name="to_date" value="<?= $this->input->post('to_date') ?? date('Y-m-d') ?>" required>
+                                        <input type="date" class="form-control" id="toDate" name="to_date" value="<?= $filters['to_date'] ?? date('Y-m-d') ?>" required>
                                     </div>
 									
                                    </div>
@@ -136,12 +136,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										</div>
 										<div class="filter-box">
 											<?php
-											$selectedFeeHead = isset($_POST['feesHead']) ? (array)$_POST['feesHead'] : [];
+											//$selectedFeeHead = isset($_POST['feesHead']) ? (array)$_POST['feesHead'] : [];
+											$selectedFeeHead = $_POST['feesHead'] ?? $selectedFeeHead ?? [];
 											foreach ($fee_heads as $row) {
-											$checked = in_array($row['id'], $selectedFeeHead) ? 'checked' : '';
+											$checked = in_array($row['fees_heading'], $selectedFeeHead) ? 'checked' : '';
 											echo "<div class='form-check'>
-													<input type='checkbox' class='form-check-input fee-check' name='feesHead[]' value='{$row['id']}' id='fee{$row['id']}' $checked>
-													<label class='form-check-label' for='fee{$row['id']}'>{$row['fees_heading']}</label>
+													<input type='checkbox' class='form-check-input fee-check' name='feesHead[]' value='{$row['fees_heading']}' id='fee{$row['fees_heading']}' $checked>
+													<label class='form-check-label' for='fee{$row['fees_heading']}'>{$row['fees_heading']}</label>
 												</div>";
 											}
 											?>
@@ -152,6 +153,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <div class="form-group col-md-2 d-flex align-items-end">
                                         <br>
                                         <button type="submit" class="btn btn-primary btn-sm">OK</button>
+                                        <a href="<?= base_url('report/income_reset') ?>" 
+										   class="btn btn-sm btn-danger" style="margin-left:20px">
+										   Reset
+										</a>
                                     </div>
                                     </div>
                                 </form>
@@ -174,7 +179,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th>Months</th>
                                                 <?php foreach($fee_heads as $list)
 													{ 
-														if(in_array($list['id'], $selectedFeeHead))
+														if(in_array($list['fees_heading'], $selectedFeeHead))
 														{
 												?>
                                                 <th style="text-align:right"><?=$list['fees_heading']?></th>
@@ -230,7 +235,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 												//echo '<pre>'; print_r($fee_heads); echo '</pre>';die;
 												foreach($fee_heads as $list) {
 														
-													if(in_array($list['id'], $selectedFeeHead))
+													if(in_array($list['fees_heading'], $selectedFeeHead))
 													{
 													$class_id = $record['class_id'];
 													$category_id = $record['category_id'];
@@ -380,7 +385,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 												<?php
 													$fee_heads_total_amount = 0;
 													foreach($fee_heads as $list){
-														if(in_array($list['id'], $selectedFeeHead))
+														if(in_array($list['fees_heading'], $selectedFeeHead))
 														{
 															$head_wise_totals[$list['fees_heading']] += $cat_list_amount[$list['fees_heading']];
 															
@@ -413,7 +418,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <th>Total</th>
   											<?php foreach($fee_heads as $list) 
 												{ 
-												if(in_array($list['id'], $selectedFeeHead))
+												if(in_array($list['fees_heading'], $selectedFeeHead))
 														{
 											?>
 												<th style="text-align:right"><?=number_format($head_wise_totals[$list['fees_heading']] ?? 0, 2); ?></th>
