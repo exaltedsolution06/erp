@@ -6,6 +6,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 	max-height: 400px; 
 	overflow-y: auto;
 } 
+.table-header-sticky table thead th {
+  position: sticky;
+  top: 0;
+}
 /* Sticky 5th column */
 .example thead th:nth-child(5),
 .example tbody td:nth-child(5) {
@@ -79,12 +83,21 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <label for="toDate">To</label>
                                         <input type="date" class="form-control" id="toDate" name="to_date" value="<?= $this->input->get('to_date') ?? date('Y-m-d') ?>" required>
                                     </div>
-									<div class="form-group col-md-2 d-flex align-items-end">
+									<div class="col-sm-2">
+                                        <label for="mode">Mode</label>
+                                        <select autofocus=""  name="mode" id="mode" name="class_id" class="form-control" >
+                                            <option value="">All</option>
+                                            <option value="Online" <?php echo $this->input->get('mode') == 'Online' ? 'selected' : ''; ?>>Online</option>
+                                            <option value="Cash" <?php echo $this->input->get('mode') == 'Cash' ? 'selected' : ''; ?>>Cash</option>
+                                            <option value="Other" <?php echo $this->input->get('mode') == 'Other' ? 'selected' : ''; ?>>Other</option>
+                                        </select>
+                                    </div>
+									<!--<div class="form-group col-md-2 d-flex align-items-end">
                                         <div class="form-check" style="margin-top:25px">
                                             <input type="checkbox" name="route" class="form-check-input" <?php if(isset($_GET['route']) && $_GET['route']=='on') { echo 'checked="checked"'; } ?>>
                                             <label class="form-check-label">Include Route</label>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <!-- Submit Button -->
                                     <div class="form-group col-md-2 d-flex align-items-end">
                                         <br>
@@ -104,9 +117,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
 
-                                 <div class="table-responsive-" style="overflow: auto;">
+                                 <div class="table-responsive table-header-sticky">
                                     <div class="download_label"><?php echo $this->lang->line('fee_day_book');?></div>
-<div class="table-header-sticky">
                                     <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header" style="width:1800px !important">
                                         <thead>
                                             <tr>
@@ -120,7 +132,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th>Sec.</th>
                                                 <th>Fee Cat.</th>
                                                 <th>Months</th>
-												<?php if(isset($_GET['route'])) { ?>
+												<?php //if(isset($_GET['route'])) { ?>
+												<?php if(!empty($routes)) { ?>
                                                 <th>Transport</th>
 												<?php } foreach($fee_heads as $list){ ?>
                                                 <th style="text-align:right"><?=$list['fees_heading']?></th>
@@ -306,7 +319,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 												}
 												$routeFees=0;
 												$routes_month = [];
-												if(isset($_GET['route'])){
+												if(!empty($routes)) {
 													/*$student_routes = $this->db->where('id', $record['route_id'])->get('route_head')->result_array();
 														$pay=0;
 													 foreach($student_routes as $list){*/ 
@@ -451,7 +464,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     ?>
                                             
                                                 </td>
-												<?php if(isset($_GET['route'])){ ?>
+												<?php if(!empty($routes)) { ?>
                                                        <td style="text-align:right"><?= number_format($routeFees,2);?></td>
                                                 <?php } ?>
                                                 <!--<td ><?=  ($this->db->get_where('route_head', ['id' => $record['route_id']])->row()) ? $this->db->get_where('route_head', ['id' => $record['route_id']])->row()->fees_heading : 'N.A'; ?>  </td>-->
@@ -492,7 +505,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <th></th>
                                             <th></th>
                                             <th>Total</th>
-                                            <?php if(isset($_GET['route'])){ ?>
+                                            <?php if(!empty($routes)) { ?>
 												<th><?= number_format($finalRF,2);?></th>
 											<?php } foreach($fee_heads as $list) { ?>
 												<th style="text-align:right"><?=number_format($head_wise_totals[$list['fees_heading']] ?? 0, 2); ?></th>
@@ -517,8 +530,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <?= $pagination_links; ?>
                                     </div>
                                 </div>
-
-                                </div> 
 
 
 

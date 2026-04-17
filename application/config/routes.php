@@ -16,6 +16,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['cron/(:any)'] = 'cron/index/$1';
 //es
 $route['admin/fee-discount'] = 'admin/fee_discount';
+$route['report/overall-collection-report'] = 'report/overall_collection_report';
 //======= front url rewriting==========
 $route['page/(:any)'] = 'welcome/page/$1';
 $route['read/(:any)'] = 'welcome/read/$1';

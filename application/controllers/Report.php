@@ -1733,9 +1733,9 @@ class Report extends Admin_Controller
        
         $data['routes'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
        
-        $data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('fee_head')->result_array();
+        //$data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('fee_head')->result_array();
 
-
+		$data['fee_heads'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('fee_head')->result_array();
 
         
 
@@ -1819,6 +1819,43 @@ class Report extends Admin_Controller
 
         $this->load->view('layout/header', $data);
         $this->load->view('reports/expensegroup', $data);
+        $this->load->view('layout/footer', $data);
+    }
+	
+	public function overall_collection_report()
+    {
+
+        $this->session->set_userdata('top_menu', 'Reports');
+        $this->session->set_userdata('sub_menu', 'Reports/finance');
+        $this->session->set_userdata('subsub_menu', 'Reports/finance/overall_collection_report');
+        $data['searchlist']  = $this->customlib->get_searchtype();
+        $data['date_type']   = $this->customlib->date_type();
+        $data['date_typeid'] = '';
+        
+        $vehroute_result      = $this->classsection_model->getByID();
+        $data['class'] = $vehroute_result;
+
+        $feegroup_result = $this->feegroup_model->get();
+        $data['category'] = $feegroup_result;
+
+        $data['routes'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
+       
+       // $data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('fee_head')->result_array();
+		
+		$data['fee_heads'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('fee_head')->result_array();
+		
+        $selectedFeeCat = $_POST['fee_cat'] ?? [];
+        $selectedMonths = $_POST['months'] ?? [];
+        $selectedClasses = $_POST['class'] ?? [];
+        $from_date = $_POST['from_date'] ?? '';
+        $to_date = $_POST['to_date'] ?? '';
+       
+        $data['receipt_data'] = $this->Receipt_model->get_overall_collection_report($selectedClasses, $selectedFeeCat, $from_date, $to_date);
+
+        // end paginate
+
+        $this->load->view('layout/header', $data);
+        $this->load->view('reports/overall_collection_report', $data);
         $this->load->view('layout/footer', $data);
     }
 

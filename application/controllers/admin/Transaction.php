@@ -78,16 +78,13 @@ class Transaction extends Admin_Controller {
         $data['title'] = 'student fee';
         $data['title'] = 'student fee';
 
-
-
-
         $from_date = $this->input->get('from_date');
         $to_date   = $this->input->get('to_date');
-
+        $mode   = $this->input->get('mode');
 
         // paginate
         $per_page_input = $this->input->get('per_page');
-        $total_rows = $this->Receipt_model->get_receipt_count($from_date, $to_date);
+        $total_rows = $this->Receipt_model->get_receipt_count($from_date, $to_date, $mode);
 
         $per_page = (!empty($per_page_input) && $per_page_input != 'all') ? (int)$per_page_input : 10;
         $per_page = ($per_page_input == 'all') ? $total_rows : $per_page;
@@ -120,25 +117,10 @@ class Transaction extends Admin_Controller {
         $this->pagination->initialize($config);
         $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 
-        $data['receipt_data'] = $this->Receipt_model->get_receipt($config['per_page'], $page,$from_date, $to_date);
+        $data['receipt_data'] = $this->Receipt_model->get_receipt($config['per_page'], $page,$from_date, $to_date, $mode);
         $data['pagination_links'] = $this->pagination->create_links();
 
         // end paginate
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         $class = $this->class_model->get();
         $data['sch_setting'] = $this->sch_setting_detail;
@@ -151,108 +133,8 @@ class Transaction extends Admin_Controller {
         $data['section_list'] = $this->section_model->getClassBySection($this->input->post('class_id'));
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
-
-
-        /*if ($this->form_validation->run() == false) {
-            $data['student_due_fee'] = array();
-            $data['resultarray'] = array();
-
-            $data['class_id'] = "";
-            $data['section_id'] = "";
-            $data['feetype'] = "";
-            $data['feetype_arr'] = array();
-        } else {
-            $student_Array = array(); 
-
-            $section = array();
-
-            $classlist = $this->student_model->getAllClassSection($class_id, $section_id);
-
-            foreach ($classlist as $key => $value) {
-                $classid = $value['class_id'];
-                $sectionid = $value['section_id'];
-
-                $studentlist = $this->student_model->reportClassSection($classid, $sectionid);
-
-                $student_Array = array();
-                if (!empty($studentlist)) {
-                    foreach ($studentlist as $key => $eachstudent) {
-                        $obj = new stdClass();
-                        $obj->name = $this->customlib->getFullName($eachstudent['firstname'],$eachstudent['middlename'],$eachstudent['lastname'],$this->sch_setting_detail->middlename,$this->sch_setting_detail->lastname);
-                        $obj->class = $eachstudent['class'];
-                        $obj->section = $eachstudent['section'];
-                        $obj->admission_no = $eachstudent['admission_no'];
-                        $obj->roll_no = $eachstudent['roll_no'];
-                        $obj->father_name = $eachstudent['father_name'];
-                        $student_session_id = $eachstudent['student_session_id'];
-                        $student_total_fees = $this->studentfeemaster_model->getStudentFees($student_session_id);
-
-                        if (!empty($student_total_fees)) {
-
-
-                            $totalfee = 0;
-                            $deposit = 0;
-                            $discount = 0;
-                            $balance = 0;
-                            $fine = 0;
-                            foreach ($student_total_fees as $student_total_fees_key => $student_total_fees_value) {
-
-
-                                if (!empty($student_total_fees_value->fees)) {
-                                    foreach ($student_total_fees_value->fees as $each_fee_key => $each_fee_value) {
-                                        $totalfee = $totalfee + $each_fee_value->amount;
-
-                                        $amount_detail = json_decode($each_fee_value->amount_detail);
-
-                                        if (is_object($amount_detail)) {
-                                            foreach ($amount_detail as $amount_detail_key => $amount_detail_value) {
-                                                $deposit = $deposit + $amount_detail_value->amount;
-                                                $fine = $fine + $amount_detail_value->amount_fine;
-                                                $discount = $discount + $amount_detail_value->amount_discount;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            $obj->totalfee = $totalfee;
-                            $obj->payment_mode = "N/A";
-                            $obj->deposit = $deposit;
-                            $obj->fine = $fine;
-                            $obj->discount = $discount;
-                            $obj->balance = $totalfee - ($deposit + $discount);
-                        } else {
-
-                            $obj->totalfee = 0;
-                            $obj->payment_mode = 0;
-                            $obj->deposit = 0;
-                            $obj->fine = 0;
-                            $obj->balance = 0;
-                            $obj->discount = 0;
-                        }
-
-                        if ($obj->balance > 0) {
-                            $student_Array[] = $obj;
-                        }
-                    }
-                }
-
-                $classlistdata[$value['class_id']][] = array('class_name' => $value['class'], 'section' => $value['section_id'], 'section_name' => $value['section'], 'result' => $student_Array);
-            }
-
-
-
-            $data['student_due_fee'] = $student_Array;
-            $data['resultarray'] = $classlistdata;
-
-            $data['class_id'] = $class_id;
-            $data['section_id'] = $section_id;
-            $data['feetype'] = $feetype;
-            $data['feetype_arr'] = $feetype_arr;
-        }
-
-        */
 		
+		$data['routes'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
 		$data['fee_heads'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('fee_head')->result_array();
 
 		//echo '<pre>'; print_r($data['fee_heads']); echo '</pre>';die;

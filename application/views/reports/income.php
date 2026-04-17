@@ -5,6 +5,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
  .table-header-sticky {
 	max-height: 400px; 
 	overflow-y: auto;
+}
+.table-header-sticky table thead th {
+  position: sticky;
+  top: 0;
 } 
 /* Sticky 5th column */
 .example thead th:nth-child(5),
@@ -64,32 +68,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         </select>
                                     </div>
 
-                                    <!-- Fees Head -->
-                                    <div class="col-md-2">
-                                        <!--<select class="form-control form-control-sm" id="feesHead" name="feesHead">
-                                            <option value="">N/A</option>
-                                            <?php foreach ($head_data as $row): ?>
-                                                <option value="<?= $row->fees_heading ?>" <?= ($this->input->post('feesHead') == $row->fees_heading) ? 'selected' : '' ?>><?= $row->fees_heading ?></option>
-                                            <?php endforeach; ?>
-                                            <option value="All" <?= ($this->input->post('feesHead') == 'All') ? 'selected' : '' ?>>All Heads</option>
-                                        </select>-->
-										<div class="form-check">
-											<input type="checkbox" class="form-check-input master-check" data-target="fee-check" id="selectAllFeeHead">
-											<label class="form-check-label" for="selectAllFeeHead">Select Fees Head.</label>
-										</div>
-										<div class="filter-box">
-											<?php
-											$selectedFeeHead = isset($_POST['feesHead']) ? (array)$_POST['feesHead'] : [];
-											foreach ($fee_heads as $row) {
-											$checked = in_array($row['id'], $selectedFeeHead) ? 'checked' : '';
-											echo "<div class='form-check'>
-													<input type='checkbox' class='form-check-input fee-check' name='feesHead[]' value='{$row['id']}' id='fee{$row['id']}' $checked>
-													<label class='form-check-label' for='fee{$row['id']}'>{$row['fees_heading']}</label>
-												</div>";
-											}
-											?>
-										</div>
-                                    </div>
+                                    
 
                                     <!-- Route -->
                                     <!--<div class="form-group col-md-2">
@@ -128,8 +107,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </div>
 
 
-                                   </div>
-                                   <div class="row">
                                     <!-- From Date -->
                                     <div class="form-group col-md-2">
                                         <label for="fromDate">From</label>
@@ -141,6 +118,35 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <label for="toDate">To</label>
                                         <input type="date" class="form-control" id="toDate" name="to_date" value="<?= $this->input->post('to_date') ?? date('Y-m-d') ?>" required>
                                     </div>
+									
+                                   </div>
+                                   <div class="row">
+									<!-- Fees Head -->
+                                    <div class="col-md-2">
+                                        <!--<select class="form-control form-control-sm" id="feesHead" name="feesHead">
+                                            <option value="">N/A</option>
+                                            <?php foreach ($head_data as $row): ?>
+                                                <option value="<?= $row->fees_heading ?>" <?= ($this->input->post('feesHead') == $row->fees_heading) ? 'selected' : '' ?>><?= $row->fees_heading ?></option>
+                                            <?php endforeach; ?>
+                                            <option value="All" <?= ($this->input->post('feesHead') == 'All') ? 'selected' : '' ?>>All Heads</option>
+                                        </select>-->
+										<div class="form-check">
+											<input type="checkbox" class="form-check-input master-check" data-target="fee-check" id="selectAllFeeHead">
+											<label class="form-check-label" for="selectAllFeeHead">Select Fees Head.</label>
+										</div>
+										<div class="filter-box">
+											<?php
+											$selectedFeeHead = isset($_POST['feesHead']) ? (array)$_POST['feesHead'] : [];
+											foreach ($fee_heads as $row) {
+											$checked = in_array($row['id'], $selectedFeeHead) ? 'checked' : '';
+											echo "<div class='form-check'>
+													<input type='checkbox' class='form-check-input fee-check' name='feesHead[]' value='{$row['id']}' id='fee{$row['id']}' $checked>
+													<label class='form-check-label' for='fee{$row['id']}'>{$row['fees_heading']}</label>
+												</div>";
+											}
+											?>
+										</div>
+                                    </div>
 
                                     <!-- Submit Button -->
                                     <div class="form-group col-md-2 d-flex align-items-end">
@@ -150,45 +156,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </div>
                                 </form>
 
-                                    
-                            
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                <div class="table-responsive--" style="overflow: auto;">
+                                <div class="table-responsive table-header-sticky">
                                     <div class="download_label"><?php echo $this->lang->line('head_wise_collection');?></div>
-<div class="table-header-sticky">
                                     <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header" style="width:1800px !important">
                                         <thead>
                                             <tr>
@@ -208,11 +178,16 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 														{
 												?>
                                                 <th style="text-align:right"><?=$list['fees_heading']?></th>
-                                                <?php } } ?>
-                                                <th  style="text-align: right;">Net Fees</th>
+                                                <?php 	} 
+													} 
+													if(!empty($selectedFeeHead)) {
+												?>
+												<th  style="text-align: right;">Fee Head Total</th>
+												<?php } ?>
+                                                <!--<th  style="text-align: right;">Net Fees</th>
                                                 <th  style="text-align: right;">Receipt. Amt.</th>
 												<th style="text-align: right;">Discount Amt</th>
-                                                <th style="text-align: right;">Balance Amt</th>
+                                                <th style="text-align: right;">Balance Amt</th>-->
 											</tr>
                                         </thead>
                                        
@@ -226,14 +201,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 												$record=(array)$record;
 												//echo '<pre>'; print_r($record); echo '<pre>';
 												//$total_rec_amount += $record['rec_amount']; 
-												$fees_received_sum       += (float)$record["fees_received"];
+												/*$fees_received_sum       += (float)$record["fees_received"];
                                                 $late_fees_sum    += (float)$record["late_fees"];
                                                 $ledger_amt_sum   += (float)$record["ledger_amt"];
                                                 $total_fees_sum     += (float)$record["total_fees"];
                                                 $discount_amt_sum     += (float)$record["discount_amt"];
                                                 $net_fees_sum  += (float)$record["net_fees"];
                                                 $receipt_amt_sum  += (float)$record["receipt_amt"];
-                                                $balance_amt_sum  += (float)$record["balance_amt"];
+                                                $balance_amt_sum  += (float)$record["balance_amt"];*/
 												
 												$fees_months = [];
 												if(!empty($record['fee_head'])){
@@ -378,7 +353,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 													$final += $pay;
 													
 													//echo '<pre>'; print_r($cat_list_amount);
-												}
+													}
 												}
 											?>
                                             <tr>
@@ -402,25 +377,30 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         }
                                                     ?>
                                                 </td>
-                                               <?php
+												<?php
+													$fee_heads_total_amount = 0;
 													foreach($fee_heads as $list){
 														if(in_array($list['id'], $selectedFeeHead))
 														{
 															$head_wise_totals[$list['fees_heading']] += $cat_list_amount[$list['fees_heading']];
-													?>
-														<td style="text-align:right"><?=number_format($cat_list_amount[$list['fees_heading']],2); ?></td>
-													<?php 
+															
+															$fee_heads_total_amount += $cat_list_amount[$list['fees_heading']];
+												?>
+															<td style="text-align:right"><?=number_format($cat_list_amount[$list['fees_heading']],2); ?></td>
+												<?php 
 														}
-														}
-													?>
-												<td style="text-align: right;"><?= sprintf('%.2f', $record["net_fees"]) ?></td>
+													}
+													if(!empty($selectedFeeHead)) {
+												?>
+													<td style="text-align: right;"><?= sprintf('%.2f', $fee_heads_total_amount) ?></td>
+												<?php } ?>
+												<!--<td style="text-align: right;"><?= sprintf('%.2f', $record["net_fees"]) ?></td>
                                                 <td style="text-align: right;"><?= sprintf('%.2f', $record["receipt_amt"]) ?></td>
                                                 <td style="text-align: right;"><?= sprintf('%.2f', $record["discount_amt"]) ?></td>
-                                                <td style="text-align: right;"><?= sprintf('%.2f', $record["balance_amt"]) ?></td>
+                                                <td style="text-align: right;"><?= sprintf('%.2f', $record["balance_amt"]) ?></td>-->
                                             </tr>
                                         <?php endforeach; ?>
 										<tr>
-                                           
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -437,11 +417,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 														{
 											?>
 												<th style="text-align:right"><?=number_format($head_wise_totals[$list['fees_heading']] ?? 0, 2); ?></th>
-											<?php } } ?>
-                                           <th style="text-align: right;"><?= sprintf('%.2f', $net_fees_sum) ?></th>
+											<?php } } if(!empty($selectedFeeHead)) { ?>
+												<th style="text-align: right;"><?= sprintf('%.2f', $final) ?></th>
+											<?php } ?>
+                                           <!--<th style="text-align: right;"><?= sprintf('%.2f', $net_fees_sum) ?></th>
                                             <th style="text-align: right;"><?= sprintf('%.2f', $receipt_amt_sum) ?></th>
                                             <th style="text-align: right;"><?= sprintf('%.2f', $discount_amt_sum) ?></th>
-                                            <th style="text-align: right;"><?= sprintf('%.2f', $balance_amt_sum) ?></th>
+                                            <th style="text-align: right;"><?= sprintf('%.2f', $balance_amt_sum) ?></th>-->
                                         </tr>
                                         <?php else: ?>
                                             <tr><td colspan="12" class="text-center">No records found</td></tr>
@@ -452,8 +434,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <div class="d-flex justify-content-center">
                                         <?= $pagination_links; ?>
                                     </div>
-
-                                </div> 
                                 </div> 
 
 
