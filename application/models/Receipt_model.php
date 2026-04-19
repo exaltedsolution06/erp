@@ -299,7 +299,7 @@ class Receipt_model extends CI_Model {
 
     // reportbyname
 
-    public function get_receipt($limit, $offset,$from_date = null, $to_date = null, $mode = null)
+    public function get_receipt($limit, $offset,$from_date = null, $to_date = null, $mode = null, $studentId = null)
     {
          //    echo $from_date;
 		 //echo $this->current_session; die;
@@ -369,11 +369,10 @@ class Receipt_model extends CI_Model {
         if (!empty($from_date) && !empty($to_date)) {
             $this->db->where('DATE(receipts.date_time) >=', $from_date);
             $this->db->where('DATE(receipts.date_time) <=', $to_date);
-        }
-		
-		if(!empty($mode))
-		{
-			$this->db->where('mode', $mode);
+        } if(!empty($mode)) {
+			$this->db->where('receipts.mode', $mode);
+		} if (!empty($studentId)){
+			$this->db->where('receipts.back_id', $studentId);
 		}
 
         $this->db->group_by('receipts.receipt_no');
@@ -466,7 +465,7 @@ class Receipt_model extends CI_Model {
 
     }
 
-    public function get_receipt_count($from_date = null, $to_date = null, $mode = null)
+    public function get_receipt_count($from_date = null, $to_date = null, $mode = null, $studentId = null)
     {
         $this->db->select('receipts.receipt_no'); // Select only grouped field
         $this->db->from('receipts');
@@ -477,10 +476,10 @@ class Receipt_model extends CI_Model {
          if (!empty($from_date) && !empty($to_date)) {
             $this->db->where('DATE(receipts.date_time) >=', $from_date);
             $this->db->where('DATE(receipts.date_time) <=', $to_date);
-        }
-		
-		if (!empty($from_date)){
-			$this->db->where('mode', $mode);
+        } if (!empty($mode)){
+			$this->db->where('receipts.mode', $mode);
+		} if (!empty($studentId)){
+			$this->db->where('receipts.back_id', $studentId);
 		}
 		
         $this->db->group_by('receipts.receipt_no');

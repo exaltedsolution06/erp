@@ -82,9 +82,15 @@ $payment_mode_type = $this->customlib->payment_mode_type();
 											?>
 										</select>
                                     </div>
+									<div class="form-group col-md-3">
+                                        <label for="toDate">Student Search</label>
+                                        <input type="text" id="searchInput" name="search_text" class="form-control" placeholder="Search By Student Name, Roll Number, Enroll Number, National Id, Local Id Etc.">
+										<ul id="suggestionsList" class="list-group" style="position: absolute; z-index: 1000; width: 100%; display: none;"></ul>
+										<input type="hidden" id="studentId" name="studentId">
+                                    </div>
 
                                     <!-- Submit Button -->
-                                    <div class="form-group col-md-2 d-flex align-items-end">
+                                    <div class="form-group col-md-1 d-flex align-items-end">
                                         <br>
                                         <button type="submit" class="btn btn-primary btn-sm">OK</button>
                                     </div>
@@ -287,6 +293,48 @@ $payment_mode_type = $this->customlib->payment_mode_type();
 
 
 <script type="text/javascript">
+document.getElementById('searchInput').addEventListener('input', function () {
+    const query = this.value;
+    const suggestionsList = document.getElementById('suggestionsList');
+
+    if (query.length < 2) {
+        suggestionsList.style.display = 'none';
+        return;
+    }
+
+    fetch("<?=base_url()?>/report/search_api?query=" + encodeURIComponent(query))
+        .then(response => response.json())
+        .then(data => {
+            suggestionsList.innerHTML = '';
+            if (data.length > 0) {
+                data.forEach(item => {
+                    // console.log(item);
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item list-group-item-action';
+                    li.textContent =  '(' + item.admission_no + ') '+item.name + ' s/o '+ item.father +' ('+item.class+')';;
+                    li.onclick = function () {
+                        document.getElementById('searchInput').value = '(' + item.admission_no + ') '+ item.name + ' s/o '+ item.father +' ('+item.class+')';
+                        suggestionsList.style.display = 'none';
+                        
+                        /*const currentUrl = "<?=base_url()?>/report/fee_card";
+                        const urlWithQuery = currentUrl.includes('?') ? 
+                         `${currentUrl}&id=${item.id})` :
+                         `${currentUrl}?id=${item.id}`;
+                         
+                         console.log(urlWithQuery);
+    
+                        window.location.href = urlWithQuery;*/
+						
+						$('#studentId').val(item.id);
+                    };
+                    suggestionsList.appendChild(li);
+                });
+                suggestionsList.style.display = 'block';
+            } else {
+                suggestionsList.style.display = 'none';
+            }
+        });
+});
     function removeElement() {
         document.getElementById("imgbox1").style.display = "block";
     }
