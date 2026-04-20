@@ -327,7 +327,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 														
 														$route = $this->db->get_where('route_head', ['id' => $record['route_id']])->row();
-														if(!empty($route)){
+														
 														$class_id = $record['class_id'];
 														$category_id = $record['category_id'];
 														$fee_group_id = $route->fees_heading;
@@ -439,7 +439,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 															}
 														}
 
-														}
 													//}
 													$finalRF += $routeFees = $pay;
 												}

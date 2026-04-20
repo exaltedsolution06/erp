@@ -348,6 +348,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <tbody>
                                     
                                     <?php 
+									// echo'<pre>';print_r($receipt_data);die;
                                     $total_fees_discount = 0;
                                     $head_wise_totals = []; // index by fee head
                                     $total_route = 0;
@@ -519,7 +520,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 													
 													$route = $this->db->get_where('route_head', ['id' => $record['route_id']])->row();
-													
+													if(!empty($route)){
 													$class_id = $record['class_id'];
 													$category_id = $record['category_id'];
 													$fee_group_id = $route->fees_heading;
@@ -630,7 +631,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 															$pay+=0;
 														}
 													}
-
+													}
 												//}
 												$finalRF += $routeFees = $pay;
 											}
