@@ -1649,7 +1649,8 @@ class Receipt_model extends CI_Model {
             students.dis_reason,
             students.dis_note,
             students.app_key,
-            students.parent_app_key
+            students.parent_app_key,
+			SUM(receipts.receipt_amt) as total_receipt_amt
         ');
         $this->db->from('students');
         $this->db->join('student_session', 'student_session.student_id = students.id');

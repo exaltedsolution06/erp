@@ -348,7 +348,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <tbody>
                                     
                                     <?php 
-									// echo'<pre>';print_r($receipt_data);die;
                                     $total_fees_discount = 0;
                                     $head_wise_totals = []; // index by fee head
                                     $total_route = 0;
@@ -371,8 +370,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 // $final_rec1=0;
 
                                                 // }else{
-                                                     $final_rec1+=$record["fees_discount"];
-                                                $final+=$record["fees_discount"];
+                                                     $final_rec1+=$record["total_receipt_amt"];
+                                                $final+=$record["total_receipt_amt"];
                                                 
                                                 // }
                                                  $final_rec+=$final_rec1;
@@ -643,7 +642,23 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         ?>
 
 
-                                    <?php if($final+$record["fees_discount"]>0){
+                                    <?php 
+									$f_total = 0;
+									// Fees Head Wise
+									if(in_array('Consider Old Bal', $filters)){
+										$f_total += $record["total_receipt_amt"];
+									}
+
+									// Include Route
+									if(in_array('Fees Head Wise', $filters)){
+										$f_total += $headFees;
+									}
+
+									// Consider Old Balance
+									if(in_array('Include Route', $filters)){
+										$f_total += $routeFees;
+									}
+									if($f_total>0){
                                         ?>
                                         <tr>
                                             <td><?= $sno++ ?></td>
@@ -661,7 +676,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                $oldBal = 0;
 
                                                 if (in_array('Consider Old Bal', $filters)) {
-                                                    $oldBal = $record["fees_discount"] ?? 0;
+                                                    $oldBal = $record["total_receipt_amt"] ?? 0;
                                                      ?><td style="text-align:right"><?= number_format($oldBal, 2) ?></td><?php
                                                     
                                                 }
@@ -684,7 +699,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 														}
 												?>		
 													<td style="text-align:right" >
-														<?= sprintf('%.2f',$fee_heads_total_amount) ?> 
+														<?= sprintf('%.2f',$fee_heads_total_amount) ?> klop
 													</td>
 												<?php		
 													//array_push($head_wise_totals,array_sum($cat_list_amount));
@@ -698,7 +713,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         </tr>
                                         <?php
 										if (in_array('Consider Old Bal', $filters)){
-											$total_fees_discount += $record["fees_discount"];
+											$total_fees_discount += $record["total_receipt_amt"];
 										}
                                         $total_route += $routeFees;
                                         $total_head_fees += $fee_heads_total_amount;
