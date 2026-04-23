@@ -116,10 +116,10 @@ $payment_mode_type = $this->customlib->payment_mode_type();
 								<?php echo $this->session->flashdata('success') ?>
 								<?php 
 								} ?> 
-                                 <div class="table-responsive-" style="overflow: auto;">
+                                 <div class="table-responsive table-header-sticky" style="overflow: auto;">
                                     <div class="download_label"> </div>
 
-                                    <table  cellpadding="8" cellspacing="0" class="table example table-striped table-bordered table-hover example table-fixed-header" style="width:2000px !important">
+                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header sticky-col-5" style="width:1800px !important">
                                         <thead>
                                             <tr>
                                                 <th style="width:50px !imortant">S.No</th>

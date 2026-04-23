@@ -1,29 +1,6 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 ?>
- <style>
- .table-header-sticky {
-	max-height: 400px; 
-	overflow-y: auto;
-} 
-.table-header-sticky table thead th {
-  position: sticky;
-  top: 0;
-}
-/* Sticky 5th column */
-.example thead th:nth-child(5),
-.example tbody td:nth-child(5) {
-    position: sticky;
-    left: 0;
-    background: #fff;
-    z-index: 2;
-}
-
-/* Header priority */
-.example thead th:nth-child(5) {
-    z-index: 3;
-}
- </style>
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
@@ -119,7 +96,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                  <div class="table-responsive table-header-sticky">
                                     <div class="download_label"><?php echo $this->lang->line('fee_day_book');?></div>
-                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header" style="width:1800px !important">
+                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header sticky-col-5" style="width:1800px !important">
                                         <thead>
                                             <tr>
                                                 <th>S.No</th>

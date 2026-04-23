@@ -1,0 +1,38 @@
+.table-header-sticky {
+	max-height: 400px; 
+	overflow-y: auto;
+} 
+.table-header-sticky table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+.sticky-col-1 thead th:nth-child(1), .sticky-col-1 tbody td:nth-child(1),
+.sticky-col-2 thead th:nth-child(2), .sticky-col-2 tbody td:nth-child(2),
+.sticky-col-3 thead th:nth-child(3), .sticky-col-3 tbody td:nth-child(3),
+.sticky-col-4 thead th:nth-child(4), .sticky-col-4 tbody td:nth-child(4),
+.sticky-col-5 thead th:nth-child(5), .sticky-col-5 tbody td:nth-child(5),
+.sticky-col-6 thead th:nth-child(6), .sticky-col-6 tbody td:nth-child(6),
+.sticky-col-7 thead th:nth-child(7), .sticky-col-7 tbody td:nth-child(7),
+.sticky-col-8 thead th:nth-child(8), .sticky-col-8 tbody td:nth-child(8),
+.sticky-col-9 thead th:nth-child(9), .sticky-col-9 tbody td:nth-child(9),
+.sticky-col-10 thead th:nth-child(10), .sticky-col-10 tbody td:nth-child(10) {
+    position: sticky !important;
+    left: 0;
+    background: #fff;
+    z-index: 2;
+}
+
+/* Header priority */
+.sticky-col-1 thead th:nth-child(1),
+.sticky-col-2 thead th:nth-child(2),
+.sticky-col-3 thead th:nth-child(3),
+.sticky-col-4 thead th:nth-child(4),
+.sticky-col-5 thead th:nth-child(5),
+.sticky-col-6 thead th:nth-child(6),
+.sticky-col-7 thead th:nth-child(7),
+.sticky-col-8 thead th:nth-child(8),
+.sticky-col-9 thead th:nth-child(9),
+.sticky-col-10 thead th:nth-child(10) {
+    z-index: 4 !important;
+}

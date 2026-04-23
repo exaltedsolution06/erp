@@ -83,28 +83,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
     .form-check-label{
         padding-left:1rem;
     }
-	
-.table-header-sticky {
-	max-height: 400px; 
-	overflow-y: auto;
-} 
-.table-header-sticky table thead th {
-  position: sticky;
-  top: 0;
-}
-/* Sticky 5th column */
-.example thead th:nth-child(3),
-.example tbody td:nth-child(3) {
-    position: sticky;
-    left: 0;
-    background: #fff;
-    z-index: 2;
-}
-
-/* Header priority */
-.example thead th:nth-child(3) {
-    z-index: 3;
-}
 </style>
 <?php
 
@@ -304,7 +282,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 ?></div>
 
                             <?php if((!empty($filters) and !empty($selectedMonths)) or ($filters[0]=='Consider Old Bal') ){ ?>
-                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header" style="width:1800px !important">
+                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header sticky-col-3" style="width:1800px !important">
                                 <thead>
                                     <tr>
                                         <th>S.No</th>
