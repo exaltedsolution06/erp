@@ -394,6 +394,20 @@ class Examgroup_model extends MY_Model {
 
         return $query->result();
     }
+    public function getExamByExamgroupArray($ids, $is_active = false) {
+        $this->db->select('exam_group_class_batch_exams.*,sessions.session,(select COUNT(*) from exam_group_class_batch_exam_subjects WHERE exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id = exam_group_class_batch_exams.id) as `total_subjects`')->from('exam_group_class_batch_exams');
+        $this->db->join('sessions', 'sessions.id = exam_group_class_batch_exams.session_id');
+        if ($is_active) {
+            $this->db->where('exam_group_class_batch_exams.is_active', $is_active);
+        }
+        $this->db->where_in('exam_group_class_batch_exams.exam_group_id', $ids);
+        $this->db->where('exam_group_class_batch_exams.coscholasticareas', 0);
+        $this->db->order_by('exam_group_class_batch_exams.exam_group_id');
+
+        $query = $this->db->get();
+
+        return $query->result();
+    }
 
 
 
