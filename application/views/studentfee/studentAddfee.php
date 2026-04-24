@@ -108,7 +108,8 @@ $language_name = $language["short_code"];
                                             ?>" alt="No Image">
 
                                             <h4>LEDGER AMT</h4>
-                                            <h5>Rs. <?=number_format($student['fees_discount'],2)?></h5>
+                                            <!--<h5>Rs. <?=number_format($student['fees_discount'],2)?></h5>-->
+                                            <h5>Rs. <?=format_amount($student['fees_discount'])?></h5>
                                         </div>
 
                                         <div class="col-md-10">
@@ -316,14 +317,14 @@ $language_name = $language["short_code"];
 																if (is_array($row->amount)) 
 																{
 																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
-																	echo $amount;
+																	echo format_amount($amount);
 																	$total += $amount;
 																	?>
 																	<input type="hidden" name="month_total[<?=$value?>][]" value="<?=$row->amount[$value]?>">
 																<?php
 																}
 																else{
-																	echo $row->amount;
+																	echo format_amount($row->amount);
 																	$total += $row->amount;
 																	?>
 																	<input type="hidden" name="month_total[<?=$value?>][]" value="<?=$row->amount?>">
@@ -371,14 +372,14 @@ $language_name = $language["short_code"];
                                                             if(in_array($value, $db_months)){
 																
 																if (is_array($row->amount)) {
-																	echo $row->amount[$value];
+																	echo format_amount($row->amount[$value]);
                                                                 $total += $row->amount[$value];
                                                                 ?><input type="hidden" name="month_total[<?=$value?>][]" value="<?=$row->amount[$value] ?>">
 																<?php
 																}
 																else
 																{
-                                                                echo $row->amount;
+                                                                echo format_amount($row->amount);
                                                                 $total += $row->amount;
                                                                 ?><input type="hidden" name="month_total[<?=$value?>][]" value="<?=$row->amount?>"><?php
 																}
@@ -456,7 +457,7 @@ $language_name = $language["short_code"];
                                           <div class="col-sm-2">
                                         <input style="width: 100%;" type="hidden" id="ttyp" readonly value="mounth"  />
                                         <label for="ledger_amt">Ledger Amt</label>
-                                        <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" readonly name="ledger_amt" value="<?=$student['fees_discount']?>" min="0"   max="<?= $student['fees_discount'] ?>"  />
+                                        <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" readonly name="ledger_amt" value="<?=format_amount($student['fees_discount'])?>" min="0"   max="<?= $student['fees_discount'] ?>"  />
                                         </div>
                                          <?php
 
