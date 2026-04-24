@@ -284,6 +284,8 @@
 											<th>Sec.</th>
 											<th>Fee Cat.</th>
 											<th>Route</th>
+											<th>Exam Group</th>
+											<th>Exam</th>
                                             <th>M.M</th>
                                             <th>M.O</th>
                                             <th>Percentage</th>                                            
@@ -291,6 +293,27 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+										<?php
+										$examGroupNames = [];
+										if (!empty($_POST['exam_group_id'])) {
+											foreach ($_POST['exam_group_id'] as $gid) {
+												$group = $this->examgroup_model->get($gid);
+												if ($group) {
+													$examGroupNames[] = $group->name;
+												}
+											}
+										}
+										
+										$examNames = [];
+										if (!empty($_POST['exam_id'])) {
+											foreach ($_POST['exam_id'] as $eid) {
+												$exam = $this->examgroup_model->getExamByID($eid);
+												if ($exam) {
+													$examNames[] = $exam->exam; // or exam_group_name if needed
+												}
+											}
+										}
+										?>
                                         <?php
                                         if (!empty($student_list_array)) {
                                             $rank_count = 1;
@@ -314,6 +337,8 @@
 													<td><?php echo $student_list_value['section']; ?></td>
 													<td><?php echo ($this->db->get_where('fee_groups', ['id' => $student_list_value['fee_category_id']])->row()) ? $this->db->get_where('fee_groups', ['id' => $student_list_value['fee_category_id']])->row()->name : 'N.A';; ?></td>
 													<td><?php echo ($this->db->get_where('route_head', ['id' => $student_list_value['route_id']])->row()) ? $this->db->get_where('route_head', ['id' => $student_list_value['route_id']])->row()->fees_heading : 'N.A'; ?></td>
+													<td><?php echo implode(', ', $examGroupNames); ?></td>
+													<td><?php echo implode(', ', $examNames); ?></td>
 													<td><?php echo $student_list_value['max_marks']; ?></td>
 													<td><?php echo $student_list_value['finalTotal']; ?></td>
 													<td><?php echo $student_list_value['percentage']; ?>%</td>
