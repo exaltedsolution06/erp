@@ -200,6 +200,7 @@ File change outside of application folder
 --------
 backend\dist\css\style-main.css
 backend\dist\datatables\js\ss.custom.js
+backend\dist\css\table-customize.css
 
 ===============================
 
