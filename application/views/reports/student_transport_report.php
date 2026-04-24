@@ -208,7 +208,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										<?php if ($onlyWithoutRoute) { ?>
 										<th><?php echo $this->lang->line('route'); ?></th>
 										<?php } ?>
-										<th class="text-right"><?php echo $this->lang->line('action'); ?></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -245,23 +244,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 												<?php if ($onlyWithoutRoute) { ?>
 												<td><?php echo $student['route_title']; ?></td>
 												<?php } ?>
-												<td class="pull-right">
-													
-													<a target="_blank" href="<?php echo base_url(); ?>student/admission/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Admission" >
-														<i class="fa fa-print"></i>
-													</a>
-													<a href="<?php echo base_url(); ?>student/view/<?php echo $student['id']; ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('show'); ?>" >
-														<i class="fa fa-reorder"></i>
-													</a>
-													<?php
-													if ($this->rbac->hasPrivilege('student_full_details', 'can_edit')) {
-														?>
-														<a href="<?php echo base_url(); ?>student/edit/<?php echo $student['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('edit'); ?>">
-															<i class="fa fa-pencil"></i>
-														</a>
-														<?php
-													} ?>
-												</td>
 											</tr>
 											<?php
 											$count++;
