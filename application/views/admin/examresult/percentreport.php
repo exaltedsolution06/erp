@@ -53,11 +53,8 @@
                                                     ?>
                                         </select>
                                         <span class="text-danger"><?php echo form_error('class_id'); ?></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6 col-lg-3 col-md-12">
-                                    <div class="form-group">
+										
+										
                                         <label for="exampleInputEmail1"><?php echo $this->lang->line('section'); ?></label><small class="req"> *</small>
                                         <select  id="section_id" name="section_id" class="form-control" >
                                             <option value=""><?php echo $this->lang->line('select'); ?></option>
@@ -65,6 +62,16 @@
                                         <span class="text-danger"><?php echo form_error('section_id'); ?></span>
                                     </div>
                                 </div>
+
+                                <!--<div class="col-sm-6 col-lg-3 col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('section'); ?></label><small class="req"> *</small>
+                                        <select  id="section_id" name="section_id" class="form-control" >
+                                            <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                        </select>
+                                        <span class="text-danger"><?php echo form_error('section_id'); ?></span>
+                                    </div>
+                                </div>-->
 								<div class="col-sm-6 col-lg-3 col-md-12">
 									<div class="form-check">
 										<input type="checkbox" class="form-check-input master-check" data-target="exam-group-check" id="selectAllExamGroup">
@@ -86,18 +93,20 @@
 								</div>
 								<div class="col-sm-6 col-lg-3 col-md-12">
 									<div class="form-check">
-										<input type="checkbox" class="form-check-input master-check" data-target="exam-group-check" id="selectAllExamGroup">
-										<label class="form-check-label" for="selectAllExamGroup"> <?php echo $this->lang->line('exam'); ?></label><small class="req"> *</small>
+										<input type="checkbox" class="form-check-input master-exam-check" data-target="exam-check" id="selectAllExam">
+										<label class="form-check-label" for="selectAllExam"> <?php echo $this->lang->line('exam'); ?></label><small class="req"> *</small>
 									</div>
 									<div class="filter-box">
 										<div id="exam-list-container">
 											<?php 
 											if(!empty($exam_list)){
+												$selectedExam = $_POST['exam_id'] ?? [];
 												foreach ($exam_list as $exam_list_exam){
+													$checked_exam = in_array($exam_list_exam->id, $selectedExam) ? 'checked' : '';
 											?>
 												<div class='form-check'>
 													<input type='checkbox' class='form-check-input exam-check' 
-														name='exam_id[]' value='<?php echo $exam_list_exam->id; ?>' id='exam<?php echo $exam_list_exam->id; ?>'>
+														name='exam_id[]' value='<?php echo $exam_list_exam->id; ?>' id='exam<?php echo $exam_list_exam->id; ?>' <?php echo $checked_exam; ?>>
 													<label class='form-check-label' for='exam<?php echo $exam_list_exam->id; ?>'>
 														<?php echo $exam_list_exam->exam; ?>
 													</label>
@@ -110,7 +119,7 @@
 									</div>
                                     <span class="text-danger"><?php echo form_error('exam_id[]'); ?></span>
 								</div>
-                                <div class="col-sm-12">
+                                <div class="col-md-1 mb-3">
                                     <div class="form-group">
                                         <button type="submit" name="search" value="search_filter" class="btn btn-primary pull-right btn-sm checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
                                     </div>
@@ -129,15 +138,17 @@
 
                         </div>
                         <div class="box-body">
-                            <div class="table-responsive no-padding">
-                                <div class="download_label"><?php ?> <?php echo $this->lang->line('student'); ?> <?php echo $this->lang->line('list') . "<br>";
-                        ?></div>
+                            <div class="table-responsive table-header-sticky">
+                                <div class="download_label">Percentage Rank report</div>
 
                                 <?php
                                 if (empty($stdResult)) {
-									
+								?>
+									<!--<h3 class="text-center text-danger py-2">
+										No record Found!
+									</h3>-->
+								<?php
                                 } else {
-									// echo '<pre>';print_r($stdResult);exit;
 									$student_list_array = array();
 									foreach($stdResult as $i=>$stddata){
 										$student_array = array();
@@ -145,6 +156,12 @@
                                         $student_array['exam_roll_no'] = ($stddata->roll_no != 0) ? $stddata->roll_no : "-";
                                         $student_array['student_id'] = $stddata->student_id;
                                         $student_array['name'] = $this->customlib->getFullName($stddata->firstname,$stddata->middlename,$stddata->lastname,$sch_setting->middlename,$sch_setting->lastname);
+                                        $student_array['father_name'] = $stddata->father_name;
+                                        $student_array['mother_name'] = $stddata->mother_name;
+                                        $student_array['class'] = $stddata->class;
+                                        $student_array['section'] = $stddata->section;
+                                        $student_array['fee_category_id'] = $stddata->fee_category_id;
+                                        $student_array['route_id'] = $stddata->route_id;
 												
 										$array1=[];								
 										$finalTotal=0;
@@ -181,7 +198,6 @@
 													$exam_group_id=$post_exam_group;
 													
 													$exam_type=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$exam_group_id."' AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
-											// echo '<pre>';print_r($exam_ids);exit;
 													
 													$max_marks1 = 0;
 													$term_array = [];
@@ -190,8 +206,7 @@
 															$maxMarks=$this->db->query("SELECT max_marks, min_marks FROM exam_group_class_batch_exam_subjects WHERE exam_group_class_batch_exams_id='".$type->id."' and subject_id='".$rowdata->id."'")->result()[0];
 															array_push($maxMark,$maxMarks->max_marks);
 															array_push($minMark,$maxMarks->min_marks);
-															
-										// echo '<pre>';print_r($maxMarks->max_marks);exit;				
+																		
 															$resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_batch_exam_subjects.max_marks FROM exam_group_exam_results left JOIN exam_group_class_batch_exam_subjects ON exam_group_class_batch_exam_subjects.id=exam_group_exam_results.exam_group_class_batch_exam_subject_id left JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.id=exam_group_exam_results.`exam_group_class_batch_exam_student_id` WHERE exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id='".$type->id."' and exam_group_class_batch_exam_students.exam_group_class_batch_exam_id='".$type->id."' and exam_group_class_batch_exam_subjects.subject_id='".$rowdata->id."' and exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result()[0];
 
 															$min_marks+=$maxMarks->min_marks;
@@ -212,8 +227,6 @@
 													$grade_array = [ 'type'=>'grade', 'marks'=>$max_marks1 ];
 													// array_push($array,$max_marks1);
 													array_push($array,$grade_array);
-													
-													// echo '<pre>';print_r($array1);exit;
 												}
 													$max_marks=0;
 													$finalTotal+=$total1;
@@ -228,23 +241,53 @@
 										
 										$student_array['percentage'] = $grade;
 										$student_list_array[] = $student_array;
-										// echo '<pre>';print_r($array1);exit;
 									}
-									// echo '<pre>';print_r($student_list_array);exit;
+									// Sort
+									usort($student_list_array, function ($a, $b) {
+										return $b['percentage'] <=> $a['percentage'];
+									});
+
+									// Rank
+									$rank = 1;
+									$prevPercentage = null;
+									$skip = 0;
+
+									foreach ($student_list_array as $key => $student) {
+
+										$currentPercentage = round($student['percentage'], 2);
+
+										if ($prevPercentage !== null && $currentPercentage == $prevPercentage) {
+											$student_list_array[$key]['rank'] = $rank;
+											// $skip++;
+										} else {
+											$rank += $skip;
+											$student_list_array[$key]['rank'] = $rank;
+											$skip = 1;
+										}
+
+										$prevPercentage = $currentPercentage;
+									}
                                 }
                                 ?>
 
-                                <table class="table table-striped table-bordered table-hover example" cellspacing="0" width="100%">
+								 <table cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header sticky-col-3" style="width:100% !important">
                                     <thead>
                                         <tr>
-                                            <th><?php echo $this->lang->line('rank'); ?></th>
+                                            <th>S.No</th>
                                             <th><?php echo $this->lang->line('admission_no'); ?></th>
 
                                             <!--<th><?php echo $this->lang->line('roll_no'); ?></th>-->
                                             <th><?php echo $this->lang->line('student_name'); ?></th>
+											<th>Father</th>
+											<th>Mother</th>
+											<th>Class</th>
+											<th>Sec.</th>
+											<th>Fee Cat.</th>
+											<th>Route</th>
                                             <th>M.M</th>
                                             <th>M.O</th>
                                             <th>Percentage</th>                                            
+                                            <th><?php echo $this->lang->line('rank'); ?></th>                                            
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -265,9 +308,16 @@
                                                          ?>
                                                         </a>
                                                     </td>
+													<td><?php echo $student_list_value['father_name']; ?></td>
+													<td><?php echo $student_list_value['mother_name']; ?></td>
+													<td><?php echo $student_list_value['class']; ?></td>
+													<td><?php echo $student_list_value['section']; ?></td>
+													<td><?php echo ($this->db->get_where('fee_groups', ['id' => $student_list_value['fee_category_id']])->row()) ? $this->db->get_where('fee_groups', ['id' => $student_list_value['fee_category_id']])->row()->name : 'N.A';; ?></td>
+													<td><?php echo ($this->db->get_where('route_head', ['id' => $student_list_value['route_id']])->row()) ? $this->db->get_where('route_head', ['id' => $student_list_value['route_id']])->row()->fees_heading : 'N.A'; ?></td>
 													<td><?php echo $student_list_value['max_marks']; ?></td>
 													<td><?php echo $student_list_value['finalTotal']; ?></td>
-													<td><?php echo $student_list_value['percentage']; ?>%</td>  
+													<td><?php echo $student_list_value['percentage']; ?>%</td>
+                                                    <td><?php echo $student_list_value['rank']; ?></td>
                                                 </tr>
                                         <?php
                                             $rank_count++;
@@ -290,16 +340,12 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 		$('.select2').select2();
-	});
-	$(document).ready(function () {
-		$.extend($.fn.dataTable.defaults, {
-			searching: true,
-			ordering: true,
-			paging: false,
-			retrieve: true,
-			destroy: true,
-			info: false
-		});
+        $.extend($.fn.dataTable.defaults, {
+            ordering: false,
+            paging: false,
+            bSort: false,
+            info: false
+        });
 	});
 	var class_id = '<?php echo set_value('class_id') ?>';
 	var section_id = '<?php echo set_value('section_id') ?>';
@@ -347,7 +393,12 @@
 	}
 </script>
 <script>
-  $(document).on('change', '.master-check', function () {
+	$(document).on('change', '.master-exam-check', function () {
+		const targetClass = $(this).data('target');
+
+		$('.' + targetClass).prop('checked', this.checked);
+	});
+	$(document).on('change', '.master-check', function () {
 		const targetClass = $(this).data('target');
 
 		$('.' + targetClass).prop('checked', this.checked);

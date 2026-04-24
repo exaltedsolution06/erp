@@ -552,7 +552,7 @@ class Examresult extends Admin_Controller {
             $section_id = $this->input->post('section_id');
 
             $studentList = $this->examgroupstudent_model->searchExamStudentsArray($exam_group_ids, $exam_ids, $class_id, $section_id, $session_id);
-
+			$studentListVal = [];
             if (!empty($studentList)) {
                 foreach ($studentList as $student_key => $student_value) {
                     // $studentList[$student_key]->subject_results = $this->examresult_model->getStudentResultByExam($exam_id, $student_value->exam_group_class_batch_exam_student_id);
@@ -561,14 +561,17 @@ class Examresult extends Admin_Controller {
             }
 
             // $data['studentList'] = $studentListVal;
-			$student_ids = implode(",", $studentListVal);
-			$sql="SELECT *,S.id as student_id,CL.class,SE.section FROM students S  LEFT JOIN student_session SS ON SS.student_id=S.id LEFT JOIN classes CL ON CL.id=SS.class_id LEFT JOIN sections SE ON SE.id=SS.section_id LEFT JOIN fee_groups C ON C.id=SS.fee_category_id WHERE SS.session_id='$session_id' and SS.class_id ='$class_id' and SS.section_id ='$section_id' AND S.id IN ($student_ids)";
+			if(!empty($studentListVal)){
+				$student_ids = implode(",", $studentListVal);
+				$sql="SELECT *,S.id as student_id,CL.class,SE.section FROM students S  LEFT JOIN student_session SS ON SS.student_id=S.id LEFT JOIN classes CL ON CL.id=SS.class_id LEFT JOIN sections SE ON SE.id=SS.section_id LEFT JOIN fee_groups C ON C.id=SS.fee_category_id WHERE SS.session_id='$session_id' and SS.class_id ='$class_id' and SS.section_id ='$section_id' AND S.id IN ($student_ids)";
 
-       
+		   
 
-			$query = $this->db->query($sql);       
-			$data['stdResult'] = $query->result();
-			// echo '<pre>'; print_r($data['stdResult']);die;
+				$query = $this->db->query($sql);       
+				$data['stdResult'] = $query->result();
+			}else{
+				$data['stdResult'] = [];
+			}
 
             $data['exam_ids'] = $exam_ids;
             $data['post_exam_group_id'] = $exam_group_ids;
