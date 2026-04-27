@@ -161,7 +161,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <td><?php echo $value->item_supplier; ?></td>
                                             <td><?php echo $value->item_store; ?></td>
                                             <td><?php echo $value->quantity; ?></td>
-                                            <td><?php echo $currency_symbol . $value->purchase_price; ?></td>
+                                            <td><?php echo $currency_symbol .' '. format_amount($value->purchase_price); ?></td>
 
                                             <td><?php echo date($this->customlib->getSchoolDateFormat(), strtotime($value->date)); ?></td>
                                         </tr>

@@ -1278,7 +1278,7 @@ class Report extends Admin_Controller
 			$selectedFeeHead = $this->session->userdata('income_feehead') ?? [];
 		}
 
-		// 🔥 IMPORTANT: always send to view
+		// IMPORTANT: always send to view
 		$data['filters'] = $filters;
 		$data['selectedFeeHead'] = $selectedFeeHead;
 

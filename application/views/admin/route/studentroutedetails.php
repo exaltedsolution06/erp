@@ -209,7 +209,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td><?php echo $student['vehicle_no']; ?></td>
                                                 <td><?php echo $student['driver_name']; ?></td>
                                                 <td><?php echo $student['driver_contact']; ?></td>
-                                                <td class="text-right"><?php echo $student['fare']; ?></td>
+                                                <td class="text-right"><?php echo format_amount($student['fare']); ?></td>
 
                                             </tr>
                                             <?php

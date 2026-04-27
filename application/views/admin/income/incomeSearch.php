@@ -136,7 +136,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td><?php echo !empty($value['income_category']) ? $value['income_category'] : '--'; ?></td>
                                                 <td><?php echo  date('d-m-Y', strtotime($value['date']));; ?>     </td>
 
-                                                <td class="pull-right"><?php echo ($value['amount']); ?>  </td>
+                                                <td class="pull-right"><?php echo (format_amount($value['amount'])); ?>  </td>
                                             </tr>
                                             <?php
                                             $count++;
@@ -147,7 +147,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td class="pull-right text-bold"><?php echo $this->lang->line('grand_total'); ?> : <?php echo ($currency_symbol . number_format($grand_total, 2, '.', '')); ?>
+                                            <td class="pull-right text-bold"><?php echo $this->lang->line('grand_total'); ?> : <?php echo ($currency_symbol . format_amount($grand_total)); ?>
 
                                             </td>
                                         </tr>

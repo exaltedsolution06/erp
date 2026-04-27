@@ -86,7 +86,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo $this->lang->line('amount'); ?></label><small class="req"> *</small>
-                                    <input id="amount" name="amount" placeholder="" type="text" class="form-control"  value="<?php echo set_value('amount', $expense['amount']); ?>" />
+                                    <input id="amount" name="amount" placeholder="" type="text" class="form-control"  value="<?php echo set_value('amount', format_amount($expense['amount'])); ?>" />
                                     <span class="text-danger"><?php echo form_error('amount'); ?></span>
                                 </div>
                                 <div class="form-group">
@@ -167,8 +167,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <?php echo $expense['exp_category'] ?>
 
                                                 </td>
-                                                <td class="mailbox-name"><?php echo ($currency_symbol . $expense['amount']); ?></td>
+                                                <td class="mailbox-name"><?php echo ($currency_symbol .' '. format_amount($expense['amount'])); ?></td>
                                                 <td class="mailbox-date pull-right">
+													<a href="javascript:void(0)" data-id="<?php echo $expense["id"]; ?>" class="btn btn-default btn-xs print_receipt" data-toggle="tooltip" title="" data-original-title="Print Receipt">
+														<i class="fa fa-print"></i>
+													</a>
                                                     <?php if ($expense['documents']) {
                                                         ?>
                                                         <a data-placement="left" href="<?php echo base_url(); ?>admin/expense/download/<?php echo $expense['documents'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('download'); ?>">
@@ -220,6 +223,55 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 </script>
 <script>
+	$(document).on('click', '.print_receipt', function(){
+		var id = $(this).data('id');
+		//alert(id);
+		var base_url = '<?php echo base_url() ?>';
+		var balance_type = 1;
+		
+		$.ajax({
+			type: "POST",
+			url: base_url + "admin/income/printIncome",
+            data: {'id': id, 'balance_type':balance_type},
+			dataType: "JSON", // serializes the form's elements.
+			success: function (response)
+			{
+				// $(".abc").html(response.page);
+				Popup(response.page);
+			},
+			error: function (xhr) { // if error occured
+				alert("Error occured.please try again");
+			},
+			complete: function () {
+				
+			}
+		});
+	});
+	function Popup(data)
+	{
+
+		var frame1 = $('<iframe />');
+		frame1[0].name = "frame1";
+		$("body").append(frame1);
+		var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+		frameDoc.document.open();
+	//Create a new HTML document.
+		frameDoc.document.write('<html>');
+		frameDoc.document.write('<head>');
+		frameDoc.document.write('<title></title>');
+		frameDoc.document.write('</head>');
+		frameDoc.document.write('<body>');
+		frameDoc.document.write(data);
+		frameDoc.document.write('</body>');
+		frameDoc.document.write('</html>');
+		frameDoc.document.close();
+		setTimeout(function () {
+			window.frames["frame1"].focus();
+			window.frames["frame1"].print();
+			frame1.remove();
+		}, 500);
+		return true;
+	}
     $(document).ready(function () {
         $('.detail_popover').popover({
             placement: 'right',
