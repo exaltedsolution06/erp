@@ -123,10 +123,10 @@ if($_GET['copy']=='2'){
 		font-size: 11px !important;
 	  }
 	  body.A4 .head-image {
-		height:100px;
+		height:70px;
 	  }
 	  body.A5 .head-image {
-		height:70px;
+		height:65px;
 	  }
 	  body.A4 .student-image {
 		height:85px;
@@ -819,10 +819,10 @@ if($_GET['copy']=='2'){
 	  }
 	  
 	  body.A4 .head-image {
-		height:100px;
+		height:70px;
 	  }
 	  body.A5 .head-image {
-		height:70px;
+		height:65px;
 	  }
 	  body.A4 .student-image {
 		height:85px;
