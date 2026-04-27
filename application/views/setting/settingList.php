@@ -868,6 +868,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-5"> Page Size</label>
+                                            <div class="col-sm-7">
+                                                <select name="fee_receipt_page_size" class="form-control" >
+                                                    <option value="A4" <?php echo $result->fee_receipt_page_size == 'A4' ? 'selected' : ''; ?>>A4</option>
+                                                    <option value="A5" <?php echo $result->fee_receipt_page_size == 'A5' ? 'selected' : ''; ?>>A5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div><!--./row-->
 
                                 <div class="row">

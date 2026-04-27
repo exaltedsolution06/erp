@@ -195,6 +195,9 @@ ALTER TABLE `sch_settings` ADD `rcpt_header_height` INT(10) NOT NULL AFTER `rcpt
 --- 16-04-2026 ---
 ALTER TABLE `fee_discounts` CHANGE `fee_type_id` `fee_type_id` INT(10) NOT NULL COMMENT 'fees_plan table primary id';
 
+--- 27-04-2026 ---
+ALTER TABLE `sch_settings` ADD `fee_receipt_page_size` CHAR(36) NOT NULL DEFAULT 'A4' AFTER `fee_receipt_print_mode`;
+
 ===============================
 File change outside of application folder
 --------

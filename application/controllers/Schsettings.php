@@ -347,6 +347,7 @@ class Schsettings extends Admin_Controller {
                 'serial_no_prefix' => $this->input->post('serial_no_prefix'),
                 'serial_no_suffix' => $this->input->post('serial_no_suffix'),
                 'fee_receipt_print_mode' => $this->input->post('fee_receipt_print_mode'),
+                'fee_receipt_page_size' => $this->input->post('fee_receipt_page_size'),
             );
             $this->session->userdata['admin']['is_rtl'] = $this->input->post('sch_is_rtl');
             $language_result = $this->language_model->get($this->input->post('sch_lang_id'));
