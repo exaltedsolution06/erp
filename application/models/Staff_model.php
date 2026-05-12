@@ -1055,5 +1055,17 @@ class Staff_model extends MY_Model
 		->group_end()->get()->result_array();
 
     }
+    public function get_admin()
+    {
+        $this->db->select('*');
+        $this->db->from('staff');
+        $this->db->where('session_id IS NULL', null, false);
+        $query = $this->db->get();
+        if ($query->num_rows() == 1) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
 
 }
