@@ -247,6 +247,7 @@ class Setting extends CI_Controller {
 			
 			$checkEmail = $this->db
 				->where('email', $email)
+				->where('id !=', $staff->id)
 				// ->where('session_id IS NULL', null, false)
 				->get('staff')
 				->row();
@@ -274,7 +275,7 @@ class Setting extends CI_Controller {
 
 				$response = [
 					'status' => true,
-					'message' => 'Staff Updated Successfully'
+					'message' => 'Login Details Updated Successfully'
 				];
 			}
 
@@ -320,7 +321,7 @@ class Setting extends CI_Controller {
 				
 				$response = [
 					'status' => true,
-					'message' => 'Staff Added Successfully',
+					'message' => 'Login Details Added Successfully',
 				];
 			}
 		}
