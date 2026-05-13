@@ -4301,3 +4301,6 @@ td.dt-body-right {min-width: 100px;}
 .haveDropify .dropify-filename {
 	display: none;
 }
+.form-control[disabled] {
+	background-color: #f3f4f6;
+}
