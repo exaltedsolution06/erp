@@ -36,7 +36,7 @@
 					</div>
 					<ul class="plan-details">
 						<li>
-							<strong>Student Limit:</strong> <?= $plan_val['max_students'] ?? '' ?> | <strong>Add-On:</strong> <?= $plan_val['add_on_students'] ?? '' ?>
+							<strong>Student Limit:</strong> <?= $plan_val['max_students'] ?? '' ?> <?php if(isset($plan_val['add_on_students']) && $plan_val['add_on_students'] > 0){ ?>| <strong>Add-On:</strong> <?= $plan_val['add_on_students'] ?? ''; } ?>
 						</li>
 					</ul>
 					<?php if($plan_val['id'] == $domain_api_data['plan_id']){ ?>
