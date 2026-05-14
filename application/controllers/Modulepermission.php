@@ -26,6 +26,7 @@ class Modulepermission extends Public_Controller
 			[
 				'module' => 'Software Subscription',
 				'links' => [
+					['name' => 'Company Info', 			'short_code' => 'company_info', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Package List', 			'short_code' => 'package_list', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'Quick Session Change', 			'short_code' => 'quick_session_change', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'School Registration', 	'short_code' => 'school_registration', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],

@@ -177,7 +177,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-5">Country</label>
                                             <div class="col-sm-7">
-                                                <input type="text" class="form-control" value="India" disabled>
+                                                <input type="text" class="form-control" value="<?php echo $domain_api_data['school_country']; ?>" disabled>
                                             </div>
                                         </div>
                                     </div>

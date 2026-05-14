@@ -26,24 +26,24 @@
 		<?php
 			if ($this->module_lib->hasActive('software_subscription')) {
 				if (
-					$this->rbac->hasPrivilege('create_package', 'can_view') ||
+					$this->rbac->hasPrivilege('company_info', 'can_view') ||
 					$this->rbac->hasPrivilege('package_list', 'can_view') ||
 					$this->rbac->hasPrivilege('school_registration', 'can_view') ||
-					$this->rbac->hasPrivilege('subscription_details', 'can_view') ||
-					$this->rbac->hasPrivilege('invoice_details', 'can_view') ||
-					$this->rbac->hasPrivilege('software_subscription_report', 'can_view')
+					// $this->rbac->hasPrivilege('subscription_details', 'can_view') ||
+					$this->rbac->hasPrivilege('invoice_details', 'can_view')
+					// $this->rbac->hasPrivilege('software_subscription_report', 'can_view')
 				) {
 					//$CI = get_instance();
 					//$session_sub_menu = $CI->session->userdata('sub_menu');
 					//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
 					$activeSoftwareSuMenu="";
-					/*if(set_Submenu('issueitem/index')
-						|| set_Submenu('Itemstock/index')
-						|| set_Submenu('Item/index')
-						|| set_Submenu('report/ticket-section')
+					if(set_Submenu('Companyinfo/index')
+						|| set_Submenu('Package/index')
+						|| set_Submenu('Schoolregistration/index')
+						// || set_Submenu('report/ticket-section')
 					){
 						$activeSoftwareSuMenu="active";
-					}*/
+					}
 		?>
 					<li class="treeview <?php echo $activeSoftwareSuMenu; ?>">
 						<a href="#">
@@ -51,18 +51,18 @@
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
-							<?php if ($this->rbac->hasPrivilege('create_package', 'can_view')) { ?>
-								<li class="<?php //echo set_Submenu('Package/create'); ?>"><a href="#<?php //echo base_url(); ?>package/create"><i class="fa fa-angle-double-right"></i> Create Package</a></li>
+							<?php if ($this->rbac->hasPrivilege('company_info', 'can_view')) { ?>
+								<li class="<?php echo set_Submenu('Companyinfo/index'); ?>"><a href="<?php echo base_url(); ?>companyinfo"><i class="fa fa-angle-double-right"></i> Company Info</a></li>
 							<?php } if ($this->rbac->hasPrivilege('package_list', 'can_view')) { ?>
-								<li class="<?php //echo set_Submenu('Package/index'); ?>"><a href="#<?php //echo base_url(); ?>package"><i class="fa fa-angle-double-right"></i> Package List</a></li>
+								<li class="<?php echo set_Submenu('Package/index'); ?>"><a href="<?php echo base_url(); ?>package"><i class="fa fa-angle-double-right"></i> Package List</a></li>
 							<?php } if ($this->rbac->hasPrivilege('school_registration', 'can_view')) { ?>
-								<li class="<?php //echo set_Submenu('Package/school-registration'); ?>"><a href="#<?php //echo base_url(); ?>package/school_registration"><i class="fa fa-angle-double-right"></i> School Registration</a></li>
+								<li class="<?php echo set_Submenu('Schoolregistration/index'); ?>"><a href="<?php echo base_url(); ?>schoolregistration"><i class="fa fa-angle-double-right"></i> School Registration</a></li>
 							<?php } if ($this->rbac->hasPrivilege('subscription_details', 'can_view')) { ?>
-								<li class="<?php //echo set_Submenu('Package/subscription-details'); ?>"><a href="#<?php //echo base_url(); ?>package/subscription_details"><i class="fa fa-angle-double-right"></i> Subscription Details</a></li>
+								<!--<li class="<?php //echo set_Submenu('Package/subscription-details'); ?>"><a href="#<?php //echo base_url(); ?>package/subscription_details"><i class="fa fa-angle-double-right"></i> Subscription Details</a></li>-->
 							<?php } if ($this->rbac->hasPrivilege('invoice_details', 'can_view')) { ?>
 								<li class="<?php //echo set_Submenu('Package/invoice-details'); ?>"><a href="#<?php //echo base_url(); ?>package/invoice_details"><i class="fa fa-angle-double-right"></i> Invoice Details</a></li>
 							<?php } if ($this->rbac->hasPrivilege('software_subscription_report', 'can_view')) { ?>
-								<li class="<?php //echo set_Submenu('Package/all-reports'); ?>"><a href="#<?php //echo base_url(); ?>package/all_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
+								<!--<li class="<?php //echo set_Submenu('Package/all-reports'); ?>"><a href="#<?php //echo base_url(); ?>package/all_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>-->
 							<?php } ?>
 						</ul>
 					</li>

@@ -4304,3 +4304,71 @@ td.dt-body-right {min-width: 100px;}
 .form-control[disabled] {
 	background-color: #f3f4f6;
 }
+
+/*For Package List page*/
+.plan-box{
+	background:#fff;
+	border-radius:10px;
+	border:1px solid #e5e5e5;
+	padding:15px;
+	margin-bottom:15px;
+	position:relative;
+	transition:0.3s;
+}
+.plan-box.active{
+	border: 2px solid #398439 ;
+}
+.plan-box:hover{
+	transform:translateY(-5px);
+	box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+.plan-title{
+	font-size:15px;
+	font-weight:bold;
+	margin-bottom:5px;
+	text-align: center;
+}
+.plan-price{
+	font-size:22px;
+	font-weight:bold;
+	color:#00c5fb;
+	margin-bottom:5px;
+	text-align: center;
+}
+.plan-price sub{
+	font-size: 12px;
+    color: #777;
+}
+.plan-duration{
+	font-size:14px;
+	color:#777;
+	margin-bottom:5px;
+	text-align: center;
+}
+.plan-details{
+	margin-bottom:10px;
+	padding-left: 0;
+    text-align: center;
+}
+.plan-details li{
+	list-style:none;
+	padding:5px 0;
+	border-bottom:1px dashed #ddd;
+	font-size:14px;
+}
+.plan-desc{
+	background:#f9f9f9;
+	padding:12px;
+	border-radius:6px;
+	margin-bottom:5px;
+	max-height:90px;
+	min-height:90px;
+	overflow-y: auto
+}
+.btn-plan{
+	width:100%;
+	padding:5px;
+	font-size:16px;
+	border-radius:5px !important;
+}
+/*For Package List page*/
