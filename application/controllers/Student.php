@@ -2348,7 +2348,7 @@ class Student extends Admin_Controller
             $array = array('status' => 'fail', 'error' => $msg, 'message' => '');
         } else {
 
-            $data = array(
+            /*$data = array(
                 'dis_reason' => $this->input->post('reason'),
                 'dis_note'   => $this->input->post('note'),
                 'id'         => $this->input->post('student_id'),
@@ -2356,7 +2356,17 @@ class Student extends Admin_Controller
                 'is_active'  => 'no',
             );
 
-            $this->student_model->add($data);
+            $this->student_model->add($data);*/
+            $data = array(
+                'dis_reason' => $this->input->post('reason'),
+                'dis_note'   => $this->input->post('note'),
+                'student_id'         => $this->input->post('student_id'),
+                'session_id'         => $this->current_session,
+                'disable_at' => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('disable_date'))),
+                'is_active'  => 'no',
+            );
+
+            $this->student_model->add_student_session($data);
 
             $array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'));
         }

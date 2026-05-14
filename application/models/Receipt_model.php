@@ -365,6 +365,7 @@ class Receipt_model extends CI_Model {
 		
 		$this->db->where('receipts.session_id', $this->current_session);
 		$this->db->where('student_session.session_id', $this->current_session);
+        $this->db->where('student_session.is_active', 'yes');
         
         if (!empty($from_date) && !empty($to_date)) {
             $this->db->where('DATE(receipts.date_time) >=', $from_date);
