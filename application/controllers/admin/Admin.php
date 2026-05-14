@@ -612,7 +612,8 @@ class Admin extends Admin_Controller
                 $this->load->helper('download');
                 $this->load->dbutil();
                 $version  = $this->customlib->getAppVersion();
-                $filename = "db_ver_" . $version . '_' . date("Y-m-d_H-i-s") . ".sql";
+                // $filename = "db_ver_" . $version . '_' . date("Y-m-d_H-i-s") . ".sql";
+                $filename = date("d-m-Y_H-i-s") . ".sql";
                 $prefs    = array(
                     'ignore'     => array(),
                     'format'     => 'txt',
@@ -692,7 +693,7 @@ class Admin extends Admin_Controller
                 redirect('admin/admin/backup');
             }
         }
-        $dir    = "./backup/database_backup/";
+        /*$dir    = "./backup/database_backup/";
         $result = array();
         $cdir   = scandir($dir);
         foreach ($cdir as $key => $value) {
@@ -704,7 +705,16 @@ class Admin extends Admin_Controller
                 }
             }
         }
-        $data['dbfileList']  = $result;
+        $data['dbfileList']  = $result;*/
+		$dir = "./backup/database_backup/";
+
+		$files = array_diff(scandir($dir), array('.', '..'));
+
+		usort($files, function ($a, $b) use ($dir) {
+			return filemtime($dir . $b) - filemtime($dir . $a);
+		});
+		$data['dbfileList'] = $files;
+
         $setting_result      = $this->setting_model->get();
         $data['settinglist'] = $setting_result;
         $this->load->view('layout/header', $data);
