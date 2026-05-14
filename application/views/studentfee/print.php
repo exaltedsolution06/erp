@@ -17,31 +17,49 @@ if($_GET['copy']=='2'){
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     @media print {
-		/* 🔥 Dynamic Orientation via body class */
-		body.portrait {
-			page: portraitPage;
+		/* Dynamic Orientation via body class */
+		body.A4.portrait {
+			page: A4Portrait;
 		}
-
-		body.landscape {
-			page: landscapePage;
+		body.A4.landscape {
+			page: A4Landscape;
 		}
-
-		@page portraitPage {
+		body.A5.portrait {
+			page: A5Portrait;
+		}
+		body.A5.landscape {
+			page: A5Landscape;
+		}
+		@page A4Portrait {
 			size: A4 portrait;
 			margin-left: 10mm;
 			margin-right: 5mm;
 		}
-
-		@page landscapePage {
+		@page A4Landscape {
 			size: A4 landscape;
+			margin-left: 10mm;
+			margin-right: 5mm;
+		}
+		@page A5Portrait {
+			size: A5 portrait;
+			margin-left: 10mm;
+			margin-right: 5mm;
+		}
+		@page A5Landscape {
+			size: A5 landscape;
 			margin-left: 10mm;
 			margin-right: 5mm;
 		}
 
 	  body * {
 		visibility: hidden;
-		font-size: 11px !important;
 		font-family: arial;
+	  }
+	  body.A4 * {
+		font-size: 11px !important;
+	  }
+	  body.A5 * {
+		font-size: 9px !important;
 	  }
 
 	  #print-area, #print-area * {
@@ -97,12 +115,42 @@ if($_GET['copy']=='2'){
 	  .footer-content {
 		padding: 0 !important;
 	  }
-
+	  
+	  body.A4 .note-font {
+		font-size: 13px !important;
+	  }
+	  body.A5 .note-font {
+		font-size: 11px !important;
+	  }
+	  body.A4 .head-image {
+		height:70px;
+	  }
+	  body.A5 .head-image {
+		height:65px;
+	  }
+	  body.A4 .student-image {
+		height:85px;
+	  }
+	  body.A5 .student-image {
+		height:65px;
+	  }
+	  .student-image-container {
+		  padding: .25rem 1rem .25rem 0;
+	  }
 	}
+	  body.A4 .student-image {
+		height:85px;
+	  }
+	  body.A5 .student-image {
+		height:65px;
+	  }
+	  .student-image-container {
+		  padding: .25rem 1rem .25rem 0;
+	  }
 
   </style>
 </head>
-<body class="<?php echo ($result->fee_receipt_print_mode == 2) ? 'portrait' : 'landscape'; ?>">
+<body class="<?php echo $result->fee_receipt_page_size; ?> <?php echo ($result->fee_receipt_print_mode == 2) ? 'portrait' : 'landscape'; ?>">
   <div class="card receipt-card">
    
   
@@ -124,7 +172,7 @@ if($_GET['copy']=='2'){
 
 <?php if($result->rcpt_common_header == 1 && !empty($header_image)){ ?>
 	<div class="text-center p-3 pb-0">
-		<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">		
+		<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" class="head-image" style="width:100%">
 	</div>
 <?php } else if($result->rcpt_common_header == 0 && $result->rcpt_header_height != 0) { ?>
 	<div style="border:0px; height:<?php echo $result->rcpt_header_height; ?>px"></div>
@@ -173,8 +221,8 @@ if($_GET['copy']=='2'){
       <!-- <span><strong style="width:90px; display:inline-block;">Note</strong> This is a System Generated Slip Not Required Stamp.</span>  -->
   </div>
   <?php if ($result->rcpt_photo) { ?>
-	  <div class="p-3" style="display: flex; align-items: center;">
-		<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
+	  <div class="student-image-container" style="display: flex; align-items: center;">
+		<img src="<?php echo base_url() . $student['image']; ?>" class="student-image" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
 	  </div>
 	<?php } ?>
 </div>
@@ -333,7 +381,7 @@ if($_GET['copy']=='2'){
 		if (!empty($footer_text)) {
 			echo $footer_text;
 		} else {
-			echo '<b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp.</span>';
+			echo '<b>Note</b> : <span class="note-font">This is a System Generated Slip Not Required Stamp.</span>';
 		}
 	  ?>
 	   </label>
@@ -356,7 +404,7 @@ if($_GET['copy']=='2'){
 
 <?php if($result->rcpt_common_header == 1 && !empty($header_image)){ ?>
 	<div class="text-center p-3 pb-0">
-		<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">		
+		<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" class="head-image" style="width:100%">
 	</div>
 <?php } else if($result->rcpt_common_header == 0 && $result->rcpt_header_height != 0) { ?>
 	<div style="border:0px; height:<?php echo $result->rcpt_header_height; ?>px"></div>
@@ -405,8 +453,8 @@ if($_GET['copy']=='2'){
       <!-- <span><strong style="width:90px; display:inline-block;">Note</strong> This is a System Generated Slip Not Required Stamp.</span>  -->
   </div>
   <?php if ($result->rcpt_photo) { ?>
-	  <div class="p-3" style="display: flex; align-items: center;">
-		<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
+	  <div class="student-image-container" style="display: flex; align-items: center;">
+		<img src="<?php echo base_url() . $student['image']; ?>" class="student-image" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
 	  </div>
 	<?php } ?>
 </div>
@@ -563,7 +611,7 @@ if($_GET['copy']=='2'){
 		if (!empty($footer_text)) {
 			echo $footer_text;
 		} else {
-			echo '<b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp.</span>';
+			echo '<b>Note</b> : <span class="note-font">This is a System Generated Slip Not Required Stamp.</span>';
 		}
 	  ?>
 	   </label>
@@ -653,31 +701,49 @@ if($_GET['copy']=='2'){
   <style>
     @media print {
 
-	  /* 🔥 Dynamic Orientation via body class */
-		body.portrait {
-			page: portraitPage;
+	  /* Dynamic Orientation via body class */
+		body.A4.portrait {
+			page: A4Portrait;
 		}
-
-		body.landscape {
-			page: landscapePage;
+		body.A4.landscape {
+			page: A4Landscape;
 		}
-
-		@page portraitPage {
+		body.A5.portrait {
+			page: A5Portrait;
+		}
+		body.A5.landscape {
+			page: A5Landscape;
+		}
+		@page A4Portrait {
 			size: A4 portrait;
 			margin-left: 10mm;
 			margin-right: 10mm;
 		}
-
-		@page landscapePage {
+		@page A4Landscape {
 			size: A4 landscape;
+			margin-left: 10mm;
+			margin-right: 10mm;
+		}
+		@page A5Portrait {
+			size: A5 portrait;
+			margin-left: 10mm;
+			margin-right: 10mm;
+		}
+		@page A5Landscape {
+			size: A5 landscape;
 			margin-left: 10mm;
 			margin-right: 10mm;
 		}
 
 	  body * {
 		visibility: hidden;
-		font-size: 11px !important;
 		font-family: arial;
+	  }
+	  body.A4 * {
+		font-size: 11px !important;
+	  }
+	  body.A5 * {
+		font-size: 9px !important;
 	  }
 
 	  #print-area, #print-area * {
@@ -721,8 +787,12 @@ if($_GET['copy']=='2'){
 		padding: 1pt !important;
 	  }
 
-	  h5, span {
+	  body.A4 h5, span {
 		font-size: 11px !important;
+		padding: 0 !important;
+	  }
+	  body.A5 h5, span {
+		font-size: 9px !important;
 		padding: 0 !important;
 	  }
 
@@ -739,12 +809,45 @@ if($_GET['copy']=='2'){
 	  .footer-content {
 		padding: 0 !important;
 	  }
+	  body.A4 .note-font {
+		font-size: 13px !important;
+	  }
+
+	  /* A5 */
+	  body.A5 .note-font {
+		font-size: 11px !important;
+	  }
+	  
+	  body.A4 .head-image {
+		height:70px;
+	  }
+	  body.A5 .head-image {
+		height:65px;
+	  }
+	  body.A4 .student-image {
+		height:85px;
+	  }
+	  body.A5 .student-image {
+		height:65px;
+	  }
+	  .student-image-container {
+		  padding: .25rem 1rem .25rem 0;
+	  }
 
 	}
+	body.A4 .student-image {
+		height:85px;
+	  }
+	  body.A5 .student-image {
+		height:65px;
+	  }
+	  .student-image-container {
+		  padding: .25rem 1rem .25rem 0;
+	  }
 
   </style>
 </head>
-<body class="<?php echo ($result->fee_receipt_print_mode == 2) ? 'portrait' : 'landscape'; ?>">
+<body class="<?php echo $result->fee_receipt_page_size; ?> <?php echo ($result->fee_receipt_print_mode == 2) ? 'portrait' : 'landscape'; ?>">
   <div class="card receipt-card">
    
   
@@ -759,7 +862,7 @@ if($_GET['copy']=='2'){
             <div  style="border:1px solid;" >
 				<?php if($result->rcpt_common_header == 1 && !empty($header_image)){ ?>
 					<div class="text-center p-3 pb-0">
-						<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">		
+						<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" class="head-image" style="width:100%">		
 					</div>
 				<?php } else if($result->rcpt_common_header == 0 && $result->rcpt_header_height != 0) { ?>
 					<div style="border:0px; height:<?php echo $result->rcpt_header_height; ?>px"></div>
@@ -808,8 +911,8 @@ if($_GET['copy']=='2'){
                           <!-- <span><strong style="width:90px; display:inline-block;">Note</strong> This is a System Generated Slip Not Required Stamp.</span>  -->
                       </div>
 					  <?php if ($result->rcpt_photo) { ?>
-						  <div class="p-3" style="display: flex; align-items: center;">
-							<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
+						  <div class="student-image-container" style="display: flex; align-items: center;">
+							<img src="<?php echo base_url() . $student['image']; ?>" class="student-image" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
 						  </div>
 						<?php } ?>
                     </div>
@@ -962,7 +1065,7 @@ if($_GET['copy']=='2'){
 							if (!empty($footer_text)) {
 								echo $footer_text;
 							} else {
-								echo '<b>Note</b> : <span style="font-size:13px !important">This is a System Generated Slip Not Required Stamp.</span>';
+								echo '<b>Note</b> : <span class="note-font">This is a System Generated Slip Not Required Stamp.</span>';
 							}
 						  ?>
 						   </label>

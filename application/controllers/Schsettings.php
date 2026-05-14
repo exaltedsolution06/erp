@@ -76,6 +76,12 @@ class Schsettings extends Admin_Controller {
         $data['result'] = $this->setting_model->getSetting();
         $data['session_setting'] = $this->setting_model->get_session_setting();
 		//echo $receiptnumber['receipt_sr_no']; die;
+		
+		$domain_api_url = CRM_URL .'api/Domain/get_domain_data/'.$data['result']->domain_api_key; 
+		$api_data = call_api_get($domain_api_url);
+		$data['domain_api_data'] = $api_data['data'];
+		// echo '<pre>'; print_r($api_data); die;
+		
         $this->load->view('layout/header', $data);
         $this->load->view('setting/settingList', $data);
         $this->load->view('layout/footer', $data);
@@ -229,11 +235,11 @@ class Schsettings extends Admin_Controller {
         $auto_staff_id = false;
         $this->form_validation->set_rules('sch_session_id', $this->lang->line('session'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('fee_due_days', $this->lang->line('fees_due_days'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('sch_name', $this->lang->line('school_name'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('sch_phone', $this->lang->line('phone'), 'trim|required|xss_clean');
+        // $this->form_validation->set_rules('sch_name', $this->lang->line('school_name'), 'trim|required|xss_clean');
+        // $this->form_validation->set_rules('sch_phone', $this->lang->line('phone'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('sch_start_month', $this->lang->line('start_month'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('sch_address', $this->lang->line('address'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('sch_email', $this->lang->line('email'), 'trim|required|xss_clean');
+        // $this->form_validation->set_rules('sch_address', $this->lang->line('address'), 'trim|required|xss_clean');
+        // $this->form_validation->set_rules('sch_email', $this->lang->line('email'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('sch_lang_id', $this->lang->line('language'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('sch_currency_symbol', $this->lang->line('currency_symbol'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('sch_timezone', $this->lang->line('timezone'), 'trim|required|xss_clean');
@@ -269,12 +275,12 @@ class Schsettings extends Admin_Controller {
             $data = array(
                 'is_student_house' => form_error('is_student_house'),
                 'sch_session_id' => form_error('sch_session_id'),
-                'sch_name' => form_error('sch_name'),
-                'sch_phone' => form_error('sch_phone'),
+                // 'sch_name' => form_error('sch_name'),
+                // 'sch_phone' => form_error('sch_phone'),
                 'sch_start_month' => form_error('sch_start_month'),
                 'sch_start_week' => form_error('sch_start_week'),
-                'sch_address' => form_error('sch_address'),
-                'sch_email' => form_error('sch_email'),
+                // 'sch_address' => form_error('sch_address'),
+                // 'sch_email' => form_error('sch_email'),
                 'sch_lang_id' => form_error('sch_lang_id'),
                 'sch_currency_symbol' => form_error('sch_currency_symbol'),
                 'sch_timezone' => form_error('sch_timezone'),
@@ -309,13 +315,13 @@ class Schsettings extends Admin_Controller {
                 'id' => $this->input->post('sch_id'),
                 'attendence_type' => $this->input->post('attendence_type'),
                 'session_id' => $this->input->post('sch_session_id'),
-                'name' => $this->input->post('sch_name'),
-                'phone' => $this->input->post('sch_phone'),
-                'dise_code' => $this->input->post('sch_dise_code'),
+                // 'name' => $this->input->post('sch_name'),
+                // 'phone' => $this->input->post('sch_phone'),
+                // 'dise_code' => $this->input->post('sch_dise_code'),
                 'start_month' => $this->input->post('sch_start_month'),
                 'start_week' => $this->input->post('sch_start_week'),
-                'address' => $this->input->post('sch_address'),
-                'email' => $this->input->post('sch_email'),
+                // 'address' => $this->input->post('sch_address'),
+                // 'email' => $this->input->post('sch_email'),
                 'lang_id' => $this->input->post('sch_lang_id'),
                 'timezone' => $this->input->post('sch_timezone'),
                 'date_format' => $this->input->post('sch_date_format'),
@@ -347,6 +353,7 @@ class Schsettings extends Admin_Controller {
                 'serial_no_prefix' => $this->input->post('serial_no_prefix'),
                 'serial_no_suffix' => $this->input->post('serial_no_suffix'),
                 'fee_receipt_print_mode' => $this->input->post('fee_receipt_print_mode'),
+                'fee_receipt_page_size' => $this->input->post('fee_receipt_page_size'),
             );
             $this->session->userdata['admin']['is_rtl'] = $this->input->post('sch_is_rtl');
             $language_result = $this->language_model->get($this->input->post('sch_lang_id'));

@@ -153,6 +153,32 @@ class Examgroup extends Admin_Controller {
         $data = $this->examgroup_model->getExamByExamGroup($exam_group_id, true);
         echo json_encode($data);
     }
+	public function getExamByExamgroupArray()
+	{
+		$exam_group_ids = $this->input->post('exam_group_id'); // array
+
+		if (!empty($exam_group_ids)) {
+			$data = $this->examgroup_model->getExamByExamgroupArray($exam_group_ids);
+		} else {
+			$data = [];
+		}
+
+		// return HTML (same design)
+		$html = '';
+
+		foreach ($data as $exam) {
+			$html .= "
+			<div class='form-check'>
+				<input type='checkbox' class='form-check-input exam-check' 
+					name='exam_id[]' value='{$exam->id}' id='exam{$exam->id}'>
+				<label class='form-check-label' for='exam{$exam->id}'>
+					{$exam->exam}
+				</label>
+			</div>";
+		}
+
+		echo $html;
+	}
 
     public function deleteExam() {
 

@@ -120,7 +120,7 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                             <td><?= $record["father_name"] ?></td>
                                             <td><?= $record["class"] ?></td>
                                             <td><?= $record["section"] ?></td>
-                                            <td style="text-align: right;"><?= sprintf('%.2f', $record["receipt_amt"]) ?></td>
+                                            <td style="text-align: right;"><?= format_amount($record["receipt_amt"]) ?></td>
                                             <td><?= $record["mode"] ?></td>
                                             <td><?= $record["create_by"] ?></td>
                                             <td><?= $record["remarks"] ?></td>
@@ -144,7 +144,7 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <th style="text-align: right;"><?= sprintf('%.2f', $total_amount) ?></th>
+                                                <th style="text-align: right;"><?= format_amount($total_amount) ?></th>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>

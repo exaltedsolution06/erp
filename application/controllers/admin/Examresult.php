@@ -514,6 +514,75 @@ class Examresult extends Admin_Controller {
         $this->load->view('admin/examresult/rankreport', $data);
         $this->load->view('layout/footer', $data);
     }
+    public function percentreport() {
+        if (!$this->rbac->hasPrivilege('exam_section_reports', 'can_view')) {
+            access_denied();
+        }
+
+        $this->session->set_userdata('top_menu', 'Reports');
+        $this->session->set_userdata('sub_menu', 'Reports/examinations');
+        $this->session->set_userdata('subsub_menu', 'Reports/examinations/percentreport');
+        $examgroup_result = $this->examgroup_model->get();
+        $data['examgrouplist'] = $examgroup_result;
+
+        $marksheet_result = $this->marksheet_model->get();
+        $data['marksheetlist'] = $marksheet_result;
+
+        $class = $this->class_model->get();
+        $data['title'] = 'Add Batch';
+        $data['title_list'] = 'Recent Batch';
+        $data['examType'] = $this->exam_type;
+        $data['classlist'] = $class;
+        $session = $this->session_model->get();
+        $data['sessionlist'] = $session;
+        $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
+        // $this->form_validation->set_rules('session_id', $this->lang->line('session'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('exam_group_id[]', 'Exam Group', 'required');
+		$this->form_validation->set_rules('exam_id[]', 'Exam', 'required');
+        if ($this->form_validation->run() == false) {
+            if(!empty($this->input->post('exam_group_id'))){
+				$data['exam_list'] = $this->examgroup_model->getExamByExamgroupArray($this->input->post('exam_group_id'));
+			}
+        } else {
+            $exam_group_ids = $this->input->post('exam_group_id');
+            $exam_ids = $this->input->post('exam_id');
+            $session_id = $this->current_session;
+            $class_id = $this->input->post('class_id');
+            $section_id = $this->input->post('section_id');
+
+            $studentList = $this->examgroupstudent_model->searchExamStudentsArray($exam_group_ids, $exam_ids, $class_id, $section_id, $session_id);
+			$studentListVal = [];
+            if (!empty($studentList)) {
+                foreach ($studentList as $student_key => $student_value) {
+                    // $studentList[$student_key]->subject_results = $this->examresult_model->getStudentResultByExam($exam_id, $student_value->exam_group_class_batch_exam_student_id);
+                    $studentListVal[] = $student_value->student_id;
+                }
+            }
+
+            // $data['studentList'] = $studentListVal;
+			if(!empty($studentListVal)){
+				$student_ids = implode(",", $studentListVal);
+				$sql="SELECT *,S.id as student_id,CL.class,SE.section FROM students S  LEFT JOIN student_session SS ON SS.student_id=S.id LEFT JOIN classes CL ON CL.id=SS.class_id LEFT JOIN sections SE ON SE.id=SS.section_id LEFT JOIN fee_groups C ON C.id=SS.fee_category_id WHERE SS.session_id='$session_id' and SS.class_id ='$class_id' and SS.section_id ='$section_id' AND S.id IN ($student_ids)";
+
+		   
+
+				$query = $this->db->query($sql);       
+				$data['stdResult'] = $query->result();
+			}else{
+				$data['stdResult'] = [];
+			}
+
+            $data['exam_ids'] = $exam_ids;
+            $data['post_exam_group_id'] = $exam_group_ids;
+			
+			$data['exam_list'] = $this->examgroup_model->getExamByExamgroupArray($exam_group_ids);
+        }
+        $data['sch_setting'] = $this->sch_setting_detail;
+        $this->load->view('layout/header', $data);
+        $this->load->view('admin/examresult/percentreport', $data);
+        $this->load->view('layout/footer', $data);
+    }
 
 
 

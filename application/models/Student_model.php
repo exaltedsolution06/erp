@@ -447,6 +447,32 @@ class Student_model extends MY_Model
 
         return $query->result_array();
     }
+	public function searchByClassSectionRouteReport($class_id = null, $section_id = null, $selectedRoutes)
+    {
+        $this->db->select('classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,students.middlename,  students.lastname,students.image,    students.mobileno, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(fee_groups.name, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.mother_name,students.app_key,students.parent_app_key,students.rte,students.gender,students.cast_category,route_head.fees_heading as route_title')->from('students');
+        $this->db->join('student_session', 'student_session.student_id = students.id');
+        $this->db->join('classes', 'student_session.class_id = classes.id');
+        $this->db->join('sections', 'sections.id = student_session.section_id');
+        $this->db->join('fee_groups', 'student_session.fee_category_id = fee_groups.id', 'left');
+        $this->db->join('route_head', 'route_head.id = student_session.route_id', 'left');
+        $this->db->where('student_session.session_id', $this->current_session);
+        $this->db->where('students.is_active', "yes");
+        if ($class_id != null) {
+            $this->db->where('student_session.class_id', $class_id);
+        }
+        if ($section_id != null) {
+            $this->db->where('student_session.section_id', $section_id);
+        }
+		if (!empty($selectedRoutes) && $selectedRoutes !== 'All') {
+			$this->db->where_in('student_session.route_id', $selectedRoutes);
+		}
+        //$this->db->order_by('students.id');
+        $this->db->order_by('students.admission_no', 'asc');
+
+        $query = $this->db->get();
+
+        return $query->result_array();
+    }
 
     public function searchByClassSectionWithoutCurrent($class_id = null, $section_id = null, $student_id = null)
     {

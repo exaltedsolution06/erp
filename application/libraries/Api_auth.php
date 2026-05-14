@@ -13,14 +13,17 @@ class Api_auth {
     public function check()
     {
 
-        $headers = $this->CI->input->request_headers();
+        $headers = array_change_key_case(
+			$this->CI->input->request_headers(),
+			CASE_LOWER
+		);
 
-        if(!isset($headers['Api-Key']))
-        {
-            api_response(false,'API Key required');
-        }
+		if(!isset($headers['api-key']))
+		{
+			api_response(false,'API Key required');
+		}
 
-        $api_key = $headers['Api-Key'];
+		$api_key = $headers['api-key'];
 
         $check = $this->CI->db
             ->where('domain_api_key',$api_key)

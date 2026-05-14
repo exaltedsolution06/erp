@@ -1,5 +1,9 @@
 <style type="text/css">
     .wrapper {overflow: visible;}
+	
+.form-control[disabled] {
+	background-color: #f3f4f6;
+}
 </style>
 
 <!-- Content Wrapper. Contains page content -->
@@ -103,32 +107,45 @@
 
                                 <div class="row">
 
+                                    <div class="col-md-3">
+                                        <div class="form-group row">
+                                            <label class="col-sm-5">School ID</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" class="form-control" value="<?php echo $domain_api_data['code_year'].$domain_api_data['code_number']; ?>" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-sm-4"><?php echo $this->lang->line('school_name'); ?><small class="req"> *</small></label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="name" name="sch_name" value="<?php echo $result->name; ?>">
+                                            <label class="col-sm-3"><?php echo $this->lang->line('school_name'); ?></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="name" name="sch_name" value="<?php echo $result->name; ?>" disabled>
                                                 <span class="text-danger"><?php echo form_error('name'); ?></span> <input type="hidden" name="sch_id" value="<?php echo $result->id; ?>">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="form-group row">
-                                            <label class="col-sm-4"><?php echo $this->lang->line('school_code'); ?></label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="dise_code" name="sch_dise_code" value="<?php echo $result->dise_code; ?>">
+                                            <label class="col-sm-5"><?php echo $this->lang->line('school_code'); ?></label>
+                                            <div class="col-sm-7">
+                                                <input type="text" class="form-control" id="dise_code" name="sch_dise_code" value="<?php echo $result->dise_code; ?>" disabled>
                                                 <span class="text-danger"><?php echo form_error('dise_code'); ?></span>
                                             </div>
                                         </div>
                                     </div>
-
-                                </div><!--./row-->
-                                <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-3">
                                         <div class="form-group row">
-                                            <label class="col-sm-2"><?php echo $this->lang->line('address'); ?><small class="req"> *</small></label>
+                                            <label class="col-sm-5">Affiliate No.</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" class="form-control" value="<?php echo $domain_api_data['aff_no']; ?>" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group row">
+                                            <label class="col-sm-2"><?php echo $this->lang->line('address'); ?></label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="address" name="sch_address" value="<?php echo $result->address; ?>"> <span class="text-danger"><?php echo form_error('address'); ?></span>
+                                                <input type="text" class="form-control" id="address" name="sch_address" value="<?php echo $result->address; ?>" disabled> <span class="text-danger"><?php echo form_error('address'); ?></span>
                                             </div>
                                         </div>
                                     </div>
@@ -137,23 +154,67 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-sm-4"><?php echo $this->lang->line('phone'); ?><small class="req"> *</small></label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" id="phone" name="sch_phone" value="<?php echo $result->phone; ?>"><span class="text-danger"><?php echo form_error('phone'); ?></span>
+                                            <label class="col-sm-2"><?php echo $this->lang->line('phone'); ?></label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="phone" name="sch_phone" value="<?php echo $result->phone; ?>" disabled><span class="text-danger"><?php echo form_error('phone'); ?></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group row">
-                                            <label class="col-sm-4"><?php echo $this->lang->line('email'); ?><small class="req"> *</small></label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control"  id="email" name="sch_email" value="<?php echo $result->email; ?>">
+                                            <label class="col-sm-2"><?php echo $this->lang->line('email'); ?></label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control"  id="email" name="sch_email" value="<?php echo $result->email; ?>" disabled>
                                                 <span class="text-danger"><?php echo form_error('email'); ?></span>
                                             </div>
                                         </div>
                                     </div>
 
                                 </div><!--./row-->
+								
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group row">
+                                            <label class="col-sm-5">Country</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" class="form-control" value="<?php echo $domain_api_data['school_country']; ?>" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3">State</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" value="<?php echo $domain_api_data['school_state']; ?>" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3">District</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" value="<?php echo $domain_api_data['school_district']; ?>" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group row">
+                                            <label class="col-sm-5">City</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" class="form-control" value="<?php echo $domain_api_data['school_city']; ?>" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group row">
+                                            <label class="col-sm-5">Pin Code</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" class="form-control" value="<?php echo $domain_api_data['school_pin_code']; ?>" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                                 <div class="row">
 
                                     <div class="col-md-12">
@@ -864,6 +925,17 @@
                                                 <select name="fee_receipt_print_mode" class="form-control" >
                                                     <option value="1">Landscape</option>
                                                     <option value="2" <?php echo $result->fee_receipt_print_mode == 2 ? 'selected' : ''; ?>>Potrait</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-5"> Page Size</label>
+                                            <div class="col-sm-7">
+                                                <select name="fee_receipt_page_size" class="form-control" >
+                                                    <option value="A4" <?php echo $result->fee_receipt_page_size == 'A4' ? 'selected' : ''; ?>>A4</option>
+                                                    <option value="A5" <?php echo $result->fee_receipt_page_size == 'A5' ? 'selected' : ''; ?>>A5</option>
                                                 </select>
                                             </div>
                                         </div>

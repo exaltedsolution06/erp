@@ -283,6 +283,19 @@ class Income_model extends My_Model
 		$query = $this->db->get();
 		return $query->row()->today_total_income;
 	}
+	public function income_by_session($is_date, $session_id)
+	{
+		$this->db->select('SUM(amount) as today_total_income');
+		$this->db->from(' balance_sheets');
+		$this->db->where('balance_type',0);
+		if($is_date){
+		$this->db->where('DATE(date)',date('Y-m-d'));
+		}
+		$this->db->where('session_id',$session_id);
+
+		$query = $this->db->get();
+		return $query->row()->today_total_income;
+	}
 	public function get_income_head()
 	{
 		$this->db->select('id');

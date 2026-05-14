@@ -2,27 +2,6 @@
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 ?>
  <style>
- .table-header-sticky {
-	max-height: 400px; 
-	overflow-y: auto;
-}
-.table-header-sticky table thead th {
-  position: sticky;
-  top: 0;
-} 
-/* Sticky 5th column */
-.example thead th:nth-child(5),
-.example tbody td:nth-child(5) {
-    position: sticky;
-    left: 0;
-    background: #fff;
-    z-index: 2;
-}
-
-/* Header priority */
-.example thead th:nth-child(5) {
-    z-index: 3;
-}
 .filter-box {
       border: 1px solid #ccc;
       padding: 10px;
@@ -164,7 +143,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                 <div class="table-responsive table-header-sticky">
                                     <div class="download_label"><?php echo $this->lang->line('head_wise_collection');?></div>
-                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header" style="width:1800px !important">
+                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header sticky-col-5" style="width:1800px !important">
                                         <thead>
                                             <tr>
                                                 <th>S.No</th>
@@ -391,13 +370,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 															
 															$fee_heads_total_amount += $cat_list_amount[$list['fees_heading']];
 												?>
-															<td style="text-align:right"><?=number_format($cat_list_amount[$list['fees_heading']],2); ?></td>
+															<td style="text-align:right"><?=format_amount($cat_list_amount[$list['fees_heading']]); ?></td>
 												<?php 
 														}
 													}
 													if(!empty($selectedFeeHead)) {
 												?>
-													<td style="text-align: right;"><?= sprintf('%.2f', $fee_heads_total_amount) ?></td>
+													<td style="text-align: right;"><?= format_amount($fee_heads_total_amount) ?></td>
 												<?php } ?>
 												<!--<td style="text-align: right;"><?= sprintf('%.2f', $record["net_fees"]) ?></td>
                                                 <td style="text-align: right;"><?= sprintf('%.2f', $record["receipt_amt"]) ?></td>
@@ -421,9 +400,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 												if(in_array($list['fees_heading'], $selectedFeeHead))
 														{
 											?>
-												<th style="text-align:right"><?=number_format($head_wise_totals[$list['fees_heading']] ?? 0, 2); ?></th>
+												<th style="text-align:right"><?=format_amount($head_wise_totals[$list['fees_heading']] ?? 0); ?></th>
 											<?php } } if(!empty($selectedFeeHead)) { ?>
-												<th style="text-align: right;"><?= sprintf('%.2f', $final) ?></th>
+												<th style="text-align: right;"><?= format_amount($final) ?></th>
 											<?php } ?>
                                            <!--<th style="text-align: right;"><?= sprintf('%.2f', $net_fees_sum) ?></th>
                                             <th style="text-align: right;"><?= sprintf('%.2f', $receipt_amt_sum) ?></th>

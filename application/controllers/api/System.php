@@ -6,7 +6,8 @@ class System extends CI_Controller {
     public function update_api_key()
     {
 
-        $api_key = $this->input->post('api_key');
+        $api_key = $this->input->post('domain_api_key');
+        $post = $this->input->post();
 
         if(!$api_key)
         {
@@ -18,9 +19,7 @@ class System extends CI_Controller {
         }
 
         $this->db->where('id',1);
-        $update = $this->db->update('sch_settings',[
-            'domain_api_key'=>$api_key
-        ]);
+        $update = $this->db->update('sch_settings',$post);
 
         if($update)
         {

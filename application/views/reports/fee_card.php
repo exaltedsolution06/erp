@@ -77,7 +77,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     
                                                 </tr>
                                                  <tr>
-                                                     <td><strong>Ledger Amt </strong> <br> Rs. <?=$student_data['fees_discount']?></td>
+                                                     <td><strong>Ledger Amt </strong> <br> Rs. <?=format_amount($student_data['fees_discount'])?></td>
                                                      <td><strong>Route</strong> - <?php
                                                                         $this->db->where('id', $student_data['route_id']);
                                                                         $query = $this->db->get('route_head')->row_array();
@@ -217,13 +217,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 																
 																if (is_array($row->amount)) {
 																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
-																	echo $amount;
+																	echo format_amount($amount);
 																	$total += $amount;
 																	$column_totals[$key] += $row->amount[$value];
 																}
 																else
 																{
-                                                                echo $row->amount;
+                                                                echo format_amount($row->amount);
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
 																}
@@ -247,13 +247,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 																if (is_array($row->amount)) 
 																{
 																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
-																	echo $amount;
+																	echo format_amount($amount);
 																	$total += $amount;
 																	$column_totals[$key] += $row->amount[$value];
 																}
 																else
 																{
-                                                                echo $row->amount;
+                                                                echo format_amount($row->amount);
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
 																}
@@ -265,13 +265,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 																if (is_array($row->amount)) 
 																{
 																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
-																	echo $amount;
+																	echo format_amount($amount);
 																	$total += $amount;
 																	$column_totals[$key] += $row->amount[$value];
 																}
 																else
 																{
-																echo $row->amount;
+																echo format_amount($row->amount);
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
 																}
@@ -317,12 +317,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             if ($amount != 0 && in_array($value, $db_months)) {
 																
 																if (is_array($row->amount)) {
-																echo $row->amount[$value];
+																echo format_amount($row->amount[$value]);
                                                                 $total += $row->amount[$value];
                                                                 $column_totals[$key] += $row->amount[$value];
 																}
 																else{
-                                                                echo $row->amount;
+                                                                echo format_amount($row->amount);
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
 																}
@@ -342,12 +342,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                                             if ($amount == 0 && in_array($value, $db_months)) {
 																if (is_array($row->amount)) {
-																echo $row->amount[$value];
+																echo format_amount($row->amount[$value]);
                                                                 $total += $row->amount[$value];
                                                                 $column_totals[$key] += $row->amount[$value];
 																}
 																else{
-                                                                echo $row->amount;
+                                                                echo format_amount($row->amount);
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
 																}
@@ -357,12 +357,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         } else {
                                                             if (in_array($value, $db_months)) {
 																if (is_array($row->amount)) {
-																echo $row->amount[$value];
+																echo format_amount($row->amount[$value]);
                                                                 $total += $row->amount[$value];
                                                                 $column_totals[$key] += $row->amount[$value];
 																}
 																else{
-                                                                echo $row->amount;
+                                                                echo format_amount($row->amount);
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
 																}
@@ -488,19 +488,19 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         <?php
                                                      }else{
                                                         ?>
-                                                        <td style="text-align: right;">00.00</td>
+                                                        <td style="text-align: right;">0</td>
                                                         <?php
                                                      }
 
                                                 ?>
                                                
-                                                 <td style="text-align: right;"><?= sprintf('%.2f', $record["ledger_amt"]) ?></td>
-                                                <td style="text-align: right;"><?= sprintf('%.2f', !empty($record["late_fees"]) ? $record["late_fees"] : 0) ?></td>
-                                                <td style="text-align: right;"><?= sprintf('%.2f', $record["total_fees"]) ?></td>
-                                                <td style="text-align: right;"><?= sprintf('%.2f', $record["discount_amt"]) ?></td>
-                                                <td style="text-align: right;"><?= sprintf('%.2f', $record["net_fees"]) ?></td>
-                                                <td style="text-align: right;"><?= sprintf('%.2f', $record["receipt_amt"]) ?></td>
-                                                <td style="text-align: right;"><?= sprintf('%.2f', $record["balance_amt"]) ?></td>
+                                                 <td style="text-align: right;"><?= format_amount($record["ledger_amt"]) ?></td>
+                                                <td style="text-align: right;"><?= !empty($record["late_fees"]) ? format_amount($record["late_fees"]) : 0 ?></td>
+                                                <td style="text-align: right;"><?= format_amount($record["total_fees"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount($record["discount_amt"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount($record["net_fees"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount($record["receipt_amt"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount($record["balance_amt"]) ?></td>
 
 
 
@@ -531,15 +531,15 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <th>-</th>
 
                                             <th>-</th>
-                                            <th style="text-align: right;"><?= sprintf('%.2f', $fees_received_sum) ?></th>
+                                            <th style="text-align: right;"><?= format_amount($fees_received_sum) ?></th>
 
-                                            <th style="text-align: right;"><?= sprintf('%.2f', $ledger_amt_sum) ?></th>
-                                            <th style="text-align: right;"><?= sprintf('%.2f', $late_fees_sum) ?></th>
-                                            <th style="text-align: right;"><?= sprintf('%.2f', $total_fees_sum) ?></th>
-                                            <th style="text-align: right;"><?= sprintf('%.2f', $discount_amt_sum) ?></th>
-                                            <th style="text-align: right;"><?= sprintf('%.2f', $net_fees_sum) ?></th>
-                                            <th style="text-align: right;"><?= sprintf('%.2f', $receipt_amt_sum) ?></th>
-                                            <th style="text-align: right;"><?= sprintf('%.2f', $balance_amt_sum) ?></th>
+                                            <th style="text-align: right;"><?= format_amount($ledger_amt_sum) ?></th>
+                                            <th style="text-align: right;"><?= format_amount($late_fees_sum) ?></th>
+                                            <th style="text-align: right;"><?= format_amount($total_fees_sum) ?></th>
+                                            <th style="text-align: right;"><?= format_amount($discount_amt_sum) ?></th>
+                                            <th style="text-align: right;"><?= format_amount($net_fees_sum) ?></th>
+                                            <th style="text-align: right;"><?= format_amount($receipt_amt_sum) ?></th>
+                                            <th style="text-align: right;"><?= format_amount($balance_amt_sum) ?></th>
 
 
                                             <th>-</th>

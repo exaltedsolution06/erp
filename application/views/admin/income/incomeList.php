@@ -203,7 +203,7 @@ $language_name = $language["short_code"];
                                                 $arr1 = str_split($inc_head_id);
                                                 ?>
 
-                                                <td class="mailbox-name"><?php echo ($currency_symbol . $income['amount']); ?></td>
+                                                <td class="mailbox-name"><?php echo ($currency_symbol .' '. format_amount($income['amount'])); ?></td>
                                                 <td class="mailbox-date pull-right">
 													<a href="javascript:void(0)" data-id="<?php echo $income["id"]; ?>" class="btn btn-default btn-xs print_receipt" data-toggle="tooltip" title="" data-original-title="Print Receipt">
 														<i class="fa fa-print"></i>

@@ -191,5 +191,18 @@ class Studentsession_model extends CI_Model
         $query = $this->db->query($query);
         return $query->row();
     }
+	public function getTotalMaleStudentBySessionID($session_id)
+    {
+        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($session_id) . " and students.is_active = 'yes' and  students.gender = 'Male' ";
+        $query = $this->db->query($query);
+        return $query->row();
+    }
+	
+	public function getTotalFemaleStudentBySessionID($session_id)
+    {
+        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($session_id) . " and students.is_active = 'yes' and  students.gender = 'Female' ";
+        $query = $this->db->query($query);
+        return $query->row();
+    }
 
 }

@@ -153,7 +153,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <option value="All" <?= ($this->input->get('class_id') == 'All') ? 'selected' : '' ?>>All Classes</option>
                                         </select>
                                     </div>
-                                     <div class="form-group col-md-2">
+                                    <div class="form-group col-md-2">
                                         <label for="categoryHead">Fees Category</label>
                                         <select class="form-control form-control-sm" id="categoryHead" name="categoryHead">
                                             <option value="">N/A</option>
@@ -268,11 +268,11 @@ $balance_amt_sum = 0;
                                                 <td><?= $record["father_name"] ?></td>
                                                 <td><?= $record["class"] ?></td>
                                                 <td><?= $record["section"] ?></td>
-                                               <td style="text-align:right"><?= number_format($record["rec_amount"], 2) ?></td>
-												<td style="text-align:right"><?= number_format($record["discount_amt"], 2) ?></td>
-												<td style="text-align:right"><?= number_format(($record["rec_amount"]-$record["discount_amt"]), 2) ?></td>
-												<td style="text-align:right"><?= number_format($record["rec_amount"]-$record["discount_amt"], 2) ?></td>
-												<td style="text-align:right"><?= number_format(0, 2) ?></td>
+                                               <td style="text-align:right"><?= format_amount($record["rec_amount"]) ?></td>
+												<td style="text-align:right"><?= format_amount($record["discount_amt"]) ?></td>
+												<td style="text-align:right"><?= format_amount(($record["rec_amount"]-$record["discount_amt"])) ?></td>
+												<td style="text-align:right"><?= format_amount($record["rec_amount"]-$record["discount_amt"]) ?></td>
+												<td style="text-align:right"><?= format_amount(0) ?></td>
 
                                             </tr>
                                         <?php endforeach; ?>
@@ -283,11 +283,11 @@ $balance_amt_sum = 0;
                                             <td></td>
                                             <td></td>
         <td colspan="" style="text-align: right;"><strong>Grand Total</strong></td>
-        <td style="text-align:right"><strong><?= number_format($total_fees_sum, 2) ?></strong></td>
-        <td style="text-align:right"><strong><?= number_format($discount_amt_sum, 2) ?></strong></td>
-        <td style="text-align:right"><strong><?= number_format($net_fees_sum, 2) ?></strong></td>
-        <td style="text-align:right"><strong><?= number_format($receipt_amt_sum, 2) ?></strong></td>
-        <td style="text-align:right"><strong><?= number_format($balance_amt_sum, 2) ?></strong></td>
+        <td style="text-align:right"><strong><?= format_amount($total_fees_sum) ?></strong></td>
+        <td style="text-align:right"><strong><?= format_amount($discount_amt_sum) ?></strong></td>
+        <td style="text-align:right"><strong><?= format_amount($net_fees_sum) ?></strong></td>
+        <td style="text-align:right"><strong><?= format_amount($receipt_amt_sum) ?></strong></td>
+        <td style="text-align:right"><strong><?= format_amount($balance_amt_sum) ?></strong></td>
     </tr>
                                         <?php else: ?>
                                             <tr><td colspan="21" class="text-center">No records found</td></tr>

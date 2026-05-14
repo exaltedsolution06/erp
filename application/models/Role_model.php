@@ -201,6 +201,12 @@ class Role_model extends MY_Model {
 
         return $query->num_rows();
     }
+    public function count_roles_by_sesssion($id,$session_id) {
+
+        $query = $this->db->select("*")->join("staff", "staff.id = staff_roles.staff_id")->where("staff_roles.role_id", $id)->where("staff.is_active", 1)->where('staff.session_id', $session_id)->get("staff_roles");
+
+        return $query->num_rows();
+    }
     public function count_superadmin($id) {
 
         $query = $this->db->select("*")->join("staff", "staff.id = staff_roles.staff_id")->where("staff_roles.role_id", $id)->where("staff.is_active", 1)->get("staff_roles");

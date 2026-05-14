@@ -18,16 +18,16 @@ if($_GET['copy']=='2'){
   <style>
     @media print {
 		/* Dynamic Orientation via body class */
-		body.A4.portrait {
+		body.a4.portrait {
 			page: A4Portrait;
 		}
-		body.A4.landscape {
+		body.a4.landscape {
 			page: A4Landscape;
 		}
-		body.A5.portrait {
+		body.a5.portrait {
 			page: A5Portrait;
 		}
-		body.A5.landscape {
+		body.a5.landscape {
 			page: A5Landscape;
 		}
 		@page A4Portrait {
@@ -116,37 +116,19 @@ if($_GET['copy']=='2'){
 		padding: 0 !important;
 	  }
 	  
-	  body.A4 .note-font {
+	  body.a4 .note-font {
 		font-size: 13px !important;
 	  }
-	  body.A5 .note-font {
+	  body.a5 .note-font {
 		font-size: 11px !important;
 	  }
-	  body.A4 .head-image {
+	  body.a4 .head-image {
 		height:100px;
 	  }
-	  body.A5 .head-image {
+	  body.a5 .head-image {
 		height:70px;
 	  }
-	  body.A4 .student-image {
-		height:85px;
-	  }
-	  body.A5 .student-image {
-		height:65px;
-	  }
-	  .student-image-container {
-		  padding: .25rem 1rem .25rem 0;
-	  }
 	}
-	  body.A4 .student-image {
-		height:85px;
-	  }
-	  body.A5 .student-image {
-		height:65px;
-	  }
-	  .student-image-container {
-		  padding: .25rem 1rem .25rem 0;
-	  }
 
 </style>
 </head>
@@ -206,8 +188,8 @@ if($_GET['copy']=='2'){
 								<?php } ?>
 								</div>
 								<?php if ($result->rcpt_photo) { ?>
-								<div class="student-image-container" style="display: flex; align-items: center;">
-									<img src="<?php echo base_url() . $student['image']; ?>" class="student-image" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
+								<div class="p-3" style="display: flex; align-items: center;">
+									<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
 								</div>
 								<?php } ?>
 							</div>
@@ -336,7 +318,7 @@ if($_GET['copy']=='2'){
 											if (!empty($footer_text)) {
 												echo $footer_text;
 											} else {
-												echo '<b>Note</b> : <span class="note-font">This is a System Generated Slip Not Required Stamp.</span>';
+												echo '<b>Note</b> : <span style="note-font">This is a System Generated Slip Not Required Stamp.</span>';
 											}
 										?>
 										</label>
@@ -353,7 +335,7 @@ if($_GET['copy']=='2'){
 						<div  style="border:1px solid;" >
 						<?php if($result->rcpt_common_header == 1 && !empty($header_image)){ ?>
 							<div class="text-center p-3 pb-0">
-								<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" class="head-image" style="width:100%">		
+								<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/student_receipt/<?php echo $header_image; ?>" style="height:100px;width:100%">		
 							</div>
 						<?php } else if($result->rcpt_common_header == 0 && $result->rcpt_header_height != 0) { ?>
 							<div style="border:0px; height:<?php echo $result->rcpt_header_height; ?>px"></div>
@@ -398,8 +380,8 @@ if($_GET['copy']=='2'){
 								<?php } ?>
 								</div>
 								<?php if ($result->rcpt_photo) { ?>
-									<div class="student-image-container" style="display: flex; align-items: center;">
-										<img src="<?php echo base_url() . $student['image']; ?>" class="student-image" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
+									<div class="p-3" style="display: flex; align-items: center;">
+										<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
 									</div>
 								<?php } ?>
 							</div>
@@ -521,7 +503,7 @@ if($_GET['copy']=='2'){
 											if (!empty($footer_text)) {
 												echo $footer_text;
 											} else {
-												echo '<b>Note</b> : <span class="note-font">This is a System Generated Slip Not Required Stamp.</span>';
+												echo '<b>Note</b> : <span style="note-font">This is a System Generated Slip Not Required Stamp.</span>';
 											}
 										?>
 										</label>
@@ -585,17 +567,17 @@ if($_GET['copy']=='2'){
   <style>
     @media print {
 
-	  /* Dynamic Orientation via body class */
-		body.A4.portrait {
+	  /* 🔥 Dynamic Orientation via body class */
+		body.a4.portrait {
 			page: A4Portrait;
 		}
-		body.A4.landscape {
+		body.a4.landscape {
 			page: A4Landscape;
 		}
-		body.A5.portrait {
+		body.a5.portrait {
 			page: A5Portrait;
 		}
-		body.A5.landscape {
+		body.a5.landscape {
 			page: A5Landscape;
 		}
 		@page A4Portrait {
@@ -693,40 +675,22 @@ if($_GET['copy']=='2'){
 	  .footer-content {
 		padding: 0 !important;
 	  }
-		body.A4 .note-font {
+		body.a4 .note-font {
 		font-size: 13px !important;
 	  }
 
 	  /* A5 */
-	  body.A5 .note-font {
+	  body.a5 .note-font {
 		font-size: 11px !important;
 	  }
 	  
-	  body.A4 .head-image {
+	  body.a4 .head-image {
 		height:100px;
 	  }
-	  body.A5 .head-image {
+	  body.a5 .head-image {
 		height:70px;
 	  }
-	  body.A4 .student-image {
-		height:85px;
-	  }
-	  body.A5 .student-image {
-		height:65px;
-	  }
-	  .student-image-container {
-		  padding: .25rem 1rem .25rem 0;
-	  }
 	}
-	  body.A4 .student-image {
-		height:85px;
-	  }
-	  body.A5 .student-image {
-		height:65px;
-	  }
-	  .student-image-container {
-		  padding: .25rem 1rem .25rem 0;
-	  }
 
   </style>
 </head>
@@ -794,8 +758,8 @@ if($_GET['copy']=='2'){
                           <!-- <span><strong style="width:90px; display:inline-block;">Note</strong> This is a System Generated Slip Not Required Stamp.</span>  -->
                       </div>
 					  <?php if ($result->rcpt_photo) { ?>
-						  <div class="student-image-container" style="display: flex; align-items: center;">
-							<img src="<?php echo base_url() . $student['image']; ?>" class="student-image" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
+						  <div class="p-3" style="display: flex; align-items: center;">
+							<img src="<?php echo base_url() . $student['image']; ?>" height="85" style="border: 1px solid #fff;outline: 1px solid #000000; width: auto;">
 						  </div>
 						<?php } ?>
                     </div>

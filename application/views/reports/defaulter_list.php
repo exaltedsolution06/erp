@@ -696,7 +696,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     
                                                     <?php
                                                         if(in_array('Consider Old Bal', $filters)){
-                                                            ?><td style="text-align:right"><?= number_format($record["fees_discount"], 2) ?></td> <?php
+                                                            ?><td style="text-align:right"><?= format_amount($record["fees_discount"]) ?></td> <?php
                                                         }
 
 
@@ -706,7 +706,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 																$head_wise_totals[$list['fees_heading']] += $cat_list_amount[$list['fees_heading']];
                                                                 $fees_month_amount += $cat_list_amount[$list['fees_heading']];
 																?>
-																<td style="text-align:right"><?=number_format($cat_list_amount[$list['fees_heading']],2); ?></td>
+																<td style="text-align:right"><?=format_amount($cat_list_amount[$list['fees_heading']] ?? 0); ?></td>
 															<?php }
 														}
                                                         /*if(in_array('Fees Head Wise', $filters)){
@@ -731,13 +731,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         if(in_array('Include Route', $filters)){
 
                                                             ?>
-                                                                <td style="text-align:right"><?= number_format($routeFees,2);?></td>
+                                                                <td style="text-align:right"><?= format_amount($routeFees);?></td>
                                                             <?php
                                                        
                                                         }
 
                                                     ?>
-                                                    <td style="text-align:right"><?=number_format($final,2)?>
+                                                    <td style="text-align:right"><?=format_amount($final)?>
 													<input name="fees_month[]" type="hidden" value="<?php echo  implode(',', $fees_month); ?>">
 													<input name="fees_month_amount[]" type="hidden" value="<?php echo number_format($fees_month_amount ?? 0, 2); ?>">
 													<input name="routes_month[]" type="hidden" value="<?php echo  implode(',', $routes_month); ?>">
@@ -774,7 +774,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td colspan="" style="text-align:right;">Total</td>
 
                                                 <?php if (in_array('Consider Old Bal', $filters)): ?>
-                                                    <td style="text-align:right"><?= number_format($total_fees_discount, 2) ?></td>
+                                                    <td style="text-align:right"><?= format_amount($total_fees_discount) ?></td>
                                                 <?php endif; ?>
 
                                                 <?php 
@@ -786,16 +786,16 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 												<?php if(in_array('Fees Head Wise', $filters)){
 													foreach($fee_heads as $list){
 												?>
-														<td style="text-align:right"><?=number_format($head_wise_totals[$list['fees_heading']] ?? 0, 2); ?></td>
+														<td style="text-align:right"><?=format_amount($head_wise_totals[$list['fees_heading']] ?? 0); ?></td>
 												<?php }
 												}
 												?>
 
                                                 <?php if (in_array('Include Route', $filters)): ?>
-                                                    <td style="text-align:right"><?= number_format($total_route, 2) ?></td>
+                                                    <td style="text-align:right"><?= format_amount($total_route) ?></td>
                                                 <?php endif; ?>
 
-                                                <td style="text-align:right"><?= number_format($grand_total, 2) ?></td>
+                                                <td style="text-align:right"><?= format_amount($grand_total) ?></td>
                                             </tr>
                                     </tfoot>
                                     

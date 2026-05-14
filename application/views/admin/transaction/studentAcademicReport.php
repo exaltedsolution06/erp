@@ -1,29 +1,6 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 ?>
- <style>
- .table-header-sticky {
-	max-height: 400px; 
-	overflow-y: auto;
-} 
-.table-header-sticky table thead th {
-  position: sticky;
-  top: 0;
-}
-/* Sticky 5th column */
-.example thead th:nth-child(5),
-.example tbody td:nth-child(5) {
-    position: sticky;
-    left: 0;
-    background: #fff;
-    z-index: 2;
-}
-
-/* Header priority */
-.example thead th:nth-child(5) {
-    z-index: 3;
-}
- </style>
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
@@ -119,7 +96,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                  <div class="table-responsive table-header-sticky">
                                     <div class="download_label"><?php echo $this->lang->line('fee_day_book');?></div>
-                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header" style="width:1800px !important">
+                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header sticky-col-5" style="width:1800px !important">
                                         <thead>
                                             <tr>
                                                 <th>S.No</th>
@@ -466,7 +443,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             
                                                 </td>
 												<?php if(!empty($routes)) { ?>
-                                                       <td style="text-align:right"><?= number_format($routeFees,2);?></td>
+                                                       <td style="text-align:right"><?= format_amount($routeFees);?></td>
                                                 <?php } ?>
                                                 <!--<td ><?=  ($this->db->get_where('route_head', ['id' => $record['route_id']])->row()) ? $this->db->get_where('route_head', ['id' => $record['route_id']])->row()->fees_heading : 'N.A'; ?>  </td>-->
 												<?php
@@ -476,7 +453,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 														$head_wise_totals[$list['fees_heading']] += $cat_list_amount[$list['fees_heading']];
 														$fees_month_amount += $cat_list_amount[$list['fees_heading']];
 													?>
-														<td style="text-align:right"><?=number_format($cat_list_amount[$list['fees_heading']],2); ?></td>
+														<td style="text-align:right"><?=format_amount($cat_list_amount[$list['fees_heading']]); ?></td>
 													<?php 
 														}
 													?>
@@ -484,10 +461,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                               
 
-                                            <td style="text-align: right;"><?= sprintf('%.2f', $record["net_fees"]) ?></td>
-                                                <td style="text-align: right;"><?= sprintf('%.2f', $record["receipt_amt"]) ?></td>
-                                                <td style="text-align: right;"><?= sprintf('%.2f', $record["discount_amt"]) ?></td>
-                                                <td style="text-align: right;"><?= sprintf('%.2f', $record["balance_amt"]) ?></td>
+                                            <td style="text-align: right;"><?= format_amount($record["net_fees"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount($record["receipt_amt"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount($record["discount_amt"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount($record["balance_amt"]) ?></td>
 
                                                 <td ><?= $record["mode"] ?></td>
                                                 <td ><?= $record["create_by"] ?></td>
@@ -507,15 +484,15 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <th></th>
                                             <th>Total</th>
                                             <?php if(!empty($routes)) { ?>
-												<th><?= number_format($finalRF,2);?></th>
+												<th><?= format_amount($finalRF);?></th>
 											<?php } foreach($fee_heads as $list) { ?>
-												<th style="text-align:right"><?=number_format($head_wise_totals[$list['fees_heading']] ?? 0, 2); ?></th>
+												<th style="text-align:right"><?=format_amount($head_wise_totals[$list['fees_heading']] ?? 0); ?></th>
 											<?php } ?>
                                           
-                                           <th style="text-align: right;"><?= sprintf('%.2f', $net_fees_sum) ?></th>
-                                            <th style="text-align: right;"><?= sprintf('%.2f', $receipt_amt_sum) ?></th>
-                                            <th style="text-align: right;"><?= sprintf('%.2f', $discount_amt_sum) ?></th>
-                                            <th style="text-align: right;"><?= sprintf('%.2f', $balance_amt_sum) ?></th>
+                                           <th style="text-align: right;"><?= format_amount($net_fees_sum) ?></th>
+                                            <th style="text-align: right;"><?= format_amount($receipt_amt_sum) ?></th>
+                                            <th style="text-align: right;"><?= format_amount($discount_amt_sum) ?></th>
+                                            <th style="text-align: right;"><?= format_amount($balance_amt_sum) ?></th>
 
                                             <th></th>
                                             <th></th>

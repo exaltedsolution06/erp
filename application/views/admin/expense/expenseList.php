@@ -170,7 +170,7 @@
                                                         <?php echo date('d-m-Y', strtotime($expense['date'])) ?></td>
 
                                                    
-                                                    <td class="mailbox-name"><?php echo ($currency_symbol .' '.$expense['amount']); ?></td>
+                                                    <td class="mailbox-name"><?php echo ($currency_symbol .' '.format_amount($expense['amount'])); ?></td>
                                                     <td class="mailbox-date pull-right">
 														<a href="javascript:void(0)" data-id="<?php echo $expense["id"]; ?>" class="btn btn-default btn-xs print_receipt" data-toggle="tooltip" title="" data-original-title="Print Receipt">
 															<i class="fa fa-print"></i>

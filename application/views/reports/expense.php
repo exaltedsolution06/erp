@@ -272,11 +272,11 @@ $balance_amt_sum = 0;
                                                 <td><?= $record["father_name"] ?></td>
                                                 <td><?= $record["class"] ?></td>
                                                 <td><?= $record["section"] ?></td>
-                                               <td style="text-align:right"><?= number_format($record["total_fees"], 2) ?></td>
-												<td style="text-align:right"><?= number_format($record["discount_amt"], 2) ?></td>
-												<td style="text-align:right"><?= number_format($record["net_fees"], 2) ?></td>
-												<td style="text-align:right"><?= number_format($record["receipt_amt"], 2) ?></td>
-												<td style="text-align:right"><?= number_format($record["balance_amt"], 2) ?></td>
+                                               <td style="text-align:right"><?= format_amount($record["total_fees"]) ?></td>
+												<td style="text-align:right"><?= format_amount($record["discount_amt"]) ?></td>
+												<td style="text-align:right"><?= format_amount($record["net_fees"]) ?></td>
+												<td style="text-align:right"><?= format_amount($record["receipt_amt"]) ?></td>
+												<td style="text-align:right"><?= format_amount($record["balance_amt"]) ?></td>
 
                                             </tr>
                                         <?php endforeach; ?>
@@ -287,11 +287,11 @@ $balance_amt_sum = 0;
                                             <td></td>
                                             <td></td>
         <td colspan="" style="text-align: right;"><strong>Grand Total</strong></td>
-        <td style="text-align:right"><strong><?= number_format($total_fees_sum, 2) ?></strong></td>
-        <td style="text-align:right"><strong><?= number_format($discount_amt_sum, 2) ?></strong></td>
-        <td style="text-align:right"><strong><?= number_format($net_fees_sum, 2) ?></strong></td>
-        <td style="text-align:right"><strong><?= number_format($receipt_amt_sum, 2) ?></strong></td>
-        <td style="text-align:right"><strong><?= number_format($balance_amt_sum, 2) ?></strong></td>
+        <td style="text-align:right"><strong><?= format_amount($total_fees_sum) ?></strong></td>
+        <td style="text-align:right"><strong><?= format_amount($discount_amt_sum) ?></strong></td>
+        <td style="text-align:right"><strong><?= format_amount($net_fees_sum) ?></strong></td>
+        <td style="text-align:right"><strong><?= format_amount($receipt_amt_sum) ?></strong></td>
+        <td style="text-align:right"><strong><?= format_amount($balance_amt_sum) ?></strong></td>
     </tr>
                                         <?php else: ?>
                                             <tr><td colspan="21" class="text-center">No records found</td></tr>

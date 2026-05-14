@@ -1278,7 +1278,7 @@ class Report extends Admin_Controller
 			$selectedFeeHead = $this->session->userdata('income_feehead') ?? [];
 		}
 
-		// 🔥 IMPORTANT: always send to view
+		// IMPORTANT: always send to view
 		$data['filters'] = $filters;
 		$data['selectedFeeHead'] = $selectedFeeHead;
 
@@ -1873,6 +1873,36 @@ class Report extends Admin_Controller
         $this->load->view('reports/overall_collection_report', $data);
         $this->load->view('layout/footer', $data);
     }
+	public function student_transport_report()
+    {
+
+        $this->session->set_userdata('top_menu', 'Reports');
+        $this->session->set_userdata('sub_menu', 'Reports/finance');
+        $this->session->set_userdata('subsub_menu', 'Reports/finance/student_transport_report');
+        $data['searchlist']  = $this->customlib->get_searchtype();
+        $data['date_type']   = $this->customlib->date_type();
+        $data['date_typeid'] = '';
+        
+		$class = $this->class_model->get();
+        $data['classlist'] = $class;
+		$this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
+        $data['routes'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
+		if ($this->form_validation->run() == false) {
+			
+        } else {
+			$selectedClass = $_POST['class_id'] ?? [];
+			$selectedSection = $_POST['section_id'] ?? [];
+			$selectedRoutes = $_POST['routes'] ?? [];
+		   
+            $data['resultlist']  = $this->student_model->searchByClassSectionRouteReport($selectedClass, $selectedSection, $selectedRoutes);
+			// echo'<pre>'; print_r($data['resultlist']);  die;
+        // end paginate
+		}
+        $this->load->view('layout/header', $data);
+        $this->load->view('reports/student_transport_report', $data);
+        $this->load->view('layout/footer', $data);
+    }
 
     public function student_profile()
     {
@@ -1920,7 +1950,7 @@ class Report extends Admin_Controller
 
 			$conditions = [];
 
-			// ✅ Apply only if not 'all'
+			// Apply only if not 'all'
 			if ($class_id !='' && $class_id != 'all') {
 				$conditions[] = "classes.id = '".$class_id."'";
 			}

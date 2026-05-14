@@ -34,7 +34,9 @@
 						
 						<li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/finance/discountedstudent'); ?>"><a href="<?php echo base_url(); ?>admin/route/discountedstudent"><i class="fa fa-file-text-o"></i> List of Discounted Students</a></li>
 						
-						<li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/finance/overall_collection_report'); ?>"><a href="<?php echo base_url(); ?>report/overall-collection-report"><i class="fa fa-file-text-o"></i> Overall collection report</a></li>
+						<li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/finance/overall_collection_report'); ?>"><a href="<?php echo base_url(); ?>report/overall-collection-report"><i class="fa fa-file-text-o"></i> Overall collection Report</a></li>
+						
+						<li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/finance/student_transport_report'); ?>"><a href="<?php echo base_url(); ?>report/student_transport_report"><i class="fa fa-file-text-o"></i> Student Transport Report</a></li>
 
                 </ul>
             </div>
