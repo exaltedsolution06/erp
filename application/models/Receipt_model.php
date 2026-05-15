@@ -1501,8 +1501,8 @@ class Receipt_model extends CI_Model {
             students.guardian_email,
             users.username,
             users.password,
-            students.dis_reason,
-            students.dis_note,
+            student_session.dis_reason,
+            student_session.dis_note,
             students.app_key,
             students.parent_app_key
         ');
@@ -1649,8 +1649,8 @@ class Receipt_model extends CI_Model {
             students.guardian_email,
             users.username,
             users.password,
-            students.dis_reason,
-            students.dis_note,
+            student_session.dis_reason,
+            student_session.dis_note,
             students.app_key,
             students.parent_app_key,
 			SUM(receipts.receipt_amt) as total_receipt_amt
@@ -1787,8 +1787,8 @@ class Receipt_model extends CI_Model {
             students.guardian_email,
             users.username,
             users.password,
-            students.dis_reason,
-            students.dis_note,
+            student_session.dis_reason,
+            student_session.dis_note,
             students.app_key,
             students.parent_app_key
         ');

@@ -1016,6 +1016,12 @@ class Cron extends CI_Controller
 				'fee_category_id' => $student_new_cat_id,
 				'transport_fees' => $val['transport_fees'],
 				'fees_discount' => $fees_discount,
+				'is_active' => $val['is_active'],
+				'disable_at' => $val['disable_at'],
+				'dis_reason' => $val['dis_reason'],
+				'dis_note' => $val['dis_note'],
+				'is_alumni' => $val['is_alumni'],
+				'default_login' => $val['default_login'],
 			);
 			
 			$this->student_model->add_student_session($data_new);
