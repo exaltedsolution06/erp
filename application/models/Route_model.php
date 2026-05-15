@@ -121,7 +121,7 @@ class Route_model extends MY_Model {
                 $this->db->where_in("student_session.class_id", "");
             }
         }
-        $this->db->where('students.is_active', 'yes');
+        $this->db->where('student_session.is_active', 'yes');
         $query = $this->db->select('students.firstname,students.middlename,students.id,students.admission_no,students.father_name,students.mother_name, students.father_phone,students.mother_phone,classes.class,sections.section,students.lastname,students.mobileno,transport_route.route_title,transport_route.fare,vehicles.vehicle_no,vehicles.vehicle_model,vehicles.driver_name,vehicles.driver_contact')->join('student_session', 'students.id = student_session.student_id')->join('sections', 'sections.id = student_session.section_id')->join('classes', 'classes.id = student_session.class_id')->join("vehicle_routes", "student_session.route_id = vehicle_routes.id")->join("vehicles", "vehicle_routes.vehicle_id = vehicles.id")->join("transport_route", "vehicle_routes.route_id = transport_route.id")->where('student_session.session_id', $this->current_session)->get("students");
         // $query = $this->db->select('students.firstname,students.id, students.father_name,students.mother_name, students.father_phone,students.mother_phone, students.admission_no,students.lastname,students.mobileno,transport_route.route_title,transport_route.fare,vehicles.vehicle_no,vehicles.vehicle_model,vehicles.driver_name,vehicles.driver_contact')->join("vehicle_routes", "students.vehroute_id = vehicle_routes.id")->join("vehicles", "vehicle_routes.vehicle_id = vehicles.id")->join("transport_route", "vehicle_routes.route_id = transport_route.id")->where("students.is_active", "yes")->get("students");
         //  echo $this->db->last_query();
@@ -147,7 +147,7 @@ class Route_model extends MY_Model {
             $this->db->where('vehicles.vehicle_no', $vehicle_no)->where('student_session.session_id', $this->current_session);
         }
 
-        $this->db->where('students.is_active', 'yes');
+        $this->db->where('student_session.is_active', 'yes');
         $query = $this->db->select('students.firstname,students.middlename,students.id,students.admission_no,students.father_name,students.mother_name, students.father_phone,students.mother_phone,classes.class,sections.section,students.lastname,students.mobileno,transport_route.route_title,transport_route.fare,vehicles.vehicle_no,vehicles.vehicle_model,vehicles.driver_name,vehicles.driver_contact')->join('student_session', 'students.id = student_session.student_id')->join('sections', 'sections.id = student_session.section_id')->join('classes', 'classes.id = student_session.class_id')->join("vehicle_routes", "student_session.route_id = vehicle_routes.id")->join("vehicles", "vehicle_routes.vehicle_id = vehicles.id")->join("transport_route", "vehicle_routes.route_id = transport_route.id")->get("students");
 
 

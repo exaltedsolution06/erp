@@ -930,7 +930,7 @@ class Cron extends CI_Controller
 		$this->db->where('student_session.session_id', $classes['current_session_id']);
 		$this->db->where('student_session.class_id', $classes['current_class_id']);
 		if($classes['discontinue_next_session'] == 0){
-			$this->db->where('students.is_active', 'yes');
+			$this->db->where('student_session.is_active', 'yes');
 		}
 		$qr = $this->db->get();
 		

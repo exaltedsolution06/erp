@@ -219,7 +219,7 @@ class Designtc_model extends MY_Model {
             students.guardian_relation,
             students.guardian_phone,
             students.guardian_address,
-            students.is_active,
+            student_session.is_active,
             students.created_at,
             students.updated_at,
             students.father_name,

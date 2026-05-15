@@ -54,7 +54,7 @@ class User extends Student_Controller
 
             $student_session_id = $this->input->post('clschg');
 
-            $student        = $this->student_model->getByStudentSession($student_session_id);
+            $student        = $this->student_model->getByStudentSessionId($student_session_id);
             $logged_In_User = $this->customlib->getLoggedInUserData();
 
             $logged_In_User['student_id'] = $student['id'];
@@ -63,6 +63,17 @@ class User extends Student_Controller
             $student_current_class = array('class_id' => $student['class_id'], 'section_id' => $student['section_id'], 'student_session_id' => $student['student_session_id']);
             $this->session->set_userdata('current_class', $student_current_class);
 
+			//Set session By selected class
+			$session       = $student['session_id'];
+			$session_array = $this->session->has_userdata('session_array');
+			if ($session_array) {
+				$this->session->unset_userdata('session_array');
+			}
+			$session       = $this->session_model->get($session);
+			$session_array = array('session_id' => $session['id'], 'session' => $session['session']);
+			$this->session->set_userdata('session_array', $session_array);
+			//Set session By selected class
+			
             redirect('user/user/dashboard');
         }
 
@@ -79,8 +90,8 @@ class User extends Student_Controller
         $student_id            = $this->customlib->getStudentSessionUserID();
         $student_current_class = $this->customlib->getStudentCurrentClsSection();
 
-        $student = $this->student_model->getStudentByClassSectionID($student_current_class->class_id, $student_current_class->section_id, $student_id);
-
+        $student = $this->student_model->getStudentByClassSection($student_current_class->class_id, $student_current_class->section_id, $student_id);
+		
         $data = array();
         if (!empty($student)) {
 

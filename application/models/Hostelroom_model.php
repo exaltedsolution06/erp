@@ -148,7 +148,7 @@ class Hostelroom_model extends MY_Model
                 $this->db->where_in("student_session.class_id", "");
             }
         }
-        $query = $this->db->select('students.firstname,students.middlename,students.id as sid,students.guardian_phone,students.admission_no,classes.class,sections.section,students.lastname,students.mobileno,hostel_rooms.*,hostel.hostel_name,room_types.room_type')->join('student_session', 'students.id = student_session.student_id')->join('sections', 'sections.id = student_session.section_id')->join('classes', 'classes.id = student_session.class_id')->join('hostel_rooms', 'hostel_rooms.id = students.hostel_room_id')->join('hostel', 'hostel.id = hostel_rooms.hostel_id')->join('room_types', 'room_types.id = hostel_rooms.room_type_id')->where('students.is_active', 'yes')->get("students");
+        $query = $this->db->select('students.firstname,students.middlename,students.id as sid,students.guardian_phone,students.admission_no,classes.class,sections.section,students.lastname,students.mobileno,hostel_rooms.*,hostel.hostel_name,room_types.room_type')->join('student_session', 'students.id = student_session.student_id')->join('sections', 'sections.id = student_session.section_id')->join('classes', 'classes.id = student_session.class_id')->join('hostel_rooms', 'hostel_rooms.id = students.hostel_room_id')->join('hostel', 'hostel.id = hostel_rooms.hostel_id')->join('room_types', 'room_types.id = hostel_rooms.room_type_id')->where('student_session.is_active', 'yes')->get("students");
 
         return $query->result_array();
     }
@@ -158,9 +158,9 @@ class Hostelroom_model extends MY_Model
 
         if (!empty($hostel_name)) {
 
-            $condition = array('student_session.section_id' => $section_id, 'student_session.class_id' => $class_id, 'hostel.hostel_name' => $hostel_name, 'students.is_active' => 'yes');
+            $condition = array('student_session.section_id' => $section_id, 'student_session.class_id' => $class_id, 'hostel.hostel_name' => $hostel_name, 'student_session.is_active' => 'yes');
         } else {
-            $condition = array('student_session.section_id' => $section_id, 'student_session.class_id' => $class_id, 'students.is_active' => 'yes');
+            $condition = array('student_session.section_id' => $section_id, 'student_session.class_id' => $class_id, 'student_session.is_active' => 'yes');
         }
         $query = $this->db->select('students.firstname,students.middlename,students.id as sid, students.admission_no,,students.guardian_phone,classes.class,sections.section,students.lastname,students.mobileno,hostel_rooms.*,hostel.hostel_name,room_types.room_type')->join('student_session', 'students.id = student_session.student_id')->join('sections', 'sections.id = student_session.section_id')->join('classes', 'classes.id = student_session.class_id')->join('hostel_rooms', 'hostel_rooms.id = students.hostel_room_id')->join('hostel', 'hostel.id = hostel_rooms.hostel_id')->join('room_types', 'room_types.id = hostel_rooms.room_type_id')->where($condition)->get("students");
 

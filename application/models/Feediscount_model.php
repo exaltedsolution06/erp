@@ -186,7 +186,7 @@ class Feediscount_model extends MY_Model {
         if ($rte != null) {
             $sql .= " AND `students`.`rte` =" . $this->db->escape($rte);
         }
-        $sql .= " AND students.is_active='yes'";
+        $sql .= " AND student_session.is_active='yes'";
         $sql .= " ORDER BY `students`.`id`";
 
         $query = $this->db->query($sql);

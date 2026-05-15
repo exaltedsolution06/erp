@@ -148,7 +148,7 @@ class Common extends Public_Controller
         $session_array = array('session_id' => $session['id'], 'session' => $session['session']);
         $this->session->set_userdata('session_array', $session_array);
 
-        if ($role == "student") {
+        if ($role == "student" || $role == "parent") {
             $session                 = $this->input->post('popup_session');
             $session_Array           = $this->session->userdata('student');
             $student_id              = $session_Array['student_id'];

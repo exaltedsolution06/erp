@@ -143,7 +143,7 @@ class Homework_model extends MY_model {
     }
 
     public function getStudents($id) {
-        $sql = "SELECT IFNULL(homework_evaluation.id,0) as homework_evaluation_id,student_session.*,students.firstname,students.middlename,students.lastname,students.admission_no from student_session inner JOIN (SELECT homework.id as homework_id,homework.class_id,homework.section_id,homework.session_id FROM `homework` WHERE id= " . $this->db->escape($id) . " ) as home_work on home_work.class_id=student_session.class_id and home_work.section_id=student_session.section_id and home_work.session_id=student_session.session_id inner join students on students.id=student_session.student_id and students.is_active='yes' left join homework_evaluation on homework_evaluation.student_session_id=student_session.id  and students.is_active='yes' and homework_evaluation.homework_id=" . $this->db->escape($id) . "   order by students.id desc";
+        $sql = "SELECT IFNULL(homework_evaluation.id,0) as homework_evaluation_id,student_session.*,students.firstname,students.middlename,students.lastname,students.admission_no from student_session inner JOIN (SELECT homework.id as homework_id,homework.class_id,homework.section_id,homework.session_id FROM `homework` WHERE id= " . $this->db->escape($id) . " ) as home_work on home_work.class_id=student_session.class_id and home_work.section_id=student_session.section_id and home_work.session_id=student_session.session_id inner join students on students.id=student_session.student_id and student_session.is_active='yes' left join homework_evaluation on homework_evaluation.student_session_id=student_session.id  and student_session.is_active='yes' and homework_evaluation.homework_id=" . $this->db->escape($id) . "   order by students.id desc";
 
         // $sql = "select students.id,students.firstname,students.lastname,students.admission_no from students where students.id in (select student_session.student_id from student_session where student_session.class_id = " . $this->db->escape($class_id) . " and student_session.section_id = " . $this->db->escape($section_id) . " GROUP by student_session.student_id and student_session.session_id=$this->current_session) and students.is_active = 'yes'";
         $query = $this->db->query($sql);
@@ -255,7 +255,7 @@ class Homework_model extends MY_model {
 
     public function count_students($class_id, $section_id) {
 
-        $query = $this->db->select("student_session.student_id")->join("student_session", "students.id = student_session.student_id")->where(array('student_session.class_id' => $class_id, 'student_session.section_id' => $section_id, 'students.is_active' => "yes", 'student_session.session_id' => $this->current_session))->group_by("student_session.student_id")->get("students");
+        $query = $this->db->select("student_session.student_id")->join("student_session", "students.id = student_session.student_id")->where(array('student_session.class_id' => $class_id, 'student_session.section_id' => $section_id, 'student_session.is_active' => "yes", 'student_session.session_id' => $this->current_session))->group_by("student_session.student_id")->get("students");
 
         return $query->num_rows();
     }
@@ -265,7 +265,7 @@ class Homework_model extends MY_model {
 
         $array['homework.id'] = $id;
         $array['homework.session_id'] = $this->current_session;
-        $array['students.is_active'] = 'yes';
+        $array['student_session.is_active'] = 'yes';
 
         $query = $this->db->select("count(*) as total")->join("homework_evaluation", "homework_evaluation.homework_id = homework.id")->join('student_session', 'student_session.id=homework_evaluation.student_session_id')->join('students', 'students.id=student_session.student_id')->where($array)->get("homework");
         return $query->row_array();

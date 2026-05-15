@@ -42,6 +42,7 @@ class Session_model extends MY_Model {
         $this->db->select('sessions.*')->from('sessions');
         $this->db->join('student_session', 'sessions.id = student_session.session_id');
         $this->db->where('student_session.student_id', $student_id);
+        $this->db->where('student_session.is_active', 'yes');
         $this->db->group_by('student_session.session_id');
         $this->db->order_by('sessions.id');
         $query = $this->db->get();

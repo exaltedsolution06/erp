@@ -1,0 +1,4 @@
+Examgroupstudent_model.php > searchExamGroupStudentAttempted1
+Examgroupstudent_model.php > searchExamGroupStudentAttempted
+
+Examstudent_model.php > getBatchStudentDetail

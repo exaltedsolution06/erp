@@ -83,7 +83,7 @@ class Studentsession_model extends CI_Model
 
     public function getTotalStudentBySession()
     {
-        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($this->current_session) . " and students.is_active = 'yes' ";
+        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($this->current_session) . " and student_session.is_active = 'yes' ";
         $query = $this->db->query($query);
         return $query->row();
     }
@@ -153,7 +153,8 @@ class Studentsession_model extends CI_Model
     {
         $this->db->select('student_session.*,classes.class,sections.section,student_session.id as `student_session_id`')->from('student_session');
         $this->db->where('student_id', $student_id);
-        $this->db->where('student_session.session_id', $this->current_session);
+        // $this->db->where('student_session.session_id', $this->current_session);
+        $this->db->where('student_session.is_active', 'yes');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
         $this->db->order_by('id');
@@ -167,9 +168,9 @@ class Studentsession_model extends CI_Model
         $this->db->select('student_session.*,classes.class,sections.section')->from('student_session');
         $this->db->where('student_id', $student_id);
         if ($enable_session == null) {
-            $this->db->where('student_sessionsession_id', $this->current_session);
+            $this->db->where('student_session.session_id', $this->current_session);
         } else {
-            $this->db->where('student_sessionsession_id', $enable_session);
+            $this->db->where('student_session.session_id', $enable_session);
         }
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('sections', 'sections.id = student_session.section_id');
@@ -180,27 +181,27 @@ class Studentsession_model extends CI_Model
 	
 	public function getTotalMaleStudentBySession()
     {
-        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($this->current_session) . " and students.is_active = 'yes' and  students.gender = 'Male' ";
+        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($this->current_session) . " and student_session.is_active = 'yes' and  students.gender = 'Male' ";
         $query = $this->db->query($query);
         return $query->row();
     }
 	
 	public function getTotalFemaleStudentBySession()
     {
-        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($this->current_session) . " and students.is_active = 'yes' and  students.gender = 'Female' ";
+        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($this->current_session) . " and student_session.is_active = 'yes' and  students.gender = 'Female' ";
         $query = $this->db->query($query);
         return $query->row();
     }
 	public function getTotalMaleStudentBySessionID($session_id)
     {
-        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($session_id) . " and students.is_active = 'yes' and  students.gender = 'Male' ";
+        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($session_id) . " and student_session.is_active = 'yes' and  students.gender = 'Male' ";
         $query = $this->db->query($query);
         return $query->row();
     }
 	
 	public function getTotalFemaleStudentBySessionID($session_id)
     {
-        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($session_id) . " and students.is_active = 'yes' and  students.gender = 'Female' ";
+        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($session_id) . " and student_session.is_active = 'yes' and  students.gender = 'Female' ";
         $query = $this->db->query($query);
         return $query->row();
     }

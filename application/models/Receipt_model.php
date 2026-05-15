@@ -231,7 +231,7 @@ class Receipt_model extends CI_Model {
             students.guardian_relation,
             students.guardian_phone,
             students.guardian_address,
-            students.is_active,
+            student_session.is_active,
             students.created_at,
             students.updated_at,
             students.father_name,
@@ -251,7 +251,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('users', 'users.user_id = students.id', 'left');
 
         $this->db->where('student_session.session_id', $this->current_session);
-        $this->db->where('students.is_active', 'yes');
+        $this->db->where('student_session.is_active', 'yes');
         $this->db->where('users.role', 'student');
 
         // Filter by student ID if provided
@@ -343,7 +343,7 @@ class Receipt_model extends CI_Model {
             students.guardian_relation,
             students.guardian_phone,
             students.guardian_address,
-            students.is_active,
+            student_session.is_active,
             students.created_at,
             students.updated_at,
             students.father_name,
@@ -431,7 +431,7 @@ class Receipt_model extends CI_Model {
             students.guardian_relation,
             students.guardian_phone,
             students.guardian_address,
-            students.is_active,
+            student_session.is_active,
             students.created_at,
             students.updated_at,
             students.father_name,
@@ -535,7 +535,7 @@ class Receipt_model extends CI_Model {
             students.guardian_relation,
             students.guardian_phone,
             students.guardian_address,
-            students.is_active,
+            student_session.is_active,
             students.created_at,
             students.updated_at,
             students.father_name,
@@ -565,6 +565,7 @@ class Receipt_model extends CI_Model {
 			$this->db->where('mode', $mode);
 		}
 		$this->db->where('deleted_receipts.session_id', $this->current_session);
+		$this->db->where('student_session.session_id', $this->current_session);
 
         $this->db->group_by('deleted_receipts.receipt_no');
         //$this->db->order_by('deleted_receipts.id', 'DESC');
@@ -662,7 +663,7 @@ class Receipt_model extends CI_Model {
             students.guardian_relation,
             students.guardian_phone,
             students.guardian_address,
-            students.is_active,
+            student_session.is_active,
             students.created_at,
             students.updated_at,
             students.father_name,
@@ -750,7 +751,7 @@ class Receipt_model extends CI_Model {
             students.guardian_relation,
             students.guardian_phone,
             students.guardian_address,
-            students.is_active,
+            student_session.is_active,
             students.created_at,
             students.updated_at,
             students.father_name,
@@ -904,7 +905,7 @@ class Receipt_model extends CI_Model {
             students.guardian_relation,
             students.guardian_phone,
             students.guardian_address,
-            students.is_active,
+            student_session.is_active,
             students.created_at,
             students.updated_at,
             students.father_name,
@@ -924,6 +925,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('users', 'users.user_id = students.id', 'left');
         $this->db->where('receipts.student_id', $id);
 		$this->db->where('receipts.session_id', $this->current_session);
+		$this->db->where('student_session.session_id', $this->current_session);
         $this->db->group_by('receipts.receipt_no');
         $this->db->order_by('receipts.id', 'DESC');
         $this->db->limit($limit, $offset);
@@ -932,7 +934,7 @@ class Receipt_model extends CI_Model {
         return $query->result();
 
 
-        // $this->db->select('receipts.*,classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,  students.middlename,students.lastname,students.image,    students.mobileno,students.vehroute_id, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.app_key ,students.guardian_relation,students.guardian_phone,students.guardian_address,students.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender,users.id as `user_tbl_id`,users.username,users.password as `user_tbl_password`,users.is_active as `user_tbl_active`')->from('receipts');
+        // $this->db->select('receipts.*,classes.id AS `class_id`,student_session.id as student_session_id,students.id,classes.class,sections.id AS `section_id`,sections.section,students.id,students.admission_no , students.roll_no,students.admission_date,students.firstname,  students.middlename,students.lastname,students.image,    students.mobileno,students.vehroute_id, students.email ,students.state ,   students.city , students.pincode ,     students.religion,     students.dob ,students.current_address,    students.permanent_address,IFNULL(students.category_id, 0) as `category_id`,IFNULL(categories.category, "") as `category`,students.adhar_no,students.samagra_id,students.bank_account_no,students.bank_name, students.ifsc_code , students.guardian_name , students.app_key ,students.guardian_relation,students.guardian_phone,students.guardian_address,student_session.is_active ,students.created_at ,students.updated_at,students.father_name,students.rte,students.gender,users.id as `user_tbl_id`,users.username,users.password as `user_tbl_password`,users.is_active as `user_tbl_active`')->from('receipts');
         // $this->db->join('students', 'students.id = receipts.student_id');
         // $this->db->join('student_session', 'student_session.student_id = students.id');
         // $this->db->join('classes', 'student_session.class_id = classes.id');
@@ -1004,7 +1006,7 @@ class Receipt_model extends CI_Model {
             MAX(students.guardian_relation) as guardian_relation,
             MAX(students.guardian_phone) as guardian_phone,
             MAX(students.guardian_address) as guardian_address,
-            MAX(students.is_active) as student_active,
+            MAX(student_session.is_active) as student_active,
             MAX(students.created_at) as student_created_at,
             MAX(students.updated_at) as student_updated_at,
             MAX(students.father_name) as father_name,
@@ -1113,7 +1115,7 @@ class Receipt_model extends CI_Model {
             students.guardian_relation,
             students.guardian_phone,
             students.guardian_address,
-            students.is_active,
+            student_session.is_active,
             students.created_at,
             students.updated_at,
             students.father_name,
@@ -1188,7 +1190,7 @@ class Receipt_model extends CI_Model {
             MAX(students.guardian_relation) as guardian_relation,
             MAX(students.guardian_phone) as guardian_phone,
             MAX(students.guardian_address) as guardian_address,
-            MAX(students.is_active) as student_active,
+            MAX(student_session.is_active) as student_active,
             MAX(students.created_at) as student_created_at,
             MAX(students.updated_at) as student_updated_at,
             MAX(students.father_name) as father_name,
@@ -1290,7 +1292,7 @@ class Receipt_model extends CI_Model {
             students.guardian_relation,
             students.guardian_phone,
             students.guardian_address,
-            students.is_active,
+            student_session.is_active,
             students.created_at,
             students.updated_at,
             students.father_name,
@@ -1481,7 +1483,7 @@ class Receipt_model extends CI_Model {
             students.guardian_relation,
             students.guardian_phone,
             students.guardian_address,
-            students.is_active,
+            student_session.is_active,
             students.created_at,
             students.updated_at,
             students.father_name,
@@ -1541,7 +1543,7 @@ class Receipt_model extends CI_Model {
         if (!is_null($id)) {
             $this->db->where('students.id', $id);
         } else {
-            $this->db->where('students.is_active', 'yes');
+            $this->db->where('student_session.is_active', 'yes');
             $this->db->order_by('students.id', 'desc');
 
             if ($limit !== null && $offset !== null) {
@@ -1629,7 +1631,7 @@ class Receipt_model extends CI_Model {
             students.guardian_relation,
             students.guardian_phone,
             students.guardian_address,
-            students.is_active,
+            student_session.is_active,
             students.created_at,
             students.updated_at,
             students.father_name,
@@ -1682,7 +1684,7 @@ class Receipt_model extends CI_Model {
         $this->db->where('student_session.session_id', $this->current_session);
 		$this->db->where('receipts.session_id', $this->current_session);
         $this->db->where('users.role', 'student');
-		$this->db->where('students.is_active', 'yes');
+		$this->db->where('student_session.is_active', 'yes');
 		$this->db->group_by('students.id');
 		$this->db->order_by('students.id', 'desc');
 
@@ -1767,7 +1769,7 @@ class Receipt_model extends CI_Model {
             students.guardian_relation,
             students.guardian_phone,
             students.guardian_address,
-            students.is_active,
+            student_session.is_active,
             students.created_at,
             students.updated_at,
             students.father_name,
@@ -1827,7 +1829,7 @@ class Receipt_model extends CI_Model {
         if (!is_null($id)) {
             $this->db->where('students.id', $id);
         } else {
-            $this->db->where('students.is_active', 'yes');
+            $this->db->where('student_session.is_active', 'yes');
             $this->db->order_by('students.id', 'desc');
         }
 
@@ -1858,7 +1860,7 @@ class Receipt_model extends CI_Model {
             $this->db->where_in('student_session.route_id', $selectedroutes);
         }
 
-        $this->db->where('students.is_active', 'yes');
+        $this->db->where('student_session.is_active', 'yes');
         $this->db->where('users.role', 'student');
 		
 		$this->db->where('student_session.session_id', $this->current_session);
@@ -1954,7 +1956,7 @@ class Receipt_model extends CI_Model {
             students.guardian_relation,
             students.guardian_phone,
             students.guardian_address,
-            students.is_active,
+            student_session.is_active,
             students.created_at,
             students.updated_at,
             students.father_name,
