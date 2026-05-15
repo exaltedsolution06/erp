@@ -160,5 +160,24 @@ class Common extends Public_Controller
 
         echo json_encode(array('status' => 1, 'message' => 'Session changed successfully', 'redirect_url' => $redirect_url));
     }
+	public function update_student_session_active()
+    {
+		$query = $this->db->query("
+			UPDATE student_session ss
+			JOIN students s ON s.id = ss.student_id
+			SET 
+				ss.is_active = s.is_active,
+				ss.dis_reason = s.dis_reason,
+				ss.dis_note = s.dis_note,
+				ss.disable_at = s.disable_at
+		");
+
+		if($query){
+			echo "Updated Successfully";
+		}else{
+			echo "<pre>";
+			print_r($this->db->error());
+		}
+	}
 
 }

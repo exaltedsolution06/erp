@@ -566,6 +566,7 @@ class Receipt_model extends CI_Model {
 		}
 		$this->db->where('deleted_receipts.session_id', $this->current_session);
 		$this->db->where('student_session.session_id', $this->current_session);
+		// $this->db->where('student_session.is_active', 'yes');
 
         $this->db->group_by('deleted_receipts.receipt_no');
         //$this->db->order_by('deleted_receipts.id', 'DESC');

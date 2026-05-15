@@ -21,4 +21,5 @@ Script url for new server
 http://localhost/erp/script
 http://localhost/erp/modulepermission
 http://localhost/erp/usermodulepermission
+http://localhost/erp/common/update_student_session_active
 
