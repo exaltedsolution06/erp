@@ -641,7 +641,7 @@ class Examresult extends Admin_Controller {
 
 
 
-            $sql="SELECT *,S.id as student_id FROM students S LEFT JOIN student_session SS ON SS.student_id=S.id  LEFT JOIN fee_groups C ON C.id=SS.fee_category_id WHERE SS.session_id='$session_id' and SS.class_id ='$class_id' and SS.section_id ='$section_id' ORDER BY S.firstname asc";
+            $sql="SELECT *,S.id as student_id FROM students S LEFT JOIN student_session SS ON SS.student_id=S.id  LEFT JOIN fee_groups C ON C.id=SS.fee_category_id WHERE SS.session_id='$session_id' and SS.class_id ='$class_id' and SS.section_id ='$section_id' and SS.is_active ='yes' ORDER BY S.firstname asc";
         
 
           
