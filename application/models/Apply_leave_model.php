@@ -57,7 +57,7 @@ class apply_leave_model extends MY_Model {
         $this->db->select('student_applyleave.*,students.firstname,students.middlename,students.lastname,staff.name as staff_name,staff.surname,classes.id as class_id,sections.id as section_id,classes.class,sections.section')->from('student_applyleave')->join('student_session', 'student_session.id = student_applyleave.student_session_id')->join('students', 'students.id=student_session.student_id', 'inner')->join('staff', 'staff.id=student_applyleave.approve_by', 'left')->join('classes', 'student_session.class_id = classes.id')->join('sections', 'sections.id = student_session.section_id');
         $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('student_session.id', $student_session_id);
-        $this->db->where('student_session.is_active', 'yes');
+        // $this->db->where('student_session.is_active', 'yes');
         $query = $this->db->get();
         return $query->result_array();
     }

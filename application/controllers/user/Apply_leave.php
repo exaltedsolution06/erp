@@ -21,7 +21,8 @@ class Apply_leave extends Student_Controller {
         $student_id = $this->customlib->getStudentSessionUserID();
         $student = $this->student_model->get($student_id);
         $data['results'] = $this->apply_leave_model->get_student($student_session_id);
-        $data['studentclasses'] = $this->studentsession_model->searchMultiClsSectionByStudent($student_id);
+        $data['studentclasses'] = $this->studentsession_model->searchMultiClsSectionByStudentSession($student_id);
+		// echo '<pre>';print_r($data['studentclasses']);exit;
         $this->load->view('layout/student/header', $data);
         $this->load->view('user/apply_leave/apply_leave', $data);
         $this->load->view('layout/student/footer', $data);

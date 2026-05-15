@@ -161,6 +161,18 @@ class Studentsession_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    public function searchMultiClsSectionByStudentSession($student_id)
+    {
+        $this->db->select('student_session.*,classes.class,sections.section,student_session.id as `student_session_id`')->from('student_session');
+        $this->db->where('student_id', $student_id);
+        $this->db->where('student_session.session_id', $this->current_session);
+        // $this->db->where('student_session.is_active', 'yes');
+        $this->db->join('classes', 'student_session.class_id = classes.id');
+        $this->db->join('sections', 'sections.id = student_session.section_id');
+        $this->db->order_by('id');
+        $query = $this->db->get();
+        return $query->result();
+    }
 
     public function searchActiveClassSectionStudent($student_id, $enable_session = null)
     {
