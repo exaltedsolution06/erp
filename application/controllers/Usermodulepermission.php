@@ -30,6 +30,10 @@ class Usermodulepermission extends Public_Controller
 				'short_code' => 'fees',
 			],
 			[
+				'module' => 'Due Fees',
+				'short_code' => 'due_fees',
+			],
+			[
 				'module' => 'Class Timetable',
 				'short_code' => 'class_timetable',
 			],

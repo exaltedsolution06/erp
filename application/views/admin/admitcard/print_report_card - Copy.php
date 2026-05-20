@@ -413,11 +413,9 @@
 
 								<?php 
 								$array1=[];
-								// $maxMarkShowArray1=[];
 								$aadi=0;
 								$finalTotal=0;
 								$maxMark=[];
-								// $maxMarkShow=[];
 								$minMark=[];
 								$maxMark_op=[];
 								
@@ -460,7 +458,6 @@
 									$max_marks1 = $max_marks1_op = 0;
 									$total1 = $total1_op = 0;
 									$array = $array_op = [];
-									// $maxMarkShowArray = [];
 									if($rowdata->type_one != 'optional'){
 								?>
 								
@@ -484,7 +481,6 @@
 
 
 												$max_marks1 = 0;
-												$max_marks1_show = 0;
 												$term_html = '';
 												$term_array = [];
 												$medical_leave = 0;
@@ -495,8 +491,6 @@
 		$resultData=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_batch_exam_subjects.max_marks FROM exam_group_exam_results left JOIN exam_group_class_batch_exam_subjects ON exam_group_class_batch_exam_subjects.id=exam_group_exam_results.exam_group_class_batch_exam_subject_id left JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.id=exam_group_exam_results.`exam_group_class_batch_exam_student_id` WHERE exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id='".$type->id."' and exam_group_class_batch_exam_students.exam_group_class_batch_exam_id='".$type->id."' and exam_group_class_batch_exam_subjects.subject_id='".$rowdata->id."' and exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result()[0];
 
 													$min_marks+=$maxMarks->min_marks;
-													$max_marks1_show+=$maxMarks->max_marks;
-													// array_push($maxMarkShow,$maxMarks->max_marks);
 													if($resultData->attendence != 'm_leave'){
 													array_push($maxMark,$maxMarks->max_marks);
 													array_push($minMark,$maxMarks->min_marks);
@@ -526,12 +520,12 @@
 													$total+=$resultData->get_marks; 
 												}
 												$total1+=$total; 
-												array_push($array, $max_marks1_show);
+											
 											if($desc->max_marks_shift_left==1){
 												if(isset($saved_max_marks_json[$exam_group_id]) && $saved_max_marks_json[$exam_group_id] == 1){
-													// array_push($array,$max_marks1);
+													array_push($array,$max_marks1);
 												?>
-												<td style="width:100px"><strong><?php echo format_amount($max_marks1_show); ?></strong></td>
+												<td style="width:100px"><strong><?php echo format_amount($max_marks1); ?></strong></td>
 												<?php
 												}
 											}
@@ -545,9 +539,9 @@
 											}
 											if($desc->max_marks_shift_left==0){
 												if(isset($saved_max_marks_json[$exam_group_id]) && $saved_max_marks_json[$exam_group_id] == 1){
-													// array_push($array,$max_marks1);
+													array_push($array,$max_marks1);
 												?>
-												<td style="width:100px"><strong><?php echo format_amount($max_marks1_show); ?></strong></td>
+												<td style="width:100px"><strong><?php echo format_amount($max_marks1); ?></strong></td>
 												<?php
 												}
 											}
@@ -635,7 +629,6 @@
 										$max_marks=0;
 										$finalTotal+=$total1;
 										array_push($array1,$array);	
-										// array_push($maxMarkShowArray1,$maxMarkShowArray);	
 									}else{
 										ob_start();
 										$optional_html = '';
@@ -658,7 +651,6 @@
 											
 
 												$max_marks1_op = 0;
-												$max_marks1_show_op = 0;
 												$term_html_op = '';
 												$medical_leave_op = 0;
 												foreach($exam_type_op as $type_op){
@@ -667,8 +659,7 @@
 													
 								
 								
-		$resultData_op=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_batch_exam_subjects.max_marks FROM exam_group_exam_results left JOIN exam_group_class_batch_exam_subjects ON exam_group_class_batch_exam_subjects.id=exam_group_exam_results.exam_group_class_batch_exam_subject_id left JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.id=exam_group_exam_results.`exam_group_class_batch_exam_student_id` WHERE exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id='".$type_op->id."' and exam_group_class_batch_exam_students.exam_group_class_batch_exam_id='".$type_op->id."' and exam_group_class_batch_exam_subjects.subject_id='".$rowdata->id."' and exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result()[0];	
-												$max_marks1_show_op+=$maxMarks_op->max_marks;	
+		$resultData_op=$this->db->query("SELECT exam_group_exam_results.*,exam_group_class_batch_exam_subjects.max_marks FROM exam_group_exam_results left JOIN exam_group_class_batch_exam_subjects ON exam_group_class_batch_exam_subjects.id=exam_group_exam_results.exam_group_class_batch_exam_subject_id left JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.id=exam_group_exam_results.`exam_group_class_batch_exam_student_id` WHERE exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id='".$type_op->id."' and exam_group_class_batch_exam_students.exam_group_class_batch_exam_id='".$type_op->id."' and exam_group_class_batch_exam_subjects.subject_id='".$rowdata->id."' and exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result()[0];		
 												if($resultData_op->attendence != 'm_leave'){
 													array_push($maxMark_op,$maxMarks_op->max_marks);
 													$max_marks_op+=$maxMarks_op->max_marks;
@@ -705,7 +696,7 @@
 											if($desc->max_marks_shift_left==1){
 												if(isset($saved_max_marks_json[$exam_group_id_op]) && $saved_max_marks_json[$exam_group_id_op] == 1){
 												?>
-												<td style="width:100px"><strong><?php echo format_amount($max_marks1_show_op); ?></strong></td>
+												<td style="width:100px"><strong><?php echo format_amount($max_marks1_op); ?></strong></td>
 												<?php
 												}
 											}
@@ -718,7 +709,7 @@
 											if($desc->max_marks_shift_left==0){
 												if(isset($saved_max_marks_json[$exam_group_id_op]) && $saved_max_marks_json[$exam_group_id_op] == 1){
 												?>
-												<td style="width:100px"><?php echo format_amount($max_marks1_show_op); ?></td>
+												<td style="width:100px"><?php echo format_amount($max_marks1_op); ?></td>
 												<?php
 												}
 											}
@@ -796,7 +787,6 @@
 							</tbody>
 							
 							<?php
-								// echo '<pre>'; print_r($maxMarkShowArray1);
 							
 								// echo '<pre>'; print_r($array1);
 								/*$final = array();
@@ -894,8 +884,8 @@
 										// $final[] = $totalMarks;
 									}
 								}
-
 								// echo '<pre>'; print_r($final);
+
 
 							?>
 							

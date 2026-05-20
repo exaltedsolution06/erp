@@ -270,6 +270,11 @@ if($this->studentmodule_lib->hasActive('multi_class')){
                             <li class="<?php echo set_Topmenu('fees'); ?>"><a href="<?php echo base_url(); ?>user/user/getfees"><i class="fa fa-money ftlayer"></i> <span><?php echo $this->lang->line('fees'); ?></span></a></li>
                             <?php
                         }
+                        if ($this->studentmodule_lib->hasActive('due_fees')) {
+                            ?> 
+                            <li class="<?php echo set_Topmenu('due_fees'); ?>"><a href="<?php echo base_url(); ?>user/user/upcomingfees"><i class="fa fa-money ftlayer"></i> <span>Due <?php echo $this->lang->line('fees'); ?></span></a></li>
+                            <?php
+                        }
                         ?>
                                <?php
                        if($this->module_lib->hasModule('zoom_live_classes') && $this->studentmodule_lib->hasActive('live_classes') && $this->auth->addonchk('sszlc',false)){                     

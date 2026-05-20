@@ -1,6 +1,7 @@
 <?php
 
 $lang['absent'] = 'Absent';
+$lang['m_leave'] = 'Medical Leave';
 $lang['absent_student'] = 'Absent Student';
 $lang['academic_fees_detail'] = 'Academic Fees Detail';
 $lang['academics'] = 'Set Master';

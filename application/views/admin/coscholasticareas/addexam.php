@@ -1317,7 +1317,7 @@ if (set_value('class_id') == $class['id']) {
         });
     });
 
-    $(document).on('click', '.attendance_chk', function () {
+    /*$(document).on('click', '.attendance_chk', function () {
         if ($(this).prop("checked") == true) {
             console.log("Checkbox is checked.");
 
@@ -1325,7 +1325,19 @@ if (set_value('class_id') == $class['id']) {
         } else if ($(this).prop("checked") == false) {
             $(this).closest('tr').find('.marksssss').val("");
         }
-    });
+    });*/
+	$(document).on('change', '.attendance_chk', function () {
+		let currentRow = $(this).closest('tr');
+
+		// Uncheck all checkboxes in same row
+		currentRow.find('.attendance_chk').not(this).prop('checked', false);
+		// Marks logic
+		if ($(this).is(':checked')) {
+			currentRow.find('.marksssss').val("0");
+		} else {
+			currentRow.find('.marksssss').val("");
+		}
+	});
 </script>
 <script type="text/javascript">
     $(document).ready(function () {

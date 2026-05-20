@@ -1601,6 +1601,20 @@ class Student_model extends MY_Model
 
             $this->db->trans_start();
             $student_comma_seprate = implode(', ', $students);
+			//delete from student_session
+            $this->db->where('session_id', $this->current_session);
+            $this->db->where_in('student_id', $students);
+            $this->db->delete('student_session');
+			$this->db->trans_complete();
+
+            if ($this->db->trans_status() === false) {
+                return false;
+            } else {
+                return true;
+            }
+			
+            /*$this->db->trans_start();
+            $student_comma_seprate = implode(', ', $students);
             //delete from students
             $this->db->where_in('id', $students);
             $this->db->delete('students');
@@ -1624,7 +1638,7 @@ class Student_model extends MY_Model
                 return false;
             } else {
                 return true;
-            }
+            }*/
         }
     }
 
@@ -1859,6 +1873,7 @@ class Student_model extends MY_Model
 	public function checkStudentFee($id='')
 	{
 		$this->db->where('student_id', $id);
+		$this->db->where('session_id', $this->current_session);
 		$query = $this->db->get('receipts');
         if ($query->num_rows() > 0) {
             return true;

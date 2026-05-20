@@ -58,7 +58,7 @@ class Site extends Public_Controller
 		//$url = CRM_URL .'api/company_settings/get_company_settings';
 		//$curl_data = call_api_get($url);	
 		$curl_data = fetch_crm_company(); 		
-		$data['crm_name'] = $curl_data['data']['school_name'];
+		$data['crm_name'] = $curl_data['data']['product_name'];
 		$data['crm_website_url'] = $curl_data['data']['website_url'];
 		$data['crm_logo'] = CRM_COMPANY_SETTINGS_FOLDER . $curl_data['data']['logo'];
 		

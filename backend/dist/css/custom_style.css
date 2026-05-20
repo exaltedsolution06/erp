@@ -7,3 +7,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.checkbox-inline {
+    margin-left: 0 !important;
+}

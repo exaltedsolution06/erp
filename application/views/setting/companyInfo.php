@@ -32,7 +32,7 @@
 												<tbody>
 													<tr>
 														<td class="col-md-4">Company Name</td>
-														<td class="col-md-5"><?= $company['school_name'] ?? '' ?></td>
+														<td class="col-md-5"><strong><?= $company['school_name'] ?? '' ?></strong></td>
 													</tr>
 												</tbody>
 											</table>
@@ -44,28 +44,28 @@
 											<table class="table table-hover table-striped tmb0">
 												<tbody>
 													<tr>
-														<td class="col-md-4">Country</td>
-														<td class="col-md-5"><?= $company['country'] ?? '' ?></td>
-													</tr>
-													<tr>
-														<td class="col-md-4">State</td>
-														<td class="col-md-5"><?= $company['state'] ?? '' ?></td>
-													</tr>
-													<tr>
-														<td class="col-md-4">District</td>
-														<td class="col-md-5"><?= $company['district'] ?? '' ?></td>
+														<td class="col-md-4">Address</td>
+														<td class="col-md-5"><?= $company['address'] ?? '' ?></td>
 													</tr>
 													<tr>
 														<td class="col-md-4">City</td>
 														<td class="col-md-5"><?= $company['city'] ?? '' ?></td>
 													</tr>
 													<tr>
-														<td class="col-md-4">Pin Code</td>
-														<td class="col-md-5"><?= $company['pin_code'] ?? '' ?></td>
+														<td class="col-md-4">District</td>
+														<td class="col-md-5"><?= $company['district'] ?? '' ?></td>
 													</tr>
 													<tr>
-														<td class="col-md-4">Address</td>
-														<td class="col-md-5"><?= $company['address'] ?? '' ?></td>
+														<td class="col-md-4">State</td>
+														<td class="col-md-5"><?= $company['state'] ?? '' ?></td>
+													</tr>
+													<tr>
+														<td class="col-md-4">Country</td>
+														<td class="col-md-5"><?= $company['country'] ?? '' ?></td>
+													</tr>
+													<tr>
+														<td class="col-md-4">Pin Code</td>
+														<td class="col-md-5"><?= $company['pin_code'] ?? '' ?></td>
 													</tr>
 												</tbody>
 											</table>
@@ -99,6 +99,31 @@
 													<tr>
 														<td class="col-md-4">Relationship Manager No</td>
 														<td class="col-md-5"><?= $company['relationship_manager_no'] ?? '' ?></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="tshadow mb25 bozero">   
+										<h3 class="pagetitleh2">Company Account Details </h3>
+										<div class="table-responsive around10 pt0">  
+											<table class="table table-hover table-striped tmb0">
+												<tbody>
+													<tr>
+														<td class="col-md-4">Bank Name</td>
+														<td class="col-md-5"><?= $company['bank_name'] ?? '' ?></td>
+													</tr>
+													<tr>
+														<td class="col-md-4">Account No</td>
+														<td class="col-md-5"><?= $company['account_no'] ?? '' ?></td>
+													</tr>
+													<tr>
+														<td class="col-md-4">IFSC Code</td>
+														<td class="col-md-5"><?= $company['ifsc_code'] ?? '' ?></td>
+													</tr>
+													<tr>
+														<td class="col-md-4">Branch Name</td>
+														<td class="col-md-5"><?= $company['branch_name'] ?? '' ?></td>
 													</tr>
 												</tbody>
 											</table>

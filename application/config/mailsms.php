@@ -43,7 +43,8 @@ $config['attendence'] = array(
 
 
 $config['attendence_exam'] = array(
-    'absent' => 'absent'
+    'absent' => 'absent',
+    'ml' => 'm_leave'
 );
 $config['perm_category'] = array('can_view', 'can_add', 'can_edit', 'can_delete');
 

@@ -206,6 +206,9 @@ ALTER TABLE `student_session` CHANGE `is_active` `is_active` VARCHAR(255) CHARAC
 ALTER TABLE `student_session` ADD `disable_at` DATE NULL DEFAULT NULL AFTER `is_active`;
 ALTER TABLE `student_session` ADD `dis_reason` INT(11) NULL DEFAULT NULL AFTER `disable_at`, ADD `dis_note` TEXT NULL DEFAULT NULL AFTER `dis_reason`;
 
+======== 20-05-2026========
+ALTER TABLE `sch_settings` ADD `alternate_no` VARCHAR(50) NULL DEFAULT NULL AFTER `phone`;
+
 ===============================
 File change outside of application folder
 --------

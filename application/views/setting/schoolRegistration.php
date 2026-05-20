@@ -36,7 +36,7 @@
 													</tr>
 													<tr>
 														<td class="col-md-4"><?php echo $this->lang->line('school_name'); ?></td>
-														<td class="col-md-5"><?php echo $result->id; ?></td>
+														<td class="col-md-5"><?php echo $result->name; ?></td>
 													</tr>
 													<tr>
 														<td class="col-md-4"><?php echo $this->lang->line('school_code'); ?></td>
@@ -50,6 +50,12 @@
 														<td class="col-md-4"><?php echo $this->lang->line('phone'); ?></td>
 														<td class="col-md-5"><?php echo $result->phone; ?></td>
 													</tr>
+													<?php if(isset($result->alternate_no) && $result->alternate_no != ''){ ?>
+													<tr>
+														<td class="col-md-4">Alternate No.</td>
+														<td class="col-md-5"><?php echo $result->alternate_no; ?></td>
+													</tr>
+													<?php } ?>
 													<tr>
 														<td class="col-md-4"><?php echo $this->lang->line('email'); ?></td>
 														<td class="col-md-5"><?php echo $result->email; ?></td>

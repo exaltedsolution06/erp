@@ -152,11 +152,19 @@
                                 </div><!--./row-->
                                 <div class="row">
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="form-group row">
-                                            <label class="col-sm-2"><?php echo $this->lang->line('phone'); ?></label>
-                                            <div class="col-sm-10">
+                                            <label class="col-sm-5"><?php echo $this->lang->line('phone'); ?></label>
+                                            <div class="col-sm-7">
                                                 <input type="text" class="form-control" id="phone" name="sch_phone" value="<?php echo $result->phone; ?>" disabled><span class="text-danger"><?php echo form_error('phone'); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group row">
+                                            <label class="col-sm-6">Alternate No.</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" value="<?php echo $result->alternate_no; ?>" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -181,7 +189,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-6">
                                         <div class="form-group row">
                                             <label class="col-sm-3">State</label>
                                             <div class="col-sm-9">
@@ -189,7 +197,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group row">
                                             <label class="col-sm-3">District</label>
                                             <div class="col-sm-9">
@@ -207,8 +215,8 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group row">
-                                            <label class="col-sm-5">Pin Code</label>
-                                            <div class="col-sm-7">
+                                            <label class="col-sm-6">Pin Code</label>
+                                            <div class="col-sm-6">
                                                 <input type="text" class="form-control" value="<?php echo $domain_api_data['school_pin_code']; ?>" disabled>
                                             </div>
                                         </div>
