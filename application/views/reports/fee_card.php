@@ -77,7 +77,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     
                                                 </tr>
                                                  <tr>
-                                                     <td><strong>Ledger Amt </strong> <br> Rs. <?=format_amount($student_data['fees_discount'])?></td>
+                                                     <td>
+													 <!--<strong>Ledger Amt </strong> <br> Rs. <?=format_amount($student_data['fees_discount'])?>-->
+													 <h5 style="font-size: 12px;font-weight: bold;">LEDG AMT : Rs. <?=format_amount($student_data['fees_discount'])?></h5>
+													<h5 style="font-size: 12px;font-weight: bold;">PREV AMT : Rs. <?=format_amount($student_data['previous_session_balance'])?></h5>
+													 </td>
                                                      <td><strong>Route</strong> - <?php
                                                                         $this->db->where('id', $student_data['route_id']);
                                                                         $query = $this->db->get('route_head')->row_array();

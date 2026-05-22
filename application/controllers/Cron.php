@@ -547,6 +547,27 @@ class Cron extends CI_Controller
 		}
 		return $fee_group_id;
 	}
+	public function new_route_head_id_f($data) {
+		$this->db->from('route_head');
+		$this->db->where('id', $data['fee_group_id']);
+		$this->db->where('session_id', $data['current_session_id']);
+		$qr = $this->db->get();
+		if($qr->num_rows() > 0){
+			$qrfeeHeadData = $qr->row_array();
+			$fees_heading = $qrfeeHeadData['fees_heading'];
+			
+			$this->db->from('route_head');
+			$this->db->where('session_id', $data['next_session_id']);
+			$this->db->where('fees_heading', $fees_heading);
+			$qr = $this->db->get();
+			$fee_group_id = '';
+			if($qr->num_rows() > 0){
+				$fee_head_query = $qr->row_array();
+				$fee_group_id = $fee_head_query['id'];
+			}
+		}
+		return $fee_group_id;
+	}
 	public function new_class_id($data) {	
 		$classArr = json_decode($data['class_ids']);
 		$return = [];
@@ -863,7 +884,8 @@ class Cron extends CI_Controller
 					$arrData['current_session_id'] 	= $current_session_id;
 					$arrData['next_session_id'] 	= $next_session_id;
 					$arrData['fee_group_id'] 		= $route_plan['fee_group_id'];
-					$fee_group_id 	= $this->new_fee_head_id($arrData);
+					$fee_group_id 	= $this->new_route_head_id_f($arrData);
+					// print_r($fee_group_id);exit;
 					$arrData['class_ids'] 			= $route_plan['class_ids'];
 					$class_ids 		= $this->new_class_id($arrData);
 					$arrData['category_ids'] 		= $route_plan['category_ids'];
@@ -1005,7 +1027,7 @@ class Cron extends CI_Controller
 			}else{
 				$student_new_cat_id = 0;
 			}
-			
+			// echo $fees_discount;exit;
 			$data_new = array(
 				'session_id' => $classes['next_session_id'],
 				'student_id' => $student_id,
@@ -1015,7 +1037,9 @@ class Cron extends CI_Controller
 				'school_house_id' => $val['school_house_id'] != 0 ? current(array_filter($new_house_array, fn($a) => isset($a[$val['school_house_id']])))[$val['school_house_id']] ?? 0 : 0,
 				'fee_category_id' => $student_new_cat_id,
 				'transport_fees' => $val['transport_fees'],
-				'fees_discount' => $fees_discount,
+				'fees_discount' => 0,
+				'previous_session_balance' => $fees_discount,
+				'previous_student_session_id' => $val['id'],
 				'is_active' => $val['is_active'],
 				'disable_at' => $val['disable_at'],
 				'dis_reason' => $val['dis_reason'],
@@ -1033,6 +1057,7 @@ class Cron extends CI_Controller
 				$to_be_update = array(
 					'is_system'           	 => 1,
 					'amount' 				 => $fees_discount,
+					'previous_session_balance' 				 => $fees_discount,
 				);
 				$this->db->where('id', $query->row()->id);
 				$this->db->update('student_fees_master', $to_be_update);
@@ -1042,6 +1067,7 @@ class Cron extends CI_Controller
 					'student_session_id' 	 => $val['id'],
 					'fee_session_group_id'   => $fee_session_groups_id,
 					'amount' 				 => $fees_discount,
+					'previous_session_balance' 				 => $fees_discount,
 				);
 				$this->db->insert('student_fees_master', $to_be_insert);
 			}
@@ -1665,8 +1691,8 @@ class Cron extends CI_Controller
 		$student = $this->student_model->getByStudentSessionFees($id, $current_session_id);
 		$monthsFeesPost = [ "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec","Jan", "Feb", "Mar"];
 		$monthsRoutePost = [ "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec","Jan", "Feb", "Mar"];
-		$existing_fees_entry = $this->Receipt_model->get_fees_pay_mounth($student['id']);
-		$existing_route_entry = $this->Receipt_model->get_route_pay_mounth($student['id']);
+		$existing_fees_entry = $this->Receipt_model->get_fees_pay_mounth_cron($student['id'], $current_session_id);
+		$existing_route_entry = $this->Receipt_model->get_route_pay_mounth_cron($student['id'], $current_session_id);
         $monthsFeesPost = array_values(array_diff($monthsFeesPost, $existing_fees_entry));
         $monthsRoutePost = array_values(array_diff($monthsRoutePost, $existing_route_entry));
 		//echo "<pre>";print_r($monthsFeesPost);die;
@@ -1758,7 +1784,7 @@ class Cron extends CI_Controller
 				$final_total += $total;
 			}
 			
-		$student_fee = $student['fees_discount']+$final_total;
+		$student_fee = $student['fees_discount']+$student['previous_session_balance']+$final_total;
 		return $student_fee;
 	}
 	function updateMonthlyFeeAmounts($defaultArray, $paidArray)

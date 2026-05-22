@@ -81,6 +81,48 @@ class Studentfeemaster_model extends MY_Model
             return $this->db->insert_id();
         }
     }
+	public function update_student($id, $remaining_previous_balance)
+    {
+        // Prepare the data to update
+        $data = array(
+            'amount' => $remaining_previous_balance
+        );
+
+        // Perform the update
+        $this->db->where('student_session_id', $id); // Condition to match the student ID
+        $this->db->update('student_fees_master', $data); // Update the `students` table
+
+        // Check if update was successful
+        if ($this->db->affected_rows() > 0) {
+            return true; // Successful update
+        } else {
+            return false; // No rows affected, meaning update didn't happen
+        }
+    }
+	public function update_student_fees_master($student_data)
+    {
+		$this->db->where('id', $student_data['id']);
+        $this->db->update('student_fees_master', $student_data); // Update the `students` table
+
+        // Check if update was successful
+        if ($this->db->affected_rows() > 0) {
+            return true; // Successful update
+        } else {
+            return false; // No rows affected, meaning update didn't happen
+        }
+    }
+	public function update_student_fees_master_c($previous_student_session_id, $remaining_previous_balance)
+    {
+		$this->db->where('student_session_id', $previous_student_session_id);
+        $this->db->update('student_fees_master', ['amount'=>$remaining_previous_balance]); // Update the `students` table
+
+        // Check if update was successful
+        if ($this->db->affected_rows() > 0) {
+            return true; // Successful update
+        } else {
+            return false; // No rows affected, meaning update didn't happen
+        }
+    }
 
     public function addPreviousBal($student_data, $due_date)
     {

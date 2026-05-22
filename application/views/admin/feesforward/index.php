@@ -125,6 +125,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             ?>
                                                             <tr>
                                                                 <td>
+                                                                    <input type="hidden" name="student_id[<?php echo $i; ?>]" value="<?php echo $due_fee_value->id; ?>">
                                                                     <input type="hidden" name="student_counter[]" value="<?php echo $i; ?>">
                                                                     <input type="hidden" name="student_sesion[<?php echo $i; ?>]" value="<?php echo $due_fee_value->student_session_id; ?>">
                                                                     <?php echo $due_fee_value->name ?></td>  

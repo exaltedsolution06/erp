@@ -1,1 +1,12 @@
 1)id, menu_title, content_heading, description, image, image_position
+---------------------------
+1) 'previous_balance' new field - in 'student_session' table.
+2) in student_session table 'fees_discount' field set to 0
+3) 'previous_balance' new field - in 'receipts' table from collect fee 
+4) new table 'previous_balance_paid'
+
+
+1) Store previous session balance in new field.
+2) When Student move to next session then this student ledger balance set to 0 and previous session balance store in field.
+3) When collect fee add previous balance field in collect fee page.
+4) If any user paid all previous balance then this user previous balance set to 0, otherwise deduct the the pay amount from the previous balance.

@@ -81,8 +81,8 @@ class Feesforward extends Admin_Controller {
                 if ($this->form_validation->run() == TRUE) {
 
                     $due_date = date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('due_date')));
-                    $student_data = array();
-                    foreach ($counter as $count_key => $count_value) {
+                    // $student_data = array();
+                    /*foreach ($counter as $count_key => $count_value) {
                         $student_array = array();
                         $student_array['student_session_id'] = $this->input->post('student_sesion[' . $count_value . ']');
                         $student_array['amount'] = $this->input->post('amount[' . $count_value . ']');
@@ -90,8 +90,16 @@ class Feesforward extends Admin_Controller {
                         $student_array['fee_session_group_id'] = 0;
                         $student_data[] = $student_array;
                     }
+                    $student_due_fee = $this->studentfeemaster_model->addPreviousBal($student_data, $due_date);*/
+                    foreach ($counter as $count_key => $count_value) {
+                        $student_array = array();
+                        $student_array['id'] = $this->input->post('student_id[' . $count_value . ']');
+                        $student_array['amount'] = $this->input->post('amount[' . $count_value . ']');
+                        $student_array['is_system'] = 1;
+						$student_due_fee = $this->studentfeemaster_model->update_student_fees_master($student_array);
+                        // $student_data[] = $student_array;
+                    }
 
-                    $student_due_fee = $this->studentfeemaster_model->addPreviousBal($student_data, $due_date);
 
                     $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
                     redirect('admin/feesforward');
@@ -123,6 +131,7 @@ class Feesforward extends Admin_Controller {
                 $obj->father_name = $student_list_value->father_name;
                 $obj->student_session_id = $student_list_value->current_student_session_id;
                 $obj->student_previous_session_id = $student_list_value->previous_student_session_id;
+                // $obj->id = $student_list_value->id;
                
                 if (strtotime($student_list_value->admission_date) == 0) {
                     $obj->admission_date = "";
@@ -177,11 +186,13 @@ class Feesforward extends Admin_Controller {
                         }
 
                         $eachstudent->balance = $totalfee - ($deposit + $discount);
+                        $eachstudent->id = $student_total_fees_value->id;
                     } else {
                         $eachstudent->balance = "0";
                     }
                     //===================
                 }
+// echo '<pre>'; print_r($student_Array);exit;
             }
         }
 

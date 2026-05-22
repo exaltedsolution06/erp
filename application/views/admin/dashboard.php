@@ -104,7 +104,7 @@
 			<div class="col-md-3 col-sm-6 mb10">
 				<div class="topprograssstart flex-card">
 					<h5 class="pro-border">Today's Total collection</h5>
-					<p class="text-uppercase mt10 clearfix">Collection<span class="pull-right"><?php echo isset($studentAcademicColls) ? $studentAcademicColls : 0;  ?></span>
+					<p class="text-uppercase mt10 clearfix">Collection<span class="pull-right"><?php echo isset($studentAcademicColls) ? format_amount($studentAcademicColls) : 0;  ?></span>
 					</p>
 					<div class="progress-group">
 						<div class="progress progress-minibar">
@@ -118,14 +118,14 @@
 							<div class="progress-bar progress-bar-purple" style="width: <?php echo round($studentTransportCollsPercent) ?>%"></div>
 						</div>
 					</div>-->
-					<p class="text-uppercase mt10 clearfix">Other Collection<span class="pull-right"><?php echo isset($today_other_collection) ? $today_other_collection : 0;  ?></span>
+					<p class="text-uppercase mt10 clearfix">Other Collection<span class="pull-right"><?php echo isset($today_other_collection) ? format_amount($today_other_collection) : 0;  ?></span>
 					</p>
 					<div class="progress-group">
 						<div class="progress progress-minibar">
 							<div class="progress-bar progress-bar-aqua" style="width: <?php echo round($studentOtherCollsPercent) ?>%"></div>
 						</div>
 					</div>
-					<p class="text-uppercase mt10 clearfix">Today's Total collection<span class="pull-right"><?php echo isset($todayTotalCollection) ? $todayTotalCollection: ''; ?></span>
+					<p class="text-uppercase mt10 clearfix">Today's Total collection<span class="pull-right"><?php echo isset($todayTotalCollection) ? format_amount($todayTotalCollection) : ''; ?></span>
 					</p>
 				</div>
 			</div>
@@ -133,21 +133,21 @@
 			<div class="col-md-3 col-sm-6 mb10">
 				<div class="topprograssstart flex-card">
 					<h5 class="pro-border">Today's Financial Summary</h5>
-					<p class="text-uppercase mt10 clearfix">Todays income<span class="pull-right"><?php echo isset($today_total_income) ? $today_total_income : 0;  ?></span>
+					<p class="text-uppercase mt10 clearfix">Todays income<span class="pull-right"><?php echo isset($today_total_income) ? format_amount($today_total_income) : 0;  ?></span>
 					</p>
 					<div class="progress-group">
 						<div class="progress progress-minibar">
 							<div class="progress-bar progress-bar-purple" style="width: <?php echo round($total_income_percent) ?>%"></div>
 						</div>
 					</div>
-					<p class="text-uppercase mt10 clearfix">Todays expense<span class="pull-right"><?php echo isset($today_total_expense) ? $today_total_expense : 0;  ?></span>
+					<p class="text-uppercase mt10 clearfix">Todays expense<span class="pull-right"><?php echo isset($today_total_expense) ? format_amount($today_total_expense) : 0;  ?></span>
 					</p>
 					<div class="progress-group">
 						<div class="progress progress-minibar">
 							<div class="progress-bar progress-bar-green" style="width: <?php echo round($total_expense_percent) ?>%"></div>
 						</div>
 					</div>
-					<p class="text-uppercase mt10 clearfix">Net cash in hand<span class="pull-right"><?php echo isset($net_cash_in_hands) ? $net_cash_in_hands: ''; ?></span>
+					<p class="text-uppercase mt10 clearfix">Net cash in hand<span class="pull-right"><?php echo isset($net_cash_in_hands) ? format_amount($net_cash_in_hands) : ''; ?></span>
 					</p>
 				</div>
 			</div>

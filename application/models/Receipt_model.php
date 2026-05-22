@@ -62,6 +62,43 @@ class Receipt_model extends CI_Model {
             return $insert_id;
         }
     }
+    public function insert_previous_balance($data)
+	{
+		$existing = $this->db
+			->where('receipt_no', $data['receipt_no'])
+			->get('received_previous_balance')
+			->row();
+
+		if ($existing) {
+
+			// UPDATE
+			$this->db
+				->where('receipt_no', $data['receipt_no'])
+				->update('received_previous_balance', $data);
+
+			return $existing->id;
+
+		} else {
+
+			// INSERT
+			$this->db->insert('received_previous_balance', $data);
+
+			return $this->db->insert_id();
+		}
+	}
+    public function delete_previous_balance($data)
+	{
+		if (!empty($data['receipt_no'])) {
+
+			$this->db
+				->where('receipt_no', $data['receipt_no'])
+				->delete('received_previous_balance');
+
+			return true;
+		}
+
+		return false;
+	}
 
 
     public function check_existing_entry($student_id, $month, $fee_head_type,$fee_head,$session_id)
@@ -113,11 +150,12 @@ class Receipt_model extends CI_Model {
     }
 
 
-    public function update_student($id, $fees_discount)
+    public function update_student($id, $fees_discount, $remaining_previous_balance)
     {
         // Prepare the data to update
         $data = array(
-            'fees_discount' => $fees_discount
+            'fees_discount' => $fees_discount,
+            'previous_session_balance' => $remaining_previous_balance
         );
 
         // Perform the update
@@ -164,6 +202,21 @@ class Receipt_model extends CI_Model {
  
         return $months_array;
     }
+    public function get_fees_pay_mounth_cron($id, $session_id){
+        $this->db->select('DISTINCT(months)');
+        $this->db->from('receipts');
+        $this->db->where('student_id', $id);
+		$this->db->where('session_id', $session_id);
+		$this->db->where('fee_head_type', 'fees');
+        $query = $this->db->get();
+        $result = $query->result();
+
+        $months_array = array_map(function($row) {
+            return $row->months;
+        }, $result);
+ 
+        return $months_array;
+    }
 
     public function get_route_pay_mounth($id){
         $this->db->select('DISTINCT(months)');
@@ -180,12 +233,27 @@ class Receipt_model extends CI_Model {
  
         return $months_array;
     }
+    public function get_route_pay_mounth_cron($id, $session_id){
+        $this->db->select('DISTINCT(months)');
+        $this->db->from('receipts');
+        $this->db->where('student_id', $id);
+		$this->db->where('session_id', $session_id);
+		$this->db->where('fee_head_type', 'route');
+        $query = $this->db->get();
+        $result = $query->result();
+
+        $months_array = array_map(function($row) {
+            return $row->months;
+        }, $result);
+ 
+        return $months_array;
+    }
 
 
 
     public function get_receipts_by_ids($ids = []) {
         return $this->db
-                ->select('student_id,date_time,back_id,receipt_no,mode,fee_head,late_fees,ledger_amt,total_fees,discount_amt,net_fees,receipt_amt,balance_amt,remarks,create_by,fee_head_name,SUM(balance_amount) as balance_amount,(total) as total, SUM(rec_discount) as rec_discount, SUM(rec_amount) as rec_amount')
+                ->select('student_id,date_time,back_id,receipt_no,mode,fee_head,late_fees,ledger_amt,total_fees,discount_amt,net_fees,receipt_amt,balance_amt,remarks,create_by,fee_head_name,SUM(balance_amount) as balance_amount,(total) as total, SUM(rec_discount) as rec_discount, SUM(rec_amount) as rec_amount, previous_balance')
                 ->where_in('id', $ids)
                 ->group_by('fee_head')
                 ->get('receipts')
@@ -201,6 +269,7 @@ class Receipt_model extends CI_Model {
             classes.id AS class_id,
             student_session.id as student_session_id,
             student_session.fees_discount as fees_discount,
+            student_session.previous_session_balance as previous_session_balance,
             students.id,
             classes.class,
             sections.id AS section_id,
@@ -1439,6 +1508,7 @@ class Receipt_model extends CI_Model {
             students.hostel_room_id,
             student_session.id as student_session_id,
             student_session.fees_discount,
+            student_session.previous_session_balance,
             classes.id AS class_id,
             classes.class,
             sections.id AS section_id,
@@ -1587,6 +1657,7 @@ class Receipt_model extends CI_Model {
             students.hostel_room_id,
             student_session.id as student_session_id,
             student_session.fees_discount,
+            student_session.previous_session_balance,
             classes.id AS class_id,
             classes.class,
             sections.id AS section_id,
@@ -1725,6 +1796,7 @@ class Receipt_model extends CI_Model {
             students.hostel_room_id,
             student_session.id as student_session_id,
             student_session.fees_discount,
+            student_session.previous_session_balance,
             classes.id AS class_id,
             classes.class,
             sections.id AS section_id,

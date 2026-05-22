@@ -25,22 +25,18 @@ ALTER TABLE `template_reportcard` ADD `exam_group_marks_obtained` JSON NULL DEFA
 -- 09-12-2025---
 ALTER TABLE `sch_settings` ADD `receipt_sr_no` BIGINT(20) NULL DEFAULT NULL AFTER `id`;
 
--- 18-12-2025 ---
 ALTER TABLE `sch_settings` ADD `main_domain_url` TINYTEXT NOT NULL AFTER `mobile_api_url`;
 
 ALTER TABLE `front_cms_programs` ADD `session_id` INT(11) NOT NULL AFTER `id`; 
-ALTER TABLE `staff` ADD `session_id` INT(11) NOT NULL AFTER `id`; 
-UPDATE `staff` SET `session_id` = '30' WHERE `staff`.`id` = 1; 
+ALTER TABLE `staff` ADD `session_id` INT(11) NULL AFTER `id`; 
+UPDATE `staff` SET `session_id` = '30' WHERE 1; 
 
---- 02-01-2026 ---
 DROP TABLE `u121972512_erp`.`sch_settings_session`;
 
---- 14-01-2026 ---
 ALTER TABLE `template_reportcard` ADD `max_marks_shift_left` INT(11) NOT NULL DEFAULT '0' AFTER `marks_grade_table`;
 ALTER TABLE `template_reportcard` ADD `overall_marks_title` VARCHAR(255) NULL DEFAULT NULL AFTER `max_marks_shift_left`;
 ALTER TABLE `template_reportcard` ADD `subject_color` CHAR(36) NULL DEFAULT NULL AFTER `overall_marks_title`;
 
---- 15-01-2026 ---
 ALTER TABLE `template_reportcard` ADD `scholastic_area_color` CHAR(36) NULL DEFAULT NULL AFTER `subject_color`;
 ALTER TABLE `template_reportcard` ADD `main_subject_color` CHAR(36) NULL DEFAULT NULL AFTER `scholastic_area_color`;
 ALTER TABLE `template_reportcard` ADD `left_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `right_sign`, ADD `middle_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `left_sign_title`, ADD `right_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `middle_sign_title`;
@@ -48,29 +44,24 @@ ALTER TABLE `template_reportcard` ADD `photo_image_height` INT(11) NOT NULL AFTE
 ALTER TABLE `template_reportcard` ADD `school_reopen` INT(11) NOT NULL DEFAULT '0' AFTER `main_subject_color`;
 ALTER TABLE `template_reportcard` ADD `header_height` INT(11) NULL DEFAULT NULL AFTER `school_reopen`, ADD `footer_height` INT(11) NULL DEFAULT NULL AFTER `header_height`;
 
---- 19-01-2026 ---
 ALTER TABLE `template_reportcard` DROP `photo_image_height`;
 ALTER TABLE `template_reportcard` ADD `school_reopen_date` CHAR(36) NULL DEFAULT NULL AFTER `footer_height`, ADD `school_reopen_time` CHAR(36) NULL DEFAULT NULL AFTER `school_reopen_date`;
 ALTER TABLE `template_reportcard` ADD `is_show_date` INT(11) NOT NULL DEFAULT '0' AFTER `footer_height`;
 
---- 02-02-2026 ---
 ALTER TABLE `template_reportcard` ADD `place` INT(11) NOT NULL DEFAULT '0' AFTER `school_reopen_time`;
 ALTER TABLE `template_reportcard` ADD `grade_table_title` VARCHAR(255) NULL DEFAULT NULL AFTER `place`;
 
---- 23-02-2026 ---
 ALTER TABLE `front_cms_menu_items` ADD `content_heading` VARCHAR(255) NULL DEFAULT NULL AFTER `is_active`, ADD `menu_description` LONGTEXT NOT NULL AFTER `content_heading`, ADD `image_position` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0=Left, 1=Right' AFTER `menu_description`;
 ALTER TABLE `front_cms_menu_items` ADD `media_gallery_id` INT(11) NULL DEFAULT NULL AFTER `image_position`;
 ALTER TABLE `front_cms_settings` ADD `header_phone` VARCHAR(50) NULL DEFAULT NULL AFTER `fav_icon`, ADD `header_email` VARCHAR(100) NULL DEFAULT NULL AFTER `header_phone`, ADD `header_address` TEXT NULL DEFAULT NULL AFTER `header_email`;
 ALTER TABLE `front_cms_settings` ADD `header_button_enable` INT(1) NOT NULL DEFAULT '0' COMMENT '0=Not active, 1= Active' AFTER `header_address`, ADD `header_button_text` VARCHAR(255) NULL DEFAULT NULL AFTER `header_button_enable`, ADD `header_button_url` VARCHAR(255) NULL DEFAULT NULL AFTER `header_button_text`;
 
---- 26-02-2026 ---
 ALTER TABLE `receipt_sr_no` ADD `deleted_status` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0=Active(Not delete), 1=Permanent Delete' AFTER `sr_no`;
 TRUNCATE TABLE  front_cms_menus;
 INSERT INTO front_cms_menus (id, menu, slug, description, open_new_tab, ext_url, ext_url_link, publish, content_type, is_active, created_at) VALUES
 (1, 'Main Menu', 'main-menu', 'Main menu', 0, '', '', 0, 'default', 'no', '2018-04-20 14:54:49'),
 (2, 'Bottom Menu', 'bottom-menu', 'Bottom Menu', 0, '', '', 0, 'default', 'no', '2018-04-20 14:54:55');
 
---- 27-02-2026 ---
 ALTER TABLE `sch_settings` ADD `gender` INT(11) NOT NULL DEFAULT '1' AFTER `middlename`;
 ALTER TABLE `sch_settings` ADD `dob` INT(11) NOT NULL DEFAULT '1' AFTER `gender`;
 ALTER TABLE `sch_settings` ADD `pen_no` INT(11) NOT NULL DEFAULT '1' AFTER `dob`, ADD `aadhar_no` INT(11) NOT NULL DEFAULT '1' AFTER `pen_no`;
@@ -80,12 +71,10 @@ ALTER TABLE `sch_settings` ADD `father_pan` INT(11) NOT NULL DEFAULT '1' AFTER `
 ALTER TABLE `sch_settings` ADD `mother_pan` INT(11) NOT NULL DEFAULT '1' AFTER `mother_pic`, ADD `mother_aadhar_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_pan`, ADD `mother_other_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_aadhar_no`, ADD `mother_id_no` INT(11) NOT NULL DEFAULT '1' AFTER `mother_other_no`;
 ALTER TABLE `sch_settings` ADD `rcpt_admission_no` INT(11) NOT NULL DEFAULT '1' AFTER `my_question`, ADD `rcpt_student_name` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_admission_no`, ADD `rcpt_father` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_student_name`, ADD `rcpt_class_section` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_father`, ADD `rcpt_fee_months` INT(11) NOT NULL DEFAULT '1' AFTER `rcpt_class_section`;
 
---- 03/03/2026 ---
 ALTER TABLE `sch_settings` ADD `rcpt_mother` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_fee_months`, ADD `rcpt_dob` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mother`, ADD `rcpt_mobile_no` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_dob`, ADD `rcpt_total_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mobile_no`, ADD `rcpt_late_fee` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_total_amt`, ADD `rcpt_discount_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_late_fee`, ADD `rcpt_net_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_discount_amt`, ADD `rcpt_received_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_net_amt`, ADD `rcpt_balance_amt` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_received_amt`, ADD `rcpt_amt_in_words` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_balance_amt`, ADD `rcpt_pay_mode` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_amt_in_words`, ADD `rcpt_remark` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_pay_mode`, ADD `rcpt_created_by` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_remark`, ADD `rcpt_note` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_created_by`;
 
 ALTER TABLE `sch_settings` ADD `rcpt_address` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_mobile_no`;
 
---- 05-03-2026 ---
 CREATE TABLE `template_reminder_letter` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `session_id` int(11) DEFAULT NULL,
@@ -100,9 +89,8 @@ CREATE TABLE `template_reminder_letter` (
   `description` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---- 06-03-2026 ---
 CREATE TABLE `balance_sheets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `session_id` int(11) DEFAULT NULL,
@@ -117,23 +105,18 @@ CREATE TABLE `balance_sheets` (
   `description` longtext DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0=Active, 1=Delete',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---- 16-03-2026 ---
 ALTER TABLE `sch_settings` ADD `domain_api_key` VARCHAR(255) NULL DEFAULT NULL AFTER `rcpt_note`;
 
---- 18-03-2026 ---
 ALTER TABLE `sch_settings` ADD `rcpt_photo` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_student_name`;
 
---- 19-03-2026 ---
 UPDATE `sch_settings` SET `theme`='white.jpg' WHERE 1;
 
---- 20-03-2026 ---
 ALTER TABLE `template_reminder_letter` ADD `route` TINYINT(1) NOT NULL DEFAULT '0' AFTER `class_section`;
 ALTER TABLE `template_reminder_letter` ADD `heading_title` VARCHAR(255) NULL DEFAULT NULL AFTER `template_name`;
 ALTER TABLE `template_reminder_letter` ADD `is_signature` TINYINT(1) NOT NULL DEFAULT '0' AFTER `description`, ADD `signature` VARCHAR(255) NULL DEFAULT NULL AFTER `is_signature`, ADD `signature_title` VARCHAR(255) NULL DEFAULT NULL AFTER `signature`;
 
---- 23-03-2026 ---
 CREATE TABLE `template_designtc` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `session_id` INT,
@@ -147,7 +130,6 @@ CREATE TABLE `template_designtc` (
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
---- 24-03-2026 ---
 ALTER TABLE `template_reportcard` ADD `show_date` CHAR(36) NULL DEFAULT NULL AFTER `place`, ADD `show_place` CHAR(36) NULL DEFAULT NULL AFTER `show_date`;
 ALTER TABLE `template_designtc` ADD `is_show_date` TINYINT(1) NOT NULL DEFAULT '0' AFTER `background_image`, ADD `show_date` CHAR(36) NULL DEFAULT NULL AFTER `is_show_date`;
 ALTER TABLE `template_reportcard` ADD `is_show_attendance` INT(1) NOT NULL DEFAULT '0' AFTER `show_place`;
@@ -161,16 +143,13 @@ CREATE TABLE `tc_certificate_generates` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---- 25-03-2026 ---
 ALTER TABLE `certificates` ADD `is_active_header_img` TINYINT(1) NOT NULL DEFAULT '0' AFTER `enable_image_height`;
 ALTER TABLE `certificates` ADD `is_left_footer` INT(11) NOT NULL DEFAULT '0' AFTER `center_footer`, ADD `is_center_footer` INT(11) NOT NULL DEFAULT '0' AFTER `is_left_footer`, ADD `is_right_footer` INT(11) NOT NULL DEFAULT '0' AFTER `is_center_footer`, ADD `left_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `is_right_footer`, ADD `middle_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `left_sign`, ADD `right_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `middle_sign`;
 
 ALTER TABLE `sch_settings` ADD `book_no` VARCHAR(50) NULL DEFAULT NULL AFTER `domain_api_key`, ADD `serial_no_prefix` VARCHAR(50) NULL DEFAULT NULL AFTER `book_no`, ADD `serial_no_suffix` INT(11) NULL DEFAULT NULL AFTER `serial_no_prefix`;
 
---- 26-03-2026 ---
 ALTER TABLE `template_reportcard` ADD `is_class_position` INT(1) NOT NULL DEFAULT '0' AFTER `is_show_attendance`;
 
---- 27-03-2026 ---
 CREATE TABLE `certificate_generates` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `session_id` int(11) DEFAULT NULL,
@@ -182,32 +161,45 @@ CREATE TABLE `certificate_generates` (
 ALTER TABLE `tc_certificate_generates` ADD `template_id` INT(11) NULL DEFAULT NULL AFTER `student_id`;
 ALTER TABLE `certificate_generates` ADD `template_id` INT(11) NULL DEFAULT NULL AFTER `student_id`;
 
---- 08-04-2026 ---
 ALTER TABLE `template_designtc` DROP `is_signature`, DROP `signature`, DROP `signature_title`;
 ALTER TABLE `template_designtc` ADD `left_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `fields_json`, ADD `middle_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `left_sign`, ADD `right_sign` VARCHAR(200) NULL DEFAULT NULL AFTER `middle_sign`, ADD `left_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `right_sign`, ADD `middle_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `left_sign_title`, ADD `right_sign_title` VARCHAR(255) NULL DEFAULT NULL AFTER `middle_sign_title`, ADD `is_class_teacher` INT(11) NOT NULL DEFAULT '0' AFTER `right_sign_title`, ADD `is_examination_ic` INT(11) NOT NULL DEFAULT '0' AFTER `is_class_teacher`, ADD `is_principal` INT(11) NOT NULL DEFAULT '0' AFTER `is_examination_ic`;
 ALTER TABLE `template_designtc` ADD `is_common_header` INT(11) NOT NULL DEFAULT '0' AFTER `fields_json`, ADD `header_height` INT(11) NOT NULL AFTER `is_common_header`, ADD `footer_height` INT(11) NOT NULL AFTER `header_height`;
 
---- 14-04-2026 ---
 ALTER TABLE `sch_settings` ADD `fee_receipt_print_mode` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '1=Landscape, 2=Potrait' AFTER `serial_no_suffix`;
 ALTER TABLE `sch_settings` ADD `rcpt_common_header` TINYINT(1) NOT NULL DEFAULT '1' AFTER `rcpt_note`;
 ALTER TABLE `sch_settings` ADD `rcpt_header_height` INT(10) NOT NULL AFTER `rcpt_common_header`, ADD `rcpt_footer_height` INT(10) NOT NULL AFTER `rcpt_header_height`;
 
---- 16-04-2026 ---
 ALTER TABLE `fee_discounts` CHANGE `fee_type_id` `fee_type_id` INT(10) NOT NULL COMMENT 'fees_plan table primary id';
 
---- 27-04-2026 ---
 ALTER TABLE `sch_settings` ADD `fee_receipt_page_size` CHAR(36) NOT NULL DEFAULT 'A4' AFTER `fee_receipt_print_mode`;
 
-======== 12-05-2026========
 ALTER TABLE `sch_settings` ADD `aff_no` VARCHAR(50) NULL DEFAULT NULL AFTER `fee_receipt_page_size`;
 
-======== 14-05-2026========
 ALTER TABLE `student_session` CHANGE `is_active` `is_active` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'yes';
 ALTER TABLE `student_session` ADD `disable_at` DATE NULL DEFAULT NULL AFTER `is_active`;
 ALTER TABLE `student_session` ADD `dis_reason` INT(11) NULL DEFAULT NULL AFTER `disable_at`, ADD `dis_note` TEXT NULL DEFAULT NULL AFTER `dis_reason`;
 
-======== 20-05-2026========
 ALTER TABLE `sch_settings` ADD `alternate_no` VARCHAR(50) NULL DEFAULT NULL AFTER `phone`;
+
+======== 21-05-2026========
+ALTER TABLE `student_session` ADD `previous_session_balance` FLOAT(10,2) NOT NULL DEFAULT '0.00' AFTER `fees_discount`;
+ALTER TABLE `student_fees_master` ADD `previous_session_balance` FLOAT(10,2) NOT NULL DEFAULT '0.00' AFTER `amount`;
+ALTER TABLE `receipts` ADD `previous_balance` FLOAT(10,2) NULL DEFAULT NULL AFTER `month_total`, ADD `remaining_previous_balance` FLOAT(10,2) NULL DEFAULT NULL AFTER `previous_balance`;
+
+======== 22-05-2026========
+ALTER TABLE `student_session` ADD `previous_session_id` INT(11) NULL DEFAULT NULL AFTER `previous_session_balance`;
+ALTER TABLE `student_session` CHANGE `previous_session_id` `previous_student_session_id` INT(11) NULL DEFAULT NULL;
+ALTER TABLE `deleted_receipts` ADD `previous_balance` FLOAT(10,2) NULL DEFAULT NULL AFTER `month_total`, ADD `remaining_previous_balance` FLOAT(10,2) NULL DEFAULT NULL AFTER `previous_balance`;
+
+CREATE TABLE `received_previous_balance` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `previous_student_session_id` int(11) DEFAULT NULL COMMENT 'student_session table id (previous id)',
+  `receipt_no` varchar(255) DEFAULT NULL,
+  `amount` float(10,2) DEFAULT 0.00,
+  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '0=Deleted, 1=Active',
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ===============================
 File change outside of application folder
