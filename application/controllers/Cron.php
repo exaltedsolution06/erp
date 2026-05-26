@@ -319,7 +319,7 @@ class Cron extends CI_Controller
 				$this->subject_create($new_class_array, $new_section_array, $classes['current_session_id'], $classes['next_session_id']);
 				
 				$move = $this->student_move($classes, $new_class_array, $new_section_array, $new_house_array, $new_fee_category_array, $new_route_array, $fee_category_by_move_category);
-				// echo "<pre>";print_r($move);die;
+				// echo "<pre>";print_r($new_section_array);die;
 				
 				$this->create_terms($classes);
 				$this->create_department($classes);
@@ -1028,10 +1028,13 @@ class Cron extends CI_Controller
 				$student_new_cat_id = 0;
 			}
 			// echo $fees_discount;exit;
+			$result_class = array_column($new_class_array, $classes['next_class_id']);
+
 			$data_new = array(
 				'session_id' => $classes['next_session_id'],
 				'student_id' => $student_id,
-				'class_id' => current($new_class_array[0]),
+				// 'class_id' => current($new_class_array[0]),
+				'class_id' => $result_class[0],
 				'section_id' => $val['section_id'] != 0 ? current(array_filter($new_section_array, fn($a) => isset($a[$val['section_id']])))[$val['section_id']] ?? 0 : 0,
 				'route_id' => $val['route_id'] != 0 ? current(array_filter($new_route_array, fn($a) => isset($a[$val['route_id']])))[$val['route_id']] ?? 0 : 0,
 				'school_house_id' => $val['school_house_id'] != 0 ? current(array_filter($new_house_array, fn($a) => isset($a[$val['school_house_id']])))[$val['school_house_id']] ?? 0 : 0,

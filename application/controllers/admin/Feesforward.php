@@ -152,6 +152,7 @@ class Feesforward extends Admin_Controller {
                 foreach ($student_Array as $stkey => $eachstudent) {
 
                     $eachstudent->balance = $this->findValueExists($record_exists, $eachstudent->student_session_id);
+                    $eachstudent->prev_balance = $this->findPrevValueExists($record_exists, $eachstudent->student_session_id);
                 }
             } else {
                 foreach ($student_Array as $stkey => $eachstudent) {
@@ -166,6 +167,7 @@ class Feesforward extends Admin_Controller {
 
                     if (!empty($student_total_fees)) {
                         $totalfee = 0;
+                        $totalPrevfee = 0;
                         $deposit = 0;
                         $discount = 0;
                         $balance = 0;
@@ -173,6 +175,7 @@ class Feesforward extends Admin_Controller {
                             if (!empty($student_total_fees_value->fees)) {
                                 foreach ($student_total_fees_value->fees as $each_fee_key => $each_fee_value) {
                                     $totalfee = $totalfee + $each_fee_value->amount;
+                                    $totalPrevfee = $totalPrevfee + $each_fee_value->previous_session_balance;
 
                                     $amount_detail = json_decode($each_fee_value->amount_detail);
                                     if ($amount_detail != null) {
@@ -186,9 +189,11 @@ class Feesforward extends Admin_Controller {
                         }
 
                         $eachstudent->balance = $totalfee - ($deposit + $discount);
+                        $eachstudent->prev_balance = $totalPrevfee;
                         $eachstudent->id = $student_total_fees_value->id;
                     } else {
                         $eachstudent->balance = "0";
+                        $eachstudent->prev_balance = "0";
                     }
                     //===================
                 }
@@ -206,6 +211,15 @@ class Feesforward extends Admin_Controller {
                 return $x_value->amount;
         }
         return $amount;
+    }
+
+    function findPrevValueExists($array, $find) {
+        $previous_session_balance = 0;
+        foreach ($array as $x => $x_value) {
+            if ($x_value->student_session_id == $find)
+                return $x_value->previous_session_balance;
+        }
+        return $previous_session_balance;
     }
 
 }

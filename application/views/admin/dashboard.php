@@ -170,6 +170,29 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-md-3 col-sm-6 mb10">
+				<div class="topprograssstart flex-card">
+					<h5 class="pro-border">Previous balance</h5>
+					<p class="text-uppercase mt10 clearfix">Total <span class="pull-right"><?php echo isset($tot_prev_balance) ? $tot_prev_balance : 0;  ?></span>
+					</p>
+					<p class="text-uppercase mt10 clearfix">Total Collected <span class="pull-right"><?php echo isset($collected_prev_balance) ? $collected_prev_balance : 0;  ?></span>
+					</p>
+					<div class="progress-group">
+						<div class="progress progress-minibar">
+							<div class="progress-bar progress-bar-success" style="width: <?php echo $tot_prev_balance > 0 ? round(($collected_prev_balance/$tot_prev_balance) * 100) : 0 ?>%"></div>
+						</div>
+					</div>
+					<p class="text-uppercase mt10 clearfix">Remaining <span class="pull-right"><?php echo isset($remain_prev_balance) ? $remain_prev_balance : 0;  ?></span>
+					</p>
+					<div class="progress-group">
+						<div class="progress progress-minibar">
+							<div class="progress-bar progress-bar-red" style="width: <?php echo $tot_prev_balance > 0 ? round(($remain_prev_balance/$tot_prev_balance) * 100) : 0 ?>%"></div>
+						</div>
+					</div>
+					<p class="text-uppercase mt10 clearfix">Today's total collected<span class="pull-right"><?php echo isset($today_collected_balance) ? $today_collected_balance : 0;  ?></span>
+					</p>
+				</div>
+			</div>
 		</div>  
 				
        <!-- <div class="row">    

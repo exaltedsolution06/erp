@@ -384,6 +384,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </div>
                                 </div>
 								<div class="clearfix"></div>
+								<div class="form-group switch-inline">
+									<label><?php echo $this->lang->line('show').' '.$this->lang->line('promoted_to'); ?></label>
+									<div class="material-switch switchcheck">
+										<input id="is_promoted_to" name="is_promoted_to" type="checkbox" class="chk" value="1" <?php echo set_checkbox('is_promoted_to', '1', (set_value('is_promoted_to', $reportcard->is_promoted_to) == 1) ? TRUE : FALSE); ?>>
+										<label for="is_promoted_to" class="label-success"></label>
+									</div>
+								</div>
+								<div class="clearfix"></div>
                                 <div class="row">
 									<div class="col-md-12">
 										<div class="form-group switch-inline">

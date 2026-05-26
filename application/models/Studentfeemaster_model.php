@@ -111,7 +111,40 @@ class Studentfeemaster_model extends MY_Model
             return false; // No rows affected, meaning update didn't happen
         }
     }
-	public function update_student_fees_master_c($previous_student_session_id, $remaining_previous_balance)
+	public function update_student_fees_master_c($previous_student_session_id, $remaining_previous_balance, $pre_session, $group_name)
+    {
+		$sql = "
+			UPDATE student_fees_master
+			SET amount = ?
+			WHERE student_session_id = ?
+			AND fee_session_group_id = (
+				SELECT id
+				FROM fee_session_groups
+				WHERE fee_groups_id = (
+					SELECT id
+					FROM fee_groups
+					WHERE name = ?
+					AND session_id = ?
+				)
+				AND session_id = ?
+			)
+		";
+
+		$this->db->query($sql, [
+			$remaining_previous_balance,
+			$previous_student_session_id,
+			$group_name,
+			$pre_session,
+			$pre_session
+		]);
+
+		if ($this->db->affected_rows() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+    }
+	public function update_student_fees_master_c_bkp($previous_student_session_id, $remaining_previous_balance, $pre_session, $balance_group)
     {
 		$this->db->where('student_session_id', $previous_student_session_id);
         $this->db->update('student_fees_master', ['amount'=>$remaining_previous_balance]); // Update the `students` table

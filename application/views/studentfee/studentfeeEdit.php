@@ -108,7 +108,8 @@ $language_name = $language["short_code"];
                                             }
                                             ?>" alt="No Image">
 
-											<h5 style="font-size: 12px;font-weight: bold;">LEDG AMT : Rs. <?=$ledger_total? format_amount($ledger_total) : format_amount($student['fees_discount']); ?></h5>
+											<!--<h5 style="font-size: 12px;font-weight: bold;">LEDG AMT : Rs. <?=$ledger_total? format_amount($ledger_total) : format_amount($student['fees_discount']); ?></h5>-->
+											<h5 style="font-size: 12px;font-weight: bold;">LEDG AMT : Rs. <?= format_amount($student['fees_discount']); ?></h5>
                                             <h5 style="font-size: 12px;font-weight: bold;">PREV AMT : Rs. <?=format_amount($student['previous_session_balance'])?></h5>
                                         </div>
 
@@ -546,7 +547,7 @@ $language_name = $language["short_code"];
                                     ?>
                                     <div class="col-sm-2">
                                         <label for="balance_amt">Balance Amt</label>
-										<input style="width: 100%;" type="hidden" class="form-control" name="prev_balance_amt" value="<?php echo $balance_amt; ?>" />
+										<input style="width: 100%;" type="hidden" class="form-control" name="prev_balance_amt_remain" value="<?php echo format_amount($student['fees_discount']); ?>" />
                                         <input style="width: 100%;" type="text" id="balance_amt" class="form-control" name="balance_amt" readonly value="<?php echo $balance_amt; ?>" />
                                     </div>
 									<div class="col-sm-2">

@@ -201,6 +201,12 @@ CREATE TABLE `received_previous_balance` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+======== 25-05-2026========
+ALTER TABLE `template_reportcard` ADD `is_promoted_to` INT(11) NOT NULL DEFAULT '0' AFTER `is_class_position`;
+
+
+
+
 ===============================
 File change outside of application folder
 --------

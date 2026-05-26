@@ -1170,6 +1170,13 @@ class Student_model extends MY_Model
         $query = $this->db->query($sql);
         return $query->result();
     }
+    public function getPreviousSessionStudentAll($previous_session_id)
+    {
+        $sql = "SELECT student_session.student_id as student_id, student_session.id as current_student_session_id, student_session.class_id as current_session_class_id ,previous_session.id as previous_student_session_id,students.firstname,students.middlename,students.lastname,students.admission_no,students.roll_no,students.father_name,students.admission_date FROM `student_session` left JOIN (SELECT * FROM `student_session` where session_id=$previous_session_id) as previous_session on student_session.student_id=previous_session.student_id INNER join students on students.id =student_session.student_id where student_session.is_active='yes' and student_session.session_id=$previous_session_id ORDER BY students.firstname ASC";
+
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
 
     public function studentGuardianDetails($carray)
     {

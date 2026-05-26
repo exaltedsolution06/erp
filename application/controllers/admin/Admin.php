@@ -15,6 +15,7 @@ class Admin extends Admin_Controller
         $this->load->library('Enc_lib');
         $this->sch_setting_detail = $this->setting_model->getSetting();
 		$this->load->model("Expense_model");
+		$this->current_session = $this->setting_model->getCurrentSession();
     }
 
     public function unauthorized()
@@ -507,10 +508,142 @@ class Admin extends Admin_Controller
             $data['std_graphclass'] = "col-lg-4 col-md-6 col-sm-6";
         }
 		
+		//Student previous balance
+		$pre_session = $this->session_model->getPreSession($this->current_session);
+		if($pre_session->id){
+			$student_Array = json_decode($this->findPreviousBalanceFees($pre_session->id, $this->current_session));
+			$data['tot_prev_balance'] = format_amount($student_Array->tot_prev_val);
+			
+			$student_session_ids = implode(',', array_column($student_Array->student_Array, 'student_session_id'));
+			$this->db->select_sum('amount');
+			$this->db->where('status', 1);
+			$this->db->where_in('previous_student_session_id', $ids);
+
+			$query = $this->db->get('received_previous_balance');
+
+			$result = $query->row();
+			$data['collected_prev_balance'] = format_amount($result->amount);
+			$data['remain_prev_balance'] = format_amount($data['tot_prev_balance'] - $result->amount);
+			
+			$today_total = $this->db
+				->select_sum('amount')
+				->where('status', 1)
+				->where('DATE(created_at)', date('Y-m-d'))
+				->where_in(
+					'previous_student_session_id',
+					explode(',', $student_session_ids)
+				)
+				->get('received_previous_balance')
+				->row()
+				->amount;
+			$data['today_collected_balance'] = format_amount($today_total);	
+		}else{
+			$data['tot_prev_balance'] = $data['collected_prev_balance'] = $data['remain_prev_balance'] = $data['today_collected_balance'] = 0;
+		}
+		// echo '<pre>';print_r($data['today_collected_balance']);exit;
+		
+		
 		
         $this->load->view('layout/header', $data);
         $this->load->view('admin/dashboard', $data);
         $this->load->view('layout/footer', $data); 
+    }
+	public function findPreviousBalanceFees($session_id, $current_session) {
+
+        $studentlist = $this->student_model->getPreviousSessionStudentAll($session_id);
+		// return json_encode(array('student_Array' => $studentlist, 'is_update' => $is_update, 'tot_prev_val' => $tot_prev_val));
+// return $studentlist;
+        $is_update = false;
+        $student_Array = array();
+        if (!empty($studentlist)) {
+            $student_comma_seprate = array();
+
+            foreach ($studentlist as $student_list_key => $student_list_value) {
+               
+                $obj = new stdClass();
+                $obj->name = $this->customlib->getFullName($student_list_value->firstname,$student_list_value->middlename,$student_list_value->lastname,$this->sch_setting_detail->middlename,$this->sch_setting_detail->lastname);
+                $obj->admission_no = $student_list_value->admission_no;
+                $obj->roll_no = $student_list_value->roll_no;
+                $obj->father_name = $student_list_value->father_name;
+                $obj->student_session_id = $student_list_value->current_student_session_id;
+                $obj->student_previous_session_id = $student_list_value->previous_student_session_id;
+                // $obj->id = $student_list_value->id;
+               
+                if (strtotime($student_list_value->admission_date) == 0) {
+                    $obj->admission_date = "";
+                } else {
+                    $obj->admission_date = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($student_list_value->admission_date));
+                }
+
+
+                $student_Array[] = $obj;
+                $student_comma_seprate[] = $student_list_value->current_student_session_id;
+            }
+
+            $student_session_array = "(" . implode(",", $student_comma_seprate) . ")";
+            $record_exists = $this->studentfeemaster_model->getBalanceMasterRecord($this->balance_group, $student_session_array);
+
+			$tot_prev_val = 0;
+            if (!empty($record_exists)) {
+                $is_update = true;
+                foreach ($student_Array as $stkey => $eachstudent) {
+
+                    $eachstudent->balance = $this->findValueExists($record_exists, $eachstudent->student_session_id);
+					$tot_prev_val = $tot_prev_val + $eachstudent->balance;
+                }
+            } else {
+                foreach ($student_Array as $stkey => $eachstudent) {
+
+
+                    //==========================
+                    $student_total_fees = array();
+                    if ($eachstudent->student_previous_session_id != "") {
+
+                        $student_total_fees = $this->studentfeemaster_model->getPreviousStudentFees($eachstudent->student_previous_session_id);
+                    }
+
+                    if (!empty($student_total_fees)) {
+                        $totalfee = 0;
+                        $deposit = 0;
+                        $discount = 0;
+                        $balance = 0;
+                        foreach ($student_total_fees as $student_total_fees_key => $student_total_fees_value) {
+                            if (!empty($student_total_fees_value->fees)) {
+                                foreach ($student_total_fees_value->fees as $each_fee_key => $each_fee_value) {
+                                    $totalfee = $totalfee + $each_fee_value->amount;
+
+                                    $amount_detail = json_decode($each_fee_value->amount_detail);
+                                    if ($amount_detail != null) {
+                                        foreach ($amount_detail as $amount_detail_key => $amount_detail_value) {
+                                            $deposit = $deposit + $amount_detail_value->amount;
+                                            $discount = $discount + $amount_detail_value->amount_discount;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        $eachstudent->balance = $totalfee - ($deposit + $discount);
+                        $eachstudent->id = $student_total_fees_value->id;
+						$tot_prev_val = $tot_prev_val + $eachstudent->balance;
+                    } else {
+                        $eachstudent->balance = "0";
+                    }
+                    //===================
+                }
+// echo '<pre>'; print_r($student_Array);exit;
+            }
+        }
+
+        return json_encode(array('student_Array' => $student_Array, 'is_update' => $is_update, 'tot_prev_val' => $tot_prev_val));
+    }
+	function findValueExists($array, $find) {
+        $amount = 0;
+        foreach ($array as $x => $x_value) {
+            if ($x_value->student_session_id == $find)
+                return $x_value->previous_session_balance;
+        }
+        return $amount;
     }
 
     public function getUserImage()

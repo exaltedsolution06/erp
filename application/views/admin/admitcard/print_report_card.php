@@ -1063,7 +1063,7 @@
 						<th class="" style="text-align: left !important;padding:5px 8px 5px 8px;">
 							<?=$res->exam; ?>
 						</th>
-						<td style="padding:5px 8px 5px 8px;"><?=$res->get_marks; ?></td>
+						<td style="padding:5px 8px 5px 8px;"><?= $res->attendence == 'present' ? $res->get_marks : ($res->attendence == 'm_leave' ? 'ML' : 'AB'); ?></td>
 						<?php 
 						/*$z=1; for ($i=0; $i < count($tearm_count); $i++) {
 							$term_id=$tearm_count[$i];
@@ -1121,7 +1121,10 @@
 						<?php
 						}
 						?>
-					</div>			
+					</div>
+					<?php
+					if($desc->is_promoted_to==1){
+					?>
 					<div class="col-12 mb-3 d-flex">				
 						<?php if($exam_pass_status){
 							if($is_fail){
@@ -1138,6 +1141,7 @@
 						<strong><?php echo $this->lang->line('promoted_to_class'); ?> :</strong> <strong class="text-underline" style="width:330px; text-align:center;">&nbsp;</strong>
 						<?php } ?>
 					</div>
+					<?php } ?>
 					<div class="col-12 mb-3 d-flex">
 						<strong><?php echo $this->lang->line('remarks'); ?></strong>
 						<strong class="ml-5px">:</strong> 

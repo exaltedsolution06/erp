@@ -113,6 +113,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             <?php } if ($sch_setting->father_name) { ?>
                                                                 <th class="text text-left"><?php echo $this->lang->line('father_name'); ?></th><?php } ?>
 
+                                                            <th class="">Total prev <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>
+                                                            <th class="">Total received <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>
                                                             <th class="text-right"><?php echo $this->lang->line('balance'); ?> <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>
                                                         </tr>
 
@@ -138,6 +140,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                 <?php } if ($sch_setting->father_name) { ?>
                                                                     <td><?php echo $due_fee_value->father_name; ?></td>
                                                                 <?php } ?>
+																<td><?php echo format_amount($due_fee_value->prev_balance); ?></td>
+																<td><?php echo format_amount($due_fee_value->prev_balance - $due_fee_value->balance); ?></td>
                                                                 <td class="text text-right">
 
                                                                     <input type="text" name="amount[<?php echo $i; ?>]" class="form-control tddm200" value="<?php echo $due_fee_value->balance; ?>">

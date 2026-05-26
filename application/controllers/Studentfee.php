@@ -7,6 +7,8 @@ if (!defined('BASEPATH')) {
 class Studentfee extends Admin_Controller
 {
 
+    protected $balance_group;
+	
     public function __construct()
     {
         parent::__construct();
@@ -14,6 +16,7 @@ class Studentfee extends Admin_Controller
         $this->load->library('smsgateway');
         $this->load->library('pagination');
         $this->load->library('mailsmsconf');
+        $this->balance_group = $this->config->item('ci_balance_group');
         $this->search_type        = $this->config->item('search_type');
         $this->sch_setting_detail = $this->setting_model->getSetting();
 		$this->load->model('fee_discount_model');
@@ -124,8 +127,9 @@ class Studentfee extends Admin_Controller
 			
 			// die;
             // $data['balance_amt']
+			$pre_session = $this->session_model->getPreSession($this->current_session);
             $this->Receipt_model->update_student($data['student_id'],$data['balance_amt'],$data['remaining_previous_balance']);
-            $this->studentfeemaster_model->update_student_fees_master_c($data['previous_student_session_id'],$data['remaining_previous_balance']);
+            $this->studentfeemaster_model->update_student_fees_master_c($data['previous_student_session_id'],$data['remaining_previous_balance'],$pre_session->id,$this->balance_group);
 			
 			$insert_data = array(
 				'previous_student_session_id'   => $data['previous_student_session_id'],
@@ -190,8 +194,9 @@ class Studentfee extends Admin_Controller
 		   
 			array_push($last_id,$id);
 
+			$pre_session = $this->session_model->getPreSession($this->current_session);
             $this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt']),(int)($data['remaining_previous_balance']));
-            $this->studentfeemaster_model->update_student_fees_master_c($data['previous_student_session_id'],(int)($data['remaining_previous_balance']));
+            $this->studentfeemaster_model->update_student_fees_master_c($data['previous_student_session_id'],(int)($data['remaining_previous_balance']),$pre_session->id,$this->balance_group);
 			
 			$insert_prev = array(
 				'previous_student_session_id'   => $data['previous_student_session_id'],
@@ -337,8 +342,9 @@ class Studentfee extends Admin_Controller
             }
             // die;
             // $data['balance_amt']
-            $this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt']),$data['remaining_previous_balance']);
-			$this->studentfeemaster_model->update_student_fees_master_c($data['previous_student_session_id'],$data['remaining_previous_balance']);
+			$pre_session = $this->session_model->getPreSession($this->current_session);
+            $this->Receipt_model->update_student($data['student_id'],(int)($data['prev_balance_amt_remain']),$data['remaining_previous_balance']);
+			$this->studentfeemaster_model->update_student_fees_master_c($data['previous_student_session_id'],$data['remaining_previous_balance'],$pre_session->id,$this->balance_group);
 			
 			$insert_prev = array(
 				'previous_student_session_id'   => $data['previous_student_session_id'],
@@ -394,8 +400,10 @@ class Studentfee extends Admin_Controller
 			$insert_data['session_id'] = $this->current_session;
 			$id=$this->Receipt_model->insert_receipt($insert_data); 
             array_push($last_id,$id);
+			
+			$pre_session = $this->session_model->getPreSession($this->current_session);
             $this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt']),(int)($data['remaining_previous_balance']));
-			$this->studentfeemaster_model->update_student_fees_master_c($data['previous_student_session_id'],(int)($data['remaining_previous_balance']));
+			$this->studentfeemaster_model->update_student_fees_master_c($data['previous_student_session_id'],(int)($data['remaining_previous_balance']),$pre_session->id,$this->balance_group);
 			
 			$insert_prev = array(
 				'previous_student_session_id'   => $data['previous_student_session_id'],
@@ -2254,7 +2262,8 @@ class Studentfee extends Admin_Controller
                     $this->db->update('student_session', array('fees_discount' => $new_discount,'previous_session_balance' => $new_previous_session_balance));
 					
 					// Step 4: Update the `student_fees_master`
-					$this->studentfeemaster_model->update_student_fees_master_c($row->previous_student_session_id,$new_previous_session_balance);
+					$pre_session = $this->session_model->getPreSession($this->current_session);
+					$this->studentfeemaster_model->update_student_fees_master_c($row->previous_student_session_id,$new_previous_session_balance,$pre_session->id,$this->balance_group);
 					
 					$insert_prev = array(
 						'receipt_no'   => $receipt_no,
@@ -2503,7 +2512,8 @@ class Studentfee extends Admin_Controller
 					$this->db->update('student_session', array('fees_discount' => $new_discount, 'previous_session_balance' => $new_previous_session_balance));
 					
 					// Step 4: Update the `student_fees_master`
-					$this->studentfeemaster_model->update_student_fees_master_c($row->previous_student_session_id,$new_previous_session_balance);
+					$pre_session = $this->session_model->getPreSession($this->current_session);
+					$this->studentfeemaster_model->update_student_fees_master_c($row->previous_student_session_id,$new_previous_session_balance,$pre_session->id,$this->balance_group);
 					
 					$insert_prev = array(
 						'receipt_no'   => $receipt_no,

@@ -454,7 +454,7 @@ class Examgroup_model extends MY_Model {
         return $query->result();
     }
     public function getExamByExamGroup_reportCard_c($id,$student_id, $is_active = false) {
-        $this->db->select('exam_group_class_batch_exams.*, exam_group_exam_results_coscholastic.get_marks, sessions.session,(select COUNT(*) from exam_group_class_batch_exam_subjects WHERE exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id = exam_group_class_batch_exams.id) as `total_subjects`')->from('exam_group_class_batch_exams');
+        $this->db->select('exam_group_class_batch_exams.*, exam_group_exam_results_coscholastic.get_marks, exam_group_exam_results_coscholastic.attendence, sessions.session,(select COUNT(*) from exam_group_class_batch_exam_subjects WHERE exam_group_class_batch_exam_subjects.exam_group_class_batch_exams_id = exam_group_class_batch_exams.id) as `total_subjects`')->from('exam_group_class_batch_exams');
         
         $this->db->join('sessions', 'sessions.id = exam_group_class_batch_exams.session_id');
         $this->db->join('exam_group_class_batch_exam_students', 'exam_group_class_batch_exam_students.exam_group_class_batch_exam_id = exam_group_class_batch_exams.id');
