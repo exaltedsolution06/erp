@@ -171,7 +171,7 @@ class Examresult extends Admin_Controller {
         $this->load->view('layout/footer', $data);
     }
 
-    public function printmarksheet() {
+    public function printmarksheet_old() {
 		
 		// var_dump($_POST);
 		
@@ -668,52 +668,47 @@ class Examresult extends Admin_Controller {
 
 
 
-    public function printreportcard() {
+    public function printmarksheet() {
+		$session_id = $this->current_session;
+        $section_id = $this->input->post('section_id');
+        $class_id = $this->input->post('class_id');
+       
+
+        $exam_group_id = $this->input->post('post_exam_group_id');
+        // $data['post_exam_group_id'] = implode(",",$exam_group_id);
+        $students_array = $this->input->post('exam_group_class_batch_exam_student_id');
+       
+		// Convert empty values removed
+		$students_array = array_filter($students_array, function($v){
+			return !empty($v) && is_numeric($v);
+		});
+
+		if (empty($students_array)) {
+			die("No valid student IDs found");
+		}
+
+		$student_ids = implode(",", $students_array);
+
+        $sql="SELECT *,S.id as student_id,CL.class,SE.section FROM students S  LEFT JOIN student_session SS ON SS.student_id=S.id LEFT JOIN classes CL ON CL.id=SS.class_id LEFT JOIN sections SE ON SE.id=SS.section_id LEFT JOIN fee_groups C ON C.id=SS.fee_category_id WHERE SS.session_id='$session_id' and SS.class_id ='$class_id' and SS.section_id ='$section_id' AND S.id IN ($student_ids)";
+
+        $query = $this->db->query($sql);       
+        $data['marksheet'] = $query->result();
+		$data['reportcard'] = $this->marksheet_model->get($this->input->post('marksheet_template'));
         
+
+        $data['post_exam_id']=$_POST['post_exam_id'];
+        $data['postExamGroupId']=$exam_group_id;
+        
+        $data['post_exam_group_id']=$this->db->query("SELECT * FROM exam_groups WHERE id='$exam_group_id'")->result();
     
-        
-        
-        /*
-        $this->form_validation->set_error_delimiters('', '');
-        $this->form_validation->set_rules('post_exam_id', $this->lang->line('exam'), 'required|trim|xss_clean');
-        $this->form_validation->set_rules('post_exam_group_id', $this->lang->line('exam') . " " . $this->lang->line('group'), 'required|trim|xss_clean');
-        $this->form_validation->set_rules('exam_group_class_batch_exam_student_id[]', $this->lang->line('students'), 'required|trim|xss_clean');
-        $data = array();
-
-        if ($this->form_validation->run() == false) {
-            $data = array(
-                'post_exam_id' => form_error('post_exam_id'),
-                'post_exam_group_id' => form_error('post_exam_group_id'),
-                'exam_group_class_batch_exam_student_id' => form_error('exam_group_class_batch_exam_student_id'),
-            );
-            $array = array('status' => 0, 'error' => $data);
-            echo json_encode($array);
-        } else {
-            $data['template'] = $this->marksheet_model->get($this->input->post('marksheet_template'));
-            $post_exam_id = $this->input->post('post_exam_id');
-            $post_exam_group_id = $this->input->post('post_exam_group_id');
-            $students_array = $this->input->post('exam_group_class_batch_exam_student_id');
-            $exam = $this->examgroup_model->getExamByID($post_exam_id);
-            $data['exam'] = $exam;
-
-            $exam_grades = $this->grade_model->getByExamType($exam->exam_group_type);
-            $data['exam_grades'] = $exam_grades;
-            $data['marksheet'] = $this->examresult_model->getExamResults($post_exam_id, $post_exam_group_id, $students_array);
-            
-            
-            // var_dump($data['marksheet']);
-            
-            $data['sch_setting'] = $this->sch_setting_detail;
-            $student_exam_page = $this->load->view('admin/examresult/_printmarksheet', $data, true);
-
- 
-            $array = array('status' => '1', 'error' => '', 'page' => $student_exam_page);
-            echo json_encode($array);
-        }
-        
-        
-        */
-            
+		$data['current_session'] = $this->session_model->get($this->sch_current_session);
+		
+		$student_admit_cards = $this->load->view('admin/examresult/print_marksheet_card', $data, true);
+		
+		$array = array('status' => '1', 'error' => '', 'page' => $student_admit_cards);
+		echo json_encode($array);
+    }
+    public function printreportcard() {            
         $session_id = $this->current_session;
         $section_id = $this->input->post('section_id');
         $class_id = $this->input->post('class_id');
@@ -723,10 +718,6 @@ class Examresult extends Admin_Controller {
         // $data['post_exam_group_id'] = implode(",",$exam_group_id);
         $students_array = $this->input->post('exam_group_class_batch_exam_student_id');
        
-       
-
-
-
 		// Convert empty values removed
 		$students_array = array_filter($students_array, function($v){
 			return !empty($v) && is_numeric($v);

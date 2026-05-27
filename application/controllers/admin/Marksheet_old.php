@@ -4,7 +4,7 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Marksheet extends Admin_Controller {
+class Marksheet_old extends Admin_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -24,7 +24,9 @@ class Marksheet extends Admin_Controller {
 
         $this->form_validation->set_rules('template', $this->lang->line('template'), 'trim|required|xss_clean');
 
-        $this->form_validation->set_rules('header_img', 'header_img', 'callback_handle_upload[header_img]');
+        $this->form_validation->set_rules('left_logo', $this->lang->line('left') . " " . $this->lang->line('logo'), 'callback_handle_upload[left_logo]');
+        $this->form_validation->set_rules('right_logo', $this->lang->line('right') . " " . $this->lang->line('logo'), 'callback_handle_upload[right_logo]');
+        $this->form_validation->set_rules('background_img', $this->lang->line('background') . " " . $this->lang->line('image'), 'callback_handle_upload[background_img]');
         $this->form_validation->set_rules('left_sign', $this->lang->line('sign'), 'callback_handle_upload[left_sign]');
         $this->form_validation->set_rules('middle_sign', $this->lang->line('sign'), 'callback_handle_upload[middle_sign]');
         $this->form_validation->set_rules('right_sign', $this->lang->line('sign'), 'callback_handle_upload[right_sign]');
@@ -46,21 +48,42 @@ class Marksheet extends Admin_Controller {
             } else {
                 $is_mother_name = 0;
             }
-            if (isset($_POST['is_dob'])) {
-                $is_dob = 1;
-            } else {
-                $is_dob = 0;
-            }
 
             if (isset($_POST['is_admission_no'])) {
                 $is_admission_no = 1;
             } else {
                 $is_admission_no = 0;
             }
+            if (isset($_POST['exam_session'])) {
+                $exam_session = 1;
+            } else {
+                $exam_session = 0;
+            }
             if (isset($_POST['is_roll_no'])) {
                 $is_roll_no = 1;
             } else {
                 $is_roll_no = 0;
+            }
+            if (isset($_POST['is_address'])) {
+                $is_address = 1;
+            } else {
+                $is_address = 0;
+            }
+            if (isset($_POST['is_gender'])) {
+                $is_gender = 1;
+            } else {
+                $is_gender = 0;
+            }
+
+            if (isset($_POST['is_photo'])) {
+                $is_photo = 1;
+            } else {
+                $is_photo = 0;
+            }
+            if (isset($_POST['is_division'])) {
+                $is_division = 1;
+            } else {
+                $is_division = 0;
             }
 
             if (isset($_POST['is_class'])) {
@@ -74,141 +97,49 @@ class Marksheet extends Admin_Controller {
             } else {
                 $is_section = 0;
             }
-            if (isset($_POST['is_photo'])) {
-                $is_photo = 1;
-            } else {
-                $is_photo = 0;
-            }
-            if (isset($_POST['is_contactno'])) {
-                $is_contactno = 1;
-            } else {
-                $is_contactno = 0;
-            }
-
-            if (isset($_POST['is_header'])) {
+             if (isset($_POST['is_header'])) {
                 $is_header = 1;
-				$header_height = 0;
-				$footer_height = 0;
             } else {
                 $is_header = 0;
-				$header_height = $this->input->post('header_height');
-				$footer_height = $this->input->post('footer_height');
             }
-            if (isset($_POST['marks_grade_table'])) {
-                $marks_grade_table = 1;
-                $grade_table_title = $this->input->post('grade_table_title');
+             if (isset($_POST['is_footer'])) {
+                $is_footer = 1;
             } else {
-                $marks_grade_table = 0;
-				$grade_table_title = '';
-            }
-            if (isset($_POST['max_marks_shift_left'])) {
-                $max_marks_shift_left = 1;
-            } else {
-                $max_marks_shift_left = 0;
-            }
-            if (isset($_POST['school_reopen'])) {
-                $school_reopen = 1;
-                $school_reopen_date = $this->input->post('school_reopen_date');
-                $school_reopen_time = $this->input->post('school_reopen_time');
-            } else {
-                $school_reopen = 0;
-                $school_reopen_date = "";
-                $school_reopen_time = "";
-            }
-            if (isset($_POST['is_class_teacher'])) {
-                $is_class_teacher = 1;
-            } else {
-                $is_class_teacher = 0;
-            }
-            if (isset($_POST['is_examination_ic'])) {
-                $is_examination_ic = 1;
-            } else {
-                $is_examination_ic = 0;
-            }
-            if (isset($_POST['is_principal'])) {
-                $is_principal = 1;
-            } else {
-                $is_principal = 0;
-            }
-            if (isset($_POST['is_show_date'])) {
-                $is_show_date = 1;
-                $show_date = $this->input->post('show_date');
-            } else {
-                $is_show_date = 0;
-                $show_date = '';
-            }
-            if (isset($_POST['place'])) {
-                $place = 1;
-                $show_place = $this->input->post('show_place');
-            } else {
-                $place = 0;
-                $show_place = $this->input->post('show_place');
-            }
-            if (isset($_POST['is_show_attendance'])) {
-                $is_show_attendance = 1;
-            } else {
-                $is_show_attendance = 0;
-            }
-            if (isset($_POST['is_class_position'])) {
-                $is_class_position = 1;
-            } else {
-                $is_class_position = 0;
-            }
-            if (isset($_POST['is_promoted_to'])) {
-                $is_promoted_to = 1;
-            } else {
-                $is_promoted_to = 0;
+                $is_footer = 0;
             }
 
 
 
             $insert_data = array(
                 'template' => $this->input->post('template'),
+                'heading' => $this->input->post('heading'),
                 'title' => $this->input->post('title'),
-                'overall_marks_title' => $this->input->post('overall_marks_title'),
-                'subject_color' => $this->input->post('subject_color'),
-                'scholastic_area_color' => $this->input->post('scholastic_area_color'),
-                'main_subject_color' => $this->input->post('main_subject_color'),
+                'exam_name' => $this->input->post('exam_name'),
+                'school_name' => $this->input->post('school_name'),
+                'exam_center' => $this->input->post('exam_center'),
+                'date' => $this->input->post('date'),
                 'is_name' => $is_name,
                 'is_father_name' => $is_father_name,
                 'is_mother_name' => $is_mother_name,
-                'is_dob' => $is_dob,
                 'is_admission_no' => $is_admission_no,
                 'is_roll_no' => $is_roll_no,
-                'is_class' => $is_class,
-                'is_section' => $is_section,
                 'is_photo' => $is_photo,
-                'is_contactno' => $is_contactno,
-                'exam_group_grade'=>json_encode($this->input->post('exam_group')),
-                'exam_group_marks_obtained'=>json_encode($this->input->post('marks_obtained')),
-                'exam_group_max_marks'=>json_encode($this->input->post('max_marks')),
-                'is_header'=>$is_header,
-                'marks_grade_table'=>$marks_grade_table,
-                'max_marks_shift_left'=>$max_marks_shift_left,
-                'school_reopen'=>$school_reopen,
-                'place'=>$place,
-                'show_place'=>$show_place,
-                'is_show_attendance'=>$is_show_attendance,
-                'is_class_position'=>$is_class_position,
-                'is_promoted_to'=>$is_promoted_to,
-                'grade_table_title'=>$grade_table_title,
-                'school_reopen_date'=>$school_reopen_date,
-                'school_reopen_time'=>$school_reopen_time,
-                'is_class_teacher'=>$is_class_teacher,
-                'is_examination_ic'=>$is_examination_ic,
-                'is_principal'=>$is_principal,
-                'is_show_date'=>$is_show_date,
-                'show_date'=>$show_date,
+                'is_class' => $is_class,
+                'is_header' => $is_header,
+                'is_footer' => $is_footer,
+                'is_section' => $is_section,
+                'is_division' => $is_division,
+                'content' => $this->input->post('content'),
+                'content_footer' => $this->input->post('content_footer'),
+                'exam_session' => $exam_session,
+                'left_logo' => "",
+                'right_logo' => "",
                 'left_sign' => "",
                 'right_sign' => "",
                 'middle_sign' => "",
-                'left_sign_title' => $this->input->post('left_sign_title'),
-                'middle_sign_title' => $this->input->post('middle_sign_title'),
-                'right_sign_title' => $this->input->post('right_sign_title'),
-                'background_image' => "",
+                'background_img' => "",
                 'header_img'=>"",
-				'header_height' => $header_height,
-                'footer_height' => $footer_height,
+                'footer_img'=>"",
 				'session_id' => $this->current_session
             );
 
@@ -219,6 +150,33 @@ class Marksheet extends Admin_Controller {
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["header_img"]["tmp_name"], "./uploads/marksheet/" . $img_name);
                 $insert_data['header_img'] = $img_name;
+            }
+
+            if (isset($_FILES["footer_img"]) && !empty($_FILES["footer_img"]['name'])) {
+                $time = md5($_FILES["footer_img"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["footer_img"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["footer_img"]["tmp_name"], "./uploads/marksheet/" . $img_name);
+                $insert_data['footer_img'] = $img_name;
+            }
+
+
+
+
+
+            if (isset($_FILES["left_logo"]) && !empty($_FILES["left_logo"]['name'])) {
+                $time = md5($_FILES["left_logo"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["left_logo"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["left_logo"]["tmp_name"], "./uploads/marksheet/" . $img_name);
+                $insert_data['left_logo'] = $img_name;
+            }
+            if (isset($_FILES["right_logo"]) && !empty($_FILES["right_logo"]['name'])) {
+                $time = md5($_FILES["right_logo"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["right_logo"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["right_logo"]["tmp_name"], "./uploads/marksheet/" . $img_name);
+                $insert_data['right_logo'] = $img_name;
             }
             if (isset($_FILES["left_sign"]) && !empty($_FILES["left_sign"]['name'])) {
                 $time = md5($_FILES["left_sign"]['name'] . microtime());
@@ -238,20 +196,20 @@ class Marksheet extends Admin_Controller {
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["right_sign"]["tmp_name"], "./uploads/marksheet/" . $img_name);
                 $insert_data['right_sign'] = $img_name;
-            }if (isset($_FILES["background_image"]) && !empty($_FILES["background_image"]['name'])) {
-                $time = md5($_FILES["background_image"]['name'] . microtime());
-                $fileInfo = pathinfo($_FILES["background_image"]["name"]);
-                $img_name = $time . '.' . $fileInfo['extension'];
-                move_uploaded_file($_FILES["background_image"]["tmp_name"], "./uploads/marksheet/" . $img_name);
-                $insert_data['background_image'] = $img_name;
             }
+            if (isset($_FILES["background_img"]) && !empty($_FILES["background_img"]['name'])) {
+                $time = md5($_FILES["background_img"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["background_img"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["background_img"]["tmp_name"], "./uploads/marksheet/" . $img_name);
+                $insert_data['background_img'] = $img_name;
+            }
+
             $this->marksheet_model->add($insert_data);
 
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
             redirect('admin/marksheet/index');
         }
-		
-		$this->data['exam_groups'] = $this->examgroup_model->get();
 
         $this->load->view('layout/header');
         $this->load->view('admin/marksheet/createmarksheet', $this->data);
@@ -317,7 +275,9 @@ class Marksheet extends Admin_Controller {
 
         $this->form_validation->set_rules('template', 'template', 'trim|required|xss_clean');
 
-        $this->form_validation->set_rules('header_img', 'header_img', 'callback_handle_upload[header_img]');
+        $this->form_validation->set_rules('left_logo', 'left_logo', 'callback_handle_upload[left_logo]');
+        $this->form_validation->set_rules('right_logo', 'right_logo', 'callback_handle_upload[right_logo]');
+        $this->form_validation->set_rules('background_img', 'background_img', 'callback_handle_upload[background_img]');
         $this->form_validation->set_rules('left_sign', $this->lang->line('sign'), 'callback_handle_upload[left_sign]');
         $this->form_validation->set_rules('middle_sign', $this->lang->line('sign'), 'callback_handle_upload[middle_sign]');
         $this->form_validation->set_rules('right_sign', $this->lang->line('sign'), 'callback_handle_upload[right_sign]');
@@ -339,21 +299,43 @@ class Marksheet extends Admin_Controller {
             } else {
                 $is_mother_name = 0;
             }
-            if (isset($_POST['is_dob'])) {
-                $is_dob = 1;
-            } else {
-                $is_dob = 0;
-            }
 
             if (isset($_POST['is_admission_no'])) {
                 $is_admission_no = 1;
             } else {
                 $is_admission_no = 0;
             }
+            if (isset($_POST['exam_session'])) {
+                $exam_session = 1;
+            } else {
+                $exam_session = 0;
+            }
             if (isset($_POST['is_roll_no'])) {
                 $is_roll_no = 1;
             } else {
                 $is_roll_no = 0;
+            }
+            if (isset($_POST['is_address'])) {
+                $is_address = 1;
+            } else {
+                $is_address = 0;
+            }
+            if (isset($_POST['is_gender'])) {
+                $is_gender = 1;
+            } else {
+                $is_gender = 0;
+            }
+
+            if (isset($_POST['is_photo'])) {
+                $is_photo = 1;
+            } else {
+                $is_photo = 0;
+            }
+
+            if (isset($_POST['is_division'])) {
+                $is_division = 1;
+            } else {
+                $is_division = 0;
             }
 
             if (isset($_POST['is_class'])) {
@@ -367,185 +349,89 @@ class Marksheet extends Admin_Controller {
             } else {
                 $is_section = 0;
             }
-            if (isset($_POST['is_photo'])) {
-                $is_photo = 1;
-            } else {
-                $is_photo = 0;
-            }
-            if (isset($_POST['is_contactno'])) {
-                $is_contactno = 1;
-            } else {
-                $is_contactno = 0;
-            }
 
             if (isset($_POST['is_header'])) {
                 $is_header = 1;
-				$header_height = 0;
-				$footer_height = 0;
             } else {
                 $is_header = 0;
-				$header_height = $this->input->post('header_height');
-				$footer_height = $this->input->post('footer_height');
             }
-
-            if (isset($_POST['marks_grade_table'])) {
-                $marks_grade_table = 1;
-                $grade_table_title = $this->input->post('grade_table_title');
+             if (isset($_POST['is_footer'])) {
+                $is_footer = 1;
             } else {
-                $marks_grade_table = 0;
-                $grade_table_title = '';
-            }
-            if (isset($_POST['max_marks_shift_left'])) {
-                $max_marks_shift_left = 1;
-            } else {
-                $max_marks_shift_left = 0;
-            }
-            if (isset($_POST['school_reopen'])) {
-                $school_reopen = 1;
-                $school_reopen_date = $this->input->post('school_reopen_date');
-                $school_reopen_time = $this->input->post('school_reopen_time');
-            } else {
-                $school_reopen = 0;
-				$school_reopen_date = "";
-                $school_reopen_time = "";
-            }
-            if (isset($_POST['is_class_teacher'])) {
-                $is_class_teacher = 1;
-            } else {
-                $is_class_teacher = 0;
-            }
-            if (isset($_POST['is_examination_ic'])) {
-                $is_examination_ic = 1;
-            } else {
-                $is_examination_ic = 0;
-            }
-            if (isset($_POST['is_principal'])) {
-                $is_principal = 1;
-            } else {
-                $is_principal = 0;
-            }
-            if (isset($_POST['is_show_date'])) {
-                $is_show_date = 1;
-                $show_date = $this->input->post('show_date');
-            } else {
-                $is_show_date = 0;
-                $show_date = '';
-            }
-            if (isset($_POST['place'])) {
-                $place = 1;
-                $show_place = $this->input->post('show_place');
-            } else {
-                $place = 0;
-                $show_place = '';
-            }
-            if (isset($_POST['is_show_attendance'])) {
-                $is_show_attendance = 1;
-            } else {
-                $is_show_attendance = 0;
-            }
-            if (isset($_POST['is_class_position'])) {
-                $is_class_position = 1;
-            } else {
-                $is_class_position = 0;
-            }
-            if (isset($_POST['is_promoted_to'])) {
-                $is_promoted_to = 1;
-            } else {
-                $is_promoted_to = 0;
+                $is_footer = 0;
             }
 
 
             $insert_data = array(
                 'id' => $this->input->post('id'),
                 'template' => $this->input->post('template'),
+                'heading' => $this->input->post('heading'),
                 'title' => $this->input->post('title'),
-                'overall_marks_title' => $this->input->post('overall_marks_title'),
-                'subject_color' => $this->input->post('subject_color'),
-                'scholastic_area_color' => $this->input->post('scholastic_area_color'),
-                'main_subject_color' => $this->input->post('main_subject_color'),
+                'exam_name' => $this->input->post('exam_name'),
+                'school_name' => $this->input->post('school_name'),
+                'exam_center' => $this->input->post('exam_center'),
+                'content' => $this->input->post('content'),
+                'content_footer' => $this->input->post('content_footer'),
+                'date' => $this->input->post('date'),
                 'is_name' => $is_name,
                 'is_father_name' => $is_father_name,
                 'is_mother_name' => $is_mother_name,
-                'is_dob' => $is_dob,
                 'is_admission_no' => $is_admission_no,
                 'is_roll_no' => $is_roll_no,
-                'is_class' => $is_class,
-                'is_section' => $is_section,
                 'is_photo' => $is_photo,
-                'is_contactno' => $is_contactno,
-                'exam_group_grade'=>json_encode($this->input->post('exam_group')),
-                'exam_group_marks_obtained'=>json_encode($this->input->post('marks_obtained')),
-                'exam_group_max_marks'=>json_encode($this->input->post('max_marks')),
                 'is_header'=>$is_header,
-                'marks_grade_table'=>$marks_grade_table,
-                'max_marks_shift_left'=>$max_marks_shift_left,
-                'school_reopen'=>$school_reopen,
-                'school_reopen_date'=>$school_reopen_date,
-                'school_reopen_time'=>$school_reopen_time,
-				'header_height' => $header_height,
-                'footer_height' => $footer_height,
-                'is_class_teacher'=>$is_class_teacher,
-                'is_examination_ic'=>$is_examination_ic,
-                'is_principal'=>$is_principal,
-                'is_show_date'=>$is_show_date,
-                'show_date'=>$show_date,
-                'place'=>$place,
-                'show_place'=>$show_place,
-                'is_show_attendance'=>$is_show_attendance,
-                'is_class_position'=>$is_class_position,
-                'is_promoted_to'=>$is_promoted_to,
-                'grade_table_title'=>$grade_table_title,
-                'left_sign_title' => $this->input->post('left_sign_title'),
-                'middle_sign_title' => $this->input->post('middle_sign_title'),
-                'right_sign_title' => $this->input->post('right_sign_title'),
+                'is_class' => $is_class,
+                'is_footer'=>$is_footer,
+                'is_section' => $is_section,
+                'is_division' => $is_division,
+                'exam_session' => $exam_session,
             );
             
-            if ($_POST['remove_header_img'] == 1) {
-				$path1 = "uploads/marksheet/" . $marksheet->header_img;
-				$url = FCPATH . $path1;
-				if (file_exists($url)) {
-					unlink($url);
-				}
-				$insert_data['header_img'] = '';
-			}
-            if ($_POST['remove_left_sign'] == 1) {
-				$path1 = "uploads/marksheet/" . $marksheet->left_sign;
-				$url = FCPATH . $path1;
-				if (file_exists($url)) {
-					unlink($url);
-				}
-				$insert_data['left_sign'] = '';
-			}
-            if ($_POST['remove_middle_sign'] == 1) {
-				$path1 = "uploads/marksheet/" . $marksheet->middle_sign;
-				$url = FCPATH . $path1;
-				if (file_exists($url)) {
-					unlink($url);
-				}
-				$insert_data['middle_sign'] = '';
-			}
-            if ($_POST['remove_right_sign'] == 1) {
-				$path1 = "uploads/marksheet/" . $marksheet->right_sign;
-				$url = FCPATH . $path1;
-				if (file_exists($url)) {
-					unlink($url);
-				}
-				$insert_data['right_sign'] = '';
-			}
-            if ($_POST['remove_background_image'] == 1) {
-				$path1 = "uploads/marksheet/" . $marksheet->background_image;
-				$url = FCPATH . $path1;
-				if (file_exists($url)) {
-					unlink($url);
-				}
-				$insert_data['background_image'] = '';
-			}
+            
             if (isset($_FILES["header_img"]) && !empty($_FILES["header_img"]['name'])) {
                 $time = md5($_FILES["header_img"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["header_img"]["name"]);
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["header_img"]["tmp_name"], "./uploads/marksheet/" . $img_name);
                 $insert_data['header_img'] = $img_name;
+            }
+
+            if (isset($_FILES["footer_img"]) && !empty($_FILES["footer_img"]['name'])) {
+                $time = md5($_FILES["footer_img"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["footer_img"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["footer_img"]["tmp_name"], "./uploads/marksheet/" . $img_name);
+                $insert_data['footer_img'] = $img_name;
+            }
+
+
+
+
+
+
+
+            if (isset($_FILES["left_logo"]) && !empty($_FILES["left_logo"]['name'])) {
+                $time = md5($_FILES["left_logo"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["left_logo"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["left_logo"]["tmp_name"], "./uploads/marksheet/" . $img_name);
+                $insert_data['left_logo'] = $img_name;
+            }
+
+
+
+
+
+
+
+
+
+            if (isset($_FILES["right_logo"]) && !empty($_FILES["right_logo"]['name'])) {
+                $time = md5($_FILES["right_logo"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["right_logo"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["right_logo"]["tmp_name"], "./uploads/marksheet/" . $img_name);
+                $insert_data['right_logo'] = $img_name;
             }
             if (isset($_FILES["left_sign"]) && !empty($_FILES["left_sign"]['name'])) {
                 $time = md5($_FILES["left_sign"]['name'] . microtime());
@@ -565,12 +451,13 @@ class Marksheet extends Admin_Controller {
                 $img_name = $time . '.' . $fileInfo['extension'];
                 move_uploaded_file($_FILES["right_sign"]["tmp_name"], "./uploads/marksheet/" . $img_name);
                 $insert_data['right_sign'] = $img_name;
-            }if (isset($_FILES["background_image"]) && !empty($_FILES["background_image"]['name'])) {
-                $time = md5($_FILES["background_image"]['name'] . microtime());
-                $fileInfo = pathinfo($_FILES["background_image"]["name"]);
+            }
+            if (isset($_FILES["background_img"]) && !empty($_FILES["background_img"]['name'])) {
+                $time = md5($_FILES["background_img"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["background_img"]["name"]);
                 $img_name = $time . '.' . $fileInfo['extension'];
-                move_uploaded_file($_FILES["background_image"]["tmp_name"], "./uploads/marksheet/" . $img_name);
-                $insert_data['background_image'] = $img_name;
+                move_uploaded_file($_FILES["background_img"]["tmp_name"], "./uploads/marksheet/" . $img_name);
+                $insert_data['background_img'] = $img_name;
             }
 
             $this->marksheet_model->add($insert_data);
@@ -578,8 +465,6 @@ class Marksheet extends Admin_Controller {
             $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
             redirect('admin/marksheet/index');
         }
-		
-		$this->data['exam_groups'] = $this->examgroup_model->get();
 
         $this->load->view('layout/header');
         $this->load->view('admin/marksheet/editmarksheet', $this->data);

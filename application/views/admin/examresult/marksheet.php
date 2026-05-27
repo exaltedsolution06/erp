@@ -131,7 +131,7 @@
                     <?php
                     if (isset($studentList)) {
                         ?>
-                        <form method="post" action="<?php echo base_url('admin/examresult/printmarksheet') ?>" id="printMarksheet1">
+                        <form method="post" action="<?php echo base_url('admin/examresult/printmarksheet') ?>" id="printMarksheet">
                             <input type="hidden" name="marksheet_template" value="<?php echo $marksheet_template; ?>">
 							 <input type="hidden" name="post_exam_id" value="<?php echo $exam_id; ?>">
                                 <input type="hidden" name="session_id" value="<?php echo $_POST['session_id']; ?>">
@@ -212,6 +212,7 @@
                             </div>                                           
 
                         </form>
+						<div class="abc"></div>
                     </div>
                     <?php
                 }
@@ -335,6 +336,7 @@
             },
             success: function (response)
             {
+				// $(".abc").html(response.page);
                 Popup(response.page);
             },
             error: function (xhr) { // if error occured

@@ -108,13 +108,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <table class="table table-striped example">
                                                     <thead>
                                                         <tr>
+                                                            <th class="text text-left"><?php echo $this->lang->line('admission_no'); ?></th>
+                                                            <?php if ($sch_setting->roll_no) { ?>
+                                                                <th class="text text-left"><?php echo $this->lang->line('roll_no'); ?></th>
+															<?php } ?>
                                                             <th class="text text-left"><?php echo $this->lang->line('student_name'); ?></th> 
 
-                                                            <th class="text text-left"><?php echo $this->lang->line('admission_no'); ?></th>
                                                             <?php if ($sch_setting->admission_date) { ?>
                                                                 <th class="text text-left"><?php echo $this->lang->line('admission_date'); ?></th>
-                                                            <?php } if ($sch_setting->roll_no) { ?>
-                                                                <th class="text text-left"><?php echo $this->lang->line('roll_no'); ?></th>
                                                             <?php } if ($sch_setting->father_name) { ?>
                                                                 <th class="text text-left"><?php echo $this->lang->line('father_name'); ?></th><?php } ?>
 
@@ -134,17 +135,18 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                            $remain_bal = format_amount($remain_bal + $due_fee_value->balance);
                                                             ?>
                                                             <tr>
+                                                                <td><?php echo $due_fee_value->admission_no; ?></td>
+                                                                <?php if ($sch_setting->roll_no) { ?>
+                                                                    <td><?php echo $due_fee_value->roll_no; ?></td>
+																<?php } ?>
                                                                 <td>
                                                                     <input type="hidden" name="student_id[<?php echo $i; ?>]" value="<?php echo $due_fee_value->id; ?>">
                                                                     <input type="hidden" name="student_counter[]" value="<?php echo $i; ?>">
                                                                     <input type="hidden" name="student_sesion[<?php echo $i; ?>]" value="<?php echo $due_fee_value->student_session_id; ?>">
                                                                     <?php echo $due_fee_value->name ?></td>  
 
-                                                                <td><?php echo $due_fee_value->admission_no; ?></td>
                                                                 <?php if ($sch_setting->admission_date) { ?>
                                                                     <td><?php echo $due_fee_value->admission_date; ?></td>
-                                                                <?php } if ($sch_setting->roll_no) { ?>
-                                                                    <td><?php echo $due_fee_value->roll_no; ?></td>
                                                                 <?php } if ($sch_setting->father_name) { ?>
                                                                     <td><?php echo $due_fee_value->father_name; ?></td>
                                                                 <?php } ?>
