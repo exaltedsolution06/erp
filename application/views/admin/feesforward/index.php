@@ -1,6 +1,11 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 ?>
+<style>
+.is-invalid{
+    border:1px solid red !important;
+}
+</style>
 
 <div class="content-wrapper" style="min-height: 946px;">
     <!-- Content Header (Page header) -->
@@ -122,8 +127,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <tbody>
                                                         <?php
                                                         $i = 1;
+                                                        $tot_prev = $tot_rec = $remain_bal = 0;
                                                         foreach ($student_due_fee as $due_fee_key => $due_fee_value) {
-                                                           
+                                                           $tot_prev = format_amount($tot_prev + $due_fee_value->rec_balance + $due_fee_value->balance);
+                                                           $tot_rec = format_amount($tot_rec + $due_fee_value->rec_balance);
+                                                           $remain_bal = format_amount($remain_bal + $due_fee_value->balance);
                                                             ?>
                                                             <tr>
                                                                 <td>
@@ -140,11 +148,19 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                                 <?php } if ($sch_setting->father_name) { ?>
                                                                     <td><?php echo $due_fee_value->father_name; ?></td>
                                                                 <?php } ?>
-																<td><?php echo format_amount($due_fee_value->prev_balance); ?></td>
-																<td><?php echo format_amount($due_fee_value->prev_balance - $due_fee_value->balance); ?></td>
+																<td>
+																	<span style="display: none;"><?php echo format_amount($due_fee_value->balance); ?></span>
+																	<input type="text" name="amount[<?php echo $i; ?>]" class="form-control tddm200 tot_prev_input" value="<?php echo format_amount($due_fee_value->balance); ?>">
+																	<input type="hidden" class="form-control tddm200 tot_hid_prev_input" value="<?php echo format_amount($due_fee_value->balance); ?>">
+																</td>
+																<td>
+																	<span style="display: none;"><?php echo format_amount($due_fee_value->rec_balance); ?></span>
+																	<input type="text" class="form-control tddm200 tot_received" value="<?php echo format_amount($due_fee_value->rec_balance); ?>" disabled>
+																	<input type="hidden" name="rec_amount[<?php echo $i; ?>]" value="<?php echo format_amount($due_fee_value->rec_balance); ?>">
+																</td>
                                                                 <td class="text text-right">
-
-                                                                    <input type="text" name="amount[<?php echo $i; ?>]" class="form-control tddm200" value="<?php echo $due_fee_value->balance; ?>">
+																	<span style="display: none;"><?php echo format_amount($due_fee_value->balance - $due_fee_value->rec_balance); ?></span>
+                                                                    <input type="text" class="form-control tddm200" value="<?php echo format_amount($due_fee_value->balance - $due_fee_value->rec_balance); ?>" disabled>
                                                                 </td>
                                                             </tr>
                                                             <?php
@@ -152,6 +168,18 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         }
                                                         ?>
                                                     </tbody>
+													<tfoot style="display:revert;">
+														<tr>
+															<th></th>
+															<th></th>
+															<th></th>
+															<th></th>
+															<th>Total</th>
+															<th><?php echo $tot_prev; ?></th>
+															<th><?php echo $tot_rec; ?></th>
+															<th><?php echo $remain_bal; ?></th>
+                                                        </tr>
+													</tfoot>
 
                                                 </table>
 
@@ -207,7 +235,59 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         var class_id = $(this).val();
         getSectionByClass(class_id, 0);
     });
+	$(document).on('keyup', '.tot_prev_input', function () {
 
+		let row = $(this).closest('tr');
+
+		let totalReceived = parseFloat(
+			row.find('.tot_received').val()
+		) || 0;
+
+		let currentValue = parseFloat($(this).val()) || 0;
+
+		$(this).next('.amount-error').remove();
+
+		if (currentValue < totalReceived) {
+
+			$(this).addClass('is-invalid');
+
+			$(this).after(
+				'<small class="text-danger amount-error" style="color: red;">Amount should be greater than equal Total received</small>'
+			);
+
+		} else {
+
+			$(this).removeClass('is-invalid');
+
+			$(this).next('.amount-error').remove();
+		}
+	});
+
+
+	// on focus out reset value
+	$(document).on('focusout', '.tot_prev_input', function () {
+
+		let row = $(this).closest('tr');
+
+		let totalReceived = parseFloat(
+			row.find('.tot_received').val()
+		) || 0;
+
+		let currentValue = parseFloat($(this).val()) || 0;
+		
+		let currentFixedValue = parseFloat(
+			row.find('.tot_hid_prev_input').val()
+		) || 0;
+
+		if (currentValue < totalReceived) {
+
+			$(this).val(currentFixedValue);
+
+			$(this).removeClass('is-invalid');
+
+			$(this).next('.amount-error').remove();
+		}
+	});
 
 
 

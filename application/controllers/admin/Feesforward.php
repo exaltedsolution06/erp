@@ -12,6 +12,7 @@ class Feesforward extends Admin_Controller {
     function __construct() {
         parent::__construct();
         $this->load->config('ci-blog');
+        $this->load->model('Receipt_model');
         $this->balance_group = $this->config->item('ci_balance_group');
         $this->balance_type = $this->config->item('ci_balance_type');
 
@@ -98,6 +99,19 @@ class Feesforward extends Admin_Controller {
                         $student_array['is_system'] = 1;
 						$student_due_fee = $this->studentfeemaster_model->update_student_fees_master($student_array);
                         // $student_data[] = $student_array;
+						
+						$amount = (float) str_replace(
+							',',
+							'',
+							$this->input->post('amount[' . $count_value . ']')
+						);
+
+						$rec_amount = (float) str_replace(
+							',',
+							'',
+							$this->input->post('rec_amount[' . $count_value . ']')
+						);
+						$this->Receipt_model->update_student_prev_bal($this->input->post('student_sesion[' . $count_value . ']'),($amount - $rec_amount));
                     }
 
 
@@ -152,7 +166,7 @@ class Feesforward extends Admin_Controller {
                 foreach ($student_Array as $stkey => $eachstudent) {
 
                     $eachstudent->balance = $this->findValueExists($record_exists, $eachstudent->student_session_id);
-                    $eachstudent->prev_balance = $this->findPrevValueExists($record_exists, $eachstudent->student_session_id);
+                    $eachstudent->rec_balance = $this->findRecValue($eachstudent->student_previous_session_id);
                 }
             } else {
                 foreach ($student_Array as $stkey => $eachstudent) {
@@ -167,7 +181,7 @@ class Feesforward extends Admin_Controller {
 
                     if (!empty($student_total_fees)) {
                         $totalfee = 0;
-                        $totalPrevfee = 0;
+                        // $totalPrevfee = 0;
                         $deposit = 0;
                         $discount = 0;
                         $balance = 0;
@@ -175,7 +189,7 @@ class Feesforward extends Admin_Controller {
                             if (!empty($student_total_fees_value->fees)) {
                                 foreach ($student_total_fees_value->fees as $each_fee_key => $each_fee_value) {
                                     $totalfee = $totalfee + $each_fee_value->amount;
-                                    $totalPrevfee = $totalPrevfee + $each_fee_value->previous_session_balance;
+                                    // $totalPrevfee = $totalPrevfee + $each_fee_value->previous_session_balance;
 
                                     $amount_detail = json_decode($each_fee_value->amount_detail);
                                     if ($amount_detail != null) {
@@ -189,7 +203,8 @@ class Feesforward extends Admin_Controller {
                         }
 
                         $eachstudent->balance = $totalfee - ($deposit + $discount);
-                        $eachstudent->prev_balance = $totalPrevfee;
+                        // $eachstudent->prev_balance = $totalPrevfee;
+						$eachstudent->rec_balance = $this->findRecValue($eachstudent->student_previous_session_id);
                         $eachstudent->id = $student_total_fees_value->id;
                     } else {
                         $eachstudent->balance = "0";
@@ -220,6 +235,16 @@ class Feesforward extends Admin_Controller {
                 return $x_value->previous_session_balance;
         }
         return $previous_session_balance;
+    }
+    function findRecValue($student_previous_session_id) {
+        $total = $this->db
+			->select_sum('amount')
+			->where('previous_student_session_id', $student_previous_session_id)
+			->where('status', 1)
+			->get('received_previous_balance')
+			->row()
+			->amount;
+        return $total;
     }
 
 }

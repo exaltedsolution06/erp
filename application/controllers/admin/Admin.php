@@ -515,6 +515,7 @@ class Admin extends Admin_Controller
 			$data['tot_prev_balance'] = format_amount($student_Array->tot_prev_val);
 			
 			$student_session_ids = implode(',', array_column($student_Array->student_Array, 'student_session_id'));
+			
 			$this->db->select_sum('amount');
 			$this->db->where('status', 1);
 			$this->db->where_in('previous_student_session_id', $ids);

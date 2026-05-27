@@ -111,6 +111,10 @@ $payment_mode_type = $this->customlib->payment_mode_type();
 								<?php 
 								$this->session->unset_userdata('success');
 								} ?> 
+								<?php if ($this->session->flashdata('msg')) { ?>
+								<?php echo $this->session->flashdata('msg') ?>
+								<?php 
+								} ?> 
                                  <div class="table-responsive-" style="overflow: auto;">
                                     <div class="download_label"> </div>
 

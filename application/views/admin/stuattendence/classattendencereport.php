@@ -111,7 +111,8 @@
 
 
                     <?php
-                    if ($this->module_lib->hasActive('student_attendance')) {
+                    // if (!$this->module_lib->hasActive('student_attendance')) {
+                    if ($this->rbac->hasPrivilege('student_attendance', 'can_view')) {
 
                         if (isset($resultlist)) {
                             ?>

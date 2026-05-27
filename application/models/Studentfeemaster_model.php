@@ -287,6 +287,14 @@ class Studentfeemaster_model extends MY_Model
         $result = $query->result();
         return $result;
     }
+    public function getBalanceMasterRecordBySessId($previous_session_id, $group_name)
+    {
+        $sql = "select student_fees_master.*,student_session.student_id from student_fees_master INNER JOIN student_session on student_session.id= student_fees_master.student_session_id where fee_session_group_id=(SELECT id FROM `fee_session_groups` where fee_groups_id=(SELECT id FROM `fee_groups` WHERE name=" . "'" . $group_name . "'" . " and session_id=$previous_session_id) and session_id=$previous_session_id)";
+
+        $query  = $this->db->query($sql);
+        $result = $query->result();
+        return $result;
+    }
 
     public function getStudentFees($student_session_id)
     {

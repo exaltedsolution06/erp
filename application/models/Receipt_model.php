@@ -169,6 +169,24 @@ class Receipt_model extends CI_Model {
             return false; // No rows affected, meaning update didn't happen
         }
     }
+    public function update_student_prev_bal($id, $previous_session_balance)
+    {
+        // Prepare the data to update
+        $data = array(
+            'previous_session_balance' => $previous_session_balance
+        );
+
+        // Perform the update
+        $this->db->where('id', $id); // Condition to match the student ID
+        $this->db->update('student_session', $data); // Update the `students` table
+
+        // Check if update was successful
+        if ($this->db->affected_rows() > 0) {
+            return true; // Successful update
+        } else {
+            return false; // No rows affected, meaning update didn't happen
+        }
+    }
 
     
 
