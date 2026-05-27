@@ -181,12 +181,10 @@ ALTER TABLE `student_session` ADD `dis_reason` INT(11) NULL DEFAULT NULL AFTER `
 
 ALTER TABLE `sch_settings` ADD `alternate_no` VARCHAR(50) NULL DEFAULT NULL AFTER `phone`;
 
-======== 21-05-2026========
 ALTER TABLE `student_session` ADD `previous_session_balance` FLOAT(10,2) NOT NULL DEFAULT '0.00' AFTER `fees_discount`;
 ALTER TABLE `student_fees_master` ADD `previous_session_balance` FLOAT(10,2) NOT NULL DEFAULT '0.00' AFTER `amount`;
 ALTER TABLE `receipts` ADD `previous_balance` FLOAT(10,2) NULL DEFAULT NULL AFTER `month_total`, ADD `remaining_previous_balance` FLOAT(10,2) NULL DEFAULT NULL AFTER `previous_balance`;
 
-======== 22-05-2026========
 ALTER TABLE `student_session` ADD `previous_session_id` INT(11) NULL DEFAULT NULL AFTER `previous_session_balance`;
 ALTER TABLE `student_session` CHANGE `previous_session_id` `previous_student_session_id` INT(11) NULL DEFAULT NULL;
 ALTER TABLE `deleted_receipts` ADD `previous_balance` FLOAT(10,2) NULL DEFAULT NULL AFTER `month_total`, ADD `remaining_previous_balance` FLOAT(10,2) NULL DEFAULT NULL AFTER `previous_balance`;
@@ -201,9 +199,65 @@ CREATE TABLE `received_previous_balance` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-======== 25-05-2026========
 ALTER TABLE `template_reportcard` ADD `is_promoted_to` INT(11) NOT NULL DEFAULT '0' AFTER `is_class_position`;
 
+
+======== 27-05-2026========
+ALTER TABLE template_marksheets RENAME TO template_marksheets_old_bkp;
+
+CREATE TABLE `template_marksheets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `session_id` int(11) DEFAULT NULL,
+  `template` varchar(200) DEFAULT NULL,
+  `title` text DEFAULT NULL,
+  `left_sign` varchar(200) DEFAULT NULL,
+  `middle_sign` varchar(200) DEFAULT NULL,
+  `right_sign` varchar(200) DEFAULT NULL,
+  `left_sign_title` varchar(255) DEFAULT NULL,
+  `middle_sign_title` varchar(255) DEFAULT NULL,
+  `right_sign_title` varchar(255) DEFAULT NULL,
+  `is_class_teacher` int(11) NOT NULL DEFAULT 0,
+  `is_examination_ic` int(11) NOT NULL DEFAULT 0,
+  `is_principal` int(11) NOT NULL DEFAULT 0,
+  `background_image` varchar(200) DEFAULT NULL,
+  `is_name` int(11) DEFAULT 1,
+  `is_father_name` int(11) DEFAULT 1,
+  `is_mother_name` int(11) DEFAULT 1,
+  `is_dob` int(11) DEFAULT 1,
+  `is_admission_no` int(11) DEFAULT 1,
+  `is_roll_no` int(11) DEFAULT 1,
+  `is_class` int(11) NOT NULL DEFAULT 0,
+  `is_section` int(11) NOT NULL DEFAULT 0,
+  `is_photo` int(11) NOT NULL DEFAULT 0,
+  `is_contactno` int(11) NOT NULL DEFAULT 0,
+  `exam_group_grade` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`exam_group_grade`)),
+  `exam_group_marks_obtained` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`exam_group_marks_obtained`)),
+  `exam_group_max_marks` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`exam_group_max_marks`)),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` date DEFAULT NULL,
+  `is_header` int(11) NOT NULL,
+  `header_img` text NOT NULL,
+  `marks_grade_table` int(11) NOT NULL DEFAULT 0,
+  `max_marks_shift_left` int(11) NOT NULL DEFAULT 0,
+  `overall_marks_title` varchar(255) DEFAULT NULL,
+  `subject_color` char(36) DEFAULT NULL,
+  `scholastic_area_color` char(36) DEFAULT NULL,
+  `main_subject_color` char(36) DEFAULT NULL,
+  `school_reopen` int(11) NOT NULL DEFAULT 0,
+  `header_height` int(11) DEFAULT NULL,
+  `footer_height` int(11) DEFAULT NULL,
+  `is_show_date` int(11) NOT NULL DEFAULT 0,
+  `school_reopen_date` char(36) DEFAULT NULL,
+  `school_reopen_time` char(36) DEFAULT NULL,
+  `place` int(11) NOT NULL DEFAULT 0,
+  `show_date` char(36) DEFAULT NULL,
+  `show_place` char(36) DEFAULT NULL,
+  `is_show_attendance` int(1) NOT NULL DEFAULT 0,
+  `is_class_position` int(1) NOT NULL DEFAULT 0,
+  `is_promoted_to` int(11) NOT NULL DEFAULT 0,
+  `grade_table_title` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
 
