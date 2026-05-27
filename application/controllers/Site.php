@@ -115,44 +115,58 @@ class Site extends Public_Controller
                     } else {
                         $logusername = $result->name;
                     }
+					
+					$data['setting_result'] = $this->setting_model->getSetting();
+					$domain_api_url = CRM_URL .'api/Domain/get_domain_data/'.$data['setting_result']->domain_api_key; 
+					$api_data = call_api_get($domain_api_url);
+					$domain_api_data = $api_data['data'];
+					// echo '<pre>'; print_r($domain_api_data['status']); die;
+					if($domain_api_data['status'] == 0){
+						$data['name']          = $app_name;
+						// $data['error_message'] = $this->lang->line('Account Disable Due to Non-Payment of Bill. Please Contact your Vender to Start Services.');
+						$data['error_message'] = $this->lang->line('your_account_is_disabled_please_contact_to_administrator');
 
-                    $session_data = array(
-                        'session_id'      => $result->session_id,
-                        'id'              => $result->id,
-                        'username'        => $logusername,
-                        'email'           => $result->email,
-                        'roles'           => $result->roles,
-                        'date_format'     => $setting_result[0]['date_format'],
-                        'currency_symbol' => $setting_result[0]['currency_symbol'],
-                        'currency_place'  => $setting_result[0]['currency_place'],
-                        'start_month'     => $setting_result[0]['start_month'],
-                        'start_week'      => date("w", strtotime($setting_result[0]['start_week'])),
-                        'school_name'     => $setting_result[0]['name'],
-                        'timezone'        => $setting_result[0]['timezone'],
-                        'sch_name'        => $setting_result[0]['name'],
-                        'language'        => $lang_array,
-                        'is_rtl'          => $setting_result[0]['is_rtl'],
-                        'theme'           => $setting_result[0]['theme'],
-                        'gender'          => $result->gender,
-                    );
-                    $language_result1 = $this->language_model->get($lang_array['lang_id']);
-                    if ($this->customlib->get_rtl_languages($language_result1['short_code'])) {
-                        $session_data['is_rtl'] = 'enabled';
-                    } else {
-                        $session_data['is_rtl'] = 'disabled';
-                    }
+						$this->load->view('admin/login', $data);
+					}else{
 
-                    $this->session->set_userdata('admin', $session_data);
+						$session_data = array(
+							'session_id'      => $result->session_id,
+							'id'              => $result->id,
+							'username'        => $logusername,
+							'email'           => $result->email,
+							'roles'           => $result->roles,
+							'date_format'     => $setting_result[0]['date_format'],
+							'currency_symbol' => $setting_result[0]['currency_symbol'],
+							'currency_place'  => $setting_result[0]['currency_place'],
+							'start_month'     => $setting_result[0]['start_month'],
+							'start_week'      => date("w", strtotime($setting_result[0]['start_week'])),
+							'school_name'     => $setting_result[0]['name'],
+							'timezone'        => $setting_result[0]['timezone'],
+							'sch_name'        => $setting_result[0]['name'],
+							'language'        => $lang_array,
+							'is_rtl'          => $setting_result[0]['is_rtl'],
+							'theme'           => $setting_result[0]['theme'],
+							'gender'          => $result->gender,
+						);
+						$language_result1 = $this->language_model->get($lang_array['lang_id']);
+						if ($this->customlib->get_rtl_languages($language_result1['short_code'])) {
+							$session_data['is_rtl'] = 'enabled';
+						} else {
+							$session_data['is_rtl'] = 'disabled';
+						}
 
-                    $role      = $this->customlib->getStaffRole();
-                    $role_name = json_decode($role)->name;
-                    $this->customlib->setUserLog($this->input->post('username'), $role_name);
+						$this->session->set_userdata('admin', $session_data);
 
-                    if (isset($_SESSION['redirect_to'])) {
-                        redirect($_SESSION['redirect_to']);
-                    } else {
-                        redirect('admin/admin/dashboard');
-                    }
+						$role      = $this->customlib->getStaffRole();
+						$role_name = json_decode($role)->name;
+						$this->customlib->setUserLog($this->input->post('username'), $role_name);
+
+						if (isset($_SESSION['redirect_to'])) {
+							redirect($_SESSION['redirect_to']);
+						} else {
+							redirect('admin/admin/dashboard');
+						}
+					}
 
                 } else {
                     $data['name']          = $app_name;
