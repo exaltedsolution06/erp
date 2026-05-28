@@ -10,3 +10,8 @@
 2) When Student move to next session then this student ledger balance set to 0 and previous session balance store in field.
 3) When collect fee add previous balance field in collect fee page.
 4) If any user paid all previous balance then this user previous balance set to 0, otherwise deduct the the pay amount from the previous balance.
+
+//Ticket section
+tickets = id, school_code, ticket_type, subject, body, status(0=delete,1=pending,2=open,3=close), created_at, updated_at
+ticket_files = id, ticket_id, file
+ticket_followup = id, ticket_id, user_type(0=Crm, 1=School), message, created_at

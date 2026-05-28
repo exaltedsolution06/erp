@@ -193,6 +193,34 @@
 					</p>
 				</div>
 			</div>
+			<div class="col-md-3 col-sm-6 mb10">
+				<div class="topprograssstart flex-card">
+					<h5 class="pro-border">Tickets</h5>
+					<p class="text-uppercase mt10 clearfix">Total Tickets <span class="pull-right"><?php echo isset($ticketcounter) ? $ticketcounter['total'] : 0;  ?></span>
+					</p>
+					<p class="text-uppercase mt10 clearfix">Pending Tickets <span class="pull-right"><?php echo isset($ticketcounter) ? $ticketcounter['pending'] : 0;  ?></span>
+					</p>
+					<div class="progress-group">
+						<div class="progress progress-minibar">
+							<div class="progress-bar progress-bar-warning" style="width: <?php echo $ticketcounter['total'] > 0 ? round(($ticketcounter['pending']/$ticketcounter['total']) * 100) : 0 ?>%"></div>
+						</div>
+					</div>
+					<p class="text-uppercase mt10 clearfix">Open Tickets <span class="pull-right"><?php echo isset($ticketcounter) ? $ticketcounter['open'] : 0;  ?></span>
+					</p>
+					<div class="progress-group">
+						<div class="progress progress-minibar">
+							<div class="progress-bar progress-bar-primary" style="width: <?php echo $ticketcounter['total'] > 0 ? round(($ticketcounter['open']/$ticketcounter['total']) * 100) : 0 ?>%"></div>
+						</div>
+					</div>
+					<p class="text-uppercase mt10 clearfix">Close Tickets <span class="pull-right"><?php echo isset($ticketcounter) ? $ticketcounter['close'] : 0;  ?></span>
+					</p>
+					<div class="progress-group">
+						<div class="progress progress-minibar">
+							<div class="progress-bar progress-bar-success" style="width: <?php echo $ticketcounter['total'] > 0 ? round(($ticketcounter['close']/$ticketcounter['total']) * 100) : 0 ?>%"></div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>  
 				
        <!-- <div class="row">    

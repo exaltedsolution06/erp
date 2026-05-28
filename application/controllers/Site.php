@@ -120,11 +120,10 @@ class Site extends Public_Controller
 					$domain_api_url = CRM_URL .'api/Domain/get_domain_data/'.$data['setting_result']->domain_api_key; 
 					$api_data = call_api_get($domain_api_url);
 					$domain_api_data = $api_data['data'];
-					// echo '<pre>'; print_r($domain_api_data['status']); die;
+					// echo '<pre>'; print_r($domain_api_data); die;
 					if($domain_api_data['status'] == 0){
 						$data['name']          = $app_name;
-						// $data['error_message'] = $this->lang->line('Account Disable Due to Non-Payment of Bill. Please Contact your Vender to Start Services.');
-						$data['error_message'] = $this->lang->line('your_account_is_disabled_please_contact_to_administrator');
+						$data['error_message_popup'] = $domain_api_data['disable_reason'];
 
 						$this->load->view('admin/login', $data);
 					}else{
@@ -431,49 +430,62 @@ class Site extends Public_Controller
                         } else {
                             $language = array('lang_id' => $result[0]->lang_id, 'language' => $result[0]->language);
                         }
-                      
-                        if ($result[0]->role == "parent") {
-                            $username = $result[0]->guardian_name;
-                            if ($result[0]->guardian_relation == "Father") {
-                                $image = $result[0]->father_pic;
-                            } else if ($result[0]->guardian_relation == "Mother") {
-                                $image = $result[0]->mother_pic;
-                            } else if ($result[0]->guardian_relation == "Other") {
-                                $image = $result[0]->guardian_pic;
-                            }
-                        } elseif ($result[0]->role == "student") {
-                            $image    = $result[0]->image;
-							$username = $this->customlib->getFullName($result[0]->firstname,$result[0]->middlename,$result[0]->lastname,$this->sch_setting->middlename,$this->sch_setting->lastname);
-                        }
 						
-                        $session_data = array(
-                            'id'              => $result[0]->id,
-                            'login_username'  => $result[0]->username,
-                            'student_id'      => $result[0]->user_id,
-                            'role'            => $result[0]->role,
-                            'username'        => $username,
-                            'date_format'     => $setting_result[0]['date_format'],
-                            'start_week'      => date("w", strtotime($setting_result[0]['start_week'])),
-                            'currency_symbol' => $setting_result[0]['currency_symbol'],
-                            'timezone'        => $setting_result[0]['timezone'],
-                            'sch_name'        => $setting_result[0]['name'],
-                            'language'        => $language,
-                            'is_rtl'          => $setting_result[0]['is_rtl'],
-                            'theme'           => $setting_result[0]['theme'],
-                            'image'           =>  $image,
-                            'gender'          => $result[0]->gender,
-                        );
-                        $language_result1 = $this->language_model->get($language['lang_id']);
-                        if ($this->customlib->get_rtl_languages($language_result1['short_code'])) {
-                            $session_data['is_rtl'] = 'enabled';
-                        } else {
-                            $session_data['is_rtl'] = 'disabled';
-                        }
-                        $this->session->set_userdata('student', $session_data);
-                        if ($result[0]->role == "parent") {
-                            $this->customlib->setUserLog($result[0]->username, $result[0]->role);
-                        }
-                        redirect('user/user/choose');
+						$data['setting_result'] = $this->setting_model->getSetting();
+						$domain_api_url = CRM_URL .'api/Domain/get_domain_data/'.$data['setting_result']->domain_api_key; 
+						$api_data = call_api_get($domain_api_url);
+						$domain_api_data = $api_data['data'];
+						// echo '<pre>'; print_r($domain_api_data['status']); die;
+						if($domain_api_data['status'] == 0){
+							$data['name']          = $app_name;
+							$data['error_message_popup'] = $domain_api_data['disable_reason'];
+
+							$this->load->view('userlogin', $data);
+						}else{
+                      
+							if ($result[0]->role == "parent") {
+								$username = $result[0]->guardian_name;
+								if ($result[0]->guardian_relation == "Father") {
+									$image = $result[0]->father_pic;
+								} else if ($result[0]->guardian_relation == "Mother") {
+									$image = $result[0]->mother_pic;
+								} else if ($result[0]->guardian_relation == "Other") {
+									$image = $result[0]->guardian_pic;
+								}
+							} elseif ($result[0]->role == "student") {
+								$image    = $result[0]->image;
+								$username = $this->customlib->getFullName($result[0]->firstname,$result[0]->middlename,$result[0]->lastname,$this->sch_setting->middlename,$this->sch_setting->lastname);
+							}
+							
+							$session_data = array(
+								'id'              => $result[0]->id,
+								'login_username'  => $result[0]->username,
+								'student_id'      => $result[0]->user_id,
+								'role'            => $result[0]->role,
+								'username'        => $username,
+								'date_format'     => $setting_result[0]['date_format'],
+								'start_week'      => date("w", strtotime($setting_result[0]['start_week'])),
+								'currency_symbol' => $setting_result[0]['currency_symbol'],
+								'timezone'        => $setting_result[0]['timezone'],
+								'sch_name'        => $setting_result[0]['name'],
+								'language'        => $language,
+								'is_rtl'          => $setting_result[0]['is_rtl'],
+								'theme'           => $setting_result[0]['theme'],
+								'image'           =>  $image,
+								'gender'          => $result[0]->gender,
+							);
+							$language_result1 = $this->language_model->get($language['lang_id']);
+							if ($this->customlib->get_rtl_languages($language_result1['short_code'])) {
+								$session_data['is_rtl'] = 'enabled';
+							} else {
+								$session_data['is_rtl'] = 'disabled';
+							}
+							$this->session->set_userdata('student', $session_data);
+							if ($result[0]->role == "parent") {
+								$this->customlib->setUserLog($result[0]->username, $result[0]->role);
+							}
+							redirect('user/user/choose');
+						}
                     } else {
                         $data['error_message'] = 'Account Suspended';
                         $this->load->view('userlogin', $data);

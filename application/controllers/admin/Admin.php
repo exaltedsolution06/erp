@@ -543,7 +543,12 @@ class Admin extends Admin_Controller
 		}
 		// echo '<pre>';print_r($data['today_collected_balance']);exit;
 		
-		
+		$setting_result = $this->sch_setting_detail;
+		// ticket list
+		$list_url = CRM_URL . 'api/Ticket/ticket_counter/' . $setting_result->domain_api_key;
+		$ticket_result = call_api_get($list_url);
+		$data['ticketcounter'] = $ticket_result['data'];
+		// print_r($data['ticketcounter']);exit;
 		
         $this->load->view('layout/header', $data);
         $this->load->view('admin/dashboard', $data);

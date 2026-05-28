@@ -179,6 +179,33 @@
         <script src="<?php echo base_url(); ?>backend/usertemplate/assets/js/jquery.backstretch.min.js"></script>
         <script src="<?php echo base_url(); ?>backend/usertemplate/assets/js/jquery.mCustomScrollbar.min.js"></script>
         <script src="<?php echo base_url(); ?>backend/usertemplate/assets/js/jquery.mousewheel.min.js"></script>
+		<?php
+		if (isset($error_message_popup)) {
+		?>	
+			<div class="modal fade" id="disable-reason" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel">Disable Reason</h4>
+						</div> 
+						<div class="modal-body">
+							<p class="text-danger" style="color: #ff0000; letter-spacing: 1px;"><b><?php echo $error_message_popup; ?></b></p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $this->lang->line('cancel'); ?></button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<script>
+			$(document).ready(function () {
+				$('#disable-reason').modal('show');
+			});
+			</script>
+		<?php	
+		}
+		?>
     </body>
 </html>
 <script type="text/javascript">

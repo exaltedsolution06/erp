@@ -1153,7 +1153,7 @@
 					//$session_sub_menu = $CI->session->userdata('sub_menu');
 					//echo '<pre>'; print_r($session_sub_menu);echo '</pre>';die;
 					$activeTsMenu="";
-					if(set_Submenu('report/ticket-section')
+					if(set_Submenu('Ticket/create')
 					){
 						$activeTsMenu="active";
 					}
@@ -1165,7 +1165,7 @@
 						</a>
 						<ul class="treeview-menu">
 							<?php if ($this->rbac->hasPrivilege('create_ticket', 'can_view')) { ?>
-								<li class="<?php //echo set_Submenu('Ticket/create'); ?>"><a href="#<?php //echo base_url(); ?>ticket/create"><i class="fa fa-angle-double-right"></i> Create Ticket</a></li>
+								<li class="<?php echo set_Submenu('Ticket/create'); ?>"><a href="<?php echo base_url(); ?>ticket/index"><i class="fa fa-angle-double-right"></i> Create Ticket</a></li>
 							<?php } if ($this->rbac->hasPrivilege('track_ticket', 'can_view')) { ?>
 								<li class="<?php //echo set_Submenu('Ticket/track'); ?>"><a href="#<?php //echo base_url(); ?>ticket/track"><i class="fa fa-angle-double-right"></i> Track Ticket</a></li>
 							<?php } if ($this->rbac->hasPrivilege('closed_ticket', 'can_view')) { ?>

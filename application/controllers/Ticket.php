@@ -10,26 +10,105 @@ class Ticket extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model("ticket_model");
     }
 
-    public function index()
-    {
-        if (!$this->rbac->hasPrivilege('ticket_list', 'can_view')) {
-            access_denied();
-        }
-        $this->session->set_userdata('top_menu', 'Ticket');
-        $this->session->set_userdata('sub_menu', 'ticket/index');
-        $data['title']        = 'Ticket List';
-        $ticket_result      = $this->ticket_model->get();
-        $data['ticketlist'] = $ticket_result;
-        $this->load->view('layout/header', $data);
-        $this->load->view('ticket/ticketList', $data);
-        $this->load->view('layout/footer', $data);
-    }
+    public function index($id = null)
+	{
+		if (!$this->rbac->hasPrivilege('create_ticket', 'can_view')) {
+			access_denied();
+		}
+
+		$this->session->set_userdata('top_menu', 'Ticket');
+		$this->session->set_userdata('sub_menu', 'Ticket/create');
+
+		$data['title'] = 'Ticket List';
+
+		$setting_result = $this->setting_model->getSetting();
+
+		// ticket types
+		$ticket_api_url = CRM_URL . 'api/Ticket/get_ticket_type/' . $setting_result->domain_api_key;
+		$api_data = call_api_get($ticket_api_url);
+		$data['ticket_type'] = $api_data['data'];
+
+		// ticket list
+		$list_url = CRM_URL . 'api/Ticket/ticket_list/' . $setting_result->domain_api_key;
+		$ticket_result = call_api_get($list_url);
+		$data['ticketlist'] = $ticket_result['data'];
+		
+		// Domain Data
+		$domain_api_url = CRM_URL .'api/Domain/get_domain_data/'.$setting_result->domain_api_key; 
+		$api_data = call_api_get($domain_api_url);
+		$data['domain_api_data'] = $api_data['data'];
+		// print_r($data['domain_api_data']);exit;
+
+		// default edit data
+		$data['edit_ticket'] = [];
+
+		// if edit mode
+		if ($id) {
+
+			$details_url = CRM_URL . 'api/Ticket/ticket_details/' . $id;
+
+			$ticket = call_api_get($details_url);
+
+			$data['edit_ticket'] = $ticket['data'];
+		}
+
+		// validation
+		$this->form_validation->set_rules('ticket_type', 'Ticket Type', 'required');
+		$this->form_validation->set_rules('ticket_subject', 'Ticket Subject', 'required');
+		$this->form_validation->set_rules('ticket_body', 'Ticket Body', 'required');
+
+		if ($this->form_validation->run() == false) {
+
+			$this->load->view('layout/header', $data);
+			$this->load->view('ticket/ticketList', $data);
+			$this->load->view('layout/footer', $data);
+
+		} else {
+
+			$postData = [
+				'school_id' => $this->input->post('school_id'),
+				'school_code_id' => $this->input->post('school_code_id'),
+				'school_name' => $this->input->post('school_name'),
+				'ticket_type' => $this->input->post('ticket_type'),
+				'subject'     => $this->input->post('ticket_subject'),
+				'body'        => $this->input->post('ticket_body')
+			];
+
+			// EDIT
+			if ($id) {
+
+				$update_url = CRM_URL . 'api/Ticket/update_ticket/' . $id;
+
+				call_api_post_with_file($update_url, $postData, $_FILES);
+
+				$this->session->set_flashdata(
+					'msg',
+					'<div class="alert alert-success">Ticket Updated Successfully</div>'
+				);
+
+			} else {
+
+				// CREATE
+				$create_url = CRM_URL . 'api/Ticket/create_ticket';
+
+				call_api_post_with_file($create_url, $postData, $_FILES);
+
+				$this->session->set_flashdata(
+					'msg',
+					'<div class="alert alert-success">Ticket Created Successfully</div>'
+				);
+			}
+
+			redirect('ticket/index');
+		}
+	}
 
     public function view($id)
     {
-        if (!$this->rbac->hasPrivilege('ticket_list', 'can_view')) {
+        if (!$this->rbac->hasPrivilege('create_ticket', 'can_view')) {
             access_denied();
         }
         $data['title']    = 'Ticket List';
@@ -39,66 +118,20 @@ class Ticket extends Admin_Controller
         $this->load->view('ticket/ticketShow', $data);
         $this->load->view('layout/footer', $data);
     }
+	public function delete($id)
+	{
+		$delete_url = CRM_URL . 'api/Ticket/delete_ticket/' . $id;
 
-    public function delete($id)
-    {
-        if (!$this->rbac->hasPrivilege('ticket_list', 'can_delete')) {
-            access_denied();
-        }
-        $data['title'] = 'Ticket List';
-        $this->ticket_model->remove($id);
-        $this->session->set_flashdata('msgdelete', '<div class="alert alert-success text-left">' . $this->lang->line('delete_message') . '</div>');
-        redirect('ticket/index');
-    }
+		call_api_get($delete_url);
 
-    public function create()
-    {
-        if (!$this->rbac->hasPrivilege('ticket_list', 'can_add')) {
-            access_denied();
-        }
-        $data['title']        = 'Create Ticket';
-        $ticket_result      = $this->ticket_model->get();
-        $data['ticketlist'] = $ticket_result;
-        $this->form_validation->set_rules('ticket', $this->lang->line('ticket'), 'trim|required|xss_clean');
-        if ($this->form_validation->run() == false) {
-            $this->load->view('layout/header', $data);
-            $this->load->view('ticket/ticketList', $data);
-            $this->load->view('layout/footer', $data);
-        } else {
-            $data = array(
-                'ticket' => $this->input->post('ticket'),
-            );
-            $this->ticket_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
-            redirect('ticket/index');
-        }
-    }
+		/*$this->session->set_flashdata(
+			'msgdelete',
+			'<div class="alert alert-success">
+				Ticket Deleted Successfullyh
+			</div>'
+		);*/
+		$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">Ticket Deleted Successfully</div>');
 
-    public function edit($id)
-    {
-        if (!$this->rbac->hasPrivilege('ticket_list', 'can_edit')) {
-            access_denied();
-        }
-        $data['title']        = 'Edit Ticket';
-        $ticket_result      = $this->ticket_model->get();
-        $data['ticketlist'] = $ticket_result;
-        $data['id']           = $id;
-        $ticket             = $this->ticket_model->get($id);
-        $data['ticket']     = $ticket;
-        $this->form_validation->set_rules('ticket', $this->lang->line('ticket'), 'trim|required|xss_clean');
-        if ($this->form_validation->run() == false) {
-            $this->load->view('layout/header', $data);
-            $this->load->view('ticket/ticketEdit', $data);
-            $this->load->view('layout/footer', $data);
-        } else {
-            $data = array(
-                'id'       => $id,
-                'ticket' => $this->input->post('ticket'),
-            );
-            $this->ticket_model->add($data);
-            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
-            redirect('ticket/index');
-        }
-    }
-
+		redirect('ticket/index');
+	}
 }
