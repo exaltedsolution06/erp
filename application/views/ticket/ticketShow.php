@@ -243,12 +243,16 @@
 					<div class="timeline-line"></div>
 					<?php
 						foreach($ticket['ticket_followup'] as $row){
-							$is_user = ($row['user_type'] == 1) ? 'left' : 'right';
+							$is_user = ($row['user_type'] == 1) ? 'right' : 'left';
 					?>
 					<!-- Item 2 -->
 					<div class="timeline-item <?= $is_user ?>">
 						<div class="timeline-icon">
+							<?php if($row['user_type'] == 1){ ?>
 							<i class="fas fa-user"></i>
+							<?php } else { ?>							
+							<img src="<?php echo CRM_URL ?>assets/img/favicon.png"></i>
+							<?php } ?>
 						</div>
 
 						<div class="timeline-card">
