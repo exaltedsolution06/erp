@@ -229,9 +229,6 @@
 				</div> 
             </div> 
             <div class="col-md-9">
-			<div class="text-right" style="margin-bottom: 10px;">
-				<button type="button" class="btn btn-primary" id="addFollowupBtn"><i class="fa fa-plus"></i> Add Followup</button>
-			</div>
 			<?php 
 				if(!empty($ticket['ticket_followup'])){
 			?>
@@ -239,6 +236,7 @@
 						<?php echo $this->session->flashdata('msg') ?>
 					<?php } ?>    
 				<div class="timeline-wrapper">
+				<div style="max-height: 500px; overflow: auto;">
 					<!-- Timeline Center Line -->
 					<div class="timeline-line"></div>
 					<?php
@@ -257,6 +255,14 @@
 
 						<div class="timeline-card">
 							<h4><?= $row['message'] ?></h4>
+							<?php if(!empty($row['image'])){ ?>
+								<div style="margin-top:10px;">
+									<a href="<?= CRM_URL . 'uploads/followups/' . $row['image'] ?>" target="_blank">
+										<img src="<?= CRM_URL . 'uploads/followups/' . $row['image'] ?>"
+											 style="max-width:100px;border-radius:8px;">
+									</a>
+								</div>
+							<?php } ?>
 							<div class="date-actions">
 								<span class="date"><?php echo isset($row['created_at']) ? date('d/m/Y', strtotime($row['created_at'])) : '' ?></span>
 								<?php if($row['user_type'] == 1){ ?>
@@ -270,11 +276,15 @@
 					</div>
 					<?php } ?>
 				</div>
+				</div>
 			<?php 
 				}else{
 			?>
 				<h4 class="text-center">No Followup</h4>
-			<?php } ?>	
+			<?php } ?>
+				<div class="text-right" style="margin-top: 10px;">
+					<button type="button" class="btn btn-primary" id="addFollowupBtn"><i class="fa fa-plus"></i> Add Followup</button>
+				</div>	
             </div> 
         </div> 
     </section>
@@ -283,7 +293,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <form id="followupForm">
+            <form id="followupForm" enctype="multipart/form-data">
 
                 <div class="modal-header">
                     <h4 class="modal-title">Followup</h4>
@@ -296,11 +306,26 @@
 
                     <input type="hidden" name="id" id="followup_id">
                     <input type="hidden" name="ticket_id" value="<?= $ticket['id'] ?>">
+					<input type="hidden" name="old_image" id="old_image">
 
                     <div class="form-group">
                         <label>Message</label>
                         <input type="text" class="form-control" name="message" id="message" required />
                     </div>
+					<div class="form-group">
+						<label>Upload Image</label>
+
+						<input type="file"
+							   class="filestyle form-control"
+							   name="followup_image"
+							   id="followup_image"
+							   accept="image/*">
+					</div>
+					<div id="image_preview_div" style="display:none;margin-top:10px;">
+						<img id="image_preview"
+							 src=""
+							 style="max-width:100px;border-radius:8px;">
+					</div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">
@@ -318,6 +343,7 @@
 var addUrl = "<?= base_url('ticket/add_followup') ?>";
 var editUrl = "<?= base_url('ticket/get_followup') ?>";
 var deleteUrl = "<?= base_url('ticket/delete_followup') ?>";
+
 $(document).ready(function () {
 
     $('#addFollowupBtn').click(function () {
@@ -325,6 +351,10 @@ $(document).ready(function () {
         $('#followupForm')[0].reset();
 
         $('#followup_id').val('');
+        $('#old_image').val('');
+
+        $('#image_preview_div').hide();
+        $('#image_preview').attr('src', '');
 
         $('.modal-title').text('Add Followup');
 
@@ -332,6 +362,8 @@ $(document).ready(function () {
     });
 
 });
+
+/* EDIT */
 $(document).on('click', '.edit-followup', function () {
 
     var id = $(this).data('id');
@@ -339,14 +371,29 @@ $(document).on('click', '.edit-followup', function () {
     $.ajax({
         url: editUrl,
         type: 'POST',
-        data: {
-            id: id
-        },
+        data: { id: id },
         dataType: 'json',
+
         success: function (response) {
 
             $('#followup_id').val(response.id);
             $('#message').val(response.message);
+
+            $('#old_image').val(response.image);
+
+            if(response.image){
+
+                $('#image_preview').attr(
+                    'src',
+                    "<?= CRM_URL . 'uploads/followups/' ?>" + response.image
+                );
+
+                $('#image_preview_div').show();
+
+            } else {
+
+                $('#image_preview_div').hide();
+            }
 
             $('.modal-title').text('Edit Followup');
 
@@ -355,15 +402,42 @@ $(document).on('click', '.edit-followup', function () {
     });
 
 });
+
+/* IMAGE PREVIEW */
+$('#followup_image').change(function(){
+
+    let file = this.files[0];
+
+    if(file){
+
+        let reader = new FileReader();
+
+        reader.onload = function(e){
+
+            $('#image_preview').attr('src', e.target.result);
+
+            $('#image_preview_div').show();
+        };
+
+        reader.readAsDataURL(file);
+    }
+});
+
+/* SAVE */
 $('#followupForm').submit(function (e) {
 
     e.preventDefault();
 
+    let formData = new FormData(this);
+
     $.ajax({
         url: addUrl,
         type: 'POST',
-        data: $(this).serialize(),
+        data: formData,
+        processData: false,
+        contentType: false,
         dataType: 'json',
+
         success: function (response) {
 
             if (response.status == 1) {
@@ -371,8 +445,8 @@ $('#followupForm').submit(function (e) {
                 $('#followupModal').modal('hide');
 
                 location.reload();
-            }
-            else {
+
+            } else {
 
                 alert(response.message);
             }
@@ -380,6 +454,8 @@ $('#followupForm').submit(function (e) {
     });
 
 });
+
+/* DELETE */
 $(document).on('click', '.delete-followup', function () {
 
     var id = $(this).data('id');
@@ -391,18 +467,19 @@ $(document).on('click', '.delete-followup', function () {
     $.ajax({
         url: deleteUrl,
         type: 'POST',
-        data: {
-            id: id
-        },
+        data: { id: id },
         dataType: 'json',
+
         success: function (response) {
 
             if (response.status == 1) {
+
                 location.reload();
             }
         }
     });
 
 });
+
 </script>
 

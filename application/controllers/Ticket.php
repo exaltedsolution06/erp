@@ -130,34 +130,30 @@ class Ticket extends Admin_Controller
         $this->load->view('ticket/ticketShow', $data);
         $this->load->view('layout/footer', $data);
     }
-	public function delete($id)
-	{
-		$delete_url = CRM_URL . 'api/Ticket/delete_ticket/' . $id;
-
-		call_api_get($delete_url);
-
-		/*$this->session->set_flashdata(
-			'msgdelete',
-			'<div class="alert alert-success">
-				Ticket Deleted Successfullyh
-			</div>'
-		);*/
-		$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">Ticket Deleted Successfully</div>');
-
-		redirect('ticket/index');
-	}
 	public function add_followup()
 	{
 		$post = $this->input->post();
 
 		$api_url = CRM_URL . 'api/Ticket/save_followup';
 
-		$response = call_api_post($api_url, [
+		$postFields = [
 			'id'        => $post['id'],
 			'ticket_id' => $post['ticket_id'],
 			'message'   => $post['message'],
-			'user_type' => 1
-		]);
+			'user_type' => 1,
+			'old_image' => $post['old_image']
+		];
+
+		if (!empty($_FILES['followup_image']['tmp_name'])) {
+
+			$postFields['followup_image'] = new CURLFile(
+				$_FILES['followup_image']['tmp_name'],
+				$_FILES['followup_image']['type'],
+				$_FILES['followup_image']['name']
+			);
+		}
+
+		$response = call_api_post($api_url, $postFields);
 		$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">Followup saved Successfully</div>');
 		echo json_encode($response);
 	}
@@ -182,5 +178,21 @@ class Ticket extends Admin_Controller
 		$response = call_api_get($api_url);
 		$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">Followup deleted Successfully</div>');
 		echo json_encode($response);
+	}
+	public function delete($id)
+	{
+		$delete_url = CRM_URL . 'api/Ticket/delete_ticket/' . $id;
+
+		call_api_get($delete_url);
+
+		/*$this->session->set_flashdata(
+			'msgdelete',
+			'<div class="alert alert-success">
+				Ticket Deleted Successfullyh
+			</div>'
+		);*/
+		$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">Ticket Deleted Successfully</div>');
+
+		redirect('ticket/index');
 	}
 }
