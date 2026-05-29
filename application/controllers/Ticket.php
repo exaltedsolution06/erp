@@ -112,8 +112,20 @@ class Ticket extends Admin_Controller
             access_denied();
         }
         $data['title']    = 'Ticket List';
-        $ticket         = $this->ticket_model->get($id);
-        $data['ticket'] = $ticket;
+        
+		$setting_result = $this->setting_model->getSetting();
+		
+		// ticket types
+		$ticket_api_url = CRM_URL . 'api/Ticket/get_ticket_type/' . $setting_result->domain_api_key;
+		$api_data = call_api_get($ticket_api_url);
+		$data['ticket_type'] = $api_data['data'];
+		
+		// ticket list
+		$list_url = CRM_URL . 'api/Ticket/ticket_details/' . $id;
+		$ticket_result = call_api_get($list_url);
+		$data['ticket'] = $ticket_result['data'];
+		// echo '<pre>';print_r($data['ticket']);exit;
+		
         $this->load->view('layout/header', $data);
         $this->load->view('ticket/ticketShow', $data);
         $this->load->view('layout/footer', $data);
@@ -133,5 +145,42 @@ class Ticket extends Admin_Controller
 		$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">Ticket Deleted Successfully</div>');
 
 		redirect('ticket/index');
+	}
+	public function add_followup()
+	{
+		$post = $this->input->post();
+
+		$api_url = CRM_URL . 'api/Ticket/save_followup';
+
+		$response = call_api_post($api_url, [
+			'id'        => $post['id'],
+			'ticket_id' => $post['ticket_id'],
+			'message'   => $post['message'],
+			'user_type' => 1
+		]);
+		$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">Followup saved Successfully</div>');
+		echo json_encode($response);
+	}
+
+	public function get_followup()
+	{
+		$id = $this->input->post('id');
+
+		$api_url = CRM_URL . 'api/Ticket/get_followup/'.$id;
+
+		$response = call_api_get($api_url);
+
+		echo json_encode($response['data']);
+	}
+
+	public function delete_followup()
+	{
+		$id = $this->input->post('id');
+
+		$api_url = CRM_URL . 'api/Ticket/delete_followup/'.$id;
+
+		$response = call_api_get($api_url);
+		$this->session->set_flashdata('msg', '<div class="alert alert-success text-left">Followup deleted Successfully</div>');
+		echo json_encode($response);
 	}
 }

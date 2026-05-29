@@ -44,6 +44,30 @@ function api_response($status,$message,$data = [])
 
     exit;
 }
+function call_api_post($url, $postData = [])
+{
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => $postData,
+        CURLOPT_SSL_VERIFYPEER => false,
+    ));
+
+    $response = curl_exec($curl);
+
+    if (curl_errno($curl)) {
+
+        echo curl_error($curl);
+        exit;
+    }
+
+    curl_close($curl);
+
+    return json_decode($response, true);
+}
 function call_api_post_with_file($url, $postData = [], $files = [])
 {
     $curl = curl_init();

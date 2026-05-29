@@ -103,7 +103,7 @@
 											$image_ext = ['jpg','jpeg','png','gif','webp'];
 											?>
 
-											<div class="col-sm-4 col-md-3 col-xs-6 existing-file-<?php echo $file['id']; ?>">
+											<div class="col-sm-4 col-md-6 col-xs-6 existing-file-<?php echo $file['id']; ?>">
 
 												<div class="img_div_modal image_div">
 
@@ -208,7 +208,7 @@
 
 													echo 'Normal';
 
-												} elseif ($ticket['status'] == 1) {
+												} elseif ($ticket['ticket_type'] == 1) {
 
 													echo 'Priority';
 												}
@@ -237,6 +237,13 @@
 												<?php echo date('d-m-Y', strtotime($ticket['created_at'])); ?>
 											</td>
                                             <td  class="mailbox-date pull-right">
+                                                <?php
+                                                if ($this->rbac->hasPrivilege('create_ticket', 'can_view')) {
+                                                    ?>
+                                                    <a data-placement="left" href="<?php echo base_url(); ?>ticket/view/<?php echo $ticket['id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('show'); ?>">
+                                                        <i class="fa fa-reorder"></i>
+                                                    </a>
+                                                <?php } ?>
                                                 <?php
                                                 if ($this->rbac->hasPrivilege('create_ticket', 'can_edit')) {
                                                     ?>
@@ -323,7 +330,7 @@ function renderPreviews()
             let image = e.target.result;
 
             let html = `
-                <div class="col-sm-4 col-md-3 col-xs-6 preview-${index}">
+                <div class="col-sm-4 col-md-6 col-xs-6 preview-${index}">
 
                     <div class="img_div_modal image_div">
 
