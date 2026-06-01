@@ -3450,7 +3450,17 @@ content: "";
             width: calc(100% - 30%);
             padding: 0;
         }
-
+		.row-flex3 {
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.flex-card {
+			display: flex;
+			align-items: stretch;
+			flex: 0 0 auto;
+			flex-direction: column;
+			height: 100%;
+		}
     }
 
     @media screen and (min-width: 992px) {

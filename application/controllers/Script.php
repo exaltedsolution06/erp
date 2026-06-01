@@ -835,4 +835,51 @@ class Script extends Public_Controller
 			echo 'You have no active session';
 		}
     }
+	
+	public function fix_sql()
+	{
+		$database = $this->db->database;
+
+		$result = $this->db->query("
+			SELECT TABLE_NAME, COLUMN_TYPE, COLUMN_KEY, EXTRA
+			FROM information_schema.COLUMNS
+			WHERE TABLE_SCHEMA = '{$database}'
+			AND COLUMN_NAME = 'id'
+		")->result();
+		$i = 0;
+		foreach ($result as $row) {
+
+			$needFix = false;
+
+			// Missing Primary Key
+			if ($row->COLUMN_KEY != 'PRI') {
+				$needFix = true;
+			}
+
+			// Missing Auto Increment
+			if (strpos($row->EXTRA, 'auto_increment') === false) {
+				$needFix = true;
+			}
+
+			if ($needFix) {
+				$i++;
+				// Delete id=0 only for affected tables
+				echo "DELETE FROM `{$row->TABLE_NAME}` WHERE `id` = 0;<br>";
+
+				if ($row->COLUMN_KEY != 'PRI') {
+					echo "ALTER TABLE `{$row->TABLE_NAME}` ADD PRIMARY KEY (`id`);<br>";
+				}
+
+				if (strpos($row->EXTRA, 'auto_increment') === false) {
+					echo "ALTER TABLE `{$row->TABLE_NAME}` MODIFY `id` {$row->COLUMN_TYPE} NOT NULL AUTO_INCREMENT;<br>";
+				}
+
+				echo "<br>";
+			}
+		}
+		
+		if($i == 0){
+			echo "All atble have auto increment id";
+		}
+	}
 }

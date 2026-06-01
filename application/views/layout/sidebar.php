@@ -665,7 +665,7 @@
 		?>
 					<li class="treeview <?php echo $activeLpMenu; ?>">
 						<a href="#">
-							<i class="fa-solid fa-person-chalkboard ftlayer"></i> <span>Lesson Plan </span>
+							<i class="fa fa-solid fa-person-chalkboard ftlayer"></i> <span>Lesson Plan </span>
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
@@ -965,7 +965,7 @@
 		?>
 					<li class="treeview <?php echo $activeIsMenu; ?>">
 						<a href="#">
-							<i class="fa-solid fa-file-invoice-dollar ftlayer"></i> <span>Income Section</span>
+							<i class="fa fa-solid fa-file-invoice-dollar ftlayer"></i> <span>Income Section</span>
 							<i class="fa fa-angle-left pull-right"></i>
 						</a>
 						<ul class="treeview-menu">
@@ -1169,7 +1169,7 @@
 							<?php } if ($this->rbac->hasPrivilege('track_ticket', 'can_view')) { ?>
 								<li class="<?php //echo set_Submenu('Ticket/track'); ?>"><a href="#<?php //echo base_url(); ?>ticket/track"><i class="fa fa-angle-double-right"></i> Track Ticket</a></li>
 							<?php } if ($this->rbac->hasPrivilege('closed_ticket', 'can_view')) { ?>
-								<li class="<?php //echo set_Submenu('Ticket/closed'); ?>"><a href="#<?php //echo base_url(); ?>ticket/closed"><i class="fa fa-angle-double-right"></i> Closed Ticket</a></li>
+								<!--<li class="<?php //echo set_Submenu('Ticket/closed'); ?>"><a href="#<?php //echo base_url(); ?>ticket/closed"><i class="fa fa-angle-double-right"></i> Closed Ticket</a></li>-->
 							<?php } if ($this->rbac->hasPrivilege('ticket_section_report', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('report/ticket-section'); ?>"><a href="<?php echo base_url(); ?>admin/report/ticket_section_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 							<?php } ?>

@@ -167,6 +167,7 @@ class Feesforward extends Admin_Controller {
 
                     $eachstudent->balance = $this->findValueExists($record_exists, $eachstudent->student_session_id);
                     $eachstudent->rec_balance = $this->findRecValue($eachstudent->student_previous_session_id);
+					$eachstudent->id = $this->findIdExists($record_exists, $eachstudent->student_session_id);
                 }
             } else {
                 foreach ($student_Array as $stkey => $eachstudent) {
@@ -224,6 +225,14 @@ class Feesforward extends Admin_Controller {
         foreach ($array as $x => $x_value) {
             if ($x_value->student_session_id == $find)
                 return $x_value->amount;
+        }
+        return $amount;
+    }
+    function findIdExists($array, $find) {
+        $amount = 0;
+        foreach ($array as $x => $x_value) {
+            if ($x_value->student_session_id == $find)
+                return $x_value->id;
         }
         return $amount;
     }

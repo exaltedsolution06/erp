@@ -36,7 +36,7 @@ class Prevbalscript extends Admin_Controller
 					]);
 			}
 		}
-		
+		echo 'success';
     }
 
 }

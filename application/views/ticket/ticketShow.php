@@ -277,18 +277,26 @@
 					<?php } ?>
 				</div>
 				</div>
+				<?php if($ticket['status'] == 3){ ?>
+				<div class="alert alert-danger" style="margin-top: 5px;" role="alert">
+					Ticket Closed!
+				</div>
+				<?php } ?>
 			<?php 
 				}else{
 			?>
 				<h4 class="text-center">No Followup</h4>
 			<?php } ?>
+				<?php if($ticket['status'] != 3){ ?>
 				<div class="text-right" style="margin-top: 10px;">
 					<button type="button" class="btn btn-primary" id="addFollowupBtn"><i class="fa fa-plus"></i> Add Followup</button>
-				</div>	
+				</div>
+				<?php } ?>				
             </div> 
         </div> 
     </section>
 </div>
+<?php if($ticket['status'] != 3){ ?>
 <div class="modal fade" id="followupModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -338,6 +346,7 @@
         </div>
     </div>
 </div>
+<?php } ?>
 <script>
 
 var addUrl = "<?= base_url('ticket/add_followup') ?>";
