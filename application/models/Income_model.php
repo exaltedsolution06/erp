@@ -263,8 +263,9 @@ class Income_model extends My_Model
 	{
 		$today = date('Y-m-d');
 		$this->db->select('SUM(amount) as today_other_collection');
-		$this->db->from(' balance_sheets');
+		$this->db->from('balance_sheets');
 		$this->db->where('balance_type',0);
+		$this->db->where('status',0);
 		$this->db->where('receipt_no',NULL);
 		$this->db->where('DATE(date)',date('Y-m-d'));
 		$this->db->where('session_id',$this->current_session);
@@ -275,8 +276,9 @@ class Income_model extends My_Model
 	public function todays_income()
 	{
 		$this->db->select('SUM(amount) as today_total_income');
-		$this->db->from(' balance_sheets');
+		$this->db->from('balance_sheets');
 		$this->db->where('balance_type',0);
+		$this->db->where('status',0);
 		$this->db->where('DATE(date)',date('Y-m-d'));
 		$this->db->where('session_id',$this->current_session);
 
@@ -286,8 +288,9 @@ class Income_model extends My_Model
 	public function income_by_session($is_date, $session_id)
 	{
 		$this->db->select('SUM(amount) as today_total_income');
-		$this->db->from(' balance_sheets');
+		$this->db->from('balance_sheets');
 		$this->db->where('balance_type',0);
+		$this->db->where('status',0);
 		if($is_date){
 		$this->db->where('DATE(date)',date('Y-m-d'));
 		}
@@ -325,6 +328,7 @@ class Income_model extends My_Model
 	{
 		$condition = "balance_type = 0 AND date_format(date,'%Y-%m-%d') between '" . $start_month . "' and '" . $end_month . "'";
 		$this->db->select('SUM(amount) as total_amount')->from('balance_sheets');
+		$this->db->where('status',0);
         $this->db->where($condition);
         $this->db->where('session_id', $this->current_session);
         //$this->db->order_by('date','ASC');
@@ -335,6 +339,7 @@ class Income_model extends My_Model
 	{
 		$this->db->select('SUM(amount) as total_amount')->from('balance_sheets');
 		$this->db->where('balance_type', 0);
+		$this->db->where('status',0);
 		$this->db->where('session_id', $this->current_session);
 		$query        = $this->db->get();
 		return $query->row()->total_amount;
@@ -343,6 +348,7 @@ class Income_model extends My_Model
 	{
 		$this->db->select('*')->from('balance_sheets');
 		$this->db->where('balance_type', $res['balance_type']);
+		$this->db->where('status',0);
 		$this->db->where('id', $res['id']);
 		$this->db->where('session_id', $this->current_session);
 		$query = $this->db->get();

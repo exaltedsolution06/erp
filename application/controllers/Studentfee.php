@@ -2284,6 +2284,7 @@ class Studentfee extends Admin_Controller
 
             // Step 2: Backup each receipt row
             foreach ($receiptList as $receipt) {
+				 unset($receipt['id']);
                 $this->Receipt_model->backup_receipt_data($receipt);
             }
 
