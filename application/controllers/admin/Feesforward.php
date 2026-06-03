@@ -137,7 +137,7 @@ class Feesforward extends Admin_Controller {
             $student_comma_seprate = array();
 
             foreach ($studentlist as $student_list_key => $student_list_value) {
-               
+               if(isset($student_list_value->previous_student_session_id) && $student_list_value->previous_student_session_id != ''){
                 $obj = new stdClass();
                 $obj->name = $this->customlib->getFullName($student_list_value->firstname,$student_list_value->middlename,$student_list_value->lastname,$this->sch_setting_detail->middlename,$this->sch_setting_detail->lastname);
                 $obj->admission_no = $student_list_value->admission_no;
@@ -156,6 +156,7 @@ class Feesforward extends Admin_Controller {
 
                 $student_Array[] = $obj;
                 $student_comma_seprate[] = $student_list_value->current_student_session_id;
+			   }
             }
 
             $student_session_array = "(" . implode(",", $student_comma_seprate) . ")";

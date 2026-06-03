@@ -130,9 +130,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         $i = 1;
                                                         $tot_prev = $tot_rec = $remain_bal = 0;
                                                         foreach ($student_due_fee as $due_fee_key => $due_fee_value) {
-                                                           $tot_prev = format_amount($tot_prev + $due_fee_value->rec_balance + $due_fee_value->balance);
+                                                           $tot_prev = format_amount($tot_prev + $due_fee_value->balance);
                                                            $tot_rec = format_amount($tot_rec + $due_fee_value->rec_balance);
-                                                           $remain_bal = format_amount($remain_bal + $due_fee_value->balance);
+                                                           $remain_bal = format_amount($remain_bal + ($due_fee_value->balance-$due_fee_value->rec_balance));
                                                             ?>
                                                             <tr>
                                                                 <td><?php echo $due_fee_value->admission_no; ?></td>
