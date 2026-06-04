@@ -177,6 +177,7 @@ if($_GET['copy']=='2'){
 <?php } else if($result->rcpt_common_header == 0 && $result->rcpt_header_height != 0) { ?>
 	<div style="border:0px; height:<?php echo $result->rcpt_header_height; ?>px"></div>
 <?php } else { ?>
+	<!--
 	<?php if ($result->rcpt_student_name) { ?>
 	<h5><b><?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></b></h5>
 	<?php } if ($result->rcpt_address) { ?>
@@ -188,6 +189,13 @@ if($_GET['copy']=='2'){
 	<?php } ?>
 	<span><b>Email Id.</b>: <?=$student['email']?></span> <br>
 	<span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br>
+	-->
+	<div class="text-center" style="padding: 5px 0;">
+		<h5><strong><?=$result->name ?? '' ?></strong></h5>								
+		<div style="margin-bottom:5px;"><span><?=$result->address ?? '' ?></span> </div>
+		<span><b>Email</b> : <?=$result->email?></span>,
+		<span><b>Mobile</b> : <?=$result->phone?></span> <br>
+	</div>
 <?php } ?>
 
 
@@ -339,8 +347,8 @@ if($_GET['copy']=='2'){
     </tr>
 	<?php } if ($result->rcpt_balance_amt) { ?>
     <tr>
-        <td colspan="2" class="text-end">Balance Amount</td>
-        <td class="text-end"><?=format_amount($fees[0]->balance_amt+$list->remaining_previous_balance)?></td>
+        <td colspan="2" class="text-end" style="font-weight:bold">Balance Amount</td>
+        <td class="text-end" style="font-weight:bold"><?=format_amount($fees[0]->balance_amt+$list->remaining_previous_balance)?></td>
     </tr>
 	<?php } ?>
     </tbody>
@@ -416,6 +424,7 @@ if($_GET['copy']=='2'){
 <?php } else if($result->rcpt_common_header == 0 && $result->rcpt_header_height != 0) { ?>
 	<div style="border:0px; height:<?php echo $result->rcpt_header_height; ?>px"></div>
 <?php } else { ?>
+	<!--
 	<?php if ($result->rcpt_student_name) { ?>
 	<h5><b><?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></b></h5>
 	<?php } if ($result->rcpt_address) { ?>
@@ -427,6 +436,13 @@ if($_GET['copy']=='2'){
 	<?php } ?>
 	<span><b>Email Id.</b>: <?=$student['email']?></span> <br>
 	<span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br>
+	-->
+	<div class="text-center" style="padding: 5px 0;">
+		<h5><strong><?=$result->name ?? '' ?></strong></h5>								
+		<div style="margin-bottom:5px;"><span><?=$result->address ?? '' ?></span> </div>
+		<span><b>Email</b> : <?=$result->email?></span>,
+		<span><b>Mobile</b> : <?=$result->phone?></span> <br>
+	</div>
 <?php } ?>
 
 
@@ -576,8 +592,8 @@ if($_GET['copy']=='2'){
   </tr>
   <?php } if ($result->rcpt_balance_amt) { ?>
   <tr>
-      <td colspan="2" class="text-end">Balance Amount</td>
-      <td class="text-end"><?=format_amount($fees[0]->balance_amt+$list->remaining_previous_balance)?></td>
+      <td colspan="2" class="text-end" style="font-weight:bold">Balance Amount</td>
+      <td class="text-end" style="font-weight:bold"><?=format_amount($fees[0]->balance_amt+$list->remaining_previous_balance)?></td>
   </tr>
   <?php } ?>
   </tbody>
@@ -881,6 +897,7 @@ if($_GET['copy']=='2'){
 				<?php } else if($result->rcpt_common_header == 0 && $result->rcpt_header_height != 0) { ?>
 					<div style="border:0px; height:<?php echo $result->rcpt_header_height; ?>px"></div>
 				<?php } else { ?>
+					<!--
 					<?php if ($result->rcpt_student_name) { ?>
 					<h5><b><?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></b></h5>
 					<?php } if ($result->rcpt_address) { ?>
@@ -892,6 +909,13 @@ if($_GET['copy']=='2'){
 					<?php } ?>
 					<span><b>Email Id.</b>: <?=$student['email']?></span> <br>
 					<span><strong>Session: <?=$this->session_model->get($this->setting_model->getCurrentSession())['session']?></strong></span> <br>
+					-->
+					<div class="text-center" style="padding: 5px 0;">
+						<h5><strong><?=$result->name ?? '' ?></strong></h5>								
+						<div style="margin-bottom:5px;"><span><?=$result->address ?? '' ?></span> </div>
+						<span><b>Email</b> : <?=$result->email?></span>,
+						<span><b>Mobile</b> : <?=$result->phone?></span> <br>
+					</div>
 				<?php } ?>
 
 
@@ -1037,8 +1061,8 @@ if($_GET['copy']=='2'){
                         </tr>
 						<?php } if ($result->rcpt_balance_amt) { ?>
                         <tr>
-                            <td colspan="2" class="text-end">Balance Amount</td>
-                            <td class="text-end"><?=format_amount($fees[0]->balance_amt+$list->remaining_previous_balance)?></td>
+                            <td colspan="2" class="text-end" style="font-weight:bold">Balance Amount</td>
+                            <td class="text-end" style="font-weight:bold"><?=format_amount($fees[0]->balance_amt+$list->remaining_previous_balance)?></td>
                         </tr>
 						<?php } ?>
                         </tbody>

@@ -557,7 +557,7 @@ $language_name = $language["short_code"];
 										<label id="error_message_prev" style="color: red; display:block;font-size:10px !important">Amount must be between 0 and <?=format_amount($student['previous_session_balance']+$previous_balance) ?>.</label>
                                     </div>
 									<div class="col-sm-2">
-                                        <label for="remaining_previous_balance">Remain Prev Balance</label>
+                                        <label for="remaining_previous_balance">Remain Pre. Bal.</label>
                                         <input style="width: 100%;" type="text" id="remaining_previous_balance" class="form-control" value="<?=$student['previous_session_balance']?>" name="remaining_previous_balance" readonly />
                                     </div>
 									<div class="col-sm-2">
