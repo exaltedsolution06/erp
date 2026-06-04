@@ -289,8 +289,8 @@ class Modulepermission extends Public_Controller
 				'module' => 'Ticket Section',
 				'links' => [
 					['name' => 'Create Ticket', 'short_code' => 'create_ticket', 'add' => true, 'view' => true, 'edit' => true,  'delete' => true],
-					['name' => 'Track Ticket',  'short_code' => 'track_ticket', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Closed Ticket', 'short_code' => 'closed_ticket', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					// ['name' => 'Track Ticket',  'short_code' => 'track_ticket', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					// ['name' => 'Closed Ticket', 'short_code' => 'closed_ticket', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
 					['name' => 'All Report',    'short_code' => 'ticket_section_report', 'add' => false,  'view' => true,'edit' => false, 'delete' => false],
 				]
 			],

@@ -1167,7 +1167,7 @@
 							<?php if ($this->rbac->hasPrivilege('create_ticket', 'can_view')) { ?>
 								<li class="<?php echo set_Submenu('Ticket/create'); ?>"><a href="<?php echo base_url(); ?>ticket/index"><i class="fa fa-angle-double-right"></i> Create Ticket</a></li>
 							<?php } if ($this->rbac->hasPrivilege('track_ticket', 'can_view')) { ?>
-								<li class="<?php //echo set_Submenu('Ticket/track'); ?>"><a href="#<?php //echo base_url(); ?>ticket/track"><i class="fa fa-angle-double-right"></i> Track Ticket</a></li>
+								<!--<li class="<?php //echo set_Submenu('Ticket/track'); ?>"><a href="#<?php //echo base_url(); ?>ticket/track"><i class="fa fa-angle-double-right"></i> Track Ticket</a></li>-->
 							<?php } if ($this->rbac->hasPrivilege('closed_ticket', 'can_view')) { ?>
 								<!--<li class="<?php //echo set_Submenu('Ticket/closed'); ?>"><a href="#<?php //echo base_url(); ?>ticket/closed"><i class="fa fa-angle-double-right"></i> Closed Ticket</a></li>-->
 							<?php } if ($this->rbac->hasPrivilege('ticket_section_report', 'can_view')) { ?>

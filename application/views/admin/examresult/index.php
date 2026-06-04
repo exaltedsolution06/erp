@@ -198,7 +198,9 @@
                                                                 foreach ($subjectList as $subject_key => $subject_value) {
 																if(in_array($subject_value->subject_id, $subject_id_data)) {		
                                                                     $subject_status = 1;
+																	if ($result->attendence != "m_leave") {
                                                                     $total_marks = $total_marks + $subject_value->max_marks;
+																	}
                                                                     ?>
                                                                     <td>
                                                                         <?php
@@ -216,7 +218,7 @@
 
                                                                                 $total_quality_point = $total_quality_point + ($point * $subject_credit_hour);
                                                                                 echo $point . " X " . $subject_credit_hour . " = " . number_format($point * $subject_credit_hour, 2, '.', '');
-                                                                                if ($result->attendence == "absent") {
+                                                                                if ($result->attendence == "absent" || $result->attendence == "m_leave") {
                                                                                     ?>  
                                                                                     <p class="text">
                                                                                         <?php echo $this->lang->line($result->attendence); ?>
@@ -229,12 +231,14 @@
                                                                             } else {
 
                                                                                 $get_marks = $get_marks + $result->get_marks;
-                                                                                if ($result->get_marks < $subject_value->min_marks) {
-                                                                                    $result_status = 0;
-                                                                                    $subject_status = 0;
-                                                                                }
+																				if ($result->attendence != "m_leave") {
+																					if ($result->get_marks < $subject_value->min_marks) {
+																						$result_status = 0;
+																						$subject_status = 0;
+																					}
 
-                                                                                echo $result->get_marks;
+																					echo $result->get_marks;
+                                                                                }
 
                                                                                 //print_r($result)
 
@@ -248,7 +252,7 @@
                                                                                     echo ($subject_status == 0) ? " (F)" : "";
                                                                                 }
 
-                                                                                if ($result->attendence == "absent") {
+                                                                                if ($result->attendence == "absent" || $result->attendence == "m_leave") {
                                                                                     ?>  
                                                                                     <p class="text">
                                                                                         <?php echo $this->lang->line($result->attendence); ?>

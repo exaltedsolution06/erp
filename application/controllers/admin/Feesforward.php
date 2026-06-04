@@ -143,8 +143,11 @@ class Feesforward extends Admin_Controller {
                 $obj->admission_no = $student_list_value->admission_no;
                 $obj->roll_no = $student_list_value->roll_no;
                 $obj->father_name = $student_list_value->father_name;
+                $obj->mother_name = $student_list_value->mother_name;
                 $obj->student_session_id = $student_list_value->current_student_session_id;
                 $obj->student_previous_session_id = $student_list_value->previous_student_session_id;
+                $obj->student_class = $student_list_value->class;
+                $obj->student_section = $student_list_value->section;
                 // $obj->id = $student_list_value->id;
                
                 if (strtotime($student_list_value->admission_date) == 0) {

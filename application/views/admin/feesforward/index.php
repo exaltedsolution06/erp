@@ -108,20 +108,25 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <table class="table table-striped example">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text text-left"><?php echo $this->lang->line('admission_no'); ?></th>
-                                                            <?php if ($sch_setting->roll_no) { ?>
-                                                                <th class="text text-left"><?php echo $this->lang->line('roll_no'); ?></th>
-															<?php } ?>
+                                                            <th class="text text-left">Adm. No</th>
                                                             <th class="text text-left"><?php echo $this->lang->line('student_name'); ?></th> 
 
+                                                            <?php if ($sch_setting->roll_no) { ?>
+                                                                <!--<th class="text text-left"><?php echo $this->lang->line('roll_no'); ?></th>-->
+															<?php } ?>
                                                             <?php if ($sch_setting->admission_date) { ?>
-                                                                <th class="text text-left"><?php echo $this->lang->line('admission_date'); ?></th>
+                                                                <!--<th class="text text-left"><?php echo $this->lang->line('admission_date'); ?></th>-->
                                                             <?php } if ($sch_setting->father_name) { ?>
-                                                                <th class="text text-left"><?php echo $this->lang->line('father_name'); ?></th><?php } ?>
-
-                                                            <th class="">Total prev <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>
-                                                            <th class="">Total received <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>
-                                                            <th class="text-right"><?php echo $this->lang->line('balance'); ?> <span><?php echo "(" . $currency_symbol . ")"; ?></span></th>
+                                                                <th class="text text-left"><?php echo $this->lang->line('father_name'); ?></th>
+                                                            <?php } if ($sch_setting->mother_name) { ?>
+                                                                <th class="text text-left"><?php echo $this->lang->line('mother_name'); ?></th>
+																
+																<?php } ?>
+															<th class="text text-left"><?php echo $this->lang->line('class'); ?></th>
+															<th class="text text-left"><?php echo $this->lang->line('section'); ?></th>
+                                                            <th class="">Total Previous Bal</th>
+                                                            <th class="">Total Received</th>
+                                                            <th class="text-right">Total Balance</th>
                                                         </tr>
 
                                                     </thead> 
@@ -136,20 +141,24 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             ?>
                                                             <tr>
                                                                 <td><?php echo $due_fee_value->admission_no; ?></td>
-                                                                <?php if ($sch_setting->roll_no) { ?>
-                                                                    <td><?php echo $due_fee_value->roll_no; ?></td>
-																<?php } ?>
                                                                 <td>
                                                                     <input type="hidden" name="student_id[<?php echo $i; ?>]" value="<?php echo $due_fee_value->id; ?>">
                                                                     <input type="hidden" name="student_counter[]" value="<?php echo $i; ?>">
                                                                     <input type="hidden" name="student_sesion[<?php echo $i; ?>]" value="<?php echo $due_fee_value->student_session_id; ?>">
                                                                     <?php echo $due_fee_value->name ?></td>  
+                                                                <?php if ($sch_setting->roll_no) { ?>
+                                                                    <!--<td><?php echo $due_fee_value->roll_no; ?></td>-->
+																<?php } ?>
 
                                                                 <?php if ($sch_setting->admission_date) { ?>
-                                                                    <td><?php echo $due_fee_value->admission_date; ?></td>
+                                                                    <!--<td><?php echo $due_fee_value->admission_date; ?></td>-->
                                                                 <?php } if ($sch_setting->father_name) { ?>
                                                                     <td><?php echo $due_fee_value->father_name; ?></td>
+                                                                <?php } if ($sch_setting->mother_name) { ?>
+                                                                    <td><?php echo $due_fee_value->mother_name; ?></td>
                                                                 <?php } ?>
+																<td><?php echo $due_fee_value->student_class; ?></td>
+																<td><?php echo $due_fee_value->student_section; ?></td>
 																<td>
 																	<span style="display: none;"><?php echo format_amount($due_fee_value->balance); ?></span>
 																	<input type="text" name="amount[<?php echo $i; ?>]" class="form-control tddm200 tot_prev_input" value="<?php echo format_amount($due_fee_value->balance); ?>">
@@ -172,6 +181,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     </tbody>
 													<tfoot style="display:revert;">
 														<tr>
+															<th></th>
 															<th></th>
 															<th></th>
 															<th></th>

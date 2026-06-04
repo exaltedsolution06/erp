@@ -304,7 +304,7 @@
 									<?php 
 									// $allNames = [];
 									foreach($post_exam_group_id as $rowDatagroup){
-									$exam_type=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$rowDatagroup->id."' AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
+									$exam_type=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$rowDatagroup->id."' AND coscholasticareas=0 AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
 									// $allNames[] = $rowDatagroup->name;
 									$gradecount = 0;
 									if(isset($saved_json[$rowDatagroup->id]) && $saved_json[$rowDatagroup->id] == 1){
@@ -342,7 +342,7 @@
 									<th class="main-subject-color" style="width:100px; --main-subject-color: <?= htmlspecialchars($desc->main_subject_color, ENT_QUOTES, 'UTF-8') ?>;"><?php echo $this->lang->line('main'); ?> <?php echo $this->lang->line('subject'); ?></th>
 									
 									<?php  foreach($post_exam_group_id as $rowDatagroup){
-									$exam_type=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$rowDatagroup->id."' AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
+									$exam_type=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$rowDatagroup->id."' AND coscholasticareas=0 AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
 										if($desc->max_marks_shift_left==1){
 											if(isset($saved_max_marks_json[$rowDatagroup->id]) && $saved_max_marks_json[$rowDatagroup->id] == 1){
 											?>
@@ -479,7 +479,7 @@
 			
 												
 												// $exam_type=$this->db->query("SELECT * FROM exam_group_class_batch_exams WHERE exam_group_id='".$exam_group_id."'")->result();
-												$exam_type=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$exam_group_id."' AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
+												$exam_type=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$exam_group_id."' AND coscholasticareas=0 AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
 											
 
 
@@ -654,7 +654,7 @@
 			
 												
 												// $exam_type_op=$this->db->query("SELECT * FROM exam_group_class_batch_exams WHERE exam_group_id='".$exam_group_id_op."'")->result();
-												$exam_type_op=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$exam_group_id_op."' AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
+												$exam_type_op=$this->db->query("SELECT exam_group_class_batch_exams.* FROM exam_group_class_batch_exams INNER JOIN exam_group_class_batch_exam_students ON exam_group_class_batch_exam_students.exam_group_class_batch_exam_id=exam_group_class_batch_exams.id WHERE exam_group_id='".$exam_group_id_op."' AND coscholasticareas=0 AND exam_group_class_batch_exam_students.student_id='".$stddata->student_id."'")->result();
 											
 
 												$max_marks1_op = 0;

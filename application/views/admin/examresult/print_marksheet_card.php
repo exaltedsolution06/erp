@@ -1005,7 +1005,7 @@
 			<?php } ?>
 			
 			<?php 
-			$tearm_count=($_POST['exam_group_id']);
+			$tearm_count=($_POST['post_exam_group_id']);
 			$examgroup_result = $this->examgroup_model->get_c_by_exam_group($tearm_count);
 			$count_examgroup_result = count($examgroup_result);
 
