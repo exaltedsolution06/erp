@@ -258,6 +258,10 @@ CREATE TABLE `template_marksheets` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+======== 05-06-2026 ========
+ALTER TABLE `receipts` ADD `receipt_type` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0=Month, 1=Ledger, 2=Previous, 3=Ledger & Previous' AFTER `remaining_previous_balance`, ADD `ledger_discount` VARCHAR(100) NULL DEFAULT NULL AFTER `receipt_type`, ADD `previous_discount` VARCHAR(100) NULL DEFAULT NULL AFTER `ledger_discount`;
+ALTER TABLE `deleted_receipts` ADD `receipt_type` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0=Month, 1=Ledger, 2=Previous, 3=Ledger & Previous' AFTER `remaining_previous_balance`, ADD `ledger_discount` VARCHAR(100) NULL DEFAULT NULL AFTER `receipt_type`, ADD `previous_discount` VARCHAR(100) NULL DEFAULT NULL AFTER `ledger_discount`;
+
 
 
 ===============================

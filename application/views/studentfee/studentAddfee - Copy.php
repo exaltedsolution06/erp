@@ -340,10 +340,10 @@ $language_name = $language["short_code"];
 
                                                 <th><?= $total ?> <input type="hidden" name="total[]" value="<?=$total?>"> </th>
 												<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_add')) { ?>
-                                                <th><input type="text" style="width: 100px;" class="rec_discount" name="rec_discount[]" id="total_get_discount_<?=$aa?>" value=""></th>
+                                                <th><input type="text" style="width: 100px;" class="rec_discount" name="rec_discount[]" id="total_get_discount_<?=$aa?>" oninput="calculateDisData(this,<?=$aa?>)" value="0"></th>
 												<?php } ?>
-                                                <th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" value="<?= $total ?>"></th>
-                                                <th><input type="text" class="row_balance" name="row_balance[]" value="0" readonly style="width:100px;"></th>
+                                                <th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?= $total ?>"></th>
+                                                <th>0</th>
                                             </tr>
                                             <?php
                                                 $final_total += $total;
@@ -355,6 +355,7 @@ $language_name = $language["short_code"];
 
                                                 $db_months = json_decode($row->months);
                                                 $total = 0;
+                                                $aa++;
                                                 $statusNew++;
                                             ?>
                                             <tr>
@@ -393,61 +394,14 @@ $language_name = $language["short_code"];
                                                     </th>
                                                 <?php endforeach; ?>
                                                 <th><?= $total ?> <input type="hidden" name="total[]" value="<?=$total?>"> </th>
-                                                <th><input type="text" style="width:100px;" class="rec_discount" name="rec_discount[]"  id="total_get_discount_<?=$aa?>" value=""></th>
-                                                <th><input type="text" style="width:100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" value="<?= $total ?>"></th>
-                                                <th><input type="text" class="row_balance" name="row_balance[]" value="0" readonly style="width:100px;"></th>
+                                                <th><input type="text" style="width:100px;" class="rec_discount" name="rec_discount[]"  id="total_get_discount_<?=$aa?>"   oninput="calculateDisData(this,<?=$aa?>)" value="0"></th>
+                                                <th><input type="text" style="width:100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?= $total ?>"></th>
+                                                <th>0</th>
                                             </tr>
                                             <?php
                                                 $final_total += $total;
-                                                $aa++;
                                             }
-											?>
-											<input type="hidden" name="hid_fees_received" value="<?php echo $final_total;?>">
-											<?php
-											$total = format_amount($student['fees_discount']);
-											$statusNew++;
-											$final_total += $total;
                                             ?>
-											<tr>
-												<th><input type="checkbox" class="row_selector" onchange="DeleteRowData(this,<?=$aa?>)" checked />
-                                                </th>
-                                                <th>LEDG AMT</th>
-												<?php foreach($months_data as $key=>$value){
-												?>
-												<th></th>
-												<?php
-												} 
-												?>
-                                                <th><?=$total?> <input type="hidden" name="total[]" value="<?=$total?>"></th>
-												<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_add')) { ?>
-                                                <th><input type="text" style="width: 100px;" class="rec_discount" name="ledg_rec_discount" id="total_get_discount_<?=$aa?>" value=""></th>
-												<?php } ?>
-                                                <th><input type="text" style="width: 100px;" class="rec_amount" name="ledg_rec_amount" id="total_rec_discount_<?=$aa?>" value="<?=$total?>"></th>
-                                                <th><input type="text" class="row_balance" name="ledg_row_balance" value="0" readonly style="width:100px;"></th>
-                                            </tr>
-											<?php
-											$aa++;
-											$total = format_amount($student['previous_session_balance']);
-											$statusNew++;
-											$final_total += $total;
-                                            ?>
-											<tr>
-												<th><input type="checkbox" class="row_selector" onchange="DeleteRowData(this,<?=$aa?>)" checked />
-                                                </th>
-                                                <th>PREV AMT</th>
-												<?php foreach($months_data as $key=>$value){
-												?>
-												<th></th>
-												<?php
-												} 
-												?>
-                                                <th><?=$total?> <input type="hidden" name="total[]" value="<?=$total?>"></th>
-												<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_add')) { ?>
-                                                <th><input type="text" style="width: 100px;" class="rec_discount" name="prev_rec_discount" id="total_get_discount_<?=$aa?>" value=""></th>
-												<?php } ?>
-                                                <th><input type="text" style="width: 100px;" class="rec_amount" name="prev_rec_amount" id="total_rec_discount_<?=$aa?>" value="<?=$total?>"></th>
-                                                <th><input type="text" class="row_balance" name="prev_row_balance" value="0" readonly style="width:100px;"></th>
-                                            </tr>
                                         </tbody>
                                 </table>
                             </div>
@@ -456,11 +410,30 @@ $language_name = $language["short_code"];
                         <div class="card-footer"  style="padding: 10px;">
                             <div class="container" style="overflow-x: auto; max-width: 100%;">
                                 <div class="row">
-                                                                        
+                                    
+                                    
+                                    <?php 
+                                    
+                                    if($statusNew==0) {
+                                    
+                                    ?>
+                                    
+                                    <div class="col-sm-2">
+                                        <label for="fees_received">Ledger Total</label>
+                                        <input style="width: 100%;" type="text" id="fees_received" class="form-control" value="<?=$student['fees_discount']?>" name="fees_received" readonly />
+                                    </div>
+                                    <?php }else{
+                                    
+                                    ?>
+                                    
                                     <div class="col-sm-2">
                                         <label for="fees_received">Estimated Total</label>
                                         <input style="width: 100%;" type="text" id="fees_received" class="form-control" value="<?=$final_total?>" name="fees_received" readonly />
                                     </div>
+                                    
+                                    <?php
+                                    
+                                    } ?>
                                     
                                     
                                     <div class="col-sm-2">
@@ -471,35 +444,118 @@ $language_name = $language["short_code"];
                                         
                                          
                                         <input style="width: 100%;" type="hidden" id="old_ledger_amt"  name="old_ledger_amt" readonly value="<?=$student['fees_discount']?>"  />
-                                        <input style="width: 100%;" type="hidden" id="old_prev_amt"  name="old_prev_amt" readonly value="<?=$student['previous_session_balance']?>"  />
                                         
-                                        
+                                        <?php 
                                     
+                                    if($statusNew==0) {
+                                    
+                                    ?>
+                                          
+                                          <?php
+                                    }else{
+                                        ?>
+                                          <div class="col-sm-2">
+                                        <input style="width: 100%;" type="hidden" id="ttyp" readonly value="mounth"  />
+                                        <label for="ledger_amt">Ledger Amt</label>
+                                        <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" readonly name="ledger_amt" value="<?=format_amount($student['fees_discount'])?>" min="0"   max="<?= $student['fees_discount'] ?>"  />
+                                        </div>
+                                         <?php
+
+                                    }
+                                    
+                                    
+                                    ?>
+                                       
                                     <div class="col-sm-2">
+                                        <label for="total_fees">Total Fees</label>
+                                        <input style="width: 100%;" type="text" id="total_fees" class="form-control" name="total_fees" readonly value="<?=$student['fees_discount']+$final_total?>" />
+                                    </div>
+                               
+                                      <?php 
+                                    
+                                    if($statusNew==0) {
+                                    
+                                    ?>
+                                     <div class="col-sm-2">
                                         
                                         <label for="discount_amt">Discount Amt</label>
-                                        <input style="width: 100%;" type="text" id="discount_amt" class="form-control" name="discount_amt" value="" readonly  />
+                                        <input style="width: 100%;" type="text" id="discount_amt" class="form-control" name="discount_amt" value="0"  />
                                     </div>
+                                    
+                                    <?php
+                                    }else{
+                                        ?>
+                                        
+                                         <div class="col-sm-2">
+                                        
+                                        <label for="discount_amt">Discount Amt</label>
+                                        <input style="width: 100%;" type="text" id="discount_amt" class="form-control" name="discount_amt" value="0" readonly  />
+                                    </div>
+                                        <?php
+                                    }
+                                    
+                                    
+                                    ?>
                                
                                     
                                     
                                     <div class="col-sm-2">
                                         <label for="net_fees">Net Fees</label>
-                                        <input style="width: 100%;" type="text" id="net_fees" class="form-control" name="net_fees" value="<?=$final_total?>" readonly />
+                                        <input style="width: 100%;" type="text" id="net_fees" class="form-control" name="net_fees" value="<?=$student['fees_discount']+$final_total?>" readonly />
                                     </div>
                                 </div>
                                 <div class="row " style="display:flex; margin-top: 10px !important;">
 
-									<div class="col-sm-2">
-										<label for="receipt_amt">Receipt Amt</label>
-										<input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$final_total?>"/>
-										<label id="error_message_rcpt" style="color: red; display:block;font-size:10px !important">Amount must be between 0 and <?=$final_total ?>.</label>
-										<input type="hidden" value="<?=$final_total?>" name="hid_receipt_amt" id="hid_receipt_amt">
-									</div>
+
+                                    <?php 
+                                    
+                                    if($statusNew==0) {
+                                        ?>
+                                        
+                                        <div class="col-sm-2">
+                                        
+                                        <input style="width: 100%;" type="hidden" id="ttyp" readonly value="lager"  />
+                                       
+                                        <label for="ledger_amt">Ledger Amt</label>
+                                        <input style="width: 100%;" type="text" id="ledger_amt" class="form-control" name="ledger_amt" value="" min="0"   max="<?= $student['fees_discount'] ?>"  />
+                                         <lable id="error_message" style="color: red; display:block;font-size:10px !important"></lable>
+                                         <input style="width: 100%;" type="hidden" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$student['fees_discount']+$final_total?>" readonly  />
+                                       
+                                    </div>
+                                        
+                                        <?php
+                                    }else{
+                                        ?>
+                                        <div class="col-sm-2">
+                                            <label for="receipt_amt">Receipt Amt</label>
+                                            <input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$student['fees_discount']+$final_total?>"/>
+											<label id="error_message_rcpt" style="color: red; display:block;font-size:10px !important">Amount must be between 0 and <?=$student['fees_discount']+$final_total ?>.</label>
+											<input type="hidden" value="<?=$student['fees_discount']+$final_total?>" name="hid_receipt_amt" id="hid_receipt_amt">
+                                        </div>
+                                        <?php
+                                        
+                                    }
+                                    
+                                    ?>
+                                   
                                     
                                     <div class="col-sm-2">
                                         <label for="balance_amt">Balance Amt</label>
                                         <input style="width: 100%;" type="text" id="balance_amt" class="form-control" name="balance_amt" readonly value="0" />
+                                    </div>
+									<div class="col-sm-2">
+                                        <label for="previous_session_balance">Previous Balance</label>
+                                        <input type="hidden" id="hid_previous_session_balance" value="<?=format_amount($student['previous_session_balance'])?>" />
+                                        <input style="width: 100%;" type="text" id="previous_session_balance" class="form-control" value="<?=format_amount($student['previous_session_balance'])?>" name="previous_session_balance" />
+										<label id="error_message_prev" style="color: red; display:block;font-size:10px !important">Amount must be between 0 and <?=format_amount($student['previous_session_balance']) ?>.</label>
+                                    </div>
+									<div class="col-sm-2">
+                                        <label for="remaining_previous_balance">Remain Pre. Bal.</label>
+                                        <input style="width: 100%;" type="text" id="remaining_previous_balance" class="form-control" value="0" name="remaining_previous_balance" readonly />
+                                    </div>
+									<div class="col-sm-2">
+                                        <label for="total_payable_amt">Total Payable Amt</label>
+                                        <input style="width: 100%;" type="text" id="total_payable_amt" class="form-control" value="<?=$student['fees_discount']+$final_total+$student['previous_session_balance']?>" name="total_payable_amt" readonly />
                                     </div>
                                     <div class="col-sm-2">
                                         <label for="mode">Mode</label>
@@ -1465,215 +1521,615 @@ function formatToDisplayDate(inputDateStr) {
 
 
 <script>
+
+
+
+    function calculateData(input,id) {
+        let cleanedValue = input.value.replace(/[^0-9.]/g, '');
+        const parts = cleanedValue.split('.');
+        if (parts.length > 2) {
+            cleanedValue = parts[0] + '.' + parts[1];
+        }
+        if (cleanedValue === '') {
+            cleanedValue = 0;
+        }
+        input.value = cleanedValue;
+        
+        if (cleanedValue !== '') {
+
+            const number = parseFloat(cleanedValue);
+            const row = input.closest('tr');
+            const cells = row.querySelectorAll('th, td');
+            const len = cells.length;
+
+            // Get last 3 cell values
+            const val1 = cells[len - 4].innerText;
+            const val2 = number;
+            const val3 = cells[len - 1].innerText;
+            let element1 = document.getElementById("total_get_discount_" + id).value;
+            cells[len - 1].innerText = Number(val1) - (Number(element1) + Number(val2));
+
+        }
+
+
+        let sum = 0;
+        document.querySelectorAll('.rec_amount').forEach(el => {
+            const val = parseFloat(el.value);
+            if (!isNaN(val)) {
+                sum += val;
+            }
+        });
+
+        // alert(sum);
+        
+        let ledger_amt = parseFloat(document.querySelector('[name="ledger_amt"]').value) || 0;
+        document.querySelector('[name="receipt_amt"]').value = sum+ledger_amt;
+		
+        let feesReceived = parseFloat(document.querySelector('[name="net_fees"]').value) || 0;
+        let balanceAmt = feesReceived - sum;
+		
+        document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);;
+        FinalcalculateFees();
+    }
+
+
+    function calculateDisData(input,id){
+        //alert(id);
+        let cleanedValue = input.value.replace(/[^0-9.]/g, '');
+        const parts = cleanedValue.split('.');
+        if (parts.length > 2) {
+            cleanedValue = parts[0] + '.' + parts[1];
+        }
+        if (cleanedValue === '') {
+            cleanedValue = 0;
+        }
+        input.value = cleanedValue;
+        
+        // alert(cleanedValue);
+
+        if (cleanedValue !== '') {
+            const number = parseFloat(cleanedValue);
+            const row = input.closest('tr');
+            const cells = row.querySelectorAll('th, td');
+            const len = cells.length;
+            // Get last 3 cell values
+            const val1 = cells[len - 4].innerText;
+            const val2 = number;
+            const val3 = cells[len - 1].innerText;
+            
+            // alert(val1-val2);
+            var dis_amt=val1-val2;
+            let element = document.getElementById("total_rec_discount_" + id);
+            // alert(element);
+            element.value = dis_amt-val3;
+
+        }
+
+        let sum = 0;
+        document.querySelectorAll('.rec_discount').forEach(el => {
+            const val = parseFloat(el.value);
+            if (!isNaN(val)) {
+                sum += val;
+            }
+        });
+        //alert(sum);
+        // let ledger_amt = parseFloat(document.querySelector('[name="ledger_amt"]').value) || 0;
+        // document.querySelector('[name="receipt_amt"]').value = sum+ledger_amt;
+        // let feesReceived = parseFloat(document.querySelector('[name="net_fees"]').value) || 0;
+        // let balanceAmt = feesReceived - sum;
+        
+        document.querySelector('[name="discount_amt"]').value = sum;
+        FinalcalculateFees();
+        // calculateDataDiscount(id);
+    }
+
+
+
+    // function calculateDataDiscount(id){
+       
+    //     const row = $("#total_rec_discount_"+id).closest('tr');
+    //     const cells = row.find('th, td'); // jQuery .find()
+    //     const len = cells.length;
+
+    //     const val1 = cells[len - 4].innerText;
+    //     const val3 = cells[len - 1].innerText;
+
+      
+
+
+    // }
+
+
+
+
+function DeleteRowData(checkbox,id) {
+    // Find the row
+    const row = checkbox.closest('tr');
+    const input = row.querySelector('.rec_amount');
+    if (!input) return;
+
+    if (!checkbox.checked) {
+        $("#payvalue_"+id).val('unpaid');
+        input.dataset.originalValue = input.value;
+        input.value = 0;
+        input.readOnly = true;
+    } else {
+        $("#payvalue_"+id).val('paid');
+        input.value = input.dataset.originalValue || '';
+        input.readOnly = false;
+    }
+
+    // rec_discount
+
+    const input1 = row.querySelector('.rec_discount');
+    if (!input1) return;
+
+    if (!checkbox.checked) {
+        input1.dataset.originalValue = input1.value;
+        input1.value = 0;
+        input1.readOnly = true;
+        
+    } else {
+        
+        input1.value = input1.dataset.originalValue || '';
+        input1.readOnly = false;
+    }
+
+    if (!checkbox.checked) {
+    
+        const cells = row.querySelectorAll('th, td');
+        const len = cells.length;
+        cells[len - 1].innerText = 0;
+
+    }else{
+        const cells = row.querySelectorAll('th, td');
+        const len = cells.length;
+        const val1 = cells[len - 4].innerText;
+        cells[len - 1].innerText =  Number(val1) - (Number(input.dataset.originalValue) + Number(input1.dataset.originalValue));
+    }
+
+   calculateDataCheckBox(checkbox,id);
+
+
+}
+
+
+
+
+
+// document.addEventListener('DOMContentLoaded', function () {
+
+//     const inputs = document.querySelectorAll('[name="discount_amt"],[name="ledger_amt"]');
+//     inputs.forEach(input => {
+//         input.addEventListener('keyup', calculateFees);
+//     });
+    
+    
+
+//     function calculateFees() {
+
+        
+
+        
+//         let old_ledger_amt = parseFloat(document.querySelector('[name="old_ledger_amt"]').value) || 0;
+//         let feesReceived = parseFloat(document.querySelector('[name="fees_received"]').value) || 0;
+//         let ledgerAmt = parseFloat(document.querySelector('[name="ledger_amt"]').value) || 0;
+//         let lateFees = parseFloat(document.querySelector('[name="late_fees"]').value) || 0;
+//         let totalFees = parseFloat(document.querySelector('[name="total_fees"]').value) || 0;
+//         let discountAmt = parseFloat(document.querySelector('[name="discount_amt"]').value) || 0;
+
+
+
+//         let receiptAmt1 = old_ledger_amt;
+
+//         document.querySelector('[name="receipt_amt"]').value = Number(receiptAmt1)+Number(lateFees);
+//         let receiptAmt = parseFloat(document.querySelector('[name="receipt_amt"]').value) || 0;
+
+//         let netFees = lateFees +ledgerAmt;
+        
+        
+//         document.querySelector('[name="total_fees"]').value = netFees;
+        
+//         // document.querySelector('[name="net_fees"]').value = netFees;
+
+//         // let balanceAmt = netFees - Number(receiptAmt);
+//         // document.querySelector('[name="balance_amt"]').value = balanceAmt;
+        
+        
+        
+//     }
+// });
+
+
+
+
 $(document).ready(function () {
-
-    function formatAmount(value) {
-        value = parseFloat(value) || 0;
-        return Number.isInteger(value) ? value : value.toFixed(2);
-    }
-
-    function updateMainBalance() {
-
-        let rowBalanceTotal = 0;
-
-        $('.row_balance').each(function () {
-            rowBalanceTotal += parseFloat($(this).val()) || 0;
-        });
-
-        let autoReceiptAmt = parseFloat($('#hid_receipt_amt').val()) || 0;
-        let manualReceiptAmt = parseFloat($('#receipt_amt').val()) || 0;
-
-        let finalBalance = rowBalanceTotal + (autoReceiptAmt - manualReceiptAmt);
-
-        $('#balance_amt').val(formatAmount(finalBalance));
-    }
-
-    function updateFooterTotals() {
-
-        let totalDiscount = 0;
-        let totalReceipt = 0;
-        let totalBalance = 0;
-        let estimatedTotal = 0;
-
-        $('tbody tr').each(function () {
-
-            let checkbox = $(this).find('.row_selector');
-
-            if (checkbox.length && !checkbox.is(':checked')) {
-                return true;
-            }
-
-            let totalField = $(this).find('input[name="total[]"]');
-
-            if (totalField.length) {
-                estimatedTotal += parseFloat(totalField.val()) || 0;
-            }
-
-            let discountField = $(this).find('.rec_discount');
-
-            if (discountField.length) {
-                totalDiscount += parseFloat(discountField.val()) || 0;
-            }
-
-            let recField = $(this).find('.rec_amount');
-
-            if (recField.length) {
-                totalReceipt += parseFloat(recField.val()) || 0;
-            }
-
-            let balField = $(this).find('.row_balance');
-
-            if (balField.length) {
-                totalBalance += parseFloat(balField.val()) || 0;
-            }
-        });
-
-        let lateFees = parseFloat($('#late_fees').val()) || 0;
-
-        let netFees = estimatedTotal + lateFees - totalDiscount;
-        let receiptAmt = totalReceipt + lateFees;
-
-        $('#fees_received').val(formatAmount(estimatedTotal));
-        $('#discount_amt').val(formatAmount(totalDiscount));
-        $('#net_fees').val(formatAmount(netFees));
-
-        if (!$('#receipt_amt').data('manual')) {
-            $('#receipt_amt').val(formatAmount(receiptAmt));
-        }
-
-        $('#hid_receipt_amt').val(formatAmount(receiptAmt));
-
-        $('#error_message_rcpt').text(
-            'Amount must be between 0 and ' +
-            formatAmount(receiptAmt) +
-            '.'
-        );
-
-        // Logic A
-        $('#balance_amt').val(formatAmount(totalBalance));
-    }
-
-    // Discount Change
-    $(document).on('input', '.rec_discount', function () {
-
-        let row = $(this).closest('tr');
-
-        let total = parseFloat(
-            row.find('input[name="total[]"]').val()
-        ) || 0;
-
-        let discount = parseFloat($(this).val()) || 0;
-
-        if (discount < 0) {
-            discount = 0;
-        }
-
-        if (discount > total) {
-            discount = total;
-        }
-
-        $(this).val(formatAmount(discount));
-
-        let payable = total - discount;
-
-        row.find('.rec_amount').val(formatAmount(payable));
-        row.find('.row_balance').val('0');
-
-        updateFooterTotals();
-    });
-
-    // Received Amount Change
-    $(document).on('input', '.rec_amount', function () {
-
-        let row = $(this).closest('tr');
-
-        let total = parseFloat(
-            row.find('input[name="total[]"]').val()
-        ) || 0;
-
-        let discount = parseFloat(
-            row.find('.rec_discount').val()
-        ) || 0;
-
-        let payable = total - discount;
-
-        let received = parseFloat($(this).val()) || 0;
-
-        if (received < 0) {
-            received = 0;
-        }
-
-        if (received > payable) {
-            received = payable;
-        }
-
-        $(this).val(formatAmount(received));
-
-        let balance = payable - received;
-
-        row.find('.row_balance').val(formatAmount(balance));
-
-        $('#receipt_amt').removeData('manual');
-
-        updateFooterTotals();
-    });
-
-    // Late Fee Change
-    $(document).on('input', '#late_fees', function () {
-
-        $('#receipt_amt').removeData('manual');
-
-        updateFooterTotals();
-    });
-
-    // Manual Receipt Amount Change
-    $(document).on('input', '#receipt_amt', function () {
-
-        $(this).data('manual', true);
-
-        updateMainBalance();
-    });
-
-    // Checkbox Change
-    $(document).on('change', '.row_selector', function () {
-
-        let row = $(this).closest('tr');
-
-        let total = parseFloat(
-            row.find('input[name="total[]"]').val()
-        ) || 0;
-
-        if ($(this).is(':checked')) {
-
-            row.find('.rec_discount').prop('disabled', false);
-            row.find('.rec_amount').prop('disabled', false);
-
-            row.find('.rec_discount').val('');
-
-            row.find('.rec_amount').val(formatAmount(total));
-
-            row.find('.row_balance').val('0');
-
+    $("#previous_session_balance").on("keyup", function () {
+		// alert(12);
+		const ttyp=$("#ttyp").val();
+		let previous_session_balance = $("#previous_session_balance").val();	
+		let hid_previous_session_balance = $("#hid_previous_session_balance").val();
+		let remaining_previous_balance = $("#remaining_previous_balance").val();
+		let total_payable_amt = $("#total_payable_amt").val();
+		
+		let clean = $(this).val().replace(/[^0-9.]/g, '');
+        $(this).val(clean);	
+		if(Number(previous_session_balance) >= Number(hid_previous_session_balance)) {
+			$('#error_message_prev').text(`Amount must be between 0 and ${hid_previous_session_balance}.`).show();
+			$(this).val(hid_previous_session_balance);
+			$("#remaining_previous_balance").val(0);
+		}else{
+			$("#remaining_previous_balance").val(Number(hid_previous_session_balance) - Number(previous_session_balance));
+		}
+		previous_session_balance = $("#previous_session_balance").val();	
+		if(ttyp=='lager'){
+			let ledgerAmt = $("#ledger_amt").val();
+			
+			$("#total_payable_amt").val(Number(ledgerAmt) + Number(previous_session_balance));
+		}else{
+			let receipt_amt = $("#receipt_amt").val();
+	
+			$("#total_payable_amt").val(Number(receipt_amt) + Number(previous_session_balance));
+		}
+	});
+    $("#receipt_amt").on("keyup", function () {
+        let clean = $(this).val().replace(/[^0-9.]/g, '');
+        $(this).val(clean);		
+		
+		let previous_session_balance = $("#previous_session_balance").val();	
+		let net_fees = $("#net_fees").val();
+		let receipt_amt = $("#receipt_amt").val();
+        let balanceAmt = Number(net_fees) - Number(receipt_amt);
+		$("#balance_amt").val(parseFloat(balanceAmt).toFixed(2));
+		console.log(receipt_amt, net_fees);
+		if(Number(receipt_amt) >= Number(net_fees)) {
+			$('#error_message_rcpt').text(`Amount must be between 0 and ${net_fees}.`).show();
+			$(this).val(net_fees);
+			$("#balance_amt").val(0);
+		} else{
+			$('#error_message_rcpt').hide();
+			$("#total_payable_amt").val(Number(receipt_amt) + Number(previous_session_balance));
+		}
+		// If empty OR zero OR not a number → disable button
+        if (receipt_amt === "" || parseFloat(receipt_amt) <= 0 || isNaN(receipt_amt)) {
+            $("#submit_btn").prop("disabled", true);
         } else {
+            $("#submit_btn").prop("disabled", false);
+        }		
+    });
+});
 
-            row.find('.rec_discount')
-                .val('')
-                .prop('disabled', true);
+document.addEventListener('DOMContentLoaded', function () {
+    const inputs = document.querySelectorAll('[name="fees_received"], [name="discount_amt"],[name="ledger_amt"],[name="late_fees"], [name="total_fees"], .rec_amount');
+    inputs.forEach(input => {
+        input.addEventListener('keyup', calculateFees);
+    });
+    const ttyp=$("#ttyp").val();
+    function calculateFees() {
+        let sum = 0;
+        document.querySelectorAll('.rec_amount').forEach(el => {
+            const val = parseFloat(el.value);
+            if (!isNaN(val)) {
+                sum += val;
+            }
+        });
+        
+        let old_ledger_amt = parseFloat(document.querySelector('[name="old_ledger_amt"]').value) || 0;
+        let feesReceived = parseFloat(document.querySelector('[name="fees_received"]').value) || 0;
+        let feesReceived_1 = parseFloat(document.querySelector('[name="fees_received"]').value) || 0;
+        let ledgerAmt = parseFloat(document.querySelector('[name="ledger_amt"]').value) || 0;
+        let lateFees = parseFloat(document.querySelector('[name="late_fees"]').value) || 0;
+        let totalFees = parseFloat(document.querySelector('[name="total_fees"]').value) || 0;
+        let discountAmt = parseFloat(document.querySelector('[name="discount_amt"]').value) || 0;
+        let previousAmt = parseFloat(document.querySelector('[name="previous_session_balance"]').value) || 0;
 
-            row.find('.rec_amount')
-                .val('0')
-                .prop('disabled', true);
+        if(ttyp=='lager'){ 
+            
+             // alert(previousAmt);
+            feesReceived=0;
+            // console.log(feesReceived);
+    
+            let netFees = old_ledger_amt + lateFees;
+            
+            //   alert(netFees);
+            document.querySelector('[name="total_fees"]').value = netFees;
+           
+            document.querySelector('[name="net_fees"]').value = netFees-discountAmt;
+            
+            document.querySelector('[name="receipt_amt"]').value = netFees;
+            
+            
+            let net_fees = parseFloat(document.querySelector('[name="net_fees"]').value) || 0;
+    
+            let balanceAmt = Number(net_fees) - Number(ledgerAmt);
+            
+            // alert(balanceAmt);
+            
+            document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);
+            document.querySelector('[name="total_payable_amt"]').value = (Number(ledgerAmt)+Number(previousAmt));
+            
+        }else{
 
-            row.find('.row_balance')
-                .val('0');
+            let receiptAmt1 = sum+ledgerAmt;
+			//alert(receiptAmt1);alert(lateFees);
+            document.querySelector('[name="receipt_amt"]').value = Number(receiptAmt1)+Number(lateFees); // comment 05-12-2025
+           // $('#receipt_amt').val(Number(receiptAmt1)+Number(lateFees)); // comment 05-12-2025
+            let receiptAmt = parseFloat(document.querySelector('[name="receipt_amt"]').value) || 0;
+			//alert(receiptAmt);
+            let totalFees = (feesReceived + lateFees + ledgerAmt);
+            document.querySelector('[name="total_fees"]').value = totalFees;
+            /*if(discountAmt==''){
+                document.querySelector('[name="total_fees"]').value = netFees;
+            }*/
+			let netFees = totalFees-discountAmt;
+            document.querySelector('[name="net_fees"]').value = totalFees-discountAmt;
+    
+            let balanceAmt = netFees - Number(receiptAmt);
+            document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);;
+			
+			const hid_receipt_amt = parseFloat(document.querySelector('[name="hid_receipt_amt"]').value);
+			//const errorMessageRcpt = document.getElementById('error_message_rcpt');
+			
+			document.querySelector('[name="total_payable_amt"]').value = (Number(receiptAmt)+Number(previousAmt));
+			
+			//alert(receiptAmt);alert(hid_receipt_amt);
+			if(receiptAmt >= hid_receipt_amt)
+			{
+				$('#error_message_rcpt').text(`Amount must be between 0 and ${totalFees-discountAmt}.`).show();
+			}
+			else{
+				
+				$('#error_message_rcpt').hide();
+			}
+        
         }
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+});
 
-        $('#receipt_amt').removeData('manual');
 
-        updateFooterTotals();
+
+
+
+
+
+
+
+    // document.addEventListener('DOMContentLoaded', function () {
+        
+    //     const inputs = document.querySelectorAll('[name="discount_amt"],[name="ledger_amt"]');
+    
+    //     inputs.forEach(input => {
+    //         input.addEventListener('input', calculateFees);
+    //     });
+    
+    //     function calculateFees() {
+            
+    //         const getVal = name => parseFloat(document.querySelector(`[name="${name}"]`)?.value) || 0;
+    
+    
+    //         const old_ledger_amt = getVal('old_ledger_amt');
+    //         const feesReceived = getVal('fees_received');
+    //         const ledgerAmt = getVal('ledger_amt');
+    //         const lateFees = getVal('late_fees');
+    //         const totalFees = getVal('total_fees');
+    //         const discountAmt = getVal('discount_amt');
+    //         const net_fees_1 = getVal('net_fees');
+        
+        
+    //         var bakaya=totalFees - discountAmt;
+    //       console.log(bakaya);
+        
+        
+    //         const receiptAmt = ledger_amt + lateFees - discountAmt;
+    //         const netFees = lateFees + ledgerAmt + discountAmt;
+    
+    //         const receiptField = document.querySelector('[name="receipt_amt"]');
+    //         const totalFeesField = document.querySelector('[name="total_fees"]');
+    //         const balance_amt = document.querySelector('[name="balance_amt"]');
+    //         const net_fees = document.querySelector('[name="net_fees"]');
+            
+    //         //alert(netFees);
+    //         if (receiptField) receiptField.value = totalFees-discountAmt;
+    //         if (totalFeesField) totalFeesField.value = ledgerAmt+lateFees;
+    //         if (balance_amt) balance_amt.value = (old_ledger_amt +lateFees) - bakaya;
+    //         if (net_fees) net_fees.value = totalFees-discountAmt;
+            
+            
+    //     }
+        
+    // });
+
+
+
+
+
+
+
+
+
+
+
+function FinalcalculateFees(){
+
+    let sum1 = 0;
+    document.querySelectorAll('.rec_discount').forEach(el => {
+        const val = parseFloat(el.value);
+        if (!isNaN(val)) {
+            sum1 += val;
+        }
+    });
+    document.querySelector('[name="discount_amt"]').value = Number(sum1);
+
+	
+    let sum = 0;
+    document.querySelectorAll('.rec_amount').forEach(el => {
+        const val = parseFloat(el.value);
+        if (!isNaN(val)) {
+			//alert(val);
+            sum += val;
+			
+			
+        }
+    });
+    
+
+    let lateFees = parseFloat(document.querySelector('[name="late_fees"]').value) || 0;
+    let ledgerAmt1 = parseFloat(document.querySelector('[name="ledger_amt"]').value) || 0;
+    document.querySelector('[name="receipt_amt"]').value = Number(sum)+Number(ledgerAmt1)+Number(lateFees);
+	
+	
+	// 10-12-2025 when give discount then receive amount message change
+	const errorMessageRcpt = document.getElementById('error_message_rcpt');
+	errorMessageRcpt.textContent = `Amount must be between 0 and ${Number(sum)+Number(ledgerAmt1)+Number(lateFees)}.`;
+	errorMessageRcpt.style.display = 'block';
+	//--
+	
+
+    let feesReceived = parseFloat(document.querySelector('[name="fees_received"]').value) || 0;
+    let ledgerAmt = parseFloat(document.querySelector('[name="ledger_amt"]').value) || 0;
+    
+	let totalFeesVal = lateFees + feesReceived + ledgerAmt; // ES
+	
+   // let totalFees = parseFloat(document.querySelector('[name="total_fees"]').value) || 0;  // ES
+   document.querySelector('[name="total_fees"]').value = totalFeesVal; // ES
+    let totalFees = parseFloat(document.querySelector('[name="total_fees"]').value) || 0;
+    let discountAmt = parseFloat(document.querySelector('[name="discount_amt"]').value) || 0;
+    let receiptAmt = parseFloat(document.querySelector('[name="receipt_amt"]').value) || 0;
+
+
+    let netFees = totalFees - discountAmt;
+    
+    if(discountAmt==''){
+        document.querySelector('[name="total_fees"]').value = netFees;
+    }
+    document.querySelector('[name="net_fees"]').value = netFees;
+
+    let balanceAmt = netFees - receiptAmt;
+    document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);;
+   
+}
+
+
+function calculateDataCheckBox(checkbox,id){
+
+
+
+    const row = checkbox.closest('tr');
+    // const row = this.closest('tr');
+    const cells = row.querySelectorAll('th, td');
+    const len = cells.length;
+
+    // Get last 3 cell values
+    const val1 = cells[len - 4].innerText;
+    // const val2 = cells[len - 2].innerText;
+    const val3 = cells[len - 1].innerText;
+
+    if (!checkbox.checked) {
+        let feesReceived = parseFloat(document.querySelector('[name="fees_received"]').value) || 0;
+            feesReceived=parseInt(feesReceived)-parseInt(val1);
+        document.querySelector('[name="fees_received"]').value = feesReceived;
+
+
+        let total_fees = parseFloat(document.querySelector('[name="total_fees"]').value) || 0;
+        total_fees=parseInt(total_fees)-parseInt(val1);
+        document.querySelector('[name="total_fees"]').value = total_fees;
+
+
+
+    }else{
+        let feesReceived = parseFloat(document.querySelector('[name="fees_received"]').value) || 0;
+            feesReceived=parseInt(feesReceived)+parseInt(val1);
+        document.querySelector('[name="fees_received"]').value = feesReceived;
+
+        let total_fees = parseFloat(document.querySelector('[name="total_fees"]').value) || 0;
+        total_fees=parseInt(total_fees)+parseInt(val1);
+        document.querySelector('[name="total_fees"]').value = total_fees;
+    }
+
+
+    FinalcalculateFees();
+    
+    
+    // let balance_amt = parseFloat(document.querySelector('[name="balance_amt"]').value) || 0;
+    //     balance_amt=parseInt(balance_amt)-parseInt(val1);
+    // document.querySelector('[name="balance_amt"]').value = balance_amt.toFixed(2);
+
+    // let net_fees = parseFloat(document.querySelector('[name="net_fees"]').value) || 0;
+    //     net_fees=parseInt(net_fees)-parseInt(val1);
+    // document.querySelector('[name="net_fees"]').value = net_fees.toFixed(2);
+
+
+}
+
+
+    document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
+
+
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ledgerAmtInput = document.getElementById('ledger_amt');
+       
+        // const oldLedgerAmt = parseInt(document.getElementById('net_fees').value, 10);
+        const oldLedgerAmt = parseFloat(document.getElementById('net_fees').value);
+
+        const errorMessage = document.getElementById('error_message');
+        const submitBtn = document.getElementById('submit_btn');
+
+        function validateLedgerAmount() {
+            const value = parseFloat(ledgerAmtInput.value)??1.1;
+            // const oldLedgerAmt = parseInt(document.getElementById('net_fees').value, 10);
+            const oldLedgerAmt = parseFloat(document.getElementById('net_fees').value);
+
+            if (isNaN(value) || value < 0 || value > oldLedgerAmt) {
+                // alert(value);
+                errorMessage.textContent = `Amount must be between 0 and ${oldLedgerAmt}.`;
+                errorMessage.style.display = 'block';
+                submitBtn.disabled = true;
+
+
+                if (!isNaN(value) && ledgerAmtInput.value.trim() !== '') {
+                    document.querySelector('[name="ledger_amt"]').value = oldLedgerAmt;
+                    // errorMessage.style.display = 'none';
+                    submitBtn.disabled = false;
+                }
+
+
+            } else {
+                errorMessage.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        }
+		
+		
+
+        // Validate on input change
+        ledgerAmtInput.addEventListener('input', validateLedgerAmount);
+		
+        
+
+        // Initial validation on page load
+        validateLedgerAmount();
+		
     });
 
-    updateFooterTotals();
 
-});
-</script>
+
+    const dateInput = document.getElementById('dateInput');
+    const outputInput = document.getElementById('outputInput');
+    dateInput.addEventListener('change', function () {
+      outputInput.value = this.value;
+    });
+
+
+  </script>
