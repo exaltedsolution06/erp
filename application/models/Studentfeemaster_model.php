@@ -115,7 +115,7 @@ class Studentfeemaster_model extends MY_Model
     {
 		$sql = "
 			UPDATE student_fees_master
-			SET amount = ?
+			SET amount = amount - ?
 			WHERE student_session_id = ?
 			AND fee_session_group_id = (
 				SELECT id

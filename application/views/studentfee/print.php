@@ -301,16 +301,16 @@ if($_GET['copy']=='2'){
 										<tr> 
 											<td style="font-weight:bold"><?=$i+1?></td>
 											<td style="font-weight:bold">Previous Balance</td>
-											<td class="text-end" style="font-weight:bold"><?=format_amount($list->previous_balance+$list->remaining_previous_balance)?></td>
+											<td class="text-end" style="font-weight:bold"><?=format_amount((int)$list->previous_balance+(int)$list->remaining_previous_balance+(int)$list->previous_discount)?></td>
 										</tr>
 									<?php } ?>
     <?php if ($result->rcpt_total_amt) { ?>
     <tr style="border-top:1px solid">
         <td colspan="2" class="text-end" style="font-size:17px;"><strong>Total Amount</strong></td>
         <?php if($fees[0]->fee_head_name!='Ledger Amount'){ ?>
-        <td class="text-end"><h6 style="font-size:17px;"><b><?=format_amount($pay+$fees[0]->ledger_amt+$list->previous_balance+$list->remaining_previous_balance)?></b></h6></td>
+        <td class="text-end"><h6 style="font-size:17px;"><b><?=format_amount((int)$pay+(int)$fees[0]->ledger_amt+(int)$list->previous_balance+(int)$list->remaining_previous_balance+(int)$list->previous_discount)?></b></h6></td>
         <?php }else{ ?>
-        <td class="text-end"><h6 style="font-size:17px;"><b><?=format_amount($pay+$list->previous_balance+$list->remaining_previous_balance)?></b></h6></td>
+        <td class="text-end"><h6 style="font-size:17px;"><b><?=format_amount((int)$pay+(int)$list->previous_balance+(int)$list->remaining_previous_balance+(int)$list->previous_discount)?></b></h6></td>
         <?php } ?>
     </tr>
 	<?php } if ($result->rcpt_late_fee) { ?>
@@ -321,7 +321,7 @@ if($_GET['copy']=='2'){
 	<?php } if ($result->rcpt_discount_amt) { ?>
     <tr>
         <td colspan="2" class="text-end">- Discount Amount (If Any)</td>
-        <td class="text-end"><?=format_amount($fees[0]->discount_amt)?></td>
+        <td class="text-end"><?=format_amount((int)$fees[0]->discount_amt+(int)$list->previous_discount)?></td>
     </tr>
 	<?php } if ($result->rcpt_net_amt) { ?>
     <tr style="border-top:1px solid">
@@ -343,12 +343,12 @@ if($_GET['copy']=='2'){
 	<?php } if ($result->rcpt_received_amt) { ?>
     <tr>
         <td colspan="2" class="text-end" style="font-weight:bold;font-size:17px;">Received Amount</td>
-        <td class="text-end" style="font-weight:bold;font-size:17px;"><?=format_amount($fees[0]->receipt_amt +(int)$list->previous_balance)?></td>		
+        <td class="text-end" style="font-weight:bold;font-size:17px;"><?=format_amount($fees[0]->receipt_amt)?></td>		
     </tr>
 	<?php } if ($result->rcpt_balance_amt) { ?>
     <tr>
         <td colspan="2" class="text-end" style="font-weight:bold;font-size:17px;">Balance Amount</td>
-        <td class="text-end" style="font-weight:bold;font-size:17px;"><?=format_amount($fees[0]->balance_amt+$list->remaining_previous_balance)?></td>
+        <td class="text-end" style="font-weight:bold;font-size:17px;"><?=format_amount((int)$fees[0]->balance_amt+(int)$list->remaining_previous_balance)?></td>
     </tr>
 	<?php } ?>
     </tbody>
@@ -359,7 +359,7 @@ if($_GET['copy']=='2'){
 
 <?php if ($result->rcpt_amt_in_words) { ?>
 <div class="row">
-	<div class="col-12"><h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt + (int)$list->previous_balance);?> Only</h6></div>
+	<div class="col-12"><h6><b>Received</b> : <?=number_to_words((int)$fees[0]->receipt_amt + (int)$list->previous_balance);?> Only</h6></div>
 </div>
 <?php } ?>
 <div class="row">
@@ -546,16 +546,16 @@ if($_GET['copy']=='2'){
 										<tr> 
 											<td style="font-weight:bold"><?=$i+1?></td>
 											<td style="font-weight:bold">Previous Balance</td>
-											<td class="text-end" style="font-weight:bold"><?=format_amount($list->previous_balance+$list->remaining_previous_balance)?></td>
+											<td class="text-end" style="font-weight:bold"><?=format_amount((int)$list->previous_balance+(int)$list->remaining_previous_balance+(int)$list->previous_discount)?></td>
 										</tr>
 									<?php } ?>
 <?php if ($result->rcpt_total_amt) { ?>
   <tr style="border-top:1px solid">
       <td colspan="2" class="text-end" style="font-size:17px;"><strong>Total Amount</strong></td>
       <?php if($fees[0]->fee_head_name!='Ledger Amount'){ ?>
-      <td class="text-end"><h6 style="font-size:17px;"><b><?=format_amount($pay+$fees[0]->ledger_amt+$list->previous_balance+$list->remaining_previous_balance)?></b></h6></td>
+      <td class="text-end"><h6 style="font-size:17px;"><b><?=format_amount((int)$pay+(int)$fees[0]->ledger_amt+(int)$list->previous_balance+(int)$list->remaining_previous_balance+(int)$list->previous_discount)?></b></h6></td>
       <?php }else{ ?>
-      <td class="text-end"><h6 style="font-size:17px;"><b><?=format_amount($pay+$list->previous_balance+$list->remaining_previous_balance)?></b></h6></td>
+      <td class="text-end"><h6 style="font-size:17px;"><b><?=format_amount((int)$pay+(int)$list->previous_balance+(int)$list->remaining_previous_balance+(int)$list->previous_discount)?></b></h6></td>
       <?php } ?>
   </tr>
 <?php } if ($result->rcpt_late_fee) { ?>
@@ -566,7 +566,7 @@ if($_GET['copy']=='2'){
 <?php } if ($result->rcpt_discount_amt) { ?>
   <tr>
       <td colspan="2" class="text-end">- Discount Amount (If Any)</td>
-      <td class="text-end"><?=format_amount($fees[0]->discount_amt)?></td>
+      <td class="text-end"><?=format_amount((int)$fees[0]->discount_amt+(int)$list->previous_discount)?></td>
   </tr>
 <?php } if ($result->rcpt_net_amt) { ?>
   <tr style="border-top:1px solid">
@@ -588,12 +588,12 @@ if($_GET['copy']=='2'){
   <?php } if ($result->rcpt_received_amt) { ?>
   <tr>
       <td colspan="2" class="text-end" style="font-weight:bold;font-size:17px;">Received Amount</td>
-      <td class="text-end" style="font-weight:bold;font-size:17px;"><?=format_amount($fees[0]->receipt_amt +(int)$list->previous_balance)?></td>
+      <td class="text-end" style="font-weight:bold;font-size:17px;"><?=format_amount($fees[0]->receipt_amt)?></td>
   </tr>
   <?php } if ($result->rcpt_balance_amt) { ?>
   <tr>
       <td colspan="2" class="text-end" style="font-weight:bold;font-size:17px;">Balance Amount</td>
-      <td class="text-end" style="font-weight:bold;font-size:17px;"><?=format_amount($fees[0]->balance_amt+$list->remaining_previous_balance)?></td>
+      <td class="text-end" style="font-weight:bold;font-size:17px;"><?=format_amount((int)$fees[0]->balance_amt+(int)$list->remaining_previous_balance)?></td>
   </tr>
   <?php } ?>
   </tbody>
@@ -604,7 +604,7 @@ if($_GET['copy']=='2'){
 
 <?php if ($result->rcpt_amt_in_words) { ?>
 <div class="row">
-	<div class="col-12"><h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt + (int)$list->previous_balance);?> Only</h6></div>
+	<div class="col-12"><h6><b>Received</b> : <?=number_to_words((int)$fees[0]->receipt_amt + (int)$list->previous_balance);?> Only</h6></div>
 </div>
 <?php } ?>
 <div class="row">
@@ -1015,16 +1015,16 @@ if($_GET['copy']=='2'){
 							<tr> 
 								<td style="font-weight:bold"><?=$i+1?></td>
 								<td style="font-weight:bold">Previous Balance</td>
-								<td class="text-end" style="font-weight:bold"><?=format_amount($list->previous_balance+$list->remaining_previous_balance)?></td>
+								<td class="text-end" style="font-weight:bold"><?=format_amount((int)$list->previous_balance+(int)$list->remaining_previous_balance+(int)$list->previous_discount)?></td>
 							</tr>
 						<?php } ?>
 						<?php if ($result->rcpt_total_amt) { ?>
                         <tr style="border-top:1px solid">
                             <td colspan="2" class="text-end" style="font-size:17px;"><strong>Total Amount</strong></td>
                             <?php if($fees[0]->fee_head_name!='Ledger Amount'){ ?>
-                            <td class="text-end"><h6 style="font-size:17px;"><b><?=format_amount($pay+$fees[0]->ledger_amt+$list->previous_balance+$list->remaining_previous_balance)?></b></h6></td>
+                            <td class="text-end"><h6 style="font-size:17px;"><b><?=format_amount((int)$pay+(int)$fees[0]->ledger_amt+(int)$list->previous_balance+(int)$list->remaining_previous_balance+(int)$list->previous_discount)?></b></h6></td>
                             <?php }else{ ?>
-                            <td class="text-end"><h6 style="font-size:17px;"><b><?=format_amount($pay+$list->previous_balance+$list->remaining_previous_balance)?></b></h6></td>
+                            <td class="text-end"><h6 style="font-size:17px;"><b><?=format_amount((int)$pay+(int)$list->previous_balance+(int)$list->remaining_previous_balance+(int)$list->previous_discount)?></b></h6></td>
                             <?php } ?>
                         </tr>
 						<?php } if ($result->rcpt_late_fee) { ?>
@@ -1035,7 +1035,7 @@ if($_GET['copy']=='2'){
 						<?php } if ($result->rcpt_discount_amt) { ?>
                         <tr>
                             <td colspan="2" class="text-end">- Discount Amount (If Any)</td>
-                            <td class="text-end"><?=format_amount($fees[0]->discount_amt)?></td>
+                            <td class="text-end"><?=format_amount((int)$fees[0]->discount_amt+(int)$list->previous_discount)?></td>
                         </tr>
 						<?php } if ($result->rcpt_net_amt) { ?>
                         <tr style="border-top:1px solid">
@@ -1057,12 +1057,12 @@ if($_GET['copy']=='2'){
 						<?php } if ($result->rcpt_received_amt) { ?>
                         <tr>
                             <td colspan="2" class="text-end" style="font-weight:bold;font-size:17px;">Received Amount</td>
-                            <td class="text-end" style="font-weight:bold;font-size:17px;"><?=format_amount($fees[0]->receipt_amt +(int)$list->previous_balance)?></td>
+                            <td class="text-end" style="font-weight:bold;font-size:17px;"><?=format_amount($fees[0]->receipt_amt)?></td>
                         </tr>
 						<?php } if ($result->rcpt_balance_amt) { ?>
                         <tr>
                             <td colspan="2" class="text-end" style="font-weight:bold;font-size:17px;">Balance Amount</td>
-                            <td class="text-end" style="font-weight:bold;font-size:17px;"><?=format_amount($fees[0]->balance_amt+$list->remaining_previous_balance)?></td>
+                            <td class="text-end" style="font-weight:bold;font-size:17px;"><?=format_amount((int)$fees[0]->balance_amt+(int)$list->remaining_previous_balance)?></td>
                         </tr>
 						<?php } ?>
                         </tbody>
@@ -1073,7 +1073,7 @@ if($_GET['copy']=='2'){
 
 					<?php if ($result->rcpt_amt_in_words) { ?>
 					<div class="row">
-						<div class="col-12"><h6><b>Received</b> : <?=number_to_words($fees[0]->receipt_amt + (int)$list->previous_balance);?> Only</h6></div>
+						<div class="col-12"><h6><b>Received</b> : <?=number_to_words((int)$fees[0]->receipt_amt + (int)$list->previous_balance);?> Only</h6></div>
 					</div>
 					<?php } ?>
                     <div class="row">

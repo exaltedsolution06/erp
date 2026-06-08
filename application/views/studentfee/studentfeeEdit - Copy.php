@@ -108,12 +108,9 @@ $language_name = $language["short_code"];
                                             }
                                             ?>" alt="No Image">
 
-                                            <h4>LEDGER AMT</h4>
-                                            <h5>Rs. <?=$ledger_total? format_amount($ledger_total) : format_amount($student['fees_discount']); ?>
-											<?//=$ledger_total ? number_format($fees_received,2) : number_format($ledger_amt,2); ?>
-											<?//=$ledger_total ? number_format($fees_received,2) : number_format($ledger_amt,2); ?>
-											
-											<?//=$ledger_amt ? number_format($ledger_amt,2) : number_format($student['fees_discount'],2); ?><?//=number_format($student['fees_discount'],2)?></h5>
+											<!--<h5 style="font-size: 12px;font-weight: bold;">LEDG AMT : Rs. <?=$ledger_total? format_amount($ledger_total) : format_amount($student['fees_discount']); ?></h5>-->
+											<h5 style="font-size: 12px;font-weight: bold;">LEDG AMT : Rs. <?= format_amount($student['fees_discount']); ?></h5>
+                                            <h5 style="font-size: 12px;font-weight: bold;">PREV AMT : Rs. <?=format_amount($student['previous_session_balance'])?></h5>
                                         </div>
 
                                         <div class="col-md-10">
@@ -267,6 +264,7 @@ $language_name = $language["short_code"];
                             <input type="hidden"  value="<?=$receipt_no?>" name="receipt_no">
                             <input type="hidden"  value="<?=$student['id']?>" name="student_id">
                             <input type="hidden"  value="<?=$sr_no?>" name="sr_no">
+                            <input type="hidden"  value="<?=$student['previous_student_session_id']?>" name="previous_student_session_id">
                             <div class="table-responsive">
                                 <div class="download_label "><?php echo $this->lang->line('student_fees') . ": " . $student['firstname'] . " " . $student['lastname'] ?> </div>
                                 <table class="table table-bordered">
@@ -549,10 +547,23 @@ $language_name = $language["short_code"];
                                     ?>
                                     <div class="col-sm-2">
                                         <label for="balance_amt">Balance Amt</label>
-										<input style="width: 100%;" type="hidden" class="form-control" name="prev_balance_amt" value="<?php echo $balance_amt; ?>" />
+										<input style="width: 100%;" type="hidden" class="form-control" name="prev_balance_amt_remain" value="<?php echo format_amount($student['fees_discount']); ?>" />
                                         <input style="width: 100%;" type="text" id="balance_amt" class="form-control" name="balance_amt" readonly value="<?php echo $balance_amt; ?>" />
                                     </div>
-                                
+									<div class="col-sm-2">
+                                        <label for="previous_session_balance">Previous Balance</label>
+                                        <input type="hidden" id="hid_previous_session_balance" value="<?=format_amount($student['previous_session_balance']+$previous_balance)?>" />
+                                        <input style="width: 100%;" type="text" id="previous_session_balance" class="form-control" value="<?=format_amount($previous_balance)?>" name="previous_session_balance" />
+										<label id="error_message_prev" style="color: red; display:block;font-size:10px !important">Amount must be between 0 and <?=format_amount($student['previous_session_balance']+$previous_balance) ?>.</label>
+                                    </div>
+									<div class="col-sm-2">
+                                        <label for="remaining_previous_balance">Remain Pre. Bal.</label>
+                                        <input style="width: 100%;" type="text" id="remaining_previous_balance" class="form-control" value="<?=$student['previous_session_balance']?>" name="remaining_previous_balance" readonly />
+                                    </div>
+									<div class="col-sm-2">
+                                        <label for="total_payable_amt">Total Payable Amt</label>
+                                        <input style="width: 100%;" type="text" id="total_payable_amt" class="form-control" value="<?=$receipt_amt+$previous_balance?>" name="total_payable_amt" readonly />
+                                    </div>
                                     <div class="col-sm-2">
                                         <label for="mode">Mode</label>
                                         <select autofocus=""  name="mode" id="mode" name="class_id" class="form-control" >
@@ -1732,10 +1743,39 @@ function DeleteRowData(checkbox,id) {
 
 
 $(document).ready(function () {
+	$("#previous_session_balance").on("keyup", function () {
+		// alert(12);
+		const ttyp=$("#ttyp").val();
+		let previous_session_balance = $("#previous_session_balance").val();	
+		let hid_previous_session_balance = $("#hid_previous_session_balance").val();
+		let remaining_previous_balance = $("#remaining_previous_balance").val();
+		let total_payable_amt = $("#total_payable_amt").val();
+		
+		let clean = $(this).val().replace(/[^0-9.]/g, '');
+        $(this).val(clean);	
+		if(Number(previous_session_balance) >= Number(hid_previous_session_balance)) {
+			$('#error_message_prev').text(`Amount must be between 0 and ${hid_previous_session_balance}.`).show();
+			$(this).val(hid_previous_session_balance);
+			$("#remaining_previous_balance").val(0);
+		}else{
+			$("#remaining_previous_balance").val(Number(hid_previous_session_balance) - Number(previous_session_balance));
+		}
+		previous_session_balance = $("#previous_session_balance").val();	
+		if(ttyp=='lager'){
+			let ledgerAmt = $("#ledger_amt").val();
+			
+			$("#total_payable_amt").val(Number(ledgerAmt) + Number(previous_session_balance));
+		}else{
+			let receipt_amt = $("#receipt_amt").val();
+	
+			$("#total_payable_amt").val(Number(receipt_amt) + Number(previous_session_balance));
+		}
+	});
     $("#receipt_amt").on("keyup", function () {
         let clean = $(this).val().replace(/[^0-9.]/g, '');
         $(this).val(clean);		
 		
+		let previous_session_balance = $("#previous_session_balance").val();	
 		let net_fees = $("#net_fees").val();
 		let receipt_amt = $("#receipt_amt").val();
         let balanceAmt = Number(net_fees) - Number(receipt_amt);
@@ -1746,7 +1786,8 @@ $(document).ready(function () {
 			$(this).val(net_fees);
 			$("#balance_amt").val(0);
 		} else{
-			$('#error_message_rcpt').hide()
+			$('#error_message_rcpt').hide();
+			$("#total_payable_amt").val(Number(receipt_amt) + Number(previous_session_balance));
 		}
 		// If empty OR zero OR not a number → disable button
         if (receipt_amt === "" || parseFloat(receipt_amt) <= 0 || isNaN(receipt_amt)) {
@@ -1772,7 +1813,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 	//-------------------------
 
-    const inputs = document.querySelectorAll('[name="fees_received"], [name="discount_amt"],[name="ledger_amt"],[name="late_fees"], [name="total_fees"]');
+    const inputs = document.querySelectorAll('[name="fees_received"], [name="discount_amt"],[name="ledger_amt"],[name="late_fees"], [name="total_fees"], .rec_amount');
     inputs.forEach(input => {
         input.addEventListener('keyup', calculateFees);
     });
@@ -1793,6 +1834,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let lateFees = parseFloat(document.querySelector('[name="late_fees"]').value) || 0;
         let totalFees = parseFloat(document.querySelector('[name="total_fees"]').value) || 0;
         let discountAmt = parseFloat(document.querySelector('[name="discount_amt"]').value) || 0;
+        let previousAmt = parseFloat(document.querySelector('[name="previous_session_balance"]').value) || 0;
 
         if(ttyp=='lager'){ 
             
@@ -1819,6 +1861,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // alert(balanceAmt);
             
             document.querySelector('[name="balance_amt"]').value = parseFloat(balanceAmt).toFixed(2);
+            document.querySelector('[name="total_payable_amt"]').value = (Number(ledgerAmt)+Number(previousAmt));
 			
             
         }else{

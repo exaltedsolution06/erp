@@ -35,3 +35,7 @@ http://localhost/erp/prevbalscript
 CRON 
 Every 5 minutes - 
 /usr/bin/php /home/u731855585/domains/easyskool.in/public_html/DemoERP/index.php cron changeSessions 2o7PfLpUBrSkIvlQfeK75IDED
+
+
+current balance - hidden balance
+Ledger balance+(current balance - hidden balance)
