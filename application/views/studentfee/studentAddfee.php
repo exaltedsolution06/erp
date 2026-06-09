@@ -298,29 +298,6 @@ $language_name = $language["short_code"];
                                             $fees_total = 0;
                                             $aa=1;
 										
-										$total = format_amount($student['fees_discount']);
-										$final_total += $total;
-										?>
-										<tr>
-											<th><input type="checkbox" class="row_selector" onchange="DeleteRowData(this,<?=$aa?>)" checked />
-											</th>
-											<th>LEDG AMT</th>
-											<?php foreach($months_data as $key=>$value){
-											?>
-											<th></th>
-											<?php
-											} 
-											?>
-											<th><?=$total?> <input type="hidden" name="total[]" value="<?=$total?>"></th>
-											<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_add')) { ?>
-											<th><input type="text" style="width: 100px;" class="rec_discount" name="ledg_rec_discount" id="total_get_discount_<?=$aa?>" value=""></th>
-											<?php } ?>
-											<th><input type="text" style="width: 100px;" class="rec_amount" name="ledg_rec_amount" id="total_rec_discount_<?=$aa?>" value="<?=$total?>"></th>
-											<th><input type="text" class="row_balance" name="ledg_row_balance" value="0" readonly style="width:100px;"></th>
-										</tr>
-										<?php
-										$aa++;
-										$statusNew++;
 										$total = format_amount($student['previous_session_balance']);
 										$final_total += $total;
 										?>
@@ -340,6 +317,29 @@ $language_name = $language["short_code"];
 											<?php } ?>
 											<th><input type="text" style="width: 100px;" class="rec_amount" name="prev_rec_amount" id="total_rec_discount_<?=$aa?>" value="<?=$total?>"></th>
 											<th><input type="text" class="row_balance" name="prev_row_balance" value="0" readonly style="width:100px;"></th>
+										</tr>
+										<?php
+										$aa++;
+										$statusNew++;
+										$total = format_amount($student['fees_discount']);
+										$final_total += $total;
+										?>
+										<tr>
+											<th><input type="checkbox" class="row_selector" onchange="DeleteRowData(this,<?=$aa?>)" checked />
+											</th>
+											<th>LEDG AMT</th>
+											<?php foreach($months_data as $key=>$value){
+											?>
+											<th></th>
+											<?php
+											} 
+											?>
+											<th><?=$total?> <input type="hidden" name="total[]" value="<?=$total?>"></th>
+											<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_add')) { ?>
+											<th><input type="text" style="width: 100px;" class="rec_discount" name="ledg_rec_discount" id="total_get_discount_<?=$aa?>" value=""></th>
+											<?php } ?>
+											<th><input type="text" style="width: 100px;" class="rec_amount" name="ledg_rec_amount" id="total_rec_discount_<?=$aa?>" value="<?=$total?>"></th>
+											<th><input type="text" class="row_balance" name="ledg_row_balance" value="0" readonly style="width:100px;"></th>
 										</tr>
 										<?php										
                                             foreach($data_list as $row){

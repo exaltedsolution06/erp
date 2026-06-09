@@ -141,7 +141,7 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                                 <th style="text-align: right;">Net Fees</th>
                                                 <th style="text-align: right;">Receipt. Amt.</th>
                                                 <th style="text-align: right;">Balance Amt</th>
-                                                <th style="text-align: right;">Received Prev Amt.</th>
+                                                <th style="text-align: right;">Prev Bal</th>
                                                 <th >Mode</th>
                                                 <th >User</th>
                                                 <th>Action</th>

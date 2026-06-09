@@ -1673,7 +1673,7 @@ class Report extends Admin_Controller
        
 
         $data['routes'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
-        $data['fee_heads'] = $this->db->order_by('id', 'DESC')->get('fee_head')->result_array();
+        $data['fee_heads'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('fee_head')->result_array();
        
 
         $selectedFeeCat = $_POST['fee_cat'] ?? [];

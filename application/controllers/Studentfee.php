@@ -48,6 +48,9 @@ class Studentfee extends Admin_Controller
             
             $data['months']=array_unique($data['months']);
             $total_month=count($data['months']);
+            $total_pay=count($data['pay']);
+            $total_total=count($data['total']);
+			$deduct_count = $total_total - $total_pay;
             $paid=$data['pay'];
             foreach($paid as $key=>$value){
                 if($value=='paid'){
@@ -76,11 +79,11 @@ class Studentfee extends Admin_Controller
                             'fee_head'     => $data['fee_head'][$key],
                             'fee_head_type'  => $data['fee_head_type'][$key],
                             'fee_head_name'  => $data['fee_head_name'][$key],
-                            'total'        => ($data['total'][$key]),
+                            'total'        => ($data['total'][$key+$deduct_count]),
                             'month_total'   => $data['month_total'][$month][$key],
                             'rec_discount' => (int) ($data['rec_discount'][$key]),
                             'rec_amount'   => ($data['rec_amount'][$key]),
-                            'balance_amount' => (float) ($data['total'][$key] ?? 0)-((float) ($data['rec_discount'][$key] ?? 0)+(float) ($data['rec_amount'][$key] ?? 0)),
+                            'balance_amount' => (float) ($data['total'][$key+$deduct_count] ?? 0)-((float) ($data['rec_discount'][$key] ?? 0)+(float) ($data['rec_amount'][$key] ?? 0)),
                             'fees_received' => $data['hid_fees_received'],
                             'late_fees'    => $data['late_fees'],
                             'ledger_amt'   => $data['old_ledger_amt'],
@@ -204,7 +207,7 @@ class Studentfee extends Admin_Controller
                 'ledger_discount'     => $data['ledg_rec_discount'],
                 'previous_discount'     => $data['prev_rec_discount'],
 				'ledger_received'     => $data['ledg_rec_amount'],
-				'remain_ledger'     => $data['prev_row_balance'],
+				'remain_ledger'     => $data['ledg_row_balance'],
             );
             
 			$insert_data['session_id'] = $this->current_session;
@@ -283,6 +286,9 @@ class Studentfee extends Admin_Controller
         if(!empty($data['pay'][0])){            
             $data['months']=array_unique($data['months']);
             $total_month=count($data['months']);
+			$total_pay=count($data['pay']);
+            $total_total=count($data['total']);
+			$deduct_count = $total_total - $total_pay;
             $paid=$data['pay'];
             foreach($paid as $key=>$value){
                 if($value=='paid'){
@@ -326,14 +332,14 @@ class Studentfee extends Admin_Controller
                             'fee_head'     => $data['fee_head'][$key],
                             'fee_head_type'  => $data['fee_head_type'][$key],
                             'fee_head_name'  => $data['fee_head_name'][$key],
-                            'total'        => ($data['total'][$key]),
+                            'total'        => ($data['total'][$key+$deduct_count]),
                             'month_total'   => $data['month_total'][$month][$key],
                             'rec_discount' => (int) ($data['rec_discount'][$key]),
                             'rec_amount'   => ($data['rec_amount'][$key]),
-                            'balance_amount' => (int) $data['total'][$key]-((int) $data['rec_discount'][$key] + (int) $data['rec_amount'][$key]),
-                            'fees_received' => $data['fees_received'],
+                            'balance_amount' => (int) $data['total'][$key+$deduct_count]-((int) $data['rec_discount'][$key] + (int) $data['rec_amount'][$key]),
+                            'fees_received' => $data['hid_fees_received'],
                             'late_fees'    => $data['late_fees'],
-                            'ledger_amt'   => $data['ledger_amt'],
+                            'ledger_amt'   => $data['old_ledger_amt'],
                             'total_fees'   => (float) ($data['hid_fees_received'] ?? 0) + (float) ($data['late_fees'] ?? 0) + (float) ($data['old_ledger_amt'] ?? 0),
                             'discount_amt' => (float) ($data['discount_amt'] ?? 0)-(float) ($data['prev_rec_discount'] ?? 0),
                             'net_fees'     => (float) ($data['net_fees'] ?? 0)-(float) ($data['prev_rec_amount'] ?? 0),
@@ -351,7 +357,7 @@ class Studentfee extends Admin_Controller
 							'ledger_discount'     => $data['ledg_rec_discount'],
 							'previous_discount'     => $data['prev_rec_discount'],
 							'ledger_received'     => $data['ledg_rec_amount'],
-							'remain_ledger'     => $data['prev_row_balance'],
+							'remain_ledger'     => $data['ledg_row_balance'],
                         );
 						//echo '<pre>'; print_r($insert_data); echo '</pre>';die;
 
@@ -370,10 +376,11 @@ class Studentfee extends Admin_Controller
 			$pre_session = $this->session_model->getPreSession($this->current_session);
 						
 			$up_prev_bal = (int)$data['current_prev_balance'] + ((int)$data['prev_row_balance'] - (int)$data['old_prev_row_balance']);
-			$up_ledg_bal = (int)$data['prev_balance_amt_remain'] + (((int)$data['balance_amt'] - (int)$data['old_prev_row_balance']) - (int)$data['ledg_old']);$this->Receipt_model->update_student($data['student_id'],$up_ledg_bal,$up_prev_bal);
+			$up_ledg_bal = (int)$data['prev_balance_amt_remain'] + (((int)$data['balance_amt'] - (int)$data['prev_row_balance']) - (int)$data['ledg_old']);
+			$this->Receipt_model->update_student($data['student_id'],$up_ledg_bal,$up_prev_bal);
 			
 			$prev_discount = (int)$data['prev_rec_discount'] - (int)$data['prev_discount'];
-			$this->studentfeemaster_model->update_student_fees_master_c($data['previous_student_session_id'],$data['remaining_previous_balance'],$pre_session->id,$this->balance_group);
+			$this->studentfeemaster_model->update_student_fees_master_c($data['previous_student_session_id'],$prev_discount,$pre_session->id,$this->balance_group);
 			
 			$insert_prev = array(
 				'previous_student_session_id'   => $data['previous_student_session_id'],
@@ -414,26 +421,31 @@ class Studentfee extends Admin_Controller
                 'fee_head'     => '',
                 'fee_head_type'  =>'', 
                 'fee_head_name'  => 'Ledger Amount',
-                'total'        => ($data['ledger_amt']),
+                'total'        => ($data['old_ledger_amt']),
                 'rec_discount' => 0,
-                'rec_amount'   => ($data['receipt_amt']),
-                'balance_amount'   => $data['ledger_amt'],
-                'fees_received' => $data['ledger_amt'],
+                'rec_amount'   => ($data['old_ledger_amt']),
+                'balance_amount'   => $data['prev_row_balance'] > 0 ? ((float) ($data['balance_amt'] ?? 0)-(float) ($data['prev_row_balance'] ?? 0)) : $data['balance_amt'],
+                'fees_received' => $data['old_ledger_amt'],
                 'late_fees'    => $data['late_fees'],
                 'ledger_amt'   => $data['old_ledger_amt'],
-                'total_fees'   => $data['total_fees'],
-                'discount_amt' => $data['discount_amt'],
-                'net_fees'     => $data['net_fees'],
-                'receipt_amt'  => $data['ledger_amt'],
-                'balance_amt'  => $data['balance_amt'],
+                'total_fees'   => (float) ($data['late_fees'] ?? 0)+(float) ($data['old_ledger_amt'] ?? 0),
+                'discount_amt' => $data['ledg_rec_discount'],
+                'net_fees'     => (float) ($data['late_fees'] ?? 0)+(float) ($data['old_ledger_amt'] ?? 0)-(float) ($data['ledg_rec_discount'] ?? 0),
+                'receipt_amt'  => $data['receipt_amt'],
+                // 'balance_amt'  => $data['balance_amt'],
+                'balance_amt'  => $data['prev_row_balance'] > 0 ? ((float) ($data['balance_amt'] ?? 0)-(float) ($data['prev_row_balance'] ?? 0)) : $data['balance_amt'],
                 'mode'         => $data['mode'],
                 'remarks'      => $data['remarks'],
                 'date_time'      => $data['date_time'],
                 'back_id'      => $data['back_id'],
                 'sr_no'        => $data['sr_no'] ? $data['sr_no'] : 1,
                 'create_by'     => $this->customlib->getUserData()['email'],
-				'previous_balance'     => $data['previous_session_balance'],
-				'remaining_previous_balance'     => $data['remaining_previous_balance'],
+				'previous_balance'     => $data['prev_rec_amount'],
+                'remaining_previous_balance'     => $data['prev_row_balance'],
+                'ledger_discount'     => $data['ledg_rec_discount'],
+                'previous_discount'     => $data['prev_rec_discount'],
+				'ledger_received'     => $data['ledg_rec_amount'],
+				'remain_ledger'     => $data['ledg_row_balance'],
             );
 			
 			$insert_data['session_id'] = $this->current_session;
@@ -441,13 +453,20 @@ class Studentfee extends Admin_Controller
             array_push($last_id,$id);
 			
 			$pre_session = $this->session_model->getPreSession($this->current_session);
-            $this->Receipt_model->update_student($data['student_id'],(int)($data['prev_balance_amt_remain']),(int)($data['remaining_previous_balance']));
-			// $this->studentfeemaster_model->update_student_fees_master_c($data['previous_student_session_id'],(int)($data['remaining_previous_balance']),$pre_session->id,$this->balance_group);
+			
+            // $this->Receipt_model->update_student($data['student_id'],(int)($data['prev_balance_amt_remain']),(int)($data['remaining_previous_balance']));
+			$up_prev_bal = (int)$data['current_prev_balance'] + ((int)$data['prev_row_balance'] - (int)$data['old_prev_row_balance']);
+			$up_ledg_bal = (int)$data['prev_balance_amt_remain'] + (((int)$data['balance_amt'] - (int)$data['prev_row_balance']) - (int)$data['ledg_old']);
+			$this->Receipt_model->update_student($data['student_id'],$up_ledg_bal,$up_prev_bal);
+			
+			$prev_discount = (int)$data['prev_rec_discount'] - (int)$data['prev_discount'];
+			$this->studentfeemaster_model->update_student_fees_master_c($data['previous_student_session_id'],$prev_discount,$pre_session->id,$this->balance_group);
 			
 			$insert_prev = array(
 				'previous_student_session_id'   => $data['previous_student_session_id'],
 				'receipt_no'   => $data['receipt_no'],
-				'amount'   => $data['previous_session_balance'],
+				'amount'   => $data['prev_rec_amount'],
+				'discount'   => $data['prev_rec_discount'],
 				'status'   => 1,
 			);
 			$this->Receipt_model->insert_previous_balance($insert_prev);
@@ -458,7 +477,7 @@ class Studentfee extends Admin_Controller
 				'balance_type'   => 0,
 				'student_id'   => $data['student_id'],
 				'receipt_no'   => $data['receipt_no'],
-				'amount'   => $data['ledger_amt']+$data['previous_session_balance'],
+				'amount'   => $data['receipt_amt'],
 				'date'   => date('Y-m-d H:i:s'),
 			);
 			
@@ -2282,8 +2301,8 @@ class Studentfee extends Admin_Controller
                  $receipt_amt=$res_del->receipt_amt; // 18-11-2025
 				 $ledger_amt=$res_del->ledger_amt;
 				 $balance_amt=$res_del->balance_amt;
-				 $previous_balance_with_discount=$res_del->previous_balance+$res_del->previous_discount;
-				 $update_receipt_amt = $ledger_amt - $balance_amt; // ES
+				 $previous_balance_with_discount=(int)$res_del->previous_balance+(int)$res_del->previous_discount;
+				 $update_receipt_amt = (int)$ledger_amt - (int)$balance_amt; // ES
 				
 				
                 $this->db->where('student_id', $res_del->student_id);
@@ -2297,8 +2316,8 @@ class Studentfee extends Admin_Controller
 
                     // Step 2: Add ₹100 to current discount
                     //$new_discount = $current_discount + $receipt_amt; // 18-11-2025
-                    $new_discount = $current_discount + $update_receipt_amt; // ES
-                    $new_previous_session_balance = $current_previous_balance + $previous_balance_with_discount; // ES
+                    $new_discount = (int)$current_discount + (int)$update_receipt_amt; // ES
+                    $new_previous_session_balance = (int)$current_previous_balance + (int)$previous_balance_with_discount; // ES
 
                     // Step 3: Update the `fees_discount`
                     $this->db->where('student_id', $res_del->student_id);
@@ -2307,7 +2326,7 @@ class Studentfee extends Admin_Controller
 					
 					// Step 4: Update the `student_fees_master`
 					$pre_session = $this->session_model->getPreSession($this->current_session);
-					// $this->studentfeemaster_model->update_student_fees_master_c($row->previous_student_session_id,$new_previous_session_balance,$pre_session->id,$this->balance_group);
+					// $this->studentfeemaster_model->update_student_fees_master_up($row->previous_student_session_id,$new_previous_session_balance,$pre_session->id,$this->balance_group);
 					
 					$insert_prev = array(
 						'receipt_no'   => $receipt_no,
@@ -2537,7 +2556,7 @@ class Studentfee extends Admin_Controller
 				$receipt_amt=$res_del->receipt_amt;
 				$ledger_amt= (int)$res_del->ledger_amt;
 				$balance_amount= (int)$res_del->balance_amt;
-				 $previous_balance=$res_del->previous_balance+$res_del->previous_discount;
+				 $previous_balance=(int)$res_del->previous_balance+(int)$res_del->previous_discount;
 				
 				$this->db->where('student_id', $res_del->student_id);
 				$this->db->where('session_id', $res_del->session_id);
@@ -2548,8 +2567,8 @@ class Studentfee extends Admin_Controller
 					$current_discount = (int)$row->fees_discount;
 					$current_previous_session_balance = (int)$row->previous_session_balance;
 					
-					$new_discount = $current_discount - $ledger_amt + $balance_amount; // ES
-					$new_previous_session_balance = $current_previous_session_balance - $previous_balance; // ES
+					$new_discount = (int)$current_discount - (int)$ledger_amt + (int)$balance_amount; // ES
+					$new_previous_session_balance = (int)$current_previous_session_balance - (int)$previous_balance; // ES
 					
 					if($previous_balance > $current_previous_session_balance){
 						$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">This receipt previous balance is greater than the current previous balance. Please permanently delete this receipt and create a new receipt again.</div>');
@@ -2569,7 +2588,7 @@ class Studentfee extends Admin_Controller
 					
 					// Step 4: Update the `student_fees_master`
 					$pre_session = $this->session_model->getPreSession($this->current_session);
-					// $this->studentfeemaster_model->update_student_fees_master_c($row->previous_student_session_id,$new_previous_session_balance,$pre_session->id,$this->balance_group);
+					// $this->studentfeemaster_model->update_student_fees_master_up($row->previous_student_session_id,$new_previous_session_balance,$pre_session->id,$this->balance_group);
 					
 					$insert_prev = array(
 						'receipt_no'   => $receipt_no,
@@ -2588,6 +2607,7 @@ class Studentfee extends Admin_Controller
 			
 			 // Step 2: Backup each receipt row
             foreach ($receiptList as $receipt) {
+				unset($receipt['id']);
                 $this->Receipt_model->backup_deleted_receipt_data($receipt);
             }
 			
