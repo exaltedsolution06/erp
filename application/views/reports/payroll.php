@@ -233,6 +233,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th style="text-align:right">Discount</th>
                                                 <th style="text-align:right">Net Fee</th>
                                                 <th style="text-align:right">Rec. Amt.</th>
+                                                <th style="text-align:right">Prev Bal</th>
                                                 <th style="text-align:right">Bal. Amt.</th>
 											<span class="download_label" style="display:none;">Route Wise Collection Report</span>
                                             </tr>
@@ -247,6 +248,7 @@ $discount_amt_sum = 0;
 $net_fees_sum = 0;
 $receipt_amt_sum = 0;
 $balance_amt_sum = 0;
+$previous_balance_sum = 0;
 ?>
                                             <?php if (!empty($receipt_data)): ?>
                                                 <?php $sno = 1; foreach ($receipt_data as $record): ?>
@@ -256,6 +258,7 @@ $balance_amt_sum = 0;
             $discount_amt_sum += $record["discount_amt"];
             $net_fees_sum += $record["rec_amount"]-$record["discount_amt"];
             $receipt_amt_sum += $record["rec_amount"]-$record["discount_amt"];
+            $previous_balance_sum += $record["previous_balance"];
             $balance_amt_sum += 0;
 
         ?>
@@ -272,6 +275,7 @@ $balance_amt_sum = 0;
 												<td style="text-align:right"><?= format_amount($record["discount_amt"]) ?></td>
 												<td style="text-align:right"><?= format_amount(($record["rec_amount"]-$record["discount_amt"])) ?></td>
 												<td style="text-align:right"><?= format_amount($record["rec_amount"]-$record["discount_amt"]) ?></td>
+												<td style="text-align:right"><?= format_amount($record["previous_balance"]) ?></td>
 												<td style="text-align:right"><?= format_amount(0) ?></td>
 
                                             </tr>
@@ -287,6 +291,7 @@ $balance_amt_sum = 0;
         <td style="text-align:right"><strong><?= format_amount($discount_amt_sum) ?></strong></td>
         <td style="text-align:right"><strong><?= format_amount($net_fees_sum) ?></strong></td>
         <td style="text-align:right"><strong><?= format_amount($receipt_amt_sum) ?></strong></td>
+        <td style="text-align:right"><strong><?= format_amount($previous_balance_sum) ?></strong></td>
         <td style="text-align:right"><strong><?= format_amount($balance_amt_sum) ?></strong></td>
     </tr>
                                         <?php else: ?>

@@ -125,6 +125,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th  style="text-align: right;">Net Fees</th>
                                                 <th  style="text-align: right;">Receipt. Amt.</th>
 												<th style="text-align: right;">Discount Amt</th>
+												<th style="text-align: right;">Prev Bal</th>
                                                 <th style="text-align: right;">Balance Amt</th>
 
 
@@ -150,6 +151,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 $net_fees_sum  += (float)$record["net_fees"];
                                                 $receipt_amt_sum  += (float)$record["receipt_amt"];
                                                 $balance_amt_sum  += (float)$record["balance_amt"];
+                                                $previous_balance_sum  += (float)$record["previous_balance"];
 												
 												//echo '<pre>'; print_r($record); echo '</pre>';
 												
@@ -464,6 +466,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <td style="text-align: right;"><?= format_amount($record["net_fees"]) ?></td>
                                                 <td style="text-align: right;"><?= format_amount($record["receipt_amt"]) ?></td>
                                                 <td style="text-align: right;"><?= format_amount($record["discount_amt"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount($record["previous_balance"]) ?></td>
                                                 <td style="text-align: right;"><?= format_amount($record["balance_amt"]) ?></td>
 
                                                 <td ><?= $record["mode"] ?></td>
@@ -492,6 +495,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                            <th style="text-align: right;"><?= format_amount($net_fees_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($receipt_amt_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($discount_amt_sum) ?></th>
+                                            <th style="text-align: right;"><?= format_amount($previous_balance_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($balance_amt_sum) ?></th>
 
                                             <th></th>

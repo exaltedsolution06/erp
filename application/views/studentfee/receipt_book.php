@@ -95,6 +95,7 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                         <th>Class</th>
                                         <th>Sec.</th>
                                         <th style="text-align: right;">Rec. Amt.</th>
+                                        <th style="text-align: right;">Prev Bal</th>
                                         <th>Mode</th>
                                         <th>User</th>
                                         <th>Remark</th>
@@ -121,6 +122,7 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                             <td><?= $record["class"] ?></td>
                                             <td><?= $record["section"] ?></td>
                                             <td style="text-align: right;"><?= format_amount($record["receipt_amt"]) ?></td>
+                                            <td style="text-align: right;"><?= format_amount($record["previous_balance"]) ?></td>
                                             <td><?= $record["mode"] ?></td>
                                             <td><?= $record["create_by"] ?></td>
                                             <td><?= $record["remarks"] ?></td>

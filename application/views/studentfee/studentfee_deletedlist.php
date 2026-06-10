@@ -143,8 +143,8 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                                 <th style="text-align: right;">Discount Amt</th>
                                                 <th style="text-align: right;">Net Fees</th>
                                                 <th style="text-align: right;">Receipt. Amt.</th>
+                                                <th style="text-align: right;">Prev Bal</th>
                                                 <th style="text-align: right;">Balance Amt</th>
-                                                <th style="text-align: right;">Received Prev Amt.</th>
 
 
 
@@ -238,8 +238,8 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                                 <td style="text-align: right;"><?= format_amount($record["discount_amt"]) ?></td>
                                                 <td style="text-align: right;"><?= format_amount($record["net_fees"]) ?></td>
                                                 <td style="text-align: right;"><?= format_amount($record["receipt_amt"]) ?></td>
-                                                <td style="text-align: right;"><?= format_amount($record["balance_amt"]) ?></td>
                                                 <td style="text-align: right;"><?= format_amount($record["previous_balance"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount($record["balance_amt"]) ?></td>
 
 
 

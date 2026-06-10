@@ -78,6 +78,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <th>Class</th>
                                         <th>Sec.</th>
                                         <th style="text-align: right;">Rec. Amt.</th>
+                                        <th style="text-align: right;">Prev Bal</th>
                                         <th>Mode</th>
                                         <th>User</th>
                                         <th>Remark</th>
@@ -93,6 +94,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         foreach ($receipt_data as $record):
                                             $record = (array) $record;
                                             $total_amount += floatval($record["receipt_amt"]);
+                                            $previous_balance_amount += floatval($record["previous_balance"]);
                                     ?>
                                         <tr>
                                             <td><?= $sno++ ?></td>
@@ -104,6 +106,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <td><?= $record["class"] ?></td>
                                             <td><?= $record["section"] ?></td>
                                             <td style="text-align: right;"><?= format_amount($record["receipt_amt"]) ?></td>
+                                            <td style="text-align: right;"><?= format_amount($record["previous_balance"]) ?></td>
                                             <td><?= $record["mode"] ?></td>
                                             <td><?= $record["create_by"] ?></td>
                                             <td><?= $record["remarks"] ?></td>
@@ -127,6 +130,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td></td>
                                                 <td></td>
                                                 <th style="text-align: right;"><?= format_amount($total_amount) ?></th>
+                                                <th style="text-align: right;"><?= format_amount($previous_balance_amount) ?></th>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>

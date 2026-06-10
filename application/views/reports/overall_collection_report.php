@@ -134,7 +134,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <?php
                                             //  "Show Total & Recd."
                                             $filters = $_POST['filters'] ?? [];
-                                            $filterOptions = ["Fees Head Wise", "Include Route", "Consider Old Bal" ];
+                                            $filterOptions = ["Fees Head Wise", "Include Route", "Consider Old Bal", "Previous Balance" ];
                                             foreach ($filterOptions as $index => $value) {
                                             $checked = in_array($value, $filters) ? 'checked' : '';
                                             echo "<div class='form-check'>
@@ -296,6 +296,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <?php 
 
                                             $filters = $_POST['filters'];
+											if(in_array('Previous Balance', $filters)){
+                                                        ?>
+                                                             <th style="text-align:right">Prev Bal.</th>
+                                                            <!-- <th>Net Amt.</th> -->
+                                                        <?php
+                                                    }
                                                 if(in_array('Consider Old Bal', $filters)){
                                                 ?>
                                                         <th style="text-align:right">Old Bal.</th>
@@ -327,6 +333,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     
                                     <?php 
                                     $total_fees_discount = 0;
+									$total_prev_balance = 0;
                                     $head_wise_totals = []; // index by fee head
                                     $total_route = 0;
                                     $grand_total = 0;
@@ -341,6 +348,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
                                             $final_rec1=0;
+											if(in_array('Previous Balance', $filters)){
+                                                        $final+=$record["previous_session_balance"];
+                                                    }
                                             if(in_array('Consider Old Bal', $filters)){
                                                 // if($_POST['months'][0]=='Apr'){
 
@@ -652,7 +662,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <?php
 
                                                $oldBal = 0;
-
+												if(in_array('Previous Balance', $filters)){
+                                                            ?><td style="text-align:right"><?= format_amount($record["previous_session_balance"]) ?></td> <?php
+                                                        }
                                                 if (in_array('Consider Old Bal', $filters)) {
                                                     $oldBal = $record["total_receipt_amt"] ?? 0;
                                                      ?><td style="text-align:right"><?= format_amount($oldBal) ?></td><?php
@@ -693,6 +705,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										if (in_array('Consider Old Bal', $filters)){
 											$total_fees_discount += $record["total_receipt_amt"];
 										}
+										if (in_array('Previous Balance', $filters)){
+										$total_prev_balance += $record["previous_session_balance"];
+										}
                                         $total_route += $routeFees;
                                         $total_head_fees += $fee_heads_total_amount;
                                         $grand_total += $final;
@@ -713,7 +728,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <td></td>
                                         <td></td>
                                         <td colspan="" style="text-align:right;">Total</td>
-
+										<?php if (in_array('Previous Balance', $filters)): ?>
+                                                    <td style="text-align:right"><?= format_amount($total_prev_balance) ?></td>
+                                                <?php endif; ?>
                                         <?php if (in_array('Consider Old Bal', $filters)): ?>
                                             <td style="text-align:right"><?= format_amount($total_fees_discount) ?></td>
                                         <?php endif; ?>
@@ -733,11 +750,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										<?php
 												} 
 										?>
-												<th style="text-align: right;"><?= format_amount($total_head_fees) ?></th>
+												<th style="text-align: right;"><?= format_amount($total_head_fees) ?>kl</th>
 										<?php } ?>
                                          
 
-                                        <td style="text-align:right"><?= format_amount(($total_fees_discount + $total_head_fees + $finalRF)) ?></td>
+                                        <td style="text-align:right"><?= format_amount(($total_fees_discount + $total_head_fees + $finalRF +$total_prev_balance)) ?></td>
                                         <!--<td style="text-align:right"><?= number_format($grand_total_1, 2) ?></td>
                                         <td style="text-align:right"><?= number_format($grand_total_2, 2) ?></td>-->
                                       
