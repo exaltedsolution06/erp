@@ -300,7 +300,7 @@ $language_name = $language["short_code"];
 										
 										<?php
 										$total = $pre_bal_total = format_amount((int)$previous_discount+(int)$remaining_previous_balance+(int)$previous_balance);
-										if($total > 0){
+										if($total != 0){
 										$statusNew++;
 										$final_total += $total;
 										?>
@@ -330,7 +330,7 @@ $language_name = $language["short_code"];
 										}
 										$statusNew++;
 										$total = $ledg_total = format_amount($ledger_amt);
-										if($total > 0){
+										if($total != 0){
 										$final_total += $total;
 										?>
 										<tr>
@@ -477,7 +477,7 @@ $language_name = $language["short_code"];
                                 <div class="row">
                                     
 									<?php
-                                    if($pre_bal_total > 0){
+                                    if($pre_bal_total != 0){
 									?>
 									<div class="col-sm-2">
                                         <label for="pre_bal_total">Prev. Received</label>
@@ -485,7 +485,7 @@ $language_name = $language["short_code"];
                                     </div>
 									<?php } ?>
 									<?php
-                                    if($ledg_total > 0){
+                                    if($ledg_total != 0){
 									?>
 									<div class="col-sm-2">
                                         <label for="ledg_total">Ledg. Received</label>

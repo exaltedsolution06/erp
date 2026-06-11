@@ -365,16 +365,16 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <th style="width:70px !imortant">Date</th>
                                             <th style="width:70px !imortant">Slip No</th>
                                             <th>Months</th>
-                                            <th style="text-align: right;">Fees</th>
+                                             <th style="text-align: right;">Prev Bal</th>
+											<th style="text-align: right;">Ledger Amt</th>
+											<th style="text-align: right;">Fee</th>
 
-                                            <th style="text-align: right;">Ledger Amt</th>
-                                            <th style="text-align: right;">Late/Other Fees</th>
-                                            <th style="text-align: right;">Total Fees</th>
-                                            <th style="text-align: right;">Discount Amt</th>
-                                            <th style="text-align: right;">Net Fees</th>
-                                            <th style="text-align: right;">Receipt Amt</th>
-                                            <th style="text-align: right;">Prev Bal</th>
-                                            <th style="text-align: right;">Bal.Amt</th>
+											<th style="text-align: right;">Late/Other</th>
+											<th style="text-align: right;">Total Fees</th>
+											<th style="text-align: right;">Discount Amt</th>
+											<th style="text-align: right;">Net Fees</th>
+											<th style="text-align: right;">Receipt. Amt.</th>
+											<th style="text-align: right;">Balance Amt</th>
                                             <th style="text-align: right;">Mode</th>
                                             <th style="text-align: right;">User</th>
                                         </tr>
@@ -393,12 +393,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 }
                                                 $late_fees_sum    += (float)$record["late_fees"];
                                                 $ledger_amt_sum   += (float)$record["ledger_amt"];
-                                                $total_fees_sum     += (float)$record["total_fees"];
-                                                $discount_amt_sum     += (float)$record["discount_amt"];
-                                                $net_fees_sum  += (float)$record["net_fees"];
+                                                $total_fees_sum     += (float)$record["total_fees"]+(float)$record["previous_balance"]+(float)$record["remaining_previous_balance"]+(float)$record["previous_discount"];
+                                                $discount_amt_sum     += (float)$record["discount_amt"]+(float)$record["previous_discount"];
+                                                $net_fees_sum  += format_amount((float)$record["total_fees"]+(float)$record["previous_balance"]+(float)$record["remaining_previous_balance"]+(float)$record["previous_discount"])-format_amount((float)$record["discount_amt"]+(float)$record["previous_discount"]);
                                                 $receipt_amt_sum  += (float)$record["receipt_amt"];
-                                                $balance_amt_sum  += (float)$record["balance_amt"];
-                                                $previous_balance_sum  += (float)$record["previous_balance"];
+                                                $balance_amt_sum  += (float)$record["balance_amt"]+(float)$record["remaining_previous_balance"];
+                                                $prev_balance_amt_sum  += (float)$record["previous_balance"]+(float)$record["remaining_previous_balance"]+(float)$record["previous_discount"];
                                             ?>
                                             <tr>
                                                 <td style="width:50px !important"><?= $sno++ ?></td>
@@ -425,6 +425,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     ?>
                                             
                                                 </td>
+												<td style="text-align: right;"><?= format_amount((float)$record["previous_balance"]+(float)$record["remaining_previous_balance"]+(float)$record["previous_discount"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount($record["ledger_amt"]) ?></td>
 
                                                 <?php
                                                      if(!empty($record['fee_head'])){
@@ -433,20 +435,19 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         <?php
                                                      }else{
                                                         ?>
-                                                        <td style="text-align: right;">00.00</td>
+                                                        <td style="text-align: right;">0</td>
                                                         <?php
                                                      }
 
                                                 ?>
                                                
-                                                 <td style="text-align: right;"><?= format_amount($record["ledger_amt"]) ?></td>
                                                 <td style="text-align: right;"><?= !empty($record["late_fees"]) ? format_amount($record["late_fees"]) : 0 ?></td>
-                                                <td style="text-align: right;"><?= format_amount($record["total_fees"]) ?></td>
-                                                <td style="text-align: right;"><?= format_amount($record["discount_amt"]) ?></td>
-                                                <td style="text-align: right;"><?= format_amount($record["net_fees"]) ?></td>
-                                                <td style="text-align: right;"><?= format_amount($record["receipt_amt"]) ?></td>
-                                                <td style="text-align: right;"><?= format_amount($record["previous_balance"]) ?></td>
-                                                <td style="text-align: right;"><?= format_amount($record["balance_amt"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount((float)$record["total_fees"]+(float)$record["previous_balance"]+(float)$record["remaining_previous_balance"]+(float)$record["previous_discount"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount((float)$record["discount_amt"]+(float)$record["previous_discount"]) ?></td>
+                                                <!--<td style="text-align: right;"><?= format_amount((float)$record["net_fees"]+(float)$record["previous_balance"]) ?></td>-->
+                                                <td style="text-align: right;"><?= format_amount((float)$record["total_fees"]+(float)$record["previous_balance"]+(float)$record["remaining_previous_balance"]+(float)$record["previous_discount"])-format_amount((float)$record["discount_amt"]+(float)$record["previous_discount"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount((float)$record["receipt_amt"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount((float)$record["balance_amt"]+(float)$record["remaining_previous_balance"]) ?></td>
 
 
 
@@ -462,15 +463,15 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <th>-</th>
 
                                             <th>-</th>
+                                            <th style="text-align: right;"><?= format_amount($prev_balance_amt_sum) ?></th>
+                                            <th style="text-align: right;"><?= format_amount($ledger_amt_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($fees_received_sum) ?></th>
 
-                                            <th style="text-align: right;"><?= format_amount($ledger_amt_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($late_fees_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($total_fees_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($discount_amt_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($net_fees_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($receipt_amt_sum) ?></th>
-                                            <th style="text-align: right;"><?= format_amount($previous_balance_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($balance_amt_sum) ?></th>
 
 

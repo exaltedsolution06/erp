@@ -135,15 +135,14 @@ $payment_mode_type = $this->customlib->payment_mode_type();
 
                                 
 
-                                                <th style="text-align: right;">Fee</th>
-
+                                                <th style="text-align: right;">Prev Bal</th>
                                                 <th style="text-align: right;">Ledger Amt</th>
+                                                <th style="text-align: right;">Fee</th>
                                                 <th style="text-align: right;">Late/Other</th>
                                                 <th style="text-align: right;">Total Fees</th>
                                                 <th style="text-align: right;">Discount Amt</th>
                                                 <th style="text-align: right;">Net Fees</th>
                                                 <th style="text-align: right;">Receipt. Amt.</th>
-                                                <th style="text-align: right;">Prev Bal</th>
                                                 <th style="text-align: right;">Balance Amt</th>
 
 
@@ -170,12 +169,12 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                                 }
                                                 $late_fees_sum    += (float)$record["late_fees"];
                                                 $ledger_amt_sum   += (float)$record["ledger_amt"];
-                                                $total_fees_sum     += (float)$record["total_fees"];
-                                                $discount_amt_sum     += (float)$record["discount_amt"];
-                                                $net_fees_sum  += (float)$record["net_fees"];
+                                                $total_fees_sum     += (float)$record["total_fees"]+(float)$record["previous_balance"]+(float)$record["remaining_previous_balance"]+(float)$record["previous_discount"];
+                                                $discount_amt_sum     += (float)$record["discount_amt"]+(float)$record["previous_discount"];
+                                                $net_fees_sum  += format_amount((float)$record["total_fees"]+(float)$record["previous_balance"]+(float)$record["remaining_previous_balance"]+(float)$record["previous_discount"])-format_amount((float)$record["discount_amt"]+(float)$record["previous_discount"]);
                                                 $receipt_amt_sum  += (float)$record["receipt_amt"];
-                                                $balance_amt_sum  += (float)$record["balance_amt"];
-                                                $prev_balance_amt_sum  += (float)$record["previous_balance"];
+                                                $balance_amt_sum  += (float)$record["balance_amt"]+(float)$record["remaining_previous_balance"];
+                                                $prev_balance_amt_sum  += (float)$record["previous_balance"]+(float)$record["remaining_previous_balance"]+(float)$record["previous_discount"];
 
                                                 $result = $this->db->get_where('student_session', ['student_id' => $record['student_id']])->row();
                                                 
@@ -218,6 +217,8 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                                     ?>
                                             
                                                 </td>
+												<td style="text-align: right;"><?= format_amount((float)$record["previous_balance"]+(float)$record["remaining_previous_balance"]+(float)$record["previous_discount"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount($record["ledger_amt"]) ?></td>
 
                                                 <?php
                                                      if(!empty($record['fee_head'])){
@@ -232,14 +233,13 @@ $payment_mode_type = $this->customlib->payment_mode_type();
 
                                                 ?>
                                                
-                                                <td style="text-align: right;"><?= format_amount($record["ledger_amt"]) ?></td>
                                                 <td style="text-align: right;"><?= !empty($record["late_fees"]) ? format_amount($record["late_fees"]) : 0 ?></td>
-                                                <td style="text-align: right;"><?= format_amount($record["total_fees"]) ?></td>
-                                                <td style="text-align: right;"><?= format_amount($record["discount_amt"]) ?></td>
-                                                <td style="text-align: right;"><?= format_amount($record["net_fees"]) ?></td>
-                                                <td style="text-align: right;"><?= format_amount($record["receipt_amt"]) ?></td>
-                                                <td style="text-align: right;"><?= format_amount($record["previous_balance"]) ?></td>
-                                                <td style="text-align: right;"><?= format_amount($record["balance_amt"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount((float)$record["total_fees"]+(float)$record["previous_balance"]+(float)$record["remaining_previous_balance"]+(float)$record["previous_discount"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount((float)$record["discount_amt"]+(float)$record["previous_discount"]) ?></td>
+                                                <!--<td style="text-align: right;"><?= format_amount((float)$record["net_fees"]+(float)$record["previous_balance"]) ?></td>-->
+                                                <td style="text-align: right;"><?= format_amount((float)$record["total_fees"]+(float)$record["previous_balance"]+(float)$record["remaining_previous_balance"]+(float)$record["previous_discount"])-format_amount((float)$record["discount_amt"]+(float)$record["previous_discount"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount((float)$record["receipt_amt"]) ?></td>
+                                                <td style="text-align: right;"><?= format_amount((float)$record["balance_amt"]+(float)$record["remaining_previous_balance"]) ?></td>
 
 
 
@@ -274,16 +274,16 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                             <th>-</th>
 
                                             <th>-</th>
+                                            <th style="text-align: right;"><?= format_amount($prev_balance_amt_sum) ?></th>
+                                            <th style="text-align: right;"><?= format_amount($ledger_amt_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($fees_received_sum) ?></th>
 
-                                            <th style="text-align: right;"><?= format_amount($ledger_amt_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($late_fees_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($total_fees_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($discount_amt_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($net_fees_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($receipt_amt_sum) ?></th>
                                             <th style="text-align: right;"><?= format_amount($balance_amt_sum) ?></th>
-                                            <th style="text-align: right;"><?= format_amount($prev_balance_amt_sum) ?></th>
 
 
                                             <th>-</th>

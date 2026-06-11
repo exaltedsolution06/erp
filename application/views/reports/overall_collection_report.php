@@ -750,7 +750,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										<?php
 												} 
 										?>
-												<th style="text-align: right;"><?= format_amount($total_head_fees) ?>kl</th>
+												<th style="text-align: right;"><?= format_amount($total_head_fees) ?></th>
 										<?php } ?>
                                          
 

@@ -94,8 +94,8 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                         <th>Father</th>
                                         <th>Class</th>
                                         <th>Sec.</th>
-                                        <th style="text-align: right;">Rec. Amt.</th>
                                         <th style="text-align: right;">Prev Bal</th>
+                                        <th style="text-align: right;">Rec. Amt.</th>
                                         <th>Mode</th>
                                         <th>User</th>
                                         <th>Remark</th>
@@ -111,6 +111,7 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                         foreach ($receipt_data as $record):
                                             $record = (array) $record;
                                             $total_amount += floatval($record["receipt_amt"]);
+                                            $total_pre_amount += floatval($record["previous_balance"]);
                                     ?>
                                         <tr>
                                             <td><?= $sno++ ?></td>
@@ -121,8 +122,8 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                             <td><?= $record["father_name"] ?></td>
                                             <td><?= $record["class"] ?></td>
                                             <td><?= $record["section"] ?></td>
-                                            <td style="text-align: right;"><?= format_amount($record["receipt_amt"]) ?></td>
                                             <td style="text-align: right;"><?= format_amount($record["previous_balance"]) ?></td>
+                                            <td style="text-align: right;"><?= format_amount($record["receipt_amt"]) ?></td>
                                             <td><?= $record["mode"] ?></td>
                                             <td><?= $record["create_by"] ?></td>
                                             <td><?= $record["remarks"] ?></td>
@@ -146,6 +147,7 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
+                                                <th style="text-align: right;"><?= format_amount($total_pre_amount) ?></th>
                                                 <th style="text-align: right;"><?= format_amount($total_amount) ?></th>
                                                 <td></td>
                                                 <td></td>

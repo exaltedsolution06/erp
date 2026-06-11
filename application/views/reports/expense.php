@@ -235,11 +235,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th>Father</th>
                                                 <th>Class</th>
                                                 <th>Sec.</th>
+                                                <th style="text-align:right">Prev Bal</th>
                                                 <th style="text-align:right">Total Fee</th>
                                                 <th style="text-align:right">Discount</th>
                                                 <th style="text-align:right">Net Fee</th>
                                                 <th style="text-align:right">Rec. Amt.</th>
-                                                <th style="text-align:right">Prev Bal</th>
                                                 <th style="text-align:right">Bal. Amt.</th>
                                             </tr>
                                         </thead>
@@ -259,12 +259,12 @@ $balance_amt_sum = 0;
                                             <?php  $record=(array)$record; ?>
                                             <?php
                 // Sum each column
-                $total_fees_sum += $record["total_fees"];
-                $discount_amt_sum += $record["discount_amt"];
-                $net_fees_sum += $record["net_fees"];
-                $receipt_amt_sum += $record["receipt_amt"];
-                $balance_amt_sum += $record["balance_amt"];
-                $previous_balance_sum += $record["previous_balance"];
+                $total_fees_sum += (int)$record["total_fees"];
+                $discount_amt_sum += (int)$record["discount_amt"];
+                $net_fees_sum += (int)$record["net_fees"];
+                $receipt_amt_sum += (int)$record["receipt_amt"];
+                $balance_amt_sum += (int)$record["balance_amt"];
+                $previous_balance_sum += (int)$record["previous_balance"];
             ?>
                                             <tr>
                                                  <td ><?=  ($this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()) ? $this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()->name : 'N.A'; ?>  </td>
@@ -274,11 +274,11 @@ $balance_amt_sum = 0;
                                                 <td><?= $record["father_name"] ?></td>
                                                 <td><?= $record["class"] ?></td>
                                                 <td><?= $record["section"] ?></td>
+												<td style="text-align:right"><?= format_amount($record["previous_balance"]) ?></td>
                                                <td style="text-align:right"><?= format_amount($record["total_fees"]) ?></td>
 												<td style="text-align:right"><?= format_amount($record["discount_amt"]) ?></td>
 												<td style="text-align:right"><?= format_amount($record["net_fees"]) ?></td>
 												<td style="text-align:right"><?= format_amount($record["receipt_amt"]) ?></td>
-												<td style="text-align:right"><?= format_amount($record["previous_balance"]) ?></td>
 												<td style="text-align:right"><?= format_amount($record["balance_amt"]) ?></td>
 
                                             </tr>
@@ -290,11 +290,11 @@ $balance_amt_sum = 0;
                                             <td></td>
                                             <td></td>
         <td colspan="" style="text-align: right;"><strong>Grand Total</strong></td>
+        <td style="text-align:right"><strong><?= format_amount($previous_balance_sum) ?></strong></td>
         <td style="text-align:right"><strong><?= format_amount($total_fees_sum) ?></strong></td>
         <td style="text-align:right"><strong><?= format_amount($discount_amt_sum) ?></strong></td>
         <td style="text-align:right"><strong><?= format_amount($net_fees_sum) ?></strong></td>
         <td style="text-align:right"><strong><?= format_amount($receipt_amt_sum) ?></strong></td>
-        <td style="text-align:right"><strong><?= format_amount($previous_balance_sum) ?></strong></td>
         <td style="text-align:right"><strong><?= format_amount($balance_amt_sum) ?></strong></td>
     </tr>
                                         <?php else: ?>
