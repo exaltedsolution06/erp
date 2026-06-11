@@ -52,8 +52,9 @@ class Feesforward extends Admin_Controller {
 
                 $due_date = date('Y-m-d');
                 $data['due_date_formated'] = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($due_date));
-                ;
             }
+			$due_date = date('Y-m-d');
+                $data['due_date_formated'] = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateYYYYMMDDtoStrtotime($due_date));
 
             //========================
             if ($action == 'search') {
@@ -171,6 +172,7 @@ class Feesforward extends Admin_Controller {
 
                     $eachstudent->balance = $this->findValueExists($record_exists, $eachstudent->student_session_id);
                     $eachstudent->rec_balance = $this->findRecValue($eachstudent->student_previous_session_id);
+                    $eachstudent->disc_amt = $this->findDiscValue($eachstudent->student_previous_session_id);
 					$eachstudent->id = $this->findIdExists($record_exists, $eachstudent->student_session_id);
                 }
             } else {
@@ -210,6 +212,7 @@ class Feesforward extends Admin_Controller {
                         $eachstudent->balance = $totalfee - ($deposit + $discount);
                         // $eachstudent->prev_balance = $totalPrevfee;
 						$eachstudent->rec_balance = $this->findRecValue($eachstudent->student_previous_session_id);
+						$eachstudent->disc_amt = $this->findDiscValue($eachstudent->student_previous_session_id);
                         $eachstudent->id = $student_total_fees_value->id;
                     } else {
                         $eachstudent->balance = "0";
@@ -257,6 +260,16 @@ class Feesforward extends Admin_Controller {
 			->get('received_previous_balance')
 			->row()
 			->amount;
+        return $total;
+    }
+    function findDiscValue($student_previous_session_id) {
+        $total = $this->db
+			->select_sum('discount')
+			->where('previous_student_session_id', $student_previous_session_id)
+			->where('status', 1)
+			->get('received_previous_balance')
+			->row()
+			->discount;
         return $total;
     }
 

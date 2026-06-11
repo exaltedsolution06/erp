@@ -39,6 +39,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <label for="exampleInputEmail1"><?php echo $this->lang->line('class'); ?></label><small class="req"> *</small>
                                         <select  id="class_id" name="class_id" class="form-control"  >
                                             <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                            <option value="all"><?php echo $this->lang->line('all'); ?></option>
                                             <?php
                                             foreach ($classlist as $class) {
                                                 ?>
@@ -75,7 +76,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 <div class="box-header with-border">
                                     <h3 class="box-title titlefix"><?php echo $this->lang->line('previous_session_balance_fees'); ?></h3>
                                     <div class="pull-right">
-                                        <span class="text text-danger pt6 bolds"><?php echo $this->lang->line('due_date'); ?>:</span> <?php echo set_value('due_date', $due_date_formated); ?>
+                                        <span class="text text-danger pt6 bolds">Current Date:</span> <?php echo set_value('due_date', $due_date_formated); ?>
                                         <input id="due_date" name="due_date" placeholder="" type="hidden" class="form-control date"  value="<?php echo set_value('due_date', $due_date_formated); ?>" readonly /> 
                                     </div>  
                                 </div>
@@ -126,6 +127,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 															<th class="text text-left"><?php echo $this->lang->line('section'); ?></th>
                                                             <th class="">Total Previous Bal</th>
                                                             <th class="">Total Received</th>
+                                                            <th class="">Total Discount</th>
                                                             <th class="text-right">Total Balance</th>
                                                         </tr>
 
@@ -137,6 +139,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         foreach ($student_due_fee as $due_fee_key => $due_fee_value) {
                                                            $tot_prev = format_amount($tot_prev + $due_fee_value->balance);
                                                            $tot_rec = format_amount($tot_rec + $due_fee_value->rec_balance);
+                                                           $tot_disc = format_amount($tot_disc + $due_fee_value->disc_amt);
                                                            $remain_bal = format_amount($remain_bal + ($due_fee_value->balance-$due_fee_value->rec_balance));
                                                             ?>
                                                             <tr>
@@ -169,6 +172,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 																	<input type="text" class="form-control tddm200 tot_received" value="<?php echo format_amount($due_fee_value->rec_balance); ?>" disabled>
 																	<input type="hidden" name="rec_amount[<?php echo $i; ?>]" value="<?php echo format_amount($due_fee_value->rec_balance); ?>">
 																</td>
+																<td>
+																	<span style="display: none;"><?php echo format_amount($due_fee_value->disc_amt); ?></span>
+																	<input type="text" class="form-control tddm200" value="<?php echo format_amount($due_fee_value->disc_amt); ?>" disabled>
+																</td>
                                                                 <td class="text text-right">
 																	<span style="display: none;"><?php echo format_amount($due_fee_value->balance - $due_fee_value->rec_balance); ?></span>
                                                                     <input type="text" class="form-control tddm200" value="<?php echo format_amount($due_fee_value->balance - $due_fee_value->rec_balance); ?>" disabled>
@@ -189,6 +196,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 															<th>Total</th>
 															<th><?php echo $tot_prev; ?></th>
 															<th><?php echo $tot_rec; ?></th>
+															<th><?php echo $tot_disc; ?></th>
 															<th><?php echo $remain_bal; ?></th>
                                                         </tr>
 													</tfoot>
@@ -310,6 +318,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
             $('#section_id').html("");
             var base_url = '<?php echo base_url() ?>';
             var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+            div_data += '<option value="all"><?php echo $this->lang->line('all'); ?></option>';
             $.ajax({
                 type: "GET",
                 url: base_url + "sections/getByClass",
