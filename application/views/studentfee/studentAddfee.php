@@ -298,7 +298,8 @@ $language_name = $language["short_code"];
                                             $fees_total = 0;
                                             $aa=1;
 										
-										$total = format_amount($student['previous_session_balance']);
+										$total = $pre_bal_total = format_amount($student['previous_session_balance']);
+										if($total > 0){
 										$final_total += $total;
 										?>
 										<tr>
@@ -320,8 +321,10 @@ $language_name = $language["short_code"];
 										</tr>
 										<?php
 										$aa++;
+										}
 										$statusNew++;
-										$total = format_amount($student['fees_discount']);
+										$total = $ledg_total = format_amount($student['fees_discount']);
+										if($total > 0){
 										$final_total += $total;
 										?>
 										<tr>
@@ -341,7 +344,8 @@ $language_name = $language["short_code"];
 											<th><input type="text" style="width: 100px;" class="rec_amount" name="ledg_rec_amount" id="total_rec_discount_<?=$aa?>" value="<?=$total?>"></th>
 											<th><input type="text" class="row_balance" name="ledg_row_balance" value="0" readonly style="width:100px;"></th>
 										</tr>
-										<?php										
+										<?php
+										}										
                                             foreach($data_list as $row){
                                                 $db_months = json_decode($row->months);
                                                 $total = 0;
@@ -459,7 +463,24 @@ $language_name = $language["short_code"];
                         <div class="card-footer"  style="padding: 10px;">
                             <div class="container" style="overflow-x: auto; max-width: 100%;">
                                 <div class="row">
-                                                                        
+                                                     
+									<?php
+                                    if($pre_bal_total > 0){
+									?>
+									<div class="col-sm-2">
+                                        <label for="pre_bal_total">Prev. Received</label>
+                                        <input style="width: 100%;" type="text" id="pre_bal_total" class="form-control" value="<?=format_amount($pre_bal_total)?>" readonly />
+                                    </div>
+									<?php } ?>
+									<?php
+                                    if($ledg_total > 0){
+									?>
+									<div class="col-sm-2">
+                                        <label for="ledg_total">Ledg. Received</label>
+                                        <input style="width: 100%;" type="text" id="ledg_total" class="form-control" value="<?=format_amount($ledg_total)?>" readonly />
+                                    </div>
+									<?php } ?>
+													 
                                     <div class="col-sm-2">
                                         <label for="fees_received">Estimated Total</label>
                                         <input style="width: 100%;" type="text" id="fees_received" class="form-control" value="<?=$final_total?>" name="fees_received" readonly />
@@ -1581,6 +1602,13 @@ $(document).ready(function () {
 
         row.find('.rec_amount').val(formatAmount(payable));
         row.find('.row_balance').val('0');
+		
+		if ($(this).attr('name') === 'prev_rec_discount') {
+			$('#pre_bal_total').val(formatAmount(payable));
+		}
+		if ($(this).attr('name') === 'ledg_rec_discount') {
+			$('#ledg_total').val(formatAmount(payable));
+		}
 
         updateFooterTotals();
     });
@@ -1617,6 +1645,13 @@ $(document).ready(function () {
         row.find('.row_balance').val(formatAmount(balance));
 
         $('#receipt_amt').removeData('manual');
+		
+		if ($(this).attr('name') === 'prev_rec_amount') {
+			$('#pre_bal_total').val(formatAmount(received));
+		}
+		if ($(this).attr('name') === 'ledg_rec_amount') {
+			$('#ledg_total').val(formatAmount(received));
+		}
 
         updateFooterTotals();
     });
@@ -1656,6 +1691,13 @@ $(document).ready(function () {
             row.find('.rec_amount').val(formatAmount(total));
 
             row.find('.row_balance').val('0');
+			
+			if (row.find('.rec_discount[name="prev_rec_discount"]').length) {
+				$('#pre_bal_total').val(formatAmount(total));
+			}
+			if (row.find('.rec_discount[name="ledg_rec_discount"]').length) {
+				$('#ledg_total').val(formatAmount(total));
+			}
 
         } else {
 
@@ -1669,6 +1711,13 @@ $(document).ready(function () {
 
             row.find('.row_balance')
                 .val('0');
+				
+			if (row.find('.rec_discount[name="prev_rec_discount"]').length) {
+				$('#pre_bal_total').val('0');
+			}
+			if (row.find('.rec_discount[name="ledg_rec_discount"]').length) {
+				$('#ledg_total').val('0');
+			}	
         }
 
         $('#receipt_amt').removeData('manual');

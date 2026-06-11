@@ -236,7 +236,7 @@ if($_GET['copy']=='2'){
 										?>
 										<tr> 
 											<td style="font-weight:bold"><?= $i++; ?></td>
-											<td style="font-weight:bold">Previous Balance</td>
+											<td style="font-weight:bold">Prev. Bal</td>
 											<td class="text-end" style="font-weight:bold"><?=$pre_bal?></td>
 										</tr>
 									<?php } } ?>
@@ -246,7 +246,7 @@ if($_GET['copy']=='2'){
 										?>
 										<tr> 
 											<td style="font-weight:bold"><?= $i++; ?></td>
-											<td style="font-weight:bold">Old Balance</td>
+											<td style="font-weight:bold">Old Bal</td>
 											<td class="text-end" style="font-weight:bold"><?=$old_bal?></td>
 										</tr>
 									<?php } } ?>
@@ -455,7 +455,7 @@ if($_GET['copy']=='2'){
 										?>
 										<tr> 
 											<td style="font-weight:bold"><?= $i++; ?></td>
-											<td style="font-weight:bold">Previous Balance</td>
+											<td style="font-weight:bold">Prev. Bal</td>
 											<td class="text-end" style="font-weight:bold"><?=$pre_bal?></td>
 										</tr>
 									<?php } } ?>
@@ -465,7 +465,7 @@ if($_GET['copy']=='2'){
 										?>
 										<tr> 
 											<td style="font-weight:bold"><?= $i++; ?></td>
-											<td style="font-weight:bold">Old Balance</td>
+											<td style="font-weight:bold">Old Bal</td>
 											<td class="text-end" style="font-weight:bold"><?=$old_bal?></td>
 										</tr>
 									<?php } } ?>
@@ -874,7 +874,7 @@ if($_GET['copy']=='2'){
                         <?php if($fees[0]->fee_head_name == 'Ledger Amount'){ ?>
                         <!--<tr> 
                             <th></th>
-                            <th class="text-end">Old Balance</th>
+                            <th class="text-end">Old Bal</th>
                             <th class="text-end"><?=$fees[0]->ledger_amt?></th>
                         </tr>-->
                         <?php } ?>
@@ -893,7 +893,7 @@ if($_GET['copy']=='2'){
 							?>
 							<tr> 
 								<td style="font-weight:bold"><?= $i++; ?></td>
-								<td style="font-weight:bold">Previous Balance</td>
+								<td style="font-weight:bold">Prev. Bal</td>
 								<td class="text-end" style="font-weight:bold"><?=$pre_bal?></td>
 							</tr>
 						<?php } } ?>
@@ -903,7 +903,7 @@ if($_GET['copy']=='2'){
 							 ?>
                         <tr> 
                             <td style="font-weight:bold"><?= $i++; ?></td>
-                            <td style="font-weight:bold">Old Balance</td>
+                            <td style="font-weight:bold">Old Bal</td>
                             <td class="text-end" style="font-weight:bold"><?=$old_bal?></td>
                         </tr>
 						 <?php } } ?>
