@@ -112,7 +112,7 @@ class Feesforward extends Admin_Controller {
 							'',
 							$this->input->post('rec_amount[' . $count_value . ']')
 						);
-						$this->Receipt_model->update_student_prev_bal($this->input->post('student_sesion[' . $count_value . ']'),($amount - $rec_amount));
+						$this->Receipt_model->update_student_prev_bal($this->input->post('student_sesion[' . $count_value . ']'),((int)$amount - (int)$rec_amount));
                     }
 
 

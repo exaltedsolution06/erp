@@ -28,6 +28,7 @@ TRUNCATE TABLE `userlog`;
 TRUNCATE TABLE `template_reportcard`;
 TRUNCATE TABLE `template_marksheets_old_bkp`;
 TRUNCATE TABLE `template_admitcards`;
+TRUNCATE TABLE `subject_group_class_sections`;
 
 
 -------------------------------

@@ -107,8 +107,8 @@ $language_name = $language["short_code"];
                                             }
                                             ?>" alt="No Image">
 
-                                            <h5 style="font-size: 12px;font-weight: bold;">LEDG AMT : Rs. <?=format_amount($student['fees_discount'])?></h5>
                                             <h5 style="font-size: 12px;font-weight: bold;">PREV AMT : Rs. <?=format_amount($student['previous_session_balance'])?></h5>
+                                            <h5 style="font-size: 12px;font-weight: bold;">LEDG AMT : Rs. <?=format_amount($student['fees_discount'])?></h5>
                                         </div>
 
                                         <div class="col-md-10">
@@ -303,7 +303,7 @@ $language_name = $language["short_code"];
 										$final_total += $total;
 										?>
 										<tr>
-											<th><input type="checkbox" class="row_selector" onchange="DeleteRowData(this,<?=$aa?>)" checked />
+											<th><input type="checkbox" name="row_selector[1]" class="row_selector" onchange="DeleteRowData(this,1)" checked />
 											</th>
 											<th>PREV AMT</th>
 											<?php foreach($months_data as $key=>$value){
@@ -314,9 +314,9 @@ $language_name = $language["short_code"];
 											?>
 											<th><?=$total?> <input type="hidden" name="total[]" value="<?=$total?>"></th>
 											<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_add')) { ?>
-											<th><input type="text" style="width: 100px;" class="rec_discount" name="prev_rec_discount" id="total_get_discount_<?=$aa?>" value=""></th>
+											<th><input type="text" style="width: 100px;" class="rec_discount" name="prev_rec_discount" id="total_get_discount_1" value=""></th>
 											<?php } ?>
-											<th><input type="text" style="width: 100px;" class="rec_amount" name="prev_rec_amount" id="total_rec_discount_<?=$aa?>" value="<?=$total?>"></th>
+											<th><input type="text" style="width: 100px;" class="rec_amount" name="prev_rec_amount" id="total_rec_discount_1" value="<?=$total?>"></th>
 											<th><input type="text" class="row_balance" name="prev_row_balance" value="0" readonly style="width:100px;"></th>
 										</tr>
 										<?php
@@ -328,7 +328,7 @@ $language_name = $language["short_code"];
 										$final_total += $total;
 										?>
 										<tr>
-											<th><input type="checkbox" class="row_selector" onchange="DeleteRowData(this,<?=$aa?>)" checked />
+											<th><input type="checkbox" name="row_selector[2]" class="row_selector" onchange="DeleteRowData(this,2)" checked />
 											</th>
 											<th>LEDG AMT</th>
 											<?php foreach($months_data as $key=>$value){
@@ -339,9 +339,9 @@ $language_name = $language["short_code"];
 											?>
 											<th><?=$total?> <input type="hidden" name="total[]" value="<?=$total?>"></th>
 											<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_add')) { ?>
-											<th><input type="text" style="width: 100px;" class="rec_discount" name="ledg_rec_discount" id="total_get_discount_<?=$aa?>" value=""></th>
+											<th><input type="text" style="width: 100px;" class="rec_discount" name="ledg_rec_discount" id="total_get_discount_2" value=""></th>
 											<?php } ?>
-											<th><input type="text" style="width: 100px;" class="rec_amount" name="ledg_rec_amount" id="total_rec_discount_<?=$aa?>" value="<?=$total?>"></th>
+											<th><input type="text" style="width: 100px;" class="rec_amount" name="ledg_rec_amount" id="total_rec_discount_2" value="<?=$total?>"></th>
 											<th><input type="text" class="row_balance" name="ledg_row_balance" value="0" readonly style="width:100px;"></th>
 										</tr>
 										<?php
@@ -354,7 +354,7 @@ $language_name = $language["short_code"];
                                         ?>
                                             <tr>
                                                 <th>
-                                                    <input type="checkbox" checked onchange="DeleteRowData(this,<?=$aa?>)" disabled />
+                                                    <input type="checkbox" name="row_selector[<?=$aa?>]" checked onchange="DeleteRowData(this,<?=$aa?>)" disabled />
                                                     <input type="hidden"  name="pay[]" value="paid" id="payvalue_<?=$aa?>">
                                                     <input type="hidden"  name="fee_head[]" value="<?=$row->id?>" >
                                                     <input type="hidden"  name="fee_head_type[]" value="fees" >
@@ -416,7 +416,7 @@ $language_name = $language["short_code"];
                                                      <input type="hidden"  name="fee_head_type[]" value="route" >
                                                      <input type="hidden"  name="fee_head_name[]" value="<?= $row->fees_heading ?>" >
                                                 </th>
-                                                <th><?= $row->fees_heading ?></th>
+                                                <th><?php // echo $row->fees_heading ?>Transport Fee</th>
                                                 <?php foreach($months_data as $key => $value): ?>
                                                     <th>
                                                         <?php 
@@ -468,7 +468,7 @@ $language_name = $language["short_code"];
                                     if($pre_bal_total != 0){
 									?>
 									<div class="col-sm-2">
-                                        <label for="pre_bal_total">Prev. Received</label>
+                                        <label for="pre_bal_total">Prev. Session Amt.</label>
                                         <input style="width: 100%;" type="text" id="pre_bal_total" class="form-control" value="<?=format_amount($pre_bal_total)?>" readonly />
                                     </div>
 									<?php } ?>
@@ -476,7 +476,7 @@ $language_name = $language["short_code"];
                                     if($ledg_total != 0){
 									?>
 									<div class="col-sm-2">
-                                        <label for="ledg_total">Ledg. Received</label>
+                                        <label for="ledg_total">Total Ledger Amt.</label>
                                         <input style="width: 100%;" type="text" id="ledg_total" class="form-control" value="<?=format_amount($ledg_total)?>" readonly />
                                     </div>
 									<?php } ?>
@@ -516,8 +516,8 @@ $language_name = $language["short_code"];
 
 									<div class="col-sm-2">
 										<label for="receipt_amt">Receipt Amt</label>
-										<input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$final_total?>"/>
-										<label id="error_message_rcpt" style="color: red; display:block;font-size:10px !important">Amount must be between 0 and <?=$final_total ?>.</label>
+										<input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" readonly value="<?=$final_total?>"/>
+										<!--<label id="error_message_rcpt" style="color: red; display:block;font-size:10px !important">Amount must be between 0 and <?=$final_total ?>.</label>-->
 										<input type="hidden" value="<?=$final_total?>" name="hid_receipt_amt" id="hid_receipt_amt">
 									</div>
                                     
@@ -1604,10 +1604,10 @@ $(document).ready(function () {
         row.find('.row_balance').val('0');
 		
 		if ($(this).attr('name') === 'prev_rec_discount') {
-			$('#pre_bal_total').val(formatAmount(payable));
+			// $('#pre_bal_total').val(formatAmount(payable));
 		}
 		if ($(this).attr('name') === 'ledg_rec_discount') {
-			$('#ledg_total').val(formatAmount(payable));
+			// $('#ledg_total').val(formatAmount(payable));
 		}
 
         updateFooterTotals();
@@ -1647,10 +1647,10 @@ $(document).ready(function () {
         $('#receipt_amt').removeData('manual');
 		
 		if ($(this).attr('name') === 'prev_rec_amount') {
-			$('#pre_bal_total').val(formatAmount(received));
+			// $('#pre_bal_total').val(formatAmount(received));
 		}
 		if ($(this).attr('name') === 'ledg_rec_amount') {
-			$('#ledg_total').val(formatAmount(received));
+			// $('#ledg_total').val(formatAmount(received));
 		}
 
         updateFooterTotals();
@@ -1693,10 +1693,10 @@ $(document).ready(function () {
             row.find('.row_balance').val('0');
 			
 			if (row.find('.rec_discount[name="prev_rec_discount"]').length) {
-				$('#pre_bal_total').val(formatAmount(total));
+				// $('#pre_bal_total').val(formatAmount(total));
 			}
 			if (row.find('.rec_discount[name="ledg_rec_discount"]').length) {
-				$('#ledg_total').val(formatAmount(total));
+				// $('#ledg_total').val(formatAmount(total));
 			}
 
         } else {
@@ -1713,10 +1713,10 @@ $(document).ready(function () {
                 .val('0');
 				
 			if (row.find('.rec_discount[name="prev_rec_discount"]').length) {
-				$('#pre_bal_total').val('0');
+				// $('#pre_bal_total').val('0');
 			}
 			if (row.find('.rec_discount[name="ledg_rec_discount"]').length) {
-				$('#ledg_total').val('0');
+				// $('#ledg_total').val('0');
 			}	
         }
 
@@ -1726,6 +1726,13 @@ $(document).ready(function () {
     });
 
     updateFooterTotals();
+	
+	document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
+	const dateInput = document.getElementById('dateInput');
+    const outputInput = document.getElementById('outputInput');
+    dateInput.addEventListener('change', function () {
+      outputInput.value = this.value;
+    });
 
 });
 </script>

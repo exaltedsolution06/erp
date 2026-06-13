@@ -38,6 +38,8 @@
 						
 						<li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/finance/student_transport_report'); ?>"><a href="<?php echo base_url(); ?>report/student_transport_report"><i class="fa fa-file-text-o"></i> Student Transport Report</a></li>
 
+						<li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('feesforward/index'); ?>"><a href="<?php echo base_url(); ?>admin/feesforward"><i class="fa fa-file-text-o"></i> Previous Session Balance</a></li>
+
                 </ul>
             </div>
         </div>

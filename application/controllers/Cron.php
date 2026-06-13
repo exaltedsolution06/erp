@@ -1107,38 +1107,31 @@ class Cron extends CI_Controller
 		foreach ($classes as $key => $classArr) {
 			$classSectionArr[$key] = $classArr + ($sections[$key] ?? []);
 		}
-		//echo "<pre>";print_r($classSectionArr);
+		// echo "<pre>";print_r($classSectionArr);exit;
 		
 		$result = [];
-		foreach ($classSectionArr as $val) {
+		foreach ($classes as $index => $class) {
 
-			$classKey   = null;
-			$classValue = null;
-			$sectionKey = null;
-			$sectionValue = null;
+			$currentClassId = key($class);
+			$nextClassId = current($class);
 
-			foreach ($val as $key => $value) {
-				
-				if ($key > 1) {
-					$classKey   = $key;
-					$classValue = $value;
-				} 
-				
-				else {
-					$sectionKey   = $key;
-					$sectionValue = $value;
-				}
+			$currentSectionId = null;
+			$nextSectionId = null;
+
+			if (isset($sections[$index])) {
+				$currentSectionId = key($sections[$index]);
+				$nextSectionId = current($sections[$index]);
 			}
 
 			$result[] = [
-				'current_class_id'   => $classKey,
-				'next_class_id'      => $classValue,
-				'current_section_id' => $sectionKey,
-				'next_section_id'    => $sectionValue,
+				'current_class_id'   => $currentClassId,
+				'next_class_id'      => $nextClassId,
+				'current_section_id' => $currentSectionId,
+				'next_section_id'    => $nextSectionId,
 			];
 		}
 
-		//echo "<pre>";print_r($result);
+		// echo "<pre>";print_r($result);exit;
 		
 		$new_subject_arr = [];
 		
@@ -1198,16 +1191,16 @@ class Cron extends CI_Controller
 									'name' => $subject_name,
 									'code' => $subject_code,
 									'type' => $subject_type,
-									'type_one' => $subject_type,
+									'type_one' => $subject_type_one,
 									'session_id' => $next_session
 								);
 								
 								$new_subject_id = $this->subject_model->add($data);
-								$new_subject_arr[] = $new_subject_id;
+								$new_subject_arr[$subject_data['id']] = $new_subject_id;
 							}
 							else{
 								$s_id = $qr_subject->row_array();
-								$new_subject_arr[] = $s_id['id'];
+								$new_subject_arr[$subject_data['id']] = $s_id['id'];
 							}
 							
 						}
@@ -1218,13 +1211,14 @@ class Cron extends CI_Controller
 				
 				// add subjects in subject group
 				// get next class and section names
+				// echo "<pre>";print_r($new_subject_arr);exit;
 				if(!empty($new_subject_arr))
 				{
-					$classData = $this->db->where('id', $val['next_class_id'])->get('classes')->row_array();
-					$next_class_name = $classData['class'];
+					// $classData = $this->db->where('id', $val['next_class_id'])->get('classes')->row_array();
+					// $next_class_name = $classData['class'];
 					
-					$sectionData = $this->db->where('id', $val['next_section_id'])->get('sections')->row_array();
-					$next_section_name = $sectionData['section'];
+					// $sectionData = $this->db->where('id', $val['next_section_id'])->get('sections')->row_array();
+					// $next_section_name = $sectionData['section'];
 					
 					$next_class_section_ids = [];
 					$classSectionData = $this->db->where('class_id', $val['next_class_id'])->get('class_sections')->result_array();
@@ -1232,33 +1226,100 @@ class Cron extends CI_Controller
 					{
 						$next_class_section_ids[] = $ids['id'];
 					}
+					// echo "<pre>";print_r($next_class_section_ids);exit;
 					
 					//insert into tables subject_groups ,subject_group_subjects, subject_group_class_sections
 					
-					$class_array = array(
-						'name' => $next_class_name.' '.$next_section_name,
-						'session_id' => $next_session,
-						'description' => '',
-					);
-					$subject_group = $new_subject_arr;
+					// $subject_group = $new_subject_arr;
 					$section_group = $next_class_section_ids;
 					
-					
-					$this->db->insert('subject_groups', $class_array);
-					$subject_group_id = $this->db->insert_id();
-					
-					$subject_group_subject_Array = array();
-					foreach ($subject_group as $sub_group_key => $sub_group_value) {
-
-						$vehicle_array = array(
-							'subject_group_id' => $subject_group_id,
-							'subject_id' => $sub_group_value,
-							'session_id' => $next_session,
-						);
-
-						$subject_group_subject_Array[] = $vehicle_array;
+					// Subject_groups table start
+					$this->db->from('subject_groups');
+					$this->db->where('session_id' , $current_session);
+					$s_data = $this->db->get();
+					if($s_data->num_rows() > 0)
+					{
+						foreach($s_data->result_array() as $s_val)
+						{
+							$this->db->from('subject_groups');
+							$this->db->where('name', $s_val['name']);
+							$this->db->where('session_id' , $next_session);
+							$qr_subject1 = $this->db->get();
+							if($qr_subject1->num_rows() == 0)
+							{
+								// add subject in next session
+								$class_array = array(
+									'name' => $s_val['name'],
+									'description' => $s_val['description'],
+									'session_id' => $next_session,
+								);
+								
+								$this->db->insert('subject_groups', $class_array);
+								$subject_group_id = $this->db->insert_id();
+								$new_subject_group_arr[$s_val['id']] = $subject_group_id;
+							}
+							else{
+								$s_id = $qr_subject1->row_array();
+								$new_subject_group_arr[$s_val['id']] = $s_id['id'];
+							}
+						}
 					}
-					$this->db->insert_batch('subject_group_subjects', $subject_group_subject_Array);
+					// echo "<pre>";print_r($new_subject_group_arr);exit;
+					// Subject_groups table end
+					
+					// subject_group_subjects table start
+					$old_records = $this->db
+						->where('session_id', $current_session)
+						->get('subject_group_subjects')
+						->result_array();
+
+					$existing = $this->db
+						->select('subject_group_id, subject_id')
+						->where('session_id', $next_session)
+						->get('subject_group_subjects')
+						->result_array();
+
+					$existing_combinations = [];
+
+					foreach ($existing as $row) {
+						$existing_combinations[$row['subject_group_id'].'_'.$row['subject_id']] = true;
+					}
+
+					$insert_data = [];
+
+					foreach ($old_records as $row) {
+
+						if (
+							!isset($new_subject_group_arr[$row['subject_group_id']]) ||
+							!isset($new_subject_arr[$row['subject_id']])
+						) {
+							continue;
+						}
+
+						$new_group_id   = $new_subject_group_arr[$row['subject_group_id']];
+						$new_subject_id = $new_subject_arr[$row['subject_id']];
+
+						$key = $new_group_id . '_' . $new_subject_id;
+
+						// Skip if already exists
+						if (isset($existing_combinations[$key])) {
+							continue;
+						}
+
+						$insert_data[] = [
+							'subject_group_id' => $new_group_id,
+							'session_id'       => $next_session,
+							'subject_id'       => $new_subject_id,
+							'created_at'       => date('Y-m-d H:i:s'),
+						];
+
+						// Prevent duplicates within the same batch
+						$existing_combinations[$key] = true;
+					}
+
+					if (!empty($insert_data)) {
+						$this->db->insert_batch('subject_group_subjects', $insert_data);
+					}
 					
 					$section_group_array = array();
 					foreach ($section_group as $section_group_key => $section_group_value) {

@@ -15,3 +15,17 @@
 tickets = id, school_code, ticket_type, subject, body, status(0=delete,1=pending,2=open,3=close), created_at, updated_at
 ticket_files = id, ticket_id, file
 ticket_followup = id, ticket_id, user_type(0=Crm, 1=School), message, created_at
+---------------
+when pge load - hidden field(original_ledg_bal) = Balance Amt - PREV Balance AMT
+		= 3000 - 3000
+		= 1000
+Currrent ledger update = (Balance Amt - PREV Balance AMT)-hidden field(original_ledg_bal)
+			= (3000 - 3000)-1000
+			= 0
+------------
+already check + edit = (Balance Amt - hidden Balance Amt(old_prev_row_balance))+PREV AMT
+already check + then uncheck = (hidden_received_discount) + PREV AMT
+
+old_prev_row_balance
+previous_receive_dics = 
+Discount + Ledger = 
