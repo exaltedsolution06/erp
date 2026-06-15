@@ -252,7 +252,7 @@ if($_GET['copy']=='2'){
 									<?php } } ?>
 									<?php  
 										$pay=0;
-
+										// echo'<pre>';print_r($fees);exit;
 										foreach($fees as $list)
 										{ 
 											if($list->fee_head_name != 'Ledger Amount')
@@ -261,11 +261,12 @@ if($_GET['copy']=='2'){
 											}else{
 												$fee_head_bal = format_amount($list->ledger_amt);
 											}
+											// echo'<pre>';print_r($fee_head_bal);exit;
 											if($fee_head_bal > 0){
 									?>
 										<tr>
 											<td style="font-weight:bold"><?=$i++?></td>
-											<td style="font-weight:bold"><?=$list->fee_head_type == 'route' ? 'Transport Fee' : $list->fee_head_name?></td>
+											<td style="font-weight:bold"><?=$list->fee_head_type == 'route' ? 'Transport Fee' : ($list->fee_head_type == '' ? 'Ledger Balance' : $list->fee_head_name)?></td>
 											<?php if($list->fee_head_name != 'Ledger Amount') { ?>
 											<td class="text-end" style="font-weight:bold"><?=format_amount($list->total)?></td>
 											<?php } else { ?>
@@ -480,7 +481,7 @@ if($_GET['copy']=='2'){
 										?>
 										<tr>
 											<td style="font-weight:bold"><?=$i++?></td>
-											<td style="font-weight:bold"><?=$list->fee_head_type == 'route' ? 'Transport Fee' : $list->fee_head_name?></td>
+											<td style="font-weight:bold"><?=$list->fee_head_type == 'route' ? 'Transport Fee' : ($list->fee_head_type == '' ? 'Ledger Balance' : $list->fee_head_name)?></td>
 											<?php if($list->fee_head_name != 'Ledger Amount') { ?>
 											<td class="text-end" style="font-weight:bold"><?=format_amount($list->total)?></td>
 											<?php } else { ?>
@@ -918,7 +919,7 @@ if($_GET['copy']=='2'){
 							?>
                         <tr>
                             <td style="font-weight:bold"><?=$i++?></td>
-                            <td style="font-weight:bold"><?=$list->fee_head_type == 'route' ? 'Transport Fee' : $list->fee_head_name?></td>
+                            <td style="font-weight:bold"><?=$list->fee_head_type == 'route' ? 'Transport Fee' : ($list->fee_head_type == '' ? 'Ledger Balance' : $list->fee_head_name)?></td>
 							<?php 
 								if($list->fee_head_name != 'Ledger Amount')
 								{

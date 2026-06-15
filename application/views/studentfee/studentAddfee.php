@@ -312,7 +312,7 @@ $language_name = $language["short_code"];
 											<?php
 											} 
 											?>
-											<th><?=$total?> <input type="hidden" name="total[]" value="<?=$total?>"></th>
+											<th><?=$total?> <input type="hidden" name="total[]" value="<?=$total?>"><input type="hidden" name="prev_present" value="1"></th>
 											<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_add')) { ?>
 											<th><input type="text" style="width: 100px;" class="rec_discount" name="prev_rec_discount" id="total_get_discount_1" value=""></th>
 											<?php } ?>
@@ -337,7 +337,7 @@ $language_name = $language["short_code"];
 											<?php
 											} 
 											?>
-											<th><?=$total?> <input type="hidden" name="total[]" value="<?=$total?>"></th>
+											<th><?=$total?> <input type="hidden" name="total[]" value="<?=$total?>"><input type="hidden" name="ledg_present" value="1"></th>
 											<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_add')) { ?>
 											<th><input type="text" style="width: 100px;" class="rec_discount" name="ledg_rec_discount" id="total_get_discount_2" value=""></th>
 											<?php } ?>

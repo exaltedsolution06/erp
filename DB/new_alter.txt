@@ -265,6 +265,7 @@ ALTER TABLE `received_previous_balance` ADD `discount` VARCHAR(100) NULL DEFAULT
 ALTER TABLE `receipts` ADD `ledger_received` VARCHAR(100) NULL DEFAULT NULL AFTER `previous_discount`, ADD `remain_ledger` VARCHAR(100) NULL DEFAULT NULL AFTER `ledger_received`;
 ALTER TABLE `deleted_receipts` ADD `ledger_received` VARCHAR(100) NULL DEFAULT NULL AFTER `previous_discount`, ADD `remain_ledger` VARCHAR(100) NULL DEFAULT NULL AFTER `ledger_received`;
 
+ALTER TABLE `receipts` CHANGE `total` `total` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL, CHANGE `rec_discount` `rec_discount` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL, CHANGE `rec_amount` `rec_amount` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL;
 
 
 

@@ -52,15 +52,21 @@ class Studentfee extends Admin_Controller
             $total_total=count($data['total']);
 			$deduct_count = $total_total - $total_pay;
             $previous_balance=0;
-			if(!isset($data['row_selector'][1])){
-				$previous_balance = $data['total'][0];
-				$data['total'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
+			if(isset($data['prev_present']) && $data['prev_present'] == 1){
+				if(!isset($data['row_selector'][1])){
+					$previous_balance = $data['total'][0];
+					$data['total'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
+				}
 			}
             $previous_ledger_balance=0;
-			if(!isset($data['row_selector'][2])){
-				$previous_ledger_balance = $data['total'][1];
-				$data['total'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
+			if(isset($data['ledg_present']) && $data['ledg_present'] == 1){
+				if(!isset($data['row_selector'][2])){
+					$previous_ledger_balance = $data['total'][1];
+					$data['total'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
+				}
 			}
+			// echo $total_total."<br>";
+			// echo $total_pay."<br>";
 			// echo "<pre>";print_r($data);die;
             $paid=$data['pay'];
             foreach($paid as $key=>$value){
@@ -93,7 +99,7 @@ class Studentfee extends Admin_Controller
                             'total'        => ($data['total'][$key+$deduct_count]),
                             'month_total'   => $data['month_total'][$month][$key],
                             'rec_discount' => (int) ($data['rec_discount'][$key]),
-                            'rec_amount'   => ($data['rec_amount'][$key]),
+                            'rec_amount'   => ((int)$data['rec_amount'][$key]),
                             'balance_amount' => (float) ($data['total'][$key+$deduct_count] ?? 0)-((float) ($data['rec_discount'][$key] ?? 0)+(float) ($data['rec_amount'][$key] ?? 0)),
                             'fees_received' => $data['hid_fees_received'],
                             'late_fees'    => $data['late_fees'],
@@ -188,6 +194,7 @@ class Studentfee extends Admin_Controller
 			$this->setting_model->insert_receipt_sr_no($receipt_sr_no, $current_session_id);
 			
         }else{
+			// echo "<pre>";print_r($data);die;
 			if($data['ledg_rec_amount'] > 0 && $data['prev_rec_amount'] > 0){
 				$receipt_type = 3;
 			}else if($data['ledg_rec_amount'] > 0 && $data['prev_rec_amount'] == 0){
@@ -252,7 +259,8 @@ class Studentfee extends Admin_Controller
 				$previous_session_balance = (int)$data['prev_row_balance'];
 			}else if(!isset($data['row_selector'][1]) && isset($data['row_selector'][2])){
 				$fees_discount = (int)$data['balance_amt'];
-				$previous_session_balance = (int)$previous_balance;
+				// $previous_session_balance = (int)$previous_balance;
+				$previous_session_balance = (int)$data['old_prev_amt'];
 			}else{
 				$fees_discount = (int)$data['balance_amt']-(int)$data['prev_row_balance'];
 				$previous_session_balance = (int)$data['prev_row_balance'];
@@ -341,18 +349,21 @@ class Studentfee extends Admin_Controller
             $total_total=count($data['total']);
 			$deduct_count = $total_total - $total_pay;
 			$previous_balance=0;
-			if(!isset($data['row_selector'][1])){
-				$previous_balance = $data['total'][0];
-				$data['total'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
+			if(isset($data['prev_present']) && $data['prev_present'] == 1){
+				if(!isset($data['row_selector'][1])){
+					$previous_balance = $data['total'][0];
+					$data['total'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
+				}
 			}
             $previous_ledger_balance=0;
-			if(!isset($data['row_selector'][2])){
-				$previous_ledger_balance = $data['total'][1];
-				$data['total'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
+			if(isset($data['ledg_present']) && $data['ledg_present'] == 1){
+				if(!isset($data['row_selector'][2])){
+					$previous_ledger_balance = $data['total'][1];
+					$data['total'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
+				}
 			}
 			// echo "<pre>";print_r($data);die;
             $paid=$data['pay'];
-		// echo '<pre>'; print_r($data); echo '</pre>';die;		
             foreach($paid as $key=>$value){
                 if($value=='paid'){
                     foreach ($data['months'] as $keys => $month) {
@@ -401,7 +412,7 @@ class Studentfee extends Admin_Controller
                             'total'        => ($data['total'][$key+$deduct_count]),
                             'month_total'   => $data['month_total'][$month][$key],
                             'rec_discount' => (int) ($data['rec_discount'][$key]),
-                            'rec_amount'   => ($data['rec_amount'][$key]),
+                            'rec_amount'   => ((int)$data['rec_amount'][$key]),
                             'balance_amount' => (int) $data['total'][$key+$deduct_count]-((int) $data['rec_discount'][$key] + (int) $data['rec_amount'][$key]),
                             'fees_received' => $data['hid_fees_received'],
                             'late_fees'    => $data['late_fees'],

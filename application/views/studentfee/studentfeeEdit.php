@@ -316,7 +316,7 @@ $language_name = $language["short_code"];
 											<?php
 											} 
 											?>
-											<th><?=format_amount(($total > 0 ? $total: ((int)$total+(int)$student['previous_session_balance'])))?> <input type="hidden" name="total[]" value="<?=$total?>"><input type="hidden" name="final_total[]" value="<?=($total > 0 ? $total: ((int)$total+(int)$student['previous_session_balance']))?>"></th>
+											<th><?=format_amount(($total > 0 ? $total: ((int)$total+(int)$student['previous_session_balance'])))?> <input type="hidden" name="total[]" value="<?=$total?>"><input type="hidden" name="final_total[]" value="<?=($total > 0 ? $total: ((int)$total+(int)$student['previous_session_balance']))?>"><input type="hidden" name="prev_present" value="1"></th>
 											<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_add')) { ?>
 											<th><input type="text" style="width: 100px;" class="rec_discount" name="prev_rec_discount" id="total_get_discount_1" value="<?= $previous_discount ?>"></th>
 											<?php } ?>
@@ -331,14 +331,50 @@ $language_name = $language["short_code"];
 										<?php
 										$aa++;
 										}
+										$rem_rcpt_balance = 0;
+										foreach($data_list as $row){
+											$db_months = json_decode($row->months);
+											$t1 = 0;
+											foreach($months_data as $key => $value){
+												if(in_array($value, $db_months)){																
+													if (is_array($row->amount)) 
+													{
+														$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
+														$t1 += $amount;
+													}else{
+														$t1 += $row->amount;
+													}
+												}
+											}
+											$rem_rcpt_balance += $balance_amount[$row->id] ? $balance_amount[$row->id] : 0;
+										}
+										foreach($route_data_list as $row){
+											$db_months = json_decode($row->months);
+											$t1 = 0;
+											foreach($months_data as $key => $value){
+												if(in_array($value, $db_months)){																
+													if (is_array($row->amount)) 
+													{
+														$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
+														$t1 += $amount;
+													}else{
+														$t1 += $row->amount;
+													}
+												}
+											}
+											$rem_rcpt_balance += $balance_amount[$row->id] ? $balance_amount[$row->id] : 0;
+										}
+										
 										$statusNew++;
 										$total = $ledg_total = format_amount($ledger_amt);
 										if($total != 0 || $student['fees_discount'] > 0){
-										if($ledger_amt != 0){
-										$final_total += (int)$total;
-										}
+											$f_total = $total > 0 ? $total: ((int)$total+(int)$student['fees_discount']);
+										// if(((int)$f_total-(int)$rem_rcpt_balance) != 0){
+											if($ledger_amt != 0){
+												$final_total += (int)$total;
+											}
 										?>
-										<tr>
+										<tr id="ledger_row">
 											<th><input type="checkbox" class="row_selector" name="row_selector[2]" onchange="DeleteRowData(this,2)" <?= $total == 0 ? '':'checked'?> />
 											</th>
 											<th>LEDG AMT</th>
@@ -348,7 +384,7 @@ $language_name = $language["short_code"];
 											<?php
 											} 
 											?>
-											<th><?=format_amount(($total > 0 ? $total: ((int)$total+(int)$student['fees_discount'])))?> <input type="hidden" name="total[]" value="<?=$total?>"><input type="hidden" name="final_total[]" value="<?=($total > 0 ? $total: ((int)$total+(int)$student['fees_discount']))?>"></th>
+											<th id="ledg_tot_text"><?=format_amount($f_total)?> <input type="hidden" name="total[]" value="<?=$total?>"><input type="hidden" class="ledg_final_total" name="final_total[]" value="<?=format_amount($f_total)?>"><input type="hidden" name="ledg_present" value="1"></th>
 											<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_add')) { ?>
 											<th><input type="text" style="width: 100px;" class="rec_discount" name="ledg_rec_discount" id="total_get_discount_2" value="<?= $ledger_discount ?>"></th>
 											<?php } ?>
@@ -358,6 +394,7 @@ $language_name = $language["short_code"];
 											<input type="hidden" name="hidden_received_discount_ledger" value="<?=format_amount((int)$ledger_discount+(int)$ledger_received)?>" ></th>
 										</tr>
 										<?php
+										// }
 										}
                                             foreach($data_list as $row){
                                                 $db_months = json_decode($row->months);
@@ -399,18 +436,23 @@ $language_name = $language["short_code"];
                                                             }
                                                         ?>   
                                                     </th>
-                                                <?php endforeach; ?>
+                                                <?php endforeach;
+													// echo $row->id.'<br>';
+													// echo'<pre>';print_r($received_amount);exit;
+												?>
 
                                                 <th><?= $total ?> <input type="hidden" name="total[]" value="<?=$total?>"><input type="hidden" name="final_total[]" value="<?=$total?>"></th>
 												<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_edit')) { ?>
                                                 <th><input type="text" style="width: 100px;" class="rec_discount" name="rec_discount[]" id="total_get_discount_<?=$aa?>" oninput="calculateDisData(this,<?=$aa?>)" value="<?=$rec_discount[$row->id];?>"></th>
 												<?php } ?>
-                                                <th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id]);?>"></th>
+                                                <!--<th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id]);?>"></th>-->
+                                                <th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$total-$rec_discount[$row->id]-$balance_amount[$row->id]?>"></th>
 												
 												<!--<th><?= $total-$rec_discount[$row->id]-($received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id])) ?></th>-->
                                                 
-												<!--<th><?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?></th>-->
-												<th><input type="text" class="row_balance" name="row_balance[]" value="<?= $total-$rec_discount[$row->id]-($received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id])) ?>" readonly style="width:100px;"></th>
+												<!--<th><?= $total-$rec_discount[$row->id]-$received_amount[$row->id] ?></th>-->
+												<!--<th><input type="text" class="row_balance" name="row_balance[]" value="<?= $total-$rec_discount[$row->id]-($received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id])) ?>" readonly style="width:100px;"></th>-->
+												<th><input type="text" class="row_balance" name="row_balance[]" value="<?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?>" readonly style="width:100px;"></th>
                                             </tr>
                                             <?php
                                                 $fees_total += $total;
@@ -463,9 +505,10 @@ $language_name = $language["short_code"];
                                                 <?php endforeach; ?>
                                                 <th><?= $total ?> <input type="hidden" name="total[]" value="<?=$total?>"><input type="hidden" name="final_total[]" value="<?=$total?>"></th>
                                                 <th><input type="text" style="width:100px;" class="rec_discount" name="rec_discount[]"  id="total_get_discount_<?=$aa?>"   oninput="calculateDisData(this,<?=$aa?>)" value="<?=$rec_discount[$row->id];?>"></th>				
-                                                <th><input type="text" style="width:100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id]);?>"></th>
-                                                <!--<th><?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?></th>-->
-                                                <th><input type="text" class="row_balance" name="row_balance[]" value="<?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?>" readonly style="width:100px;"></th>
+                                                <th><input type="text" style="width:100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$total-$rec_discount[$row->id]-$balance_amount[$row->id]?>"></th>
+                                                <!--<th><?= $total-$rec_discount[$row->id]-$received_amount[$row->id] ?></th>-->
+                                                <!--<th><input type="text" class="row_balance" name="row_balance[]" value="<?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?>" readonly style="width:100px;"></th>-->
+												<th><input type="text" class="row_balance" name="row_balance[]" value="<?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?>" readonly style="width:100px;"></th>
                                             </tr>
                                             <?php
                                                 $fees_total += $total;
@@ -1767,6 +1810,18 @@ $(document).ready(function () {
 			$(this).val('');
 		}
 	});
+	
+	/*let totalBalance = 0;
+	var ledg_final_total_val = $('.ledg_final_total').val();
+    $('input[name="row_balance[]"]').each(function () {
+        let value = parseFloat($(this).val()) || 0;
+        totalBalance += value;
+    });
+	$('#ledg_tot_text').text(ledg_final_total_val-totalBalance);
+	$('.ledg_final_total"]').val(ledg_final_total_val-totalBalance);
+	if(){
+		
+	}*/
 
 });
 </script>

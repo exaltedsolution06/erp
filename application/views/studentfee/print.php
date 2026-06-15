@@ -291,7 +291,7 @@ if($_GET['copy']=='2'){
 			?>
     <tr>
         <td style="font-weight:bold"><?=$i++?></td>
-        <td style="font-weight:bold"><?=$list->fee_head_type == 'route' ? 'Transport Fee' : $list->fee_head_name?></td>
+        <td style="font-weight:bold"><?=$list->fee_head_type == 'route' ? 'Transport Fee' : ($list->fee_head_type == '' ? 'Ledger Balance' : $list->fee_head_name)?></td>
 		<?php 
 		if($list->fee_head_name != 'Ledger Amount')
 		{
@@ -552,7 +552,7 @@ if($_GET['copy']=='2'){
   ?>
   <tr>
       <td style="font-weight:bold"><?=$i++?></td>
-      <td style="font-weight:bold"><?=$list->fee_head_type == 'route' ? 'Transport Fee' : $list->fee_head_name?></td>
+      <td style="font-weight:bold"><?=$list->fee_head_type == 'route' ? 'Transport Fee' : ($list->fee_head_type == '' ? 'Ledger Balance' : $list->fee_head_name)?></td>
        <?php 
 		if($list->fee_head_name != 'Ledger Amount')
 		{
@@ -1038,7 +1038,7 @@ if($_GET['copy']=='2'){
 							?>
                         <tr>
                             <td style="font-weight:bold"><?=$i++?></td>
-                            <td style="font-weight:bold"><?=$list->fee_head_type == 'route' ? 'Transport Fee' : $list->fee_head_name?></td>
+                            <td style="font-weight:bold"><?=$list->fee_head_type == 'route' ? 'Transport Fee' : ($list->fee_head_type == '' ? 'Ledger Balance' : $list->fee_head_name)?></td>
 							<?php 
 								if($list->fee_head_name != 'Ledger Amount')
 								{
