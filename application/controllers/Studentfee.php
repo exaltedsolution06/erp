@@ -1720,7 +1720,7 @@ class Studentfee extends Admin_Controller
 			foreach ($receiptArr as $row) {
 				$recDiscountArr[$row['fee_head']] = $row['rec_discount'];
 				$recAmountArr[$row['fee_head']] = $row['rec_amount'];
-				$balanceAmountArr[$row['fee_head']] = $row['balance_amount'];
+				$balanceAmountArr[$row['fee_head'].'-'.$row['fee_head_type']] = $row['balance_amount'];
 			}
 			$data['rec_discount'] = $recDiscountArr;
 			$data['received_amount'] = $recAmountArr;

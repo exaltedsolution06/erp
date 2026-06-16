@@ -1338,6 +1338,8 @@ class Cron extends CI_Controller
 				}
 				
 			} // if end
+			
+			// echo "<pre>";print_r($new_subject_group_arr);exit;
 		}
 		
 	}

@@ -301,7 +301,6 @@ $language_name = $language["short_code"];
 										<?php
 										$total = $pre_bal_total = format_amount((int)$previous_discount+(int)$remaining_previous_balance+(int)$previous_balance);
 										if($total != 0 || $student['previous_session_balance'] > 0){
-										$statusNew++;
 										if($total != 0){
 										$final_total += (int)$total;
 										}
@@ -346,7 +345,7 @@ $language_name = $language["short_code"];
 													}
 												}
 											}
-											$rem_rcpt_balance += $balance_amount[$row->id] ? $balance_amount[$row->id] : 0;
+											$rem_rcpt_balance += $balance_amount[$row->id.'-fees'] ? $balance_amount[$row->id.'-fees'] : 0;
 										}
 										foreach($route_data_list as $row){
 											$db_months = json_decode($row->months);
@@ -362,10 +361,9 @@ $language_name = $language["short_code"];
 													}
 												}
 											}
-											$rem_rcpt_balance += $balance_amount[$row->id] ? $balance_amount[$row->id] : 0;
+											$rem_rcpt_balance += $balance_amount[$row->id.'-route'] ? $balance_amount[$row->id.'-route'] : 0;
 										}
 										
-										$statusNew++;
 										$total = $ledg_total = format_amount($ledger_amt);
 										if($total != 0 || $student['fees_discount'] > 0){
 											$f_total = $total > 0 ? $total: ((int)$total+(int)$student['fees_discount']);
@@ -446,13 +444,13 @@ $language_name = $language["short_code"];
                                                 <th><input type="text" style="width: 100px;" class="rec_discount" name="rec_discount[]" id="total_get_discount_<?=$aa?>" oninput="calculateDisData(this,<?=$aa?>)" value="<?=$rec_discount[$row->id];?>"></th>
 												<?php } ?>
                                                 <!--<th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id]);?>"></th>-->
-                                                <th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$total-$rec_discount[$row->id]-$balance_amount[$row->id]?>"></th>
+                                                <th><input type="text" style="width: 100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$total-$rec_discount[$row->id]-$balance_amount[$row->id.'-fees']?>"></th>
 												
 												<!--<th><?= $total-$rec_discount[$row->id]-($received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id])) ?></th>-->
                                                 
 												<!--<th><?= $total-$rec_discount[$row->id]-$received_amount[$row->id] ?></th>-->
 												<!--<th><input type="text" class="row_balance" name="row_balance[]" value="<?= $total-$rec_discount[$row->id]-($received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id])) ?>" readonly style="width:100px;"></th>-->
-												<th><input type="text" class="row_balance" name="row_balance[]" value="<?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?>" readonly style="width:100px;"></th>
+												<th><input type="text" class="row_balance" name="row_balance[]" value="<?=$balance_amount[$row->id.'-fees'] ? $balance_amount[$row->id.'-fees'] : 0;?>" readonly style="width:100px;"></th>
                                             </tr>
                                             <?php
                                                 $fees_total += $total;
@@ -505,10 +503,10 @@ $language_name = $language["short_code"];
                                                 <?php endforeach; ?>
                                                 <th><?= $total ?> <input type="hidden" name="total[]" value="<?=$total?>"><input type="hidden" name="final_total[]" value="<?=$total?>"></th>
                                                 <th><input type="text" style="width:100px;" class="rec_discount" name="rec_discount[]"  id="total_get_discount_<?=$aa?>"   oninput="calculateDisData(this,<?=$aa?>)" value="<?=$rec_discount[$row->id];?>"></th>				
-                                                <th><input type="text" style="width:100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$total-$rec_discount[$row->id]-$balance_amount[$row->id]?>"></th>
+                                                <th><input type="text" style="width:100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$total-$rec_discount[$row->id]-$balance_amount[$row->id.'-route']?>"></th>
                                                 <!--<th><?= $total-$rec_discount[$row->id]-$received_amount[$row->id] ?></th>-->
                                                 <!--<th><input type="text" class="row_balance" name="row_balance[]" value="<?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?>" readonly style="width:100px;"></th>-->
-												<th><input type="text" class="row_balance" name="row_balance[]" value="<?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?>" readonly style="width:100px;"></th>
+												<th><input type="text" class="row_balance" name="row_balance[]" value="<?=$balance_amount[$row->id.'-route'] ? $balance_amount[$row->id.'-route'] : 0;?>" readonly style="width:100px;"></th>
                                             </tr>
                                             <?php
                                                 $fees_total += $total;
@@ -539,6 +537,14 @@ $language_name = $language["short_code"];
 									<div class="col-sm-2">
                                         <label for="ledg_total">Total Ledger Amt.</label>
                                         <input style="width: 100%;" type="text" id="ledg_total" class="form-control" value="<?=format_amount($ledg_total)?>" readonly />
+                                    </div>
+									<?php } ?>
+									<?php
+                                    if($statusNew > 0){
+									?>
+									<div class="col-sm-2">
+                                        <label for="ledg_total">Academics Fee</label>
+                                        <input style="width: 100%;" type="text" class="form-control" value="<?=format_amount($fees_total)?>" readonly />
                                     </div>
 									<?php } ?>
 									

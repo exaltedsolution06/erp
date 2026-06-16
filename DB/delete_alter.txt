@@ -28,7 +28,6 @@ TRUNCATE TABLE `userlog`;
 TRUNCATE TABLE `template_reportcard`;
 TRUNCATE TABLE `template_marksheets_old_bkp`;
 TRUNCATE TABLE `template_admitcards`;
-TRUNCATE TABLE `subject_group_class_sections`;
 
 
 -------------------------------
@@ -123,6 +122,8 @@ DELETE FROM subject_groups;
 ALTER TABLE subject_groups AUTO_INCREMENT = 1;
 DELETE FROM subjects;
 ALTER TABLE subjects AUTO_INCREMENT = 1;
+DELETE FROM subject_group_class_sections;
+ALTER TABLE subject_group_class_sections AUTO_INCREMENT = 1;
 DELETE FROM student_fees_master;
 ALTER TABLE student_fees_master AUTO_INCREMENT = 1;
 DELETE FROM student_fees_discounts;

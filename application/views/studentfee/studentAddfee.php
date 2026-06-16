@@ -322,7 +322,6 @@ $language_name = $language["short_code"];
 										<?php
 										$aa++;
 										}
-										$statusNew++;
 										$total = $ledg_total = format_amount($student['fees_discount']);
 										if($total != 0){
 										$final_total += $total;
@@ -478,6 +477,14 @@ $language_name = $language["short_code"];
 									<div class="col-sm-2">
                                         <label for="ledg_total">Total Ledger Amt.</label>
                                         <input style="width: 100%;" type="text" id="ledg_total" class="form-control" value="<?=format_amount($ledg_total)?>" readonly />
+                                    </div>
+									<?php } ?>
+									<?php
+                                    if($statusNew > 0){
+									?>
+									<div class="col-sm-2">
+                                        <label for="ledg_total">Academics Fee</label>
+                                        <input style="width: 100%;" type="text" class="form-control" value="<?=format_amount($fees_total)?>" readonly />
                                     </div>
 									<?php } ?>
 													 
@@ -1604,10 +1611,10 @@ $(document).ready(function () {
         row.find('.row_balance').val('0');
 		
 		if ($(this).attr('name') === 'prev_rec_discount') {
-			// $('#pre_bal_total').val(formatAmount(payable));
+			$('#pre_bal_total').val(formatAmount(total));
 		}
 		if ($(this).attr('name') === 'ledg_rec_discount') {
-			// $('#ledg_total').val(formatAmount(payable));
+			$('#ledg_total').val(formatAmount(total));
 		}
 
         updateFooterTotals();
@@ -1647,10 +1654,10 @@ $(document).ready(function () {
         $('#receipt_amt').removeData('manual');
 		
 		if ($(this).attr('name') === 'prev_rec_amount') {
-			// $('#pre_bal_total').val(formatAmount(received));
+			$('#pre_bal_total').val(formatAmount(total));
 		}
 		if ($(this).attr('name') === 'ledg_rec_amount') {
-			// $('#ledg_total').val(formatAmount(received));
+			$('#ledg_total').val(formatAmount(total));
 		}
 
         updateFooterTotals();
@@ -1693,10 +1700,10 @@ $(document).ready(function () {
             row.find('.row_balance').val('0');
 			
 			if (row.find('.rec_discount[name="prev_rec_discount"]').length) {
-				// $('#pre_bal_total').val(formatAmount(total));
+				$('#pre_bal_total').val(formatAmount(total));
 			}
 			if (row.find('.rec_discount[name="ledg_rec_discount"]').length) {
-				// $('#ledg_total').val(formatAmount(total));
+				$('#ledg_total').val(formatAmount(total));
 			}
 
         } else {
@@ -1713,10 +1720,10 @@ $(document).ready(function () {
                 .val('0');
 				
 			if (row.find('.rec_discount[name="prev_rec_discount"]').length) {
-				// $('#pre_bal_total').val('0');
+				$('#pre_bal_total').val('0');
 			}
 			if (row.find('.rec_discount[name="ledg_rec_discount"]').length) {
-				// $('#ledg_total').val('0');
+				$('#ledg_total').val('0');
 			}	
         }
 
