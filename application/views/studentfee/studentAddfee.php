@@ -267,6 +267,7 @@ $language_name = $language["short_code"];
                             <input type="hidden"  value="<?=$receipt_no?>" name="receipt_no" class="receipt_no">
                             <input type="hidden"  value="<?=$student['id']?>" name="student_id">
                             <input type="hidden"  value="<?=$student['previous_student_session_id']?>" name="previous_student_session_id">
+							<span id="select_check_msg" style="color: red; display:block;font-size:15px !important"></span>
                             <div class="table-responsive">
                                 <div class="download_label "><?php echo $this->lang->line('student_fees') . ": " . $student['firstname'] . " " . $student['lastname'] ?> </div>
                                 <table class="table table-bordered">
@@ -409,7 +410,7 @@ $language_name = $language["short_code"];
                                                 $aa++;
                                             ?>
                                             <tr>
-                                                <th><input type="checkbox"  onchange="DeleteRowData(this,<?=$aa?>)" checked disabled />
+                                                <th><input type="checkbox" name="row_selector[<?=$aa?>]" onchange="DeleteRowData(this,<?=$aa?>)" checked disabled />
                                                     <input type="hidden"  name="pay[]" value="paid" id="payvalue_<?=$aa?>">
                                                      <input type="hidden"  name="fee_head[]" value="<?=$row->id?>" >
                                                      <input type="hidden"  name="fee_head_type[]" value="route" >
@@ -461,7 +462,7 @@ $language_name = $language["short_code"];
                         <!-- /.box-body -->
                         <div class="card-footer"  style="padding: 10px;">
                             <div class="container" style="overflow-x: auto; max-width: 100%;">
-                                <div class="row">
+                                <div class="row" style="display:flex; margin-top: 10px !important;">
                                                      
 									<?php
                                     if($pre_bal_total != 0){
@@ -1741,5 +1742,31 @@ $(document).ready(function () {
       outputInput.value = this.value;
     });
 
+	toggleSubmitButton();
+
+    $(document).on('change', 'input[type="checkbox"][name^="row_selector["]:enabled', function () {
+        toggleSubmitButton();
+    });
 });
+function toggleSubmitButton() {
+
+    // Check if any disabled checkbox is already checked
+    let hasPermanentChecked = $('input[type="checkbox"][name^="row_selector["]:disabled:checked').length > 0;
+
+    if (hasPermanentChecked) {
+        $('#submit_btn').prop('disabled', false);
+        $('#select_check_msg').text('');
+        return;
+    }
+
+    // Otherwise check the editable checkboxes
+    let checkedCount = $('input[type="checkbox"][name^="row_selector["]:enabled:checked').length;
+
+    $('#submit_btn').prop('disabled', checkedCount === 0);
+	if (checkedCount === 0) {
+        $('#select_check_msg').text('Please select at least one item to continue.');
+    } else {
+        $('#select_check_msg').text('');
+    }
+}
 </script>

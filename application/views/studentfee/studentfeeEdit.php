@@ -265,6 +265,7 @@ $language_name = $language["short_code"];
                             <input type="hidden"  value="<?=$student['id']?>" name="student_id">
                             <input type="hidden"  value="<?=$sr_no?>" name="sr_no">
                             <input type="hidden"  value="<?=$student['previous_student_session_id']?>" name="previous_student_session_id">
+							<span id="select_check_msg" style="color: red; display:block;font-size:15px !important"></span>
                             <div class="table-responsive">
                                 <div class="download_label "><?php echo $this->lang->line('student_fees') . ": " . $student['firstname'] . " " . $student['lastname'] ?> </div>
                                 <table class="table table-bordered">
@@ -521,7 +522,7 @@ $language_name = $language["short_code"];
                         <!-- /.box-body -->
                         <div class="card-footer"  style="padding: 10px;">
                             <div class="container" style="overflow-x: auto; max-width: 100%;">
-                                <div class="row">
+                                <div class="row" style="display:flex; margin-top: 10px !important;">
                                     
 									<?php
 									if($pre_bal_total != 0 || $student['previous_session_balance'] > 0){
@@ -1817,17 +1818,31 @@ $(document).ready(function () {
 		}
 	});
 	
-	/*let totalBalance = 0;
-	var ledg_final_total_val = $('.ledg_final_total').val();
-    $('input[name="row_balance[]"]').each(function () {
-        let value = parseFloat($(this).val()) || 0;
-        totalBalance += value;
-    });
-	$('#ledg_tot_text').text(ledg_final_total_val-totalBalance);
-	$('.ledg_final_total"]').val(ledg_final_total_val-totalBalance);
-	if(){
-		
-	}*/
+	toggleSubmitButton();
 
+    $(document).on('change', 'input[type="checkbox"][name^="row_selector["]:enabled', function () {
+        toggleSubmitButton();
+    });
 });
+function toggleSubmitButton() {
+
+    // Check if any disabled checkbox is already checked
+    let hasPermanentChecked = $('input[type="checkbox"][name^="row_selector["]:disabled:checked').length > 0;
+
+    if (hasPermanentChecked) {
+        $('#submit_btn').prop('disabled', false);
+        $('#select_check_msg').text('');
+        return;
+    }
+
+    // Otherwise check the editable checkboxes
+    let checkedCount = $('input[type="checkbox"][name^="row_selector["]:enabled:checked').length;
+
+    $('#submit_btn').prop('disabled', checkedCount === 0);
+	if (checkedCount === 0) {
+        $('#select_check_msg').text('Please select at least one item to continue.');
+    } else {
+        $('#select_check_msg').text('');
+    }
+}
 </script>
