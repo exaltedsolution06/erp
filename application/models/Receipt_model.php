@@ -150,12 +150,14 @@ class Receipt_model extends CI_Model {
     }
 
 
-    public function update_student($id, $fees_discount, $remaining_previous_balance)
+    public function update_student($id, $fees_discount, $remaining_previous_balance, $total_fees_discount)
     {
+		$student_data = $this->db->from('student_session')->where('student_id', $id)->where('session_id', $this->current_session)->get()->row();
         // Prepare the data to update
         $data = array(
             'fees_discount' => $fees_discount,
-            'previous_session_balance' => $remaining_previous_balance
+            'previous_session_balance' => $remaining_previous_balance,
+            'total_fees_discount' => (int)$student_data->total_fees_discount + (int)$total_fees_discount,
         );
 
         // Perform the update
@@ -277,6 +279,17 @@ class Receipt_model extends CI_Model {
                 ->order_by('id')
                 ->get('receipts')
                 ->result();
+    }
+    public function ledger_received_sum($student_id) {
+        return $this->db
+        ->select('SUM(ledger_received) as ledger_received')
+        ->from('(SELECT receipt_no, MAX(ledger_received) as ledger_received
+                 FROM receipts
+                 WHERE session_id = '.$this->db->escape($this->current_session).'
+                 AND student_id = '.$this->db->escape($student_id).'
+                 GROUP BY receipt_no) t', false)
+        ->get()
+        ->row();
     }
     
 

@@ -267,6 +267,7 @@ ALTER TABLE `deleted_receipts` ADD `ledger_received` VARCHAR(100) NULL DEFAULT N
 
 ALTER TABLE `receipts` CHANGE `total` `total` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL, CHANGE `rec_discount` `rec_discount` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL, CHANGE `rec_amount` `rec_amount` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL;
 
+ALTER TABLE `student_session` ADD `total_fees_discount` FLOAT(10,2) NOT NULL DEFAULT '0.00' AFTER `fees_discount`;
 
 
 

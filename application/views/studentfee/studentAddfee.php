@@ -524,8 +524,8 @@ $language_name = $language["short_code"];
 
 									<div class="col-sm-2">
 										<label for="receipt_amt">Receipt Amt</label>
-										<input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" readonly value="<?=$final_total?>"/>
-										<!--<label id="error_message_rcpt" style="color: red; display:block;font-size:10px !important">Amount must be between 0 and <?=$final_total ?>.</label>-->
+										<input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$final_total?>"/>
+										<label id="error_message_rcpt" style="color: red; display:block;font-size:10px !important">Amount must be between 0 and <?=$final_total ?>.</label>
 										<input type="hidden" value="<?=$final_total?>" name="hid_receipt_amt" id="hid_receipt_amt">
 									</div>
                                     
@@ -1676,8 +1676,16 @@ $(document).ready(function () {
     $(document).on('input', '#receipt_amt', function () {
 
         $(this).data('manual', true);
+		
+		let hid_rcpt_amt_val = $('#hid_receipt_amt').val();
+		let receipt_amt = $("#receipt_amt").val();
+		
+		if(formatAmount(receipt_amt) > formatAmount(hid_rcpt_amt_val)){
+			$("#receipt_amt").val(formatAmount(hid_rcpt_amt_val));
+		}
 
         updateMainBalance();
+		$('#receipt_amt').removeData('manual');
     });
 
     // Checkbox Change
@@ -1747,9 +1755,21 @@ $(document).ready(function () {
     $(document).on('change', 'input[type="checkbox"][name^="row_selector["]:enabled', function () {
         toggleSubmitButton();
     });
+	
+	$(document).on('change', 'input[name="row_selector[1]"]', function () {
+        toggleSubmitButton();
+    });
 });
 function toggleSubmitButton() {
-
+	
+	if ($('input[name="row_selector[1]"]').is(':checked')) {
+		$('#receipt_amt').prop('readonly', true);
+		$('#error_message_rcpt').hide();
+	} else {
+		$('#receipt_amt').prop('readonly', false);
+		$('#error_message_rcpt').show();
+	}
+	
     // Check if any disabled checkbox is already checked
     let hasPermanentChecked = $('input[type="checkbox"][name^="row_selector["]:disabled:checked').length > 0;
 

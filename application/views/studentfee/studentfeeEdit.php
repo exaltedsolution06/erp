@@ -383,14 +383,15 @@ $language_name = $language["short_code"];
 											<?php
 											} 
 											?>
-											<th id="ledg_tot_text"><?=format_amount($f_total)?> <input type="hidden" name="total[]" value="<?=$total?>"><input type="hidden" class="ledg_final_total" name="final_total[]" value="<?=format_amount($f_total)?>"><input type="hidden" name="ledg_present" value="1"></th>
+											<th><span id="ledg_tot_text"><?=format_amount($f_total)?></span> <input type="hidden" name="total[]" value="<?=$total?>"><input type="hidden" class="ledg_final_total" name="final_total[]" value="<?=format_amount($f_total)?>"><input type="hidden" name="ledg_present" value="1"></th>
 											<?php if ($this->rbac->hasPrivilege('assign_discount', 'can_add')) { ?>
 											<th><input type="text" style="width: 100px;" class="rec_discount" name="ledg_rec_discount" id="total_get_discount_2" value="<?= $ledger_discount ?>"></th>
 											<?php } ?>
 											<th><input type="text" style="width: 100px;" class="rec_amount" name="ledg_rec_amount" id="total_rec_discount_2" value="<?=$ledger_received?>"></th>
 											<th><input type="text" class="row_balance" name="ledg_row_balance" value="<?= $remain_ledger ?>" readonly style="width:100px;">
-											<input type="hidden" name="old_ledg_row_balance" value="<?= $remain_ledger ?>" ></th>
+											<input type="hidden" name="old_ledg_row_balance" value="<?= $remain_ledger ?>" >
 											<input type="hidden" name="hidden_received_discount_ledger" value="<?=format_amount((int)$ledger_discount+(int)$ledger_received)?>" ></th>
+											<input type="hidden" name="original_discount_ledger" value="<?=format_amount((int)$ledger_discount)?>" ></th>
 										</tr>
 										<?php
 										// }
@@ -451,7 +452,7 @@ $language_name = $language["short_code"];
                                                 
 												<!--<th><?= $total-$rec_discount[$row->id]-$received_amount[$row->id] ?></th>-->
 												<!--<th><input type="text" class="row_balance" name="row_balance[]" value="<?= $total-$rec_discount[$row->id]-($received_amount[$row->id] ? $received_amount[$row->id] : ($total-$rec_discount[$row->id])) ?>" readonly style="width:100px;"></th>-->
-												<th><input type="text" class="row_balance" name="row_balance[]" value="<?=$balance_amount[$row->id.'-fees'] ? $balance_amount[$row->id.'-fees'] : 0;?>" readonly style="width:100px;"></th>
+												<th><input type="text" class="row_balance fees_row_balance" name="row_balance[]" value="<?=$balance_amount[$row->id.'-fees'] ? $balance_amount[$row->id.'-fees'] : 0;?>" readonly style="width:100px;"></th>
                                             </tr>
                                             <?php
                                                 $fees_total += $total;
@@ -507,7 +508,7 @@ $language_name = $language["short_code"];
                                                 <th><input type="text" style="width:100px;" class="rec_amount" name="rec_amount[]" id="total_rec_discount_<?=$aa?>" oninput="calculateData(this,<?=$aa?>)" value="<?=$total-$rec_discount[$row->id]-$balance_amount[$row->id.'-route']?>"></th>
                                                 <!--<th><?= $total-$rec_discount[$row->id]-$received_amount[$row->id] ?></th>-->
                                                 <!--<th><input type="text" class="row_balance" name="row_balance[]" value="<?=$balance_amount[$row->id] ? $balance_amount[$row->id] : 0;?>" readonly style="width:100px;"></th>-->
-												<th><input type="text" class="row_balance" name="row_balance[]" value="<?=$balance_amount[$row->id.'-route'] ? $balance_amount[$row->id.'-route'] : 0;?>" readonly style="width:100px;"></th>
+												<th><input type="text" class="row_balance fees_row_balance" name="row_balance[]" value="<?=$balance_amount[$row->id.'-route'] ? $balance_amount[$row->id.'-route'] : 0;?>" readonly style="width:100px;"></th>
                                             </tr>
                                             <?php
                                                 $fees_total += $total;
@@ -594,8 +595,8 @@ $language_name = $language["short_code"];
                                 <div class="row " style="margin-top: 10px !important;">
 									<div class="col-sm-2">
 										<label for="receipt_amt">Receipt Amt</label>
-										<input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" readonly value="<?=$receipt_amt; ?>"/>
-										<!--<lable id="error_message_rcpt" style="color: red; display:block;font-size:10px !important">Amount must be between 0 and <?=$receipt_amt ?>.</lable>-->
+										<input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt"  value="<?=$receipt_amt; ?>"/>
+										<label id="error_message_rcpt" style="color: red; display:block;font-size:10px !important">Amount must be between 0 and <?=$receipt_amt ?>.</label>
 										<input type="hidden" value="<?=$receipt_amt; ?>" name="hid_receipt_amt" id="hid_receipt_amt">
 										<input type="hidden" value="<?php echo ((int)$balance_amt+(int)$remaining_previous_balance)-$remaining_previous_balance; ?>" name="original_ledg_bal" id="original_ledg_bal">
 									</div>
@@ -1638,7 +1639,7 @@ $(document).ready(function () {
 
         $('#error_message_rcpt').text(
             'Amount must be between 0 and ' +
-            formatAmount(netFees) +
+            formatAmount(receiptAmt) +
             '.'
         );
 
@@ -1748,8 +1749,16 @@ $(document).ready(function () {
     $(document).on('input', '#receipt_amt', function () {
 
         $(this).data('manual', true);
-
+		
+		let hid_rcpt_amt_val = $('#hid_receipt_amt').val();
+		let receipt_amt = $("#receipt_amt").val();
+		
+		if(formatAmount(receipt_amt) > formatAmount(hid_rcpt_amt_val)){
+			$("#receipt_amt").val(formatAmount(hid_rcpt_amt_val));
+		}
+		
         updateMainBalance();
+		$('#receipt_amt').removeData('manual');
     });
 
     // Checkbox Change
@@ -1823,9 +1832,33 @@ $(document).ready(function () {
     $(document).on('change', 'input[type="checkbox"][name^="row_selector["]:enabled', function () {
         toggleSubmitButton();
     });
+	
+    $(document).on('change', 'input[name="row_selector[1]"]', function () {
+        toggleSubmitButton();
+    });
+	
+	if (!$('input[name="row_selector[2]"]').prop('checked')) {
+		let fees_row_balance_total = 0;
+		let ledg_final_total = $('.ledg_final_total').val();
+		let old_ledger_amt = $('#old_ledger_amt').val();
+		$('.fees_row_balance').each(function () {
+			fees_row_balance_total += parseFloat($(this).val()) || 0;
+		});
+		$('.ledg_final_total').val(formatAmount(ledg_final_total) - formatAmount(fees_row_balance_total));
+		$('#ledg_tot_text').text(formatAmount(ledg_final_total) - formatAmount(fees_row_balance_total));
+		$('#old_ledger_amt').val(formatAmount(old_ledger_amt) - formatAmount(fees_row_balance_total));
+	}
 });
 function toggleSubmitButton() {
-
+	
+	if ($('input[name="row_selector[1]"]').is(':checked')) {
+		$('#receipt_amt').prop('readonly', true);
+		$('#error_message_rcpt').hide();
+	} else {
+		$('#receipt_amt').prop('readonly', false);
+		$('#error_message_rcpt').show();
+	}
+	
     // Check if any disabled checkbox is already checked
     let hasPermanentChecked = $('input[type="checkbox"][name^="row_selector["]:disabled:checked').length > 0;
 
@@ -1843,6 +1876,6 @@ function toggleSubmitButton() {
         $('#select_check_msg').text('Please select at least one item to continue.');
     } else {
         $('#select_check_msg').text('');
-    }
+    }	
 }
 </script>

@@ -25,7 +25,34 @@ Currrent ledger update = (Balance Amt - PREV Balance AMT)-hidden field(original_
 ------------
 already check + edit = (Balance Amt - hidden Balance Amt(old_prev_row_balance))+PREV AMT
 already check + then uncheck = (hidden_received_discount) + PREV AMT
+---------------------------------------------
+PREV AMT : Rs. 14000
+LEDG AMT : Rs. 200 
+Step 1) Collect new fee
+   	Select Apr academy
+	uncheck PREV AMT
+	check LEDG AMT Received all
+	From academy 200 bal amount
+	Total balance in this slip 200
+	Total LEDG AMT is 200
 
-old_prev_row_balance
-previous_receive_dics = 
-Discount + Ledger = 
+Step 2) Edit this slip
+	Uncheck LEDG AMT
+	Total LEDG AMT is 3200
+
+when already uncheck LEDG AMT then in edit page need to show minus 
+
+==============
+1. Existing Balance Amt = 200
+2. Updated Balance = 300
+3. Existing LEDG AMT = 0
+Existing LEDG AMT + (Updated Balance-xisting Balance Amt)
+0+(300-200) = 100
+
+0+(100-200) = -100
+
+200+(200-200) = 200
+
+If balance then plus (main balance - prev balance - original ledger bal)
+If discount then minus (main disc - prev disc - original hidden)
+$total = balance - disc

@@ -1041,6 +1041,7 @@ class Cron extends CI_Controller
 				'fee_category_id' => $student_new_cat_id,
 				'transport_fees' => $val['transport_fees'],
 				'fees_discount' => 0,
+				'total_fees_discount' => 0,
 				'previous_session_balance' => $fees_discount,
 				'previous_student_session_id' => $val['id'],
 				'is_active' => $val['is_active'],
