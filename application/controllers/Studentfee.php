@@ -467,7 +467,7 @@ class Studentfee extends Admin_Controller
 				$up_prev_bal = ((int)$data['prev_row_balance'] - (int)$data['old_prev_row_balance']) + (int)$data['current_prev_balance'];
 			}
 			$up_disc = (int)$data['ledg_rec_discount'] - (int)$data['original_discount_ledger'];
-			$total_fees_discount = ((int)$data['balance_amt']-(int)$data['prev_row_balance']-(int)$data['original_ledg_bal']-(int)$data['ledg_row_balance']) - (int)$up_disc;
+			$total_fees_discount = ((int)$data['balance_amt']-(int)$data['prev_row_balance']-(int)$data['original_ledg_bal']-((int)$data['ledg_row_balance']-(int)$data['old_ledg_row_balance'])) - (int)$up_disc;
 				
 			if($data['hidden_received_discount_ledger'] > 0 && !isset($data['row_selector'][2])){
 				// $up_ledg_bal =  ((int)$data['hidden_received_discount_ledger'] + (int)$data['prev_balance_amt_remain']) - (int)(array_sum($data['row_balance']));
@@ -620,7 +620,7 @@ class Studentfee extends Admin_Controller
 				// echo $up_ledg_bal;die;
 			}
 			$up_disc = (int)$data['ledg_rec_discount'] - (int)$data['original_discount_ledger'];
-			$total_fees_discount = ((int)$data['balance_amt']-(int)$data['prev_row_balance']-(int)$data['original_ledg_bal']-(int)$data['ledg_row_balance']) - (int)$up_disc;
+			$total_fees_discount = ((int)$data['balance_amt']-(int)$data['prev_row_balance']-(int)$data['original_ledg_bal']-((int)$data['ledg_row_balance']-(int)$data['old_ledg_row_balance'])) - (int)$up_disc;
 			$this->Receipt_model->update_student($data['student_id'],$up_ledg_bal,$up_prev_bal,$total_fees_discount);
 			
 			$prev_discount = (int)$data['prev_rec_discount'] - (int)$data['prev_discount'];
