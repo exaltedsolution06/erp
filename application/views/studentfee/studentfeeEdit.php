@@ -1633,6 +1633,10 @@ $(document).ready(function () {
 
         if (!$('#receipt_amt').data('manual')) {
             $('#receipt_amt').val(formatAmount(receiptAmt));
+			
+			// Logic A
+			$('#balance_amt').val(formatAmount(totalBalance));
+		
         }
 
         $('#hid_receipt_amt').val(formatAmount(receiptAmt));
@@ -1643,9 +1647,6 @@ $(document).ready(function () {
             '.'
         );
 
-        // Logic A
-        $('#balance_amt').val(formatAmount(totalBalance));
-		
 		$('.rec_discount').each(function () {
 			if ($(this).val() == '0') {
 				$(this).val('');
@@ -1814,7 +1815,9 @@ $(document).ready(function () {
         updateFooterTotals();
     });
 
+	$('#receipt_amt').data('manual', true);
     updateFooterTotals();
+	$('#receipt_amt').removeData('manual');
 	
 	$('.rec_discount').each(function () {
 		if ($(this).val() == '0') {

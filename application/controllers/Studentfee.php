@@ -167,7 +167,7 @@ class Studentfee extends Admin_Controller
 				$previous_session_balance = (int)$data['prev_row_balance'];
 			}
 			$pre_session = $this->session_model->getPreSession($this->current_session);
-			$total_fees_discount = (int)$data['balance_amt']-(int)$data['prev_row_balance']-(int)$data['ledg_rec_discount'];
+			$total_fees_discount = (int)$data['balance_amt']-(int)$data['prev_row_balance']-(int)$data['ledg_rec_discount']-(int)$data['ledg_row_balance'];
             $this->Receipt_model->update_student($data['student_id'],$fees_discount,$previous_session_balance,$total_fees_discount);
             $this->studentfeemaster_model->update_student_fees_master_c($data['previous_student_session_id'],$data['prev_rec_discount'],$pre_session->id,$this->balance_group);
 			
@@ -271,7 +271,7 @@ class Studentfee extends Admin_Controller
 				$previous_session_balance = (int)$data['prev_row_balance'];
 			}
 			$pre_session = $this->session_model->getPreSession($this->current_session);
-			$total_fees_discount = (int)$data['balance_amt']-(int)$data['prev_row_balance']-(int)$data['ledg_rec_discount'];
+			$total_fees_discount = (int)$data['balance_amt']-(int)$data['prev_row_balance']-(int)$data['ledg_rec_discount']-(int)$data['ledg_row_balance'];
             $this->Receipt_model->update_student($data['student_id'],$fees_discount,$previous_session_balance,$total_fees_discount);
             $this->studentfeemaster_model->update_student_fees_master_c($data['previous_student_session_id'],(int)($data['prev_rec_discount']),$pre_session->id,$this->balance_group);
 			
@@ -591,7 +591,6 @@ class Studentfee extends Admin_Controller
 			
 			$pre_session = $this->session_model->getPreSession($this->current_session);
 			
-            // $this->Receipt_model->update_student($data['student_id'],(int)($data['prev_balance_amt_remain']),(int)($data['remaining_previous_balance']));
 			if($data['hidden_received_discount'] > 0 && !isset($data['row_selector'][1])){
 				$up_prev_bal = (int)$data['hidden_received_discount'] + (int)$data['current_prev_balance'];
 			}else if($data['hidden_received_discount'] == 0 && isset($data['row_selector'][1])){
@@ -646,7 +645,6 @@ class Studentfee extends Admin_Controller
 			);
 			
 			$this->Receipt_model->insert_balance_sheet($balance_sheet);
-            //$this->Receipt_model->update_student($data['student_id'],(int)($data['balance_amt'] - $data['prev_balance_amt']));
         }
         $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Fees Edited successfully</div>');
 		
@@ -2452,7 +2450,7 @@ class Studentfee extends Admin_Controller
             $receipt_no = $_GET['receipt_no'];
 			
 			$res_del=$this->db
-                ->select('student_id,session_id,date_time,back_id,receipt_no,mode,fee_head,late_fees,ledger_amt,total_fees,discount_amt,net_fees,receipt_amt,balance_amt,remarks,fee_head_name,SUM(balance_amount) as balance_amount,(total) as total, SUM(rec_discount) as rec_discount, SUM(rec_amount) as rec_amount, previous_balance, previous_discount')
+                ->select('student_id,session_id,date_time,back_id,receipt_no,mode,fee_head,late_fees,ledger_amt,total_fees,discount_amt,net_fees,receipt_amt,balance_amt,remarks,fee_head_name,SUM(balance_amount) as balance_amount,(total) as total, SUM(rec_discount) as rec_discount, SUM(rec_amount) as rec_amount, previous_balance, previous_discount, ledger_discount, remain_ledger, remaining_previous_balance')
                 ->where_in('receipt_no', $receipt_no)
                 ->group_by('fee_head')
                 ->get('receipts')
@@ -2482,11 +2480,13 @@ class Studentfee extends Admin_Controller
                     //$new_discount = $current_discount + $receipt_amt; // 18-11-2025
                     $new_discount = (int)$current_discount + (int)$update_receipt_amt; // ES
                     $new_previous_session_balance = (int)$current_previous_balance + (int)$previous_balance_with_discount; // ES
+					
+					$total_fees_discount = (int)$row->total_fees_discount+(int)$res_del->ledger_discount - ((int)$res_del->balance_amt-((int)$res_del->remain_ledger+(int)$res_del->remaining_previous_balance));
 
-                    // Step 3: Update the `fees_discount`
+                    // Step 3: Update the `fees_discount` 3300+100 - (600-200)   3000-100 + (600-200)
                     $this->db->where('student_id', $res_del->student_id);
 					$this->db->where('session_id', $res_del->session_id);
-                    $this->db->update('student_session', array('fees_discount' => $new_discount,'previous_session_balance' => $new_previous_session_balance));
+                    $this->db->update('student_session', array('fees_discount' => $new_discount,'previous_session_balance' => $new_previous_session_balance,'total_fees_discount' => $total_fees_discount));
 					
 					// Step 4: Update the `student_fees_master`
 					$pre_session = $this->session_model->getPreSession($this->current_session);
@@ -2710,7 +2710,7 @@ class Studentfee extends Admin_Controller
 			
 			// update table student_session table 
 				$res_del=$this->db
-					->select('student_id,session_id,date_time,back_id,receipt_no,mode,fee_head,late_fees,ledger_amt,total_fees,discount_amt,net_fees,receipt_amt,balance_amt,remarks,fee_head_name,SUM(balance_amount) as balance_amount,(total) as total, SUM(rec_discount) as rec_discount, SUM(rec_amount) as rec_amount, previous_balance, previous_discount')
+					->select('student_id,session_id,date_time,back_id,receipt_no,mode,fee_head,late_fees,ledger_amt,total_fees,discount_amt,net_fees,receipt_amt,balance_amt,remarks,fee_head_name,SUM(balance_amount) as balance_amount,(total) as total, SUM(rec_discount) as rec_discount, SUM(rec_amount) as rec_amount, previous_balance, previous_discount, ledger_discount, remain_ledger, remaining_previous_balance')
 					->where_in('receipt_no', $receipt_no)
 					->group_by('fee_head')
 					->get('deleted_receipts')
@@ -2744,11 +2744,13 @@ class Studentfee extends Admin_Controller
 			
 						redirect('studentfee/studentfee_deletedlist');
 					}*/
-
+					
+					$total_fees_discount = (int)$row->total_fees_discount-(int)$res_del->ledger_discount + ((int)$res_del->balance_amt-((int)$res_del->remain_ledger+(int)$res_del->remaining_previous_balance));
+					
 					// Step 3: Update the `fees_discount`
 					$this->db->where('student_id', $res_del->student_id);
 					$this->db->where('session_id', $res_del->session_id);
-					$this->db->update('student_session', array('fees_discount' => $new_discount, 'previous_session_balance' => $new_previous_session_balance));
+					$this->db->update('student_session', array('fees_discount' => $new_discount, 'previous_session_balance' => $new_previous_session_balance, 'total_fees_discount' => $total_fees_discount));
 					
 					// Step 4: Update the `student_fees_master`
 					$pre_session = $this->session_model->getPreSession($this->current_session);
