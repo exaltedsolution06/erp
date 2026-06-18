@@ -232,7 +232,7 @@ if($_GET['copy']=='2'){
 									<tbody>
 									<?php $i=1; if($fees[0]->previous_balance > 0){
 											$pre_bal = format_amount((int)$fees[0]->previous_balance+(int)$fees[0]->remaining_previous_balance+(int)$fees[0]->previous_discount);
-											if($pre_bal > 0){
+											if($pre_bal != 0){
 										?>
 										<tr> 
 											<td style="font-weight:bold"><?= $i++; ?></td>
@@ -242,7 +242,7 @@ if($_GET['copy']=='2'){
 									<?php } } ?>
 									<?php if($fees[0]->fee_head_name != 'Ledger Amount'){
 											$old_bal = format_amount($fees[0]->ledger_amt);
-											if($old_bal > 0){
+											if($old_bal != 0){
 										?>
 										<tr> 
 											<td style="font-weight:bold"><?= $i++; ?></td>
@@ -262,7 +262,7 @@ if($_GET['copy']=='2'){
 												$fee_head_bal = format_amount($list->ledger_amt);
 											}
 											// echo'<pre>';print_r($fee_head_bal);exit;
-											if($fee_head_bal > 0){
+											if($fee_head_bal != 0){
 									?>
 										<tr>
 											<td style="font-weight:bold"><?=$i++?></td>
@@ -452,7 +452,7 @@ if($_GET['copy']=='2'){
 									<tbody>									
 									<?php $i=1; if($fees[0]->previous_balance > 0){
 										$pre_bal = format_amount((int)$fees[0]->previous_balance+(int)$fees[0]->remaining_previous_balance+(int)$fees[0]->previous_discount);
-										if($pre_bal > 0){
+										if($pre_bal != 0){
 										?>
 										<tr> 
 											<td style="font-weight:bold"><?= $i++; ?></td>
@@ -462,7 +462,7 @@ if($_GET['copy']=='2'){
 									<?php } } ?>
 									<?php if($fees[0]->fee_head_name != 'Ledger Amount'){
 											$old_bal = format_amount($fees[0]->ledger_amt);
-											if($old_bal > 0){
+											if($old_bal != 0){
 										?>
 										<tr> 
 											<td style="font-weight:bold"><?= $i++; ?></td>
@@ -477,7 +477,7 @@ if($_GET['copy']=='2'){
 											}else{
 												$fee_head_bal = format_amount($list->ledger_amt);
 											}
-											if($fee_head_bal > 0){
+											if($fee_head_bal != 0){
 										?>
 										<tr>
 											<td style="font-weight:bold"><?=$i++?></td>
@@ -890,7 +890,7 @@ if($_GET['copy']=='2'){
 						
 						<?php $i=1; if($fees[0]->previous_balance > 0){
 							$pre_bal = format_amount((int)$fees[0]->previous_balance+(int)$fees[0]->remaining_previous_balance+(int)$fees[0]->previous_discount);
-							if($pre_bal > 0){
+							if($pre_bal != 0){
 							?>
 							<tr> 
 								<td style="font-weight:bold"><?= $i++; ?></td>
@@ -900,7 +900,7 @@ if($_GET['copy']=='2'){
 						<?php } } ?>
                          <?php if($fees[0]->fee_head_name != 'Ledger Amount'){
 								$old_bal = format_amount($fees[0]->ledger_amt);
-								if($old_bal > 0){
+								if($old_bal != 0){
 							 ?>
                         <tr> 
                             <td style="font-weight:bold"><?= $i++; ?></td>
@@ -915,7 +915,7 @@ if($_GET['copy']=='2'){
 								}else{
 									$fee_head_bal = format_amount($list->ledger_amt);
 								}
-								if($fee_head_bal > 0){
+								if($fee_head_bal != 0){
 							?>
                         <tr>
                             <td style="font-weight:bold"><?=$i++?></td>
@@ -943,7 +943,7 @@ if($_GET['copy']=='2'){
 							else{
 								$pay = $list->ledger_amt; 
 							}
-						} 
+						}
 						?>
 						<?php if ($result->rcpt_total_amt) { ?>
                         <tr style="border-top:1px solid">

@@ -311,6 +311,16 @@ class Studentfee extends Admin_Controller
 
         $data = $this->input->post(); 
 		
+		/*$cur_ledger_update = ((int)$data['balance_amt']-(int)$data['prev_row_balance']) - (int)$data['original_ledg_bal'];
+		$up_ledg_bal = (int)$data['prev_balance_amt_remain'] + (int)$cur_ledger_update;
+		echo $data['balance_amt'].'<br>';
+		echo $data['prev_row_balance'].'<br>';
+		echo $data['original_ledg_bal'].'<br>';
+		echo $data['prev_balance_amt_remain'].'<br>';
+		echo $cur_ledger_update.'<br>';
+		die;*/		
+		// echo '<pre>'; print_r($data); echo '</pre>';die;		
+		
 		$rept_no = explode('/', $data['receipt_no']);
         $srNo = $rept_no[1];	
 		//echo '<pre>'; print_r($data); echo '</pre>';die;
@@ -342,6 +352,7 @@ class Studentfee extends Admin_Controller
 			}
 			// echo "<pre>";print_r($data);die;
             $paid=$data['pay'];
+		// echo '<pre>'; print_r($data); echo '</pre>';die;		
             foreach($paid as $key=>$value){
                 if($value=='paid'){
                     foreach ($data['months'] as $keys => $month) {
@@ -390,7 +401,7 @@ class Studentfee extends Admin_Controller
                             'total'        => ($data['total'][$key+$deduct_count]),
                             'month_total'   => $data['month_total'][$month][$key],
                             'rec_discount' => (int) ($data['rec_discount'][$key]),
-                            'rec_amount'   => ($data['rec_amount'][$key]),
+                            'rec_amount'   => ((int)$data['rec_amount'][$key]),
                             'balance_amount' => (int) $data['total'][$key+$deduct_count]-((int) $data['rec_discount'][$key] + (int) $data['rec_amount'][$key]),
                             'fees_received' => $data['hid_fees_received'],
                             'late_fees'    => $data['late_fees'],
@@ -414,7 +425,7 @@ class Studentfee extends Admin_Controller
 							'ledger_received'     => $data['ledg_rec_amount'],
 							'remain_ledger'     => $data['ledg_row_balance'],
                         );
-						//echo '<pre>'; print_r($insert_data); echo '</pre>';die;
+						// echo '<pre>'; print_r($insert_data); echo '</pre>';
 
                         // echo "<hr>";
 						$insert_data['session_id'] = $this->current_session;
@@ -432,11 +443,31 @@ class Studentfee extends Admin_Controller
 			
 			if($data['hidden_received_discount'] > 0 && !isset($data['row_selector'][1])){
 				$up_prev_bal = (int)$data['hidden_received_discount'] + (int)$data['current_prev_balance'];
+			}else if($data['hidden_received_discount'] == 0 && isset($data['row_selector'][1])){
+				$up_prev_bal = (int)$data['prev_row_balance'];
 			}else{
-				$up_prev_bal = ((int)$data['prev_row_balance'] - (int)$data['hidden_received_discount']) + (int)$data['current_prev_balance'];
+				$up_prev_bal = ((int)$data['prev_row_balance'] - (int)$data['old_prev_row_balance']) + (int)$data['current_prev_balance'];
 			}
-			$cur_ledger_update = ((int)$data['balance_amt']-(int)$data['prev_row_balance']) - (int)$data['original_ledg_bal'];
-			$up_ledg_bal = (int)$data['prev_balance_amt_remain'] + (int)$cur_ledger_update;
+			if($data['hidden_received_discount_ledger'] > 0 && !isset($data['row_selector'][2])){
+				$up_ledg_bal = (int)$data['hidden_received_discount_ledger'] + (int)$data['prev_balance_amt_remain'];
+				// echo 'One'.'<br>';
+				// echo $data['hidden_received_discount_ledger'].'<br>';
+				// echo $data['prev_balance_amt_remain'].'<br>';
+				// echo $up_ledg_bal.'<br>';die;
+			}else if($data['hidden_received_discount_ledger'] >= 0 && isset($data['row_selector'][2])){
+				$up_ledg_bal = (int)$data['balance_amt'] - (int)$data['prev_row_balance'];
+				// echo 'Two'.'<br>';
+				// echo $data['balance_amt'].'<br>';
+				// echo $data['prev_row_balance'].'<br>';
+				// echo $up_ledg_bal.'<br>';die;
+			}else{
+				$cur_ledger_update = ((int)$data['balance_amt']-(int)$data['prev_row_balance']) - (int)$data['original_ledg_bal']; // (7000-2000)-1000
+				$up_ledg_bal = (int)$data['prev_balance_amt_remain'] + $cur_ledger_update; // 4000+4000
+				// echo 'Three'.'<br>';
+				// echo $data['prev_balance_amt_remain'].'<br>';
+				// echo $cur_ledger_update.'<br>';
+				// echo $up_ledg_bal;die;
+			}
 			$this->Receipt_model->update_student($data['student_id'],$up_ledg_bal,$up_prev_bal);
 			
 			$prev_discount = (int)$data['prev_rec_discount'] - (int)$data['prev_discount'];
@@ -471,7 +502,17 @@ class Studentfee extends Admin_Controller
 			}else if($data['ledg_rec_amount'] == 0 && $data['prev_rec_amount'] > 0){
 				$receipt_type = 2;
 			}
-			
+			$previous_balance=0;
+			if(!isset($data['row_selector'][1])){
+				$previous_balance = $data['total'][0];
+				$data['total'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
+			}
+            $previous_ledger_balance=0;
+			if(!isset($data['row_selector'][2])){
+				$previous_ledger_balance = $data['total'][1];
+				$data['total'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
+			}
+			// echo "<pre>";print_r($data);die;
 			// $this->Receipt_model->delete_receipts_by_receipt_no($data['receipt_no']);
             $insert_data = array(
                 'receipt_no'   => $data['receipt_no'],
@@ -490,7 +531,8 @@ class Studentfee extends Admin_Controller
                 'ledger_amt'   => $data['old_ledger_amt'],
                 'total_fees'   => (float) ($data['late_fees'] ?? 0)+(float) ($data['old_ledger_amt'] ?? 0),
                 'discount_amt' => $data['ledg_rec_discount'],
-                'net_fees'     => (float) ($data['late_fees'] ?? 0)+(float) ($data['old_ledger_amt'] ?? 0)-(float) ($data['ledg_rec_discount'] ?? 0),
+                // 'net_fees'     => (float) ($data['late_fees'] ?? 0)+(float) ($data['old_ledger_amt'] ?? 0)-(float) ($data['ledg_rec_discount'] ?? 0),
+				'net_fees'     => (float) ($data['net_fees'] ?? 0)-(float) ($data['prev_rec_amount'] ?? 0),
                 'receipt_amt'  => $data['receipt_amt'],
                 // 'balance_amt'  => $data['balance_amt'],
                 'balance_amt'  => $data['prev_row_balance'] > 0 ? ((float) ($data['balance_amt'] ?? 0)-(float) ($data['prev_row_balance'] ?? 0)) : $data['balance_amt'],
@@ -515,8 +557,33 @@ class Studentfee extends Admin_Controller
 			$pre_session = $this->session_model->getPreSession($this->current_session);
 			
             // $this->Receipt_model->update_student($data['student_id'],(int)($data['prev_balance_amt_remain']),(int)($data['remaining_previous_balance']));
-			$up_prev_bal = (int)$data['current_prev_balance'] + ((int)$data['prev_row_balance'] - (int)$data['old_prev_row_balance']);
-			$up_ledg_bal = (int)$data['prev_balance_amt_remain'] + (((int)$data['balance_amt'] - (int)$data['prev_row_balance']) - (int)$data['ledg_old']);
+			if($data['hidden_received_discount'] > 0 && !isset($data['row_selector'][1])){
+				$up_prev_bal = (int)$data['hidden_received_discount'] + (int)$data['current_prev_balance'];
+			}else if($data['hidden_received_discount'] == 0 && isset($data['row_selector'][1])){
+				$up_prev_bal = (int)$data['prev_row_balance'];
+			}else{
+				$up_prev_bal = ((int)$data['prev_row_balance'] - (int)$data['old_prev_row_balance']) + (int)$data['current_prev_balance'];
+			}
+			if($data['hidden_received_discount_ledger'] > 0 && !isset($data['row_selector'][2])){
+				$up_ledg_bal = (int)$data['hidden_received_discount_ledger'] + (int)$data['prev_balance_amt_remain'];
+				// echo 'One'.'<br>';
+				// echo $data['hidden_received_discount_ledger'].'<br>';
+				// echo $data['prev_balance_amt_remain'].'<br>';
+				// echo $up_ledg_bal.'<br>';die;
+			}else if($data['hidden_received_discount_ledger'] >= 0 && isset($data['row_selector'][2])){
+				$up_ledg_bal = (int)$data['balance_amt'] - (int)$data['prev_row_balance'];
+				// echo 'Two'.'<br>';
+				// echo $data['balance_amt'].'<br>';
+				// echo $data['prev_row_balance'].'<br>';
+				// echo $up_ledg_bal.'<br>';die;
+			}else{
+				$cur_ledger_update = ((int)$data['balance_amt']-(int)$data['prev_row_balance']) - (int)$data['original_ledg_bal']; // (7000-2000)-1000
+				$up_ledg_bal = (int)$data['prev_balance_amt_remain'] + $cur_ledger_update; // 4000+4000
+				// echo 'Three'.'<br>';
+				// echo $data['prev_balance_amt_remain'].'<br>';
+				// echo $cur_ledger_update.'<br>';
+				// echo $up_ledg_bal;die;
+			}
 			$this->Receipt_model->update_student($data['student_id'],$up_ledg_bal,$up_prev_bal);
 			
 			$prev_discount = (int)$data['prev_rec_discount'] - (int)$data['prev_discount'];

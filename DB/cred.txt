@@ -23,6 +23,7 @@ http://localhost/erp/modulepermission
 http://localhost/erp/usermodulepermission
 http://localhost/erp/common/update_student_session_active
 http://localhost/erp/script/fix_sql
+http://localhost/erp/script/update_student_total_fees
 
 http://localhost/erp/prevbalscript
 

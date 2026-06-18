@@ -882,4 +882,24 @@ class Script extends Public_Controller
 			echo "All atble have auto increment id";
 		}
 	}
+	public function update_student_total_fees()
+	{
+		$result = $this->db->select('*')->from('student_session')->get()->result_array();
+		
+		foreach ($result as $row) {
+			$ledger_received_sum = $this->db
+				->select('SUM(ledger_received) as ledger_received')
+				->from('(SELECT receipt_no, MAX(ledger_received) as ledger_received
+						 FROM receipts
+						 WHERE session_id = '.$this->db->escape($row['session_id']).'
+						 AND student_id = '.$this->db->escape($row['student_id']).'
+						 GROUP BY receipt_no) t', false)
+				->get()
+				->row();
+			$this->db->where('student_id', $row['student_id']);
+			$this->db->where('session_id', $row['session_id']);
+			$this->db->update('student_session', array('total_fees_discount' => ((int)$row['fees_discount'] + (int)$ledger_received_sum->ledger_received)));
+		}
+		echo "Success";
+	}
 }

@@ -1111,13 +1111,15 @@ class Cron extends CI_Controller
 		// echo "<pre>";print_r($classSectionArr);exit;
 		
 		$result = [];
+		$currentSectionId = null;
+		$nextSectionId = null;
 		foreach ($classes as $index => $class) {
 
 			$currentClassId = key($class);
 			$nextClassId = current($class);
 
-			$currentSectionId = null;
-			$nextSectionId = null;
+			// $currentSectionId = null;
+			// $nextSectionId = null;
 
 			if (isset($sections[$index])) {
 				$currentSectionId = key($sections[$index]);
@@ -1135,6 +1137,7 @@ class Cron extends CI_Controller
 		// echo "<pre>";print_r($result);exit;
 		
 		$new_subject_arr = [];
+		$class_section_ids = [];
 		
 		foreach($result as $val)
 		{
@@ -1150,6 +1153,7 @@ class Cron extends CI_Controller
 				$this->db->where('section_id', $val['next_section_id']);
 				$next_id = $this->db->get('class_sections')->row_array();
 				$next_class_section_id = $next_id['id'];
+				$class_section_ids[$class_section_id] = $next_class_section_id;
 			 
 				$hasRec = $this->db->where('class_section_id', $next_class_section_id)->get('subject_group_class_sections');
 				if($hasRec->num_rows() == 0)
@@ -1208,7 +1212,6 @@ class Cron extends CI_Controller
 						
 					}
 				}
-				
 				
 				// add subjects in subject group
 				// get next class and section names
@@ -1322,7 +1325,42 @@ class Cron extends CI_Controller
 						$this->db->insert_batch('subject_group_subjects', $insert_data);
 					}
 					
-					$section_group_array = array();
+					$cl_sections = $this->db
+						->where('session_id', $current_session)
+						->get('subject_group_class_sections')
+						->result_array();
+					// echo "<pre>";print_r($cl_sections);exit;	
+					foreach ($cl_sections as $row) {
+
+						if (
+							!isset($new_subject_group_arr[$row['subject_group_id']]) ||
+							!isset($class_section_ids[$row['class_section_id']])
+						) {
+							continue;
+						}
+
+						$new_group_id = $new_subject_group_arr[$row['subject_group_id']];
+						$new_class_section_id = $class_section_ids[$row['class_section_id']];
+
+						$exists = $this->db
+							->where('subject_group_id', $new_group_id)
+							->where('class_section_id', $new_class_section_id)
+							->where('session_id', $next_session)
+							->get('subject_group_class_sections')
+							->row();
+
+						if (!$exists) {
+							$this->db->insert('subject_group_class_sections', [
+								'subject_group_id' => $new_group_id,
+								'class_section_id' => $new_class_section_id,
+								'session_id'       => $next_session,
+								'description'      => $row['description'],
+								'is_active'        => $row['is_active'],
+								'created_at'       => date('Y-m-d H:i:s'),
+							]);
+						}
+					}					
+					/*$section_group_array = array();
 					foreach ($section_group as $section_group_key => $section_group_value) {
 
 						$sections_array = array(
@@ -1333,7 +1371,7 @@ class Cron extends CI_Controller
 
 						$section_group_array[] = $sections_array;
 					}
-					$this->db->insert_batch('subject_group_class_sections', $section_group_array);
+					$this->db->insert_batch('subject_group_class_sections', $section_group_array);*/
 					
 					//$this->subjectgroup_model->add($class_array, $subject_group, $section_group);
 				}
@@ -1342,6 +1380,8 @@ class Cron extends CI_Controller
 			
 			// echo "<pre>";print_r($new_subject_group_arr);exit;
 		}
+		// echo "<pre>";print_r($class_section_ids);exit;
+		
 		
 	}
 	public function create_disable_reason($classes)

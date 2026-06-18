@@ -200,12 +200,12 @@ class Studentfee extends Admin_Controller
 			
         }else{
 			// echo "<pre>";print_r($data);die;
-			if($data['ledg_rec_amount'] > 0 && $data['prev_rec_amount'] > 0){
+			if(isset($data['row_selector'][1]) && isset($data['row_selector'][2])){
 				$receipt_type = 3;
-			}else if($data['ledg_rec_amount'] > 0 && $data['prev_rec_amount'] == 0){
-				$receipt_type = 1;
-			}else if($data['ledg_rec_amount'] == 0 && $data['prev_rec_amount'] > 0){
+			}else if(isset($data['row_selector'][1]) && !isset($data['row_selector'][2])){
 				$receipt_type = 2;
+			}else if(!isset($data['row_selector'][1]) && isset($data['row_selector'][2])){
+				$receipt_type = 1;
 			}
 			$previous_balance=0;
 			if(!isset($data['row_selector'][1])){
@@ -530,12 +530,12 @@ class Studentfee extends Admin_Controller
 			
 			$this->Receipt_model->insert_balance_sheet($balance_sheet);
         }else{
-			if($data['ledg_rec_amount'] > 0 && $data['prev_rec_amount'] > 0){
+			if(isset($data['row_selector'][1]) && isset($data['row_selector'][2])){
 				$receipt_type = 3;
-			}else if($data['ledg_rec_amount'] > 0 && $data['prev_rec_amount'] == 0){
-				$receipt_type = 1;
-			}else if($data['ledg_rec_amount'] == 0 && $data['prev_rec_amount'] > 0){
+			}else if(isset($data['row_selector'][1]) && !isset($data['row_selector'][2])){
 				$receipt_type = 2;
+			}else if(!isset($data['row_selector'][1]) && isset($data['row_selector'][2])){
+				$receipt_type = 1;
 			}
 			$previous_balance=0;
 			if(!isset($data['row_selector'][1])){
@@ -2483,7 +2483,7 @@ class Studentfee extends Admin_Controller
 					
 					$total_fees_discount = (int)$row->total_fees_discount+(int)$res_del->ledger_discount - ((int)$res_del->balance_amt-((int)$res_del->remain_ledger+(int)$res_del->remaining_previous_balance));
 
-                    // Step 3: Update the `fees_discount` 3300+100 - (600-200)   3000-100 + (600-200)
+                    // Step 3: Update the `fees_discount`
                     $this->db->where('student_id', $res_del->student_id);
 					$this->db->where('session_id', $res_del->session_id);
                     $this->db->update('student_session', array('fees_discount' => $new_discount,'previous_session_balance' => $new_previous_session_balance,'total_fees_discount' => $total_fees_discount));
