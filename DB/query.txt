@@ -61,5 +61,5 @@ If discount in ledger then plus when delete and minus when retrieve.
 
 From receipts table (only sum ofledger received + student session fees_discount)
 
-
+edit page fess_discount - hidden original value
 

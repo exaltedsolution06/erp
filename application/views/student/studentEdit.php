@@ -413,6 +413,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Legder Amount</label>
                                                     <input id="fees_discount" name="fees_discount" placeholder="" type="text" class="form-control"  value="<?php echo $student['fees_discount'] ?>"  />
+                                                    <input name="hid_fees_discount" type="hidden" value="<?php echo $student['fees_discount'] ?>"  />
                                                     <span class="text-danger"><?php echo form_error('fees_discount'); ?></span>
                                                 </div> 
                                             </div>

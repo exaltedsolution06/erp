@@ -796,6 +796,7 @@ class Student extends Admin_Controller
                     'section_id'    => $section_id,
                     'session_id'    => $session,
                     'fees_discount' => $fees_discount,
+                    'total_fees_discount' => $fees_discount,
                     'route_id' => $vehroute_id,
                     'fee_category_id' => $this->input->post('category_id'),
                     'school_house_id' => $this->input->post('house'),
@@ -1486,12 +1487,23 @@ class Student extends Admin_Controller
 							}	
 
                             if (!empty($insert_id)) {
+								$this->db->where('session_id', $session);
+								$this->db->where('student_id', $insert_id);
+								$q = $this->db->get('student_session');
+								if ($q->num_rows() > 0) {
+									$rec = $q->row_array();
+									$total_fees_discount = (int)$rec['total_fees_discount'] + ((int)$ledger_amt - (int)$rec['fees_discount']);
+								} else {
+									$total_fees_discount = $ledger_amt;
+								}
+								
                                 $data_new = array(
                                     'student_id' => $insert_id,
                                     'class_id'   => $class_id,
                                     'section_id' => $section_id,
                                     'session_id' => $session,
                                     'fees_discount' => $ledger_amt,
+                                    'total_fees_discount' => $total_fees_discount,
                                     'route_id' => $result[$i]['Route List ID'],
                                     'school_house_id' => $result[$i]['Student House ID'],
                                     'fee_category_id' => $result[$i]['Fee Category ID'],
@@ -1680,6 +1692,7 @@ class Student extends Admin_Controller
             $section_id     = $this->input->post('section_id');
             $hostel_room_id = $this->input->post('hostel_room_id');
             $fees_discount  = $this->input->post('fees_discount');
+            $hid_fees_discount  = $this->input->post('hid_fees_discount');
             $vehroute_id    = $this->input->post('vehroute_id');
             if (empty($vehroute_id)) {
                 $vehroute_id = 0;
@@ -1868,6 +1881,7 @@ class Student extends Admin_Controller
                 'section_id'    => $section_id,
                 'session_id'    => $session,
                 'fees_discount' => $fees_discount,
+                'total_fees_discount' => (int)$student['total_fees_discount'] + ((int)$fees_discount - (int)$hid_fees_discount),
 				'route_id' => $vehroute_id,
                 'fee_category_id' => $this->input->post('category_id'),
                 'school_house_id' => $this->input->post('house'),
