@@ -327,6 +327,8 @@ class Cron extends CI_Controller
 				$this->create_disable_reason($classes);
 				$this->create_staff($classes);
 				
+				$this->cloneAcademicSessionTemplates($classes['current_session_id'], $classes['next_session_id']);
+				
 				$this->insert_opening_balance($classes);
 			}
 			
@@ -340,7 +342,265 @@ class Cron extends CI_Controller
 		
 			
 	}
-	
+	private function cloneImage($fileName, $folder)
+	{
+		if (empty($fileName)) {
+			return $fileName;
+		}
+
+		$sourcePath = FCPATH . $folder . $fileName;
+
+		if (!file_exists($sourcePath)) {
+			return $fileName;
+		}
+
+		$fileInfo = pathinfo($fileName);
+
+		$newFileName = md5(
+			$fileInfo['filename'] . microtime(true) . rand(1000, 9999)
+		) . '.' . $fileInfo['extension'];
+
+		$destinationPath = FCPATH . $folder . $newFileName;
+
+		if (copy($sourcePath, $destinationPath)) {
+			return $newFileName;
+		}
+
+		return $fileName;
+	}
+	public function cloneSessionData(
+		$table,
+		$fromSessionId,
+		$toSessionId,
+		array $imageFields = [],
+		$uniqueField,
+		$filePath = ''
+	) {
+		$records = $this->db
+			->where('session_id', $fromSessionId)
+			->get($table)
+			->result_array();
+
+		$inserted = 0;
+
+		foreach ($records as $row) {
+
+			// Skip if already copied
+			$exists = $this->db
+				->where('session_id', $toSessionId)
+				->where($uniqueField, $row[$uniqueField])
+				->count_all_results($table);
+
+			if ($exists) {
+				continue;
+			}
+
+			unset($row['id']);
+
+			$row['session_id'] = $toSessionId;
+
+			// Clone images
+			foreach ($imageFields as $field) {
+
+				if (!empty($row[$field])) {
+					$row[$field] = $this->cloneImage($row[$field], $filePath);
+				}
+			}
+
+			if (array_key_exists('updated_at', $row)) {
+				$row['updated_at'] = date('Y-m-d');
+			}
+
+			$this->db->insert($table, $row);
+
+			$inserted++;
+		}
+
+		return $inserted;
+	}
+	public function cloneSessionDataDiffPath(
+		$table,
+		$fromSessionId,
+		$toSessionId,
+		array $imageFields = [],
+		$uniqueField,
+	) {
+		$records = $this->db
+			->where('session_id', $fromSessionId)
+			->get($table)
+			->result_array();
+
+		$inserted = 0;
+
+		foreach ($records as $row) {
+
+			// Skip if already copied
+			$exists = $this->db
+				->where('session_id', $toSessionId)
+				->where($uniqueField, $row[$uniqueField])
+				->count_all_results($table);
+
+			if ($exists) {
+				continue;
+			}
+
+			unset($row['id']);
+
+			$row['session_id'] = $toSessionId;
+
+			// Clone images
+			foreach ($imageFields as $column => $folder) {
+
+				if (!empty($row[$column])) {
+					$row[$column] = $this->cloneImage(
+						$row[$column],
+						$folder
+					);
+				}
+			}
+
+			if (array_key_exists('updated_at', $row)) {
+				$row['updated_at'] = date('Y-m-d');
+			}
+
+			$this->db->insert($table, $row);
+
+			$inserted++;
+		}
+
+		return $inserted;
+	}
+	public function cloneAcademicSessionTemplates($fromSessionId, $toSessionId)
+	{
+		$this->db->trans_start();
+
+		// Admit Card Templates
+		$this->cloneSessionData(
+			'template_admitcards',
+			$fromSessionId,
+			$toSessionId,
+			[
+				'left_logo',
+				'right_logo',
+				'sign',
+				'background_img'
+			],
+			'template',
+			'uploads/admit_card/'
+		);
+
+		// Marksheet Templates
+		$this->cloneSessionData(
+			'template_marksheets',
+			$fromSessionId,
+			$toSessionId,
+			[
+				'left_sign',
+				'middle_sign',
+				'right_sign',
+				'background_image',
+				'header_img'
+			],
+			'template',
+			'uploads/marksheet/'
+		);
+		
+		// Reportcard Templates
+		$this->cloneSessionData(
+			'template_reportcard',
+			$fromSessionId,
+			$toSessionId,
+			[
+				'left_sign',
+				'middle_sign',
+				'right_sign',
+				'background_image',
+				'header_img'
+			],
+			'template',
+			'uploads/reportcard/'
+		);
+		
+		// Grade Templates
+		$this->cloneSessionData(
+			'grades',
+			$fromSessionId,
+			$toSessionId,
+			[],
+			'name',
+			''
+		);
+
+		// Reminder Letter Templates
+		$this->cloneSessionData(
+			'template_reminder_letter',
+			$fromSessionId,
+			$toSessionId,
+			[],
+			'template_name',
+			'uploads/certificate/'
+		);
+
+		// Certificate Templates
+		$this->cloneSessionData(
+			'certificates',
+			$fromSessionId,
+			$toSessionId,
+			[
+				'left_sign',
+				'middle_sign',
+				'right_sign',
+				'background_image'
+			],
+			'certificate_name',
+			'uploads/certificate/'
+		);
+
+		// Student ID Card Templates
+		$this->cloneSessionDataDiffPath(
+			'id_card',
+			$fromSessionId,
+			$toSessionId,
+			[
+				'background'=>'uploads/student_id_card/background/',
+				'logo'=>'uploads/student_id_card/logo/',
+				'sign_image'=>'uploads/student_id_card/signature/'
+			],
+			'title',
+		);
+
+		// Staff ID Card Templates
+		$this->cloneSessionDataDiffPath(
+			'staff_id_card',
+			$fromSessionId,
+			$toSessionId,
+			[
+				'background'=>'uploads/staff_id_card/background/',
+				'logo'=>'uploads/staff_id_card/logo/',
+				'sign_image'=>'uploads/staff_id_card/signature/'
+			],
+			'title',
+		);
+
+		// Design TC Templates
+		$this->cloneSessionData(
+			'template_designtc',
+			$fromSessionId,
+			$toSessionId,
+			[
+				'left_sign',
+				'middle_sign',
+				'right_sign',
+				'background_image'
+			],
+			'certificate_name',
+			'uploads/transfer_certificate/'
+		);
+
+		$this->db->trans_complete();
+
+		return $this->db->trans_status();
+	}
 	public function house_create($current_class_id, $current_session_id, $next_session_id)
     {
 		$new_house_array = [];
@@ -1433,6 +1693,7 @@ class Cron extends CI_Controller
 			$this->db->from('exam_group_class_batch_exams');
 			$this->db->where('session_id', $classes['current_session_id']);
 			$this->db->where('exam_group_id', $val['id']);
+			$this->db->where('coscholasticareas', 0);
 			$queryAss = $this->db->get();
 			if($queryAss->num_rows() > 0)
 			{
@@ -1451,7 +1712,8 @@ class Cron extends CI_Controller
 							'description' => $valAss['exam'],
 							'is_publish' => 1,
 							'is_active' => 1,
-							'exam_group_id' => $valAss['id'],
+							'coscholasticareas' => 0,
+							'exam_group_id' => $new_term_array[$valAss['exam_group_id']],
 						);
 						$this->db->insert('exam_group_class_batch_exams', $array);
 					}
@@ -1486,6 +1748,7 @@ class Cron extends CI_Controller
 			$this->db->from('exam_group_class_batch_exams');
 			$this->db->where('session_id', $classes['current_session_id']);
 			$this->db->where('exam_group_id', $val['id']);
+			$this->db->where('coscholasticareas', 1);
 			$queryAss = $this->db->get();
 			if($queryAss->num_rows() > 0)
 			{
@@ -1506,7 +1769,7 @@ class Cron extends CI_Controller
 							'is_publish' => 1,
 							'is_active' => 1,
 							'coscholasticareas' => 1,
-							'exam_group_id' => $valAss['id'],
+							'exam_group_id' => $new_term_array[$valAss['exam_group_id']],
 						);
 						$this->db->insert('exam_group_class_batch_exams', $array);
 					}

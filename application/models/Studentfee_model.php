@@ -177,8 +177,7 @@ class Studentfee_model extends CI_Model {
 		$this->db->from("( 
 			SELECT receipt_no, MAX(receipt_amt) as receipt_amt
 			FROM receipts
-			WHERE fee_head_type = 'fees'
-			AND date_time = '{$today}'
+			WHERE /*fee_head_type = 'fees' AND*/ date_time = '{$today}'
 			AND session_id = '{$this->current_session}'
 			GROUP BY receipt_no
 		) as t", false);

@@ -1881,4 +1881,9 @@ function toggleSubmitButton() {
         $('#select_check_msg').text('');
     }	
 }
+const dateInput = document.getElementById('dateInput');
+const outputInput = document.getElementById('outputInput');
+dateInput.addEventListener('change', function () {
+  outputInput.value = this.value;
+});
 </script>
