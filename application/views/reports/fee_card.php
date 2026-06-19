@@ -522,7 +522,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         <i class="fa fa-pencil"></i>
                                                     </a>
 													<?php } if ($this->rbac->hasPrivilege('collect_fee_list', 'can_delete')) { ?>
-                                                    <a href="<?php echo base_url(); ?>studentfee/studentfeelist?receipt_no=<?=$record["receipt_no"]?>&type=delete" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Delete">
+                                                    <a href="<?php echo base_url(); ?>studentfee/studentfeelist?receipt_no=<?=$record["receipt_no"]?>&type=delete&id=<?=$s_id?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Delete">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
 													<?php } ?>

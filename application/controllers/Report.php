@@ -544,6 +544,7 @@ class Report extends Admin_Controller
 			
         }
 	  // var_dump($data);
+        $data['s_id'] = $id;
         $data['sch_setting'] = $this->sch_setting_detail;
         $this->load->view('layout/header', $data);
         $this->load->view('reports/fee_card', $data);

@@ -2533,7 +2533,12 @@ class Studentfee extends Admin_Controller
 			
 			$this->session->set_flashdata('success', '<div class="alert alert-success text-center">Receipts with Receipt No: ' . $receipt_no . ' backed up and deleted successfully.</div>');
 			
-            redirect('studentfee/studentfeelist');
+			$s_id=$_GET['id']??0;
+			if($s_id != 0){
+				redirect('report/fee_card?id='.$s_id);	
+			}else{
+				redirect('studentfee/studentfeelist');				
+			}
             
         }
 
