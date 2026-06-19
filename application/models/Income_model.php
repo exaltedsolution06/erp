@@ -273,6 +273,20 @@ class Income_model extends My_Model
 		$query = $this->db->get();
 		return $query->row()->today_other_collection;
 	}
+	public function todays_collection()
+	{
+		$today = date('Y-m-d');
+		$this->db->select('SUM(amount) as today_other_collection');
+		$this->db->from('balance_sheets');
+		$this->db->where('balance_type',0);
+		$this->db->where('status',0);
+		$this->db->where('receipt_no!=',NULL);
+		$this->db->where('DATE(date)',date('Y-m-d'));
+		$this->db->where('session_id',$this->current_session);
+
+		$query = $this->db->get();
+		return $query->row()->today_other_collection;
+	}
 	public function todays_income()
 	{
 		$this->db->select('SUM(amount) as today_total_income');
@@ -314,6 +328,31 @@ class Income_model extends My_Model
 				'session_id' => $this->current_session,
 				'income_category' => INCOME_HEAD_FEE, // define in config/constants
 				'description' => INCOME_HEAD_FEE,
+				'is_active' => 'yes',
+				'is_deleted' => 'no',
+				'created_at' => date('Y-m-d h:i:s'),
+			);
+			$this->db->insert('income_head', $data);
+			$return_value = $this->db->insert_id();
+			return $return_value;
+        }
+		
+	}
+	public function get_income_head_prev($current_session)
+	{
+		$this->db->select('id');
+        $this->db->from('income_head');
+        $this->db->where('session_id', $current_session);
+        $this->db->where('income_category', PREVIOUS_CASH);
+        $query = $this->db->get();
+        if ($query->num_rows() == 1) {
+            return $query->row()->id;
+        } else {
+            
+			$data = array(
+				'session_id' => $current_session,
+				'income_category' => PREVIOUS_CASH, // define in config/constants
+				'description' => PREVIOUS_CASH,
 				'is_active' => 'yes',
 				'is_deleted' => 'no',
 				'created_at' => date('Y-m-d h:i:s'),

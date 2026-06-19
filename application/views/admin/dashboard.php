@@ -125,7 +125,7 @@
 							<div class="progress-bar progress-bar-aqua" style="width: <?php echo round($studentOtherCollsPercent) ?>%"></div>
 						</div>
 					</div>
-					<p class="text-uppercase mt10 clearfix">Today's Total collection<span class="pull-right"><?php echo isset($todayTotalCollection) ? format_amount($todayTotalCollection) : ''; ?></span>
+					<p class="text-uppercase mt10 clearfix">Today's Total collection<span class="pull-right"><?php echo isset($todayTotalCollection) ? format_amount($today_total_income) : ''; ?></span>
 					</p>
 				</div>
 			</div>

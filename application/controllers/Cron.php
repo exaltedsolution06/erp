@@ -37,6 +37,7 @@ class Cron extends CI_Controller
         $this->balance_type    = $this->config->item('ci_balance_type');
 		$this->load->model('fee_discount_model');
 		$this->load->model('Receipt_model');
+		$this->load->model('Income_model');
     }
 	
 	
@@ -212,7 +213,7 @@ class Cron extends CI_Controller
 				
 				//echo "<pre>";print_r($val);die;
 				$classes = $val;
-				$this->insert_opening_balance($classes);
+				// $this->insert_opening_balance($classes);
 				// Create section start
 					$this->db->select('sections.*')->from('sections');
 					$this->db->where('session_id', $classes['current_session_id']);
@@ -327,7 +328,7 @@ class Cron extends CI_Controller
 				$this->create_disable_reason($classes);
 				$this->create_staff($classes);
 				
-				$this->cloneAcademicSessionTemplates($classes['current_session_id'], $classes['next_session_id']);
+				// $this->cloneAcademicSessionTemplates($classes['current_session_id'], $classes['next_session_id']);
 				
 				$this->insert_opening_balance($classes);
 			}
@@ -2235,13 +2236,14 @@ class Cron extends CI_Controller
 			$result = $query->row();
 
 			$total_debit_amount = $result->amount;
-	
 			if($total_credit_amount > $total_debit_amount)
 			{
+				$income_head = $this->Income_model->get_income_head_prev($classes['next_session_id']);
 				$data = array(
 					'session_id' => $classes['next_session_id'],
 					'balance_type' => 0,
-					'amount' => $total_credit_amount,
+					'head_id'   => $income_head,
+					'amount' => (int)$total_credit_amount-(int)$total_debit_amount,
 					'date' => date('Y-m-d_H-i-s'),
 					'description' => 'Opening balance'
 				);
@@ -2249,7 +2251,7 @@ class Cron extends CI_Controller
 				$this->db->insert('balance_sheets', $data);
 			}
 			
-			if($total_debit_amount > $total_credit_amount)
+			/*if($total_debit_amount > $total_credit_amount)
 			{
 				$data = array(
 					'session_id' => $classes['next_session_id'],
@@ -2273,7 +2275,7 @@ class Cron extends CI_Controller
 				);
 				
 				$this->db->insert('balance_sheets', $data);
-			}
+			}*/
 		}
 	}
 	
