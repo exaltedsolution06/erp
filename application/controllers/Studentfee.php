@@ -52,17 +52,19 @@ class Studentfee extends Admin_Controller
             $total_total=count($data['total']);
 			$deduct_count = $total_total - $total_pay;
             $previous_balance=0;
+			$t0 = false;
 			if(isset($data['prev_present']) && $data['prev_present'] == 1){
+				$t0 = true;
 				if(!isset($data['row_selector'][1])){
 					$previous_balance = $data['total'][0];
-					$data['total'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
+					$data['totall'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
 				}
 			}
             $previous_ledger_balance=0;
 			if(isset($data['ledg_present']) && $data['ledg_present'] == 1){
 				if(!isset($data['row_selector'][2])){
-					$previous_ledger_balance = $data['total'][1];
-					$data['total'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
+					$previous_ledger_balance = $t0 ? $data['total'][1] : $data['total'][0];
+					$data['totall'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
 				}
 			}
 			
@@ -207,16 +209,36 @@ class Studentfee extends Admin_Controller
 			}else if(!isset($data['row_selector'][1]) && isset($data['row_selector'][2])){
 				$receipt_type = 1;
 			}
-			$previous_balance=0;
+			
+			/*$previous_balance=0;
 			if(!isset($data['row_selector'][1])){
 				$previous_balance = $data['total'][0];
-				$data['total'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
+				$data['totall'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
 			}
             $previous_ledger_balance=0;
 			if(!isset($data['row_selector'][2])){
 				$previous_ledger_balance = $data['total'][1];
-				$data['total'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
+				$data['totall'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
+			}*/
+			
+			$previous_balance=0;
+			$t0 = false;
+			if(isset($data['prev_present']) && $data['prev_present'] == 1){
+				$t0 = true;
+				if(!isset($data['row_selector'][1])){
+					$previous_balance = $data['total'][0];
+					$data['totall'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
+				}
 			}
+            $previous_ledger_balance=0;
+			if(isset($data['ledg_present']) && $data['ledg_present'] == 1){
+				if(!isset($data['row_selector'][2])){
+					$previous_ledger_balance = $t0 ? $data['total'][1] : $data['total'][0];
+					$data['totall'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
+				}
+			}
+			
+			
 			// echo "<pre>";print_r($data);die;
 			$insert_data = array(
                 'receipt_no'   => $data['receipt_no'],
@@ -354,18 +376,34 @@ class Studentfee extends Admin_Controller
 			$total_pay=count($data['pay']);
             $total_total=count($data['total']);
 			$deduct_count = $total_total - $total_pay;
-			$previous_balance=0;
+			/*$previous_balance=0;
 			if(isset($data['prev_present']) && $data['prev_present'] == 1){
 				if(!isset($data['row_selector'][1])){
 					$previous_balance = $data['total'][0];
-					$data['total'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
+					$data['totall'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
 				}
 			}
             $previous_ledger_balance=0;
 			if(isset($data['ledg_present']) && $data['ledg_present'] == 1){
 				if(!isset($data['row_selector'][2])){
 					$previous_ledger_balance = $data['total'][1];
-					$data['total'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
+					$data['totall'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
+				}
+			}*/
+			$previous_balance=0;
+			$t0 = false;
+			if(isset($data['prev_present']) && $data['prev_present'] == 1){
+				$t0 = true;
+				if(!isset($data['row_selector'][1])){
+					$previous_balance = $data['total'][0];
+					$data['totall'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
+				}
+			}
+            $previous_ledger_balance=0;
+			if(isset($data['ledg_present']) && $data['ledg_present'] == 1){
+				if(!isset($data['row_selector'][2])){
+					$previous_ledger_balance = $t0 ? $data['total'][1] : $data['total'][0];
+					$data['totall'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
 				}
 			}
 			// echo "<pre>";print_r($data);die;
@@ -537,15 +575,31 @@ class Studentfee extends Admin_Controller
 			}else if(!isset($data['row_selector'][1]) && isset($data['row_selector'][2])){
 				$receipt_type = 1;
 			}
-			$previous_balance=0;
+			/*$previous_balance=0;
 			if(!isset($data['row_selector'][1])){
 				$previous_balance = $data['total'][0];
-				$data['total'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
+				$data['totall'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
 			}
             $previous_ledger_balance=0;
 			if(!isset($data['row_selector'][2])){
 				$previous_ledger_balance = $data['total'][1];
-				$data['total'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
+				$data['totall'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
+			}*/
+			$previous_balance=0;
+			$t0 = false;
+			if(isset($data['prev_present']) && $data['prev_present'] == 1){
+				$t0 = true;
+				if(!isset($data['row_selector'][1])){
+					$previous_balance = $data['total'][0];
+					$data['totall'][0] = $data['prev_rec_discount'] = $data['prev_rec_amount'] = 0;
+				}
+			}
+            $previous_ledger_balance=0;
+			if(isset($data['ledg_present']) && $data['ledg_present'] == 1){
+				if(!isset($data['row_selector'][2])){
+					$previous_ledger_balance = $t0 ? $data['total'][1] : $data['total'][0];
+					$data['totall'][1] = $data['ledg_rec_discount'] = $data['ledg_rec_amount'] = $data['old_ledger_amt'] = 0;
+				}
 			}
 			// echo "<pre>";print_r($data);die;
 			// $this->Receipt_model->delete_receipts_by_receipt_no($data['receipt_no']);
