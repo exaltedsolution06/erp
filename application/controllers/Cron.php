@@ -328,7 +328,7 @@ class Cron extends CI_Controller
 				$this->create_disable_reason($classes);
 				$this->create_staff($classes);
 				
-				// $this->cloneAcademicSessionTemplates($classes['current_session_id'], $classes['next_session_id']);
+				$this->cloneAcademicSessionTemplates($classes['current_session_id'], $classes['next_session_id']);
 				
 				$this->insert_opening_balance($classes);
 			}
@@ -900,22 +900,22 @@ class Cron extends CI_Controller
 		if($qr->num_rows() > 0){
 			$fees_plan_array = $qr->result_array();
 			foreach($fees_plan_array as $fees_plan){
+				$arrData['current_session_id'] 	= $current_session_id;
+				$arrData['next_session_id'] 	= $next_session_id;
+				$arrData['fee_group_id'] 		= $fees_plan['fee_group_id'];
+				$fee_group_id 	= $this->new_fee_head_id($arrData);
+				$arrData['class_ids'] 			= $fees_plan['class_ids'];
+				$class_ids 		= $this->new_class_id($arrData);
+				$arrData['category_ids'] 		= $fees_plan['category_ids'];
+				$category_ids 		= $this->new_fee_category_id($arrData);
+					
 				$this->db->from('fees_plan');
 				$this->db->where('session_id', $next_session_id);
-				$this->db->where('fee_group_id', $fees_plan['fee_group_id']);
-				$this->db->where('category_ids', $fees_plan['category_ids']);
-				$this->db->where('class_ids', $fees_plan['class_ids']);
+				$this->db->where('fee_group_id', $fee_group_id);
+				$this->db->where('category_ids', $category_ids);
+				$this->db->where('class_ids', $class_ids);
 				$qr = $this->db->get();
 				if($qr->num_rows() == 0){
-					$arrData['current_session_id'] 	= $current_session_id;
-					$arrData['next_session_id'] 	= $next_session_id;
-					$arrData['fee_group_id'] 		= $fees_plan['fee_group_id'];
-					$fee_group_id 	= $this->new_fee_head_id($arrData);
-					$arrData['class_ids'] 			= $fees_plan['class_ids'];
-					$class_ids 		= $this->new_class_id($arrData);
-					$arrData['category_ids'] 		= $fees_plan['category_ids'];
-					$category_ids 		= $this->new_fee_category_id($arrData);
-					
 					$arr = [
 						'fee_group_id' 	=> $fee_group_id,
 						'class_ids' 	=> $class_ids,
@@ -1135,23 +1135,23 @@ class Cron extends CI_Controller
 		if($qr->num_rows() > 0){
 			$route_plan_array = $qr->result_array();
 			foreach($route_plan_array as $route_plan){
+				$arrData['current_session_id'] 	= $current_session_id;
+				$arrData['next_session_id'] 	= $next_session_id;
+				$arrData['fee_group_id'] 		= $route_plan['fee_group_id'];
+				$fee_group_id 	= $this->new_route_head_id_f($arrData);
+				// print_r($fee_group_id);exit;
+				$arrData['class_ids'] 			= $route_plan['class_ids'];
+				$class_ids 		= $this->new_class_id($arrData);
+				$arrData['category_ids'] 		= $route_plan['category_ids'];
+				$category_ids 		= $this->new_fee_category_id($arrData);
+					
 				$this->db->from('route_plan');
 				$this->db->where('session_id', $next_session_id);
-				$this->db->where('fee_group_id', $route_plan['fee_group_id']);
-				$this->db->where('category_ids', $route_plan['category_ids']);
-				$this->db->where('class_ids', $route_plan['class_ids']);
+				$this->db->where('fee_group_id', $fee_group_id);
+				$this->db->where('category_ids', $category_ids);
+				$this->db->where('class_ids', $class_ids);
 				$qr = $this->db->get();
 				if($qr->num_rows() == 0){
-					$arrData['current_session_id'] 	= $current_session_id;
-					$arrData['next_session_id'] 	= $next_session_id;
-					$arrData['fee_group_id'] 		= $route_plan['fee_group_id'];
-					$fee_group_id 	= $this->new_route_head_id_f($arrData);
-					// print_r($fee_group_id);exit;
-					$arrData['class_ids'] 			= $route_plan['class_ids'];
-					$class_ids 		= $this->new_class_id($arrData);
-					$arrData['category_ids'] 		= $route_plan['category_ids'];
-					$category_ids 		= $this->new_fee_category_id($arrData);
-					
 					$arr = [
 						'fee_group_id' 	=> $fee_group_id,
 						'class_ids' 	=> $class_ids,

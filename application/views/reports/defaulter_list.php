@@ -289,7 +289,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
 
-                                <div class="table-responsive1">
+                                <div class="table-responsive table-header-sticky">
 								<form method="post" action="<?php echo base_url('report/printreminderletter') ?>" id="printreminderletter">
 								 <?php if(!empty($filters) and !empty($selectedMonths)){ ?>
 								 
@@ -323,7 +323,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                     <?php if(!empty($filters) and !empty($selectedMonths)){ ?>
 									<div style="max-height: 400px; overflow-y: auto;">
-                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header">
+                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header sticky-col-4">
                                         <thead>
                                             <tr>
 												<th><input type="checkbox" id="select_all" /></th>
@@ -331,6 +331,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th>Adm. No</th>
                                                 <th>Student</th>
                                                 <th>Father</th>
+                                                <th>Last Receipt Date</th>
                                                 <th>Class</th>
                                                 <th>Sec.</th>
 												<th>Contact No.</th>
@@ -690,6 +691,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
                                             <?php if($final>0){
+												$last_receipt_date = $this->db
+													->where('student_id', $record["student_id"])
+													->where('session_id', $cur_session)
+													->order_by('created_at', 'DESC')
+													->limit(1)
+													->get('receipts')
+													->row();
                                                 ?>
                                                 <tr>
 												<td class="text-center"><input type="checkbox" class="checkbox center-block"  name="exam_group_class_batch_exam_student_id[]" data-student_id="<?php echo $student_value->student_id; ?>" value="<?php echo $record['student_id']; ?>"></td>
@@ -697,6 +705,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     <td><?= $record["admission_no"] ?><?php //json_encode($record)?></td>
                                                     <td><?= $record["firstname"].' '.$record["middlename"].' '.$record["lastname"] ?></td>
 													<td><?= $record["father_name"] ?></td>
+													<th><?= !empty($last_receipt_date) ? date('d-m-Y',strtotime($last_receipt_date->created_at)) : ''; ?></th>
                                                     <td><?= $record["class"] ?></td>
                                                     <td><?= $record["section"] ?></td>
 													<td><?= isset($record["mobileno"]) ? $record["mobileno"] : 'NA'; ?></td>

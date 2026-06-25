@@ -305,7 +305,23 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td><?php echo $value['pan_no']; ?></td>
                                                 <td><?php echo $value['aadhan_no']; ?></td>
                                                 <td><?php echo $value['other_no']; ?></td>
-                                                <td><?php echo $value['cast_category']; ?></td>
+                                                <td>
+												<?php 
+												$CI =& get_instance();
+												$CI->load->model('Castecategory_model');
+
+												$categories = $CI->Castecategory_model->get();
+												$categoryName = '';
+
+												foreach ($categories as $category_val) {
+													if ($category_val['id'] == $value['cast_category']) {
+														$categoryName = $category_val['category'];
+														break;
+													}
+												}
+												echo $categoryName;
+												?>
+												</td>
                                                 <?php if ($sch_setting->religion) { ?>
                                                     <td><?php echo $value['religion']; ?></td>
                                                 <?php } if ($sch_setting->cast) { ?>

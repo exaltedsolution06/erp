@@ -193,7 +193,20 @@ foreach ($students as $s_idx => $student) {
     if (isset($student->firstname))  $student_name  = $student->firstname;
     if (isset($student->middlename)) $student_name .= ' ' . $student->middlename;
     if (isset($student->lastname))   $student_name .= ' ' . $student->lastname;
+	
+	$CI =& get_instance();
+	$CI->load->model('Castecategory_model');
 
+	$categories = $CI->Castecategory_model->get();
+	$categoryName = '';
+
+	foreach ($categories as $category_val) {
+		if ($category_val['id'] == $student->cast_category) {
+			$categoryName = $category_val['category'];
+			break;
+		}
+	}
+	
     $replaceArr = [
         '[roll_no]'          => $student->roll_no,
         '[name]'             => trim($student_name),
@@ -212,7 +225,7 @@ foreach ($students as $s_idx => $student) {
         '[gender]'           => $student->gender,
         '[category]'         => $student->category,
         '[phone]'            => $student->mobileno,
-        '[CASTE CATEGORY]'   => $student->cast_category,
+        '[CASTE CATEGORY]'   => $categoryName,
         '[present_address]'  => $student->current_address,
         '[guardian]'         => $student->guardian_name,
         '[created_at]'       => date('d/m/Y', strtotime($student->created_at)),

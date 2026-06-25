@@ -64,9 +64,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     
                         </div>
 
-                        <div class="table-responsive" style="overflow: auto;">
+                        <div class="table-responsive table-header-sticky">
                             <div class="download_label"><?php echo $this->lang->line('receipt_book');?></div>
-                            <table class="table table-striped table-bordered table-hover example table-fixed-header" style="width:100% !important" cellpadding="8" cellspacing="0">
+                            <table class="table table-striped table-bordered table-hover example table-fixed-header sticky-col-5">
                                 <thead>
                                     <tr>
                                         <th>S.No</th>

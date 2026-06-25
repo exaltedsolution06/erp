@@ -23,6 +23,7 @@ class Studentfee extends Admin_Controller
 		$this->current_session = $this->setting_model->getCurrentSession();
 		
 		$this->load->model('Income_model');
+		$this->load->model('Paymentmode_model');
     }
 
 
@@ -886,6 +887,7 @@ class Studentfee extends Admin_Controller
         $data['receipt_data'] = $this->Receipt_model->get_receipt($config['per_page'], $page,$from_date,$to_date,$mode);
         $data['pagination_links'] = $this->pagination->create_links();
         $data['sch_setting'] = $this->sch_setting_detail;
+		$data['p_modes'] = $this->Paymentmode_model->get();
         $this->load->view('layout/header', $data);
         $this->load->view('studentfee/receipt_book', $data);
         $this->load->view('layout/footer', $data);
@@ -1228,6 +1230,7 @@ class Studentfee extends Admin_Controller
 
         $data['receipt_data'] = $this->Receipt_model->get_receipt($config['per_page'], $page,$from_date, $to_date,$mode);
         $data['pagination_links'] = $this->pagination->create_links();
+		$data['p_modes'] = $this->Paymentmode_model->get();
         // end paginate
         // var_dump($data['receipt_data']);
         // die;
@@ -1500,7 +1503,7 @@ class Studentfee extends Admin_Controller
         $data['title'] = 'Student Detail';
 
         $student         = $this->student_model->getByStudentSession($id);
-		//echo "<pre>";print_r($student);die;
+		// echo "<pre>";print_r($student);die;
         
         $data['student'] = $student;
         $data['update_ids']=$id;
@@ -1517,6 +1520,8 @@ class Studentfee extends Admin_Controller
         $session                      = $this->setting_model->getCurrentSession();
         $studentlistbysection         = $this->student_model->getStudentClassSection($student["class_id"], $session);
         $data["studentlistbysection"] = $studentlistbysection;
+		
+		$data['p_modes'] = $this->Paymentmode_model->get();
 		
 		//--- exaltedsol 09-12-2025---
 		//$expld_receipt_no = explode('/', $data['receipt_no']);
@@ -1548,11 +1553,24 @@ class Studentfee extends Admin_Controller
         $this->session->set_userdata('last_receipt_id', $last_receipt_id);
 		//echo $last_receipt_id; die;
         if(@$_GET['receipt_no'] ==''){
-            $data['receipt_no']=$this->session_model->get($this->setting_model->getCurrentSession())['session']."/".$last_receipt_id;
+			$get_session_setting = $this->setting_model->get_session_setting();
+			if($get_session_setting->receipt_year_status == 1){
+				$data['receipt_no']=$this->session_model->get($this->setting_model->getCurrentSession())['session']."/".$last_receipt_id;
+			}else{
+				$data['receipt_no']=$last_receipt_id;
+			}
         }else{
             $data['receipt_no']=$_GET['receipt_no'];
         }
-
+		
+		$data['last_receipt_date'] = $this->db
+			->where('student_id', $student["student_id"])
+			->where('session_id', $this->current_session)
+			->order_by('created_at', 'DESC')
+			->limit(1)
+			->get('receipts')
+			->row();
+			
         $data['data_list']=0;
         $data['addfee']=$id;
 
@@ -1714,7 +1732,9 @@ class Studentfee extends Admin_Controller
         $session                      = $this->setting_model->getCurrentSession();
         $studentlistbysection         = $this->student_model->getStudentClassSection($student["class_id"], $session);
         $data["studentlistbysection"] = $studentlistbysection;
-
+		
+		$data['p_modes'] = $this->Paymentmode_model->get();
+		
         /*$last_receipt_id = $this->Receipt_model->get_last_receipt_id();
         $this->session->set_userdata('last_receipt_id', $last_receipt_id);
 
@@ -1726,7 +1746,14 @@ class Studentfee extends Admin_Controller
 
 		$data['receipt_no']= $receipt_no;
 		
-
+		$data['last_receipt_date'] = $this->db
+			->where('student_id', $student["student_id"])
+			->where('session_id', $this->current_session)
+			->order_by('created_at', 'DESC')
+			->limit(1)
+			->get('receipts')
+			->row();
+			
         $data['data_list']=0;
         $data['addfee']=$id;
 
@@ -2681,7 +2708,7 @@ class Studentfee extends Admin_Controller
         // die;
         if ($this->input->server('REQUEST_METHOD') == "GET") {
           
-          
+			$data['p_modes'] = $this->Paymentmode_model->get();
             $this->load->view('layout/header', $data);
             $this->load->view('studentfee/reportFees_List', $data);
             $this->load->view('layout/footer', $data);
@@ -2692,12 +2719,12 @@ class Studentfee extends Admin_Controller
             $this->form_validation->set_rules('student_id', $this->lang->line('student'), 'trim|required|xss_clean');
 
             if ($this->form_validation->run() == false) {
-
+				$data['p_modes'] = $this->Paymentmode_model->get();
                 $this->load->view('layout/header', $data);
                 $this->load->view('studentfee/reportFees_List', $data);
                 $this->load->view('layout/footer', $data);
             } else {
-
+				$data['p_modes'] = $this->Paymentmode_model->get();
                 $data['student_due_fee'] = array();
                 $class_id                = $this->input->post('class_id');
                 $section_id              = $this->input->post('section_id');
@@ -2937,7 +2964,7 @@ class Studentfee extends Admin_Controller
         // die;
         if ($this->input->server('REQUEST_METHOD') == "GET") {
           
-          
+			$data['p_modes'] = $this->Paymentmode_model->get();
             $this->load->view('layout/header', $data);
             $this->load->view('studentfee/studentfee_deletedlist', $data);
             $this->load->view('layout/footer', $data);
@@ -2948,12 +2975,12 @@ class Studentfee extends Admin_Controller
             $this->form_validation->set_rules('student_id', $this->lang->line('student'), 'trim|required|xss_clean');
 
             if ($this->form_validation->run() == false) {
-
+				$data['p_modes'] = $this->Paymentmode_model->get();
                 $this->load->view('layout/header', $data);
                 $this->load->view('studentfee/studentfee_deletedlist', $data);
                 $this->load->view('layout/footer', $data);
             } else {
-
+				$data['p_modes'] = $this->Paymentmode_model->get();
                 $data['student_due_fee'] = array();
                 $class_id                = $this->input->post('class_id');
                 $section_id              = $this->input->post('section_id');

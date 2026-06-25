@@ -80,7 +80,21 @@
 						</div>
 						<div class="row mt-2 d-flex">
 							<div class="col-3 labelOnly">Caste Category </div>
-							<div class="col-2 borderOnly"><?php echo $data['student']['cast_category']; ?></div>
+							<?php
+							$CI =& get_instance();
+							$CI->load->model('Castecategory_model');
+
+							$categories = $CI->Castecategory_model->get();
+							$categoryName = '';
+
+							foreach ($categories as $category) {
+								if ($category['id'] == $data['student']['cast_category']) {
+									$categoryName = $category['category'];
+									break;
+								}
+							}
+							?>
+							<div class="col-2 borderOnly"><?php echo $categoryName; ?></div>
 							<div class="col-2 labelOnly text-right">Religion</div>
 							<div class="col-2 borderOnly"><?php echo $data['student']['religion']; ?></div>
 							<div class="col-1 labelOnly text-right">Caste </div>

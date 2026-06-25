@@ -496,6 +496,7 @@ class Schsettings extends Admin_Controller {
 				// $editSettingSessiondata['session_id'] = $this->input->post('sch_session_id');
 				//$editSettingSessiondata['id'] = $this->input->post('sch_id');
 				$editSettingSessiondata['receipt_sr_no'] = $this->input->post('receipt_start_sequence');
+				$editSettingSessiondata['receipt_year_status'] = $this->input->post('receipt_year_status');
 				$this->setting_model->addSettingSession($editSettingSessiondata);
 				$array = array('status' => 'success', 'error' => '', 'message' => $this->lang->line('success_message'),'check_receipt_no'=> $check_receipt_no);
 				// echo json_encode($array);

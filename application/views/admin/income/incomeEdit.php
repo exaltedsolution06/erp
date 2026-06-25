@@ -131,6 +131,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         </th>
                                         <th><?php echo $this->lang->line('date'); ?>
                                         </th>
+										<th><?php echo $this->lang->line('student_name'); ?>
+                                        </th>
+										<th><?php echo $this->lang->line('father_name'); ?>
+                                        </th>
                                         <th><?php echo $this->lang->line('income_head'); ?>
                                         </th>
                                         <th><?php echo $this->lang->line('amount'); ?>
@@ -146,6 +150,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <?php
                                     } else {
                                         foreach ($incomelist as $income) {
+											$this->load->model('Student_model');
+											$students = $this->Student_model->get($income['student_id']);
                                             ?>
                                             <tr>
                                                 
@@ -154,7 +160,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 </td>
                                                 <td class="mailbox-name">
                                                      <?php echo date('d-m-Y', strtotime($income['date'])); ?></td>
-
+												<td class="mailbox-name">
+                                                    <?php echo $students['firstname'];?>
+                                                </td>
+												<td class="mailbox-name">
+                                                    <?php echo $students['father_name'];?>
+                                                </td>
                                                 <td class="mailbox-name">
                                                     <?php
                                                     $income_head = $income['income_category'];

@@ -373,13 +373,11 @@
 						<?php } if ($this->rbac->hasPrivilege('search_fee_slip', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('studentfee/search_fee_slip'); ?>"><a href="<?php echo base_url(); ?>studentfee/search_fee_slip"><i class="fa fa-angle-double-right"></i> Search Fee Slip</a></li>
 						<?php } if ($this->rbac->hasPrivilege('student_ledger', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('studentfee/student_ledger'); ?>"><a href="<?php echo base_url(); ?>studentfee/student_ledger"><i class="fa fa-angle-double-right"></i> Student Ledger</a></li>
+							<!--<li class="<?php echo set_Submenu('studentfee/student_ledger'); ?>"><a href="<?php echo base_url(); ?>studentfee/student_ledger"><i class="fa fa-angle-double-right"></i> Student Ledger</a></li>-->
 						<?php } if ($this->rbac->hasPrivilege('quick_receipt', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="#<?php //echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Quick Receipt</a></li>
+							<!--<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="#<?php //echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Quick Receipt</a></li>-->
 						<?php } if ($this->rbac->hasPrivilege('quick_payment', 'can_view')) { ?>
-							<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="#<?php //echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Quick Payment</a></li>
-						<?php //} if ($this->rbac->hasPrivilege('fee_reminder', 'can_view')) { ?>
-							<!--<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="<?php echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Fee Reminder</a></li>-->
+							<!--<li class="<?php echo set_Submenu('feesforward/index'); ?>"><a href="#<?php //echo base_url('admin/feesforward'); ?>"><i class="fa fa-angle-double-right"></i> Quick Payment</a></li>-->
 						<?php } if ($this->rbac->hasPrivilege('fee_all_reports', 'can_view')) { ?>
 							<li class="<?php echo set_Submenu('Reports/finance') || set_Submenu('reports/studenttransportdetails') ? 'active' : ''; ?>"><a href="<?php echo base_url(); ?>report/finance"><i class="fa fa-angle-double-right"></i> All Reports</a></li>
 						<?php } ?>

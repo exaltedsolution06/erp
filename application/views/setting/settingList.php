@@ -687,6 +687,30 @@
                                         </div>
                                     </div>
 									
+									<div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4">Include Year in Receipt No.</label>
+                                            <div class="col-sm-8">
+                                                <label class="radio-inline">
+                                                    <input name="receipt_year_status" class="receipt-disabled1" value="0" type="radio" 
+                                                    <?php
+                                                    if ($session_setting['receipt_year_status'] == 0) {
+                                                        echo "checked";
+                                                    }
+                                                    ?>><?php echo $this->lang->line('disabled'); ?>
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input name="receipt_year_status" value="1" class="receipt-enabled1" type="radio"
+													<?php
+                                                    if ($session_setting['receipt_year_status'] == 1) {
+                                                        echo "checked";
+                                                    }
+                                                    ?>><?php echo $this->lang->line('enabled'); ?>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+									
                                     <div class="col-md-12">
                                         <div class="settinghr"></div>
                                         <h4 class="session-head"><?php echo $this->lang->line('online_examination'); ?></h4>

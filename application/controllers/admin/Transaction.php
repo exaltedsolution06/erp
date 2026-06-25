@@ -11,6 +11,7 @@ class Transaction extends Admin_Controller {
 		$this->current_session = $this->setting_model->getCurrentSession();
         $this->load->model('Receipt_model');
 		$this->load->model('fee_discount_model');
+		$this->load->model('Paymentmode_model');
         $this->load->library('pagination');
     }
 
@@ -136,7 +137,7 @@ class Transaction extends Admin_Controller {
 		
 		$data['routes'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('route_head')->result_array();
 		$data['fee_heads'] = $this->db->where('session_id', $this->current_session)->order_by('id', 'DESC')->get('fee_head')->result_array();
-
+		$data['p_modes'] = $this->Paymentmode_model->get();
 		//echo '<pre>'; print_r($data['fee_heads']); echo '</pre>';die;
         $this->load->view('layout/header', $data);
         $this->load->view('admin/transaction/studentAcademicReport', $data);

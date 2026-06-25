@@ -74,7 +74,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                     
                                                 </tr>
                                                  <tr>
-                                                     <td><strong>Ledger Amt </strong> <br> Rs. <?=format_amount($student_data['fees_discount'])?></td>
+                                                     <td>
+													 <!--<strong>Ledger Amt </strong> <br> Rs. <?=format_amount($student_data['fees_discount'])?>-->
+													 <h5 style="font-size: 12px;font-weight: bold;">PREV AMT : Rs. <?=format_amount($student_data['previous_session_balance'])?></h5>
+													 <h5 style="font-size: 12px;font-weight: bold;">LEDG AMT : Rs. <?=format_amount($student_data['fees_discount'])?></h5>
+													 </td>
                                                      <td><strong>Route</strong> - <?php
                                                                         $this->db->where('id', $student_data['route_id']);
                                                                         $query = $this->db->get('route_head')->row_array();
@@ -176,6 +180,106 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         </tr>
                                     </thead>
                                     <tbody>
+									<?php if(isset($months_data)){ ?>
+									<?php
+										$prev_total = 0;
+										if ($fees_card == 'received') {
+											$prev_received_sum = $this->db
+												->select('SUM(previous_balance) as previous_balance')
+												->from('(SELECT receipt_no, MAX(previous_balance) as previous_balance
+														 FROM receipts
+														 WHERE session_id = '.$this->db->escape($cur_session).'
+														 AND student_id = '.$this->db->escape($student_data['student_session_id']).'
+														 GROUP BY receipt_no) t', false)
+												->get()
+												->row();
+											$prev_total = $prev_received_sum->previous_balance;
+										} elseif ($fees_card == 'due') {
+											$prev_received_sum = $this->db
+												->select('SUM(previous_balance) as previous_balance')
+												->from('(SELECT receipt_no, MAX(previous_balance) as previous_balance
+														 FROM receipts
+														 WHERE session_id = '.$this->db->escape($cur_session).'
+														 AND student_id = '.$this->db->escape($student_data['student_session_id']).'
+														 GROUP BY receipt_no) t', false)
+												->get()
+												->row();
+												
+											$this->db->select('sfm.previous_session_balance');
+											$this->db->from('student_fees_master sfm');
+											$this->db->join('fee_session_groups fsg', 'fsg.id = sfm.fee_session_group_id');
+											$this->db->join('fee_groups fg', 'fg.id = fsg.fee_groups_id');
+											$this->db->where('sfm.student_session_id', $student_data["previous_student_session_id"]);
+											$this->db->where('fg.name', $this->config->item('ci_balance_group'));
+
+											$row_data = $this->db->get()->row();
+
+											$prev_total = $row_data ? $row_data->previous_session_balance : 0;
+											
+											$prev_total = (int)$prev_total-(int)$prev_received_sum->previous_balance;
+										} else {
+											$this->db->select('sfm.previous_session_balance');
+											$this->db->from('student_fees_master sfm');
+											$this->db->join('fee_session_groups fsg', 'fsg.id = sfm.fee_session_group_id');
+											$this->db->join('fee_groups fg', 'fg.id = fsg.fee_groups_id');
+											$this->db->where('sfm.student_session_id', $student_data["previous_student_session_id"]);
+											$this->db->where('fg.name', $this->config->item('ci_balance_group'));
+
+											$row_data = $this->db->get()->row();
+
+											$prev_total = $row_data ? $row_data->previous_session_balance : 0;
+										}
+									if($prev_total > 0){
+									?>
+									<tr>
+										<td></td>
+										<td><b>PREV AMT</b></td>
+										<?php foreach($months_data as $key => $value): ?>
+										<td></td>
+										<?php endforeach; ?>
+										<td style="text-align: right;"><b><?= format_amount($prev_total); ?> </b></td>
+									</tr>
+									<?php
+									}
+										$ledg_total = 0;
+										if ($fees_card == 'received') {
+											$ledger_received_sum = $this->db
+												->select('SUM(ledger_received) as ledger_received')
+												->from('(SELECT receipt_no, MAX(ledger_received) as ledger_received
+														 FROM receipts
+														 WHERE session_id = '.$this->db->escape($cur_session).'
+														 AND student_id = '.$this->db->escape($student_data['student_session_id']).'
+														 GROUP BY receipt_no) t', false)
+												->get()
+												->row();
+											$ledg_total = $ledger_received_sum->ledger_received;
+										} elseif ($fees_card == 'due') {
+											$ledg_total = $student_data['fees_discount'];
+										} else {
+											$ledger_received_sum = $this->db
+												->select('SUM(ledger_received) as ledger_received')
+												->from('(SELECT receipt_no, MAX(ledger_received) as ledger_received
+														 FROM receipts
+														 WHERE session_id = '.$this->db->escape($cur_session).'
+														 AND student_id = '.$this->db->escape($student_data['student_session_id']).'
+														 GROUP BY receipt_no) t', false)
+												->get()
+												->row();
+											$ledg_remain_total = $student_data['fees_discount'];	
+												
+											$ledg_total = (int)$ledger_received_sum->ledger_received + (int)$ledg_remain_total;
+										}
+									if($ledg_total > 0){
+									?>
+									<tr>
+										<td></td>
+										<td><b>LEDG AMT</b></td>
+										<?php foreach($months_data as $key => $value): ?>
+										<td></td>
+										<?php endforeach; ?>
+										<td style="text-align: right;"><b><?= format_amount($ledg_total); ?> </b></td>
+									</tr>		
+									<?php } } ?>
                                     <?php 
 
 

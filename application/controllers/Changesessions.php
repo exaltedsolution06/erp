@@ -39,6 +39,7 @@ class Changesessions extends Admin_Controller
         $data['addedListCatData'] = $this->session_model->addedListCatData();
         $data['readyForCronData'] = $this->session_model->readyForCronData();
         $data['moveCompletedData'] = $this->session_model->moveCompletedData();
+        $data['current_session'] = $this->current_session;
         $this->load->view('layout/header', $data);
         $this->load->view('session/changeSession', $data);
         $this->load->view('layout/footer', $data);

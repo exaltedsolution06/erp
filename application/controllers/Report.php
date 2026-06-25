@@ -546,6 +546,7 @@ class Report extends Admin_Controller
 	  // var_dump($data);
         $data['s_id'] = $id;
         $data['sch_setting'] = $this->sch_setting_detail;
+        $data['cur_session'] = $this->current_session;
         $this->load->view('layout/header', $data);
         $this->load->view('reports/fee_card', $data);
         $this->load->view('layout/footer', $data);
@@ -685,6 +686,7 @@ class Report extends Admin_Controller
 
 	  // var_dump($data);
         $data['sch_setting'] = $this->sch_setting_detail;
+		$data['cur_session'] = $this->current_session;
         $this->load->view('layout/header', $data);
         $this->load->view('reports/onlineFeesReport', $data);
         $this->load->view('layout/footer', $data);
@@ -1568,6 +1570,8 @@ class Report extends Admin_Controller
 		
 		$data['reminder_letter_list'] = $this->Reminder_model->remindLetterList();
         // end paginate
+		
+		$data['cur_session'] = $this->current_session;
         $this->load->view('layout/header', $data);
         $this->load->view('reports/defaulter_list', $data);
         $this->load->view('layout/footer', $data);
@@ -1830,7 +1834,7 @@ class Report extends Admin_Controller
 
         $data['pagination_links'] = $this->pagination->create_links();
 
-
+		$data['cur_session'] = $this->current_session;
         // end paginate
 
         $this->load->view('layout/header', $data);

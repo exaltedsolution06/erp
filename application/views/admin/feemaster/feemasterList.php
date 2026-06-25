@@ -324,7 +324,7 @@
                                                 
                                                 <tr>
                                                     <td><?php echo $plan['fee_head_name']; ?></td>
-                                                    <td><?php echo $plan['amount']; ?></td>
+                                                    <td><?php echo format_amount($plan['amount']); ?></td>
                                                     <td>
                                                         <?php
                                                         // Decode the class_ids JSON (just to be safe)

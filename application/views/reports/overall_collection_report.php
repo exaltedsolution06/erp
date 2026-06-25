@@ -125,7 +125,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <div class="row">
 
                                         <!-- Filters -->
-                                        <div class="col-md-2 mb-3">
+                                        <div class="col-md-3 mb-3">
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input master-check" data-target="filter-check" id="selectAllFilters">
                                             <label class="form-check-label" for="selectAllFilters">Select All Filters</label>
@@ -237,9 +237,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </div>
 
                                     <!-- To Date -->
-                                    <div class="form-group col-md-2">
-                                        
-                                    </div>
                                         <!--<div class="col-md-2 mb-3">
                                             <div class="form-check">
                                                 <input type="checkbox" class="form-check-input master-check" data-target="route-check" id="selectAllRoute">

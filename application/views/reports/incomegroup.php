@@ -276,14 +276,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
 
-                                <div class="table-responsive">
+                                <div class="table-responsive table-header-sticky">
                                     <div class="download_label"> <?php
                                         // echo $this->lang->line('fees_statement') . "<br>";
                                         $this->customlib->get_postmessage();
                                         ?></div>
 
                                     <?php if(!empty($filters) and !empty($selectedMonths)){ ?>
-                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header">
+                                    <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header sticky-col-3">
                                         <thead>
                                             <tr>
                                                 <th>S.No</th>

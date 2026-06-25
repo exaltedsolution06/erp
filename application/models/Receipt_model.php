@@ -407,6 +407,7 @@ class Receipt_model extends CI_Model {
         // die;
         $this->db->select('
             receipts.*,
+            payment_mode.title as mode,
             receipts.receipt_no,
             receipts.id as receipts_id,
             GROUP_CONCAT(DISTINCT receipts.months ORDER BY receipts.months SEPARATOR ", ") AS receipt_months,
@@ -462,6 +463,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('sections', 'sections.id = student_session.section_id');
         //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
+        $this->db->join('payment_mode', 'payment_mode.id = receipts.mode', 'left');
 		
 		
 		$this->db->where('receipts.session_id', $this->current_session);
@@ -495,6 +497,7 @@ class Receipt_model extends CI_Model {
         // die;
         $this->db->select('
             receipts.*,
+			payment_mode.title as mode,
             receipts.receipt_no,
             receipts.id as receipts_id,
             GROUP_CONCAT(DISTINCT receipts.months ORDER BY receipts.months SEPARATOR ", ") AS receipt_months,
@@ -550,6 +553,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('sections', 'sections.id = student_session.section_id');
         //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
+		$this->db->join('payment_mode', 'payment_mode.id = receipts.mode', 'left');
 		
 		
 		$this->db->where('receipts.session_id', $this->current_session);
@@ -600,6 +604,7 @@ class Receipt_model extends CI_Model {
         // die;
         $this->db->select('
             deleted_receipts.*,
+			payment_mode.title as mode,
             deleted_receipts.receipt_no,
             deleted_receipts.id as receipts_id,
             classes.id AS class_id,
@@ -654,6 +659,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('sections', 'sections.id = student_session.section_id');
         //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
+		$this->db->join('payment_mode', 'payment_mode.id = deleted_receipts.mode', 'left');
 
         
         if (!empty($from_date) && !empty($to_date)) {
@@ -729,6 +735,7 @@ class Receipt_model extends CI_Model {
         // die;
         $this->db->select('
             receipts.*,
+			payment_mode.title as mode,
             receipts.receipt_no,
             GROUP_CONCAT(DISTINCT receipts.months ORDER BY receipts.months SEPARATOR ", ") AS receipt_months,
             classes.id AS class_id,
@@ -783,7 +790,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('sections', 'sections.id = student_session.section_id');
         //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
-
+		$this->db->join('payment_mode', 'payment_mode.id = receipts.mode', 'left');
         
         if (!empty($filters['feesHead']) and $filters['feesHead']!='All') {
             $this->db->where('receipts.fee_head_name', $filters['feesHead']);
@@ -971,6 +978,7 @@ class Receipt_model extends CI_Model {
 
         $this->db->select('
             receipts.*,
+			payment_mode.title as mode,
             receipts.receipt_no,
             GROUP_CONCAT(DISTINCT receipts.months ORDER BY receipts.months SEPARATOR ", ") AS receipt_months,
             classes.id AS class_id,
@@ -1025,11 +1033,16 @@ class Receipt_model extends CI_Model {
         $this->db->join('sections', 'sections.id = student_session.section_id');
         //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
+		$this->db->join('payment_mode', 'payment_mode.id = receipts.mode', 'left');
         $this->db->where('receipts.student_id', $id);
 		$this->db->where('receipts.session_id', $this->current_session);
 		$this->db->where('student_session.session_id', $this->current_session);
-        $this->db->group_by('receipts.receipt_no');
-        $this->db->order_by('receipts.id', 'DESC');
+		
+		$this->db->group_by('receipts.receipt_no');
+        $this->db->order_by('receipts.date_time', 'DESC');
+		$this->db->order_by('receipts.receipt_no', 'DESC');
+        // $this->db->order_by('receipts.id', 'DESC');
+		
         $this->db->limit($limit, $offset);
 
         $query = $this->db->get();
@@ -1077,6 +1090,7 @@ class Receipt_model extends CI_Model {
      
         $this->db->select('
             receipts.*,
+			payment_mode.title as mode,
             MAX(receipts.date_time) as receipt_date,
             GROUP_CONCAT(DISTINCT receipts.months ORDER BY receipts.months SEPARATOR ", ") AS receipt_months,
             SUM(receipts.total) as total_amount,
@@ -1141,6 +1155,7 @@ class Receipt_model extends CI_Model {
         //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
         // $this->db->join('route_head', 'route_head.fees_heading = receipts.fee_head_name', 'left');
+		$this->db->join('payment_mode', 'payment_mode.id = receipts.mode', 'left');
         
         $this->db->where('receipts.fee_head_name !=', 'Ledger Amount');
 
@@ -1261,6 +1276,7 @@ class Receipt_model extends CI_Model {
 
         $this->db->select('
             receipts.*,
+			payment_mode.title as mode,
             MAX(receipts.date_time) as receipt_date,
             GROUP_CONCAT(DISTINCT receipts.months ORDER BY receipts.months SEPARATOR ", ") AS receipt_months,
             SUM(receipts.total) as total_amount,
@@ -1317,7 +1333,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('sections', 'sections.id = student_session.section_id');
         //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
-        
+        $this->db->join('payment_mode', 'payment_mode.id = receipts.mode', 'left');
         $this->db->where('receipts.fee_head_name !=', 'Ledger Amount');
 
 
@@ -1541,6 +1557,7 @@ class Receipt_model extends CI_Model {
             student_session.id as student_session_id,
             student_session.fees_discount,
             student_session.previous_session_balance,
+            student_session.previous_student_session_id,
             classes.id AS class_id,
             classes.class,
             sections.id AS section_id,
@@ -2003,6 +2020,7 @@ class Receipt_model extends CI_Model {
 		$this->db->select('receipts.id');
         $this->db->from('receipts');
 		$this->db->where('receipt_no', $receipt_no);
+		$this->db->where('session_id', $this->current_session);
 		$query = $this->db->get();
         return array_column($query->result_array(), 'id');
     }
@@ -2024,6 +2042,7 @@ class Receipt_model extends CI_Model {
         // die;
         $this->db->select('
             receipts.*,
+			payment_mode.title as mode,
             receipts.receipt_no,
             receipts.id as receipts_id,
             GROUP_CONCAT(DISTINCT receipts.months ORDER BY receipts.months SEPARATOR ", ") AS receipt_months,
@@ -2079,6 +2098,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('sections', 'sections.id = student_session.section_id');
         //$this->db->join('categories', 'students.category_id = categories.id', 'left');
         $this->db->join('users', 'users.user_id = students.id', 'left');
+		$this->db->join('payment_mode', 'payment_mode.id = receipts.mode', 'left');
 
         if (!empty($receipt_no)) {
             $this->db->where('receipts.receipt_no', $receipt_no);

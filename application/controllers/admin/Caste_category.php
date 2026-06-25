@@ -10,19 +10,125 @@ class Caste_category extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+		
+		$this->load->model('Castecategory_model');
     }
-
-    public function index()
+	
+	public function index()
     {
-        if (!$this->rbac->hasPrivilege('caste_category', 'can_view')) {
+       if (!$this->rbac->hasPrivilege('caste_category', 'can_view')) {
             access_denied();
         }
 		$this->session->set_userdata('top_menu', 'Academics');
 		$this->session->set_userdata('sub_menu', 'admin/castecategory');
-		$data['title'] = 'Castecategory List';		
+		$data['title'] = 'Castecategory List';	
 		
+        $category_result      = $this->Castecategory_model->get();
+        $data['categorylist'] = $category_result;
+		
+		$this->load->view('layout/header', $data);
+		$this->load->view('admin/category/categoryList', $data);
+		$this->load->view('layout/footer', $data);
+    }
+
+    public function view($id)
+    {
+        if (!$this->rbac->hasPrivilege('caste_category', 'can_view')) {
+            access_denied();
+        }
+        $data['title']    = 'Category List';
+        $category         = $this->Castecategory_model->get($id);
+        $data['category'] = $category;
         $this->load->view('layout/header', $data);
-        $this->load->view('admin/category/caste-category', $data);
+        $this->load->view('admin/category/categoryShow', $data);
         $this->load->view('layout/footer', $data);
     }
+
+    public function delete($id)
+    {
+        if (!$this->rbac->hasPrivilege('caste_category', 'can_delete')) {
+            access_denied();
+        }
+        $data['title'] = 'Category List';
+        $this->Castecategory_model->remove($id);
+        $this->session->set_flashdata('msgdelete', '<div class="alert alert-success text-left">' . $this->lang->line('delete_message') . '</div>');
+        redirect('admin/caste_category');
+    }
+
+    public function create()
+    {
+        if (!$this->rbac->hasPrivilege('caste_category', 'can_add')) {
+            access_denied();
+        }
+        $data['title']        = 'Add Category';
+        $category_result      = $this->Castecategory_model->get();
+        $data['categorylist'] = $category_result;
+        //$this->form_validation->set_rules('category', $this->lang->line('category'), 'trim|required|xss_clean');
+		$this->form_validation->set_rules(
+			'category',
+			$this->lang->line('category'),
+			'trim|required|xss_clean|callback_check_data_unique'
+		);
+        if ($this->form_validation->run() == false) {
+            $this->load->view('layout/header', $data);
+            $this->load->view('admin/category/categoryList', $data);
+            $this->load->view('layout/footer', $data);
+        } else {
+            $data = array(
+                'category' => $this->input->post('category'),
+            );
+            $this->Castecategory_model->add($data);
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('success_message') . '</div>');
+            redirect('admin/caste_category');
+        }
+    }
+
+    public function edit($id)
+    {
+        if (!$this->rbac->hasPrivilege('caste_category', 'can_edit')) {
+            access_denied();
+        }
+        $data['title']        = 'Edit Category';
+        $category_result      = $this->Castecategory_model->get();
+        $data['categorylist'] = $category_result;
+        $data['id']           = $id;
+        $category             = $this->Castecategory_model->get($id);
+        $data['category']     = $category;
+        //$this->form_validation->set_rules('category', $this->lang->line('category'), 'trim|required|xss_clean');
+		$this->form_validation->set_rules(
+			'category',
+			$this->lang->line('category'),
+			'trim|required|xss_clean|callback_check_data_unique['.$id.']'
+		);
+        if ($this->form_validation->run() == false) {
+            $this->load->view('layout/header', $data);
+            $this->load->view('admin/category/categoryEdit', $data);
+            $this->load->view('layout/footer', $data);
+        } else {
+            $data = array(
+                'id'       => $id,
+                'category' => $this->input->post('category'),
+            );
+            $this->Castecategory_model->add($data);
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
+            redirect('admin/caste_category');
+        }
+    }
+	/**
+	* Custom validation callback to check uniqueness
+	*/
+	public function check_data_unique($category, $id)
+	{
+		$exists = $this->Castecategory_model->check_data_exists($category, $id);
+
+		if ($exists) {
+			$this->form_validation->set_message(
+				'check_data_unique',
+				'Record already exists'
+			);
+			return false;
+		}
+
+		return true;
+	}
 }

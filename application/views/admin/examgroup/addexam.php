@@ -18,7 +18,7 @@
                             <?php 
                             if($this->rbac->hasPrivilege('add_exam','can_add')){
                                 ?>
-                                <a tabindex="-1" class="btn btn-primary btn-sm" href="#" id="examModalButton"> <?php echo $this->lang->line('new') . " " . $this->lang->line('exam') ?></a>
+                                <a tabindex="-1" class="btn btn-primary btn-sm" href="#" id="examModalButton"> <?php echo $this->lang->line('add') . " " . $this->lang->line('exam') ?></a>
                                 <?php
                             }
                             if($this->rbac->hasPrivilege('link_exam','can_view')){

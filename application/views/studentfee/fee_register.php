@@ -1,7 +1,7 @@
 
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
-$payment_mode_type = $this->customlib->payment_mode_type();
+// $payment_mode_type = $this->customlib->payment_mode_type();
 //echo "<pre>";print_r($receipt_data);die;
 ?>
 <div class="content-wrapper" style="min-height: 1126px;">
@@ -72,14 +72,9 @@ $payment_mode_type = $this->customlib->payment_mode_type();
                                         <label for="toDate">Mode</label>
                                         <select name="mode" class="form-control">
 											<option value="">Select Mode</option>
-											<?php 
-											foreach($payment_mode_type as $key=>$mode)
-											{
-											?>
-											<option value="<?php echo $key ?>" <?php if ($this->input->get('mode') == $key) echo "selected=selected" ?>><?php echo $mode; ?></option>
-											<?php 
-											}
-											?>
+											<?php foreach($p_modes as $p_mode) { ?>
+												<option value="<?=$p_mode['id']?>" <?php echo $this->input->get('mode') == $p_mode['id'] ? 'selected' : ''; ?>><?=$p_mode['title']?></option>
+											<?php } ?>
 										</select>
                                     </div>
 

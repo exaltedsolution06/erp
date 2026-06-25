@@ -62,11 +62,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </div>
 									<div class="col-sm-2">
                                         <label for="mode">Mode</label>
-                                        <select autofocus=""  name="mode" id="mode" name="class_id" class="form-control" >
+                                        <select autofocus=""  name="mode" id="mode" class="form-control" >
                                             <option value="">All</option>
-                                            <option value="Online" <?php echo $this->input->get('mode') == 'Online' ? 'selected' : ''; ?>>Online</option>
-                                            <option value="Cash" <?php echo $this->input->get('mode') == 'Cash' ? 'selected' : ''; ?>>Cash</option>
-                                            <option value="Other" <?php echo $this->input->get('mode') == 'Other' ? 'selected' : ''; ?>>Other</option>
+											<?php foreach($p_modes as $p_mode) { ?>
+												<option value="<?=$p_mode['id']?>" <?php echo $this->input->get('mode') == $p_mode['id'] ? 'selected' : ''; ?>><?=$p_mode['title']?></option>
+											<?php } ?>
                                         </select>
                                     </div>
 									<!--<div class="form-group col-md-2 d-flex align-items-end">

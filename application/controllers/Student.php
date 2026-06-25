@@ -17,6 +17,7 @@ class Student extends Admin_Controller
         $this->load->library('mailsmsconf');
         $this->load->library('encoding_lib');
         $this->load->model("classteacher_model");
+        $this->load->model("Castecategory_model");
         $this->load->model(array("timeline_model", "student_edit_field_model","fee_discount_model"));
         $this->blood_group        = $this->config->item('bloodgroup');
         $this->sch_setting_detail = $this->setting_model->getSetting();
@@ -477,6 +478,7 @@ class Student extends Admin_Controller
         $vehroute_result            = $this->route_model->get();
         $data['vehroutelist']       = $vehroute_result;
 		
+		$data['categories'] = $this->Castecategory_model->get();
 		
 		// fetch data for cusrom fielda
         $custom_fields              = $this->customfield_model->getByBelong('students');
@@ -520,6 +522,22 @@ class Student extends Admin_Controller
         $this->form_validation->set_rules('firstname', $this->lang->line('first_name'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('mobileno', 'Mobile Number', 'trim|required|xss_clean');
+		$this->form_validation->set_rules(
+			'father_phone',
+			'Phone No',
+			'trim|xss_clean|callback_validate_mobile'
+		);
+		$this->form_validation->set_rules(
+			'mother_phone',
+			'Mother Phone',
+			'trim|xss_clean|callback_validate_mobile'
+		);
+		$this->form_validation->set_rules(
+			'guardian_phone',
+			'Guardian Phone',
+			'trim|xss_clean|callback_validate_mobile'
+		);
         //$this->form_validation->set_rules('gender', $this->lang->line('gender'), 'trim|required|xss_clean');
         //$this->form_validation->set_rules('dob', $this->lang->line('date_of_birth'), 'trim|required|xss_clean');
         if($this->sch_setting_detail->guardian_name){
@@ -1575,7 +1593,23 @@ class Student extends Admin_Controller
     }
 
 
+	public function validate_mobile($mobile)
+	{
+		if (empty($mobile)) {
+			return true; // optional field
+		}
 
+		if (preg_match('/^[0-9]{10}$/', $mobile)) {
+			return true;
+		}
+
+		$this->form_validation->set_message(
+			'validate_mobile',
+			'The {field} must be exactly 10 digits.'
+		);
+
+		return false;
+	}
     public function edit($id)
     {
         if (!$this->rbac->hasPrivilege('student_full_details', 'can_edit')) {
@@ -1591,6 +1625,7 @@ class Student extends Admin_Controller
         $data['student'] = $student;
         $data['studentDetails'] = $studentDetails;
 		
+		$data['categories'] = $this->Castecategory_model->get();
 
         $data['adm_auto_insert'] = $this->sch_setting_detail->adm_auto_insert;
         $data['genderList']      = $genderList;
@@ -1632,6 +1667,22 @@ class Student extends Admin_Controller
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('category_id', $this->lang->line('category_id'), 'trim|required|xss_clean');
+        $this->form_validation->set_rules('mobileno', 'Mobile Number', 'trim|required|xss_clean');
+		$this->form_validation->set_rules(
+			'father_phone',
+			'Phone No',
+			'trim|xss_clean|callback_validate_mobile'
+		);
+		$this->form_validation->set_rules(
+			'mother_phone',
+			'Mother Phone',
+			'trim|xss_clean|callback_validate_mobile'
+		);
+		$this->form_validation->set_rules(
+			'guardian_phone',
+			'Guardian Phone',
+			'trim|xss_clean|callback_validate_mobile'
+		);
         //$this->form_validation->set_rules('gender', $this->lang->line('gender'), 'trim|required|xss_clean');
 
          if($this->sch_setting_detail->guardian_name){
@@ -1949,7 +2000,7 @@ class Student extends Admin_Controller
 
             }
 
-            $this->session->set_flashdata('msg', '<div student="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">' . $this->lang->line('update_message') . '</div>');
             redirect('student/search');
         }
     }

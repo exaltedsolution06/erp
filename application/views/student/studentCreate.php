@@ -179,13 +179,26 @@
 										<?php if ($sch_setting->category) { ?>
                                         <div class="col-md-2">
                                             <label for="exampleInputEmail1">Cast Category</label>
-                                            <select class="form-control" name="cast_category" id="" autocomplete="off">
+                                            <!--<select class="form-control" name="cast_category" id="" autocomplete="off">
                                                 <option value="">Select - </option>
                                                 <option value="GENERAL" <?= (set_value('cast_category') == 'GENERAL') ? 'selected' : '' ?>>GENERAL</option>
                                                 <option value="OBC" <?= (set_value('cast_category') == 'OBC') ? 'selected' : '' ?>>OBC</option>
                                                 <option value="SC/ST" <?= (set_value('cast_category') == 'SC/ST') ? 'selected' : '' ?>>SC/ST</option>
                                                 <option value="MINORITY" <?= (set_value('cast_category') == 'MINORITY') ? 'selected' : '' ?>>MINORITY</option>
                                                 <option value="OTHER" <?= (set_value('cast_category') == 'OTHER') ? 'selected' : '' ?>>Other</option>
+                                            </select>-->
+											<select class="form-control" name="cast_category" id="" autocomplete="off">
+                                                <option value="">Select - </option>
+                                                <?php
+                                                foreach($categories as $value) {
+                                                ?>
+                                                    <option value="<?=$value['id']?>" <?= ($value['id'] == set_value('cast_category')) ? 'selected' : '' ?>>
+                                                        <?=$value['category']?>
+                                                    </option>
+                                                <?php
+                                                }
+
+                                                ?>
                                             </select>
                                         </div>
                                         <?php } ?>
@@ -210,7 +223,7 @@
 <?php } if ($sch_setting->mobile_no) { ?>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('mobile_no'); ?></label>
+                                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('mobile_no'); ?><small class="req"> *</small></label>
                                                     <input id="mobileno" name="mobileno" placeholder="" type="text" class="form-control"  value="<?php echo set_value('mobileno'); ?>" />
                                                     <span class="text-danger"><?php echo form_error('mobileno'); ?></span>
                                                 </div>

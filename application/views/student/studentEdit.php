@@ -177,11 +177,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <select class="form-control" name="cast_category" id="" autocomplete="off">
                                                 <option value="">Select - </option>
                                                 <?php
-                                                $categories = ['GENERAL', 'OBC', 'SC/ST', 'MINORITY', 'OTHER']; // your category list
+                                                // $categories = ['GENERAL', 'OBC', 'SC/ST', 'MINORITY', 'OTHER']; // your category list
+                                                // $categories = $this->Castecategory_model->get();
                                                 foreach($categories as $value) {
                                                 ?>
-                                                    <option value="<?=$value?>" <?= ($value == $student['cast_category']) ? 'selected' : '' ?>>
-                                                        <?=$value?>
+                                                    <option value="<?=$value['id']?>" <?= ($value['id'] == $student['cast_category']) ? 'selected' : '' ?>>
+                                                        <?=$value['category']?>
                                                     </option>
                                                 <?php
                                                 }
@@ -215,7 +216,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <?php }if ($sch_setting->mobile_no) { ?>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('mobile_no'); ?></label>
+                                                    <label for="exampleInputEmail1"><?php echo $this->lang->line('mobile_no'); ?><small class="req"> *</small></label>
                                                     <input id="mobileno" name="mobileno" placeholder="" type="text" class="form-control"  value="<?php echo set_value('mobileno', $student['mobileno']); ?>" />
                                                     <span class="text-danger"><?php echo form_error('mobileno'); ?></span>
                                                 </div>

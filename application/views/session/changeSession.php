@@ -12,14 +12,14 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 			<div class="col-md-7">
 				<div class="box box-primary">
 					<div class="box-header with-border">
-						<h3 class="box-title">Move Students From this Class to this Class</h3>
+						<h3 class="box-title">Move Students - Current Session (<?php echo $this->setting_model->getCurrentSessionName(); ?>)</h3>
 					</div>
 					<form id="form1" action="" method="post" accept-charset="utf-8">
 					<input type="hidden" name="batch_id" value="<?php echo $batch_id; ?>">
 						<div class="box-body">
 							<div class="col-sm-5">
 								<div class="form-group">
-									<label>Class in Current Session (<?php echo $this->setting_model->getCurrentSessionName(); ?>)</label><small class="req"> *</small>
+									<label>From Class</label><small class="req"> *</small>
 									<select autofocus="" id="current_class_id" name="current_class_id" class="form-control" data-id="current">
 										<option value=""><?php echo $this->lang->line('select'); ?></option>
 										<?php
@@ -49,10 +49,12 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 										<option value=""><?php echo $this->lang->line('select'); ?></option>
 										<?php
 										foreach ($sessionlist as $session) {
+											if($session['id'] != $current_session){
 											?>
 											<option value="<?php echo $session['id'] ?>" ><?php echo $session['session'] ?></option>
 											<?php
 											$count++;
+											}
 										}
 										?>
 									</select>
@@ -61,7 +63,7 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="exampleInputEmail1">Shift to this next Class</label><small class="req"> *</small>
+									<label for="exampleInputEmail1">Next Class</label><small class="req"> *</small>
 									<select  id="next_class_id" name="next_class_id" class="form-control" data-id="next">
 										<option value=""><?php echo $this->lang->line('select'); ?></option>
 										<?php
@@ -102,7 +104,7 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 						<div class="box-body">
 							<div class="col-sm-6">
 								<div class="form-group">
-									<label>Current Session Fee Category</label><small class="req"> *</small>
+									<label>Current Fee Category</label><small class="req"> *</small>
 									<select autofocus="" id="current_category_id" name="current_category_id" class="form-control" >
 										<option value=""><?php echo $this->lang->line('select'); ?></option>
 										<?php
@@ -118,7 +120,7 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
-									<label>Next Session Fee Category</label><small class="req"> *</small>
+									<label>Next Fee Category</label><small class="req"> *</small>
 									<select autofocus="" id="next_category_id" name="next_category_id" class="form-control" >
 										<option value=""><?php echo $this->lang->line('select'); ?></option>
 										<?php

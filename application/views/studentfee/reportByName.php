@@ -88,10 +88,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </div>
                                     
                                 </div>   
-                                 <div class="table-responsive-" style="overflow: auto;">
+                                 <div class="table-responsive table-header-sticky" style="overflow: auto;">
                                     <div class="download_label"><?php echo $this->lang->line('fee_register');?></div>
 
-                                    <table  cellpadding="8" cellspacing="0" class="table example table-striped table-bordered table-hover example table-fixed-header" style="width:2100px !important">
+                                    <table  cellpadding="8" cellspacing="0" class="table example table-striped table-bordered table-hover example table-fixed-header sticky-col-5" style="width:2100px !important">
                                         <thead>
                                             <tr>
                                                 <th style="width:50px !imortant">S.No</th>

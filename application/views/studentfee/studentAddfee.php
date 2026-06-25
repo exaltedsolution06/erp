@@ -95,9 +95,9 @@ $language_name = $language["short_code"];
                             </div>
                         </div><!--./box-header-->
                         <div class="box-body" style="padding-top:0;">
-                            <div class="row">
+                            <div class="row" style="display:flex;">
                                 <div class="col-md-9">
-                                    <div class="sfborder">
+                                    <div class="sfborder" style="height: 100%;">
                                         <div class="col-md-2 text-center">
                                             <img width="115" height="115" class="round5" src="<?php
                                             if (!empty($student['image'])) {
@@ -162,7 +162,10 @@ $language_name = $language["short_code"];
                                                                     }
                                                                 }
                                                                 ?></th>
-                                                            <th>City - <?=$student_data['city']?></th>
+                                                            <!--<th>City - <?=$student_data['city']?></th>-->
+															<?php if(!empty($last_receipt_date)){ ?>
+                                                            <th>Last Receipt Date - <?= date('d-m-Y',strtotime($last_receipt_date->created_at)) ?></th>
+															<?php } ?>
                                                         </tr>
                                                     
                                                     </tbody>
@@ -174,7 +177,7 @@ $language_name = $language["short_code"];
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="sfborder p-5">
+                                    <div class="sfborder p-5" style="height: 100%;">
                                     
 
                                         <form action="" method="post">
@@ -187,7 +190,7 @@ $language_name = $language["short_code"];
 												<?php } ?>
                                                     <div class="col-sm-12">
                                                         <input class="form-check-input month-check" type="checkbox" id="select_all"  >
-                                                        <label for="select_all">Select All</label>
+                                                        <label for="select_all">Select All Months</label>
                                                     </div>
                                                     <hr>
 													<input type="hidden"  value="<?=$receipt_no?>" name="page_receipt_no" class="receipt_no">
@@ -232,13 +235,13 @@ $language_name = $language["short_code"];
                                                 </div>
                                             </div>
                                         </form>
-
-
-                                </div>
-                                <div class="col-md-12">
-                                    <div style="background: #dadada; height: 1px; width: 100%; clear: both; margin-bottom: 10px;"></div>
-                                </div>
+								</div>
                             </div>
+							<div class="row">
+                                <div class="col-md-12">
+                                    <div style="background: #dadada; height: 1px; width: 100%; clear: both; margin-top: 10px;"></div>
+                                </div>
+							</div>  
                         </div>  
 
                         <form action="<?=base_url('studentfee/saveFee')?>" id="ledger_form" method="post">
@@ -468,7 +471,7 @@ $language_name = $language["short_code"];
                                     if($pre_bal_total != 0){
 									?>
 									<div class="col-sm-2">
-                                        <label for="pre_bal_total">Prev. Session Amt.</label>
+                                        <label for="pre_bal_total"><strong>Prev. Session Amt.</strong></label>
                                         <input style="width: 100%;" type="text" id="pre_bal_total" class="form-control" value="<?=format_amount($pre_bal_total)?>" readonly />
                                     </div>
 									<?php } ?>
@@ -476,7 +479,7 @@ $language_name = $language["short_code"];
                                     if($ledg_total != 0){
 									?>
 									<div class="col-sm-2">
-                                        <label for="ledg_total">Total Ledger Amt.</label>
+                                        <label for="ledg_total"><strong>Ledger Amount</strong></label>
                                         <input style="width: 100%;" type="text" id="ledg_total" class="form-control" value="<?=format_amount($ledg_total)?>" readonly />
                                     </div>
 									<?php } ?>
@@ -484,19 +487,19 @@ $language_name = $language["short_code"];
                                     if($statusNew > 0){
 									?>
 									<div class="col-sm-2">
-                                        <label for="ledg_total">Academics Fee</label>
+                                        <label for="ledg_total"><strong>Academics Fee</strong></label>
                                         <input style="width: 100%;" type="text" class="form-control" value="<?=format_amount($fees_total)?>" readonly />
                                     </div>
 									<?php } ?>
 													 
                                     <div class="col-sm-2">
-                                        <label for="fees_received">Estimated Total</label>
+                                        <label for="fees_received"><strong>Estimated Total</strong></label>
                                         <input style="width: 100%;" type="text" id="fees_received" class="form-control" value="<?=$final_total?>" name="fees_received" readonly />
                                     </div>
                                     
                                     
                                     <div class="col-sm-2">
-                                        <label for="late_fees">Late/Other Fee</label>
+                                        <label for="late_fees"><strong>Late/Other Fee</strong></label>
                                         <input style="width: 100%;" type="text" id="late_fees" class="form-control" name="late_fees" />
                                     </div>
                                   
@@ -509,40 +512,40 @@ $language_name = $language["short_code"];
                                     
                                     <div class="col-sm-2">
                                         
-                                        <label for="discount_amt">Discount Amt</label>
+                                        <label for="discount_amt"><strong>Discount Amt</strong></label>
                                         <input style="width: 100%;" type="text" id="discount_amt" class="form-control" name="discount_amt" value="" readonly  />
                                     </div>
                                
                                     
                                     
                                     <div class="col-sm-2">
-                                        <label for="net_fees">Net Fees</label>
+                                        <label for="net_fees"><strong>Net Fees</strong></label>
                                         <input style="width: 100%;" type="text" id="net_fees" class="form-control" name="net_fees" value="<?=$final_total?>" readonly />
                                     </div>
                                 </div>
                                 <div class="row " style="display:flex; margin-top: 10px !important;">
 
 									<div class="col-sm-2">
-										<label for="receipt_amt">Receipt Amt</label>
+										<label for="receipt_amt"><strong>Receipt Amt</strong></label>
 										<input style="width: 100%;" type="text" id="receipt_amt" class="form-control" name="receipt_amt" value="<?=$final_total?>"/>
 										<label id="error_message_rcpt" style="color: red; display:block;font-size:10px !important">Amount must be between 0 and <?=$final_total ?>.</label>
 										<input type="hidden" value="<?=$final_total?>" name="hid_receipt_amt" id="hid_receipt_amt">
 									</div>
                                     
                                     <div class="col-sm-2">
-                                        <label for="balance_amt">Balance Amt</label>
+                                        <label for="balance_amt"><strong>Balance Amt</strong></label>
                                         <input style="width: 100%;" type="text" id="balance_amt" class="form-control" name="balance_amt" readonly value="0" />
                                     </div>
                                     <div class="col-sm-2">
-                                        <label for="mode">Mode</label>
+                                        <label for="mode"><strong>Payment Mode</strong></label>
                                         <select autofocus=""  name="mode" id="mode" name="class_id" class="form-control" >
-                                            <option value="Online">Online</option>
-                                            <option value="Cash">Cash</option>
-                                            <option value="Other">Other</option>
+											<?php foreach($p_modes as $p_mode) { ?>
+                                            <option value="<?=$p_mode['id']?>"><?=$p_mode['title']?></option>
+											<?php } ?>
                                         </select>
                                     </div>
                                     <div class="col-sm-2">
-                                        <label for="remarks">Remarks</label>
+                                        <label for="remarks"><strong>Remarks</strong></label>
                                         <input style="width: 100%;" type="text" id="remarks" class="form-control" name="remarks" />
                                     </div>
                                     <div class="col-sm-1">

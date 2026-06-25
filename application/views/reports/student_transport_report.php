@@ -120,6 +120,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 												<label><?php echo $this->lang->line('class'); ?></label><small class="req"> *</small>
 												<select autofocus="" id="class_id" name="class_id" class="form-control" >
 													<option value=""><?php echo $this->lang->line('select'); ?></option>
+													<option value="all" <?php
+														if (set_value('class_id') == 'all') {
+															echo "selected=selected";
+														}
+														?>><?php echo $this->lang->line('all'); ?></option>
 													<?php
 													foreach ($classlist as $class) {
 														?>
@@ -285,7 +290,11 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 			$('#section_id').html("");
 			var base_url = '<?php echo base_url() ?>';
 			var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
-
+			var sel1 = "";
+			if (section_id === 'all') {
+				sel1 = "selected";
+			}
+			div_data += '<option value="all"'+sel1+'><?php echo $this->lang->line('all'); ?></option>';
 
 			$.ajax({
 				type: "GET",

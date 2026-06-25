@@ -902,4 +902,39 @@ class Script extends Public_Controller
 		}
 		echo "Success";
 	}
+	public function fix_student_caste_category()
+	{
+		$result = $this->db->select('*')->from('students')->get()->result_array();
+		foreach ($result as $row) {
+			if($row['cast_category']!=''){
+				$category = $this->db->select('*')->from('caste_categories')->where('category', $row['cast_category'])->get()->row_array();
+				if(!empty($category)){
+					$this->db->where('id', $row['id']);
+					$this->db->update('students', array('cast_category' => $category['id']));
+				}
+			}
+		}
+		
+		$result1 = $this->db->select('*')->from('receipts')->get()->result_array();
+		foreach ($result1 as $row1) {
+			if($row1['mode']!=''){
+				$modes = $this->db->select('*')->from('payment_mode')->where('title', $row1['mode'])->get()->row_array();
+				if(!empty($modes)){
+					$this->db->where('id', $row1['id']);
+					$this->db->update('receipts', array('mode' => $modes['id']));
+				}
+			}
+		}
+		$result2 = $this->db->select('*')->from('deleted_receipts')->get()->result_array();
+		foreach ($result2 as $row2) {
+			if($row2['mode']!=''){
+				$modes = $this->db->select('*')->from('payment_mode')->where('title', $row2['mode'])->get()->row_array();
+				if(!empty($modes)){
+					$this->db->where('id', $row2['id']);
+					$this->db->update('deleted_receipts', array('mode' => $modes['id']));
+				}
+			}
+		}
+		echo "Success";
+	}
 }

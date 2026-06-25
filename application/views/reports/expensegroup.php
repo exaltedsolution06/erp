@@ -280,14 +280,14 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
 
-                        <div class="table-responsive">
+                        <div class="table-responsive table-header-sticky">
                             <div class="download_label"> <?php
                                 // echo $this->lang->line('fees_statement') . "<br>";
                                 $this->customlib->get_postmessage();
                                 ?></div>
 
                             <?php if((!empty($filters) and !empty($selectedMonths)) or ($filters[0]=='Consider Old Bal') ){ ?>
-                            <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header">
+                            <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header sticky-col-3">
                                 <thead>
                                     <tr>
                                         <th>S.No</th>
@@ -362,13 +362,43 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     $grand_total_2 = 0;
                                     if (!empty($receipt_data)): ?>
                                         <?php $sno = 1; foreach ($receipt_data as $record): ?>
-                                    <?php  $record=(array)$record;   $final=0;?>
+                                    <?php  $record=(array)$record;   $final=0;
+									
+                                            $final_rec=0;
+                                            $final_rec1=0;
+											
+									$this->db->select('sfm.previous_session_balance');
+									$this->db->from('student_fees_master sfm');
+									$this->db->join('fee_session_groups fsg', 'fsg.id = sfm.fee_session_group_id');
+									$this->db->join('fee_groups fg', 'fg.id = fsg.fee_groups_id');
+									$this->db->where('sfm.student_session_id', $record["previous_student_session_id"]);
+									$this->db->where('fg.name', $this->config->item('ci_balance_group'));
+
+									$row_data = $this->db->get()->row();
+
+									$previous_balance = $row_data ? $row_data->previous_session_balance : 0;
+									$record["previous_session_balance"] = $previous_balance;
+									
+									$ledger_received_sum = $this->db
+										->select('SUM(ledger_received) as ledger_received')
+										->from('(SELECT receipt_no, MAX(ledger_received) as ledger_received
+												 FROM receipts
+												 WHERE session_id = '.$this->db->escape($cur_session).'
+												 AND student_id = '.$this->db->escape($record['student_session_id']).'
+												 GROUP BY receipt_no) t', false)
+										->get()
+										->row();
+									$ledg_received_total = $ledger_received_sum->ledger_received;
+									$ledg_remain_total = $record['fees_discount'];
+									$record["fees_discount"] = (int)$ledg_received_total + (int)$ledg_remain_total;
+									
+									// $final_rec1+=$record["fees_discount"];
+									$final_rec+=$ledg_received_total;
+									?>
                                     <?php
-                                             $final_rec=0;
                                             $filters = $_POST['filters'];
 
 
-                                            $final_rec1=0;
 											if(in_array('Previous Balance', $filters)){
                                                         $final+=$record["previous_session_balance"];
                                                     }
