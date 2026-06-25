@@ -249,6 +249,11 @@ data-placement="left"<div class="content-wrapper" style="min-height: 946px;">
 			<div class="col-md-12">
 				<button type="button" class="btn btn-success pull-right transfer_batch">Ok, Transfer these students to next session</button> 
 			</div> 
+			<div class="col-md-12 mt10">
+				<div class="alert alert-warning">
+					<strong>Important:</strong> After clicking the <strong>"Ok, Transfer these students to next session"</strong> button, please do not perform any other actions on the website for approximately <strong>30 minutes</strong> while the transfer process is being completed.
+				</div>
+			</div> 
         </div>
 		<?php } ?>
 		<div class="row mt10">

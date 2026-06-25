@@ -1727,7 +1727,8 @@ class Report extends Admin_Controller
 
         // end paginate
 
-
+		$data['cur_session'] = $this->current_session;
+		
         $this->load->view('layout/header', $data);
         $this->load->view('reports/incomegroup', $data);
         $this->load->view('layout/footer', $data);

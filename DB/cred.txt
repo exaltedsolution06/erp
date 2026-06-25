@@ -32,7 +32,7 @@ http://localhost/erp/prevbalscript
 2) Step 2 - other 7 sql
 3) step 3 - alter.txt
 4) step 4 - new_alter.txt
-5) step 5 - 4 script url
+5) step 5 - 7 script url
 --------------------------------------------------------------------
 CRON 
 Every 5 minutes - 

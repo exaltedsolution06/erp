@@ -290,6 +290,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <th>Adm. No</th>
                                                 <th>Student</th>
                                                 <th>Father</th>
+                                                <th>Last Receipt Date</th>
                                                 <th>Class</th>
                                                 <th>Sec.</th>
                                                 <th>Fee Cat.</th>
@@ -535,12 +536,20 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
                                             <?php if($final>0){
+												$last_receipt_date = $this->db
+													->where('student_id', $record["student_id"])
+													->where('session_id', $cur_session)
+													->order_by('created_at', 'DESC')
+													->limit(1)
+													->get('receipts')
+													->row();
                                                 ?>
                                                 <tr>
                                                     <td><?= $sno++ ?></td>
                                                     <td><?= $record["admission_no"] ?><?php //json_encode($record)?></td>
                                                     <td><?= $record["firstname"].' '.$record["middlename"].' '.$record["lastname"] ?></td>
                                                     <td><?= $record["father_name"] ?></td>
+													<th><?= !empty($last_receipt_date) ? date('d-m-Y',strtotime($last_receipt_date->created_at)) : ''; ?></th>
                                                     <td><?= $record["class"] ?></td>
                                                     <td><?= $record["section"] ?></td>
                                                     <td ><?=  ($this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()) ? $this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()->name : 'N.A'; ?>  </td>
