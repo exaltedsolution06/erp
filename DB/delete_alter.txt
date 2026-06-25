@@ -31,6 +31,7 @@ TRUNCATE TABLE `template_admitcards`;
 TRUNCATE TABLE `student_timeline`;
 TRUNCATE TABLE `student_subject_attendances`;
 TRUNCATE TABLE `student_sibling`;
+TRUNCATE TABLE `sch_settings_session`;
 
 
 -------------------------------
