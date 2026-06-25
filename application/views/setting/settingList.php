@@ -687,9 +687,9 @@
                                         </div>
                                     </div>
 									
-									<div class="col-md-6">
+									<div class="col-md-12">
                                         <div class="form-group row">
-                                            <label class="col-sm-4">Include Year in Receipt No.</label>
+                                            <label class="col-sm-2">Include Year in Receipt No.</label>
                                             <div class="col-sm-8">
                                                 <label class="radio-inline">
                                                     <input name="receipt_year_status" class="receipt-disabled1" value="0" type="radio" 
