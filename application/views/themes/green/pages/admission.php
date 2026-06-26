@@ -76,9 +76,6 @@ if ($this->session->flashdata('msg')) {
                 <span class="text-danger"><?php echo form_error('lastname'); ?></span>
             </div>
         </div>
-        
-    </div><!--./row--> 
-    <div class="row"> 
         <div class="col-md-3">
             <div class="form-group">
                 <label for="exampleInputFile"> <?php echo $this->lang->line('gender'); ?></label><small class="req"> *</small> 
@@ -93,6 +90,28 @@ if ($this->session->flashdata('msg')) {
                     ?>
                 </select>
                 <span class="text-danger"><?php echo form_error('gender'); ?></span>
+            </div>
+        </div>
+        
+    </div><!--./row--> 
+    <div class="row"> 
+		<div class="col-md-3">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Cast Category</label><small style="color:red;"> *</small> 
+                <select  id="category_id" name="category_id" class="form-control"  >
+                    <option value="">Select - </option>
+					<?php
+					foreach($categories as $value) {
+					?>
+						<option value="<?=$value['id']?>" <?= ($value['id'] == $student['category_id']) ? 'selected' : '' ?>>
+							<?=$value['category']?>
+						</option>
+					<?php
+					}
+
+					?>
+                </select>
+                <span class="text-danger"><?php echo form_error('class_id'); ?></span>
             </div>
         </div>
         <div class="col-md-3">

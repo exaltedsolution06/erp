@@ -16,6 +16,7 @@ class Welcome extends Front_Controller
         $this->load->library('Ajax_pagination');
         $this->load->library('module_lib');
         $this->load->library('captchalib');
+        $this->load->model("Castecategory_model");
         $this->banner_content         = $this->config->item('ci_front_banner_content');
         $this->perPage                = 12;
         $this->sch_setting_detail     = $this->setting_model->getSetting();
@@ -225,6 +226,8 @@ class Welcome extends Front_Controller
             $this->data['genderList'] = $genderList;
             $this->data['title']      = 'Add Student';
             $this->data['title_list'] = 'Recently Added Student';
+			
+			$this->data['categories'] = $this->Castecategory_model->get();
 
             $data["student_categorize"] = 'class';
             $session                    = $this->setting_model->getCurrentSession();
@@ -305,6 +308,7 @@ class Welcome extends Front_Controller
                         'class_section_id'    => $this->input->post('section_id'),
                         'guardian_is'         => $this->input->post('guardian_is'),
                         'dob'                 => date('Y-m-d', strtotime($this->input->post('dob'))),
+                        'category_id'    	  => $this->input->post('category_id'),
                         'current_address'     => $this->input->post('current_address'),
                         'permanent_address'   => $this->input->post('permanent_address'),
                         'father_name'         => $this->input->post('father_name'),

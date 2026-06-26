@@ -27,7 +27,7 @@
                                         <th><?php echo $this->lang->line('father_name'); ?></th>
                                         <th><?php echo $this->lang->line('date_of_birth'); ?></th>
                                         <th><?php echo $this->lang->line('gender'); ?></th>
-                                        <th><?php echo $this->lang->line('category'); ?></th>
+                                        <th>Cast Category</th>
                                         <th style="width:10%"><?php echo $this->lang->line('student') . " " . $this->lang->line('mobile_no'); ?></th>
                                         <th><?php echo $this->lang->line('enrolled'); ?></th>
 
@@ -56,7 +56,21 @@
                                                 }
                                                 ?></td>
                                             <td><?php echo $student['gender']; ?></td>
-                                            <td><?php echo $student['category']; ?></td>
+											<?php
+											$CI =& get_instance();
+											$CI->load->model('Castecategory_model');
+
+											$categories = $CI->Castecategory_model->get();
+											$categoryName = '';
+
+											foreach ($categories as $category_val) {
+												if ($category_val['id'] == $student['category_id']) {
+													$categoryName = $category_val['category'];
+													break;
+												}
+											}
+											?>
+                                            <td><?php echo $categoryName; ?></td>
                                             <td><?php echo $student['mobileno']; ?></td>
                                             <td><?php echo ($student['is_enroll']) ? "<i class='fa fa-check'></i><span style='display:none'>Yes</span>" : "<i class='fa fa-minus-circle'></i><span style='display:none'>No</span>"; ?></td>
 

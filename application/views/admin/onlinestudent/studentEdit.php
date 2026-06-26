@@ -130,20 +130,21 @@
                                          <?php if ($sch_setting->category) { ?>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('category'); ?></label>
+                                                <label for="exampleInputEmail1">Cast Category</label>
                                                 <select  id="category_id" name="category_id" class="form-control" >
-                                                    <option value=""><?php echo $this->lang->line('select'); ?></option>
-                                                    <?php
-                                                    foreach ($categorylist as $category) {
-                                                        ?>
-                                                        <option value="<?php echo $category['id'] ?>" <?php
-                                                        if ($student['category_id'] == $category['id']) {
-                                                            echo "selected =selected";
-                                                        }
-                                                        ?>><?php echo $category['category']; ?></option>
-                                                                <?php
-                                                            }
-                                                            ?>
+                                                    <option value="">Select - </option>
+													<?php
+													// $categories = ['GENERAL', 'OBC', 'SC/ST', 'MINORITY', 'OTHER']; // your category list
+													// $categories = $this->Castecategory_model->get();
+													foreach($categories as $value) {
+													?>
+														<option value="<?=$value['id']?>" <?= ($value['id'] == $student['category_id']) ? 'selected' : '' ?>>
+															<?=$value['category']?>
+														</option>
+													<?php
+													}
+
+													?>
                                                 </select>
                                                 <span class="text-danger"><?php echo form_error('category_id'); ?></span>
                                             </div>

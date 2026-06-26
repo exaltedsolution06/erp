@@ -15,6 +15,7 @@ class Onlinestudent extends Admin_Controller {
         $this->load->library('encoding_lib');
         $this->load->model("classteacher_model");
         $this->load->model("timeline_model");
+        $this->load->model("Castecategory_model");
         $this->blood_group = $this->config->item('bloodgroup');
         $this->sch_setting_detail = $this->setting_model->getSetting();
         $this->role;
@@ -88,6 +89,8 @@ class Onlinestudent extends Admin_Controller {
         $houses = $this->houselist_model->get();
         $data['houses'] = $houses;
         $data['sch_setting'] = $this->sch_setting_detail;
+		
+		$data['categories'] = $this->Castecategory_model->get();
 
         if($this->input->post('save')=='enroll'){
              if (!$this->sch_setting_detail->adm_auto_insert) {
