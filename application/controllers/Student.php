@@ -571,6 +571,16 @@ class Student extends Admin_Controller
             $this->load->view('layout/footer', $data);
         } else {
 			
+			$data['result'] = $this->setting_model->getSetting();
+			$domain_api_url = CRM_URL .'api/Domain/get_domain_data/'.$data['result']->domain_api_key; 
+			$api_data = call_api_get($domain_api_url);
+			$total_student_current_session = $this->student_model->total_student_current_session();
+			$max_student_limit = (int)$api_data['data']['max_students'] + (int)$api_data['data']['add_on_students'];
+			if($total_student_current_session >= $max_student_limit){
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger"><strong>Maximum student limit reached.</strong> The maximum allowed student limit for your school has been reached ('.$max_student_limit.' students). Please contact the administrator to upgrade your limit.</div>');
+				redirect('student/create');
+			}
+		
             //echo "ok";vehroute_id  route_id
             // die;
              $custom_field_post  = $this->input->post("custom_fields[students]");
@@ -1314,8 +1324,33 @@ class Student extends Admin_Controller
                     $file = $_FILES['file']['tmp_name'];
                     $this->load->library('CSVReader');
                     $result = $this->csvreader->parse_file($file);
-
+					
+					
                     if (!empty($result)) {
+						$data['s_result'] = $this->setting_model->getSetting();
+						$domain_api_url = CRM_URL .'api/Domain/get_domain_data/'.$data['s_result']->domain_api_key; 
+						$api_data = call_api_get($domain_api_url);
+						$total_student_current_session = $this->student_model->total_student_current_session();
+						$max_student_limit = (int)$api_data['data']['max_students'] + (int)$api_data['data']['add_on_students'];
+						if($total_student_current_session >= $max_student_limit){
+							$this->session->set_flashdata('msg', '<div class="alert alert-danger"><strong>Maximum student limit reached.</strong> The maximum allowed student limit for your school has been reached ('.$max_student_limit.' students). Please contact the administrator to upgrade your limit.</div>');
+							redirect('student/import');
+						}
+						$csv_student_count = count($result);
+						if (($total_student_current_session + $csv_student_count) > $max_student_limit) {
+
+							$available_slots = $max_student_limit - $total_student_current_session;
+
+							$this->session->set_flashdata(
+								'msg',
+								'<div class="alert alert-danger">
+									<strong>CSV upload failed.</strong> Your school currently has <strong>' . $total_student_current_session . '</strong> students. The uploaded CSV contains <strong>' . $csv_student_count . '</strong> students, but only <strong>' . $available_slots . '</strong> student slot(s) are available. Please upload a smaller CSV or contact the administrator to increase your student limit.
+								</div>'
+							);
+
+							redirect('student/import');
+						}
+						
                         $rowcount = 0;
                         for ($i = 1; $i <= count($result); $i++) {
 

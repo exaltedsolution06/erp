@@ -728,6 +728,14 @@ class Student_model extends MY_Model
         return $query->result_array();
     }
 
+    public function total_student_current_session()
+    {
+		$total_students = $this->db
+			->where('session_id', $this->current_session)
+			->count_all_results('student_session');
+		
+		return $total_students;
+	}
     public function student_ratio()
     {
 
