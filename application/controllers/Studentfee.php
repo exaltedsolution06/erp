@@ -187,19 +187,24 @@ class Studentfee extends Admin_Controller
 			// by exaltedsol
 			$expld_receipt_no = explode('/', $data['receipt_no']);
 			//echo "<pre>";print_r($data['receipt_no']);die;
-			$receipt_sr_no = $expld_receipt_no[1];
+			if (count($expld_receipt_no) > 1) {
+				// Receipt number contains '/'
+				$receipt_sr_no = $expld_receipt_no[1];
+			}else{
+				$receipt_sr_no = $expld_receipt_no[0];
+			}
 			
 			
-			$current_session  = $expld_receipt_no[0];
+			/*$current_session  = $this->current_session;
 			$qr = $this->db->where('session', $current_session)->get('sessions');
 			$current_session_id = 0;
 			if($qr->num_rows())
 			{
 				$res = $qr->row_array();
 				$current_session_id = $res['id'];
-			}
+			}*/
 			
-			$this->setting_model->insert_receipt_sr_no($receipt_sr_no, $current_session_id);
+			$this->setting_model->insert_receipt_sr_no($receipt_sr_no, $this->current_session);
 			
         }else{
 			// echo "<pre>";print_r($data);die;
@@ -311,17 +316,22 @@ class Studentfee extends Admin_Controller
 			// by exaltedsol
 			$expld_receipt_no = explode('/', $data['receipt_no']);
 			//echo "<pre>";print_r($data['receipt_no']);die;
-			$receipt_sr_no = $expld_receipt_no[1];
-			$current_session  = $expld_receipt_no[0];
+			if (count($expld_receipt_no) > 1) {
+				// Receipt number contains '/'
+				$receipt_sr_no = $expld_receipt_no[1];
+			}else{
+				$receipt_sr_no = $expld_receipt_no[0];
+			}
+			/*$current_session  = $this->current_session;
 			$qr = $this->db->where('session', $current_session)->get('sessions');
 			$current_session_id = 0;
 			if($qr->num_rows())
 			{
 				$res = $qr->row_array();
 				$current_session_id = $res['id'];
-			}
+			}*/
 			
-			$this->setting_model->insert_receipt_sr_no($receipt_sr_no, $current_session_id);
+			$this->setting_model->insert_receipt_sr_no($receipt_sr_no, $this->current_session);
 			
 			
 			// insert into balance_sheets table 
@@ -359,7 +369,12 @@ class Studentfee extends Admin_Controller
 		// echo '<pre>'; print_r($data); echo '</pre>';die;		
 		
 		$rept_no = explode('/', $data['receipt_no']);
-        $srNo = $rept_no[1];	
+		if (count($rept_no) > 1) {
+			// Receipt number contains '/'
+			$srNo = $rept_no[1];
+		}else{
+			$srNo = $rept_no[0];
+		}
 		//echo '<pre>'; print_r($data); echo '</pre>';die;
         if (empty($data['receipt_no']) || empty($data['student_id'])) {
             echo json_encode(['status' => 'error', 'message' => 'Receipt number or student ID is missing']);
@@ -1554,7 +1569,7 @@ class Studentfee extends Admin_Controller
 		//echo $last_receipt_id; die;
         if(@$_GET['receipt_no'] ==''){
 			$get_session_setting = $this->setting_model->get_session_setting();
-			if($get_session_setting->receipt_year_status == 1){
+			if($get_session_setting['receipt_year_status'] == 1){
 				$data['receipt_no']=$this->session_model->get($this->setting_model->getCurrentSession())['session']."/".$last_receipt_id;
 			}else{
 				$data['receipt_no']=$last_receipt_id;

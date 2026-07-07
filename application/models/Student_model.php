@@ -632,7 +632,7 @@ class Student_model extends MY_Model
         $this->db->join('fee_groups', 'student_session.fee_category_id = fee_groups.id', 'left');
         $this->db->join('school_houses', 'student_session.school_house_id = school_houses.id', 'left');
         $this->db->where('student_session.session_id', $this->current_session);
-        $this->db->where('student_session.is_active', 'yes');
+        // $this->db->where('student_session.is_active', 'yes');
         $this->db->group_start();
         // $this->db->like('CONCAT(students.firstname," ",students.middlename," ",students.lastname)', $searchterm);
 

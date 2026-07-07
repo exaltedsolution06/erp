@@ -548,7 +548,7 @@ class Setting_model extends MY_Model {
         if ($query->num_rows() > 0) {
 			$row = $query->row();
 			$max_id = $row->sr_no;
-			$next_id = $max_id +1;
+			$next_id = (int)$max_id +1;
             return $next_id;
         } else {
             return 1; // Or 0, depending on your logic
