@@ -44,7 +44,7 @@
 						Current Plan
 					</button>
 					<?php }else{ ?>
-					<button class="btn btn-info btn-plan">
+					<button class="btn btn-info btn-plan choose-plan">
 						Choose Plan
 					</button>
 					<?php } ?>
@@ -57,3 +57,24 @@
 		</div>
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
+
+<div id="choosePlan" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Choose Plan</h4>
+            </div>
+            <div class="modal-body subject-body">
+				<p class="">Please Contact to your Partner or Call <?= $company['contact_no'] ?? '' ?></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$('.choose-plan').click(function () {
+	$('#choosePlan').modal().show();
+});
+</script>

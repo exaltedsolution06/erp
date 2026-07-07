@@ -35,6 +35,9 @@ class Package extends Admin_Controller {
 		$data['plans_api_data'] = $api_data['data'];
 		// echo '<pre>'; print_r($api_data); die;
 		
+		$company_details = fetch_crm_company(); 
+		$data['company'] = $company_details['data']; 
+		
         $this->load->view('layout/header', $data);
         $this->load->view('setting/packageList', $data);
         $this->load->view('layout/footer', $data);
