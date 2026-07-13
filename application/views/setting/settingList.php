@@ -977,6 +977,34 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="settinghr"></div>
+                                        <div class="relative">
+                                            <h4 class="session-head">Fee Receipt Dynamic Heading</h4>
+                                        </div>
+                                    </div><!--./col-md-12-->
+
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-5"> School Copy</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" name="fee_receipt_first_copy" id="fee_receipt_first_copy" class="form-control" value="<?php echo $result->fee_receipt_first_copy; ?>">
+                                                <span class="text-danger"><?php echo form_error('fee_receipt_first_copy'); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-5"> Parent Copy</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" name="fee_receipt_second_copy" id="fee_receipt_second_copy" class="form-control" value="<?php echo $result->fee_receipt_second_copy; ?>">
+                                                <span class="text-danger"><?php echo form_error('fee_receipt_second_copy'); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--./row-->
+								
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="settinghr"></div>
                                         <h4 class="session-head"><?php echo $this->lang->line('current_theme'); ?></h4>
                                     </div><!--./col-md-12-->
                                     <div class="col-sm-12">

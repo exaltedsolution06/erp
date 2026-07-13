@@ -1805,7 +1805,7 @@ class Receipt_model extends CI_Model {
         $this->db->where('student_session.session_id', $this->current_session);
 		$this->db->where('receipts.session_id', $this->current_session);
         $this->db->where('users.role', 'student');
-		$this->db->where('student_session.is_active', 'yes');
+		// $this->db->where('student_session.is_active', 'yes');
 		$this->db->group_by('students.id');
 		$this->db->order_by('students.id', 'desc');
 

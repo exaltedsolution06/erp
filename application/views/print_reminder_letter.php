@@ -136,6 +136,7 @@ foreach ($result as $val) {
         '[Net Balance]'   => $net_balance,
         '[Total Balance]' => $net_balance+$old_balance,
         '[Selected Months]'  => $selected_months,
+        '[Last Receipt Date]'  => $val['last_receipt_date'],
     ];
 
     $body = str_replace(array_keys($replaceArr), array_values($replaceArr), $val['description']);

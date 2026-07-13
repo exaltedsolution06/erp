@@ -623,6 +623,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
+                                                <td></td>
                                                 <td colspan="" style="text-align:right;">Total</td>
 
                                                 <?php if (in_array('Previous Balance', $filters)): ?>

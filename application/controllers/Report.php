@@ -1623,6 +1623,7 @@ class Report extends Admin_Controller
 						'old_balc' => format_amount($old_balc),
 						'fees_month' => $this->input->post('fees_month')[$k],
 						'fees_month_amount' => format_amount($this->input->post('fees_month_amount')[$k]),
+						'last_receipt_date' => format_amount($this->input->post('last_receipt_date')[$k]),
 						'routes_month' => $this->input->post('routes_month')[$k],
 						'routes_month_amount' => format_amount($this->input->post('routes_month_amount')[$k]),
 						'amount' => format_amount($amount),

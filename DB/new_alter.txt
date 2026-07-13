@@ -273,6 +273,8 @@ ALTER TABLE `student_session` ADD `total_fees_discount` FLOAT(10,2) NOT NULL DEF
 
 ALTER TABLE `sch_settings_session` ADD `receipt_year_status` TINYINT(1) NOT NULL DEFAULT '0' AFTER `receipt_sr_no`;
 
+ALTER TABLE `sch_settings` ADD `fee_receipt_first_copy` VARCHAR(255) NULL DEFAULT NULL AFTER `aff_no`, ADD `fee_receipt_second_copy` VARCHAR(255) NULL DEFAULT NULL AFTER `fee_receipt_first_copy`;
+
 
 ===============================
 File change outside of application folder

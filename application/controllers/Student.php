@@ -522,7 +522,7 @@ class Student extends Admin_Controller
         $this->form_validation->set_rules('firstname', $this->lang->line('first_name'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('mobileno', 'Mobile Number', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('mobileno', 'Mobile Number', 'trim|required|numeric|exact_length[10]|xss_clean');
 		$this->form_validation->set_rules(
 			'father_phone',
 			'Phone No',
@@ -1702,7 +1702,7 @@ class Student extends Admin_Controller
         $this->form_validation->set_rules('class_id', $this->lang->line('class'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('section_id', $this->lang->line('section'), 'trim|required|xss_clean');
         $this->form_validation->set_rules('category_id', $this->lang->line('category_id'), 'trim|required|xss_clean');
-        $this->form_validation->set_rules('mobileno', 'Mobile Number', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('mobileno', 'Mobile Number', 'trim|required|numeric|exact_length[10]|xss_clean');
 		$this->form_validation->set_rules(
 			'father_phone',
 			'Phone No',

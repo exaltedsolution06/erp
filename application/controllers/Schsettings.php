@@ -306,6 +306,8 @@ class Schsettings extends Admin_Controller {
                 'book_no' => form_error('book_no'),
                 'serial_no_prefix' => form_error('serial_no_prefix'),
                 'serial_no_suffix' => form_error('serial_no_suffix'),
+                'fee_receipt_first_copy' => form_error('fee_receipt_first_copy'),
+                'fee_receipt_second_copy' => form_error('fee_receipt_second_copy'),
             );
             $array = array('status' => 'fail', 'error' => $data);
             echo json_encode($array);
@@ -354,6 +356,8 @@ class Schsettings extends Admin_Controller {
                 'serial_no_suffix' => $this->input->post('serial_no_suffix'),
                 'fee_receipt_print_mode' => $this->input->post('fee_receipt_print_mode'),
                 'fee_receipt_page_size' => $this->input->post('fee_receipt_page_size'),
+                'fee_receipt_first_copy' => $this->input->post('fee_receipt_first_copy'),
+                'fee_receipt_second_copy' => $this->input->post('fee_receipt_second_copy'),
             );
             $this->session->userdata['admin']['is_rtl'] = $this->input->post('sch_is_rtl');
             $language_result = $this->language_model->get($this->input->post('sch_lang_id'));

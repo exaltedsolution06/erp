@@ -140,7 +140,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <?php
                                                 //  "Show Total & Recd."
                                                 $filters = $_POST['filters'] ?? [];
-                                                $filterOptions = ["Fees Head Wise", "Include Route", "Consider Old Bal", "Previous Balance" ];
+                                                $filterOptions = ["Fees Head Wise", "Fees Month Wise", "Include Route", "Consider Old Bal", "Previous Balance" ];
                                                 foreach ($filterOptions as $index => $value) {
                                                 $checked = in_array($value, $filters) ? 'checked' : '';
                                                 echo "<div class='form-check'>
@@ -322,7 +322,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     <div class="download_label">Defaulter List</div>
 
                                     <?php if(!empty($filters) and !empty($selectedMonths)){ ?>
-									<div style="max-height: 400px; overflow-y: auto;">
+									<div style="">
                                     <table  cellpadding="8" cellspacing="0" class="table table-striped table-bordered table-hover example table-fixed-header sticky-col-4">
                                         <thead>
                                             <tr>
@@ -365,6 +365,16 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             <th style="text-align:right"><?=$list['fees_heading']?></th>
                                                         <?php }
                                                     }
+													
+                                                    if(in_array('Fees Month Wise', $filters)){
+														$month_selected = $_POST['months'] ?? [];
+														if (!is_array($month_selected)) {
+															$month_selected = [$month_selected];
+														}
+                                                        foreach($month_selected as $m_val){ ?>
+                                                            <th style="text-align:right"><?=$m_val?></th>
+                                                        <?php }
+                                                    }
                                                     
                                                     if(in_array('Show Total & Recd.', $filters)){
 
@@ -401,6 +411,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             $total_fees_discount = 0;
                                             $total_prev_balance = 0;
                                             $head_wise_totals = []; // index by fee head
+                                            $month_wise_totals = []; // index by fee head
                                             $total_route = 0;
                                             $grand_total = 0;
                                             if (!empty($receipt_data)): ?>
@@ -450,7 +461,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 																$this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
                                                                 $query = $this->db->get();
                                                                 $amt_fee_heads = $query->row();
-
+																// echo '<pre>'; print_r($amt_fee_heads);exit;
                                                                 $db_months = json_decode($list['months'] ?? '[]');
 
                                                                 $selected_months = $_POST['months'] ?? [];
@@ -555,7 +566,128 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                         }
                                                     }
 													// echo '<pre>'; print_r(implode(',', $fees_month));exit;
-                                                    
+													// echo '<pre>'; print_r($fee_heads);exit;
+													
+													$month_amount = [];
+
+													if (in_array('Fees Month Wise', $filters)) {
+
+														$feeDiscountsArr = [];
+														if ($record['student_session_id'] != null) {
+															$feeDiscountsArr = $this->fee_discount_model->get_all_fees($record['student_session_id']);
+														}
+
+														$month_selected = $_POST['months'] ?? [];
+														if (!is_array($month_selected)) {
+															$month_selected = [$month_selected];
+														}
+
+														$monthMap = [
+															"Apr" => "month_apr",
+															"May" => "month_may",
+															"Jun" => "month_jun",
+															"Jul" => "month_jul",
+															"Aug" => "month_aug",
+															"Sep" => "month_sep",
+															"Oct" => "month_oct",
+															"Nov" => "month_nov",
+															"Dec" => "month_dec",
+															"Jan" => "month_jan",
+															"Feb" => "month_feb",
+															"Mar" => "month_mar"
+														];
+
+														foreach ($month_selected as $month) {
+
+															$month_total = 0;
+
+															foreach ($fee_heads as $list) {
+
+																$class_id    = $record['class_id'];
+																$category_id = $record['category_id'];
+																$fee_group_id = $list['fees_heading'];
+
+																$this->db->from('fee_head');
+																$this->db->join('fees_plan', 'fee_head.id = fees_plan.fee_group_id');
+																$this->db->where('fees_plan.fee_group_id', $list['id']);
+																$this->db->where("JSON_CONTAINS(fees_plan.class_ids, '\"$class_id\"')", null, false);
+																$this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
+
+																$query = $this->db->get();
+																$amt_fee_heads = $query->row();
+
+																if (!$amt_fee_heads) {
+																	continue;
+																}
+
+																$db_months = json_decode($list['months'] ?? '[]');
+
+																if (!in_array($month, $db_months)) {
+																	continue;
+																}
+
+																// Discount Logic
+																$months = json_decode($amt_fee_heads->months, true);
+																if (!is_array($months)) {
+																	continue;
+																}
+
+																$amounts = [];
+																$matched = false;
+
+																if (!empty($feeDiscountsArr)) {
+
+																	foreach ($feeDiscountsArr as $paid) {
+
+																		if ($paid['fee_type_id'] == $amt_fee_heads->id) {
+
+																			foreach ($months as $m) {
+
+																				$column = $monthMap[$m];
+
+																				$amounts[$m] = isset($paid[$column])
+																					? (float)$paid[$column]
+																					: (float)$amt_fee_heads->amount;
+																			}
+
+																			$matched = true;
+																			break;
+																		}
+																	}
+																}
+
+																// Same fallback as Fees Head Wise
+																if (!$matched) {
+
+																	foreach ($months as $m) {
+																		$amounts[$m] = (float)$amt_fee_heads->amount;
+																	}
+																}
+
+																$amt_fee_heads->amount = $amounts;
+
+																// Receipt Check
+																$this->db->where([
+																	'student_id'    => $record['student_id'],
+																	'fee_head_name' => $fee_group_id,
+																	'months'        => $month
+																]);
+
+																$receipt = $this->db->get('receipts')->row();
+
+																if (empty($receipt)) {
+
+																	$month_total += isset($amt_fee_heads->amount[$month])
+																		? (float)$amt_fee_heads->amount[$month]
+																		: 0;
+																	$fees_month[$month] = $month;
+																}
+															}
+
+															$month_amount[$month] = $month_total;
+															$final += $month_total;
+														}
+													}
                                                    
                                                     $routeFees=0;
 													$routes_month = [];
@@ -731,6 +863,20 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 																<td style="text-align:right"><?=format_amount($cat_list_amount[$list['fees_heading']] ?? 0); ?></td>
 															<?php }
 														}
+														if(in_array('Fees Month Wise', $filters)){
+															$month_selected = $_POST['months'] ?? [];
+															if (!is_array($month_selected)) {
+																$month_selected = [$month_selected];
+															}
+															$fees_month_amount = 0;
+															foreach ($month_selected as $month) {
+																$month_wise_totals[$month] += $month_amount[$month];
+																$fees_month_amount += $month_amount[$month];
+																?>
+																<td style="text-align:right"><?=format_amount($month_amount[$month] ?? 0); ?></td>
+														<?php			
+															}
+														}
                                                         /*if(in_array('Fees Head Wise', $filters)){
 															$fees_month_amount = 0;
                                                             foreach($cat_list_amount as $key=>$value){ 
@@ -765,6 +911,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 													<input name="routes_month[]" type="hidden" value="<?php echo  implode(',', $routes_month); ?>">
 													<input name="routes_month_amount[]" type="hidden" value="<?php echo number_format($routeFees,2); ?>">
 													<input name="default_data[]" type="hidden" value="<?php echo  $record['student_id'] .'@@@'.$record["fees_discount"].'@@@'.$final ;?>"></td>
+													<input name="last_receipt_date[]" type="hidden" value="<?php echo !empty($last_receipt_date) ? date('d-m-Y',strtotime($last_receipt_date->created_at)) : 'NA'; ?>"></td>
                                                     
                                                 </tr>
                                                 <?php
@@ -794,6 +941,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
+                                                <td></td>
                                                 <td colspan="" style="text-align:right;">Total</td>
 
                                                 <?php if (in_array('Previous Balance', $filters)): ?>
@@ -813,6 +961,18 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 													foreach($fee_heads as $list){
 												?>
 														<td style="text-align:right"><?=format_amount($head_wise_totals[$list['fees_heading']] ?? 0); ?></td>
+												<?php }
+												}
+												?>
+
+												<?php if(in_array('Fees Month Wise', $filters)){
+													$month_selected = $_POST['months'] ?? [];
+													if (!is_array($month_selected)) {
+														$month_selected = [$month_selected];
+													}
+													foreach($month_selected as $m_val){
+												?>
+														<td style="text-align:right"><?=format_amount($month_wise_totals[$m_val] ?? 0); ?></td>
 												<?php }
 												}
 												?>
@@ -889,6 +1049,46 @@ if ($search_type == 'period') {
 
 </script>
 <script>
+$(document).ready(function () {
+
+    // Get the two mutually exclusive checkboxes
+    const $headWise = $("input.filter-check[value='Fees Head Wise']");
+    const $monthWise = $("input.filter-check[value='Fees Month Wise']");
+
+    // Mutually exclusive selection
+    $headWise.on("change", function () {
+        if ($(this).is(":checked")) {
+            $monthWise.prop("checked", false);
+        }
+    });
+
+    $monthWise.on("change", function () {
+        if ($(this).is(":checked")) {
+            $headWise.prop("checked", false);
+        }
+    });
+
+    // Select All
+    $("#selectAllFilters").on("change", function () {
+
+        if ($(this).is(":checked")) {
+
+            // Check all filters
+            $(".filter-check").prop("checked", true);
+
+            // Keep only Fees Head Wise checked
+            $monthWise.prop("checked", false);
+            $headWise.prop("checked", true);
+
+        } else {
+
+            // Uncheck all filters
+            $(".filter-check").prop("checked", false);
+        }
+
+    });
+
+});
 $(document).on('click', '#select_all', function () {
         $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
     });

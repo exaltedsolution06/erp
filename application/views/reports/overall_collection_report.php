@@ -345,6 +345,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
                                             $final_rec1=0;
+											$ledger_received = $this->Receipt_model->ledger_received_sum($record['student_session_id']);	
 											if(in_array('Previous Balance', $filters)){
                                                         $final+=$record["previous_session_balance"];
                                                     }
@@ -355,8 +356,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 // $final_rec1=0;
 
                                                 // }else{
-                                                     $final_rec1+=$record["total_receipt_amt"];
-                                                $final+=$record["total_receipt_amt"];
+                                                     // $final_rec1+=$record["total_receipt_amt"];
+                                                // $final+=$record["total_receipt_amt"];
+                                                     $final_rec1+=(int)$ledger_received->ledger_received;
+                                                $final+=(int)$ledger_received->ledger_received;
                                                 
                                                 // }
                                                  $final_rec+=$final_rec1;
@@ -631,7 +634,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									$f_total = 0;
 									// Fees Head Wise
 									if(in_array('Consider Old Bal', $filters)){
-										$f_total += $record["total_receipt_amt"];
+										// $f_total += $record["total_receipt_amt"];
+										$f_total += (int)$ledger_received->ledger_received;
 									}
 
 									// Include Route
@@ -663,7 +667,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                             ?><td style="text-align:right"><?= format_amount($record["previous_session_balance"]) ?></td> <?php
                                                         }
                                                 if (in_array('Consider Old Bal', $filters)) {
-                                                    $oldBal = $record["total_receipt_amt"] ?? 0;
+                                                    // $oldBal = $record["total_receipt_amt"] ?? 0;
+                                                    $oldBal = (int)$ledger_received->ledger_received ?? 0;
                                                      ?><td style="text-align:right"><?= format_amount($oldBal) ?></td><?php
                                                     
                                                 }
@@ -700,7 +705,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         </tr>
                                         <?php
 										if (in_array('Consider Old Bal', $filters)){
-											$total_fees_discount += $record["total_receipt_amt"];
+											// $total_fees_discount += $record["total_receipt_amt"];
+											$total_fees_discount += (int)$ledger_received->ledger_received;
 										}
 										if (in_array('Previous Balance', $filters)){
 										$total_prev_balance += $record["previous_session_balance"];
