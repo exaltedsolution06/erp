@@ -350,10 +350,10 @@ button.btn:after
     padding-bottom: 15px;*/
 	text-align: left;
     color: #fff;
-    overflow: auto;
+    /* overflow: auto; */
     position: relative;
-    max-height: 350px;
-    height: 330px;
+    max-height: 450px;
+    height: 450px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;

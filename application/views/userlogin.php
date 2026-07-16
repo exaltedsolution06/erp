@@ -147,9 +147,13 @@ if (!$empty_notice) {
 													<a href="<?= $crm_website_url ?>" target="_blank"><img src="<?php echo $crm_logo; ?>"/></a>
 												</div>
 											</div>
-											<div class="loginright mCustomScrollbar">
+											<div class="loginright mCustomScrollbar1">
 												<div class="messages">
-
+												<marquee direction="up"
+													 scrollamount="5"
+													 height="390"
+													 onmouseover="this.stop();"
+													 onmouseout="this.start();">
 													<?php
 														foreach ($notice as $notice_key => $notice_value) {
 													?>
@@ -173,6 +177,7 @@ if (!$empty_notice) {
 													<?php
 														}
 													?>
+												</marquee>	
 												</div>
 											</div>
 										</div>

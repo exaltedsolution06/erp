@@ -149,11 +149,11 @@
 													<a href="<?= $crm_website_url ?>" target="_blank"><img src="<?php echo $crm_logo; ?>" /></a>
 												</div>
 											</div>
-											<div class="loginright mCustomScrollbar">
+											<div class="loginright mCustomScrollbar1">
 												<div class="messages"> 
 												<marquee direction="up"
 													 scrollamount="5"
-													 height="350"
+													 height="390"
 													 onmouseover="this.stop();"
 													 onmouseout="this.start();">
 												<?php 
