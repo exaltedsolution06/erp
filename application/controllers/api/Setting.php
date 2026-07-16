@@ -91,7 +91,7 @@ class Setting extends CI_Controller {
 								<div class="card-body">
 									<span class="dash-widget-icon"><i class="fa-solid fa-users"></i></span>
 									<div class="dash-widget-info">
-										<h3>'.(int)$total_male_students + (int)$total_female_students.'</h3>
+										<h3>'.((int)$total_male_students + (int)$total_female_students).'</h3>
 										<span>Total Students</span>
 									</div>
 								</div>
@@ -126,7 +126,7 @@ class Setting extends CI_Controller {
 								<div class="card-body">
 									<span class="dash-widget-icon"><i class="fa-solid fa-user-shield"></i></span>
 									<div class="dash-widget-info">
-										<h3>'.(int)$count_staff_male + (int)$count_staff_female.'</h3>
+										<h3>'.((int)$count_staff_male + (int)$count_staff_female).'</h3>
 										<span>Total Staff</span>
 									</div>
 								</div>
@@ -145,7 +145,9 @@ class Setting extends CI_Controller {
 				$female_total_present += $female_attendance_value->present + $female_attendance_value->excuse + $female_attendance_value->late + $female_attendance_value->half_day;
 			}
 			$staff_attendance_result = $this->staffattendancemodel->get_staff_attendancebydate(date('Y-m-d'), $session_id);
+			if ($staff_attendance_result) {
 			$staff_total_present += $staff_attendance_result->present + $staff_attendance_result->late + $staff_attendance_result->half_day;
+			}
 			$html .= '<div class="row">
 						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
 							<div class="card dash-widget">
