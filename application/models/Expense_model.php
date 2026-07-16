@@ -283,18 +283,36 @@ class Expense_model extends MY_Model
 		$query = $this->db->get();
 		return $query->row()->today_total_expense;
 	}
-	public function expense_by_session($is_date, $session_id)
+	public function expense_by_session($session_id = '', $from_date = '', $to_date = '')
 	{
-		$this->db->select('SUM(amount) as today_total_expense');
-		$this->db->from(' balance_sheets');
-		$this->db->where('balance_type',1);
-		if($is_date){
-		$this->db->where('DATE(date)',date('Y-m-d'));
-		}
-		$this->db->where('session_id',$session_id);
+		$this->db->select("
+			SUM(CASE WHEN balance_type = 0 THEN amount ELSE 0 END) AS total_income,
+			SUM(CASE WHEN balance_type = 1 THEN amount ELSE 0 END) AS total_expense
+		");
 
-		$query = $this->db->get();
-		return $query->row()->today_total_expense;
+		$this->db->from('balance_sheets');
+		$this->db->where('status', 0);
+
+		if (!empty($session_id)) {
+			$this->db->where('session_id', $session_id);
+		}
+
+		if (!empty($from_date) && !empty($to_date)) {
+			$this->db->where('DATE(date) >=', date('Y-m-d', strtotime($from_date)));
+			$this->db->where('DATE(date) <=', date('Y-m-d', strtotime($to_date)));
+		}
+
+		$result = $this->db->get()->row();
+
+		if (!$result) {
+			$result = new stdClass();
+			$result->total_income = 0;
+			$result->total_expense = 0;
+		}
+
+		$result->total_fund = $result->total_income - $result->total_expense;
+
+		return $result;
 	}
 	 public function getExpenseAmountBetweenDate($start_date, $end_date)
     {

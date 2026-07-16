@@ -35,6 +35,8 @@ class Setting extends CI_Controller {
 		
 		$form_type = $this->input->post('form_type', true);
 		$session_id = $this->input->post('session_id', true);
+		$from_date  = $this->input->post('from_date', true);
+		$to_date    = $this->input->post('to_date', true);
 		
 		$html = '';
 		if($form_type == 'strengths'){
@@ -185,62 +187,90 @@ class Setting extends CI_Controller {
 					</div>';
 		}
 		if($form_type == 'income'){
-			$today_income  = $this->income_model->income_by_session(true, $session_id);
-			$total_income  = $this->income_model->income_by_session(false, $session_id);
+			$income = $this->income_model->income_by_session(
+				$session_id,
+				$from_date,
+				$to_date
+			);
 			
 			$html = '<div class="row">
-						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
-							<div class="card dash-widget">
-								<div class="card-body">
-									<span class="dash-widget-icon"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-									<div class="dash-widget-info">
-										<h3>'.(format_amount($today_income ?? '0')).'</h3>
-										<span>Today`s Income</span>
-									</div>
-								</div>
+				<div class="col-md-4">
+					<div class="card dash-widget">
+						<div class="card-body">
+							<span class="dash-widget-icon"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+							<div class="dash-widget-info">
+								<h3>'.format_amount($income->collection ?? 0).'</h3>
+								<span>Collection</span>
 							</div>
 						</div>
-						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
-							<div class="card dash-widget">
-								<div class="card-body">
-									<span class="dash-widget-icon"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-									<div class="dash-widget-info">
-										<h3>'.(format_amount($total_income ?? '0')).'</h3>
-										<span>Total Income</span>
-									</div>
-								</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card dash-widget">
+						<div class="card-body">
+							<span class="dash-widget-icon"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+							<div class="dash-widget-info">
+								<h3>'.format_amount($income->other_collection ?? 0).'</h3>
+								<span>Other Collection</span>
 							</div>
 						</div>
-					</div>';
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card dash-widget">
+						<div class="card-body">
+							<span class="dash-widget-icon"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+							<div class="dash-widget-info">
+								<h3>'.format_amount($income->total_collection ?? 0).'</h3>
+								<span>Total Collection</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>';
 		}
 		if($form_type == 'expense'){
-			$today_expense  = $this->expense_model->expense_by_session(true, $session_id);
-			$total_expense  = $this->expense_model->expense_by_session(false, $session_id);
+			$expense = $this->expense_model->expense_by_session(
+				$session_id,
+				$from_date,
+				$to_date
+			);
 			
 			$html = '<div class="row">
-						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
-							<div class="card dash-widget">
-								<div class="card-body">
-									<span class="dash-widget-icon"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-									<div class="dash-widget-info">
-										<h3>'.(format_amount($today_expense ?? '0')).'</h3>
-										<span>Today`s Expense</span>
-									</div>
-								</div>
+				<div class="col-md-4">
+					<div class="card dash-widget">
+						<div class="card-body">
+							<span class="dash-widget-icon"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+							<div class="dash-widget-info">
+								<h3>'.format_amount($expense->total_income ?? 0).'</h3>
+								<span>Total Income</span>
 							</div>
 						</div>
-						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
-							<div class="card dash-widget">
-								<div class="card-body">
-									<span class="dash-widget-icon"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-									<div class="dash-widget-info">
-										<h3>'.(format_amount($total_expense ?? '0')).'</h3>
-										<span>Total Expense</span>
-									</div>
-								</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card dash-widget">
+						<div class="card-body">
+							<span class="dash-widget-icon"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+							<div class="dash-widget-info">
+								<h3>'.format_amount($expense->total_expense ?? 0).'</h3>
+								<span>Total Expense</span>
 							</div>
 						</div>
-					</div>';
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card dash-widget">
+						<div class="card-body">
+							<span class="dash-widget-icon"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+							<div class="dash-widget-info">
+								<h3>'.format_amount($expense->total_fund ?? 0).'</h3>
+								<span>Total Fund Available</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>';
 		}
 		
 		echo json_encode([

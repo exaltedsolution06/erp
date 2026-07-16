@@ -151,6 +151,11 @@
 											</div>
 											<div class="loginright mCustomScrollbar">
 												<div class="messages"> 
+												<marquee direction="up"
+													 scrollamount="5"
+													 height="350"
+													 onmouseover="this.stop();"
+													 onmouseout="this.start();">
 												<?php 
 												if(!empty($crm_school_update))
 												{
@@ -183,6 +188,7 @@
 													<?php
 													
 													?>
+												</marquee>
 												</div>  
 											</div>
 											<!-- <img src="<?php echo base_url(); ?>backend/usertemplate/assets/img/backgrounds/bg3.jpg" class="img-responsive" style="border-radius:4px;" /> -->

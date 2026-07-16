@@ -299,19 +299,42 @@ class Income_model extends My_Model
 		$query = $this->db->get();
 		return $query->row()->today_total_income;
 	}
-	public function income_by_session($is_date, $session_id)
+	public function income_by_session($session_id = '', $from_date = '', $to_date = '')
 	{
-		$this->db->select('SUM(amount) as today_total_income');
-		$this->db->from('balance_sheets');
-		$this->db->where('balance_type',0);
-		$this->db->where('status',0);
-		if($is_date){
-		$this->db->where('DATE(date)',date('Y-m-d'));
-		}
-		$this->db->where('session_id',$session_id);
+		$this->db->select("
+			SUM(CASE WHEN balance_type = 0 THEN amount ELSE 0 END) AS total_collection,
+			SUM(CASE
+					WHEN balance_type = 0
+					AND receipt_no IS NOT NULL
+					AND receipt_no != ''
+					THEN amount
+					ELSE 0
+				END) AS collection
+		");
 
-		$query = $this->db->get();
-		return $query->row()->today_total_income;
+		$this->db->from('balance_sheets');
+		$this->db->where('status', 0);
+
+		if (!empty($session_id)) {
+			$this->db->where('session_id', $session_id);
+		}
+
+		if (!empty($from_date) && !empty($to_date)) {
+			$this->db->where('DATE(date) >=', date('Y-m-d', strtotime($from_date)));
+			$this->db->where('DATE(date) <=', date('Y-m-d', strtotime($to_date)));
+		}
+
+		$result = $this->db->get()->row();
+
+		if (!$result) {
+			$result = new stdClass();
+			$result->total_collection = 0;
+			$result->collection = 0;
+		}
+
+		$result->other_collection = $result->total_collection - $result->collection;
+
+		return $result;
 	}
 	public function get_income_head()
 	{
