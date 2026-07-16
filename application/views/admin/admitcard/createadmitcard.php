@@ -40,6 +40,37 @@ if (isset($error_message)) {
                                     <input autofocus="" id="template" value="<?php echo set_value('template'); ?>" name="template" placeholder="" type="text" class="form-control" />
                                     <span class="text-danger"><?php echo form_error('template'); ?></span>
                                 </div>
+								
+								<div class="clearfix"></div>
+                                <div class="row">
+									<div class="col-md-12">
+										<div class="form-group switch-inline">
+											<label><?php echo $this->lang->line('header').' '.$this->lang->line('image'); ?></label>
+											<div class="material-switch switchcheck">
+												<input id="is_header" name="is_header" type="checkbox" class="chk" value="1" onclick="valueHeaderImageChanged()">
+												<label for="is_header" class="label-success"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12 col-sm-12 img_div_modal">
+										<div class="form-group enableHeaderImageDiv" hidden>
+											<input id="documents" name="header_img" placeholder="" type="file" class="filestyle form-control" data-height="40">
+											<span class="text-danger"><?php echo form_error('header_img'); ?></span>
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-6 img_div_modal enableHeadFootDiv">
+										<div class="form-group">
+											<input id="header_height" name="header_height" placeholder="<?php echo $this->lang->line('header'); ?> <?php echo $this->lang->line('height'); ?>" type="number" class="form-control" min="0" />
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-6 img_div_modal enableHeadFootDiv">
+										<div class="form-group">
+											<input id="footer_height" name="footer_height" placeholder="<?php echo $this->lang->line('footer'); ?> <?php echo $this->lang->line('height'); ?>" type="number" class="form-control" min="0" />
+										</div>
+									</div>
+								</div>
+								
+								<div class="clearfix"></div>
                                 <div class="form-group">
                                     <label> <?php echo $this->lang->line('heading'); ?></label>
                                     <input autofocus="" id="heading" name="heading" value="<?php echo set_value('heading'); ?>" placeholder="" type="text" class="form-control" />
@@ -92,6 +123,13 @@ if (isset($error_message)) {
                                     <span class="text-danger"><?php echo form_error('background_img'); ?></span>
                                 </div>
 
+                                <div class="form-group switch-inline">
+                                    <label>Sign in left side</label>
+                                    <div class="material-switch switchcheck">
+                                        <input id="sign_left_position" name="sign_left_position" type="checkbox" class="chk" value="1">
+                                        <label for="sign_left_position" class="label-success"></label>
+                                    </div>
+                                </div>
                                 <div class="form-group switch-inline">
                                     <label><?php echo $this->lang->line('name'); ?></label>
                                     <div class="material-switch switchcheck">
@@ -355,5 +393,15 @@ if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
             $("#enableImageDiv").show();       
         else
             $("#enableImageDiv").hide();        
+    }
+    function valueHeaderImageChanged()
+    {
+        if ($('#is_header').is(":checked")){
+            $(".enableHeaderImageDiv").show();
+            $(".enableHeadFootDiv").hide();
+        }else{
+			$(".enableHeadFootDiv").show();
+            $(".enableHeaderImageDiv").hide();
+		}
     }
 </script>

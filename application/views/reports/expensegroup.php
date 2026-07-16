@@ -296,6 +296,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <th>Father</th>
                                         <th>Class</th>
                                         <th>Sec.</th>
+										<th>Contact No.</th>
                                         <th>Fee Cat.</th>
                                         <th>Route</th>
 
@@ -606,6 +607,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <td><?= $record["father_name"] ?></td>
                                             <td><?= $record["class"] ?></td>
                                             <td><?= $record["section"] ?></td>
+											<td><?= isset($record["mobileno"]) ? $record["mobileno"] : 'NA'; ?></td>
                                             <td ><?=  ($this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()) ? $this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()->name : 'N.A'; ?>  </td>
                                         
                                             <td ><?=  ($this->db->get_where('route_head', ['id' => $record['route_id']])->row()) ? $this->db->get_where('route_head', ['id' => $record['route_id']])->row()->fees_heading : 'N.A'; ?>  </td>
@@ -673,6 +675,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
                                 <?php endforeach; ?>
                                     <tr style="font-weight: bold;">
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>

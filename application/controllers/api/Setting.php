@@ -51,12 +51,15 @@ class Setting extends CI_Controller {
 			}
 			
 			$tot_roles = $this->role_model->get();
-			$count_staff = 0;
+			$count_staff_male = 0;
+			$count_staff_female = 0;
 			foreach ($tot_roles as $key => $value) {
 				if($value["is_superadmin"] != 1){
-					$count_staff += $this->role_model->count_roles_by_sesssion($value["id"], $session_id);
+					$count_staff_male += $this->role_model->count_roles_by_sesssion_male($value["id"], $session_id);
+					$count_staff_female += $this->role_model->count_roles_by_sesssion_female($value["id"], $session_id);
 				}else{
-					$count_staff += $this->role_model->count_superadmin($value["id"]);
+					$count_staff_male += $this->role_model->count_superadmin_male($value["id"]);
+					$count_staff_female += $this->role_model->count_superadmin_female($value["id"]);
 				}
 			}
 			
@@ -67,7 +70,7 @@ class Setting extends CI_Controller {
 									<span class="dash-widget-icon"><i class="fa-solid fa-male"></i></span>
 									<div class="dash-widget-info">
 										<h3>'.$total_male_students.'</h3>
-										<span>Male Student</span>
+										<span>Total Male</span>
 									</div>
 								</div>
 							</div>
@@ -78,7 +81,31 @@ class Setting extends CI_Controller {
 									<span class="dash-widget-icon"><i class="fa-solid fa-female"></i></span>
 									<div class="dash-widget-info">
 										<h3>'.$total_female_students.'</h3>
-										<span>Female Student</span>
+										<span>Total Female</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
+							<div class="card dash-widget">
+								<div class="card-body">
+									<span class="dash-widget-icon"><i class="fa-solid fa-users"></i></span>
+									<div class="dash-widget-info">
+										<h3>'.(int)$total_male_students + (int)$total_female_students.'</h3>
+										<span>Total Students</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
+							<div class="card dash-widget">
+								<div class="card-body">
+									<span class="dash-widget-icon"><i class="fa-solid fa-user-shield"></i></span>
+									<div class="dash-widget-info">
+										<h3>'.$count_staff_male.'</h3>
+										<span>Total Male Staff</span>
 									</div>
 								</div>
 							</div>
@@ -88,8 +115,67 @@ class Setting extends CI_Controller {
 								<div class="card-body">
 									<span class="dash-widget-icon"><i class="fa-solid fa-user-shield"></i></span>
 									<div class="dash-widget-info">
-										<h3>'.$count_staff.'</h3>
-										<span>Staff</span>
+										<h3>'.$count_staff_female.'</h3>
+										<span>Total Female Staff</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
+							<div class="card dash-widget">
+								<div class="card-body">
+									<span class="dash-widget-icon"><i class="fa-solid fa-user-shield"></i></span>
+									<div class="dash-widget-info">
+										<h3>'.(int)$count_staff_male + (int)$count_staff_female.'</h3>
+										<span>Total Staff</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>';
+					
+			$male_total_present = $female_total_present = $staff_total_present = 0;
+			$date = " and student_attendences.date='" . date('Y-m-d') . "'";
+			$male_attendance_result = $this->stuattendence_model->get_male_attendancebydate($date, $session_id);
+			foreach ($male_attendance_result as $key => $male_attendance_value) {
+				$male_total_present += $male_attendance_value->present + $male_attendance_value->excuse + $male_attendance_value->late + $male_attendance_value->half_day;
+			}
+			$female_attendance_result = $this->stuattendence_model->get_female_attendancebydate($date, $session_id);
+			foreach ($female_attendance_result as $key => $female_attendance_value) {
+				$female_total_present += $female_attendance_value->present + $female_attendance_value->excuse + $female_attendance_value->late + $female_attendance_value->half_day;
+			}
+			$staff_attendance_result = $this->staffattendancemodel->get_staff_attendancebydate(date('Y-m-d'), $session_id);
+			$staff_total_present += $staff_attendance_result->present + $staff_attendance_result->late + $staff_attendance_result->half_day;
+			$html .= '<div class="row">
+						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
+							<div class="card dash-widget">
+								<div class="card-body">
+									<span class="dash-widget-icon"><i class="fa-solid fa-male"></i></span>
+									<div class="dash-widget-info">
+										<h3>'.$male_total_present.'</h3>
+										<span>Todays Boys Present</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
+							<div class="card dash-widget">
+								<div class="card-body">
+									<span class="dash-widget-icon"><i class="fa-solid fa-female"></i></span>
+									<div class="dash-widget-info">
+										<h3>'.$female_total_present.'</h3>
+										<span>Todays Girls Present</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-lg-6 col-xl-4">
+							<div class="card dash-widget">
+								<div class="card-body">
+									<span class="dash-widget-icon"><i class="fa-solid fa-user-shield"></i></span>
+									<div class="dash-widget-info">
+										<h3>'.$staff_total_present.'</h3>
+										<span>Todays Staff Present</span>
 									</div>
 								</div>
 							</div>

@@ -146,8 +146,6 @@ DELETE FROM staff_roles;
 ALTER TABLE staff_roles AUTO_INCREMENT = 1;
 DELETE FROM staff_leave_details;
 ALTER TABLE staff_leave_details AUTO_INCREMENT = 1;
-DELETE FROM staff_attendance_type;
-ALTER TABLE staff_attendance_type AUTO_INCREMENT = 1;
 DELETE FROM staff_attendance;
 ALTER TABLE staff_attendance AUTO_INCREMENT = 1;
 DELETE FROM staff;

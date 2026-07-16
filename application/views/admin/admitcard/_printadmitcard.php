@@ -34,6 +34,13 @@ if (!empty($student_details)) {
     foreach ($student_details as $student_key => $student_value) {
 
         ?>
+		<?php 
+	if($admitcard->is_header==0){
+?>
+	<div class="" style="height:<?php echo $admitcard->header_height; ?>px;"></div>
+<?php
+	}
+?>
         <div class="mark-container">
             <?php
 if ($admitcard->background_img != "") {
@@ -42,6 +49,39 @@ if ($admitcard->background_img != "") {
                 <?php
 }
         ?>
+		<?php 
+			if($admitcard->is_header==1){
+			if($admitcard->header_img!='' || $admitcard->header_img!=null){
+			$is_header_file_path = FCPATH . 'uploads/admit_card/' . $admitcard->header_img;
+			if (file_exists($is_header_file_path)) {
+			?>
+			<div class="col-12" style="padding:0;">
+				<img src="<?php echo base_url('uploads/admit_card/'.$admitcard->header_img) ?>" style="height:150px;width:100%">
+			</div>
+			<?php
+			}else{
+				if(!empty($header_image)){
+				$header_path = FCPATH . 'uploads/print_headerfooter/common_header/' . $header_image;	
+				if (file_exists($header_path)){
+			?>
+			<div class="col-12" style="padding:0;">
+				<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/common_header/<?php echo $header_image; ?>" style="height:150px;width:100%">
+			</div>
+			<?php
+				}}
+			}
+			}else{
+				if(!empty($header_image)){
+				$header_path = FCPATH . 'uploads/print_headerfooter/common_header/' . $header_image;	
+				if (file_exists($header_path)){
+			?>
+			<div class="col-12" style="padding:0;">
+				<img src="<?php echo base_url(); ?>/uploads/print_headerfooter/common_header/<?php echo $header_image; ?>" style="height:150px;width:100%">
+			</div>
+			<?php
+				}}
+			}
+			} ?>
             <table cellpadding="0" cellspacing="0" width="100%" class="tablemain">
                 <?php
 if ($admitcard->title != "" || $admitcard->heading != "" || $admitcard->left_logo != "") {
@@ -302,11 +342,15 @@ if ($admitcard->content_footer != "") {
         ?>
                 <?php
 if ($admitcard->sign != "") {
+	$sign_position = 'right';
+	if($admitcard->sign_left_position == 1){
+		$sign_position = 'left';
+	}
             ?>
                 <tr><td valign="top" height="20px"></td></tr>
                     <tr>
                         <td align="right" valign="top">
-                            <table cellpadding="0" cellspacing="0" width="100%" style="text-align: center;">
+                            <table cellpadding="0" cellspacing="0" width="100%" style="text-align: <?php echo $sign_position; ?>;">
                                 <tr>
                                     <td valign="top">
                                         <img src="<?php echo base_url('uploads/admit_card/' . $admitcard->sign); ?>" width="100" height="38"  />
@@ -320,6 +364,13 @@ if ($admitcard->sign != "") {
         ?>
             </table>
         </div>
+		<?php 
+	if($admitcard->is_header==0){
+	?>
+		<div class="" style="height:<?php echo $admitcard->footer_height; ?>px;"></div>
+	<?php
+		}
+	?>
         <?php
 }
 }

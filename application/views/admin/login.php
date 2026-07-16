@@ -24,7 +24,28 @@
             /* @media (max-width: 767px){.col-md-offset-3 {margin-left: 0;}}*/
             .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
                 background: rgb(53, 170, 71);} 
+				
+			.password-group {
+				position: relative;
+			}
 
+			.password-group .toggle-password {
+				position: absolute;
+				top: 50%;
+				right: 15px;
+				transform: translateY(-50%);
+				cursor: pointer;
+				color: #777;
+				z-index: 10;
+			}
+
+			.password-group .toggle-password:hover {
+				color: #333;
+			}
+
+			.password-group input {
+				padding-right: 45px;
+			}
         </style>
 
     </head>
@@ -88,9 +109,12 @@
                                                 <span class="fa fa-envelope form-control-feedback"></span>
                                                 <span class="text-danger"><?php echo form_error('username'); ?></span>
                                             </div>
-                                            <div class="form-group has-feedback">                                           
+                                            <div class="form-group has-feedback password-group">
                                                 <input type="password" value="<?php echo set_value('password') ?>" name="password" placeholder="<?php echo $this->lang->line('password'); ?>" class="form-password form-control" id="form-password">
-                                                <span class="fa fa-lock form-control-feedback"></span>
+                                                <!--<span class="fa fa-lock form-control-feedback"></span>-->
+												<span class="toggle-password">
+													<i class="fa fa-eye" id="togglePassword"></i>
+												</span>
                                                 <span class="text-danger"><?php echo form_error('password'); ?></span>
                                             </div>
                                             <?php if($is_captcha){ ?>
@@ -208,6 +232,25 @@
 		?>
     </body>
 </html>
+<script>
+$(document).ready(function () {
+
+    $('#togglePassword').click(function () {
+
+        var password = $('#form-password');
+
+        if (password.attr('type') === 'password') {
+            password.attr('type', 'text');
+            $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+        } else {
+            password.attr('type', 'password');
+            $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+        }
+
+    });
+
+});
+</script>
 <script type="text/javascript">
     $(document).ready(function () {
         $('.login-form input[type="text"], .login-form input[type="password"], .login-form textarea').on('focus', function () {

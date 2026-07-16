@@ -62,6 +62,7 @@ class Examresult extends Admin_Controller {
 			
             $data['student_details'] = $this->examstudent_model->getStudentsAdmitCardByExamAndStudentID($students_array, $post_exam_id);
             $data['sch_setting']= $this->sch_setting_detail;
+			$data['header_image']= $this->setting_model->get_header_return('common_header');
             $student_admit_cards = $this->load->view('admin/admitcard/_printadmitcard', $data, true);
             $array = array('status' => '1', 'error' => '', 'page' => $student_admit_cards);
             echo json_encode($array);

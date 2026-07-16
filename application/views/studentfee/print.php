@@ -202,9 +202,9 @@ if($_GET['copy']=='2'){
 <table class="table mt-1 mb-1" style="border-top:1px solid #000000; border-bottom:1px solid #000000;">
     <thead>
         <tr>
-			<th>Rec. No.: <?=$fees[0]->receipt_no?></th>
-			<th><?php echo isset($result->fee_receipt_first_copy) && $result->fee_receipt_first_copy != '' ? $result->fee_receipt_first_copy : 'School Copy'; ?></th>
-			<th class="text-end">Date: <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
+			<th style="width:33%;">Rec. No.: <?=$fees[0]->receipt_no?></th>
+			<th style="width:33%; text-align:center;"><?php echo isset($result->fee_receipt_first_copy) && $result->fee_receipt_first_copy != '' ? $result->fee_receipt_first_copy : 'School Copy'; ?></th>
+			<th style="width:33%;" class="text-end">Date: <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
 		</tr>
     </thead>
 </table> 
@@ -463,9 +463,9 @@ if($_GET['copy']=='2'){
 <table class="table mt-1 mb-1">
     <thead>
         <tr style="border-top:1px solid #000000; border-bottom:1px solid #000000;">
-            <th>Rec. No.: <?=$fees[0]->receipt_no?></th>
-			<th><?php echo isset($result->fee_receipt_second_copy) && $result->fee_receipt_second_copy != '' ? $result->fee_receipt_second_copy : 'Parent Copy'; ?></th>
-			<th class="text-end">Date: <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
+            <th style="width:33%;">Rec. No.: <?=$fees[0]->receipt_no?></th>
+			<th style="width:33%; text-align:center;"><?php echo isset($result->fee_receipt_second_copy) && $result->fee_receipt_second_copy != '' ? $result->fee_receipt_second_copy : 'Parent Copy'; ?></th>
+			<th style="width:33%;" class="text-end">Date: <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
         </tr>
     </thead>
 </table> 
@@ -953,9 +953,9 @@ if($_GET['copy']=='2'){
                     <table class="table mt-1 mb-1">
                         <thead>
                             <tr style="border-top:1px solid #000000; border-bottom:1px solid #000000;">
-                                <th>Rec. No.: <?=$fees[0]->receipt_no?></th>
-								<th><?php echo isset($result->fee_receipt_second_copy) && $result->fee_receipt_second_copy != '' ? $result->fee_receipt_second_copy : 'Parent Copy'; ?></th>
-                                <th class="text-end">Date: <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
+                                <th style="width:33%;">Rec. No.: <?=$fees[0]->receipt_no?></th>
+								<th style="width:33%; text-align:center;"><?php echo isset($result->fee_receipt_second_copy) && $result->fee_receipt_second_copy != '' ? $result->fee_receipt_second_copy : 'Parent Copy'; ?></th>
+                                <th style="width:33%;" class="text-end">Date: <?=date('d-m-Y',strtotime($fees[0]->date_time))?></th>
                             </tr>
                         </thead>
                     </table> 

@@ -40,6 +40,7 @@
 					if(set_Submenu('Companyinfo/index')
 						|| set_Submenu('Package/index')
 						|| set_Submenu('Schoolregistration/index')
+						|| set_Submenu('Package/invoice-details')
 						// || set_Submenu('report/ticket-section')
 					){
 						$activeSoftwareSuMenu="active";
@@ -60,7 +61,7 @@
 							<?php } if ($this->rbac->hasPrivilege('subscription_details', 'can_view')) { ?>
 								<!--<li class="<?php //echo set_Submenu('Package/subscription-details'); ?>"><a href="#<?php //echo base_url(); ?>package/subscription_details"><i class="fa fa-angle-double-right"></i> Subscription Details</a></li>-->
 							<?php } if ($this->rbac->hasPrivilege('invoice_details', 'can_view')) { ?>
-								<li class="<?php //echo set_Submenu('Package/invoice-details'); ?>"><a href="#<?php //echo base_url(); ?>package/invoice_details"><i class="fa fa-angle-double-right"></i> Invoice Details</a></li>
+								<li class="<?php echo set_Submenu('Package/invoice-details'); ?>"><a href="<?php echo base_url(); ?>package/invoice_details"><i class="fa fa-angle-double-right"></i> Invoice Details</a></li>
 							<?php } if ($this->rbac->hasPrivilege('software_subscription_report', 'can_view')) { ?>
 								<!--<li class="<?php //echo set_Submenu('Package/all-reports'); ?>"><a href="#<?php //echo base_url(); ?>package/all_reports"><i class="fa fa-angle-double-right"></i> All Reports</a></li>-->
 							<?php } ?>

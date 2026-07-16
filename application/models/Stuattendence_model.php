@@ -161,6 +161,22 @@ class Stuattendence_model extends MY_Model {
 
         return $count_studentattendance;
     }
+    public function get_male_attendancebydate($date, $session_id) {
+        $sql = 'SELECT classes.class as class_name,sections.section as section_name, SUM(CASE WHEN `attendence_type_id` = 1 THEN 1 ELSE 0 END) AS "present",SUM(CASE WHEN `attendence_type_id` = 2 THEN 1 ELSE 0 END) AS "excuse",SUM(CASE WHEN `attendence_type_id` = 4 THEN 1 ELSE 0 END) AS "absent",SUM(CASE WHEN `attendence_type_id` = 3 THEN 1 ELSE 0 END) AS "late",SUM(CASE WHEN `attendence_type_id` = 6 THEN 1 ELSE 0 END) AS "half_day" FROM `student_attendences` join student_session on student_attendences.student_session_id=student_session.id join students on students.id=student_session.student_id inner join class_sections on (student_session.class_id=class_sections.class_id and student_session.section_id=class_sections.section_id) inner join classes on classes.id=class_sections.class_id inner join sections on sections.id=class_sections.section_id WHERE `students`.`gender`="Male" and `student_session`.`session_id`='.$session_id.' ' . $date . ' group by class_sections.id';
+
+        $query = $this->db->query($sql);
+        $count_studentattendance = $query->result();
+
+        return $count_studentattendance;
+    }
+    public function get_female_attendancebydate($date, $session_id) {
+        $sql = 'SELECT classes.class as class_name,sections.section as section_name, SUM(CASE WHEN `attendence_type_id` = 1 THEN 1 ELSE 0 END) AS "present",SUM(CASE WHEN `attendence_type_id` = 2 THEN 1 ELSE 0 END) AS "excuse",SUM(CASE WHEN `attendence_type_id` = 4 THEN 1 ELSE 0 END) AS "absent",SUM(CASE WHEN `attendence_type_id` = 3 THEN 1 ELSE 0 END) AS "late",SUM(CASE WHEN `attendence_type_id` = 6 THEN 1 ELSE 0 END) AS "half_day" FROM `student_attendences` join student_session on student_attendences.student_session_id=student_session.id join students on students.id=student_session.student_id inner join class_sections on (student_session.class_id=class_sections.class_id and student_session.section_id=class_sections.section_id) inner join classes on classes.id=class_sections.class_id inner join sections on sections.id=class_sections.section_id WHERE `students`.`gender`="Female" and `student_session`.`session_id`='.$session_id.' ' . $date . ' group by class_sections.id';
+
+        $query = $this->db->query($sql);
+        $count_studentattendance = $query->result();
+
+        return $count_studentattendance;
+    }
 	
 	public function getTodayPresentStudents()
 	{

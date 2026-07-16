@@ -26,6 +26,7 @@ class Admitcard extends Admin_Controller
 
         $this->form_validation->set_rules('template', $this->lang->line('template'), 'trim|required|xss_clean');
 
+        $this->form_validation->set_rules('header_img', 'header_img', 'callback_handle_upload[header_img]');
         $this->form_validation->set_rules('left_logo', $this->lang->line('left') . " " . $this->lang->line('logo'), 'callback_handle_upload[left_logo]');
         $this->form_validation->set_rules('right_logo', $this->lang->line('right') . " " . $this->lang->line('logo'), 'callback_handle_upload[right_logo]');
         $this->form_validation->set_rules('background_img', $this->lang->line('background') . " " . $this->lang->line('image'), 'callback_handle_upload[background_img]');
@@ -37,6 +38,12 @@ class Admitcard extends Admin_Controller
                 $is_name = 1;
             } else {
                 $is_name = 0;
+            }
+
+            if (isset($_POST['sign_left_position'])) {
+                $sign_left_position = 1;
+            } else {
+                $sign_left_position = 0;
             }
 
             if (isset($_POST['is_father_name'])) {
@@ -99,6 +106,16 @@ class Admitcard extends Admin_Controller
                 $is_section = 0;
             }
 
+            if (isset($_POST['is_header'])) {
+                $is_header = 1;
+				$header_height = 0;
+				$footer_height = 0;
+            } else {
+                $is_header = 0;
+				$header_height = $this->input->post('header_height');
+				$footer_height = $this->input->post('footer_height');
+            }
+			
             $insert_data = array(
                 'template'        => $this->input->post('template'),
                 'heading'         => $this->input->post('heading'),
@@ -107,6 +124,7 @@ class Admitcard extends Admin_Controller
                 'school_name'     => $this->input->post('school_name'),
                 'exam_center'     => $this->input->post('exam_center'),
                 'is_name'         => $is_name,
+                'sign_left_position'         => $sign_left_position,
                 'is_father_name'  => $is_father_name,
                 'is_mother_name'  => $is_mother_name,
                 'is_dob'          => $is_dob,
@@ -122,9 +140,20 @@ class Admitcard extends Admin_Controller
                 'right_logo'      => "",
                 'sign'            => "",
                 'background_img'  => "",
+                'is_header'=>$is_header,
+                'header_img'=>"",
+				'header_height' => $header_height,
+                'footer_height' => $footer_height,
 				'session_id' => $this->current_session
             );
 
+            if (isset($_FILES["header_img"]) && !empty($_FILES["header_img"]['name'])) {
+                $time = md5($_FILES["header_img"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["header_img"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["header_img"]["tmp_name"], "./uploads/admit_card/" . $img_name);
+                $insert_data['header_img'] = $img_name;
+            }
             if (isset($_FILES["left_logo"]) && !empty($_FILES["left_logo"]['name'])) {
                 $time     = md5($_FILES["left_logo"]['name'] . microtime());
                 $fileInfo = pathinfo($_FILES["left_logo"]["name"]);
@@ -223,6 +252,7 @@ class Admitcard extends Admin_Controller
         $this->data['admitcard']     = $get_admitcard;
         $this->form_validation->set_rules('template', $this->lang->line('template'), 'trim|required|xss_clean');
 
+        $this->form_validation->set_rules('header_img', 'header_img', 'callback_handle_upload[header_img]');
         $this->form_validation->set_rules('left_logo', $this->lang->line('left') . " " . $this->lang->line('logo'), 'callback_handle_upload[left_logo]');
         $this->form_validation->set_rules('right_logo', $this->lang->line('right') . " " . $this->lang->line('logo'), 'callback_handle_upload[right_logo]');
         $this->form_validation->set_rules('background_img', $this->lang->line('background') . " " . $this->lang->line('image'), 'callback_handle_upload[background_img]');
@@ -234,6 +264,12 @@ class Admitcard extends Admin_Controller
                 $is_name = 1;
             } else {
                 $is_name = 0;
+            }
+
+            if (isset($_POST['sign_left_position'])) {
+                $sign_left_position = 1;
+            } else {
+                $sign_left_position = 0;
             }
 
             if (isset($_POST['is_father_name'])) {
@@ -295,6 +331,17 @@ class Admitcard extends Admin_Controller
             } else {
                 $is_section = 0;
             }
+			
+            if (isset($_POST['is_header'])) {
+                $is_header = 1;
+				$header_height = 0;
+				$footer_height = 0;
+            } else {
+                $is_header = 0;
+				$header_height = $this->input->post('header_height');
+				$footer_height = $this->input->post('footer_height');
+            }
+
             $insert_data = array(
                 'id'              => $this->input->post('id'),
                 'template'        => $this->input->post('template'),
@@ -304,6 +351,7 @@ class Admitcard extends Admin_Controller
                 'school_name'     => $this->input->post('school_name'),
                 'exam_center'     => $this->input->post('exam_center'),
                 'is_name'         => $is_name,
+                'sign_left_position'         => $sign_left_position,
                 'is_father_name'  => $is_father_name,
                 'is_mother_name'  => $is_mother_name,
                 'is_dob'          => $is_dob,
@@ -315,8 +363,27 @@ class Admitcard extends Admin_Controller
                 'is_class'        => $is_class,
                 'is_section'      => $is_section,
                 'content_footer'  => htmlentities($this->input->post('content_footer')),
+				'is_header'=>$is_header,
+				'header_height' => $header_height,
+                'footer_height' => $footer_height,
             );
 
+            if ($_POST['remove_header_img'] == 1) {
+				$path1 = "uploads/admit_card/" . $get_admitcard->header_img;
+				$url = FCPATH . $path1;
+				if (file_exists($url)) {
+					unlink($url);
+				}
+				$insert_data['header_img'] = '';
+			}
+			
+            if (isset($_FILES["header_img"]) && !empty($_FILES["header_img"]['name'])) {
+                $time = md5($_FILES["header_img"]['name'] . microtime());
+                $fileInfo = pathinfo($_FILES["header_img"]["name"]);
+                $img_name = $time . '.' . $fileInfo['extension'];
+                move_uploaded_file($_FILES["header_img"]["tmp_name"], "./uploads/admit_card/" . $img_name);
+                $insert_data['header_img'] = $img_name;
+            }
             if (isset($_FILES["left_logo"]) && !empty($_FILES["left_logo"]['name']) && $_FILES['left_logo']['error'] == 0) {
 
                 $time     = md5($_FILES["left_logo"]['name'] . microtime());

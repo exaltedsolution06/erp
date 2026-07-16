@@ -41,6 +41,37 @@ if (isset($error_message)) {
                                     <input autofocus="" id="template" name="template" placeholder="" type="text" class="form-control" value="<?php echo set_value('template', $admitcard->template); ?>"/>
                                     <span class="text-danger"><?php echo form_error('template'); ?></span>
                                 </div>
+								
+								<div class="clearfix"></div>
+                                <div class="row">
+									<div class="col-md-12">
+										<div class="form-group switch-inline">
+											<label><?php echo $this->lang->line('header').' '.$this->lang->line('image'); ?></label>
+											<div class="material-switch switchcheck">
+												<input id="is_header" name="is_header" type="checkbox" class="chk" value="1" onclick="valueHeaderImageChanged()" <?php echo set_checkbox('is_header', '1', (set_value('is_header', $admitcard->is_header) == 1) ? TRUE : FALSE); ?>>
+												<label for="is_header" class="label-success"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12 col-sm-12 img_div_modal">
+										<div class="form-group enableHeaderImageDiv" hidden>
+											<input id="documents" data-default-file="<?php echo base_url() ?>./uploads/admit_card/<?php echo $admitcard->header_img; ?>" name="header_img" placeholder="" type="file" class="filestyle form-control" data-height="40">
+											<input type="hidden" name="remove_header_img" class="remove_image">
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-6 img_div_modal enableHeadFootDiv">
+										<div class="form-group">
+											<input id="header_height" name="header_height" placeholder="<?php echo $this->lang->line('header'); ?> <?php echo $this->lang->line('height'); ?>" type="number" class="form-control" min="0" value="<?php echo set_value('header_height', $admitcard->header_height); ?>" />
+										</div>
+									</div>
+									<div class="col-md-6 col-sm-6 img_div_modal enableHeadFootDiv">
+										<div class="form-group">
+											<input id="footer_height" name="footer_height" placeholder="<?php echo $this->lang->line('footer'); ?> <?php echo $this->lang->line('height'); ?>" type="number" class="form-control" min="0" value="<?php echo set_value('footer_height', $admitcard->footer_height); ?>" />
+										</div>
+									</div>
+								</div>
+								
+								<div class="clearfix"></div>
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('heading'); ?></label>
                                     <input autofocus="" id="heading" name="heading" placeholder="" type="text" class="form-control" value="<?php echo set_value('heading', $admitcard->heading); ?>"/>
@@ -90,6 +121,13 @@ if (isset($error_message)) {
                                     <label><?php echo $this->lang->line('background') . " " . $this->lang->line('image'); ?></label>
                                     <input id="documents" name="background_img" placeholder="" type="file" class="filestyle form-control" data-height="28"  name="background_image">
                                     <span class="text-danger"><?php echo form_error('background_img'); ?></span>
+                                </div>
+                                <div class="form-group switch-inline">
+                                    <label>Sign in left side</label>
+                                    <div class="material-switch switchcheck">
+                                        <input id="sign_left_position" name="sign_left_position" type="checkbox" class="chk" value="1" <?php echo set_checkbox('sign_left_position', '1', (set_value('sign_left_position', $admitcard->sign_left_position) == 1) ? true : false); ?>>
+                                        <label for="sign_left_position" class="label-success"></label>
+                                    </div>
                                 </div>
                                 <div class="form-group switch-inline">
                                     <label><?php echo $this->lang->line('name'); ?></label>
@@ -318,6 +356,11 @@ if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
     }
 </script>
 <script>
+	$(document).ready(function (e) {
+		$("body").on('click', '.dropify-clear', function () {
+			$(this).closest('.form-group').find('.remove_image').val(1);
+		});
+	});
     $(document).ready(function () {
         $('.detail_popover').popover({
             placement: 'right',
@@ -332,6 +375,15 @@ if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
+		
+		if ($('#is_header').is(":checked")){
+            $(".enableHeaderImageDiv").show();
+            $(".enableHeadFootDiv").hide();
+        }else{
+			$(".enableHeadFootDiv").show();
+            $(".enableHeaderImageDiv").hide();
+		}
+		
         $('.view_data').click(function () {
             var certificateid = $(this).attr("id");
             $.ajax({
@@ -355,4 +407,14 @@ if ($this->rbac->hasPrivilege('design_admit_card', 'can_edit')) {
         else
             $("#enableImageDiv").hide();        
     }
+	function valueHeaderImageChanged()
+    {
+        if ($('#is_header').is(":checked")){
+            $(".enableHeaderImageDiv").show();
+            $(".enableHeadFootDiv").hide();
+        }else{
+			$(".enableHeadFootDiv").show();
+            $(".enableHeaderImageDiv").hide();
+		}
+    }	
 </script>
