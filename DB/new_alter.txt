@@ -278,6 +278,8 @@ ALTER TABLE `sch_settings` ADD `fee_receipt_first_copy` VARCHAR(255) NULL DEFAUL
 ALTER TABLE `template_admitcards` ADD `is_header` INT(11) NULL DEFAULT NULL AFTER `is_section`, ADD `header_img` TEXT NULL DEFAULT NULL AFTER `is_header`, ADD `header_height` INT(11) NULL DEFAULT NULL AFTER `header_img`, ADD `footer_height` INT(11) NULL DEFAULT NULL AFTER `header_height`;
 ALTER TABLE `template_admitcards` ADD `sign_left_position` INT(11) NOT NULL DEFAULT '1' AFTER `content_footer`;
 
+ALTER TABLE `sch_settings` ADD `marks_in_exam` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '1=Required,0=Not required' AFTER `fee_receipt_second_copy`;
+
 
 ===============================
 File change outside of application folder

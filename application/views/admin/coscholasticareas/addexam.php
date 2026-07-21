@@ -1144,7 +1144,8 @@ if (set_value('class_id') == $class['id']) {
       $(element).parent().removeClass(errorClass);
     }
 });
-
+			var marks_in_exam = '<?php echo $sch_setting->marks_in_exam ?>';
+			if(marks_in_exam == 1){
             $('.marksssss').each(function () {
                 $(this).rules("add",
                         {
@@ -1155,6 +1156,7 @@ if (set_value('class_id') == $class['id']) {
                             }
                         });
             });
+			}
 
 
             // test if form is valid

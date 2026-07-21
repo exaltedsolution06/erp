@@ -3,7 +3,17 @@
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 // $payment_mode_type = $this->customlib->payment_mode_type();
 //echo "<pre>";print_r($receipt_data);die;
+
+$printUrl = $this->input->get('print');
 ?>
+<?php if (!empty($printUrl)) : ?>
+<script>
+    window.open("<?= $printUrl ?>", "_blank");
+
+    // Remove the query string so refresh won't open it again
+    window.history.replaceState({}, document.title, "<?= site_url('studentfee/studentfeelist') ?>");
+</script>
+<?php endif; ?>
 <div class="content-wrapper" style="min-height: 1126px;">
     <section class="content-header">
         <h1>

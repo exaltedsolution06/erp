@@ -526,7 +526,9 @@
 													$total+=$resultData->get_marks; 
 												}
 												$total1+=$total; 
+												if(isset($saved_max_marks_json[$exam_group_id]) && $saved_max_marks_json[$exam_group_id] == 1){
 												array_push($array, $max_marks1_show);
+												}
 											if($desc->max_marks_shift_left==1){
 												if(isset($saved_max_marks_json[$exam_group_id]) && $saved_max_marks_json[$exam_group_id] == 1){
 													// array_push($array,$max_marks1);

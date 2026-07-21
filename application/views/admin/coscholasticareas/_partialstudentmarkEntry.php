@@ -91,7 +91,7 @@
                                     </div>
                                 </td>
 								<?php if ($this->rbac->hasPrivilege('add_grade', 'can_add')) { ?>
-                                <td> <input type="text" class="marksssss form-control" name="exam_group_student_mark_<?php echo $student['exam_group_class_batch_exam_students_id']; ?>" value="<?php echo $student['exam_group_exam_result_get_marks']; ?>" step="any"></td>
+                                <td> <input type="text" class="marksssss form-control" name="exam_group_student_mark_<?php echo $student['exam_group_class_batch_exam_students_id']; ?>" value="<?php echo $student['exam_group_exam_result_get_marks'] > 0 ? format_amount($student['exam_group_exam_result_get_marks']) : ''; ?>" step="any"></td>
 
                                 <td> <input type="text" class="form-control note" name="exam_group_student_note_<?php echo $student['exam_group_class_batch_exam_students_id']; ?>" value="<?php echo $student['exam_group_exam_result_note']; ?>"></td>
 								<?php } ?>

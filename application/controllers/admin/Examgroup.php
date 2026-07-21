@@ -387,6 +387,7 @@ class Examgroup extends Admin_Controller {
 		if(!$data['examgroup']){
 			redirect('admin/examgroup/index');
 		}
+		$data['sch_setting']  =$this->sch_setting_detail;
         $this->load->view('layout/header', $data);
         $this->load->view('admin/examgroup/addexam', $data);
         $this->load->view('layout/footer', $data);

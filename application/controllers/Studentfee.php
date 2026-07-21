@@ -351,7 +351,9 @@ class Studentfee extends Admin_Controller
 
 
         $this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Fees Paid successfully</div>');
-        redirect('studentfee/print/'.base64_encode(json_encode($last_id)));
+        // redirect('studentfee/print/'.base64_encode(json_encode($last_id)));
+		$print_url = site_url('studentfee/print/' . base64_encode(json_encode($last_id)));
+		redirect('studentfee/studentfeelist?print=' . urlencode($print_url));
     }
 	
 	public function editFee(){
@@ -727,7 +729,9 @@ class Studentfee extends Admin_Controller
 		
 		//print_r($last_id); 
 		//print_r($receiptIds); die;
-        redirect('studentfee/print_receipt/'.base64_encode(json_encode($last_id)));
+        // redirect('studentfee/print_receipt/'.base64_encode(json_encode($last_id)));
+		$print_url=site_url('studentfee/print_receipt/' . base64_encode(json_encode($last_id)));
+		redirect('studentfee/studentfeelist?print=' . urlencode($print_url));
     }
 
 

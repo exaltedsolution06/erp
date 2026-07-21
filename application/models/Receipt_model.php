@@ -352,7 +352,7 @@ class Receipt_model extends CI_Model {
         $this->db->join('users', 'users.user_id = students.id', 'left');
 
         $this->db->where('student_session.session_id', $this->current_session);
-        $this->db->where('student_session.is_active', 'yes');
+        // $this->db->where('student_session.is_active', 'yes');
         $this->db->where('users.role', 'student');
 
         // Filter by student ID if provided

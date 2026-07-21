@@ -356,7 +356,7 @@ class Coscholasticareas extends Admin_Controller {
 		if(!$data['examgroup']){
 			redirect('admin/coscholasticareas/index');
 		}
-
+		$data['sch_setting']  =$this->sch_setting_detail;
         $this->load->view('layout/header', $data);
         $this->load->view('admin/coscholasticareas/addexam', $data);
         $this->load->view('layout/footer', $data);
