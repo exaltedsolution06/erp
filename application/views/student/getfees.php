@@ -43,11 +43,64 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <img class="profile-user-img img-responsive img-circle" src="<?php echo base_url() . $student['image'] ?>" alt="User profile picture">
                                             <?php
                                         }?>
-                                        <h4>LEDGER AMT</h4>
-                                        <h5>Rs. <?=number_format($student_data['fees_discount'],2)?></h5>
+                                        <h5 style="font-size: 12px;font-weight: bold;">PREV AMT : Rs. <?=format_amount($student_data['previous_session_balance'])?></h5>
+                                        <h5 style="font-size: 12px;font-weight: bold;">LEDG AMT : Rs. <?=format_amount($student_data['fees_discount'])?></h5>
                                     </div>
+									<div class="col-md-10">
+										<div class="row">
+											<table class="table table-striped mb0 font13">
+												<tbody>
 
-                                    <div class="col-md-10">
+													<tr>
+														<td>Admission No.  <b><?=$student['admission_no']?></b> </td>
+													</tr>
+													<tr>
+														<th>Student Name</th>
+														<th>Father Name</th>
+														<th>Mother Name</th>
+													</tr>
+													<tr>
+														<td><?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></td>
+														<td><?=$student['father_name']?></td>
+														<td><?=$student['mother_name']?></td>
+													</tr>
+
+													<!-- 2 -->
+
+												
+												
+
+													<!-- 3 -->
+													<tr>
+														<th>Class - <?=$student['class']?> </th>
+														<th>Section. - <?=$student['section']?></th>
+														<th>Contact No. - <?=$student['mobileno']?></th>
+													</tr>
+													
+													<tr>
+														<th>Route - <?php
+																	$this->db->where('id', $student['route_id']);
+																	$query = $this->db->get('route_head')->row_array();
+																	echo (($query['fees_heading']));
+																?></th>
+														<th>Category - <?php
+															foreach ($categorylist as $value) {
+																if ($student_data['category_id'] == $value['id']) {
+																	echo $value['name'];
+																}
+															}
+															?></th>
+														<!--<th>City - <?=$student_data['city']?></th>-->
+														<?php if(!empty($last_receipt_date)){ ?>
+														<th>Last Receipt Date - <?= date('d-m-Y',strtotime($last_receipt_date->created_at)) ?></th>
+														<?php } ?>
+													</tr>
+												
+												</tbody>
+											</table>
+										</div>
+									</div>
+                                    <!--<div class="col-md-10">
                                         <div class="row">
 
                                             <table class="table table-striped mb0 font13">
@@ -102,7 +155,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             </table>
 
                                         </div>
-                                    </div>
+                                    </div>-->
 
 
                                 </div>
@@ -154,12 +207,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
 							</div>	
-                            <div class="col-md-12">
+                            <!--<div class="col-md-12">
                                 <div style="background: #dadada; height: 1px; width: 100%; clear: both; margin-bottom: 10px;"></div>
-                            </div>
+                            </div>-->
                         </div>
 
-                        <div class="table-responsive">
+                        <!--<div class="table-responsive">
                             <div class="download_label"><?php echo $this->lang->line('student_fees') . ": " . $student['firstname'] . " " . $student['lastname'] ?> </div>
                             <?php
                             if (empty($student_due_fee)) {
@@ -466,7 +519,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </tbody>
                                 </table>
                             <?php } ?>
-                        </div>
+                        </div>-->
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -480,10 +533,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 						<h3 class="box-title titlefix"><i class="fa fa-users"></i> Collect Fee List</h3>
 						<div class="box-tools pull-right"></div>
 					</div>
-					<div class="box-body table-responsive">
+					<div class="box-body table-responsive table-header-sticky" style="overflow: auto;">
 
 						<div class="download_label">Collect Fee List</div>
-						<table class="table table-striped table-bordered table-hover example">
+						<table class="table table-striped table-bordered table-hover example table-fixed-header sticky-col-5">
 							<thead>
 
 								<tr>
@@ -621,10 +674,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 						<h3 class="box-title titlefix"><i class="fa fa-users"></i> <?php echo $this->lang->line('receipt_book');?></h3>
 						<div class="box-tools pull-right"></div>
 					</div>
-					<div class="box-body table-responsive">
+					<div class="box-body table-responsive table-header-sticky" style="overflow: auto;">
 
 						<div class="download_label"><?php echo $this->lang->line('receipt_book');?></div>
-						<table class="table table-striped table-bordered table-hover example">
+						<table class="table table-striped table-bordered table-hover example table-fixed-header sticky-col-5">
 							<thead>
 
 								<tr>
@@ -640,6 +693,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									<th>Mode</th>
 									<th>User</th>
 									<th>Remark</th>
+                                    <th>Action</th>
 								</tr>
 							</thead>            
 							<tbody>    
@@ -663,6 +717,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 										<td><?= $record["mode"] ?></td>
 										<td><?= $record["create_by"] ?></td>
 										<td><?= $record["remarks"] ?></td>
+										<td>
+											<a target="_blank" href="<?php echo base_url(); ?>user/user/callback_receipts_ids_by_receipt_no/
+											<?= base64_encode($record["receipt_no"]); ?>" class="btn btn-default btn-xs" data-toggle="tooltip" title="" data-original-title="Print Receipt">
+												<i class="fa fa-print"></i>
+											</a>
+										</td>
 									</tr>
 									<?php
 								}
@@ -681,6 +741,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									<td></td>
 									<td></td>
 									<td></td>
+                                    <td>-</td>
 								</tr>
 							</tbody>
 						</table>

@@ -127,8 +127,15 @@ class visitors_model extends MY_Model {
     }
 
     public function image_delete($id, $img_name) {
-        $file = "./uploads/front_office/visitors/" . $img_name;
-        unlink($file);
+		$file = get_school_file_path('front_office/visitors', $img_name);
+
+		if (file_exists($file)) {
+			unlink($file);
+		}
+		
+        // $file = "./uploads/front_office/visitors/" . $img_name;
+        // unlink($file);
+		
         $this->db->where('id', $id);
         $this->db->delete('visitors_book');
         $controller_name = $this->uri->segment(2);

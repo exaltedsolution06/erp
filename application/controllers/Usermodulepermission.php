@@ -77,14 +77,14 @@ class Usermodulepermission extends Public_Controller
 				'module' => 'Library Management',
 				'short_code' => 'library',
 			],
-			[
+			/*[
 				'module' => 'Transport Route',
 				'short_code' => 'transport_routes',
 			],
 			[
 				'module' => 'Hostel Room',
 				'short_code' => 'hostel_rooms',
-			],
+			],*/
 		];
 		foreach($modules as $module_val){
 			$system = 0;

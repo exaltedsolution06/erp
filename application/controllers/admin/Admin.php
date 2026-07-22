@@ -548,12 +548,29 @@ class Admin extends Admin_Controller
 		$list_url = CRM_URL . 'api/Ticket/ticket_counter/' . $setting_result->domain_api_key;
 		$ticket_result = call_api_get($list_url);
 		$data['ticketcounter'] = $ticket_result['data'];
-		// print_r($data['ticketcounter']);exit;
+		// Alert list
+		$alert_url = CRM_URL . 'api/Alert/get_alert/' . $setting_result->domain_api_key;
+		$alert_result = call_api_get($alert_url);
+		$data['alert_result'] = $alert_result['data'];
+		// echo '<pre>';print_r($data['alert_result']);exit;
+		
+		// Show the popup only if there's a message AND it hasn't been dismissed this session
+		$data['show_alert_popup'] = (
+			!empty($data['alert_result']['popup_alert']) &&
+			!$this->session->userdata('popup_alert_dismissed')
+		);
+		// echo '<pre>';print_r($data['show_alert_popup']);exit;
 		
         $this->load->view('layout/header', $data);
         $this->load->view('admin/dashboard', $data);
         $this->load->view('layout/footer', $data); 
     }
+	// Called via AJAX when the user closes the popup
+	public function dismiss_alert_popup()
+	{
+		$this->session->set_userdata('popup_alert_dismissed', true);
+		echo json_encode(['status' => 'success']);
+	}
 	public function findPreviousBalanceFees($session_id, $current_session) {
 
         $studentlist = $this->student_model->getPreviousSessionStudentAll($session_id);

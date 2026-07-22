@@ -54,7 +54,7 @@ if (!empty($student['image'])) {
                      </li>
            <?php }?>
                      <li class="list-group-item">
-                        <b><?php echo $this->lang->line('class'); ?></b> <a class="pull-right text-aqua"><?php echo $student['class']; ?></a>
+                        <b><?php echo $this->lang->line('class'); ?></b> <a class="pull-right text-aqua"><?php echo $student['class'] . " (" . $session . ")"; ?></a>
                      </li>
                      <li class="list-group-item">
                         <b><?php echo $this->lang->line('section'); ?></b> <a class="pull-right text-aqua"><?php echo $student['section']; ?></a>
@@ -64,6 +64,9 @@ if (!empty($student['image'])) {
                         <b><?php echo $this->lang->line('rte'); ?></b> <a class="pull-right text-aqua"><?php echo $student['rte']; ?></a>
                      </li>
                      <?php }?>
+					<li class="list-group-item listnoback">
+						<b><?php echo $this->lang->line('gender'); ?></b> <a class="pull-right text-aqua"><?php echo $this->lang->line(strtolower($student['gender'])); ?></a>
+					</li>
                   </ul>
                </div>
             </div>
@@ -118,8 +121,11 @@ if (!empty($student['dob'])) {
 ?></td>
                                  </tr>
                                  <?php if ($sch_setting->category) {
-    ?>
-                                 <tr>
+    ?>							<tr>
+									<td>Fee <?php echo $this->lang->line('category'); ?></td>
+									<td><?php echo $student['category']; ?></td>
+								</tr>
+                                <!-- <tr>
                                     <td><?php echo $this->lang->line('category'); ?></td>
                                     <td>
                                        <?php
@@ -130,7 +136,7 @@ foreach ($category_list as $value) {
     }
     ?>
                                     </td>
-                                 </tr>
+                                 </tr>-->
                                  <?php }if ($sch_setting->mobile_no) {?>
                                  <tr>
                                     <td><?php echo $this->lang->line('mobile_no'); ?></td>
@@ -444,17 +450,17 @@ if (!empty($student['measurement_date'])) {
                   <?php if ($this->studentmodule_lib->hasActive('fees')) {
     ?>
                   <div class="tab-pane" id="fee">
-                     <div class="download_label"><?php echo "Fee Details" ?></div>
+                     <div class="download_label"><?php echo "Collect Fee List" ?></div>
                      <?php
 if (empty($student_due_fee) && empty($student_discount_fee)) {
         ?>
-                     <div class="alert alert-danger">
+                     <!--<div class="alert alert-danger">
                         <?php echo $this->lang->line('no_record_found'); ?>
-                     </div>
+                     </div>-->
                      <?php
 } else {
         ?>
-                     <div class="table-responsive">
+                     <!--<div class="table-responsive">
                         <table class="table table-hover table-striped" id="feetable">
                            <thead>
                               <tr>
@@ -715,11 +721,267 @@ echo ($currency_symbol . number_format($total_balance_amount - $alot_fee_discoun
         ?>
                            </tbody>
                         </table>
-                     </div>
+                     </div>-->
                      <?php
 }
     ?>
-                  </div>
+					
+					<table class="table table-bordered">
+                                    <thead class="header">
+									<?php
+                                        if(empty($data_list)){
+										?>
+										
+											<div class="alert alert-danger">
+												<?php echo $this->lang->line('no_record_found'); ?>
+											</div>
+										<?php										
+										}
+										else{
+										?>
+                                        <tr>
+                                            <th>
+                                                <!-- <input type="checkbox" checked id="select_all_data"/><br> -->
+                                            </th>
+                                            <th>Fees Head</th>
+                                            <?php foreach($months_data as $key=>$value){
+                                            ?>
+                                            <th style="text-align: right;"><?=$value?> </th>
+                                            <?php
+                                            } 
+                                            ?>
+                                            <th style="text-align: right;">Total</th>
+                                            <!-- <th>Discount</th>
+                                            <th>Received</th>
+                                            <th>Balance</th> -->
+                                        </tr>
+										<?php 
+										}
+										?>
+                                    </thead>
+									<?php 
+									if(!empty($data_list)){
+									?>
+                                    <tbody>
+                                    <?php 
+										$statusNew = 0;
+                                        $final_total = 0;
+                                        $aa = 1;
+										
+                                        $column_totals = array_fill(0, count($months_data), 0); // initialize column totals
+
+                                        // Loop for $data_list
+                                        foreach ($data_list as $row) {
+                                            $db_months = json_decode($row->months);
+                                            $total = 0;
+                                            $statusNew++;
+                                    ?>
+                                        <tr>
+                                            <td></td>
+                                            <td><b><?= $row->fees_heading ?></b></td>
+                                            <?php foreach($months_data as $key => $value): ?>
+                                                <td style="text-align: right;">
+                                                    <?php 
+                                                        $amount = 0;
+                                                        if ($fees_card == 'received') {
+                                                            $amount = ($this->db->get_where('receipts', [
+                                                                'student_id' => $student_data['id'],
+                                                                'months' => $value,
+                                                                'fee_head_name' => $row->fees_heading
+                                                            ])->row()) ? $this->db->get_where('receipts', [
+                                                                'student_id' => $student_data['id'],
+                                                                'months' => $value,
+                                                                'fee_head_name' => $row->fees_heading
+                                                            ])->row()->fees_received : 0;
+
+                                                            if ($amount != 0 && in_array($value, $db_months)) {
+																
+																if (is_array($row->amount)) {
+																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
+																	echo $amount;
+																	$total += $amount;
+																	$column_totals[$key] += $row->amount[$value];
+																}
+																else
+																{
+                                                                echo $row->amount;
+                                                                $total += $row->amount;
+                                                                $column_totals[$key] += $row->amount;
+																}
+                                                            } else {
+                                                                echo 0;
+                                                            }
+
+                                                        } elseif ($fees_card == 'due') {
+                                                            $amount = ($this->db->get_where('receipts', [
+                                                                'student_id' => $student_data['id'],
+                                                                'months' => $value,
+                                                                'fee_head_name' => $row->fees_heading
+                                                            ])->row()) ? $this->db->get_where('receipts', [
+                                                                'student_id' => $student_data['id'],
+                                                                'months' => $value,
+                                                                'fee_head_name' => $row->fees_heading
+                                                            ])->row()->fees_received : 0;
+
+                                                            if ($amount == 0 && in_array($value, $db_months)) {
+																
+																if (is_array($row->amount)) 
+																{
+																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
+																	echo $amount;
+																	$total += $amount;
+																	$column_totals[$key] += $row->amount[$value];
+																}
+																else
+																{
+                                                                echo $row->amount;
+                                                                $total += $row->amount;
+                                                                $column_totals[$key] += $row->amount;
+																}
+                                                            } else {
+                                                                echo 0;
+                                                            }
+                                                        } else {
+                                                            if (in_array($value, $db_months)) {
+																if (is_array($row->amount)) 
+																{
+																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
+																	echo $amount;
+																	$total += $amount;
+																	$column_totals[$key] += $row->amount[$value];
+																}
+																else
+																{
+																echo $row->amount;
+                                                                $total += $row->amount;
+                                                                $column_totals[$key] += $row->amount;
+																}
+                                                            } else {
+                                                                echo 0;
+                                                            }
+                                                        }
+                                                    ?>   
+                                                </td>
+                                            <?php endforeach; ?>
+                                            <td style="text-align: right;"><b><?= $total ?></b></td>
+                                        </tr>
+                                    <?php
+                                            $final_total += $total;
+                                            $aa++;
+                                        }
+
+                                        // Loop for $route_data_list
+                                        foreach ($route_data_list as $row) {
+                                            $db_months = json_decode($row->months);
+                                            $total = 0;
+                                            $aa++;
+                                            $statusNew++;
+                                    ?>
+                                        <tr>
+                                            <td></td>
+                                            <td><b><?= $row->fees_heading ?></b></td>
+                                            <?php foreach($months_data as $key => $value): ?>
+                                                <td style="text-align: right;">
+                                                    <?php 
+                                                        $amount = 0;
+                                                        if ($fees_card == 'received') {
+                                                            $amount = ($this->db->get_where('receipts', [
+                                                                'student_id' => $student_data['id'],
+                                                                'months' => $value,
+                                                                'fee_head_name' => $row->fees_heading
+                                                            ])->row()) ? $this->db->get_where('receipts', [
+                                                                'student_id' => $student_data['id'],
+                                                                'months' => $value,
+                                                                'fee_head_name' => $row->fees_heading
+                                                            ])->row()->receipt_amt : 0;
+
+                                                            if ($amount != 0 && in_array($value, $db_months)) {
+																
+																if (is_array($row->amount)) {
+																echo $row->amount[$value];
+                                                                $total += $row->amount[$value];
+                                                                $column_totals[$key] += $row->amount[$value];
+																}
+																else{
+                                                                echo $row->amount;
+                                                                $total += $row->amount;
+                                                                $column_totals[$key] += $row->amount;
+																}
+                                                            } else {
+                                                                echo 0;
+                                                            }
+                                                        } elseif ($fees_card == 'due') {
+                                                            $amount = ($this->db->get_where('receipts', [
+                                                                'student_id' => $student_data['id'],
+                                                                'months' => $value,
+                                                                'fee_head_name' => $row->fees_heading
+                                                            ])->row()) ? $this->db->get_where('receipts', [
+                                                                'student_id' => $student_data['id'],
+                                                                'months' => $value,
+                                                                'fee_head_name' => $row->fees_heading
+                                                            ])->row()->receipt_amt : 0;
+
+                                                            if ($amount == 0 && in_array($value, $db_months)) {
+																if (is_array($row->amount)) {
+																echo $row->amount[$value];
+                                                                $total += $row->amount[$value];
+                                                                $column_totals[$key] += $row->amount[$value];
+																}
+																else{
+                                                                echo $row->amount;
+                                                                $total += $row->amount;
+                                                                $column_totals[$key] += $row->amount;
+																}
+                                                            } else {
+                                                                echo 0;
+                                                            }
+                                                        } else {
+                                                            if (in_array($value, $db_months)) {
+																if (is_array($row->amount)) {
+																echo $row->amount[$value];
+                                                                $total += $row->amount[$value];
+                                                                $column_totals[$key] += $row->amount[$value];
+																}
+																else{
+                                                                echo $row->amount;
+                                                                $total += $row->amount;
+                                                                $column_totals[$key] += $row->amount;
+																}
+                                                            } else {
+                                                                echo 0;
+                                                            }
+                                                        }
+                                                    ?>   
+                                                </td>
+                                            <?php endforeach; ?>
+                                            <td style="text-align: right;"><b><?= $total ?> </b></td>
+                                        </tr>
+                                        
+                                    <?php
+                                            $final_total += $total;
+                                        }
+
+                                        if(!empty($final_total)){
+                                    ?>
+                                    <tr>
+                                            <td></td>
+                                            <td><b>Total</b></td>
+                                            <?php foreach ($column_totals as $col_total): ?>
+                                                <td style="text-align: right;"><b><?= $col_total ?></b></td>
+                                            <?php endforeach; ?>
+                                            <td style="text-align: right;"><b><?= $final_total ?></b></td>
+                                        </tr>
+                                        <?php }  ?>
+
+                                    </tbody>
+									<?php 
+										}
+									?>
+
+
+                                </table>
+				  
+				  </div>
                   <?php }?>
                   <div class="tab-pane" id="timelineh">
                      <div class="timeline-header no-border">

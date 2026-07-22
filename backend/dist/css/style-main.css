@@ -4113,10 +4113,10 @@ td.dt-body-right {min-width: 100px;}
 }
 
 .dashalertpay {
-    background:#e91e63 !important; 
+    background:#ff0000 !important; 
 	border-radius: 4px; 
 	margin-bottom:10px;
-    border:1px solid #fe075b !important;
+    border:1px solid #ff0000 !important;
 	padding: 8px 35px 8px 15px;
 	color: #ffffff !important;
 }

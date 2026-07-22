@@ -45,9 +45,11 @@ class Visitors extends Admin_Controller {
             $visitor_id = $this->Visitors_model->add($visitors);
 
             if (isset($_FILES["file"]) && !empty($_FILES['file']['name'])) {
+				$upload_path = get_upload_path('front_office/visitors');
+				
                 $fileInfo = pathinfo($_FILES["file"]["name"]);
                 $img_name = 'id' . $visitor_id . '.' . $fileInfo['extension'];
-                move_uploaded_file($_FILES["file"]["tmp_name"], "./uploads/front_office/visitors/" . $img_name);
+                move_uploaded_file($_FILES["file"]["tmp_name"], $upload_path . $img_name);
                 $this->Visitors_model->image_add($visitor_id, $img_name);
             }
 
@@ -96,10 +98,11 @@ class Visitors extends Admin_Controller {
                 'note' => $this->input->post('note')
             );
             if (isset($_FILES["file"]) && !empty($_FILES['file']['name'])) {
+				$upload_path = get_upload_path('front_office/visitors');
                 $fileInfo = pathinfo($_FILES["file"]["name"]);
 
                 $img_name = 'id' . $id . '.' . $fileInfo['extension'];
-                move_uploaded_file($_FILES["file"]["tmp_name"], "./uploads/front_office/visitors/" . $img_name);
+				move_uploaded_file($_FILES["file"]["tmp_name"], $upload_path . $img_name);
                 $this->Visitors_model->image_update($id, $img_name);
             }
             $this->Visitors_model->update($id, $visitors);
@@ -118,7 +121,8 @@ class Visitors extends Admin_Controller {
 
     public function download($documents) {
         $this->load->helper('download');
-        $filepath = "./uploads/front_office/visitors/" . $documents;
+        // $filepath = "./uploads/front_office/visitors/" . $documents;
+		$filepath = get_upload_path('front_office/visitors') . $documents;
         $data = file_get_contents($filepath);
         $name = $documents;
         force_download($name, $data);

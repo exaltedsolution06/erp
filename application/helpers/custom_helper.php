@@ -301,3 +301,42 @@ if (!function_exists('format_amount'))
     }
 }
 
+if (!function_exists('get_school_id')) {
+
+    function get_school_id()
+    {
+        $CI =& get_instance();
+
+        $admin = $CI->session->userdata('admin');
+
+        return $admin['school_id'] ?? null;
+    }
+}
+
+if (!function_exists('get_upload_path')) {
+
+    function get_upload_path($folder)
+    {
+        $schoolId = get_school_id();
+
+        if (!$schoolId) {
+            show_error('School ID not found.');
+        }
+
+        $path = FCPATH . 'uploads/' . $schoolId . '/' . trim($folder, '/') . '/';
+
+        if (!is_dir($path)) {
+            mkdir($path, 0755, true);
+        }
+
+        return $path;
+    }
+}
+
+if (!function_exists('get_school_file_path')) {
+
+    function get_school_file_path($folder, $filename = '')
+    {
+        return get_upload_path($folder) . ltrim($filename, '/');
+    }
+}

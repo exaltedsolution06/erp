@@ -145,6 +145,7 @@ class Site extends Public_Controller
 							'language'        => $lang_array,
 							'is_rtl'          => $setting_result[0]['is_rtl'],
 							'theme'           => $setting_result[0]['theme'],
+							'school_id'       => $domain_api_data['code_year'].$domain_api_data['code_number'],
 							'gender'          => $result->gender,
 						);
 						$language_result1 = $this->language_model->get($lang_array['lang_id']);
@@ -472,6 +473,7 @@ class Site extends Public_Controller
 								'is_rtl'          => $setting_result[0]['is_rtl'],
 								'theme'           => $setting_result[0]['theme'],
 								'image'           =>  $image,
+								'school_id'       => $domain_api_data['code_year'].$domain_api_data['code_number'],
 								'gender'          => $result[0]->gender,
 							);
 							$language_result1 = $this->language_model->get($language['lang_id']);

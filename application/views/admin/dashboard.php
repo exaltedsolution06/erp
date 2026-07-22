@@ -4,15 +4,28 @@
     .box-header>.box-tools {display: none;}
     .sidebar-collapse #barChart{height: 100% !important;}
     .sidebar-collapse #lineChart{height: 100% !important;}
+	.blink-text {
+		animation: blink 1s infinite;
+		font-weight: bold;
+	}
+
+	@keyframes blink {
+		0%, 50% {
+			opacity: 1;
+		}
+		51%, 100% {
+			opacity: 0;
+		}
+	}
 </style>
 <div class="content-wrapper" style="min-height: 946px;">
     <section class="content">
-        
+        <?php if($alert_result['payment_reminder']!=''){ ?>
         <div class="dashalertpay alert alert-danger alert-dismissible" role="alert">
 			<a class="link pull-right" autocomplete="off">Pay Now</a>
-			Important notice! payment due
+			<span class="blink-text"><?php echo $alert_result['payment_reminder']; ?></span>
 		</div>
-        
+        <?php } ?>
         
         
         
@@ -899,6 +912,21 @@ if ($this->rbac->hasPrivilege('staff_role_count_widget', 'can_view')) {
         </div>
     </div>
 </div>
+<?php if (!empty($show_alert_popup)){ ?>
+<div id="popupAlertModal" class="modal fade " role="dialog">
+    <div class="modal-dialog modal-dialog2 modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Notice</h4>
+            </div>
+            <div class="modal-body">
+				<?= nl2br(htmlspecialchars($alert_result['popup_alert'])) ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
 <style>
     canvas {
         -moz-user-select: none;
@@ -909,6 +937,22 @@ if ($this->rbac->hasPrivilege('staff_role_count_widget', 'can_view')) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <!-- <script src="<?php echo base_url() ?>backend/js/Chart.min.js"></script>
 <script src="<?php echo base_url() ?>backend/js/utils.js"></script> -->
+<script>
+$(document).ready(function(){
+    <?php if (!empty($show_alert_popup)): ?>
+	$('#popupAlertModal').modal('show');
+    <?php endif; ?>
+});
+
+// Fires once the modal has fully closed (X, backdrop click, Esc — all covered)
+$(document).on('hidden.bs.modal', '#popupAlertModal', function(){
+    $.ajax({
+        url: "<?= base_url('admin/admin/dismiss_alert_popup') ?>",
+        type: 'POST',
+        dataType: 'json'
+    });
+});
+</script>
 <script type="text/javascript">
 
     new Chart(document.getElementById("doughnut-chart"), {

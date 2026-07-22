@@ -43,14 +43,76 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <img class="profile-user-img img-responsive img-circle" src="<?php echo base_url() . $student['image'] ?>" alt="User profile picture">
                                             <?php
                                         }?>
-                                        <h4>LEDGER AMT</h4>
+										<h5>
+											<input type="checkbox" class="prev-checkbox" id="prev-checkbox" value="<?= format_amount($student_data['previous_session_balance']) ?>">
+											<label style="font-size: 12px;font-weight: bold;" for="prev-checkbox">PREV AMT : Rs. <?=format_amount($student_data['previous_session_balance'])?></label>
+										</h5>
+                                        <h5>
+											<input type="checkbox" class="ledger-checkbox" id="ledger-checkbox" value="<?= format_amount($student_data['fees_discount']) ?>">
+											<label style="font-size: 12px;font-weight: bold;" for="ledger-checkbox">LEDG AMT : Rs. <?=format_amount($student_data['fees_discount'])?></label>
+										</h5>
+										
+                                        <!--<h4>LEDGER AMT</h4>
                                         <h5>
 											<input type="checkbox" class="ledger-checkbox" id="ledger-checkbox" value="<?= format_amount($student_data['fees_discount']) ?>">
 											<label for="ledger-checkbox">Rs. <?=format_amount($student_data['fees_discount'])?></label>
-										</h5>
+										</h5>-->
                                     </div>
+									<div class="col-md-10">
+										<div class="row">
+											<table class="table table-striped mb0 font13">
+												<tbody>
 
-                                    <div class="col-md-10">
+													<tr>
+														<td>Admission No.  <b><?=$student['admission_no']?></b> </td>
+													</tr>
+													<tr>
+														<th>Student Name</th>
+														<th>Father Name</th>
+														<th>Mother Name</th>
+													</tr>
+													<tr>
+														<td><?=$student['firstname']?> <?=$student['middlename']?> <?=$student['lastname']?></td>
+														<td><?=$student['father_name']?></td>
+														<td><?=$student['mother_name']?></td>
+													</tr>
+
+													<!-- 2 -->
+
+												
+												
+
+													<!-- 3 -->
+													<tr>
+														<th>Class - <?=$student['class']?> </th>
+														<th>Section. - <?=$student['section']?></th>
+														<th>Contact No. - <?=$student['mobileno']?></th>
+													</tr>
+													
+													<tr>
+														<th>Route - <?php
+																	$this->db->where('id', $student['route_id']);
+																	$query = $this->db->get('route_head')->row_array();
+																	echo (($query['fees_heading']));
+																?></th>
+														<th>Category - <?php
+															foreach ($categorylist as $value) {
+																if ($student_data['category_id'] == $value['id']) {
+																	echo $value['name'];
+																}
+															}
+															?></th>
+														<!--<th>City - <?=$student_data['city']?></th>-->
+														<?php if(!empty($last_receipt_date)){ ?>
+														<th>Last Receipt Date - <?= date('d-m-Y',strtotime($last_receipt_date->created_at)) ?></th>
+														<?php } ?>
+													</tr>
+												
+												</tbody>
+											</table>
+										</div>
+									</div>
+                                    <!--<div class="col-md-10">
                                         <div class="row">
 
                                             <table class="table table-striped mb0 font13">
@@ -105,7 +167,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             </table>
 
                                         </div>
-                                    </div>
+                                    </div>-->
 
 
                                 </div>
@@ -409,7 +471,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 							</table>
 							<div class="text-right" style="margin: 0 0 10px 0">
-								<button type="button" class="btn btn-sm btn-primary">Pay Now Rs.<span id="total">0</span></button>
+								<button type="button" class="btn btn-sm btn-primary">Total Rs.<span id="total">0</span></button>
 							</div>
 						</div>
 					</div><!--./box-body-->
@@ -440,6 +502,11 @@ function calculateTotal()
         total += parseFloat($(this).val()) || 0;
     });
 
+    // Previous checkbox total
+    $('.prev-checkbox:checked').each(function () {
+        total += parseFloat($(this).val()) || 0;
+    });
+
     // $('#total').text(total.toFixed(2));
 	$('#total').text(Number.isInteger(total) ? total : total.toFixed(2));
 }
@@ -451,6 +518,10 @@ $('.month-checkbox').on('change', function () {
 
 // Ledger checkbox
 $('.ledger-checkbox').on('change', function () {
+    calculateTotal();
+});
+// Previous checkbox
+$('.prev-checkbox').on('change', function () {
     calculateTotal();
 });
 </script>

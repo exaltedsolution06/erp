@@ -55,6 +55,7 @@
         <!--print table mobile support-->
         <link href="<?php echo base_url(); ?>backend/dist/datatables/css/responsive.dataTables.min.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>backend/dist/datatables/css/rowReorder.dataTables.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>backend/dist/css/table-customize.css">
         <script src="<?php echo base_url(); ?>backend/custom/jquery.min.js"></script>
         <script src="<?php echo base_url(); ?>backend/dist/js/moment.min.js"></script>
         <script src="<?php echo base_url(); ?>backend/datepicker/js/bootstrap-datetimepicker.js"></script>
@@ -408,12 +409,12 @@ if($this->studentmodule_lib->hasActive('multi_class')){
                         }
                         if ($this->studentmodule_lib->hasActive('transport_routes')) {
                             ?>
-                            <li class="<?php echo set_Submenu('route/index'); ?>"><a href="<?php echo base_url(); ?>user/route"><i class="fa fa-bus ftlayer"></i> <span><?php echo $this->lang->line('transport_routes'); ?></span></a></li>
+                            <!--<li class="<?php echo set_Submenu('route/index'); ?>"><a href="<?php echo base_url(); ?>user/route"><i class="fa fa-bus ftlayer"></i> <span><?php echo $this->lang->line('transport_routes'); ?></span></a></li>-->
                             <?php
                         }
                         if ($this->studentmodule_lib->hasActive('hostel_rooms')) {
                             ?>
-                            <li class="<?php echo set_Submenu('hostelroom/index'); ?>"><a href="<?php echo base_url(); ?>user/hostelroom"><i class="fa fa-building-o ftlayer"></i> <span><?php echo $this->lang->line('hostel_rooms'); ?></span></a></li>
+                            <!--<li class="<?php echo set_Submenu('hostelroom/index'); ?>"><a href="<?php echo base_url(); ?>user/hostelroom"><i class="fa fa-building-o ftlayer"></i> <span><?php echo $this->lang->line('hostel_rooms'); ?></span></a></li>-->
 
                         <?php }
                         ?>
