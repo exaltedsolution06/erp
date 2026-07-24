@@ -921,7 +921,17 @@ if ($this->rbac->hasPrivilege('staff_role_count_widget', 'can_view')) {
                 <h4 class="modal-title">Notice</h4>
             </div>
             <div class="modal-body">
-				<?= nl2br(htmlspecialchars($alert_result['popup_alert'])) ?>
+				<?php if (!empty($alert_result['popup_alert_image'])): ?>
+				<div class="text-center">
+				  <img src="<?= htmlspecialchars($alert_result['popup_alert_image']) ?>"
+					   alt="Alert"
+					   class="img-fluid mb-3"
+					   style="max-height:300px; border-radius:6px;"></div>
+				<?php endif; ?>
+		 
+				<div class="text-start" style="margin-top:20px;">
+				  <?= nl2br(htmlspecialchars($alert_result['popup_alert'])) ?>
+				</div>
             </div>
         </div>
     </div>

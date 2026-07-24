@@ -509,7 +509,7 @@ class Student extends Admin_Controller
 			'student_session.student_id = students.id',
 			'inner'
 		);
-		$this->db->where('student_session.session_id', $this->current_session);
+		// $this->db->where('student_session.session_id', $this->current_session);
 		$this->db->order_by('students.id', 'DESC');
 		$this->db->limit(1);
 
@@ -575,7 +575,7 @@ class Student extends Admin_Controller
 			$domain_api_url = CRM_URL .'api/Domain/get_domain_data/'.$data['result']->domain_api_key; 
 			$api_data = call_api_get($domain_api_url);
 			$total_student_current_session = $this->student_model->total_student_current_session();
-			$max_student_limit = (int)$api_data['data']['max_students'] + (int)$api_data['data']['add_on_students'];
+			$max_student_limit = (int)$api_data['data']['max_students'] + (int)$api_data['data']['add_on_students'] + (int)$api_data['data']['extra_add_on_students'];
 			if($total_student_current_session >= $max_student_limit){
 				$this->session->set_flashdata('msg', '<div class="alert alert-danger"><strong>Maximum student limit reached.</strong> The maximum allowed student limit for your school has been reached ('.$max_student_limit.' students). Please contact the administrator to upgrade your limit.</div>');
 				redirect('student/create');
@@ -1331,7 +1331,7 @@ class Student extends Admin_Controller
 						$domain_api_url = CRM_URL .'api/Domain/get_domain_data/'.$data['s_result']->domain_api_key; 
 						$api_data = call_api_get($domain_api_url);
 						$total_student_current_session = $this->student_model->total_student_current_session();
-						$max_student_limit = (int)$api_data['data']['max_students'] + (int)$api_data['data']['add_on_students'];
+						$max_student_limit = (int)$api_data['data']['max_students'] + (int)$api_data['data']['add_on_students'] + (int)$api_data['data']['extra_add_on_students'];
 						if($total_student_current_session >= $max_student_limit){
 							$this->session->set_flashdata('msg', '<div class="alert alert-danger"><strong>Maximum student limit reached.</strong> The maximum allowed student limit for your school has been reached ('.$max_student_limit.' students). Please contact the administrator to upgrade your limit.</div>');
 							redirect('student/import');
