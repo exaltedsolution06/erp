@@ -359,8 +359,23 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             </tr>
                                             <?php } if ($sch_setting->cast) {  ?>
                                             <tr>
-                                                <td><?php echo $this->lang->line('cast'); ?></td>
-                                                <td><?php echo $student['cast']; ?></td>
+                                                <td><?php echo $this->lang->line('cast'); ?> Category</td>
+                                                <td><?php
+												$CI =& get_instance();
+												$CI->load->model('Castecategory_model');
+
+												$categories = $CI->Castecategory_model->get();
+												$categoryName = '';
+
+												foreach ($categories as $category_val) {
+													if ($category_val['id'] == $student['cast_category']) {
+														$categoryName = $category_val['category'];
+														break;
+													}
+												}
+												echo $categoryName;
+												// echo $student['cast_category']; 
+												?></td>
                                             </tr>
                                             <?php } if ($sch_setting->religion) {  ?>
                                             <tr>

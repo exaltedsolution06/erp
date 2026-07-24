@@ -536,6 +536,7 @@ class User extends Student_Controller
          //die;
 
         // $this->load->view('layout/header', $data);
+		$data['come_from']='student_login';
         $this->load->view('studentfee/print_receipt', $data);
         // $this->load->view('layout/footer', $data);
     }

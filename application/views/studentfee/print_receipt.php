@@ -1062,6 +1062,7 @@ if($_GET['copy']=='2'){
 
 
 
+		<?php if(!isset($come_from) ){?>
       <div class="print-options mt-4">
         <p><strong>Print Copy:</strong></p>
         
@@ -1082,6 +1083,7 @@ if($_GET['copy']=='2'){
           <label class="form-check-label" for="three">Three Copy</label>
         </div> -->
       </div>
+		<?php } ?>
     </div>
 
 
