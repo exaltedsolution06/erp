@@ -57,6 +57,7 @@ class Admin extends Admin_Controller
         $month_collection   = 0;
         $month_expense      = 0;
         $total_students     = 0;
+        $discontinue_students     = 0;
         $total_teachers     = 0;
         $ar                 = $this->startmonthandend();
         $year_str_month     = $Current_year . '-' . $ar[0] . '-01';
@@ -204,8 +205,13 @@ class Admin extends Admin_Controller
         if (!empty($tot_students)) {
             $total_students = $tot_students->total_student;
         }
+        $tot_discontinue_students = $this->studentsession_model->getTotalDiscontinueStudentBySession();
+        if (!empty($tot_discontinue_students)) {
+            $discontinue_students = $tot_discontinue_students->total_student;
+        }
 
         $data['total_students'] = $total_students;
+        $data['discontinue_students'] = $discontinue_students;
 
         $tot_roles = $this->role_model->get();
 
@@ -560,6 +566,12 @@ class Admin extends Admin_Controller
 			!$this->session->userdata('popup_alert_dismissed')
 		);
 		// echo '<pre>';print_r($data['show_alert_popup']);exit;
+		
+		$data['result_data'] = $this->setting_model->getSetting();
+		$domain_api_url = CRM_URL .'api/Domain/get_domain_data/'.$data['result_data']->domain_api_key; 
+		$api_data = call_api_get($domain_api_url);
+		$total_student_current_session = $this->student_model->total_student_current_session();
+		$data['max_student_limit'] = (int)$api_data['data']['max_students'] + (int)$api_data['data']['add_on_students'] + (int)$api_data['data']['extra_add_on_students'];
 		
         $this->load->view('layout/header', $data);
         $this->load->view('admin/dashboard', $data);

@@ -9,7 +9,11 @@
    .option_grade{
    display: none;
    }
+    td i.fa-solid {
+        font-size: 18px;
+    }
 </style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 ?>
@@ -739,20 +743,10 @@ echo ($currency_symbol . number_format($total_balance_amount - $alot_fee_discoun
                      <?php
 }
     ?>
-					
-					<table class="table table-bordered">
-                                    <thead class="header">
-									<?php
-                                        if(empty($data_list)){
-										?>
-										
-											<div class="alert alert-danger">
-												<?php echo $this->lang->line('no_record_found'); ?>
-											</div>
-										<?php										
-										}
-										else{
-										?>
+					<div class="box-body table-responsive" style="overflow: auto;">
+					<table class="table table-striped table-bordered table-hover example">
+								<thead class="header">
+                                        
                                         <tr>
                                             <th>
                                                 <!-- <input type="checkbox" checked id="select_all_data"/><br> -->
@@ -769,19 +763,117 @@ echo ($currency_symbol . number_format($total_balance_amount - $alot_fee_discoun
                                             <th>Received</th>
                                             <th>Balance</th> -->
                                         </tr>
-										<?php 
-										}
-										?>
                                     </thead>
-									<?php 
-									if(!empty($data_list)){
-									?>
                                     <tbody>
+									<?php if(isset($months_data)){ ?>
+									<?php
+										$prev_total = 0;
+										if ($fees_card == 'received') {
+											$prev_received_sum = $this->db
+												->select('SUM(previous_balance) as previous_balance')
+												->from('(SELECT receipt_no, MAX(previous_balance) as previous_balance
+														 FROM receipts
+														 WHERE session_id = '.$this->db->escape($cur_session).'
+														 AND student_id = '.$this->db->escape($student_data['student_session_id']).'
+														 GROUP BY receipt_no) t', false)
+												->get()
+												->row();
+											$prev_total = $prev_received_sum->previous_balance;
+										} elseif ($fees_card == 'due') {
+											$prev_received_sum = $this->db
+												->select('SUM(previous_balance) as previous_balance')
+												->from('(SELECT receipt_no, MAX(previous_balance) as previous_balance
+														 FROM receipts
+														 WHERE session_id = '.$this->db->escape($cur_session).'
+														 AND student_id = '.$this->db->escape($student_data['student_session_id']).'
+														 GROUP BY receipt_no) t', false)
+												->get()
+												->row();
+												
+											$this->db->select('sfm.previous_session_balance');
+											$this->db->from('student_fees_master sfm');
+											$this->db->join('fee_session_groups fsg', 'fsg.id = sfm.fee_session_group_id');
+											$this->db->join('fee_groups fg', 'fg.id = fsg.fee_groups_id');
+											$this->db->where('sfm.student_session_id', $student_data["previous_student_session_id"]);
+											$this->db->where('fg.name', $this->config->item('ci_balance_group'));
+
+											$row_data = $this->db->get()->row();
+
+											$prev_total = $row_data ? $row_data->previous_session_balance : 0;
+											
+											$prev_total = (int)$prev_total-(int)$prev_received_sum->previous_balance;
+										} else {
+											$this->db->select('sfm.previous_session_balance');
+											$this->db->from('student_fees_master sfm');
+											$this->db->join('fee_session_groups fsg', 'fsg.id = sfm.fee_session_group_id');
+											$this->db->join('fee_groups fg', 'fg.id = fsg.fee_groups_id');
+											$this->db->where('sfm.student_session_id', $student_data["previous_student_session_id"]);
+											$this->db->where('fg.name', $this->config->item('ci_balance_group'));
+
+											$row_data = $this->db->get()->row();
+
+											$prev_total = $row_data ? $row_data->previous_session_balance : 0;
+										}
+									if($prev_total > 0){
+									?>
+									<tr>
+										<td></td>
+										<td><b>PREV AMT</b></td>
+										<?php foreach($months_data as $key => $value): ?>
+										<td></td>
+										<?php endforeach; ?>
+										<td style="text-align: right;"><b><?php echo '<i class="fa-solid fa-circle-xmark text-danger"></i>'; //format_amount($prev_total); ?> </b></td>
+									</tr>
+									<?php
+									}
+										$ledg_total = 0;
+										if ($fees_card == 'received') {
+											$ledger_received_sum = $this->db
+												->select('SUM(ledger_received) as ledger_received')
+												->from('(SELECT receipt_no, MAX(ledger_received) as ledger_received
+														 FROM receipts
+														 WHERE session_id = '.$this->db->escape($cur_session).'
+														 AND student_id = '.$this->db->escape($student_data['student_session_id']).'
+														 GROUP BY receipt_no) t', false)
+												->get()
+												->row();
+											$ledg_total = $ledger_received_sum->ledger_received;
+										} elseif ($fees_card == 'due') {
+											$ledg_total = $student_data['fees_discount'];
+										} else {
+											$ledger_received_sum = $this->db
+												->select('SUM(ledger_received) as ledger_received')
+												->from('(SELECT receipt_no, MAX(ledger_received) as ledger_received
+														 FROM receipts
+														 WHERE session_id = '.$this->db->escape($cur_session).'
+														 AND student_id = '.$this->db->escape($student_data['student_session_id']).'
+														 GROUP BY receipt_no) t', false)
+												->get()
+												->row();
+											$ledg_remain_total = $student_data['fees_discount'];	
+												
+											$ledg_total = (int)$ledger_received_sum->ledger_received + (int)$ledg_remain_total;
+										}
+									if($ledg_total > 0){
+									?>
+									<tr>
+										<td></td>
+										<td><b>LEDG AMT</b></td>
+										<?php foreach($months_data as $key => $value): ?>
+										<td></td>
+										<?php endforeach; ?>
+										<td style="text-align: right;"><b><?php echo '<i class="fa-solid fa-circle-xmark text-danger"></i>'; //format_amount($ledg_total); ?> </b></td>
+									</tr>		
+									<?php } } ?>
                                     <?php 
-										$statusNew = 0;
-                                        $final_total = 0;
+
+
+                                            if(isset($months_data)){
+
+                                        $statusNew = 0;
+                                        // $final_total = 0;
+                                        $final_total = $prev_total + $ledg_total;
                                         $aa = 1;
-										
                                         $column_totals = array_fill(0, count($months_data), 0); // initialize column totals
 
                                         // Loop for $data_list
@@ -812,13 +904,13 @@ echo ($currency_symbol . number_format($total_balance_amount - $alot_fee_discoun
 																
 																if (is_array($row->amount)) {
 																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
-																	echo $amount;
+																	echo format_amount($amount);
 																	$total += $amount;
 																	$column_totals[$key] += $row->amount[$value];
 																}
 																else
 																{
-                                                                echo $row->amount;
+                                                                echo format_amount($row->amount);
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
 																}
@@ -842,31 +934,37 @@ echo ($currency_symbol . number_format($total_balance_amount - $alot_fee_discoun
 																if (is_array($row->amount)) 
 																{
 																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
-																	echo $amount;
+																	// echo format_amount($amount);
+																	echo '<i class="fa-solid fa-circle-xmark text-danger"></i>';
 																	$total += $amount;
 																	$column_totals[$key] += $row->amount[$value];
 																}
 																else
 																{
-                                                                echo $row->amount;
+                                                                echo format_amount($row->amount);
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
 																}
                                                             } else {
-                                                                echo 0;
+                                                                $amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
+																if($amount == 0){
+																	echo 0;
+																}else{
+																	echo '<i class="fa-solid fa-circle-check text-success"></i>';
+																}
                                                             }
                                                         } else {
                                                             if (in_array($value, $db_months)) {
 																if (is_array($row->amount)) 
 																{
 																	$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
-																	echo $amount;
+																	echo format_amount($amount);
 																	$total += $amount;
 																	$column_totals[$key] += $row->amount[$value];
 																}
 																else
 																{
-																echo $row->amount;
+																echo format_amount($row->amount);
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
 																}
@@ -912,12 +1010,12 @@ echo ($currency_symbol . number_format($total_balance_amount - $alot_fee_discoun
                                                             if ($amount != 0 && in_array($value, $db_months)) {
 																
 																if (is_array($row->amount)) {
-																echo $row->amount[$value];
+																echo format_amount($row->amount[$value]);
                                                                 $total += $row->amount[$value];
                                                                 $column_totals[$key] += $row->amount[$value];
 																}
 																else{
-                                                                echo $row->amount;
+                                                                echo format_amount($row->amount);
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
 																}
@@ -937,27 +1035,34 @@ echo ($currency_symbol . number_format($total_balance_amount - $alot_fee_discoun
 
                                                             if ($amount == 0 && in_array($value, $db_months)) {
 																if (is_array($row->amount)) {
-																echo $row->amount[$value];
+																// echo format_amount($row->amount[$value]);
+																echo '<i class="fa-solid fa-circle-xmark text-danger"></i>';
                                                                 $total += $row->amount[$value];
                                                                 $column_totals[$key] += $row->amount[$value];
 																}
 																else{
-                                                                echo $row->amount;
+                                                                echo format_amount($row->amount);
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
 																}
                                                             } else {
-                                                                echo 0;
+                                                                // echo 0;
+																$amount = isset($row->amount[$value]) ? (float)$row->amount[$value] : 0;
+																if($amount == 0){
+																	echo 0;
+																}else{
+																	echo '<i class="fa-solid fa-circle-check text-success"></i>';
+																}
                                                             }
                                                         } else {
                                                             if (in_array($value, $db_months)) {
 																if (is_array($row->amount)) {
-																echo $row->amount[$value];
+																echo format_amount($row->amount[$value]);
                                                                 $total += $row->amount[$value];
                                                                 $column_totals[$key] += $row->amount[$value];
 																}
 																else{
-                                                                echo $row->amount;
+                                                                echo format_amount($row->amount);
                                                                 $total += $row->amount;
                                                                 $column_totals[$key] += $row->amount;
 																}
@@ -985,16 +1090,15 @@ echo ($currency_symbol . number_format($total_balance_amount - $alot_fee_discoun
                                             <?php endforeach; ?>
                                             <td style="text-align: right;"><b><?= $final_total ?></b></td>
                                         </tr>
-                                        <?php }  ?>
+                                        <?php } } ?>
 
                                     </tbody>
-									<?php 
-										}
-									?>
 
 
-                                </table>
+
+							</table>
 				  
+					</div>
 				  </div>
                   <?php }?>
                   <div class="tab-pane" id="timelineh">

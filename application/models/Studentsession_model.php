@@ -83,7 +83,15 @@ class Studentsession_model extends CI_Model
 
     public function getTotalStudentBySession()
     {
-        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($this->current_session) . " and student_session.is_active = 'yes' ";
+        // $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($this->current_session) . " and student_session.is_active = 'yes' ";
+        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($this->current_session);
+        $query = $this->db->query($query);
+        return $query->row();
+    }
+
+    public function getTotalDiscontinueStudentBySession()
+    {
+        $query = "SELECT count(*) as `total_student` FROM `student_session` INNER JOIN students on students.id=student_session.student_id where student_session.session_id=" . $this->db->escape($this->current_session) . " and student_session.is_active = 'no' ";
         $query = $this->db->query($query);
         return $query->row();
     }

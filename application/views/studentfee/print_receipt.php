@@ -3,7 +3,10 @@
 
 <?php 
 
-if($_GET['copy']=='2'){
+$for_pdf = $for_pdf ?? false;
+$copy    = $copy ?? ($_GET['copy'] ?? '1');
+
+if($copy=='2'){
 
 ?>
  
@@ -14,7 +17,9 @@ if($_GET['copy']=='2'){
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Fee Receipt</title>
+  <?php if (!$for_pdf) { ?>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <?php } ?>
   <style>
     @media print {
 		/* Dynamic Orientation via body class */
@@ -149,6 +154,94 @@ if($_GET['copy']=='2'){
 	  }
 
 </style>
+<?php if ($for_pdf) { ?>
+<style>
+  /* --- dompdf-safe overrides: no flexbox/grid support --- */
+  /* --- minimal Bootstrap replacement: CDN is skipped for PDF --- */
+  * { box-sizing: border-box; }
+  body, body * { font-family: Arial, Helvetica, sans-serif !important; }
+  body { font-size: 12px; color: #212529; margin: 0; }
+  h5, h6 { margin-top: 0; margin-bottom: 0.5rem; }
+  strong, b { font-weight: bold; }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse !important; /* needed for inline tr border-top/border-bottom to render */
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+  .table th, .table td { padding: 4px 6px; vertical-align: top; }
+
+  .text-end    { text-align: right !important; }
+  .text-center { text-align: center !important; }
+
+  .mt-1 { margin-top: 4px !important; }
+  .mb-1 { margin-bottom: 4px !important; }
+  .mb-0 { margin-bottom: 0 !important; }
+  .p-3  { padding: 12px !important; }
+  .pt-0 { padding-top: 0 !important; }
+  .pb-0 { padding-bottom: 0 !important; }
+
+  .card { border: 0; }
+  .card-body { padding: 8px; }
+
+  /* two receipt copies side by side in one row (School Copy / Parent Copy) */
+  .col-sm-6 { width: 50% !important; }
+
+  /* border line under every row in the amount summary table */
+  .table tbody tr td { border-bottom: 1px solid; } /* no explicit color -> inherits currentColor, same as the original inline border-top styles, so both match exactly */
+
+  /* left/right padding for the Received..Note footer block */
+  .abd, .footer-content, .col-12 h6 { padding-left: 10px !important; padding-right: 10px !important; }
+
+  body * { visibility: visible !important; }
+
+  #print-area {
+    position: static !important;
+    display: block !important;
+    /* width intentionally left unset here so each branch's own @media print rule
+       (width:100% for the two-copy branch, width:50% for the one-copy branch) applies */
+  }
+
+  .card-footer, .print-options { display: none !important; }
+
+  /* Bootstrap .row/.col-* rely on flexbox — replace with table layout */
+  .row {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed;
+  }
+  .row > [class*="col-"] {
+    display: table-cell !important;
+    vertical-align: top;
+  }
+  .col-12 { width: 100%; }
+  .col-8  { width: 66.66%; }
+  .col-4  { width: 33.33%; }
+
+  /* .d-flex.justify-content-between (admission info + photo row) */
+  .d-flex.justify-content-between {
+    display: table !important;
+    width: 100%;
+  }
+  .d-flex.justify-content-between > * {
+    display: table-cell !important;
+    vertical-align: top;
+  }
+
+  /* inline flex on the student photo wrapper */
+  .student-image-container {
+    display: inline-block !important;
+    vertical-align: middle !important;
+  }
+
+  /* multiple receipt copies -> one per PDF page */
+  .receipt-card { page-break-after: always; }
+  .receipt-card:last-child { page-break-after: auto; }
+
+  table.table th, table.table td { padding: 2pt; }
+</style>
+<?php } ?>
 </head>
 <body class="<?php echo $result->fee_receipt_page_size; ?> <?php echo ($result->fee_receipt_print_mode == 2) ? 'portrait' : 'landscape'; ?>">
 	<div class="card receipt-card">
@@ -612,7 +705,7 @@ if($_GET['copy']=='2'){
 
 		<div class="card-footer d-flex justify-content-end gap-2">
 			<!-- <button class="btn btn-secondary">Cancel</button> -->
-			<a href="<?=base_url()?>studentfee/studentfeelist"><button class="btn btn-success">Back</button></a>
+			<button class="btn btn-danger" onclick="window.close();">Close</button>
 			<button class="btn btn-primary"  onclick="window.print()" >Print</button>
 		</div>
 	</div>
@@ -640,7 +733,9 @@ if($_GET['copy']=='2'){
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Fee Receipt</title>
+  <?php if (!$for_pdf) { ?>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <?php } ?>
   <style>
     @media print {
 
@@ -788,6 +883,94 @@ if($_GET['copy']=='2'){
 	  }
 
   </style>
+<?php if ($for_pdf) { ?>
+<style>
+  /* --- dompdf-safe overrides: no flexbox/grid support --- */
+  /* --- minimal Bootstrap replacement: CDN is skipped for PDF --- */
+  * { box-sizing: border-box; }
+  body, body * { font-family: Arial, Helvetica, sans-serif !important; }
+  body { font-size: 12px; color: #212529; margin: 0; }
+  h5, h6 { margin-top: 0; margin-bottom: 0.5rem; }
+  strong, b { font-weight: bold; }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse !important; /* needed for inline tr border-top/border-bottom to render */
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+  .table th, .table td { padding: 4px 6px; vertical-align: top; }
+
+  .text-end    { text-align: right !important; }
+  .text-center { text-align: center !important; }
+
+  .mt-1 { margin-top: 4px !important; }
+  .mb-1 { margin-bottom: 4px !important; }
+  .mb-0 { margin-bottom: 0 !important; }
+  .p-3  { padding: 12px !important; }
+  .pt-0 { padding-top: 0 !important; }
+  .pb-0 { padding-bottom: 0 !important; }
+
+  .card { border: 0; }
+  .card-body { padding: 8px; }
+
+  /* two receipt copies side by side in one row (School Copy / Parent Copy) */
+  .col-sm-6 { width: 50% !important; }
+
+  /* border line under every row in the amount summary table */
+  .table tbody tr td { border-bottom: 1px solid; } /* no explicit color -> inherits currentColor, same as the original inline border-top styles, so both match exactly */
+
+  /* left/right padding for the Received..Note footer block */
+  .abd, .footer-content, .col-12 h6 { padding-left: 10px !important; padding-right: 10px !important; }
+
+  body * { visibility: visible !important; }
+
+  #print-area {
+    position: static !important;
+    display: block !important;
+    /* width intentionally left unset here so each branch's own @media print rule
+       (width:100% for the two-copy branch, width:50% for the one-copy branch) applies */
+  }
+
+  .card-footer, .print-options { display: none !important; }
+
+  /* Bootstrap .row/.col-* rely on flexbox — replace with table layout */
+  .row {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed;
+  }
+  .row > [class*="col-"] {
+    display: table-cell !important;
+    vertical-align: top;
+  }
+  .col-12 { width: 100%; }
+  .col-8  { width: 66.66%; }
+  .col-4  { width: 33.33%; }
+
+  /* .d-flex.justify-content-between (admission info + photo row) */
+  .d-flex.justify-content-between {
+    display: table !important;
+    width: 100%;
+  }
+  .d-flex.justify-content-between > * {
+    display: table-cell !important;
+    vertical-align: top;
+  }
+
+  /* inline flex on the student photo wrapper */
+  .student-image-container {
+    display: inline-block !important;
+    vertical-align: middle !important;
+  }
+
+  /* multiple receipt copies -> one per PDF page */
+  .receipt-card { page-break-after: always; }
+  .receipt-card:last-child { page-break-after: auto; }
+
+  table.table th, table.table td { padding: 2pt; }
+</style>
+<?php } ?>
 </head>
 <body class="<?php echo $result->fee_receipt_page_size; ?> <?php echo ($result->fee_receipt_print_mode == 2) ? 'portrait' : 'landscape'; ?>">
   <div class="card receipt-card">
@@ -1096,7 +1279,7 @@ if($_GET['copy']=='2'){
 
     <div class="card-footer d-flex justify-content-end gap-2">
       <!-- <button class="btn btn-secondary">Cancel</button> -->
-      <a href="<?=base_url()?>studentfee/studentfeelist"><button class="btn btn-success">Back</button></a>
+      <button class="btn btn-danger" onclick="window.close();">Close</button>
       <button class="btn btn-primary"  onclick="window.print()" >Print</button>
     </div>
   </div>

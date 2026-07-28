@@ -44,11 +44,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             <?php
                                         }?>
 										<h5>
-											<input type="checkbox" class="prev-checkbox" id="prev-checkbox" value="<?= format_amount($student_data['previous_session_balance']) ?>">
 											<label style="font-size: 12px;font-weight: bold;" for="prev-checkbox">PREV AMT : Rs. <?=format_amount($student_data['previous_session_balance'])?></label>
 										</h5>
                                         <h5>
-											<input type="checkbox" class="ledger-checkbox" id="ledger-checkbox" value="<?= format_amount($student_data['fees_discount']) ?>">
 											<label style="font-size: 12px;font-weight: bold;" for="ledger-checkbox">LEDG AMT : Rs. <?=format_amount($student_data['fees_discount'])?></label>
 										</h5>
 										
@@ -320,6 +318,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 											<!-- <input type="checkbox" checked id="select_all_data"/><br> -->
 										</th>
 										<th>Fees Head</th>
+										<?php if($student_data['previous_session_balance'] > 0 || $student_data['fees_discount'] > 0){ ?>
+										<th></th>
+										<?php } ?>
 										<?php foreach($months_data as $key=>$value){
 											if($column_totals[$key] > 0){
 										?>
@@ -338,6 +339,36 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									</tr>
 								</thead>
 								<tbody>
+								<?php if($student_data['previous_session_balance'] > 0){ ?>
+								<tr>
+									<td></td>
+									<td><input type="checkbox" class="prev-checkbox" id="prev-checkbox" value="<?= format_amount($student_data['previous_session_balance']) ?>"> <b>PREV AMT</b></td>
+									<td><?=format_amount($student_data['previous_session_balance'])?></td>
+									<?php foreach($months_data as $key=>$value){
+										if($column_totals[$key] > 0){
+									?>
+									<td></td>
+									<?php
+										} 
+									} 
+									?>
+								</tr>
+								<?php } ?>
+								<?php if($student_data['fees_discount'] > 0){ ?>
+								<tr>
+									<td></td>
+									<td><input type="checkbox" class="ledger-checkbox" id="ledger-checkbox" value="<?= format_amount($student_data['fees_discount']) ?>"> <b>LEDG AMT</b></td>
+									<td><?=format_amount($student_data['fees_discount'])?></td>
+									<?php foreach($months_data as $key=>$value){
+										if($column_totals[$key] > 0){
+									?>
+									<td></td>
+									<?php
+										} 
+									} 
+									?>
+								</tr>
+								<?php } ?>
 								<?php 
 
 
@@ -357,6 +388,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									<tr>
 										<td></td>
 										<td><b><?= $row->fees_heading ?></b></td>
+										<?php if($student_data['previous_session_balance'] > 0 || $student_data['fees_discount'] > 0){ ?>
+										<td></td>
+										<?php } ?>
 										<?php foreach($months_data as $key => $value):
 												if($column_totals[$key] <= 0) continue;
 										?>
@@ -411,6 +445,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 									<tr>
 										<td></td>
 										<td><b><?= $row->fees_heading ?></b></td>
+										<?php if($student_data['previous_session_balance'] > 0 || $student_data['fees_discount'] > 0){ ?>
+										<td></td>
+										<?php } ?>
 										<?php foreach($months_data as $key => $value):
 												if($column_totals[$key] <= 0) continue;
 										?>
@@ -455,6 +492,9 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 								<tr>
 										<td></td>
 										<td><b>Total</b></td>
+										<?php if($student_data['previous_session_balance'] > 0 || $student_data['fees_discount'] > 0){ ?>
+										<td><b><?php echo (int)$student_data['previous_session_balance'] + (int)$student_data['fees_discount']; ?></b></td>
+										<?php } ?>
 										<?php 
 											foreach ($column_total as $col_total):
 												if($col_total <= 0) continue;

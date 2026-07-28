@@ -4,8 +4,11 @@
     .box-header>.box-tools {display: none;}
     .sidebar-collapse #barChart{height: 100% !important;}
     .sidebar-collapse #lineChart{height: 100% !important;}
+	.blink-button {
+		animation: blink 2s infinite;
+		font-weight: bold;
+	}
 	.blink-text {
-		animation: blink 1s infinite;
 		font-weight: bold;
 	}
 
@@ -22,7 +25,7 @@
     <section class="content">
         <?php if($alert_result['payment_reminder']!=''){ ?>
         <div class="dashalertpay alert alert-danger alert-dismissible" role="alert">
-			<a class="link pull-right" autocomplete="off">Pay Now</a>
+			<a class="link pull-right blink-button" autocomplete="off">Alert</a>
 			<span class="blink-text"><?php echo $alert_result['payment_reminder']; ?></span>
 		</div>
         <?php } ?>
@@ -84,7 +87,18 @@
 						<span class="info-box-icon bg-own"><i class="fa-solid fa-user-graduate"></i></span>
 						<div class="info-box-content">
 							<span class="info-box-text"><?php echo $this->lang->line('student'); ?></span>
-							<span class="info-box-number"><?php echo $total_students; ?></span>
+							<span class="info-box-number"><?php echo $total_students; ?>/<?php echo $max_student_limit; ?></span>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-12">
+				<div class="info-box">
+					<a href="<?php echo site_url('student/search') ?>">
+						<span class="info-box-icon bg-own"><i class="fa-solid fa-user-graduate"></i></span>
+						<div class="info-box-content">
+							<span class="info-box-text">Discontinue <?php echo $this->lang->line('student'); ?></span>
+							<span class="info-box-number"><?php echo $discontinue_students; ?></span>
 						</div>
 					</a>
 				</div>

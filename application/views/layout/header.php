@@ -145,9 +145,20 @@ $logo = CRM_COMPANY_SETTINGS_FOLDER . $fetch_company['data']['logo'];
                             <?php }?>
 							
                             <div class="navbar-custom-menu">
-								<div class="walletdiv" data-placement="bottom" data-toggle="tooltip" data-original-title="Wallet Ballance" title="Wallet Ballance">
+								<!--<div class="walletdiv" data-placement="bottom" data-toggle="tooltip" data-original-title="Wallet Ballance" title="Wallet Ballance">
 										<i class="fa-solid fa-wallet"></i> Rs. 50000
-								</div> 
+								</div> -->
+								<?php
+									$s_result = $this->setting_model->getSetting();
+
+									$domain_api_url = CRM_URL .'api/Domain/get_domain_data/'.$s_result->domain_api_key;
+									$api_datas = call_api_get($domain_api_url);
+									$domain_api_datas = $api_datas['data'];
+								?>
+								<div class="headerSubscriptionDiv">
+										<span><i class="fa-solid fa-money-check"></i> Subscription Start Date - <?= isset($domain_api_datas['subscription_start_date']) ? date('d-m-Y', strtotime($domain_api_datas['subscription_start_date'])) : '-' ?></span>
+										<span><i class="fa-solid fa-money-check"></i> Subscription End Date - <?= isset($domain_api_datas['subscription_end_date']) ? date('d-m-Y', strtotime($domain_api_datas['subscription_end_date'])) : '-' ?></span>
+								</div>
                                 <?php if($this->rbac->hasPrivilege('language_switcher','can_view')){
                                     ?>
                                     <!--<div class="langdiv"><select class="languageselectpicker" onchange="set_languages(this.value)"  type="text" id="languageSwitcher" >

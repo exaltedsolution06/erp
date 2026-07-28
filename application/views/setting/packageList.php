@@ -24,7 +24,7 @@
 			$offset_class = 'col-md-offset-1'; // center 3 boxes
 		}
 		?>
-        <div class="row">
+        <div class="row row-flex3">
 			<?php foreach($plans_api_data as $key=>$plan_val){ ?>
 			<div class="col-md-3 <?= $key == 0 ? $offset_class : '' ?>">
 				<div class="plan-box <?= $plan_val['id'] == $domain_api_data['plan_id'] ? 'active' : '' ?>">
@@ -40,9 +40,9 @@
 						</li>
 					</ul>
 					<?php if($plan_val['id'] == $domain_api_data['plan_id']){ ?>
-					<button class="btn btn-success btn-plan">
-						Current Plan
-					</button>
+					<a href="<?= base_url('package/plan_details/'.$plan_val['id']) ?>" class="btn btn-success btn-plan">
+						Current Plan Details
+					</a>
 					<?php }else{ ?>
 					<button class="btn btn-info btn-plan choose-plan">
 						Choose Plan

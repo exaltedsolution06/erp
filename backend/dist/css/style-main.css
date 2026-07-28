@@ -4142,6 +4142,15 @@ td.dt-body-right {min-width: 100px;}
 	color: #ffffff;
 	font-size:15px;
 	font-weight: bold;
+}
+.headerSubscriptionDiv {
+	float:left;
+	position: relative;
+	padding: 9px 0;
+	display: grid;
+	color: #ffffff;
+	font-size:11px;
+	font-weight: bold;
 }	
 .form-control[disabled] {
 	background-color: #f3f4f6;

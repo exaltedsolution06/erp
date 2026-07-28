@@ -1,4 +1,6 @@
 <?php
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
@@ -171,13 +173,15 @@ class User extends Student_Controller
 		if (!$this->studentmodule_lib->hasActive('my_profile')) {
 			student_access_denied();
 		}
+        $data = array();
         $this->session->set_userdata('top_menu', 'My_profile');
         $student_id            = $this->customlib->getStudentSessionUserID();
         $student_current_class = $this->customlib->getStudentCurrentClsSection();
 
         $student = $this->student_model->getStudentByClassSection($student_current_class->class_id, $student_current_class->section_id, $student_id);
+		$data['student_data'] = $this->student_model->getByStudentSession($student_current_class->student_session_id);
+		// echo'<pre>';print_r($data['student_data']);exit;
 		
-        $data = array();
         if (!empty($student)) {
 
             $student_session_id           = $student_current_class->student_session_id;
@@ -246,6 +250,8 @@ class User extends Student_Controller
 		$current_student_session = $this->student_model->get_studentsession($student['student_session_id']);
 		
         $data["session"]              = $current_student_session["session"];
+		$data['cur_session'] = $this->current_session;
+		$data['fees_card']='due';
         $this->load->view('layout/student/header', $data);
         $this->load->view('user/dashboard', $data);
         $this->load->view('layout/student/footer', $data);
@@ -456,42 +462,48 @@ class User extends Student_Controller
 			->limit(1)
 			->get('receipts')
 			->row();
-		// $data['fees_card']='received';
 		$monthsPost = $months = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
-		$class_id=$student_data['class_id'];
-		$route_id=$student_data['route_id'];
-		$category_id=$student_data['category_id'];
-		// die;
-		$this->db->from('fee_head');
-		$this->db->join('fees_plan', 'fee_head.id = fees_plan.fee_group_id');
-		$this->db->where("JSON_CONTAINS(fees_plan.class_ids, '\"$class_id\"')", null, false);
-		$this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
-		$query = $this->db->get();
-		$data['data_list'] = $query->result();
-		$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($student_current_class->student_session_id);
-		//echo "<pre>";print_r($feeDiscountsArr);die;
-		$routeDiscountsArr    = $this->fee_discount_model->get_all_routes($student_current_class->student_session_id);
-		
-		$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr);
-		
-		// route
-		$this->db->from('route_head');
-		$this->db->join('route_plan', 'route_head.id = route_plan.fee_group_id');
-		$this->db->where("JSON_CONTAINS(route_plan.class_ids, '\"$class_id\"')", null, false);
-		$this->db->where("JSON_CONTAINS(route_plan.category_ids, '\"$category_id\"')", null, false);
-		$this->db->where('route_head.id', $route_id);
-		$query = $this->db->get();
-		$data['route_data_list'] = $query->result();
-		$data['months_data']=$monthsPost;
-		
-		$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
-		
+		$data['view_months_data']=$monthsPost;
+		if(!empty($_POST['feesCard'])){
+			$data['fees_card']=$_POST['feesCard'];
+		}else{
+			$data['fees_card']='structure';
+		}
+			$class_id=$student_data['class_id'];
+			$route_id=$student_data['route_id'];
+			$category_id=$student_data['category_id'];
+			// die;
+			$this->db->from('fee_head');
+			$this->db->join('fees_plan', 'fee_head.id = fees_plan.fee_group_id');
+			$this->db->where("JSON_CONTAINS(fees_plan.class_ids, '\"$class_id\"')", null, false);
+			$this->db->where("JSON_CONTAINS(fees_plan.category_ids, '\"$category_id\"')", null, false);
+			$query = $this->db->get();
+			$data['data_list'] = $query->result();
+			$feeDiscountsArr      = $this->fee_discount_model->get_all_fees($student_current_class->student_session_id);
+			//echo "<pre>";print_r($feeDiscountsArr);die;
+			$routeDiscountsArr    = $this->fee_discount_model->get_all_routes($student_current_class->student_session_id);
+			
+			$data['data_list'] = $this->updateMonthlyFeeAmounts($data['data_list'], $feeDiscountsArr);
+			
+			// route
+			$this->db->from('route_head');
+			$this->db->join('route_plan', 'route_head.id = route_plan.fee_group_id');
+			$this->db->where("JSON_CONTAINS(route_plan.class_ids, '\"$class_id\"')", null, false);
+			$this->db->where("JSON_CONTAINS(route_plan.category_ids, '\"$category_id\"')", null, false);
+			$this->db->where('route_head.id', $route_id);
+			$query = $this->db->get();
+			$data['route_data_list'] = $query->result();
+			
+			$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
+			$data['months_data']=$monthsPost;
+		// }
 		// echo '<pre>'; print_r($data['months_data']);exit;
 		
 		$existing_entry = $this->Receipt_model->get_pay_mounth($student_id);
         $data['pay_mounth']=$existing_entry;
 		// echo '<pre>'; print_r($existing_entry);exit;
 		
+		$data['cur_session'] = $this->current_session;
         $this->load->view('layout/student/header', $data);
         $this->load->view('student/getfees', $data);
         $this->load->view('layout/student/footer', $data);
@@ -540,6 +552,81 @@ class User extends Student_Controller
         $this->load->view('studentfee/print_receipt', $data);
         // $this->load->view('layout/footer', $data);
     }
+	public function download_receipts_ids_by_receipt_no($receipt_no, $copy = '1')
+	{
+		$receipt_no = urldecode($receipt_no);
+		$ids = $this->Receipt_model->get_receipts_ids_by_receipt_no(base64_decode($receipt_no));
+	 
+		if (empty($ids)) {
+			show_404();
+		}
+	 
+		redirect('user/user/downloads/' . base64_encode(json_encode($ids)) . '/' . $copy);
+	}
+	 
+	public function downloads($id, $copy = '1')
+	{
+		ob_start();
+	 
+		$id  = urldecode($id);
+		$ids = json_decode(base64_decode($id));
+	 
+		if (!is_array($ids) || empty($ids)) {
+			show_404();
+		}
+		$ids = array_map('intval', $ids);
+	 
+		$this->db->select('GROUP_CONCAT(DISTINCT months) as month_names');
+		$this->db->from('receipts');
+		$this->db->where_in('id', $ids);
+		$query = $this->db->get();
+		$data['month_names'] = $query->row()->month_names;
+	 
+		$data['result'] = $this->setting_model->getSetting();
+	 
+		$data_fees = $this->Receipt_model->get_receipts_by_ids($ids);
+		if (empty($data_fees)) {
+			show_404();
+		}
+	 
+		$student_id = $data_fees[0]->student_id;
+		$student    = $this->Receipt_model->getStudentsPrint($student_id);
+	 
+		$data['fees']         = $data_fees;
+		$data['student']      = $student[0];
+		$data['backid']       = $data_fees[0]->back_id;
+		$data['receipt_no']   = $data_fees[0]->receipt_no;
+		$data['header_image'] = $this->setting_model->get_receiptheader_return();
+		$data['footer_text']  = $this->setting_model->get_receiptfooter_return();
+		$data['create_by']    = $this->staff_model->getByEmail($data_fees[0]->create_by);
+	 
+		// flags consumed by the view for PDF-safe rendering
+		$data['for_pdf'] = true;
+		$data['copy']    = $copy;
+	 
+		// Generate HTML (same view, same markup — only the $for_pdf branch changes CSS)
+		$html = $this->load->view('studentfee/print_receipt', $data, true);
+	 
+		if (ob_get_length()) {
+			ob_end_clean();
+		}
+	 
+		$options = new \Dompdf\Options();
+		$options->set('isRemoteEnabled', true);
+		$options->set('isHtml5ParserEnabled', true);
+		$options->set('defaultFont', 'Arial');
+		$options->set('defaultMediaType', 'print');
+	 
+		$dompdf = new \Dompdf\Dompdf($options);
+		$dompdf->loadHtml($html);
+		$dompdf->setPaper(
+			'A4',
+			($data['result']->fee_receipt_print_mode == 2) ? 'portrait' : 'landscape'
+		);
+		$dompdf->render();
+		$dompdf->stream('Fee_Receipt_' . $data['receipt_no'] . '.pdf', ['Attachment' => true]);
+		exit;
+	}
     public function upcomingfees()
     {
 		if (!$this->studentmodule_lib->hasActive('due_fees')) {

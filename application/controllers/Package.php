@@ -42,6 +42,40 @@ class Package extends Admin_Controller {
         $this->load->view('setting/packageList', $data);
         $this->load->view('layout/footer', $data);
     }
+	public function plan_details($id)
+	{
+		if (!$this->rbac->hasPrivilege('package_list', 'can_view')) {
+			access_denied();
+		}
+		$this->session->set_userdata('top_menu', 'Software Subscription');
+		$this->session->set_userdata('sub_menu', 'Package/index');
+		$data['title'] = 'Plan Details';
+
+		$data['result'] = $this->setting_model->getSetting();
+
+		$domain_api_url = CRM_URL .'api/Domain/get_domain_data/'.$data['result']->domain_api_key;
+		$api_data = call_api_get($domain_api_url);
+		$data['domain_api_data'] = $api_data['data'];
+
+		$plan_list_url = CRM_URL .'api/Subscriptions/get_subscription_list/'.$data['result']->domain_api_key;
+		$api_data = call_api_get($plan_list_url);
+
+		$data['plan'] = null;
+		foreach ($api_data['data'] as $plan_val) {
+			if ($plan_val['id'] == $id) {
+				$data['plan'] = $plan_val;
+				break;
+			}
+		}
+
+		if (!$data['plan']) {
+			show_404();
+		}
+
+		$this->load->view('layout/header', $data);
+		$this->load->view('setting/planDetails', $data);
+		$this->load->view('layout/footer', $data);
+	}
     public function invoice_details() {		
         if (!$this->rbac->hasPrivilege('invoice_details', 'can_view')) {
             access_denied();
