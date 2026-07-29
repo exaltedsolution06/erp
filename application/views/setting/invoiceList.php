@@ -13,13 +13,14 @@
                     </div>
                     <div class="box-body">
                         <div class="download_label">Invoice List</div>
-                        <div class="table-responsive mailbox-messages">
+                        <div class="table-responsive table-header-sticky" style="overflow: auto;">
                             <table class="table table-striped table-bordered table-hover example">
                                 <thead>
                                     <tr>
                                         <th>Invoice No.</th>
 										<th>School ID</th>
-										<th>Item Description</th>
+										<!--<th>Item Description</th>-->
+										<th>Subscription Type</th>
 										<th>Price</th>
 										<th>Discount</th>
 										<th>CGST</th>
@@ -37,7 +38,21 @@
 										<tr>
 											<td><strong><?= $row['invoice_prefix'] . '-' . $row['invoice_number'] ?></strong></td>
 											<td><?= $row['school_id'] ?></td>
-											<td><?= htmlspecialchars($row['item_description']) ?></td>
+											<!--<td><?= htmlspecialchars($row['item_description']) ?></td>-->
+											<td>
+												<?php
+													$sub_types = !empty($row['subscription_type']) ? explode(',', $row['subscription_type']) : [];
+												?>
+												<?php if(in_array('plan', $sub_types)){ ?>
+													<button type="button" class="btn btn-xs btn-primary"> Plan</button>
+												<?php } ?>
+												<?php if(in_array('services', $sub_types)){ ?>
+													<button type="button" class="btn btn-xs btn-info"> Services</button>
+												<?php } ?>
+												<?php if(empty($sub_types)){ ?>
+													<span class="text-muted">-</span>
+												<?php } ?>
+											</td>
 											<td><?= format_amount($row['price_amount']) ?></td>
 											<td><?= format_amount($row['discount']) ?></td>
 											<td>

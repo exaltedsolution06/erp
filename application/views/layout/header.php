@@ -156,8 +156,8 @@ $logo = CRM_COMPANY_SETTINGS_FOLDER . $fetch_company['data']['logo'];
 									$domain_api_datas = $api_datas['data'];
 								?>
 								<div class="headerSubscriptionDiv">
-										<span><i class="fa-solid fa-money-check"></i> Subscription Start Date - <?= isset($domain_api_datas['subscription_start_date']) ? date('d-m-Y', strtotime($domain_api_datas['subscription_start_date'])) : '-' ?></span>
-										<span><i class="fa-solid fa-money-check"></i> Subscription End Date - <?= isset($domain_api_datas['subscription_end_date']) ? date('d-m-Y', strtotime($domain_api_datas['subscription_end_date'])) : '-' ?></span>
+										<span><i class="fa-solid fa-money-check"></i> Start Date - <?= isset($domain_api_datas['subscription_start_date']) ? date('d-m-Y', strtotime($domain_api_datas['subscription_start_date'])) : '-' ?></span>
+										<span><i class="fa-solid fa-money-check"></i> End Date - <?= isset($domain_api_datas['subscription_end_date']) ? date('d-m-Y', strtotime($domain_api_datas['subscription_end_date'])) : '-' ?></span>
 								</div>
                                 <?php if($this->rbac->hasPrivilege('language_switcher','can_view')){
                                     ?>
