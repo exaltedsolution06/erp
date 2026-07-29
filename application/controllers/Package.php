@@ -67,7 +67,10 @@ class Package extends Admin_Controller {
 				break;
 			}
 		}
-
+		
+		$plan_list_url = CRM_URL .'api/Subscriptions/get_service_list/'.$data['result']->domain_api_key;
+		$api_data = call_api_get($plan_list_url);
+		$data['services'] = $api_data['data'];
 		if (!$data['plan']) {
 			show_404();
 		}

@@ -42,6 +42,21 @@
                         <th>Subscription End Date</th>
                         <td><?= isset($domain_api_data['subscription_end_date']) ? date('d-m-Y', strtotime($domain_api_data['subscription_end_date'])) : '-' ?></td>
                     </tr>
+                    <tr>
+                        <th>Current Services</th>
+                        <td>
+							<?php 
+								foreach($services as $serviceVal){
+									$selected_service_ids = !empty($domain_api_data['service_ids']) ? explode(',', $domain_api_data['service_ids']) : [];
+									if(in_array($serviceVal['id'], $selected_service_ids)){
+							?>
+								<button type="button" class="btn btn-xs btn-info"><?= $serviceVal['title'] ?></button>
+							<?php 
+									} 
+								}
+							?>
+						</td>
+                    </tr>
                 </table>
                 <a href="<?= base_url('package') ?>" class="btn btn-default">Back</a>
             </div>
