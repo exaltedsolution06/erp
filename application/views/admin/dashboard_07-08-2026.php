@@ -51,7 +51,6 @@
         </div> 
         
         <div class="row">    
-			<?php if ($this->rbac->hasPrivilege('staff_role_count_widget', 'can_view')) { ?>
 			<?php foreach ($roles as $key => $value) { ?>
 			<div class="col-lg-3 col-md-3 col-sm-12 col201">
 					<div class="info-box">
@@ -81,7 +80,6 @@
 					</div>  
 			</div><!--./col-lg-3-->   
             <?php } ?>
-			<?php } // end staff_role_count_widget ?>
 			<?php if ($this->rbac->hasPrivilege('student_count_widget', 'can_view')) { ?>
 			<div class="col-lg-3 col-md-3 col-sm-12">
 				<div class="info-box">
@@ -108,7 +106,6 @@
 			<?php } ?>
 		</div>  
 		<div class="row row-flex3">	
-			<?php if ($this->rbac->hasPrivilege('student_count_widget', 'can_view')) { ?>
 			<div class="col-md-3 col-sm-6 mb10">
 				<div class="topprograssstart flex-card">
 					<h5 class="pro-border">Total student</h5>
@@ -130,9 +127,7 @@
 					</p>
 				</div>
 			</div>
-			<?php } // end student_count_widget ?>
-
-			<?php if ($this->rbac->hasPrivilege('monthly_fees_collection_widget', 'can_view')) { ?>
+			
 			<div class="col-md-3 col-sm-6 mb10">
 				<div class="topprograssstart flex-card">
 					<h5 class="pro-border">Today's Total collection</h5>
@@ -161,9 +156,7 @@
 					</p>
 				</div>
 			</div>
-			<?php } // end monthly_fees_collection_widget ?>
-
-			<?php if ($this->rbac->hasPrivilege('fees_overview_widgets', 'can_view')) { ?>
+			
 			<div class="col-md-3 col-sm-6 mb10">
 				<div class="topprograssstart flex-card">
 					<h5 class="pro-border">Today's Financial Summary</h5>
@@ -185,8 +178,6 @@
 					</p>
 				</div>
 			</div>
-			<?php } // end fees_overview_widgets ?>
-			<?php if ($this->rbac->hasPrivilege('student_today_attendance_widgets', 'can_view')) { ?>
 			<div class="col-md-3 col-sm-6 mb10">
 				<div class="topprograssstart flex-card">
 					<h5 class="pro-border">Todays Total attendance</h5>
@@ -206,8 +197,6 @@
 					</div>
 				</div>
 			</div>
-			<?php } // end student_today_attendance_widgets ?>
-			<?php if ($this->rbac->hasPrivilege('fees_awaiting_payment_widgets', 'can_view')) { ?>
 			<div class="col-md-3 col-sm-6 mb10">
 				<div class="topprograssstart flex-card">
 					<h5 class="pro-border">Previous balance</h5>
@@ -231,8 +220,6 @@
 					</p>
 				</div>
 			</div>
-			<?php } // end fees_awaiting_payment_widgets ?>
-			<?php if ($this->rbac->hasPrivilege('support_tickets_widget', 'can_view')) { ?>
 			<div class="col-md-3 col-sm-6 mb10">
 				<div class="topprograssstart flex-card">
 					<h5 class="pro-border">Tickets</h5>
@@ -261,53 +248,6 @@
 					</div>
 				</div>
 			</div>
-			<?php } // end support_tickets_widget ?>
-
-			<?php if ($this->rbac->hasPrivilege('library_overview_widgets', 'can_view')) { ?>
-			<div class="col-md-3 col-sm-6 mb10">
-				<div class="topprograssstart flex-card">
-					<h5 class="pro-border">Library Overview</h5>
-					<p class="text-uppercase mt10 clearfix">Total Library Student<span class="pull-right"><?php echo isset($total_library_students) ? $total_library_students : 0;  ?></span>
-					</p>
-					<div class="progress-group">
-						<div class="progress progress-minibar">
-							<div class="progress-bar progress-bar-aqua" style="width: <?php echo isset($total_library_students_percent) ? round($total_library_students_percent) : 0 ?>%"></div>
-						</div>
-					</div>
-					<p class="text-uppercase mt10 clearfix">Total Library Staff<span class="pull-right"><?php echo isset($total_library_staff) ? $total_library_staff : 0;  ?></span>
-					</p>
-					<div class="progress-group">
-						<div class="progress progress-minibar">
-							<div class="progress-bar progress-bar-purple" style="width: <?php echo isset($total_library_staff_percent) ? round($total_library_staff_percent) : 0 ?>%"></div>
-						</div>
-					</div>
-					<p class="text-uppercase mt10 clearfix">Total Book<span class="pull-right"><?php echo isset($total_library_books) ? $total_library_books : 0;  ?></span>
-					</p>
-				</div>
-			</div>
-			<?php } // end library_overview_widgets ?>
-
-			<?php if ($this->rbac->hasPrivilege('staff_present_today_widgets', 'can_view')) { ?>
-			<div class="col-md-3 col-sm-6 mb10">
-				<div class="topprograssstart flex-card">
-					<h5 class="pro-border">Todays Staff Attendance</h5>
-					<p class="text-uppercase mt10 clearfix">Total Present<span class="pull-right"><?php echo isset($Staffattendence_data) ? $Staffattendence_data : 0;  ?></span>
-					</p>
-					<div class="progress-group">
-						<div class="progress progress-minibar">
-							<div class="progress-bar progress-bar-red" style="width: <?php echo isset($percentTotalStaff_data) ? round($percentTotalStaff_data) : 0 ?>%"></div>
-						</div>
-					</div>
-					<p class="text-uppercase mt10 clearfix">Total Absent<span class="pull-right"><?php echo isset($staff_absent_count) ? $staff_absent_count : 0;  ?></span>
-					</p>
-					<div class="progress-group">
-						<div class="progress progress-minibar">
-							<div class="progress-bar progress-bar-aqua" style="width: <?php echo isset($staff_absent_percent) ? round($staff_absent_percent) : 0 ?>%"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<?php } // end staff_present_today_widgets ?>
 		</div>  
 				
        <!-- <div class="row">    
@@ -473,7 +413,6 @@
         
         </div><!--./row-->
 		
-				<?php if ($this->rbac->hasPrivilege('income_donut_graph', 'can_view')) { ?>
 				<div class="row">
                         <div class="col-lg-7 col-md-7 col-sm-12 col60">
 							<div class="box box-primary borderwhite">
@@ -499,8 +438,6 @@
 							</div><!--./col-md-6-->
 						</div><!--./col-lg-5-->
 				</div>
-				<?php } ?>
-				<?php if ($this->rbac->hasPrivilege('expense_donut_graph', 'can_view')) { ?>
 				<div class="row">
                     <div class="col-lg-7 col-md-7 col-sm-12 col60">
                         <div class="box box-info borderwhite">
@@ -530,7 +467,6 @@
                         </div>
                     </div><!--./col-lg-5-->
 				</div>
-				<?php } ?>
         
 		<div class="row">
 			<div class="col-md-12">

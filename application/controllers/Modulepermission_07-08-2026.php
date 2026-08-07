@@ -344,21 +344,20 @@ class Modulepermission extends Public_Controller
 			[
 				'module' => 'Dashboard Management',
 				'links' => [
-					['name' => 'Monthly Fees Collection Widget',   'short_code' => 'monthly_fees_collection_widget', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Monthly Expense Widget',           'short_code' => 'monthly_expense_widget', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Student Count Widget',              'short_code' => 'student_count_widget', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Staff Role Count Widget',           'short_code' => 'staff_role_count_widget', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Fees Awaiting Payment Widgets',     'short_code' => 'fees_awaiting_payment_widgets', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Converted Leads Widgets',           'short_code' => 'converted_leads_widgets', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Fees Overview Widgets',              'short_code' => 'fees_overview_widgets', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Enquiry Overview Widgets',           'short_code' => 'enquiry_overview_widgets', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Library Overview Widgets',           'short_code' => 'library_overview_widgets', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Student Today Attendance Widgets',  'short_code' => 'student_today_attendance_widgets', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Income Donut Graph',                 'short_code' => 'income_donut_graph', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Expense Donut Graph',                'short_code' => 'expense_donut_graph', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Staff Present Today Widgets',        'short_code' => 'staff_present_today_widgets', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Student Present Today Widgets',      'short_code' => 'student_present_today_widgets', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
-					['name' => 'Support Tickets Widget',             'short_code' => 'support_tickets_widget', 'add' => false, 'view' => true, 'edit' => false, 'delete' => false],
+					['name' => 'Monthly Fees Collection Widget',   'short_code' => 'monthly_fees_collection_widget', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Monthly Expense Widget',           'short_code' => 'monthly_expense_widget', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Student Count Widget',              'short_code' => 'student_count_widget', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Staff Role Count Widget',           'short_code' => 'staff_role_count_widget', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Fees Awaiting Payment Widgets',     'short_code' => 'fees_awaiting_payment_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Converted Leads Widgets',           'short_code' => 'converted_leads_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Fees Overview Widgets',              'short_code' => 'fees_overview_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Enquiry Overview Widgets',           'short_code' => 'enquiry_overview_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Library Overview Widgets',           'short_code' => 'library_overview_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Student Today Attendance Widgets',  'short_code' => 'student_today_attendance_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Income Donut Graph',                 'short_code' => 'income_donut_graph', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Expense Donut Graph',                'short_code' => 'expense_donut_graph', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Staff Present Today Widgets',        'short_code' => 'staff_present_today_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
+					['name' => 'Student Present Today Widgets',      'short_code' => 'student_present_today_widgets', 'add' => false, 'view' => false, 'edit' => false, 'delete' => false],
 				]
 			],
 			[
@@ -432,13 +431,6 @@ class Modulepermission extends Public_Controller
 				}
 			}
 		}
-
-		// =================================================================
-		// Seed default per-role "can_view" access for the Dashboard
-		// Management widgets, so the Admin dashboard shows role-appropriate
-		// data out of the box (roles_permissions was truncated above).
-		// =================================================================
-		$this->seedDashboardRolePermissions();
 		/*foreach($modules as $module_val){
 			$system = 0;
 			if($module_val['module'] == 'Dashboard Management' || $module_val['module'] == 'Chat'){
@@ -469,84 +461,6 @@ class Modulepermission extends Public_Controller
 
 		echo 'Success';
     }
-
-	/**
-	 * Default role -> dashboard widget "can_view" grants.
-	 * Runs after permission_category has been (re)built above, and after
-	 * roles_permissions was truncated at the top of index(), so this is a
-	 * plain insert - no duplicate checks required.
-	 *
-	 * Looks roles up by name (not hardcoded id) so it works on any install.
-	 * Super Admin isn't included on purpose - Rbac::hasPrivilege() already
-	 * grants Super Admin every permission automatically.
-	 */
-	private function seedDashboardRolePermissions()
-	{
-		$role_widget_map = [
-			'Admin' => [
-				'staff_role_count_widget', 'student_count_widget', 'monthly_fees_collection_widget',
-				'monthly_expense_widget', 'fees_overview_widgets', 'student_today_attendance_widgets',
-				'fees_awaiting_payment_widgets', 'support_tickets_widget', 'converted_leads_widgets',
-				'enquiry_overview_widgets', 'library_overview_widgets', 'income_donut_graph',
-				'expense_donut_graph', 'staff_present_today_widgets', 'student_present_today_widgets',
-			],
-			'Teacher' => [
-				'student_count_widget', 'student_today_attendance_widgets',
-				'student_present_today_widgets', 'staff_present_today_widgets',
-			],
-			'Accountant' => [
-				'student_count_widget', 'monthly_fees_collection_widget', 'monthly_expense_widget',
-				'fees_overview_widgets', 'fees_awaiting_payment_widgets', 'income_donut_graph',
-				'expense_donut_graph', 'support_tickets_widget',
-			],
-			'Librarian' => [
-				'library_overview_widgets', 'student_count_widget',
-			],
-			'Receptionist' => [
-				'student_count_widget', 'enquiry_overview_widgets', 'converted_leads_widgets',
-				'support_tickets_widget',
-			],
-		];
-
-		$roles = $this->db->select('id, name')->get('roles')->result();
-		$role_id_by_name = [];
-		foreach ($roles as $role_row) {
-			$role_id_by_name[$role_row->name] = $role_row->id;
-		}
-
-		$categories = $this->db->select('id, short_code')->get('permission_category')->result();
-		$cat_id_by_code = [];
-		foreach ($categories as $cat_row) {
-			$cat_id_by_code[$cat_row->short_code] = $cat_row->id;
-		}
-
-		$insert_rows = [];
-		foreach ($role_widget_map as $role_name => $widget_codes) {
-			if (!isset($role_id_by_name[$role_name])) {
-				continue; // role not present in this install, skip
-			}
-			$role_id = $role_id_by_name[$role_name];
-
-			foreach ($widget_codes as $short_code) {
-				if (!isset($cat_id_by_code[$short_code])) {
-					continue; // widget not defined, skip
-				}
-				$insert_rows[] = [
-					'role_id'    => $role_id,
-					'perm_cat_id' => $cat_id_by_code[$short_code],
-					'can_view'   => 1,
-					'can_add'    => 0,
-					'can_edit'   => 0,
-					'can_delete' => 0,
-				];
-			}
-		}
-
-		if (!empty($insert_rows)) {
-			$this->db->insert_batch('roles_permissions', $insert_rows);
-		}
-	}
-
 	function slugify($string) {
 		return strtolower(trim(preg_replace('/\s+/', '_', $string)));
 	}

@@ -506,8 +506,6 @@ class Admin extends Admin_Controller
         $data['getTotalStaff_data']   = $getTotalStaff;
         if ($getTotalStaff > 0) {$percentTotalStaff_data = ($Staffattendence * 100) / ($getTotalStaff);} else { $percentTotalStaff_data = '0';}
         $data['percentTotalStaff_data'] = $percentTotalStaff_data;
-		$data['staff_absent_count']   = $getTotalStaff - $Staffattendence;
-		$data['staff_absent_percent'] = $getTotalStaff > 0 ? (($getTotalStaff - $Staffattendence) * 100) / $getTotalStaff : 0;
         $data['sch_setting']            = $this->sch_setting_detail;
 
         if ($data['sch_setting']->attendence_type == 0) {
@@ -561,26 +559,6 @@ class Admin extends Admin_Controller
 		$alert_result = call_api_get($alert_url);
 		$data['alert_result'] = $alert_result['data'];
 		// echo '<pre>';print_r($data['alert_result']);exit;
-
-		// Library overview widget (total library student members, staff members, and books)
-		if ($this->rbac->hasPrivilege('library_overview_widgets', 'can_view')) {
-			$data['total_library_students'] = $this->db->where('member_type', 'student')
-				->where('session_id', $this->current_session)
-				->count_all_results('libarary_members');
-
-			$data['total_library_staff'] = $this->db->where('member_type', 'teacher')
-				->where('session_id', $this->current_session)
-				->count_all_results('libarary_members');
-
-			$data['total_library_students_percent'] = $total_students > 0 ? ($data['total_library_students'] / $total_students) * 100 : 0;
-			$data['total_library_staff_percent'] = $getTotalStaff > 0 ? ($data['total_library_staff'] / $getTotalStaff) * 100 : 0;
-
-			$books_qty = $this->db->select_sum('qty')
-				->where('session_id', $this->current_session)
-				->get('books')
-				->row();
-			$data['total_library_books'] = ($books_qty && $books_qty->qty) ? $books_qty->qty : 0;
-		}
 		
 		// Show the popup only if there's a message AND it hasn't been dismissed this session
 		$data['show_alert_popup'] = (
