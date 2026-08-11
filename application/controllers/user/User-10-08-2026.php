@@ -149,89 +149,9 @@ class User extends Student_Controller
             $data['months_data']=$monthsPost;
 			
 			$data['route_data_list'] = $this->updateMonthlyFeeAmounts($data['route_data_list'], $routeDiscountsArr);
-
-			// ---- Summary widgets for the card-style dashboard (student-specific only) ----
-
-			// Fee due summary. PREV AMT / LEDG AMT come from the same source the
-			// "Collect Fee" page (studentfee/addfee/<student_session_id>) uses.
-			$student_session_data = $this->student_model->getByStudentSession($student_session_id);
-
-			$total_fee_balance     = 0;
-			$total_fees_fine       = 0;
-			foreach ($student_due_fee as $fee) {
-				foreach ($fee->fees as $fee_value) {
-					$fee_paid     = 0;
-					$fee_discount = 0;
-					if (!empty($fee_value->amount_detail)) {
-						foreach (json_decode($fee_value->amount_detail) as $fee_deposit) {
-							$fee_paid     += $fee_deposit->amount;
-							$fee_discount += $fee_deposit->amount_discount;
-						}
-					}
-					$total_fee_balance += ($fee_value->amount - ($fee_paid + $fee_discount));
-
-					if (($fee_value->due_date != "0000-00-00" && $fee_value->due_date != null) && strtotime($fee_value->due_date) < strtotime(date('Y-m-d'))) {
-						$total_fees_fine += $fee_value->fine_amount;
-					}
-				}
-			}
-			$data['total_fee_balance'] = $total_fee_balance > 0 ? $total_fee_balance : 0;
-			$data['total_fees_fine']   = $total_fees_fine;
-			$data['prev_balance_amt']  = $student_session_data['previous_session_balance'];
-			$data['ledger_amt']        = $student_session_data['fees_discount'];
-
-			// This month's attendance
-			$att_month              = date('m');
-			$att_year               = date('Y');
-			$att_present            = (int) $this->stuattendence_model->count_attendance_obj($att_month, $att_year, $student_session_id, 1);
-			$att_absent             = (int) $this->stuattendence_model->count_attendance_obj($att_month, $att_year, $student_session_id, 4);
-			$att_late               = (int) $this->stuattendence_model->count_attendance_obj($att_month, $att_year, $student_session_id, 3);
-			$att_half_day           = (int) $this->stuattendence_model->count_attendance_obj($att_month, $att_year, $student_session_id, 6);
-			$att_total_marked       = $att_present + $att_absent + $att_late + $att_half_day;
-			$data['attendance_present']    = $att_present;
-			$data['attendance_late']       = $att_late;
-			$data['attendance_absent']     = $att_absent;
-			$data['attendance_half_day']   = $att_half_day;
-			$data['attendance_present_percent']  = $att_total_marked > 0 ? ($att_present * 100) / $att_total_marked : 0;
-			$data['attendance_late_percent']     = $att_total_marked > 0 ? ($att_late * 100) / $att_total_marked : 0;
-			$data['attendance_absent_percent']   = $att_total_marked > 0 ? ($att_absent * 100) / $att_total_marked : 0;
-			$data['attendance_half_day_percent'] = $att_total_marked > 0 ? ($att_half_day * 100) / $att_total_marked : 0;
-
-			// Homework - pending vs total for this class/section this session
-			$homework_list      = $this->homework_model->getStudentHomeworkWithStatus($student['class_id'], $student['section_id'], $student_session_id);
-			$homework_total     = count($homework_list);
-			$homework_pending   = 0;
-			foreach ($homework_list as $hw) {
-				if ($hw['homework_evaluation_id'] == 0) {
-					$homework_pending++;
-				}
-			}
-			$data['homework_total']            = $homework_total;
-			$data['homework_pending']          = $homework_pending;
-			$data['homework_pending_percent']  = $homework_total > 0 ? ($homework_pending * 100) / $homework_total : 0;
-
-			// Library - books currently issued to this student
-			$library_books        = $this->librarymember_model->checkIsMember('student', $student_id);
-			$library_issued_count = 0;
-			if (!empty($library_books)) {
-				foreach ($library_books as $lib_book) {
-					if ($lib_book['is_returned'] == 0) {
-						$library_issued_count++;
-					}
-				}
-			}
-			$data['library_issued_count'] = $library_issued_count;
-
-			// Exam results published so far this session
-			$data['exam_result_count'] = count($data['exam_result']);
-		}
+		} 
  
-        $user_role = $this->customlib->getUserRole();
-        if ($user_role == 'parent') {
-            $unread_notifications = $this->notification_model->getUnreadParentNotification();
-        } else {
-            $unread_notifications = $this->notification_model->getUnreadStudentNotification();
-        }
+        $unread_notifications = $this->notification_model->getUnreadStudentNotification();
 
         $notification_bydate  = array();
 
@@ -242,32 +162,6 @@ class User extends Student_Controller
         }
 
         $data['unread_notifications'] = $notification_bydate;
-
-        // Unread count for the dashboard card - use the exact same helper the
-        // sidebar "Notice Board" badge uses, so the numbers always match.
-        $data['unread_notification_count'] = (int) $this->customlib->getUserunreadNotification();
-
-        // Total notifications (read + unread) visible to this student/parent so
-        // far, using the same list + date filter as the Notifications page, so
-        // we can show a real Unread vs Read percentage on the dashboard card.
-        if ($user_role == 'parent') {
-            $all_notifications = $this->notification_model->getNotificationForParent($this->customlib->getUsersID());
-        } else {
-            $all_notifications = $this->notification_model->getNotificationForStudent($this->customlib->getStudentSessionUserID());
-        }
-
-        $total_notification_bydate = array();
-        foreach ($all_notifications as $notice) {
-            if (date($this->customlib->getSchoolDateFormat()) >= date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($notice['publish_date']))) {
-                $total_notification_bydate[] = $notice;
-            }
-        }
-        $total_notification_count           = count($total_notification_bydate);
-        $data['total_notification_count']   = $total_notification_count;
-        $data['read_notification_count']    = $total_notification_count - $data['unread_notification_count'];
-        $data['unread_notification_percent'] = $total_notification_count > 0 ? ($data['unread_notification_count'] * 100) / $total_notification_count : 0;
-        $data['read_notification_percent']   = $total_notification_count > 0 ? ($data['read_notification_count'] * 100) / $total_notification_count : 0;
-
 		$current_student_session = $this->student_model->get_studentsession($student['student_session_id']);
 		
         $data["session"]              = $current_student_session["session"];
@@ -360,7 +254,7 @@ class User extends Student_Controller
 		$data['cur_session'] = $this->current_session;
 		$data['fees_card']='due';
         $this->load->view('layout/student/header', $data);
-        $this->load->view('user/profile', $data);
+        $this->load->view('user/dashboard', $data);
         $this->load->view('layout/student/footer', $data);
     }
 
