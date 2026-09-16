@@ -15,6 +15,7 @@
                         ?> 
                         <!--<li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/examinations/rankreport'); ?>"><a href="<?php echo base_url(); ?>admin/examresult/rankreport"><i class="fa fa-file-text-o"></i> <?php echo $this->lang->line('rank') . " " . $this->lang->line('report'); ?></a></li>-->
                         <li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/examinations/percentreport'); ?>"><a href="<?php echo base_url(); ?>admin/examresult/percentreport"><i class="fa fa-file-text-o"></i> Percent <?php echo $this->lang->line('report'); ?></a></li>
+                        <!--<li class="col-lg-4 col-md-4 col-sm-6 <?php echo set_SubSubmenu('Reports/examinations/tabulationreport'); ?>"><a href="<?php echo base_url(); ?>admin/examresult/tabulationreport"><i class="fa fa-file-text-o"></i> Tabulation <?php echo $this->lang->line('report'); ?></a></li>-->
                             <?php
                         }
                         ?>
