@@ -1023,6 +1023,15 @@ class Admin extends Admin_Controller
         }
 
         $resultlist = $this->student_model->searchFullText($search_text, $carray);
+
+        // Exclude discontinued students from the top search results only
+        // (searchFullText() is shared by several other features that still
+        // need discontinued students included, so filter here instead of
+        // in the model).
+        $resultlist = array_values(array_filter($resultlist, function ($row) {
+            return $row['is_active'] == 'yes';
+        }));
+
         $data['resultlist'] = $resultlist;
         $this->load->view('layout/header', $data);
         $this->load->view('admin/search', $data);
