@@ -93,6 +93,7 @@ class Income_model extends My_Model
 		//$this->db->where('income_head.session_id', $this->current_session);
 		$this->db->where('balance_sheets.session_id', $this->current_session);
 		$this->db->where('balance_sheets.balance_type', 0); // for income
+		$this->db->where('balance_sheets.status', 0);
 		
         if ($id != null) {
             $this->db->where('balance_sheets.id', $id);
