@@ -372,6 +372,10 @@
                         $('#section_id').html("");
                         var base_url = '<?php echo base_url() ?>';
                         var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+                        if (!class_id_post) {
+                            $('#section_id').append(div_data);
+                            return;
+                        }
                         $.ajax({
                             type: "GET",
                             url: base_url + "sections/getByClass",

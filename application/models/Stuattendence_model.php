@@ -73,24 +73,74 @@ class Stuattendence_model extends MY_Model {
         }
     }
 
+    /**
+     * Student attendance list for a class/section/date (Attendance > Student Attendance).
+     * Optimised: plain joins instead of a derived table, bound params,
+     * and only the columns the view needs. Output columns are unchanged.
+     */
     public function searchAttendenceClassSection($class_id, $section_id, $date) {
 
-        $sql = "select student_sessions.attendence_id,student_sessions.attendence_dt,students.firstname,students.middlename,students.lastname,student_sessions.date,student_sessions.remark,student_sessions.biometric_attendence,students.roll_no,students.admission_no,students.id as std_id,students.lastname,student_sessions.attendence_type_id,student_sessions.id as student_session_id, attendence_type.type as `att_type`,attendence_type.key_value as `key` from students ,(SELECT student_session.id,student_session.student_id ,IFNULL(student_attendences.date, 'xxx') as date,IFNULL(student_attendences.created_at, 'xxx') as attendence_dt,student_attendences.remark,student_attendences.biometric_attendence, IFNULL(student_attendences.id, 0) as attendence_id,student_attendences.attendence_type_id FROM `student_session` LEFT JOIN student_attendences ON student_attendences.student_session_id=student_session.id  and student_attendences.date=" . $this->db->escape($date) . " where  student_session.session_id=" . $this->db->escape($this->current_session) . " and student_session.class_id=" . $this->db->escape($class_id) . " and student_session.section_id=" . $this->db->escape($section_id) . " and student_session.is_active = 'yes') as student_sessions   LEFT JOIN attendence_type ON attendence_type.id=student_sessions.attendence_type_id where student_sessions.student_id = students.id ORDER BY students.id desc";
+        $sql = "SELECT IFNULL(sa.id, 0) AS attendence_id,
+                       IFNULL(sa.created_at, 'xxx') AS attendence_dt,
+                       s.firstname, s.middlename, s.lastname,
+                       IFNULL(sa.date, 'xxx') AS date,
+                       sa.remark, sa.biometric_attendence,
+                       s.roll_no, s.admission_no, s.id AS std_id,
+                       sa.attendence_type_id,
+                       ss.id AS student_session_id,
+                       atp.type AS att_type, atp.key_value AS `key`
+                FROM student_session ss
+                INNER JOIN students s ON s.id = ss.student_id
+                LEFT JOIN student_attendences sa ON sa.student_session_id = ss.id AND sa.date = ?
+                LEFT JOIN attendence_type atp ON atp.id = sa.attendence_type_id
+                WHERE ss.session_id = ? AND ss.class_id = ? AND ss.section_id = ? AND ss.is_active = 'yes'
+                ORDER BY s.id DESC";
 
-        $query = $this->db->query($sql);
+        $query = $this->db->query($sql, array($date, $this->current_session, $class_id, $section_id));
         return $query->result_array();
     }
 
+    /**
+     * Attendance of every student for one date (used by the class/month report,
+     * called once per day of the month). Output columns are unchanged.
+     */
     public function searchAttendenceReport($class_id, $section_id, $date) {
 
-        $sql = "select student_sessions.attendence_id,students.firstname,students.middlename,student_sessions.date,student_sessions.remark,students.roll_no,students.admission_no,students.lastname,student_sessions.attendence_type_id,student_sessions.id as student_session_id, attendence_type.type as `att_type`,attendence_type.key_value as `key` from students ,(SELECT student_session.id,student_session.student_id ,IFNULL(student_attendences.date, 'xxx') as date,student_attendences.remark, IFNULL(student_attendences.id, 0) as attendence_id,student_attendences.attendence_type_id FROM `student_session` LEFT JOIN student_attendences ON student_attendences.student_session_id=student_session.id  and student_attendences.date=" . $this->db->escape($date) . " where  student_session.session_id=" . $this->db->escape($this->current_session) . " and student_session.class_id=" . $this->db->escape($class_id) . " and student_session.section_id=" . $this->db->escape($section_id) . " and student_session.is_active = 'yes') as student_sessions   LEFT JOIN attendence_type ON attendence_type.id=student_sessions.attendence_type_id where student_sessions.student_id=students.id ";
+        $sql = "SELECT IFNULL(sa.id, 0) AS attendence_id,
+                       s.firstname, s.middlename,
+                       IFNULL(sa.date, 'xxx') AS date,
+                       sa.remark, s.roll_no, s.admission_no, s.lastname,
+                       sa.attendence_type_id,
+                       ss.id AS student_session_id,
+                       atp.type AS att_type, atp.key_value AS `key`
+                FROM student_session ss
+                INNER JOIN students s ON s.id = ss.student_id
+                LEFT JOIN student_attendences sa ON sa.student_session_id = ss.id AND sa.date = ?
+                LEFT JOIN attendence_type atp ON atp.id = sa.attendence_type_id
+                WHERE ss.session_id = ? AND ss.class_id = ? AND ss.section_id = ? AND ss.is_active = 'yes'";
 
-        $query = $this->db->query($sql);
+        $query = $this->db->query($sql, array($date, $this->current_session, $class_id, $section_id));
         return $query->result_array();
     }
 
+    /**
+     * Only students who already have attendance on the date (Attendance By Date).
+     * The old RIGHT JOIN behaved as an inner join; made explicit here.
+     */
     public function searchAttendenceClassSectionPrepare($class_id, $section_id, $date) {
-        $query = $this->db->query("select student_sessions.attendence_id,student_sessions.remark,students.id as std_id,students.firstname,students.middlename,students.admission_no,student_sessions.date,students.roll_no,students.lastname,student_sessions.attendence_type_id,student_sessions.id as student_session_id from students ,(SELECT student_session.id,student_session.student_id ,IFNULL(student_attendences.date, 'xxx') as date,student_attendences.remark,IFNULL(student_attendences.id, 0) as attendence_id,student_attendences.attendence_type_id FROM `student_session` RIGHT JOIN student_attendences ON student_attendences.student_session_id=student_session.id  and student_attendences.date=" . $this->db->escape($date) . " where  student_session.session_id=" . $this->db->escape($this->current_session) . " and student_session.class_id=" . $this->db->escape($class_id) . " and student_session.section_id=" . $this->db->escape($section_id) . " and student_session.is_active = 'yes') as student_sessions where student_sessions.student_id=students.id ");
+
+        $sql = "SELECT IFNULL(sa.id, 0) AS attendence_id,
+                       sa.remark, s.id AS std_id,
+                       s.firstname, s.middlename, s.admission_no,
+                       sa.date AS date, s.roll_no, s.lastname,
+                       sa.attendence_type_id,
+                       ss.id AS student_session_id
+                FROM student_attendences sa
+                INNER JOIN student_session ss ON ss.id = sa.student_session_id
+                INNER JOIN students s ON s.id = ss.student_id
+                WHERE sa.date = ? AND ss.session_id = ? AND ss.class_id = ? AND ss.section_id = ? AND ss.is_active = 'yes'";
+
+        $query = $this->db->query($sql, array($date, $this->current_session, $class_id, $section_id));
         return $query->result_array();
     }
 

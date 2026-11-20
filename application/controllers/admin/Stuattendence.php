@@ -24,7 +24,6 @@ class Stuattendence extends Admin_Controller {
         $this->session->set_userdata('sub_menu', 'stuattendence/index');
         $data['title'] = 'Add Fees Type';
         $data['title_list'] = 'Fees Type List';
-        $sch_setting = $this->setting_model->getSchoolDetail();
         $data['sch_setting'] = $this->sch_setting_detail;
         $class = $this->class_model->get('', $classteacher = 'yes');
         $userdata = $this->customlib->getUserData();
@@ -61,8 +60,6 @@ class Stuattendence extends Admin_Controller {
             $class = $this->input->post('class_id');
             $section = $this->input->post('section_id');
             $date = $this->input->post('date');
-            $student_list = $this->stuattendence_model->get();
-            $data['studentlist'] = $student_list;
             $data['class_id'] = $class;
             $data['section_id'] = $section;
             $data['date'] = $date;
@@ -174,8 +171,6 @@ class Stuattendence extends Admin_Controller {
             $class = $this->input->post('class_id');
             $section = $this->input->post('section_id');
             $date = $this->input->post('date');
-            $student_list = $this->stuattendence_model->get();
-            $data['studentlist'] = $student_list;
             $data['class_id'] = $class;
             $data['section_id'] = $section;
             $data['date'] = $date;
