@@ -2151,7 +2151,7 @@ class Student extends Admin_Controller
     {
         $class      = $this->input->get('class_id');
         $section    = $this->input->get('section_id');
-        $resultlist = $this->student_model->searchByClassSection($class, $section);
+        $resultlist = $this->student_model->searchByClassSectionLite($class, $section);
         foreach ($resultlist as $key => $value) {
             $resultlist[$key]['full_name'] = $this->customlib->getFullName($value['firstname'], $value['middlename'], $value['lastname'], $this->sch_setting_detail->middlename, $this->sch_setting_detail->lastname);
             # code...
@@ -2293,7 +2293,6 @@ class Student extends Admin_Controller
         $this->session->set_userdata('sub_menu', 'student/disablestudentslist');
         $class                   = $this->class_model->get();
         $data['classlist']       = $class;
-        $result                  = $this->student_model->getdisableStudent();
         $data["resultlist"]      = array();
         $data['adm_auto_insert'] = $this->sch_setting_detail->adm_auto_insert;
         $data['sch_setting']     = $this->sch_setting_detail;

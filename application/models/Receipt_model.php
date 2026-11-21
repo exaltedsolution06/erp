@@ -400,6 +400,24 @@ class Receipt_model extends CI_Model {
 
     // reportbyname
 
+    /**
+     * Date-range filter on a date_time column that stores 'Y-m-d' (or 'Y-m-d H:i:s') text.
+     * Uses plain range comparisons (index friendly) instead of DATE(column) >= ...
+     * Falls back to the old DATE() form when the inputs are not valid Y-m-d dates.
+     */
+    private function _apply_date_range($column, $from_date, $to_date)
+    {
+        $from = DateTime::createFromFormat('Y-m-d', (string) $from_date);
+        $to   = DateTime::createFromFormat('Y-m-d', (string) $to_date);
+        if ($from && $to && $from->format('Y-m-d') === $from_date && $to->format('Y-m-d') === $to_date) {
+            $this->db->where($column . ' >=', $from_date);
+            $this->db->where($column . ' <', $to->modify('+1 day')->format('Y-m-d'));
+        } else {
+            $this->db->where('DATE(' . $column . ') >=', $from_date);
+            $this->db->where('DATE(' . $column . ') <=', $to_date);
+        }
+    }
+
     public function get_receipt($limit, $offset,$from_date = null, $to_date = null, $mode = null, $studentId = null)
     {
          //    echo $from_date;
@@ -471,8 +489,7 @@ class Receipt_model extends CI_Model {
         // $this->db->where('student_session.is_active', 'yes');
         
         if (!empty($from_date) && !empty($to_date)) {
-            $this->db->where('DATE(receipts.date_time) >=', $from_date);
-            $this->db->where('DATE(receipts.date_time) <=', $to_date);
+            $this->_apply_date_range('receipts.date_time', $from_date, $to_date);
         } if(!empty($mode)) {
 			$this->db->where('receipts.mode', $mode);
 		} if (!empty($studentId)){
@@ -573,28 +590,27 @@ class Receipt_model extends CI_Model {
 
     public function get_receipt_count($from_date = null, $to_date = null, $mode = null, $studentId = null)
     {
-        $this->db->select('receipts.receipt_no'); // Select only grouped field
+        // Number of receipt groups (same as the GROUP BY receipt_no in get_receipt),
+        // counted in SQL instead of loading every grouped row into PHP.
+        $this->db->select('COUNT(DISTINCT receipts.receipt_no) + IF(SUM(receipts.receipt_no IS NULL) > 0, 1, 0) AS total', false);
         $this->db->from('receipts');
         $this->db->join('students', 'students.id = receipts.student_id');
         $this->db->join('student_session', 'student_session.student_id = students.id');
-        $this->db->join('users', 'users.user_id = students.id', 'left');
-		$this->db->where('student_session.session_id', $this->current_session);
-         if (!empty($from_date) && !empty($to_date)) {
-            $this->db->where('DATE(receipts.date_time) >=', $from_date);
-            $this->db->where('DATE(receipts.date_time) <=', $to_date);
-        } if (!empty($mode)){
-			$this->db->where('receipts.mode', $mode);
-		} if (!empty($studentId)){
-			$this->db->where('receipts.back_id', $studentId);
-		}
-		
-        $this->db->group_by('receipts.receipt_no');
-        
-        $query = $this->db->get();
-        return $query->num_rows(); // This returns the count of grouped rows
+        $this->db->where('receipts.session_id', $this->current_session);
+        $this->db->where('student_session.session_id', $this->current_session);
+        if (!empty($from_date) && !empty($to_date)) {
+            $this->_apply_date_range('receipts.date_time', $from_date, $to_date);
+        }
+        if (!empty($mode)) {
+            $this->db->where('receipts.mode', $mode);
+        }
+        if (!empty($studentId)) {
+            $this->db->where('receipts.back_id', $studentId);
+        }
+
+        $row = $this->db->get()->row();
+        return $row ? (int) $row->total : 0;
     }
-
-
 
 
 
@@ -663,8 +679,7 @@ class Receipt_model extends CI_Model {
 
         
         if (!empty($from_date) && !empty($to_date)) {
-            $this->db->where('DATE(deleted_receipts.date_time) >=', $from_date);
-            $this->db->where('DATE(deleted_receipts.date_time) <=', $to_date);
+            $this->_apply_date_range('deleted_receipts.date_time', $from_date, $to_date);
         }
 		
 		if(!empty($mode))
@@ -699,25 +714,22 @@ class Receipt_model extends CI_Model {
 
     public function get_deleted_receipt_count($from_date = null, $to_date = null, $mode = null)
     {
-        $this->db->select('deleted_receipts.receipt_no'); // Select only grouped field
+        // Counted in SQL; same filters as get_deleted_receipt().
+        $this->db->select('COUNT(DISTINCT deleted_receipts.receipt_no) + IF(SUM(deleted_receipts.receipt_no IS NULL) > 0, 1, 0) AS total', false);
         $this->db->from('deleted_receipts');
         $this->db->join('students', 'students.id = deleted_receipts.student_id');
         $this->db->join('student_session', 'student_session.student_id = students.id');
-        $this->db->join('users', 'users.user_id = students.id', 'left');
+        $this->db->where('deleted_receipts.session_id', $this->current_session);
+        $this->db->where('student_session.session_id', $this->current_session);
         if (!empty($from_date) && !empty($to_date)) {
-            $this->db->where('DATE(deleted_receipts.date_time) >=', $from_date);
-            $this->db->where('DATE(deleted_receipts.date_time) <=', $to_date);
+            $this->_apply_date_range('deleted_receipts.date_time', $from_date, $to_date);
         }
-		
-		if(!empty($mode))
-		{
-			$this->db->where('mode', $mode);
-		}
-		
-        $this->db->group_by('deleted_receipts.receipt_no');
-        
-        $query = $this->db->get();
-        return $query->num_rows(); // This returns the count of grouped rows
+        if (!empty($mode)) {
+            $this->db->where('deleted_receipts.mode', $mode);
+        }
+
+        $row = $this->db->get()->row();
+        return $row ? (int) $row->total : 0;
     }
 
 

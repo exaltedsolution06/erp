@@ -5,6 +5,9 @@ if (!defined('BASEPATH'))
 
 class Setting_model extends MY_Model {
 
+    // Per-request cache of get() (no id). Cleared by every writer below.
+    private $_get_cache = null;
+
     public function __construct() {
         parent::__construct();
 		$this->current_session = $this->getCurrentSession();
@@ -22,6 +25,10 @@ class Setting_model extends MY_Model {
     }
 
     public function get($id = null) {
+
+        if ($id == null && $this->_get_cache !== null) {
+            return $this->_get_cache;
+        }
 
         $this->db->select('sch_settings.id,sch_settings.lang_id,sch_settings.languages,sch_settings.class_teacher,sch_settings.is_rtl,sch_settings.cron_secret_key, sch_settings.timezone,
           sch_settings.name,sch_settings.email,sch_settings.biometric,sch_settings.biometric_device,sch_settings.time_format,sch_settings.phone,languages.language,sch_settings.attendence_type,
@@ -53,6 +60,7 @@ class Setting_model extends MY_Model {
                 $result[0]['session'] = $session_array['session'];
             }
 
+            $this->_get_cache = $result;
             return $result;
         }
     }
@@ -130,6 +138,7 @@ class Setting_model extends MY_Model {
     }
 
     public function add($data) {
+        $this->_get_cache = null;
         $this->db->trans_start(); # Starting Transaction
         $this->db->trans_strict(false); # See Note 01. If you wish can remove as well
         //=======================Code Start===========================
@@ -341,6 +350,7 @@ class Setting_model extends MY_Model {
     }
 
     public function add_cronsecretkey($data, $id) {
+        $this->_get_cache = null;
 
         $this->db->where("id", $id)->update("sch_settings", $data);
     }
@@ -398,6 +408,7 @@ class Setting_model extends MY_Model {
     }
 
     public function add_printheader($data) {
+        $this->_get_cache = null;
 		
 		//echo '<pre>'; print_r($data); echo '</pre>';die;
 		
@@ -561,6 +572,7 @@ class Setting_model extends MY_Model {
 	}
 	public function insert_receipt_sr_no($recpt = '', $session_id='')
 	{
+        $this->_get_cache = null;
 		$check = $this->db->where('sr_no', $recpt)
                   ->where('session_id', $session_id)
                   ->get('receipt_sr_no')
@@ -598,6 +610,7 @@ class Setting_model extends MY_Model {
 	}
 	public function truncate_receipt($id)
 	{
+        $this->_get_cache = null;
 		$this->db->truncate('receipt_sr_no');
 		$this->db->truncate('receipts');
 		$this->db->truncate('deleted_receipts');
@@ -900,6 +913,7 @@ class Setting_model extends MY_Model {
 	}
 	public function addSettingSession($data)
 	{
+		$this->_get_cache = null;
 		$session_result = $this->get();
 		// $current_session_id = $session_result[0]['current_session']['session_id'];
 		$current_session_id = $this->current_session;

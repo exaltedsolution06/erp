@@ -144,14 +144,22 @@ class Studentsession_model extends CI_Model
         $students = $this->student_model->searchByClassSectionWithSession($class_id, $section_id);
 
         if (!empty($students)) {
+            // One query for all students instead of one query per student.
+            $student_ids = array();
+            foreach ($students as $student_value) {
+                $student_ids[] = $student_value['id'];
+            }
+            $rows = $this->db->select()->from('student_session')
+                    ->where_in('student_id', $student_ids)
+                    ->where('session_id', $this->current_session)
+                    ->order_by('id')
+                    ->get()->result();
+            $sessions_by_student = array();
+            foreach ($rows as $row) {
+                $sessions_by_student[$row->student_id][] = $row;
+            }
             foreach ($students as $student_key => $student_value) {
-
-                $this->db->select()->from('student_session');
-                $this->db->where('student_id', $student_value['id']);
-                $this->db->where('session_id', $this->current_session);
-                $this->db->order_by('id');
-                $query                                      = $this->db->get();
-                $students[$student_key]['student_sessions'] = $query->result();
+                $students[$student_key]['student_sessions'] = isset($sessions_by_student[$student_value['id']]) ? $sessions_by_student[$student_value['id']] : array();
             }
         }
         return $students;

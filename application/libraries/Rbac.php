@@ -7,6 +7,7 @@ class Rbac {
     private $userRoles = array();
     protected $permissions;
     var $perm_category;
+    private $_role_name = null;
 
     function __construct() {
 
@@ -46,8 +47,11 @@ class Rbac {
     function hasPrivilege($category = null, $permission = null) {
 
         $perm = trim($category) . "-" . trim($permission);
-        $roles = $this->CI->customlib->getStaffRole();
-        $logged_user_role = json_decode($roles)->name;
+        if ($this->_role_name === null) {
+            $roles = $this->CI->customlib->getStaffRole();
+            $this->_role_name = json_decode($roles)->name;
+        }
+        $logged_user_role = $this->_role_name;
 
 
 

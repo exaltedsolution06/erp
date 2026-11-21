@@ -8,6 +8,7 @@ class Customlib
 {
 
     public $CI;
+    private $_user_data_cache = array();
 
     public function __construct()
     {
@@ -1276,6 +1277,9 @@ class Customlib
     {
         $result         = $this->getLoggedInUserData();
         $id             = $result["id"];
+        if (isset($this->_user_data_cache[$id])) {
+            return $this->_user_data_cache[$id];
+        }
         $data           = $this->CI->staff_model->get($id);
         $setting_result = $this->CI->setting_model->get();
         if (!empty($setting_result)) {
@@ -1283,6 +1287,7 @@ class Customlib
         } else {
             $data["class_teacher"] = "yes";
         }
+        $this->_user_data_cache[$id] = $data;
         return $data;
     }
 

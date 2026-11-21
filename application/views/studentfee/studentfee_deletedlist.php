@@ -153,7 +153,21 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     
                                     <tbody>
                                         
-                                            <?php if (!empty($receipt_data)): ?>
+                                            <?php
+// Lookup tables loaded once (was: 4 database queries per receipt row)
+$fg_names = array(); $rh_names = array();
+foreach ($this->db->select('id, name')->get('fee_groups')->result() as $r) { $fg_names[$r->id] = $r->name; }
+foreach ($this->db->select('id, fees_heading')->get('route_head')->result() as $r) { $rh_names[$r->id] = $r->fees_heading; }
+$stu_sessions = array();
+if (!empty($receipt_data)) {
+    $ids = array();
+    foreach ($receipt_data as $r) { $ids[] = is_object($r) ? $r->student_id : $r['student_id']; }
+    foreach ($this->db->where_in('student_id', array_unique($ids))->order_by('id')->get('student_session')->result() as $r) {
+        if (!isset($stu_sessions[$r->student_id])) { $stu_sessions[$r->student_id] = $r; }
+    }
+}
+?>
+<?php if (!empty($receipt_data)): ?>
                                                 <?php $sno = 1; foreach ($receipt_data as $record): ?>
                                              <?php  
                                                 $record=(array)$record; 
@@ -171,7 +185,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 $balance_amt_sum  += (float)$record["balance_amt"]+(float)$record["remaining_previous_balance"];
                                                 $prev_balance_amt_sum  += (float)$record["previous_balance"]+(float)$record["remaining_previous_balance"]+(float)$record["previous_discount"];
 
-                                                $result = $this->db->get_where('student_session', ['student_id' => $record['student_id']])->row();
+                                                $result = isset($stu_sessions[$record['student_id']]) ? $stu_sessions[$record['student_id']] : null;
                                                 
                                             ?>
                                             <tr>
@@ -189,8 +203,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td ><?= $record["father_name"] ?></td>
                                                 <td ><?= $record["class"] ?></td>
                                                 <td ><?= $record["section"] ?></td>
-                                                <td ><?=  ($this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()) ? $this->db->get_where('fee_groups', ['id' => $record['category_id']])->row()->name : 'N.A'; ?>  </td>
-                                                <td ><?=  ($this->db->get_where('route_head', ['id' => $record['route_id']])->row()) ? $this->db->get_where('route_head', ['id' => $record['route_id']])->row()->fees_heading : 'N.A'; ?>  </td>
+                                                <td ><?=  isset($fg_names[$record['category_id']]) ? $fg_names[$record['category_id']] : 'N.A'; ?>  </td>
+                                                <td ><?=  isset($rh_names[$record['route_id']]) ? $rh_names[$record['route_id']] : 'N.A'; ?>  </td>
                                                 
                                                 <td >
                                                     <?php
